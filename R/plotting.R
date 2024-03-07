@@ -1088,15 +1088,15 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       labels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
     ) +
     scale_alpha_manual(values = c(0.5, 1)) +
-    guides(fill = guide_legend(override.aes = list(alpha = 1)), alpha = FALSE)
+    guides(fill = guide_legend(override.aes = list(is_selected = "Selected")), alpha = FALSE)
   
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1))
+    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1)) + scale_alpha_manual(values = c(1))
   } else {
     p <- p + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
-  
+
   return(p)
 }
 
