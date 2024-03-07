@@ -35,13 +35,11 @@ jobs:
       - name: Set env vars (dev)
         if: endsWith(github.ref, '/development')
         run: |
-          echo "SHINYAPP_NAME='dev-dfe-shiny-template'" >> $GITHUB_ENV
-          echo "SHINYAPP_OVERFLOW_NAME='dev-dfe-shiny-template-overflow'">> $GITHUB_ENV
+          echo "SHINYAPP_NAME='dev-csc-outcomes-enablers'" >> $GITHUB_ENV
       - name: Set env vars (prod)
         if: endsWith(github.ref, '/main')
         run: |
-          echo "SHINYAPP_NAME='dfe-shiny-template'">> $GITHUB_ENV
-          echo "SHINYAPP_OVERFLOW_NAME='dfe-shiny-template-overflow'">> $GITHUB_ENV
+          echo "SHINYAPP_NAME='csc-outcomes-enablers'">> $GITHUB_ENV
 
       - name: Cache R packages
         if: runner.os != 'Windows'
