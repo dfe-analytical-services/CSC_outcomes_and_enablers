@@ -2,7 +2,6 @@
   "input": {
     "Yes_national": false,
     "Yes_region": false,
-    "cookie_consent_clear": 0,
     "cookies": {
 
     },
@@ -12,14 +11,20 @@
     "enabler2_panels": "Workforce Stability",
     "geographic_breakdown_e2": "National",
     "geographic_breakdown_o1": "National",
+    "geographic_breakdown_o2": "National",
     "national_comparison_checkbox_e2": null,
     "national_comparison_checkbox_o1": null,
+    "national_comparison_checkbox_o2": null,
     "navlistPanel": "intro_panel",
     "outcome1_panels": "Family Stability",
+    "outcome2_panels": "Families engaging and receiving support from their family network",
     "region_comparison_checkbox_e2": null,
     "region_comparison_checkbox_o1": null,
+    "region_comparison_checkbox_o2": null,
+    "remove": 0,
     "select_geography_e2": "National",
     "select_geography_o1": "National",
+    "select_geography_o2": "National",
     "tutorial": 0
   },
   "output": {

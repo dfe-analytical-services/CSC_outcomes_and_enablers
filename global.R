@@ -98,7 +98,7 @@ workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
-#Read in the workforce characteristics data
+# Read in the workforce characteristics data
 # workforce_char <- read_workforce_char_data()
 workforce_eth <- read_workforce_eth_data()
 workforce_eth_seniority <- read_workforce_eth_seniority_data()
@@ -114,16 +114,16 @@ cin_rates <- read_cin_rate_data()
 cin_referrals <- read_cin_referral_data()
 
 
-#Read in outcome 2 data
+# Read in outcome 2 data
 ceased_cla_data <- read_outcome2()
 
-#Dropdowns
-#choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-#choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
+# Dropdowns
+# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
+# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
 
 # choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
 
-dropdown_choices <- cla_rates #%>%
+dropdown_choices <- cla_rates # %>%
 #   mutate(geo_breakdown = case_when(
 #     geographic_level == "National" ~ "National",#NA_character_,
 #     geographic_level == "Regional" ~ region_name,

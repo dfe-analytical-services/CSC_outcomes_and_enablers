@@ -68,19 +68,23 @@ enabler2_tab <- function() {
       br(),
       gov_row(
         br(),
-      p(htmlOutput("enabler2_choice_text1"),htmlOutput("enabler2_choice_text2")),
-              conditionalPanel(
+        p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
+        conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Kingston upon Thames / Richmond upon Thames')",
-                   p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together.") ),
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'North Northamptonshire / West Northamptonshire')",
-          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together") ),
-      conditionalPanel(
-        condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
-        p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.") ),
-              conditionalPanel(
+          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
+          p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        ),
+        conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.") ),
+          p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Poole')",
           p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
@@ -457,8 +461,8 @@ enabler2_tab <- function() {
                     h2("Ethnic diversity of workforce"),
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
                     br(),
-                   insert_text(inputId = "Ethnicity_definition", text = paste(
-                      "<b>","Ethnicity (headcount)", "</b><br>",
+                    insert_text(inputId = "Ethnicity_definition", text = paste(
+                      "<b>", "Ethnicity (headcount)", "</b><br>",
                       "Percentage of headcount children and family social workers in post at 30 September by ethnicity group."
                     )),
                     plotlyOutput("plot_ethnicity_rate"),
@@ -478,7 +482,7 @@ enabler2_tab <- function() {
                         tags$ul(
                           tags$li(tags$b("Ethnicity groups"), " are based on ethnic origin and are provided on a headcount basis."),
                           tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
-                           tags$li(tags$b("Headcount"), "is a count of all individual children and family social workers, regardless of their working pattern."), 
+                          tags$li(tags$b("Headcount"), "is a count of all individual children and family social workers, regardless of their working pattern."),
                           tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
                           tags$br(),
                           p(
