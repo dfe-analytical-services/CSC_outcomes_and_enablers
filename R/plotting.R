@@ -107,14 +107,15 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
       axis.title.x = element_text(margin = margin(t = 12)),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
-    ) +
-    scale_y_continuous(limits = c(0, ylim_upper)) +
-    labs(color = "Breakdown") +
+    )+
+    scale_y_continuous(limits = c(0,ylim_upper)) +
+    labs(color = 'Location')+
     scale_color_manual(
-      "Breakdown",
+      "Location",
       values = gss_colour_pallette
     )
 }
+
 
 
 
@@ -194,6 +195,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 }
 
 
+
 # By Region bar chart repeat function -----
 
 by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
@@ -206,8 +208,8 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
 
   ggplot(turnover_reg_data, aes(x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period))) +
     geom_col(position = position_dodge()) +
-    ylab(yaxis_title) +
-    # ylab("Turnover Rate (FTE) %") +
+    ylab(yaxis_title)+
+    #ylab("Turnover rate (FTE) %") +
     xlab("Region") +
     theme_classic() +
     theme(
@@ -225,62 +227,6 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
     )
 }
 
-# Enabler 1 - Workforce charts ----
-# Social Worker Turnover -------
-# plot_social_worker_turnover <- function(geo_lvl, geo_break){
-#   social_worker_data <- workforce_data %>%
-#     filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break) %>%
-#     select(
-#       time_period, geo_breakdown,
-#       turnover_rate_fte_perc
-#     )
-#   ggplot(social_worker_data, aes(`time_period`, `turnover_rate_fte_perc`, color = geo_breakdown))+
-#     geom_line() +
-#     ylab("Social worker turnover rate (FTE) (%)")+
-#     xlab("Time period") +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.title.x = element_text(margin = margin(t = 12)),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0)
-#     ) +
-#     scale_y_continuous(limits = c(0, 100))+
-#     labs(color='Breakdown')+
-#     scale_color_manual(
-#       "Breakdown",
-#       #breaks = unique(c("England", inputArea)),
-#       values = gss_colour_pallette
-#     )
-# }
-
-
-# bar chart by region
-# plot_turnover_reg <- function(){
-#   turnover_reg_data <- workforce_data %>%
-#     filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-#     select(time_period, geo_breakdown, turnover_rate_fte_perc) %>%
-#     mutate(geo_breakdown = reorder(geo_breakdown, -turnover_rate_fte_perc)) # Order by turnover rate
-#
-#   ggplot( turnover_reg_data , aes(`geo_breakdown`, `turnover_rate_fte_perc`, fill = factor(time_period))) +
-#     geom_col(position = position_dodge()) +
-#     ylab("Turnover rate (FTE) %") +
-#     xlab("Region") +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.text.x = element_text(angle = 300),
-#       axis.title.x = element_blank(),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0)
-#     ) +
-#     scale_y_continuous(limits = c(0, 100))+
-#     scale_fill_manual(
-#       "Time period",
-#       #breaks = unique(c("England", inputArea)),
-#       values = '#12436D'#gss_colour_pallette
-#     )
-# }
 
 # plot_turnover_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL){
 #
@@ -808,27 +754,22 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
 
 # Ethnicity Rate ----
 
-plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
-  ethnicity_data <- workforce_eth[
-    workforce_eth$geo_breakdown %in% geo_breakdown & workforce_eth$OrgRole == "All children and family social workers",
-    c("time_period", "geo_breakdown", "white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc")
-  ]
-
-  ethnicity_data_long <- reshape(ethnicity_data,
-    direction = "long",
-    varying = list(names(ethnicity_data)[3:7]),
-    v.names = "percentage",
-    timevar = "ethnicity",
-    times = c("white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc"),
-    new.row.names = 1:1E6
-  )
-
+plot_ethnicity_rate <- function(geo_breakdown, geographic_level){
+  ethnicity_data <- workforce_eth[workforce_eth$geo_breakdown %in% geo_breakdown 
+                                  & workforce_eth$role == 'Total'
+                                  & workforce_eth$breakdown_topic == 'Ethnicity major'
+                                  & workforce_eth$breakdown != 'Known'
+                                  & workforce_eth$time_period >= (max(workforce_eth$time_period)-3), 
+                                  c("time_period", "geo_breakdown", "breakdown_topic",	"breakdown",
+                                	"inpost_headcount_percentage")
+                                  ]
+  
   # Ensure 'percentage' is numeric
-  ethnicity_data_long$percentage <- as.numeric(ethnicity_data_long$percentage)
-
-  custom_x_order <- c("white_perc", "black_perc", "asian_perc", "mixed_perc", "other_perc")
-
-  p <- ggplot(ethnicity_data_long, aes(x = ethnicity, y = percentage, fill = factor(time_period))) +
+  ethnicity_data$percentage <- as.numeric(ethnicity_data$inpost_headcount_percentage)
+  
+  custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
+  
+  p <- ggplot(ethnicity_data, aes(x = breakdown, y = percentage, fill = factor(time_period))) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -847,42 +788,35 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
     ) +
     scale_x_discrete(
       limits = custom_x_order,
-      labels = c("white_perc" = "White", "mixed_perc" = "Mixed", "asian_perc" = "Asian", "black_perc" = "Black", "other_perc" = "Other")
-    )
-
+      labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
+      )
+  
   return(p)
 }
 
 
 plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
-  # Filter the data based on 'geo_breakdown', 'geographic_level', and 'OrgRole'
-  combined_ethnicity_data <- combined_ethnicity_data[combined_ethnicity_data$geo_breakdown %in% geo_breakdown &
-    combined_ethnicity_data$OrgRole == "All children and family social workers", ]
 
-  # Reshape the dataframe to a long format
-  combined_ethnicity_data_long <- reshape2::melt(combined_ethnicity_data,
-    id.vars = c("geo_breakdown", "geographic_level.x", "time_period", "region_name", "OrgRole"),
-    measure.vars = c(
-      "Workforce_WhitePercentage", "Workforce_BlackPercentage", "Workforce_AsianPercentage",
-      "Workforce_MixedPercentage", "Workforce_OtherPercentage",
-      "Population_WhitePercentage", "Population_BlackPercentage", "Population_AsianPercentage",
-      "Population_MixedPercentage", "Population_OtherPercentage"
-    ),
-    variable.name = "EthnicGroup",
-    value.name = "Percentage"
-  )
+  # Filter the data based on 'geo_breakdown', 'geographic_level'
+  combined_ethnicity_data  <- combined_ethnicity_data [combined_ethnicity_data$geo_breakdown %in% geo_breakdown, 
+                                  c("time_period", "geo_breakdown", "geographic_level.x", "breakdown",
+                                    "inpost_headcount_percentage", "Percentage")] %>% 
+                                 rename(Ethnicity = breakdown, Workforce = inpost_headcount_percentage, Population = Percentage)
+  
 
   # Ensure 'percentage' is numeric
-  combined_ethnicity_data_long$Percentage <- as.numeric(combined_ethnicity_data_long$Percentage)
-
-  combined_ethnicity_data_long$DataSource <- ifelse(grepl("Workforce", combined_ethnicity_data_long$EthnicGroup), sprintf("Workforce (%s)", max(workforce_eth$time_period)), "Population (2021)")
-
-  # Create a new column 'Ethnicity' that contains only the ethnic group name
-  combined_ethnicity_data_long$Ethnicity <- gsub("Workforce_|Population_", "", combined_ethnicity_data_long$EthnicGroup)
-
-  custom_x_order <- c("WhitePercentage", "BlackPercentage", "AsianPercentage", "MixedPercentage", "OtherPercentage")
-
-  p <- ggplot(combined_ethnicity_data_long, aes(x = Ethnicity, y = Percentage, fill = factor(DataSource))) +
+  combined_ethnicity_data$Workforce <- as.numeric(combined_ethnicity_data$Workforce)
+  
+  # Reshape the dataframe to a long format
+  combined_ethnicity_data_long <- melt(combined_ethnicity_data,
+                                                 id.vars = c("geo_breakdown", "geographic_level.x", "time_period","Ethnicity"),
+                                                 measure.vars = c("Workforce", "Population"),
+                                                 variable.name = "Data",
+                                                 value.name = "Percentage")
+  
+  custom_x_order <- c("White", "Black", "Asian", "Mixed", "Other")
+  
+  p <- ggplot(combined_ethnicity_data_long, aes(x = Ethnicity, y = Percentage, fill = Data)) +
     geom_bar(stat = "identity", position = "dodge") +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -896,40 +830,38 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
     ) +
     scale_y_continuous(limits = c(0, 100)) +
     scale_fill_manual(
-      "Data", # Change legend title
-      values = c("#3D3D3D", "#F46A25")
+      "Data",  # Change legend title
+      values = c("#F46A25", "#3D3D3D")
     ) +
     scale_x_discrete(
       limits = custom_x_order,
-      labels = c("WhitePercentage" = "White", "MixedPercentage" = "Mixed", "AsianPercentage" = "Asian", "BlackPercentage" = "Black", "OtherPercentage" = "Other")
+      labels = c("White" = "White", "Mixed" = "Mixed", "Asian" = "Asian", "Black" = "Black", "Other" = "Other")
     )
 
   return(p)
 }
 
-plot_seniority_eth <- function(geo_breakdown, geographic_level) {
-  ethnicity_data_sen <- workforce_eth_seniority[
-    workforce_eth_seniority$geo_breakdown %in% geo_breakdown & workforce_eth_seniority$seniority != "All children and family social workers",
-    c("time_period", "geo_breakdown", "white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc", "known_headcount", "seniority")
-  ]
-
+plot_seniority_eth <- function(geo_breakdown, geographic_level){
+  ethnicity_data_sen <- workforce_eth_seniority[workforce_eth_seniority$geo_breakdown %in% geo_breakdown & workforce_eth_seniority$seniority != 'Total', 
+                                  c("time_period", "geo_breakdown", "breakdown", "Percentage", "seniority")]
+  
   # Reshape data using pivot_longer()
-  ethnicity_data_long <- ethnicity_data_sen %>%
-    pivot_longer(
-      cols = c("white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc"),
-      names_to = "ethnicity",
-      values_to = "percentage"
-    )
+  # ethnicity_data_long <- ethnicity_data_sen %>%
+  #   pivot_longer(
+  #     cols = c("white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc"),
+  #     names_to = "ethnicity",
+  #     values_to = "percentage"
+  #   )
 
 
   # Ensure 'percentage' is numeric
-  ethnicity_data_long$percentage <- as.numeric(ethnicity_data_long$percentage)
-
-  custom_x_order <- c("white_perc", "black_perc", "asian_perc", "mixed_perc", "other_perc")
-  custom_fill_order <- c("Manager", "Senior practitioner", "Case holder", "Qualified without cases")
-
-
-  p <- ggplot(ethnicity_data_long, aes(x = ethnicity, y = percentage, fill = factor(seniority, levels = custom_fill_order))) +
+  # ethnicity_data_long$percentage <- as.numeric(ethnicity_data_long$percentage)
+  
+  custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
+  custom_fill_order <- c("Manager",  "Senior practitioner", "Case holder","Qualified without cases")
+  
+  
+  p <- ggplot( ethnicity_data_sen, aes(x = breakdown, y = Percentage, fill = factor(seniority,levels = custom_fill_order))) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -948,7 +880,7 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
     ) +
     scale_x_discrete(
       limits = custom_x_order,
-      labels = c("white_perc" = "White", "mixed_perc" = "Mixed", "asian_perc" = "Asian", "black_perc" = "Black", "other_perc" = "Other")
+      labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
     )
 
   return(p)
@@ -1112,11 +1044,11 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       labels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
     ) +
     scale_alpha_manual(values = c(0.5, 1)) +
-    guides(fill = guide_legend(override.aes = list(alpha = 1)), alpha = FALSE)
-
+    guides(fill = guide_legend(override.aes = list(is_selected = "Selected")), alpha = FALSE)
+  
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1))
+    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1)) + scale_alpha_manual(values = c(1))
   } else {
     p <- p + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
@@ -1245,13 +1177,13 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
 # bar chart by region
 plot_cla_march_reg <- function() {
   cla_reg_data <- cla_rates %>%
-    filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
+    filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
     select(time_period, geo_breakdown, rate_per_10000) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -rate_per_10000)) # Order by cla rate
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
-
+  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+  
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
