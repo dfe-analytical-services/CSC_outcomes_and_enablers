@@ -49,25 +49,6 @@ cs_num <- function(value) {
   format(value, big.mark = ",", trim = TRUE)
 }
 
-# tidy_code_function -------------------------------------------------------------------------------
-# Code to tidy up the scripts.
-
-tidy_code_function <- function() {
-  message("----------------------------------------")
-  message("App scripts")
-  message("----------------------------------------")
-  app_scripts <- eval(styler::style_dir(recursive = FALSE)$changed)
-  message("R scripts")
-  message("----------------------------------------")
-  r_scripts <- eval(styler::style_dir("R/")$changed)
-  message("Test scripts")
-  message("----------------------------------------")
-  test_scripts <- eval(styler::style_dir("tests/", filetype = "r")$changed)
-  script_changes <- c(app_scripts, r_scripts, test_scripts)
-  return(script_changes)
-}
-
-
 # Source scripts ---------------------------------------------------------------------------------
 
 # Source any scripts here. Scripts may be needed to process data before it gets to the server file.
@@ -99,7 +80,7 @@ site_overflow <- "https://department-for-education.shinyapps.io/dfe-shiny-templa
 sites_list <- c(site_primary, site_overflow) # We can add further mirrors where necessary. Each one can generally handle about 2,500 users simultaneously
 ees_pub_name <- "Statistical publication" # Update this with your parent publication name (e.g. the EES publication)
 ees_publication <- "https://explore-education-statistics.service.gov.uk/find-statistics/" # Update with parent publication link
-google_analytics_key <- "Z967JJVQQX"
+google_analytics_key <- "Q13T4ENF6C"
 
 
 source("R/read_data.R")
