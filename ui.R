@@ -135,13 +135,7 @@ ui <- function(input, output, session) {
       # enabler3_tab(),
       # homepage_panel(),
       a11y_panel(),
-      dfeshiny::support_panel(
-        team_email = "natalie.paterson@education.gov.uk",
-        repo_name = "https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers",
-        ees_publication = FALSE,
-        publication_name = "Post-16 education and labour market activities, pathways and outcomes (LEO)",
-        alt_href = "https://www.gov.uk/government/publications/post-16-education-and-labour-market-activities-pathways-and-outcomes-leo"
-      ),
+      support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
     ),
