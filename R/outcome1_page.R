@@ -1,4 +1,4 @@
-outcome1_tab <- function(){
+outcome1_tab <- function() {
   tabPanel(
     value = "outcome1_page",
     "Outcome 1",
@@ -10,7 +10,7 @@ outcome1_tab <- function(){
         )
       ),
       gov_row(
-        #Input boxes
+        # Input boxes
         div(
           class = "input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
@@ -18,12 +18,12 @@ outcome1_tab <- function(){
             selectizeInput(
               inputId = "select_geography_o1",
               label = "Select a geographical level:",
-              choices = unique(dropdown_choices %>% pull('geographic_level')),
+              choices = unique(dropdown_choices %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
             ),
-            conditionalPanel(condition = "input.select_geography_o1 != 'National'",selectizeInput(
+            conditionalPanel(condition = "input.select_geography_o1 != 'National'", selectizeInput(
               inputId = "geographic_breakdown_o1",
               label = "Select a breakdown: ",
               choices = NULL,
@@ -31,21 +31,23 @@ outcome1_tab <- function(){
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(4,8)
+            col_widths = c(4, 8)
           ),
           layout_columns(
-            conditionalPanel(condition = "input.select_geography_o1 != 'National'",
-                             column(
-                               width = 3,
-                               checkbox_Input(
-                                 inputId = "national_comparison_checkbox_o1",
-                                 cb_labels = "Compare with National",
-                                 checkboxIds = "Yes_national",
-                                 label = "",
-                                 hint_label = NULL,
-                                 small = TRUE
-                               )
-                             )),
+            conditionalPanel(
+              condition = "input.select_geography_o1 != 'National'",
+              column(
+                width = 3,
+                checkbox_Input(
+                  inputId = "national_comparison_checkbox_o1",
+                  cb_labels = "Compare with National",
+                  checkboxIds = "Yes_national",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
             conditionalPanel(
               condition = "(input.select_geography_o1 == 'Local authority')",
               column(
@@ -59,23 +61,27 @@ outcome1_tab <- function(){
                   small = TRUE
                 )
               ),
-            ),col_widths = c(4,8)
+            ),
+            col_widths = c(4, 8)
           )
         )
       ),
       br(),
       gov_row(
         br(),
-        p(htmlOutput("outcome1_choice_text1"),htmlOutput("outcome1_choice_text2")),
+        p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire"),"or", strong("West Northamptonshire"),". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.") ),
+          p("To view 2021 and onwards data select ", strong("North Northamptonshire"), "or", strong("West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Poole')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"),". Bournemouth, Christchurch and Poole local authority was formed in April 2019.") ),
+          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Bournemouth')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"),". Bournemouth, Christchurch and Poole local authority was formed in April 2019.") ),
+          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        ),
       ),
       gov_row(
         br(),
@@ -117,7 +123,7 @@ outcome1_tab <- function(){
                   "Rate of new entrants to care",
                   gov_row(
                     insert_text(inputId = "cla_rate_definition", text = paste(
-                      "<b>","Rate of children who started to be looked after", "</b><br>",
+                      "<b>", "Rate of children who started to be looked after", "</b><br>",
                       "The children in care rate is calculated as the number of children in care per 10,000 children in the general population."
                     )),
                     # p("plots go here"),
@@ -141,9 +147,11 @@ outcome1_tab <- function(){
                           tags$li("Figures exclude children looked after under a series of short-term placements. Only the first occasion on which a child started to be looked after in the year has been counted."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                          )
                         )
                       )
                     )
@@ -252,13 +260,15 @@ outcome1_tab <- function(){
                           tags$li("Figures exclude children looked after under a series of short-term placements. Only the first occasion on which a child started to be looked after in the year has been counted."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                          )
                         )
                       )
                     )
-                    ),
+                  ),
                   gov_row(
                     h2("Rate of children in care on 31 March by region"),
                     p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
@@ -288,10 +298,10 @@ outcome1_tab <- function(){
                       help_text = (
                         dataTableOutput("table_cla_march_la")
                       )
-                      
                     )
                   )
-                ),open = FALSE
+                ),
+                open = FALSE
               )
             ),
             tabPanel(
@@ -321,12 +331,12 @@ outcome1_tab <- function(){
                   "Rate of Child In Need (CIN)",
                   gov_row(
                     h2("Rate of Child In Need (CIN)"),
-                    p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention. 
-                    Looking at the flow of children who become a CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."), 
+                    p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
+                    Looking at the flow of children who become a CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."),
                     # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-                    
+
                     insert_text(inputId = "CIN_definition", text = paste(
-                      "<b>","Children In Need (CIN) rate", "</b><br>",
+                      "<b>", "Children In Need (CIN) rate", "</b><br>",
                       "Rate of Children In Need at 31 March, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
@@ -340,20 +350,22 @@ outcome1_tab <- function(){
                         dataTableOutput("table_cin_rate")
                       )
                     ),
-                    #expandable for the additional info links
+                    # expandable for the additional info links
                     details(
                       inputId = "CIN_info",
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
                           tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their devlopment or health."),
-                          tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021","mid-year population estimates."),  "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
+                          tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021", "mid-year population estimates."), "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
                           tags$li("The rates for 2023 have been calculated based on 2021 population estimates as 2022 estimates were not available at the time of publication. Therefore, some caution is needed when interpreting the 2023 rates, either in isolation or in comparison with other years. The 2023 rates will be revised as part of the next 2024 publication."),
                           tags$li("Revised population estimates for 2012 to 2020 based on 2021 Census data, to calculate revised 2013 to 2021 rates, were not available at the time of publication. Therefore, some caution is needed when interpreting these rates, either in isolation or in comparison with other years. The 2013 to 2021 rates will be revised as part of the next 2024 publication."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+                          )
                         )
                       )
                     ),
@@ -394,42 +406,43 @@ outcome1_tab <- function(){
                   "Repeat referrals (within 12 months)",
                   gov_row(
                     h2("Repeat referrals (within 12 months)"),
-                    
-                    p("If children are being referred to services repeatedly, this suggests that they and their families may not be receiving 
-                   the support necessary to allow them to thrive  independently as a family unit. Multiple referrals can be inefficient and 
-                   cause additional upset and trauma for the child and family, therefore reducing the rate of repeat referrals will result in better outcomes."), 
-                   # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-                   
-                   insert_text(inputId = "CIN_referrals_definition", text = paste(
-                     "<b>","Re-referrals within 12 months", "</b><br>",
-                     "Percentage of re-referrals within 12 months of a previous referral in the year to 31 March."
-                   )),
-                   # p("plots go here"),
-                   plotlyOutput("plot_cin_referral"),
-                   br(),
-                   br(),
-                   # Expandable for the table alternative
-                   details(
-                     inputId = "table_cin_referral",
-                     label = "View chart as a table",
-                     help_text = (
-                       dataTableOutput("table_cin_referral")
-                     )
-                   ),
-                   details(
-                     inputId = "CIN_referral_info",
-                     label = "Additional information:",
-                     help_text = (
-                       tags$ul(
-                         tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
-                         tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                         tags$br(),
-                         p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
-                           tags$br(),
-                           "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology."))
-                       )
-                     )
-                   ),
+                    p("If children are being referred to services repeatedly, this suggests that they and their families may not be receiving
+                   the support necessary to allow them to thrive  independently as a family unit. Multiple referrals can be inefficient and
+                   cause additional upset and trauma for the child and family, therefore reducing the rate of repeat referrals will result in better outcomes."),
+                    # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
+
+                    insert_text(inputId = "CIN_referrals_definition", text = paste(
+                      "<b>", "Re-referrals within 12 months", "</b><br>",
+                      "Percentage of re-referrals within 12 months of a previous referral in the year to 31 March."
+                    )),
+                    # p("plots go here"),
+                    plotlyOutput("plot_cin_referral"),
+                    br(),
+                    br(),
+                    # Expandable for the table alternative
+                    details(
+                      inputId = "table_cin_referral",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_cin_referral")
+                      )
+                    ),
+                    details(
+                      inputId = "CIN_referral_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
+                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("Re-referrals by region"),
@@ -462,7 +475,8 @@ outcome1_tab <- function(){
                       )
                     )
                   )
-                ), open = FALSE
+                ),
+                open = FALSE
               ),
             ),
             tabPanel(
@@ -497,7 +511,6 @@ outcome1_tab <- function(){
               accordion(
                 accordion_panel(
                   "Accordion 1",
-                  
                 ),
                 accordion_panel(
                   "Accordion 2"
@@ -537,7 +550,6 @@ outcome1_tab <- function(){
               accordion(
                 accordion_panel(
                   "Accordion 1",
-                  
                 ),
                 accordion_panel(
                   "Accordion 2"

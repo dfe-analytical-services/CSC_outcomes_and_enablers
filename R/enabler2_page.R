@@ -17,12 +17,12 @@ enabler2_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e2",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% pull('geographic_level')),
+              choices = unique(workforce_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
             ),
-            conditionalPanel(condition = "input.select_geography_e2 != 'National'",selectizeInput(
+            conditionalPanel(condition = "input.select_geography_e2 != 'National'", selectizeInput(
               inputId = "geographic_breakdown_e2",
               label = "Select a breakdown: ",
               choices = NULL,
@@ -30,21 +30,23 @@ enabler2_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(4,8)
+            col_widths = c(4, 8)
           ),
           layout_columns(
-            conditionalPanel(condition = "input.select_geography_e2 != 'National'",
-                             column(
-                               width = 5,
-                               checkbox_Input(
-                                 inputId = "national_comparison_checkbox_e2",
-                                 cb_labels = "Compare with National",
-                                 checkboxIds = "Yes_national",
-                                 label = "",
-                                 hint_label = NULL,
-                                 small = TRUE
-                               )
-                             )),
+            conditionalPanel(
+              condition = "input.select_geography_e2 != 'National'",
+              column(
+                width = 5,
+                checkbox_Input(
+                  inputId = "national_comparison_checkbox_e2",
+                  cb_labels = "Compare with National",
+                  checkboxIds = "Yes_national",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
             conditionalPanel(
               condition = "(input.select_geography_e2 == 'Local authority')",
               column(
@@ -59,7 +61,7 @@ enabler2_tab <- function() {
                 )
               ),
             ),
-            col_widths = c(4,8)
+            col_widths = c(4, 8)
           ),
         )
       ),
@@ -68,29 +70,37 @@ enabler2_tab <- function() {
         br(),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 != 'Richmond upon Thames' && input.geographic_breakdown_e2 != 'West Northamptonshire')",
-          p(htmlOutput("enabler2_choice_text1"),htmlOutput("enabler2_choice_text2") )),
+          p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2"))
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Richmond upon Thames')",
-          p("Please select ", strong("Kingston upon Thames"), " to view jointly reported statistics for Kingston upon Thames and Richmond upon Thames.") ),
+          p("Please select ", strong("Kingston upon Thames"), " to view jointly reported statistics for Kingston upon Thames and Richmond upon Thames.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Kingston upon Thames')",
-          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year and their data is reported together against Kingston upon Thames.") ),
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year and their data is reported together against Kingston upon Thames.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'North Northamptonshire')",
-          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together against North Northamptonshire. ") ),
+          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together against North Northamptonshire. ")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'West Northamptonshire')",
-          p("Please select ", strong("North Northamptonshire"), ", or Northamptonshire for pre-2021 data, to view jointly reported statistics for North Northamptonshire and West Northamptonshire. ") ),
+          p("Please select ", strong("North Northamptonshire"), ", or Northamptonshire for pre-2021 data, to view jointly reported statistics for North Northamptonshire and West Northamptonshire. ")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.") ),
+          p("To view 2021 and onwards data select ", strong("North Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Poole')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"),". Bournemouth, Christchurch and Poole local authority was formed in April 2019.") ),
+          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"),". Bournemouth, Christchurch and Poole local authority was formed in April 2019.") ),
-        #p(htmlOutput("enabler2_choice_text2")),
+          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        ),
+        # p(htmlOutput("enabler2_choice_text2")),
         br(),
         div(
           tabsetPanel(
@@ -134,14 +144,13 @@ enabler2_tab <- function() {
                   # Social Worker Turnover ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   gov_row(
                     h2("Social worker turnover"),
-                    
-                    p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."), 
+                    p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."),
                     # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-                    
+
                     insert_text(inputId = "social_work_turnover_definition", text = paste(
-                      "<b>","Turnover rate", "</b><br>",
-                      "The turnover rate is calculated as the number of FTE (full-time equivalent) 
-                                  children and family social worker leavers in the year divided by the number of FTE children and 
+                      "<b>", "Turnover rate", "</b><br>",
+                      "The turnover rate is calculated as the number of FTE (full-time equivalent)
+                                  children and family social worker leavers in the year divided by the number of FTE children and
                                   family social workers in post at the 30 September."
                     )),
                     plotlyOutput("plot_s_w_turnover"),
@@ -159,9 +168,11 @@ enabler2_tab <- function() {
                       inputId = "turnover_info",
                       label = "Additional information:",
                       help_text = (
-                        p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                        )
                       )
                     ),
                   ),
@@ -223,9 +234,11 @@ enabler2_tab <- function() {
                           tags$li(tags$b("Agency workers"), " are child and family social workers not directly paid by the local authority. These may be social workers who are paid by an agency rather than the local authority or who are self-employed."),
                           tags$li("The ", tags$b("FTE agency worker rate"), " is calculated as the number of FTE agency staff working as (children and family) social workers at 30 September divided by the sum of the number of FTE agency staff working as social workers at 30 September and the number of FTE social workers."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     )
@@ -272,10 +285,10 @@ enabler2_tab <- function() {
                     #   "A workforce strategy should develop and maintain an effective workforce.
                     #        With a well-supported workforce vacancy rates should remain low."
                     # )),
-                    #p("The vacancy rate is calculated as the number of FTE vacancies at 30 September divided by the sum of the number of FTE vacancies at 30 September and the number of FTE social workers at 30 September."),
+                    # p("The vacancy rate is calculated as the number of FTE vacancies at 30 September divided by the sum of the number of FTE vacancies at 30 September and the number of FTE social workers at 30 September."),
                     br(),
                     plotlyOutput("plot_vacancy_rate"),
-                    #p("plots go here"),
+                    # p("plots go here"),
                     br(),
                     br(),
                     details(
@@ -293,9 +306,11 @@ enabler2_tab <- function() {
                           tags$li(tags$b("Vacancies"), " are defined as any FTE (child and family social worker) vacancy within a local authority’s organisational structure, including vacancies that are not being actively recruited for, and those covered by agency workers."),
                           tags$li("The ", tags$b("vacancy rate"), " is calculated as the number of FTE vacancies at 30 September divided by the sum of the number of  FTE vacancies at 30 September and the number of FTE social workers at 30 September."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     ),
@@ -331,8 +346,8 @@ enabler2_tab <- function() {
                       )
                     ),
                   ),
-                )
-                , open = FALSE
+                ),
+                open = FALSE
               )
             ),
             # Second Domain - "quality of support for children and families" -------------
@@ -358,7 +373,7 @@ enabler2_tab <- function() {
                   "Social worker caseloads",
                   gov_row(
                     h2("Social worker caseloads"),
-                    p("Ensuring that practitioners have an appropriate caseload supports recruitment and 
+                    p("Ensuring that practitioners have an appropriate caseload supports recruitment and
                          retention and allows practitioners to deliver impactful services."),
                     br(),
                     plotlyOutput("caseload_plot"),
@@ -379,9 +394,11 @@ enabler2_tab <- function() {
                           tags$li("A", tags$b("case"), " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role."),
                           tags$li("The ", tags$b("average caseload"), " is calculated as the total number of cases held by FTE social workers (including agency workers) in post at 30 September divided by the number of FTE social workers (including agency workers) in post at 30 September that hold one or more cases."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     )
@@ -417,10 +434,11 @@ enabler2_tab <- function() {
                       )
                     )
                   )
-                ), open = FALSE
+                ),
+                open = FALSE
               ),
             ),
-            
+
             # Third tab panel -----
             tabPanel(
               "Societal and cultural awareness and diversity",
@@ -433,7 +451,7 @@ enabler2_tab <- function() {
                 # value_box(
                 #  title = "Social Worker White Ethnic Group",
                 #  value = htmlOutput("white_ethnicity_txt")
-                #)
+                # )
                 #  ),
                 column(
                   width = 6,
@@ -469,14 +487,15 @@ enabler2_tab <- function() {
                           tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
                           tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     )
                   )
-                  
                 ),
                 accordion_panel(
                   "Ethnic diversity of workforce vs. general population",
@@ -498,13 +517,15 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("Population data is taken from the latest available", a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3","ONS Census data (2021).")), 
+                          tags$li("Population data is taken from the latest available", a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS Census data (2021).")),
                           tags$li(sprintf("The Workforce data comparison uses the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
                           tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     )
@@ -537,15 +558,17 @@ enabler2_tab <- function() {
                           tags$li("A case holder is a children and family social worker that manages cases, but is not in a manager or senior practitioner role (however, cases can be hold by those not in case holder roles)."),
                           tags$li("Qualified without cases includes all other qualified and registered social workers, including those without cases (for example Independent Reviewing Officer (IRO), Chairs of Child Protection Conferences, Youth Custody worker, Family Support) and those not currently practicing (for example, those in learning and development or quality assurance roles)."),
                           tags$br(),
-                          p("For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology."))
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+                          )
                         )
                       )
                     )
-                    
                   )
-                ), open = FALSE
+                ),
+                open = FALSE
               ),
             )
           )

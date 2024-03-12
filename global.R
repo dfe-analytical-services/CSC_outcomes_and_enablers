@@ -26,6 +26,7 @@ shhh(library(xfun))
 shhh(library(metathis))
 shhh(library(shinyalert))
 shhh(library(shinytest2))
+shhh(library(diffviewer))
 shhh(library(rstudioapi))
 shhh(library(bslib))
 shhh(library(reshape2))
@@ -86,17 +87,17 @@ google_analytics_key <- "Q13T4ENF6C"
 
 source("R/read_data.R")
 
-#read in the definitions data
+# read in the definitions data
 # NOT important
 definitions <- read_definitions()
 colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-definitions <- definitions[,1:4]
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Read in the workforce data
+definitions <- definitions[, 1:4]
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Read in the workforce data
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 
-#Read in the workforce characteristics data
+# Read in the workforce characteristics data
 workforce_char <- read_workforce_char_data()
 workforce_eth <- read_workforce_eth_data()
 workforce_eth_seniority <- read_workforce_eth_seniority_data()
@@ -105,19 +106,24 @@ combined_ethnicity_data <- merge_eth_dataframes()
 cla_rates <- read_cla_rate_data()
 cla_placements <- read_cla_placement_data()
 combined_cla_data <- merge_cla_dataframes()
-#uasc_data <- test_uasc()
+# uasc_data <- test_uasc()
 
-#Read in the CIN  data
+# Read in the CIN  data
 cin_rates <- read_cin_rate_data()
 cin_referrals <- read_cin_referral_data()
 
-#Dropdowns
-choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
+# Dropdowns
+choice_breakdown_level <- workforce_data %>%
+  select(geographic_level) %>%
+  filter(geographic_level != "National") %>%
+  distinct()
+choices_LA <- workforce_data %>%
+  filter(geographic_level == "Local authority") %>%
+  select()
 
-#choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
+# choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
 
-dropdown_choices <- workforce_data #%>%
+dropdown_choices <- workforce_data # %>%
 #   mutate(geo_breakdown = case_when(
 #     geographic_level == "National" ~ "National",#NA_character_,
 #     geographic_level == "Regional" ~ region_name,
@@ -127,7 +133,7 @@ dropdown_choices <- workforce_data #%>%
 #          "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
 #          "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte") %>% distinct()
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
 # Read in the data
 dfRevBal <- read_revenue_data()
 # Get geographical levels from data

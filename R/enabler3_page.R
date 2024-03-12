@@ -1,4 +1,4 @@
-enabler3_tab <- function(){
+enabler3_tab <- function() {
   tabPanel(
     value = "enabler3_page",
     "Enabler 3",
