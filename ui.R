@@ -81,6 +81,8 @@ ui <- function(input, output, session) {
         referrer = "no-referrer"
       ),
     shinyjs::useShinyjs(),
+    dfe_cookie_script(),
+    cookie_banner_ui("cookies", name = "My DfE R Shiny data dashboard"),
     customDisconnectMessage(),
     useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
