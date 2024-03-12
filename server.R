@@ -75,97 +75,18 @@ server <- function(input, output, session) {
     }
   })
 
-  # output if cookie is unspecified
-  observeEvent(input$cookies, {
-    if (!is.null(input$cookies)) {
-      if (!("dfe_analytics" %in% names(input$cookies))) {
-        shinyalert(
-          inputId = "cookie_consent",
-          title = "Cookie consent",
-          text = "This site uses cookies to record traffic flow using Google Analytics",
-          size = "s",
-          closeOnEsc = TRUE,
-          closeOnClickOutside = FALSE,
-          html = FALSE,
-          type = "",
-          showConfirmButton = TRUE,
-          showCancelButton = TRUE,
-          confirmButtonText = "Accept",
-          confirmButtonCol = "#AEDEF4",
-          timer = 0,
-          imageUrl = "",
-          animation = TRUE
-        )
-      } else {
-        msg <- list(
-          name = "dfe_analytics",
-          value = input$cookies$dfe_analytics
-        )
-        session$sendCustomMessage("analytics-consent", msg)
-        if ("cookies" %in% names(input)) {
-          if ("dfe_analytics" %in% names(input$cookies)) {
-            if (input$cookies$dfe_analytics == "denied") {
-              ga_msg <- list(name = paste0("_ga_", google_analytics_key))
-              session$sendCustomMessage("cookie-remove", ga_msg)
-            }
-          }
-        }
-      }
-    }
-  })
+  output$cookie_status <- dfeshiny::cookie_banner_server(
+    "cookies",
+    input_cookies = reactive(input$cookies),
+    input_clear = reactive(input$cookie_consent_clear),
+    parent_session = session,
+    google_analytics_key = google_analytics_key
+  )
 
-  observeEvent(input$cookie_consent, {
-    msg <- list(
-      name = "dfe_analytics",
-      value = ifelse(input$cookie_consent, "granted", "denied")
-    )
-    session$sendCustomMessage("cookie-set", msg)
-    session$sendCustomMessage("analytics-consent", msg)
-    if ("cookies" %in% names(input)) {
-      if ("dfe_analytics" %in% names(input$cookies)) {
-        if (input$cookies$dfe_analytics == "denied") {
-          ga_msg <- list(name = paste0("_ga_", google_analytics_key))
-          session$sendCustomMessage("cookie-remove", ga_msg)
-        }
-      }
-    }
-  })
-
-  observeEvent(input$remove, {
-    msg <- list(name = "dfe_analytics", value = "denied")
-    session$sendCustomMessage("cookie-remove", msg)
-    session$sendCustomMessage("analytics-consent", msg)
-  })
-
-  cookies_data <- reactive({
-    input$cookies
-  })
-
-  output$cookie_status <- renderText({
-    cookie_text_stem <- "To better understand the reach of our dashboard tools, this site uses cookies to identify numbers of unique users as part of Google Analytics. You have chosen to"
-    cookie_text_tail <- "the use of cookies on this website."
-    if ("cookies" %in% names(input)) {
-      if ("dfe_analytics" %in% names(input$cookies)) {
-        if (input$cookies$dfe_analytics == "granted") {
-          paste(cookie_text_stem, "accept", cookie_text_tail)
-        } else {
-          paste(cookie_text_stem, "reject", cookie_text_tail)
-        }
-      }
-    } else {
-      "Cookies consent has not been confirmed."
-    }
-  })
-
-
-  #  output$cookie_status <- renderText(as.character(input$cookies))
-  
-  
-  
   # output$choice_text_test <- renderText({
   #   c(paste0("you have selected",input$select_geography))
   # })
-  
+
   # Time period dropdown also does not need to appear here - does not need to be reactive
 
   # Simple server stuff goes here ------------------------------------------------------------
@@ -214,35 +135,36 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Enabler 2 ----
   # Geographic level does not need to be here as it does not need to change depending on other dropdowns
-  
+
   # Geographic breakdown e2 (list of either LA names or Region names)
-  observeEvent(eventExpr={input$select_geography_e2},{
-    choices = sort(unique(workforce_data[workforce_data$geographic_level == input$select_geography_e2, "geo_breakdown"]),decreasing = FALSE)
-  
+  observeEvent(eventExpr = {
+    input$select_geography_e2
+  }, {
+    choices <- sort(unique(workforce_data[workforce_data$geographic_level == input$select_geography_e2, "geo_breakdown"]), decreasing = FALSE)
+
     updateSelectizeInput(
       session = session,
       inputId = "geographic_breakdown_e2",
       selected = choices[1],
       choices = choices
     )
-  }
-  )
-
-  # Confirmation sentence E2 -------
-    #This function gets the selected region to put into the confirmation text below
-  
-  workforce_region <- reactive({
-    location_data_workforce %>%
-            filter(la_name == input$geographic_breakdown_e2) %>%
-      pull(region_name)  %>%
-      as.character()  # Convert to character
   })
 
-  #First sentence for the dropdown choices
+  # Confirmation sentence E2 -------
+  # This function gets the selected region to put into the confirmation text below
+
+  workforce_region <- reactive({
+    location_data_workforce %>%
+      filter(la_name == input$geographic_breakdown_e2) %>%
+      pull(region_name) %>%
+      as.character() # Convert to character
+  })
+
+  # First sentence for the dropdown choices
   output$enabler2_choice_text1 <- renderText({
     if (input$select_geography_e2 == "National") {
       paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics on ", tags$b("England"), ".")
@@ -252,97 +174,100 @@ server <- function(input, output, session) {
       paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region(), ".")
     }
   })
-  
+
   output$enabler2_choice_text2 <- renderText({
-    #Checking to see if they picked national average comparison
+    # Checking to see if they picked national average comparison
     if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       paste0("You have also selected to compare with the ", tags$b("National Average."))
       # If they picked regional comparison
     } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      #Picked both national and regional comparison
+      # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
     }
   })
 
-  
+
   # Social worker turnover rate headline box
-  #Turnover rate plot and table -----
+  # Turnover rate plot and table -----
   output$s_w_headline_txt <- renderText({
     stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(turnover_rate_fte), nsmall = 1)
-    paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(workforce_data$time_period),")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
   })
-  
-  #Social worker turnover rate benchmarking plot
+
+  # Social worker turnover rate benchmarking plot
   output$plot_s_w_turnover <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_e2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_e2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
+    validate(
+      need(!is.null(input$select_geography_e2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
         filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2,'turnover_rate_fte', 'Turnover rate (FTE) %', 100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "turnover_rate_fte", "Turnover rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #Social worker turnover rate benchmarking table alternative
+
+  # Social worker turnover rate benchmarking table alternative
   output$table_s_w_turnover <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-    filtered_data <- workforce_data %>% filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-      select(time_period, geo_breakdown,turnover_rate_fte)
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(time_period, geo_breakdown, turnover_rate_fte)
 
-    #national only
-  }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-    filtered_data<-workforce_data %>%
-      filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') %>%
-      select(time_period, geo_breakdown,turnover_rate_fte)
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, turnover_rate_fte)
 
-    #regional only
-  }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
-    location <- location_data %>%
-      filter(la_name %in% input$geographic_breakdown_e2)
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e2)
 
-    filtered_data<-workforce_data %>%
-      filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-      select(time_period, geo_breakdown,turnover_rate_fte)
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
+        select(time_period, geo_breakdown, turnover_rate_fte)
 
-    #both selected
-  }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
-    location <- location_data %>%
-      filter(la_name %in% input$geographic_breakdown_e2)
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e2)
 
-    filtered_data<- workforce_data %>%
-      filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))%>%
-      select(time_period, geo_breakdown,turnover_rate_fte)
-  }
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, turnover_rate_fte)
+    }
     datatable(
       filtered_data,
       colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
@@ -352,21 +277,21 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #turnover rate by region plot----
+
+  # turnover rate by region plot----
   output$plot_turnover_reg <- plotly::renderPlotly({
     ggplotly(
-      #plot_turnover_reg() %>%
-      by_region_bar_plot(workforce_data, 'turnover_rate_fte','Turnover Rate (FTE) %')%>%
+      # plot_turnover_reg() %>%
+      by_region_bar_plot(workforce_data, "turnover_rate_fte", "Turnover Rate (FTE) %") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #turnover rate by region table
+
+  # turnover rate by region table
   output$table_turnover_reg <- renderDataTable({
     datatable(
-      workforce_data %>% filter(geographic_level == 'Regional', time_period == max(workforce_data$time_period)) %>% select(
+      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
         turnover_rate_fte
       ) %>%
@@ -378,17 +303,17 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # Turnover Rate by LA plot ----
   output$plot_turnover_la <- plotly::renderPlotly({
     ggplotly(
-      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2,'turnover_rate_fte', 'Turnover Rate (FTE) %') %>%
+      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate (FTE) %") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #Turnover Rate by LA table
+
+  # Turnover Rate by LA table
   output$table_turnover_la <- renderDataTable({
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
@@ -402,20 +327,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-      
+
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, turnover_rate_fte)  %>%
+        select(time_period, geo_breakdown, turnover_rate_fte) %>%
         arrange(desc(turnover_rate_fte))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>% filter(geographic_level == 'Local authority', time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        turnover_rate_fte
-      ) %>%
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          turnover_rate_fte
+        ) %>%
         arrange(desc(turnover_rate_fte))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
@@ -425,52 +351,54 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  
-  #Agency Rate ----
+
+
+  # Agency Rate ----
   output$agency_rate_txt <- renderText({
     stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(agency_rate_fte), nsmall = 1)
-    paste0(stat,"%","<br>", "<p style='font-size:16px; font-weight:500;'>","(",max(workforce_data$time_period),")", "</p>")
-    })
-  
-  #Agency worker rate benchmarking plot ----
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
+  })
+
+  # Agency worker rate benchmarking plot ----
   output$plot_agency_worker <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_e2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_e2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
+    validate(
+      need(!is.null(input$select_geography_e2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
         filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2,'agency_rate_fte', 'Agency worker rate (FTE) %',100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "agency_rate_fte", "Agency worker rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
+
   # output$table_agency_worker <- renderDataTable({
   #   datatable(
   #     workforce_data %>% filter(geo_breakdown %in% input$geographic_breakdown) %>% select(
@@ -484,37 +412,38 @@ server <- function(input, output, session) {
   #     )
   #   )
   # })
-  
-  #Agency worker rate table alternative
+
+  # Agency worker rate table alternative
   output$table_agency_worker <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data <- workforce_data %>% filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown,agency_rate_fte)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,agency_rate_fte)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(time_period, geo_breakdown, agency_rate_fte)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, agency_rate_fte)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
+
+      filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown,agency_rate_fte)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+        select(time_period, geo_breakdown, agency_rate_fte)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,agency_rate_fte)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, agency_rate_fte)
     }
     datatable(
       filtered_data,
@@ -525,21 +454,21 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #agency rate plot by region ----
+
+  # agency rate plot by region ----
   output$plot_agency_reg <- plotly::renderPlotly({
     ggplotly(
-      by_region_bar_plot(workforce_data, 'agency_rate_fte', 'Agency worker rate (FTE) %') %>%
-      #plot_agency_reg() %>%
+      by_region_bar_plot(workforce_data, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
+        # plot_agency_reg() %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #agency rate table by region
+
+  # agency rate table by region
   output$table_agency_reg <- renderDataTable({
     datatable(
-      workforce_data %>% filter(geographic_level == 'Regional', time_period == max(workforce_data$time_period)) %>% select(
+      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
         agency_rate_fte
       ) %>%
@@ -551,18 +480,18 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #agency rate by la plot -----
+
+  # agency rate by la plot -----
   output$plot_agency_rate_la <- plotly::renderPlotly({
     ggplotly(
-      by_la_bar_plot(workforce_data,input$geographic_breakdown_e2, input$select_geography_e2, 'agency_rate_fte', 'Agency worker rate (FTE) %')%>%
-      #plot_agency_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
+      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
+        # plot_agency_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #agency rate by la table alternative
+
+  # agency rate by la table alternative
   output$table_agency_rate_la <- renderDataTable({
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
@@ -576,20 +505,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-      
+
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, agency_rate_fte)  %>%
+        select(time_period, geo_breakdown, agency_rate_fte) %>%
         arrange(desc(agency_rate_fte))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>% filter(geographic_level == 'Local authority', time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        agency_rate_fte
-      ) %>%
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          agency_rate_fte
+        ) %>%
         arrange(desc(agency_rate_fte))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Agency worker rate (FTE) %"),
@@ -599,84 +529,89 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # Vacancy Rate -----
   # Vacancy rate headline box
   output$vacancy_rate_txt <- renderText({
-    paste0(format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(vacancy_rate_fte), nsmall = 1), "%",
-           "<br>","<p style='font-size:16px; font-weight:500;'>", "(",max(workforce_data$time_period),")", "</p>")
+    paste0(
+      format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(vacancy_rate_fte), nsmall = 1), "%",
+      "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
+    )
   })
-  
+
   # Vacancy Rate benchmarking plot ----
   output$plot_vacancy_rate <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_e2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_e2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
+    validate(
+      need(!is.null(input$select_geography_e2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
         filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2,'vacancy_rate_fte', 'Vacancy rate (FTE) %',100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
- 
-  
-  #Vacancy Rate benchmarking table alternative 
+
+
+  # Vacancy Rate benchmarking table alternative
   output$table_vacancy_rate <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data <- workforce_data %>% filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown,vacancy_rate_fte)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,vacancy_rate_fte)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(time_period, geo_breakdown, vacancy_rate_fte)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, vacancy_rate_fte)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
+
+      filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown,vacancy_rate_fte)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+        select(time_period, geo_breakdown, vacancy_rate_fte)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,vacancy_rate_fte)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, vacancy_rate_fte)
     }
     datatable(
       filtered_data,
@@ -687,18 +622,18 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #vacancy rate by la plot ----
+
+  # vacancy rate by la plot ----
   output$plot_vacancy_rate_la <- plotly::renderPlotly({
     ggplotly(
-      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, 'vacancy_rate_fte', "Vacancy rate (FTE) %")%>%
-     # plot_vacancy_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
+      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
+        # plot_vacancy_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #vacancy rate by la table alternative
+
+  # vacancy rate by la table alternative
   output$table_vacancy_rate_la <- renderDataTable({
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
@@ -712,20 +647,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-      
+
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, vacancy_rate_fte)  %>%
+        select(time_period, geo_breakdown, vacancy_rate_fte) %>%
         arrange(desc(vacancy_rate_fte))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>% filter(geographic_level == 'Local authority', time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        vacancy_rate_fte
-      ) %>%
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          vacancy_rate_fte
+        ) %>%
         arrange(desc(vacancy_rate_fte))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Vacancy rate (FTE) %"),
@@ -735,22 +671,22 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  
-  #vacancy rate plot by region ----
+
+
+  # vacancy rate plot by region ----
   output$plot_vacancy_reg <- plotly::renderPlotly({
     ggplotly(
-      by_region_bar_plot(workforce_data, 'vacancy_rate_fte', 'Vacancy rate (FTE) %') %>%
-      #plot_vacancy_reg() %>%
+      by_region_bar_plot(workforce_data, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
+        # plot_vacancy_reg() %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #vacancy rate table by region
+
+  # vacancy rate table by region
   output$table_vacancy_reg <- renderDataTable({
     datatable(
-      workforce_data %>% filter(geographic_level == 'Regional', time_period == max(workforce_data$time_period)) %>% select(
+      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
         vacancy_rate_fte
       ) %>%
@@ -762,103 +698,113 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  
-  
-  
-  
-  #Caseload ----
-  #Caseload headline box
+
+
+
+
+
+  # Caseload ----
+  # Caseload headline box
   output$caseload_txt <- renderText({
-    previous_year = workforce_data %>% filter(time_period == (max(workforce_data$time_period)-1) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte)
-    current_year = workforce_data %>% filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte)
-    
-    if (current_year < previous_year){
-      paste0(format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1),"<br>",
-             "<p style='font-size:16px; font-weight:500;'>","in ",max(workforce_data$time_period), " down from ", previous_year, " in ", (max(workforce_data$time_period)-1), "</p>")
-    }else{
-      paste0(format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1),"<br>",
-             "<p style='font-size:16px; font-weight:500;'>","in ",max(workforce_data$time_period)," up from ", previous_year, " in ", (max(workforce_data$time_period)-1), "</p>")
-            
+    previous_year <- workforce_data %>%
+      filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(caseload_fte)
+    current_year <- workforce_data %>%
+      filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(caseload_fte)
+
+    if (current_year < previous_year) {
+      paste0(
+        format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1), "<br>",
+        "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), " down from ", previous_year, " in ", (max(workforce_data$time_period) - 1), "</p>"
+      )
+    } else {
+      paste0(
+        format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1), "<br>",
+        "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), " up from ", previous_year, " in ", (max(workforce_data$time_period) - 1), "</p>"
+      )
     }
   })
-  
-  #Caseload benchmarking plot ----
+
+  # Caseload benchmarking plot ----
   output$caseload_plot <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_e2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_e2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
+    validate(
+      need(!is.null(input$select_geography_e2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
         filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
     }
-    
-  # Set the max y-axis scale
-  max_rate <- max(workforce_data$caseload_fte, na.rm = TRUE)
-  
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
-  
-  p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2,'caseload_fte', 'Average caseload (FTE)', max_rate) %>%
-    config(displayModeBar = F)
-  
-  
-  ggplotly(p, height = 420) %>%
-    layout(yaxis = list(range = c(0, max_rate)))
-})
-  
-  
-  #caseload benchamrking table alternative
+
+    # Set the max y-axis scale
+    max_rate <- max(workforce_data$caseload_fte, na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "caseload_fte", "Average caseload (FTE)", max_rate) %>%
+      config(displayModeBar = F)
+
+
+    ggplotly(p, height = 420) %>%
+      layout(yaxis = list(range = c(0, max_rate)))
+  })
+
+
+  # caseload benchamrking table alternative
   output$table_caseload <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data <- workforce_data %>% filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown,caseload_fte)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)){
-      filtered_data<-workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,caseload_fte)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(time_period, geo_breakdown, caseload_fte)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, caseload_fte)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<-workforce_data %>%
+
+      filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown,caseload_fte)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)){
+        select(time_period, geo_breakdown, caseload_fte)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_e2)
-      
-      filtered_data<- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,caseload_fte)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, caseload_fte)
     }
     datatable(
       filtered_data,
@@ -869,20 +815,20 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # Caseload by region ----
   output$plot_caseload_reg <- plotly::renderPlotly({
     ggplotly(
-      by_region_bar_plot(workforce_data, 'caseload_fte', "Average Caseload (FTE)") %>%
+      by_region_bar_plot(workforce_data, "caseload_fte", "Average Caseload (FTE)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #Caseload by region table
+
+  # Caseload by region table
   output$table_caseload_reg <- renderDataTable({
     datatable(
-      workforce_data %>% filter(geographic_level == 'Regional', time_period == max(workforce_data$time_period)) %>% select(
+      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
         caseload_fte
       ) %>%
@@ -893,19 +839,19 @@ server <- function(input, output, session) {
         paging = TRUE
       )
     )
-  })  
-  
-  #caseload by la -----
+  })
+
+  # caseload by la -----
   output$plot_caseload_la <- plotly::renderPlotly({
     ggplotly(
-      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, 'caseload_fte', "Average Caseload (FTE)")%>%
-      #plot_caseload_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
+      by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)") %>%
+        # plot_caseload_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  #Caseload by LA table
+  # Caseload by LA table
   output$table_caseload_la <- renderDataTable({
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
@@ -919,20 +865,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-      
+
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, caseload_fte)  %>%
+        select(time_period, geo_breakdown, caseload_fte) %>%
         arrange(desc(caseload_fte))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>% filter(geographic_level == 'Local authority', time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        caseload_fte
-      ) %>%
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          caseload_fte
+        ) %>%
         arrange(desc(caseload_fte))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Average caseload (FTE)"),
@@ -942,26 +889,27 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
 
   # Ethnicity and Diversity Domain-----
   # output$white_ethnicity_txt <- renderText({
-  #   paste0(format(workforce_eth %>% filter(time_period == max(workforce_eth$time_period) 
-  #                                          & geo_breakdown %in% input$geographic_breakdown_e2 
-  #                                          & role == "Total" & breakdown == "White") %>% 
+  #   paste0(format(workforce_eth %>% filter(time_period == max(workforce_eth$time_period)
+  #                                          & geo_breakdown %in% input$geographic_breakdown_e2
+  #                                          & role == "Total" & breakdown == "White") %>%
   #                   select(inpost_headcount_percentage), nsmall = 1), "%","<br>", "(",max(workforce_eth$time_period),")")
   # })
-  
+
   output$non_white_txt <- renderText({
-    white_stat = workforce_eth %>% filter(time_period == max(workforce_eth$time_period) 
-                                          & geo_breakdown %in% input$geographic_breakdown_e2 
-                                          & role == "Total"
-                                          & breakdown == "White") %>% 
+    white_stat <- workforce_eth %>%
+      filter(time_period == max(workforce_eth$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_e2 &
+        role == "Total" &
+        breakdown == "White") %>%
       select(inpost_headcount_percentage)
-    non_white_stat = 100 - as.numeric(white_stat)
-    paste0(format(non_white_stat, nsmall = 1), "%", "<br>","<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period) ,")", "</p>")
+    non_white_stat <- 100 - as.numeric(white_stat)
+    paste0(format(non_white_stat, nsmall = 1), "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
   })
-  
+
 
   output$plot_ethnicity_rate <- plotly::renderPlotly({
     ggplotly(
@@ -970,7 +918,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$plot_population_ethnicity_rate <- plotly::renderPlotly({
     ggplotly(
       plot_population_ethnicity_rate(input$geographic_breakdown_e2) %>%
@@ -978,37 +926,41 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$table_ethnicity_rate <- renderDataTable({
     datatable(
-      workforce_eth %>% 
-        filter(geo_breakdown %in% input$geographic_breakdown_e2, 
-               role == 'Total', breakdown_topic == 'Ethnicity major' ) %>% 
-        select(time_period, geo_breakdown, breakdown, inpost_headcount,	inpost_headcount_percentage),
-      colnames = c("Time period", "Geographical breakdown", "Ethnicity", "Headcount",	"Headcount (%)"),
+      workforce_eth %>%
+        filter(
+          geo_breakdown %in% input$geographic_breakdown_e2,
+          role == "Total", breakdown_topic == "Ethnicity major"
+        ) %>%
+        select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage),
+      colnames = c("Time period", "Geographical breakdown", "Ethnicity", "Headcount", "Headcount (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
       )
     )
   })
-  
 
-  
+
+
   output$table_population_ethnicity_rate <- renderDataTable({
     datatable(
-      combined_ethnicity_data %>% 
-      filter(geo_breakdown %in% input$geographic_breakdown_e2) %>% 
-      select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage),
-     colnames = c("Geographical breakdown", 
-                 "Ethnicity group", "Workforce (%)", "Population (%)"),
-    options = list(
-      scrollx = FALSE,
-      paging = TRUE
-    )
+      combined_ethnicity_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage),
+      colnames = c(
+        "Geographical breakdown",
+        "Ethnicity group", "Workforce (%)", "Population (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
     )
   })
-  
+
   output$plot_seniority_eth <- plotly::renderPlotly({
     ggplotly(
       plot_seniority_eth(input$geographic_breakdown_e2, input$geographic_level) %>%
@@ -1016,46 +968,46 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
-  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount","Percentage")
-  
+
+  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
+
   output$table_seniority_eth <- renderDataTable({
     datatable(
-      workforce_eth_seniority[, cols] %>% 
-        filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != 'Total', time_period == max(workforce_eth_seniority$time_period)) %>% 
-        select(time_period, geo_breakdown, seniority, breakdown ,inpost_headcount,Percentage),
+      workforce_eth_seniority[, cols] %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
+        select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage),
       colnames = c("Time period", "Geographical breakdown", "Seniority level", "Ethnicity", "Headcount", "Headcount (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE,
-        target = 'column'
+        target = "column"
       )
     )
   })
-  
-  #Outcome 1 -----
+
+  # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
-  observeEvent(eventExpr={input$select_geography_o1},{
-    choices = sort(unique(dropdown_choices[dropdown_choices$geographic_level == input$select_geography_o1, "geo_breakdown"]),decreasing = FALSE)
-    
+  observeEvent(eventExpr = {
+    input$select_geography_o1
+  }, {
+    choices <- sort(unique(dropdown_choices[dropdown_choices$geographic_level == input$select_geography_o1, "geo_breakdown"]), decreasing = FALSE)
+
     updateSelectizeInput(
       session = session,
       inputId = "geographic_breakdown_o1",
       selected = choices[1],
       choices = choices,
-      
     )
-  }
-  )
-  #outcome 1 confirmation text
-  
+  })
+  # outcome 1 confirmation text
+
   region_for_la_o1 <- reactive({
     selected_la <- input$geographic_breakdown_o1
     location_data %>%
       filter(la_name == selected_la) %>%
       pull(region_name)
   })
-  
+
   output$outcome1_choice_text1 <- renderText({
     if (input$select_geography_o1 == "National") {
       paste0("You have selected ", tags$b(input$select_geography_o1), " level statistics on ", tags$b("England"), ".")
@@ -1065,147 +1017,149 @@ server <- function(input, output, session) {
       paste0("You have selected ", tags$b(input$select_geography_o1), " level statistics for ", tags$b(input$geographic_breakdown_o1), ", in ", region_for_la_o1(), ".")
     }
   })
-  
+
   output$outcome1_choice_text2 <- renderText({
-    #Checking to see if they picked national average comparison
+    # Checking to see if they picked national average comparison
     if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       paste0("You have also selected to compare with the ", tags$b("National Average."))
       # If they picked regional comparison
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      #Picked both national and regional comparison
+      # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
     }
   })
-  
+
   output$outcome1_choice_text2 <- renderText({
-    #Checking to see if they picked national average comparison
+    # Checking to see if they picked national average comparison
     if (!is.null(input$national_comparison_checkbox) && is.null(input$region_comparison_checkbox)) {
       paste0("You have also selected to compare with the ", tags$b("National Average."))
       # If they picked regional comparison
     } else if (is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
       paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      #Picked both national and regional comparison
+      # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
     }
   })
-  
-  
+
+
   # CLA rate headline ----
   output$cla_rate_headline_txt <- renderText({
-    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) 
-                                        & geo_breakdown %in% input$geographic_breakdown_o1 
-                                        & population_count == "Children starting to be looked after each year") 
-                   %>% select(rate_per_10000), nsmall = 0)
-    paste0(stat,"<br>","<p style='font-size:16px; font-weight:500;'>","(",max(cla_rates$time_period),")", "</p>")
+    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children starting to be looked after each year")
+    %>% select(rate_per_10000), nsmall = 0)
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
-  
+
   # UASC rate headline
   output$uasc_rate_headline_txt <- renderText({
-    stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) 
-                                                & geo_breakdown %in% input$geographic_breakdown_o1 
-                                                & population_count == "Children starting to be looked after each year"
-                                                & characteristic == "Unaccompanied asylum-seeking children") 
-                   %>% select(placement_per_10000), nsmall = 0)
-    paste0(stat,"<br>","<p style='font-size:16px; font-weight:500;'>","(",max(combined_cla_data$time_period),")", "</p>")
+    stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children starting to be looked after each year" &
+      characteristic == "Unaccompanied asylum-seeking children")
+    %>% select(placement_per_10000), nsmall = 0)
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
   })
-  
+
   # CLA March rate headline
   output$cla_march_rate_headline_txt <- renderText({
-    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) 
-                                        & geo_breakdown %in% input$geographic_breakdown_o1 
-                                        & population_count == "Children looked after at 31 March each year") 
-                   %>% select(rate_per_10000), nsmall = 0)
-    paste0(stat,"<br>","<p style='font-size:16px; font-weight:500;'>","(",max(cla_rates$time_period),")", "</p>")
+    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children looked after at 31 March each year")
+    %>% select(rate_per_10000), nsmall = 0)
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
-  
-  
+
+
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o1), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o1),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
+    validate(
+      need(!is.null(input$select_geography_o1), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
     }
-    
+
     filtered_data <- filtered_data %>%
       filter(population_count == "Children starting to be looked after each year")
-    
+
     # Set the max y-axis scale
     max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
-    
+
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
-    
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1,'rate_per_10000', 'Rate of children starting in care, per 10,000', max_rate) %>%
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "rate_per_10000", "Rate of children starting in care, per 10,000", max_rate) %>%
       config(displayModeBar = F)
-    
-    
+
+
     ggplotly(p, height = 420) %>%
       layout(yaxis = list(range = c(0, max_rate)))
-    
   })
-  
+
   # CLA rate TABLE
   output$table_cla_rate <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data <- cla_rates %>% filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cla_rates %>%
+
+      filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
     }
-    
+
     datatable(
-      filtered_data %>% 
-        filter(population_count == "Children starting to be looked after each year") %>% 
+      filtered_data %>%
+        filter(population_count == "Children starting to be looked after each year") %>%
         select(time_period, geo_breakdown, rate_per_10000),
       colnames = c("Time period", "Geographical breakdown", "Rate of children starting in care, per 10,000"),
       options = list(
@@ -1214,7 +1168,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CLA rate regional plot
   output$plot_cla_rate_reg <- plotly::renderPlotly({
     ggplotly(
@@ -1223,11 +1177,11 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   # CLA rate regional table
   output$table_cla_rate_reg <- renderDataTable({
     datatable(
-      cla_rates %>% filter(geographic_level == 'Regional', time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
+      cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
         time_period, geo_breakdown,
         rate_per_10000
       ) %>%
@@ -1239,7 +1193,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CLA rate LA plot
   output$plot_cla_rate_la <- plotly::renderPlotly({
     ggplotly(
@@ -1248,7 +1202,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   # CLA rate La table
   output$table_cla_rate_la <- renderDataTable({
     if (input$select_geography_o1 == "Regional") {
@@ -1263,20 +1217,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o1) %>%
           pull(la_name)
       }
-      
+
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, rate_per_10000)  %>%
+        select(time_period, geo_breakdown, rate_per_10000) %>%
         arrange(desc(rate_per_10000))
-      
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
-      data <- cla_rates %>% filter(geographic_level == 'Local authority', time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
-        time_period, geo_breakdown,
-        rate_per_10000
-      ) %>%
+      data <- cla_rates %>%
+        filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
+        select(
+          time_period, geo_breakdown,
+          rate_per_10000
+        ) %>%
         arrange(desc(rate_per_10000))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Rate of children starting in care, per 10,000"),
@@ -1286,17 +1241,17 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  
-  
-    # CIN rate headline ----
+
+
+
+  # CIN rate headline ----
   output$cin_rate_headline_txt <- renderText({
-   stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1) 
-                 %>% select(CIN_rate), nsmall = 1)
-    paste0(stat,"<br>","<p style='font-size:16px; font-weight:500;'>","(",max(cin_rates$time_period),")", "</p>")
+    stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(CIN_rate), nsmall = 1)
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
   })
-  
-  #cin rate plot by region
+
+  # cin rate plot by region
   output$plot_cin_rate_reg <- plotly::renderPlotly({
     ggplotly(
       plot_cin_rate_reg() %>%
@@ -1305,11 +1260,11 @@ server <- function(input, output, session) {
     )
   })
 
-  
-  #cin rate table by region
+
+  # cin rate table by region
   output$table_cin_rates_reg <- renderDataTable({
     datatable(
-      cin_rates %>% filter(geographic_level == 'Regional', time_period == max(cin_rates$time_period)) %>% select(
+      cin_rates %>% filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>% select(
         time_period, geo_breakdown,
         CIN_rate
       ) %>%
@@ -1324,7 +1279,7 @@ server <- function(input, output, session) {
 
 
 
-  #cin rate table by LA
+  # cin rate table by LA
   output$table_cin_rates_la <- renderDataTable({
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
@@ -1338,20 +1293,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o1) %>%
           pull(la_name)
       }
-      
+
       data <- cin_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, CIN_rate)  %>%
+        select(time_period, geo_breakdown, CIN_rate) %>%
         arrange(desc(CIN_rate))
-      
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
-      data <- cin_rates %>% filter(geographic_level == 'Local authority', time_period == max(cin_rates$time_period)) %>% select(
-        time_period, geo_breakdown,
-        CIN_rate
-      ) %>%
+      data <- cin_rates %>%
+        filter(geographic_level == "Local authority", time_period == max(cin_rates$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          CIN_rate
+        ) %>%
         arrange(desc(CIN_rate))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "CIN rates per 10,000"),
@@ -1361,8 +1317,8 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #cin rate chart by LA
+
+  # cin rate chart by LA
   output$plot_cin_rates_la <- plotly::renderPlotly({
     ggplotly(
       plot_cin_rates_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
@@ -1370,95 +1326,98 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   # CIN referral headline
   output$cin_referral_headline_txt <- renderText({
-    stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1) 
-                   %>% select(Re_referrals_percent), nsmall = 1)
-    paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(cin_referrals$time_period),")", "</p>")
+    stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(Re_referrals_percent), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
   })
-  
-    # CIN rate plot
+
+  # CIN rate plot
   output$plot_cin_rate <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o1), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o1),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_rates %>%
+    validate(
+      need(!is.null(input$select_geography_o1), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_rates %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      filtered_data <- cin_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- cin_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
     }
-    
- 
+
+
     # Set the max y-axis scale
     max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
-    
+
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
-    
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1,'CIN_rate', 'CIN rate per 10,000 Children', max_rate) %>%
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "CIN_rate", "CIN rate per 10,000 Children", max_rate) %>%
       config(displayModeBar = F)
-    
-    
+
+
     ggplotly(p, height = 420) %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
-  
-  #CIN rate table
+
+  # CIN rate table
   output$table_cin_rate <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data <- cin_rates %>% filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown,CIN_number,CIN_rate)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,CIN_number,CIN_rate)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_rates %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cin_rates %>%
+
+      filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown,CIN_number,CIN_rate)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,CIN_number,CIN_rate)
+
+      filtered_data <- cin_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, CIN_number, CIN_rate)
     }
-    
+
     datatable(
-      filtered_data %>% 
-              select(time_period, geo_breakdown, CIN_number,CIN_rate),
+      filtered_data %>%
+        select(time_period, geo_breakdown, CIN_number, CIN_rate),
       colnames = c("Time period", "Geographical breakdown", "CIN at 31 March", "CIN rate per 10,000"),
       options = list(
         scrollx = FALSE,
@@ -1466,79 +1425,82 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-    ##CIN referral plot
+
+  ## CIN referral plot
   output$plot_cin_referral <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o1), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o1),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_referrals %>%
+    validate(
+      need(!is.null(input$select_geography_o1), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_referrals %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_referrals %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_referrals %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      filtered_data <- cin_referrals %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- cin_referrals %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1,'Re_referrals_percent', 'Re-referrals (%)', 100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re_referrals_percent", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #CIN referral table
+
+  # CIN referral table
   output$table_cin_referral <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data <- cin_referrals %>% filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown,Referrals, Re_referrals, Re_referrals_percent)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cin_referrals %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,Referrals, Re_referrals, Re_referrals_percent)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_referrals %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cin_referrals %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cin_referrals %>%
+
+      filtered_data <- cin_referrals %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown,Referrals, Re_referrals, Re_referrals_percent)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,Referrals, Re_referrals, Re_referrals_percent)
+
+      filtered_data <- cin_referrals %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
     }
-    
+
     datatable(
-      filtered_data %>% 
+      filtered_data %>%
         select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent),
       colnames = c("Time period", "Geographical breakdown", "Referrals in the year", "Re-referrals within 12 months of a previous referral", "Re-referrals (%)"),
       options = list(
@@ -1547,25 +1509,27 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #cin referral table by region
+
+  # cin referral table by region
   output$table_cin_referral_reg <- renderDataTable({
     datatable(
-      cin_referrals %>% filter(geographic_level == 'Regional', time_period == max(cin_referrals$time_period)) %>% select(
+      cin_referrals %>% filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>% select(
         time_period, geo_breakdown,
         Referrals, Re_referrals, Re_referrals_percent
       ) %>%
         arrange(desc(Re_referrals_percent)),
-      colnames = c("Time period", "Geographical breakdown", "Referrals in the year",
-                   "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)" ),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Referrals in the year",
+        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      ),
       options = list(
         scrollx = FALSE,
         paging = TRUE
       )
     )
   })
-  
-  #cin referral table by LA
+
+  # cin referral table by LA
   output$table_cin_referral_la <- renderDataTable({
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
@@ -1579,33 +1543,39 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o1) %>%
           pull(la_name)
       }
-      
+
       data <- cin_referrals %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown,
-               Referrals, Re_referrals, Re_referrals_percent)  %>%
+        select(
+          time_period, geo_breakdown,
+          Referrals, Re_referrals, Re_referrals_percent
+        ) %>%
         arrange(desc(Re_referrals_percent))
-      
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
-      data <- cin_referrals  %>% filter(geographic_level == 'Local authority', time_period == max(cin_referrals$time_period)) %>% select(
-        time_period, geo_breakdown,
-        Referrals, Re_referrals, Re_referrals_percent) %>%
+      data <- cin_referrals %>%
+        filter(geographic_level == "Local authority", time_period == max(cin_referrals$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          Referrals, Re_referrals, Re_referrals_percent
+        ) %>%
         arrange(desc(Re_referrals_percent))
     }
-    
+
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Referrals in the year",
-                   "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Referrals in the year",
+        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      ),
       options = list(
         scrollx = FALSE,
         paging = TRUE
       )
     )
   })
-  
-  
-  #cin referral plot by region
+
+
+  # cin referral plot by region
   output$plot_cin_referral_reg <- plotly::renderPlotly({
     ggplotly(
       plot_cin_referral_reg() %>%
@@ -1613,8 +1583,8 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
-  #cin referral chart by LA
+
+  # cin referral chart by LA
   output$plot_cin_referral_la <- plotly::renderPlotly({
     ggplotly(
       plot_cin_referral_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
@@ -1622,7 +1592,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$plot_uasc <- plotly::renderPlotly({
     ggplotly(
       plot_uasc(input$geographic_breakdown_o1, input$select_geography_o1) %>%
@@ -1630,24 +1600,26 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$table_uasc <- renderDataTable({
     datatable(
-      combined_cla_data %>% 
-        filter(geo_breakdown %in% input$geographic_breakdown_o1, 
-               characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-               population_count == "Children starting to be looked after each year") %>% 
+      combined_cla_data %>%
+        filter(
+          geo_breakdown %in% input$geographic_breakdown_o1,
+          characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          population_count == "Children starting to be looked after each year"
+        ) %>%
         select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
         arrange(desc(time_period)),
       colnames = c("Time period", "Geographical breakdown", "Rate per 10,000 children", "UASC status"),
       options = list(
         scrollx = FALSE,
         paging = TRUE,
-        target = 'column'
+        target = "column"
       )
     )
   })
-  
+
   output$plot_uasc_reg <- plotly::renderPlotly({
     ggplotly(
       plot_uasc_reg() %>%
@@ -1655,12 +1627,14 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$table_uasc_reg <- renderDataTable({
     datatable(
-      combined_cla_data %>% filter(geographic_level == 'Regional', characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-                                   population_count == "Children starting to be looked after each year",
-                                   time_period == max(time_period)) %>% 
+      combined_cla_data %>% filter(
+        geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        population_count == "Children starting to be looked after each year",
+        time_period == max(time_period)
+      ) %>%
         select(time_period, geo_breakdown, placement_per_10000, characteristic),
       colnames = c("Time period", "Geographical breakdown", "Rate per 10,000 children", "UASC status"),
       options = list(
@@ -1669,7 +1643,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   output$plot_uasc_la <- plotly::renderPlotly({
     ggplotly(
       plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
@@ -1677,7 +1651,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$table_uasc_la <- renderDataTable({
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
@@ -1691,21 +1665,24 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o1) %>%
           pull(la_name)
       }
-      
+
       data <- combined_cla_data %>%
-        filter(geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-               population_count == "Children starting to be looked after each year",) %>%
-        select(time_period, geo_breakdown, placement_per_10000, characteristic)  %>%
+        filter(
+          geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          population_count == "Children starting to be looked after each year",
+        ) %>%
+        select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
         arrange(desc(placement_per_10000))
-      
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
-      data <- combined_cla_data %>% 
-        filter(geographic_level == 'Local authority', time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-               population_count == "Children starting to be looked after each year",) %>%
-        select(time_period, geo_breakdown, placement_per_10000, characteristic)  %>%
+      data <- combined_cla_data %>%
+        filter(
+          geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          population_count == "Children starting to be looked after each year",
+        ) %>%
+        select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
         arrange(desc(placement_per_10000))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Rate per 10,000 children", "UASC status"),
@@ -1715,91 +1692,93 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CLA Rate chart for March
   output$plot_cla_rate_march <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o1), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o1),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
+    validate(
+      need(!is.null(input$select_geography_o1), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') 
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) 
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
     }
-    
+
     filtered_data <- filtered_data %>%
       filter(population_count == "Children looked after at 31 March each year")
-    
+
     # Set the max y-axis scale
     max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
-    
+
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
-    
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1,'rate_per_10000', 'Rate per 10,000 children', max_rate) %>%
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    
-    
+
+
     ggplotly(p, height = 420) %>%
       layout(yaxis = list(range = c(0, max_rate)))
-    
   })
-  
+
   # CLA rate march TABLE
   output$table_cla_rate_march <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data <- cla_rates %>% filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)){
-      filtered_data<-cla_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)|geographic_level == 'National') %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- cla_rates %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<-cla_rates %>%
+
+      filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)){
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o1)
-      
-      filtered_data<- cla_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)|geographic_level == 'National'))%>%
-        select(time_period, geo_breakdown,rate_per_10000,population_count)
+
+      filtered_data <- cla_rates %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, rate_per_10000, population_count)
     }
-    
+
     datatable(
-      filtered_data %>% 
-        filter(population_count == "Children looked after at 31 March each year") %>% 
+      filtered_data %>%
+        filter(population_count == "Children looked after at 31 March each year") %>%
         select(time_period, geo_breakdown, rate_per_10000),
       colnames = c("Time period", "Geographical breakdown", "Rate per 10,000 children"),
       options = list(
@@ -1808,7 +1787,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CLA rate March regional plot
   output$plot_cla_march_reg <- plotly::renderPlotly({
     ggplotly(
@@ -1817,11 +1796,11 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   # CLA rate March regional table
   output$table_cla_march_reg <- renderDataTable({
     datatable(
-      cla_rates %>% filter(geographic_level == 'Regional', time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
+      cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
         time_period, geo_breakdown,
         rate_per_10000
       ) %>%
@@ -1833,7 +1812,7 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   # CLA rate March LA plot
   output$plot_cla_march_la <- plotly::renderPlotly({
     ggplotly(
@@ -1842,7 +1821,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   # CLA rate March La table
   output$table_cla_march_la <- renderDataTable({
     if (input$select_geography_o1 == "Regional") {
@@ -1857,20 +1836,21 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o1) %>%
           pull(la_name)
       }
-      
+
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
-        select(time_period, geo_breakdown, rate_per_10000)  %>%
+        select(time_period, geo_breakdown, rate_per_10000) %>%
         arrange(desc(rate_per_10000))
-      
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
-      data <- cla_rates %>% filter(geographic_level == 'Local authority', time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
-        time_period, geo_breakdown,
-        rate_per_10000
-      ) %>%
+      data <- cla_rates %>%
+        filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
+        select(
+          time_period, geo_breakdown,
+          rate_per_10000
+        ) %>%
         arrange(desc(rate_per_10000))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Rate per 10,000 children"),
@@ -1880,29 +1860,29 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #Outcome 2 -----
+
+  # Outcome 2 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
-  observeEvent(eventExpr={input$select_geography_o2},{
-    choices = sort(unique(ceased_cla_data[ceased_cla_data$geographic_level == input$select_geography_o2, "geo_breakdown"]),decreasing = FALSE)
-    
+  observeEvent(eventExpr = {
+    input$select_geography_o2
+  }, {
+    choices <- sort(unique(ceased_cla_data[ceased_cla_data$geographic_level == input$select_geography_o2, "geo_breakdown"]), decreasing = FALSE)
+
     updateSelectizeInput(
       session = session,
       inputId = "geographic_breakdown_o2",
       selected = choices[1],
       choices = choices,
-      
     )
-  }
-  )
-  
+  })
+
   region_for_la_o2 <- reactive({
     selected_la <- input$geographic_breakdown_o2
     location_data %>%
       filter(la_name == selected_la) %>%
       pull(region_name)
   })
-  
+
   output$outcome2_choice_text1 <- renderText({
     if (input$select_geography_o2 == "National") {
       paste0("You have selected ", tags$b(input$select_geography_o2), " level statistics on ", tags$b("England"), ".")
@@ -1912,138 +1892,145 @@ server <- function(input, output, session) {
       paste0("You have selected ", tags$b(input$select_geography_o2), " level statistics for ", tags$b(input$geographic_breakdown_o2), ", in ", region_for_la_o2(), ".")
     }
   })
-  
+
   output$outcome2_choice_text2 <- renderText({
-    #Checking to see if they picked national average comparison
+    # Checking to see if they picked national average comparison
     if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       paste0("You have also selected to compare with the ", tags$b("National Average."))
       # If they picked regional comparison
     } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      #Picked both national and regional comparison
+      # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
     }
   })
-  
-  #Headline stat1 -----
+
+  # Headline stat1 -----
   # output$SGO_headline_txt <- renderText({
-  #   numerator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period) 
-  #                                           & geo_breakdown %in% input$geographic_breakdown_o2 
+  #   numerator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
+  #                                           & geo_breakdown %in% input$geographic_breakdown_o2
   #                                           & cla_group == "Reason episode ceased"
   #                                           & characteristic == "Special guardianship orders") %>% select(number)
-  #   
-  #   denominator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period) 
-  #                                             & geo_breakdown %in% input$geographic_breakdown_o2 
+  #
+  #   denominator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
+  #                                             & geo_breakdown %in% input$geographic_breakdown_o2
   #                                             & cla_group == "Reason episode ceased"
   #                                             & characteristic == "Total") %>% select(number)
   #   percent <- (numerator/denominator)*100
-  #   
+  #
   #   stat <- round(percent, digits = 1)
   #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
   # })
-  # 
+  #
   output$SGO_headline_txt <- renderText({
-    stat <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period) 
-                                 & geo_breakdown %in% input$geographic_breakdown_o2 
-                                 & cla_group == "Reason episode ceased"
-                                 & characteristic == "Special guardianship orders") %>% select(`Ceased (%)`)
-    
-    paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
+    stat <- ceased_cla_data %>%
+      filter(time_period == max(ceased_cla_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o2 &
+        cla_group == "Reason episode ceased" &
+        characteristic == "Special guardianship orders") %>%
+      select(`Ceased (%)`)
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
-  
-  
-  #Headline stat2 
+
+
+  # Headline stat2
   output$CAO_headline_txt <- renderText({
-    stat <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period) 
-                                            & geo_breakdown %in% input$geographic_breakdown_o2 
-                                            & cla_group == "Reason episode ceased"
-                                            & characteristic == "Residence order or child arrangement order granted") %>% select(`Ceased (%)`)
-    
-    paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
+    stat <- ceased_cla_data %>%
+      filter(time_period == max(ceased_cla_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o2 &
+        cla_group == "Reason episode ceased" &
+        characteristic == "Residence order or child arrangement order granted") %>%
+      select(`Ceased (%)`)
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
-  
-  # SGO ---- 
-  #time series and table
+
+  # SGO ----
+  # time series and table
   output$SGO_time_series <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
+    validate(
+      need(!is.null(input$select_geography_o2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
         filter(geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) %>%
         filter(characteristic == "Special guardianship orders")
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2)|geographic_level == 'National')  %>%
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
         filter(characteristic == "Special guardianship orders")
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<-ceased_cla_data %>%
+
+      filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Special guardianship orders")
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name)|geographic_level == 'National')) %>%
+
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Special guardianship orders")
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", 'Ceased (%)', 100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  
+
+
   output$table_sgo_ceased <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data <- ceased_cla_data %>% filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic,number,Total, perc)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) |geographic_level == 'National')%>%
-        filter(characteristic == "Special guardianship orders")%>%
-        select(time_period, geo_breakdown, characteristic,number,Total, perc)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
+        filter(characteristic == "Special guardianship orders") %>%
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<-ceased_cla_data %>%
+
+      filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown,characteristic,number,Total,perc)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name)|geographic_level == 'National')) %>%
-                 filter(characteristic == "Special guardianship orders")  %>%
-        select(time_period, geo_breakdown,characteristic,number,Total,perc)
+
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
+        filter(characteristic == "Special guardianship orders") %>%
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown","Characteristic","Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -2051,24 +2038,24 @@ server <- function(input, output, session) {
     )
   })
   ##
-  #SGO by region -----
-  
+  # SGO by region -----
+
   output$plot_sgo_ceased_reg <- plotly::renderPlotly({
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
-    
+
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)","Ceased (%)")%>%
+      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #turnover rate by region table
+
+  # turnover rate by region table
   output$table_sgo_ceased_reg <- renderDataTable({
     datatable(
-      ceased_cla_data %>% filter(geographic_level == 'Regional', time_period == max(ceased_cla_data$time_period)) %>%
+      ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown,characteristic, perc) %>%
+        select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc)),
       colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
       options = list(
@@ -2077,19 +2064,19 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
   ##
-  #SGO by la ----
+  # SGO by la ----
   output$plot_SGO_la <- plotly::renderPlotly({
-    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders") 
+    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, 'Ceased (%)', 'Ceased (%)') %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #Special Guardianship orders by LA table
+
+  # Special Guardianship orders by LA table
   output$table_sgo_la <- renderDataTable({
     if (input$select_geography_o2 == "Regional") {
       if (input$geographic_breakdown_o2 == "London") {
@@ -2103,20 +2090,20 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o2) %>%
           pull(la_name)
       }
-      
+
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, perc)  %>%
+        select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- ceased_cla_data %>% filter(geographic_level == 'Local authority', time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Special guardianship orders") %>% 
+      data <- ceased_cla_data %>%
+        filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
+        filter(characteristic == "Special guardianship orders") %>%
         select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
@@ -2126,112 +2113,115 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  
-  
+
+
+
   # CAO ----
-  #time series and table 
+  # time series and table
   output$CAO_time_series <- plotly::renderPlotly({
-    validate(need(!is.null(input$select_geography_o2), 'Select a geography level.'),
-             need(!is.null(input$geographic_breakdown_o2),'Select a breakdown.'))
-    #not both
-    if(is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
+    validate(
+      need(!is.null(input$select_geography_o2), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o2), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
         filter(geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) %>%
         filter(characteristic == "Residence order or child arrangement order granted")
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2)|geographic_level == 'National')  %>%
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
         filter(characteristic == "Residence order or child arrangement order granted")
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<-ceased_cla_data %>%
+
+      filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Residence order or child arrangement order granted")
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name)|geographic_level == 'National')) %>%
+
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Residence order or child arrangement order granted")
     }
-    
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", 'Ceased (%)', 100)%>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  
+
+
   output$table_cao_ceased <- renderDataTable({
-    #neither checkboxes
-    if(is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data <- ceased_cla_data %>% filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, number, Total, perc)
-      
-      #national only
-    }else if(!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)){
-      filtered_data<-ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) |geographic_level == 'National') %>%
-        filter(characteristic == "Residence order or child arrangement order granted")%>%
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
+      filtered_data <- ceased_cla_data %>%
+        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
+        filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, number, Total, perc)
-      
-      #regional only
-    }else if(is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<-ceased_cla_data %>%
+
+      filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown,characteristic,number, Total, perc)
-      
-      #both selected
-    }else if(!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)){
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o2)
-      
-      filtered_data<- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name)|geographic_level == 'National')) %>%
-                 filter(characteristic == "Residence order or child arrangement order granted")  %>%
-        select(time_period, geo_breakdown,characteristic,number, Total, perc)
+
+      filtered_data <- ceased_cla_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
+        filter(characteristic == "Residence order or child arrangement order granted") %>%
+        select(time_period, geo_breakdown, characteristic, number, Total, perc)
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown","Characteristic","Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
       )
     )
   })
-  
-  #by region
+
+  # by region
   output$plot_cao_ceased_reg <- plotly::renderPlotly({
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-    
+
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)")%>%
+      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #turnover rate by region table
+
+  # turnover rate by region table
   output$table_cao_ceased_reg <- renderDataTable({
     datatable(
-      ceased_cla_data %>% filter(geographic_level == 'Regional', time_period == max(ceased_cla_data$time_period)) %>%
+      ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc)),
@@ -2242,18 +2232,18 @@ server <- function(input, output, session) {
       )
     )
   })
-  
-  #by la
+
+  # by la
   output$plot_cao_la <- plotly::renderPlotly({
-    data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted") 
+    data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, 'Ceased (%)', 'Ceased (%)') %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
-  
-  #CAO by LA table
+
+  # CAO by LA table
   output$table_cao_la <- renderDataTable({
     if (input$select_geography_o2 == "Regional") {
       if (input$geographic_breakdown_o2 == "London") {
@@ -2267,20 +2257,20 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_o2) %>%
           pull(la_name)
       }
-      
+
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, perc)  %>%
+        select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc))
-      
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- ceased_cla_data %>% filter(geographic_level == 'Local authority', time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>% 
+      data <- ceased_cla_data %>%
+        filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
+        filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, perc) %>%
         arrange(desc(perc))
     }
-    
+
     datatable(
       data,
       colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
@@ -2290,7 +2280,8 @@ server <- function(input, output, session) {
       )
     )
   })
-  
+
+
   # Don't touch the code below -----------------------
 
   observeEvent(input$go, {
@@ -2338,4 +2329,3 @@ server <- function(input, output, session) {
     stopApp()
   })
 }
-

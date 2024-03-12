@@ -1,4 +1,4 @@
-outcome4_tab <- function(){
+outcome4_tab <- function() {
   tabPanel(
     value = "outcome4_page",
     "Outcome 4",
