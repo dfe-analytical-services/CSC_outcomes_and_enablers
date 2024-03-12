@@ -24,7 +24,7 @@ enabler2_tab <- function() {
             ),
             conditionalPanel(condition = "input.select_geography_e2 != 'National'", selectizeInput(
               inputId = "geographic_breakdown_e2",
-              label = "Select a breakdown: ",
+              label = "Select a location: ",
               choices = NULL,
               selected = NULL,
               multiple = FALSE,
