@@ -26,7 +26,7 @@ outcome2_tab <- function() {
               condition = "input.select_geography_o2 != 'National'",
               selectizeInput(
                 inputId = "geographic_breakdown_o2",
-                label = "Select a breakdown: ",
+                label = "Select a location: ",
                 choices = NULL,
                 selected = NULL,
                 multiple = FALSE,
