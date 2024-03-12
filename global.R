@@ -26,10 +26,12 @@ shhh(library(xfun))
 shhh(library(metathis))
 shhh(library(shinyalert))
 shhh(library(shinytest2))
+shhh(library(diffviewer))
 shhh(library(rstudioapi))
 shhh(library(bslib))
 shhh(library(reshape2))
 shhh(library(tidyverse))
+shhh(library(dfeshiny))
 
 # shhh(library(shinya11y))
 
@@ -48,25 +50,6 @@ enableBookmarking("url")
 cs_num <- function(value) {
   format(value, big.mark = ",", trim = TRUE)
 }
-
-# tidy_code_function -------------------------------------------------------------------------------
-# Code to tidy up the scripts.
-
-tidy_code_function <- function() {
-  message("----------------------------------------")
-  message("App scripts")
-  message("----------------------------------------")
-  app_scripts <- eval(styler::style_dir(recursive = FALSE)$changed)
-  message("R scripts")
-  message("----------------------------------------")
-  r_scripts <- eval(styler::style_dir("R/")$changed)
-  message("Test scripts")
-  message("----------------------------------------")
-  test_scripts <- eval(styler::style_dir("tests/", filetype = "r")$changed)
-  script_changes <- c(app_scripts, r_scripts, test_scripts)
-  return(script_changes)
-}
-
 
 # Source scripts ---------------------------------------------------------------------------------
 
@@ -99,23 +82,23 @@ site_overflow <- "https://department-for-education.shinyapps.io/dfe-shiny-templa
 sites_list <- c(site_primary, site_overflow) # We can add further mirrors where necessary. Each one can generally handle about 2,500 users simultaneously
 ees_pub_name <- "Statistical publication" # Update this with your parent publication name (e.g. the EES publication)
 ees_publication <- "https://explore-education-statistics.service.gov.uk/find-statistics/" # Update with parent publication link
-google_analytics_key <- "Z967JJVQQX"
+google_analytics_key <- "Q13T4ENF6C"
 
 
 source("R/read_data.R")
 
-#read in the definitions data
+# read in the definitions data
 # NOT important
 definitions <- read_definitions()
 colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-definitions <- definitions[,1:4]
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#Read in the workforce data
+definitions <- definitions[, 1:4]
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Read in the workforce data
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
-#Read in the workforce characteristics data
+# Read in the workforce characteristics data
 # workforce_char <- read_workforce_char_data()
 workforce_eth <- read_workforce_eth_data()
 workforce_eth_seniority <- read_workforce_eth_seniority_data()
@@ -124,23 +107,23 @@ combined_ethnicity_data <- merge_eth_dataframes()
 cla_rates <- read_cla_rate_data()
 cla_placements <- read_cla_placement_data()
 combined_cla_data <- merge_cla_dataframes()
-#uasc_data <- test_uasc()
+# uasc_data <- test_uasc()
 
-#Read in the CIN  data
+# Read in the CIN  data
 cin_rates <- read_cin_rate_data()
 cin_referrals <- read_cin_referral_data()
 
 
-#Read in outcome 2 data
+# Read in outcome 2 data
 ceased_cla_data <- read_outcome2()
 
-#Dropdowns
-#choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-#choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
+# Dropdowns
+# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
+# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
 
-#choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
+# choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
 
-dropdown_choices <- cla_rates #%>%
+dropdown_choices <- cla_rates # %>%
 #   mutate(geo_breakdown = case_when(
 #     geographic_level == "National" ~ "National",#NA_character_,
 #     geographic_level == "Regional" ~ region_name,
@@ -150,7 +133,7 @@ dropdown_choices <- cla_rates #%>%
 #          "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
 #          "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte") %>% distinct()
 
-#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
 # Read in the data
 dfRevBal <- read_revenue_data()
 # Get geographical levels from data
