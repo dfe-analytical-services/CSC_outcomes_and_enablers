@@ -98,21 +98,25 @@ workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
-# Read in the workforce characteristics data
+# Read in the workforce characteristics data (Enabler 2)
 # workforce_char <- read_workforce_char_data()
 workforce_eth <- read_workforce_eth_data()
 workforce_eth_seniority <- read_workforce_eth_seniority_data()
 population_eth <- read_ethnic_population_data()
 combined_ethnicity_data <- merge_eth_dataframes()
+
+# Read in the CLA data (outcome 1)
 cla_rates <- read_cla_rate_data()
 cla_placements <- read_cla_placement_data()
 combined_cla_data <- merge_cla_dataframes()
 # uasc_data <- test_uasc()
 
-# Read in the CIN  data
+# Read in the CIN data (outcome 1)
 cin_rates <- read_cin_rate_data()
 cin_referrals <- read_cin_referral_data()
 
+# Read in the outcomes data (outcome 1)
+outcomes_absence <- read_outcomes_absence_data()
 
 # Read in outcome 2 data
 ceased_cla_data <- read_outcome2()

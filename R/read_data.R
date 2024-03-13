@@ -672,3 +672,56 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 
   return(joined)
 }
+
+
+# Outcome 1 Outcomes absence data for child well being and development
+read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
+  outcomes_absence_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_absence_data <- outcomes_absence_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
+      school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
+      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
+    )
+
+  # Make % columns numeric
+  outcomes_absence_data <- outcomes_absence_data %>%
+    mutate(`Overall absence (%)` = case_when(
+      pt_overall == "z" ~ NA,
+      pt_overall == "c" ~ NA,
+      pt_overall == "k" ~ NA,
+      pt_overall == "x" ~ NA,
+      TRUE ~ as.numeric(pt_overall)
+    )) %>%
+    mutate(`Persistent absentees (%)` = case_when(
+      pt_pupils_pa_10_exact == "z" ~ NA,
+      pt_pupils_pa_10_exact == "c" ~ NA,
+      pt_pupils_pa_10_exact == "k" ~ NA,
+      pt_pupils_pa_10_exact == "x" ~ NA,
+      TRUE ~ as.numeric(pt_pupils_pa_10_exact)
+    )) %>%
+    mutate(`Authorised absence (%)` = case_when(
+      pt_sess_authorised == "z" ~ NA,
+      pt_sess_authorised == "c" ~ NA,
+      pt_sess_authorised == "k" ~ NA,
+      pt_sess_authorised == "x" ~ NA,
+      TRUE ~ as.numeric(pt_sess_authorised)
+    )) %>%
+    mutate(`Unauthorised absence (%)` = case_when(
+      pt_sess_unauthorised == "z" ~ NA,
+      pt_sess_unauthorised == "c" ~ NA,
+      pt_sess_unauthorised == "k" ~ NA,
+      pt_sess_unauthorised == "x" ~ NA,
+      TRUE ~ as.numeric(pt_sess_unauthorised)
+    ))
+
+
+  return(outcomes_absence_data)
+}

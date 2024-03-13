@@ -510,13 +510,13 @@ outcome1_tab <- function() {
                   "School attendance",
                   gov_row(
                     h2("School attendance of Children In Need and Children Looked After"),
-                    p("Attending an education setting is a key component of long term development and wellbeing for 
+                    p("Attending an education setting is a key component of long term development and wellbeing for
                       children and young people, which affects their outcomes. Barriers to attendance can be prevalent
                       amongst children in need, and children’s social care has an important role in helping to overcome
                       those barriers."),
                     insert_text(inputId = "Absence_definition", text = paste(
                       "<b>", "Absence rate", "</b><br>",
-                      "Percentage of overall absence by social care groups: CINO at 31 March, CPPO at 31 March, 
+                      "Percentage of overall absence by social care groups: CINO at 31 March, CPPO at 31 March,
                       CLA 12 months at 31 March (definitions found in additional information)"
                     )),
                     details(
@@ -536,18 +536,18 @@ outcome1_tab <- function() {
                         )
                       )
                     ),
-                )
+                  )
                 ),
                 accordion_panel(
                   "Persistent absence",
                   gov_row(
                     h2("Educational engagement: persistent absence"),
-                    p("Engaging in education is a key component of long-term development and wellbeing for children and young people, 
+                    p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
                       which affects their outcomes. Barriers to engagement can be prevalent amongst children in need,
                       and children’s social care has an important role in helping to overcome those barriers."),
                     insert_text(inputId = "Absence_definition", text = paste(
                       "<b>", "Persistent absentees", "</b><br>",
-                      "Percentage of persistent absentees, missing 10% of more of their possible sessions in the year, by social care group: CINO at 31 March, CPPO at 31 March, 
+                      "Percentage of persistent absentees by social care group: CINO at 31 March, CPPO at 31 March,
                       CLA 12 months at 31 March (definitions found in additional information)"
                     )),
                     details(
@@ -555,6 +555,7 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
+                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year"),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
@@ -568,7 +569,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   )
-                                  ),
+                ),
                 open = FALSE
               )
             ),
