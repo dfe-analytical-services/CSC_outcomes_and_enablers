@@ -25,7 +25,7 @@ outcome1_tab <- function() {
             ),
             conditionalPanel(condition = "input.select_geography_o1 != 'National'", selectizeInput(
               inputId = "geographic_breakdown_o1",
-              label = "Select a breakdown: ",
+              label = "Select a location: ",
               choices = NULL,
               selected = NULL,
               multiple = FALSE,
