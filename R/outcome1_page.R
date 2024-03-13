@@ -555,7 +555,7 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year"),
+                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year."),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
