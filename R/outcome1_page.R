@@ -485,6 +485,30 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
+                    title = "Overall absence for CINO at 31 March",
+                    value = htmlOutput("absence_CIN_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Overall absence for CPPO at 31 March",
+                    value = htmlOutput("absence_CPP_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Overall absence for CLA 12 months on 31 March",
+                    value = htmlOutput("absence_CLA_headline_txt")
+                  )
+                ),
+                br(),
+              ),
+              fluidRow(
+                column(
+                  width = 4,
+                  value_box(
                     title = "Persistent absentees for CINO at 31 March",
                     value = htmlOutput("persistent_CIN_headline_txt")
                   )

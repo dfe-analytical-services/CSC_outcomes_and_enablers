@@ -1862,6 +1862,31 @@ server <- function(input, output, session) {
   })
 
   # Child wellbeing & development
+
+  # overall absence headline ----
+  # CIN
+  output$absence_CIN_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(`Overall absence (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+  })
+
+  # CPPO
+  output$absence_CPP_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(`Overall absence (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+  })
+
+  # CLA
+  output$absence_CLA_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(`Overall absence (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+  })
+
+
+
   # persistent absentees headline ----
   # CIN
   output$persistent_CIN_headline_txt <- renderText({
@@ -1877,8 +1902,7 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
   })
 
-
-  # CPPO
+  # CLA
   output$persistent_CLA_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
       %>% select(`Persistent absentees (%)`), nsmall = 1)
