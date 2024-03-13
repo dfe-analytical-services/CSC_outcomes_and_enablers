@@ -485,22 +485,22 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 1",
-                    value = "Testing 1"
+                    title = "Persistent absentees for CINO at 31 March",
+                    value = htmlOutput("persistent_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 2",
-                    value = "Testing 2"
+                    title = "Persistent absentees for CPPO at 31 March",
+                    value = htmlOutput("persistent_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 3",
-                    value = "Testing 3"
+                    title = "Persistent absentees for CLA 12 months on 31 March",
+                    value = htmlOutput("persistent_CLA_headline_txt")
                   )
                 ),
                 br(),
@@ -524,6 +524,11 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
+                          tags$li(
+                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England."),
+                          ),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
@@ -555,7 +560,12 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year."),
+                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year to date."),
+                          tags$li(
+                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England."),
+                          ),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
