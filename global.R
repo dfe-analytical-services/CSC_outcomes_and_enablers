@@ -32,6 +32,7 @@ shhh(library(bslib))
 shhh(library(reshape2))
 shhh(library(tidyverse))
 shhh(library(dfeshiny))
+shhh(library(shinyvalidate))
 
 # shhh(library(shinya11y))
 
@@ -87,11 +88,6 @@ google_analytics_key <- "Q13T4ENF6C"
 
 source("R/read_data.R")
 
-# read in the definitions data
-# NOT important
-definitions <- read_definitions()
-colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-definitions <- definitions[, 1:4]
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
 workforce_data <- read_workforce_data()
@@ -100,28 +96,23 @@ location_data_workforce <- GET_location_workforce() # fact table linking LA to i
 
 # Read in the workforce characteristics data
 # workforce_char <- read_workforce_char_data()
-workforce_eth <- read_workforce_eth_data()
-workforce_eth_seniority <- read_workforce_eth_seniority_data()
-population_eth <- read_ethnic_population_data()
-combined_ethnicity_data <- merge_eth_dataframes()
-cla_rates <- read_cla_rate_data()
-cla_placements <- read_cla_placement_data()
-combined_cla_data <- merge_cla_dataframes()
+workforce_eth <- suppressWarnings(read_workforce_eth_data())
+workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
+population_eth <- suppressWarnings(read_ethnic_population_data())
+combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
+cla_rates <- suppressWarnings(read_cla_rate_data())
+cla_placements <- suppressWarnings(read_cla_placement_data())
+combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 # uasc_data <- test_uasc()
 
 # Read in the CIN  data
-cin_rates <- read_cin_rate_data()
-cin_referrals <- read_cin_referral_data()
+cin_rates <- suppressWarnings(read_cin_rate_data())
+cin_referrals <- suppressWarnings(read_cin_referral_data())
 
 
 # Read in outcome 2 data
-ceased_cla_data <- read_outcome2()
+ceased_cla_data <- suppressWarnings(read_outcome2())
 
-# Dropdowns
-# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
-
-# choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
 
 dropdown_choices <- cla_rates # %>%
 #   mutate(geo_breakdown = case_when(

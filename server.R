@@ -135,6 +135,21 @@ server <- function(input, output, session) {
       )
     )
   })
+  # Dropdown Validation -----
+  iv <- InputValidator$new()
+  # outcome1
+  iv$add_rule("select_geography_o1", sv_required())
+  iv$add_rule("geographic_breakdown_o1", sv_required())
+  # outcome2
+  iv$add_rule("select_geography_o2", sv_required())
+  iv$add_rule("geographic_breakdown_o2", sv_required())
+  # enabler2
+  iv$add_rule("select_geography_e2", sv_required())
+  iv$add_rule("geographic_breakdown_e2", sv_required())
+
+
+  iv$enable()
+
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Enabler 2 ----
@@ -191,16 +206,38 @@ server <- function(input, output, session) {
 
   # Social worker turnover rate headline box
   # Turnover rate plot and table -----
+
+  # output$s_w_headline_txt <- renderText({
+  #
+  #   ifelse((is.null(input$select_geography_e2) | is.null(input$geographic_breakdown_e2)),
+  #         # stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(turnover_rate_fte), nsmall = 1)
+  #          paste0("NA"),
+  #         paste0(format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(turnover_rate_fte), nsmall = 1), "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
+  #
+  #   )
+  # })
+
   output$s_w_headline_txt <- renderText({
-    stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(turnover_rate_fte), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
+    if (is.null(input$geographic_breakdown_e2)) {
+      stat <- "NA"
+    } else {
+      stat <- format(workforce_data %>%
+        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(turnover_rate_fte), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>",
+      input$select_geography_e2, input$geographic_breakdown_e2
+    )
   })
 
   # Social worker turnover rate benchmarking plot
   output$plot_s_w_turnover <- plotly::renderPlotly({
-    validate(
+    shiny::validate(
       need(!is.null(input$select_geography_e2), "Select a geography level."),
+      # need(input$select_geography_e2 != "", "Select a geography level."),
       need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+      # need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
