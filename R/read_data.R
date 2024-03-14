@@ -725,3 +725,74 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
 
   return(outcomes_absence_data)
 }
+
+
+# Outcome 1 Outcomes KS2 data for education attainment
+read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
+  outcomes_ks2_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
+      t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
+      pt_mat_met_expected_standard, t_rwm_eligible_pupils, t_rwm_met_expected_standard, pt_rwm_met_expected_standard,
+      t_gps_eligible_pupils, t_gps_met_expected_standard, pt_gps_met_expected_standard, t_scita_eligible_pupils,
+      t_scita_met_expected_standard, pt_scita_met_expected_standard, t_read_progress_eligible_pupils,
+      t_read_progress_score, avg_read_progress_score, avg_read_progress_score_lower_CI, avg_read_progress_score_upper_CI,
+      t_writta_progress_eligible_pupils, t_writta_progress_score, avg_writta_progress_score, avg_writta_progress_score_lower_CI,
+      avg_writta_progress_score_upper_CI, t_mat_progress_eligible_pupils, t_mat_progress_score, avg_mat_progress_score,
+      avg_mat_progress_score_lower_CI, avg_mat_progress_score_upper_CI
+    )
+
+  # Make % columns numeric
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    mutate(`Expected standard reading writing maths (%)` = case_when(
+      pt_rwm_met_expected_standard == "z" ~ NA,
+      pt_rwm_met_expected_standard == "c" ~ NA,
+      pt_rwm_met_expected_standard == "k" ~ NA,
+      pt_rwm_met_expected_standard == "x" ~ NA,
+      TRUE ~ as.numeric(pt_rwm_met_expected_standard)
+    ))
+
+
+  return(outcomes_ks2_data)
+}
+
+# Outcome 1 Outcomes KS4 data for education attainment
+read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
+  outcomes_ks4_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
+      t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
+      t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
+    )
+
+  # Make number columns numeric
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    mutate(`Average Attainment 8 score` = case_when(
+      avg_att8 == "z" ~ NA,
+      avg_att8 == "c" ~ NA,
+      avg_att8 == "k" ~ NA,
+      avg_att8 == "x" ~ NA,
+      TRUE ~ as.numeric(avg_att8)
+    ))
+
+
+  return(outcomes_ks4_data)
+}
