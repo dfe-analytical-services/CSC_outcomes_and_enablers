@@ -70,18 +70,18 @@ outcome1_tab <- function() {
       gov_row(
         br(),
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_o1 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire"), "or", strong("West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_o1 == 'Poole')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_o1 == 'Bournemouth')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_o1 == 'Northamptonshire')",
+        #   p("To view 2021 and onwards data select ", strong("North Northamptonshire"), "or", strong("West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_o1 == 'Poole')",
+        #   p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_o1 == 'Bournemouth')",
+        #   p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
       ),
       gov_row(
         br(),

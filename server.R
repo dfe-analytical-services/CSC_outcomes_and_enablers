@@ -990,7 +990,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_o1
   }, {
-    choices <- sort(unique(dropdown_choices[dropdown_choices$geographic_level == input$select_geography_o1, "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
