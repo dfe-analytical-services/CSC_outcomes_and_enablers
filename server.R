@@ -144,7 +144,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_e2
   }, {
-    choices <- sort(unique(workforce_data[workforce_data$geographic_level == input$select_geography_e2, "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(workforce_data[(workforce_data$geographic_level == input$select_geography_e2 & workforce_data$time_period == max(workforce_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
