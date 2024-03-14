@@ -1866,7 +1866,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_o2
   }, {
-    choices <- sort(unique(ceased_cla_data[ceased_cla_data$geographic_level == input$select_geography_o2, "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,

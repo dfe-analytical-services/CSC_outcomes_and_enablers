@@ -637,8 +637,10 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
   read_data <- read.csv(file)
   # Call remove old la data function to remove the old
-  final_filtered_data <- remove_old_la_data(read_data)
+  # final_filtered_data <- remove_old_la_data(read_data)
+  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
 
+  final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
   ceased_cla_data <- final_filtered_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
