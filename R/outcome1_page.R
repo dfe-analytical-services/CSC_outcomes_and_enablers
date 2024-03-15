@@ -529,6 +529,23 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              gov_row(
+                div(
+                  class = "input_box",
+                  style = "min-height:100%; height = 100%; overflow-y: visible",
+                  p("This domain contains three breakdowns of data: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year) (CLA)."),
+                  p("Please use this dropdown to select which breakdown you would like to see in the accordion:"),
+                  selectizeInput(
+                    inputId = "wellbeing_extra_breakdown",
+                    label = "Select a breakdown:",
+                    choices = c("Child in Need (CINO)", "Child Protection Plan (CPPO)", "Child Looked After (CLA)"),
+                    selected = NULL,
+                    multiple = FALSE,
+                    options = NULL
+                  )
+                ),
+                br(),
+              ),
               accordion(
                 accordion_panel(
                   "School attendance",
