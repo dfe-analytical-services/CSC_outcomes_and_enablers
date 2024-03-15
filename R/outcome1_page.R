@@ -656,14 +656,14 @@ outcome1_tab <- function() {
                   width = 4,
                   value_box(
                     title = "Average attainment 8 for CINO at 31 March",
-                    value = htmlOutput("KS4_CLA_headline_txt")
+                    value = htmlOutput("KS4_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "Average attainment 8 for CPPO at 31 March",
-                    value = htmlOutput("KS4_CLA_headline_txt")
+                    value = htmlOutput("KS4_CPP_headline_txt")
                   )
                 ),
                 column(
