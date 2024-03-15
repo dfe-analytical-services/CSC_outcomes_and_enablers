@@ -591,7 +591,7 @@ outcome1_tab <- function() {
                     p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
                       which affects their outcomes. Barriers to engagement can be prevalent amongst children in need,
                       and children’s social care has an important role in helping to overcome those barriers."),
-                    insert_text(inputId = "Absence_definition", text = paste(
+                    insert_text(inputId = "Persistent_absence_definition", text = paste(
                       "<b>", "Persistent absentees", "</b><br>",
                       "Percentage of persistent absentees by social care group: CINO at 31 March, CPPO at 31 March,
                       CLA 12 months at 31 March (definitions found in additional information)"
@@ -656,21 +656,21 @@ outcome1_tab <- function() {
                   width = 4,
                   value_box(
                     title = "Average attainment 8 for CINO at 31 March",
-                    value = htmlOutput("persistent_CIN_headline_txt")
+                    value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "Average attainment 8 for CPPO at 31 March",
-                    value = htmlOutput("persistent_CPP_headline_txt")
+                    value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "Average attainment 8 for CLA 12 months on 31 March",
-                    value = htmlOutput("persistent_CLA_headline_txt")
+                    value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),
                 br(),
