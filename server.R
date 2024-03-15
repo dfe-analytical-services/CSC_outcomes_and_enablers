@@ -1910,6 +1910,56 @@ server <- function(input, output, session) {
   })
 
 
+  # Education attainment
+
+  # KS2 headline ----
+  # CIN
+  output$KS2_CIN_headline_txt <- renderText({
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+  })
+
+  # CPPO
+  output$KS2_CPP_headline_txt <- renderText({
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2e$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+  })
+
+  # CLA
+  output$KS2_CLA_headline_txt <- renderText({
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+  })
+
+  # KS4 headline ----
+  # CIN
+  output$KS4_CIN_headline_txt <- renderText({
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(`Average Attainment 8`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+  })
+
+  # CPPO
+  output$KS4_CPP_headline_txt <- renderText({
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(`Average Attainment 8`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+  })
+
+  # CLA
+  output$KS4_CLA_headline_txt <- renderText({
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(`Average Attainment 8`), nsmall = 1)
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+  })
+
+
+
+
+
   # Outcome 2 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {

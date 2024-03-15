@@ -785,7 +785,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 
   # Make number columns numeric
   outcomes_ks4_data <- outcomes_ks4_data %>%
-    mutate(`Average Attainment 8 score` = case_when(
+    mutate(`Average Attainment 8` = case_when(
       avg_att8 == "z" ~ NA,
       avg_att8 == "c" ~ NA,
       avg_att8 == "k" ~ NA,

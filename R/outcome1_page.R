@@ -609,39 +609,61 @@ outcome1_tab <- function() {
             ),
             tabPanel(
               "Educational attainment",
+              br(),
               fluidRow(
-                p("testing")
+                column(
+                  width = 4,
+                  value_box(
+                    title = "CINO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    value = htmlOutput("KS2_CIN_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "CPPO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    value = htmlOutput("KS2_CPP_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "CLA 12 months on 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    value = htmlOutput("KS2_CLA_headline_txt")
+                  )
+                ),
+                br(),
               ),
               fluidRow(
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 1",
-                    value = "Testing 1"
+                    title = "Average attainment 8 for CINO at 31 March",
+                    value = htmlOutput("persistent_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 2",
-                    value = "Testing 2"
+                    title = "Average attainment 8 for CPPO at 31 March",
+                    value = htmlOutput("persistent_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Testing 3",
-                    value = "Testing 3"
+                    title = "Average attainment 8 for CLA 12 months on 31 March",
+                    value = htmlOutput("persistent_CLA_headline_txt")
                   )
                 ),
                 br(),
               ),
               accordion(
                 accordion_panel(
-                  "Accordion 1",
+                  "Key stage 2",
                 ),
                 accordion_panel(
-                  "Accordion 2"
+                  "Key stage 4"
                 ),
                 open = FALSE
               )
