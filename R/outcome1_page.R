@@ -533,7 +533,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year) (CLA)."),
+                  p("This domain contains three breakdowns of data: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
                   p("Please use this dropdown to select which breakdown you would like to see in the accordion:"),
                   selectizeInput(
                     inputId = "wellbeing_extra_breakdown",
@@ -594,7 +594,7 @@ outcome1_tab <- function() {
                     insert_text(inputId = "Persistent_absence_definition", text = paste(
                       "<b>", "Persistent absentees", "</b><br>",
                       "Percentage of persistent absentees by social care group: CINO at 31 March, CPPO at 31 March,
-                      CLA 12 months at 31 March (definitions found in additional information)"
+                      CLA 12 months at 31 March (definitions found in additional information)."
                     )),
                     details(
                       inputId = "Persistent_info",
@@ -678,9 +678,80 @@ outcome1_tab <- function() {
               accordion(
                 accordion_panel(
                   "Key stage 2",
+                  gov_row(
+                    h2("Key stage 2 attainment"),
+                    p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
+                      Children should be supported to access and make progress in education to support their development and life chances.
+                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
+                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
+                        objectives in the child’s Personal Education Plan."),
+                    insert_text(inputId = "ks2_definition", text = paste(
+                      "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                      "Percentage of pupils achieving expected standard in reading, writing and maths combined for CINO at 31 March, CPPO at 31 March,
+                      CLA 12 months at 31 March (definitions found in additional information)."
+                    )),
+                    details(
+                      inputId = "ks2_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
+                          tags$li(
+                            "Attainment in reading, writing and maths combined is not directly comparable to some earlier years (2016/17) because of changes to writing teacher assessment frameworks in 2018. For more detailed information on this see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment."),
+                          ),
+                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                          )
+                        )
+                      )
+                    ),
+                  )
                 ),
                 accordion_panel(
-                  "Key stage 4"
+                  "Key stage 4",
+                  gov_row(
+                    h2("Key stage 4 attainment"),
+                    p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
+                      Children should be supported to access and make progress in education to support their development and life chances.
+                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
+                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
+                        objectives in the child’s Personal Education Plan."),
+                    insert_text(inputId = "ks4_definition", text = paste(
+                      "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                      "Average achievement of pupils in up to 8 qualifications, including English language, English literature and maths, for CINO at 31 March, CPPO at 31 March,
+                      CLA 12 months at 31 March (definitions found in additional information)."
+                    )),
+                    details(
+                      inputId = "ks4_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li(
+                            "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
+                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
+                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
+                          ),
+                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                          )
+                        )
+                      )
+                    ),
+                  )
                 ),
                 open = FALSE
               )
