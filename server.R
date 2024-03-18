@@ -1966,6 +1966,52 @@ server <- function(input, output, session) {
   })
 
 
+  # absence rate TABLE
+  output$table_absence_rate <- renderDataTable({
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_absence %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_absence %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_absence %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_absence %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+    }
+
+    datatable(
+      filtered_data %>%
+        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`),
+      colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Number of pupils", "Overall absence (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
 
   # Education attainment
 

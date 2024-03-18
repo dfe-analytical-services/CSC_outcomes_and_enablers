@@ -561,6 +561,14 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("absence_time_series"),
                     br(),
+                    # Expandable for the table alternative
+                    details(
+                      inputId = "table_absence",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_absence_rate")
+                      )
+                    ),
                     details(
                       inputId = "Attendance_info",
                       label = "Additional information:",
