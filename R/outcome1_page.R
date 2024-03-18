@@ -602,9 +602,18 @@ outcome1_tab <- function() {
                       and children’s social care has an important role in helping to overcome those barriers."),
                     insert_text(inputId = "Persistent_absence_definition", text = paste(
                       "<b>", "Persistent absentees", "</b><br>",
-                      "Percentage of persistent absentees by social care group: CINO at 31 March, CPPO at 31 March,
-                      CLA 12 months at 31 March (definitions found in additional information)."
+                      htmlOutput("outcome1_choice_social_care_group_text_1")
                     )),
+                    plotlyOutput("persistence_time_series"),
+                    br(),
+                    # Expandable for the table alternative
+                    details(
+                      inputId = "table_persistence",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_persistent_rate")
+                      )
+                    ),
                     details(
                       inputId = "Persistent_info",
                       label = "Additional information:",
