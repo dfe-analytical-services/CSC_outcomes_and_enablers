@@ -120,6 +120,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    filter(new_la_code != "E10000009") %>%
     select(
       geographic_level, geo_breakdown, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
@@ -164,6 +165,7 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    filter(new_la_code != "E10000009") %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -191,6 +193,7 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    filter(new_la_code != "E10000009") %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -442,6 +445,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       TRUE ~ as.numeric(rate_per_10000)
     )) %>%
     filter(!is.na(rate_per_10000)) %>%
+    filter(new_la_code != "E10000009") %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, population_count, population_estimate, number, rate_per_10000) %>%
     distinct()
 
@@ -464,6 +468,7 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       TRUE ~ as.numeric(percentage)
     )) %>%
     filter(!is.na(percentage)) %>%
+    filter(new_la_code != "E10000009") %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, cla_group, characteristic, number, percentage) %>%
     distinct()
 
@@ -523,6 +528,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       At31_episodes_rate == "c" ~ NA,
       TRUE ~ as.numeric(At31_episodes_rate)
     )) %>%
+    filter(new_la_code != "E10000009") %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, At31_episodes, At31_episodes_rate) %>%
     distinct() %>%
     rename(CIN_rate = At31_episodes_rate, CIN_number = At31_episodes)
@@ -558,6 +564,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       Re_referrals_percent == "c" ~ NA,
       TRUE ~ as.numeric(Re_referrals_percent)
     )) %>%
+    filter(new_la_code != "E10000009") %>%
     select(time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name, Referrals, Re_referrals, Re_referrals_percent) %>%
     distinct()
 
