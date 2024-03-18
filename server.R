@@ -1044,6 +1044,10 @@ server <- function(input, output, session) {
     }
   })
 
+  output$outcome1_choice_social_care_group_text <- renderText({
+    paste0("Percentage of overall absence for ", tags$b(input$wellbeing_extra_breakdown), ".")
+  })
+
 
   # CLA rate headline ----
   output$cla_rate_headline_txt <- renderText({
@@ -1915,6 +1919,52 @@ server <- function(input, output, session) {
       %>% select(`Persistent absentees (%)`), nsmall = 1)
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
+
+
+  # overall absence timeseries chart
+  output$absence_time_series <- plotly::renderPlotly({
+    validate(
+      need(!is.null(input$select_geography_o1), "Select a geography level."),
+      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_absence %>%
+        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_absence %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_absence %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
+        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_absence %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown)
+    }
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
 
 
   # Education attainment

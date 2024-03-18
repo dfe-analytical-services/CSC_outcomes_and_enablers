@@ -533,12 +533,12 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
-                  p("Please use this dropdown to select which breakdown you would like to see in the accordion:"),
+                  p("This domain contains three breakdowns of data for the following social care groups: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
+                  p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "wellbeing_extra_breakdown",
-                    label = "Select a breakdown:",
-                    choices = c("Child in Need (CINO)", "Child Protection Plan (CPPO)", "Child Looked After (CLA)"),
+                    label = "Select a social care group:",
+                    choices = c("CINO at 31 March", "CPPO at 31 March", "CLA 12 months at 31 March"),
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
@@ -557,9 +557,10 @@ outcome1_tab <- function() {
                       those barriers."),
                     insert_text(inputId = "Absence_definition", text = paste(
                       "<b>", "Absence rate", "</b><br>",
-                      "Percentage of overall absence by social care groups: CINO at 31 March, CPPO at 31 March,
-                      CLA 12 months at 31 March (definitions found in additional information)"
+                      htmlOutput("outcome1_choice_social_care_group_text")
                     )),
+                    plotlyOutput("absence_time_series"),
+                    br(),
                     details(
                       inputId = "Attendance_info",
                       label = "Additional information:",
