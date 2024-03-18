@@ -1864,25 +1864,32 @@ server <- function(input, output, session) {
   # Child wellbeing & development
 
   # overall absence headline ----
+
+  # formatted time period
+  formatted_time_period_wellbeing <- outcomes_absence %>%
+    filter(time_period == max(time_period), geo_breakdown == "National", social_care_group == "CINO at 31 March", school_type == "Total") %>%
+    mutate(time_period_new = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+
   # CIN
   output$absence_CIN_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
       %>% select(`Overall absence (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$absence_CPP_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
       %>% select(`Overall absence (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$absence_CLA_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
       %>% select(`Overall absence (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
 
@@ -1892,46 +1899,52 @@ server <- function(input, output, session) {
   output$persistent_CIN_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
       %>% select(`Persistent absentees (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$persistent_CPP_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
       %>% select(`Persistent absentees (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$persistent_CLA_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
       %>% select(`Persistent absentees (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_absence$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
 
   # Education attainment
 
   # KS2 headline ----
+
+  # formatted time period
+  formatted_time_period <- outcomes_ks2 %>%
+    filter(time_period == max(time_period), geo_breakdown == "National", social_care_group == "CINO at 31 March") %>%
+    mutate(time_period_new = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
   # CIN
   output$KS2_CIN_headline_txt <- renderText({
     stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
       %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS2_CPP_headline_txt <- renderText({
     stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
       %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS2_CLA_headline_txt <- renderText({
     stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
       %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks2$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # KS4 headline ----
@@ -1939,21 +1952,21 @@ server <- function(input, output, session) {
   output$KS4_CIN_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS4_CPP_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS4_CLA_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(outcomes_ks4$time_period), ")", "</p>")
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
 
