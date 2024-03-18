@@ -223,9 +223,7 @@ server <- function(input, output, session) {
   # Social worker turnover rate benchmarking plot
   output$plot_s_w_turnover <- plotly::renderPlotly({
     shiny::validate(
-      # need(!is.null(input$select_geography_e2), "Select a geography level."),
       need(input$select_geography_e2 != "", "Select a geography level."),
-      # need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
       need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
     )
     # not both
@@ -306,6 +304,10 @@ server <- function(input, output, session) {
 
   # turnover rate by region plot----
   output$plot_turnover_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       # plot_turnover_reg() %>%
       by_region_bar_plot(workforce_data, "turnover_rate_fte", "Turnover Rate (FTE) %") %>%
@@ -341,6 +343,10 @@ server <- function(input, output, session) {
 
   # Turnover Rate by LA table
   output$table_turnover_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
         # Include both Inner London and Outer London
@@ -395,9 +401,9 @@ server <- function(input, output, session) {
 
   # Agency worker rate benchmarking plot ----
   output$plot_agency_worker <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_e2), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
@@ -491,6 +497,10 @@ server <- function(input, output, session) {
 
   # agency rate plot by region ----
   output$plot_agency_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_region_bar_plot(workforce_data, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
         # plot_agency_reg() %>%
@@ -517,6 +527,10 @@ server <- function(input, output, session) {
 
   # agency rate by la plot -----
   output$plot_agency_rate_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
         # plot_agency_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
@@ -582,9 +596,9 @@ server <- function(input, output, session) {
 
   # Vacancy Rate benchmarking plot ----
   output$plot_vacancy_rate <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_e2), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
@@ -666,6 +680,10 @@ server <- function(input, output, session) {
 
   # vacancy rate by la plot ----
   output$plot_vacancy_rate_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
         # plot_vacancy_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
@@ -716,6 +734,10 @@ server <- function(input, output, session) {
 
   # vacancy rate plot by region ----
   output$plot_vacancy_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_region_bar_plot(workforce_data, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
         # plot_vacancy_reg() %>%
@@ -792,9 +814,9 @@ server <- function(input, output, session) {
 
   # Caseload benchmarking plot ----
   output$caseload_plot <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_e2), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_e2), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
@@ -882,6 +904,10 @@ server <- function(input, output, session) {
 
   # Caseload by region ----
   output$plot_caseload_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_region_bar_plot(workforce_data, "caseload_fte", "Average Caseload (FTE)") %>%
         config(displayModeBar = F),
@@ -907,6 +933,10 @@ server <- function(input, output, session) {
 
   # caseload by la -----
   output$plot_caseload_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)") %>%
         # plot_caseload_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
@@ -973,16 +1003,23 @@ server <- function(input, output, session) {
     paste0(non_white_stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
   })
 
-
   output$plot_ethnicity_rate <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
-      plot_ethnicity_rate(input$geographic_breakdown_e2, input$geographic_level) %>%
+      plot_ethnicity_rate(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
   output$plot_population_ethnicity_rate <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_population_ethnicity_rate(input$geographic_breakdown_e2) %>%
         config(displayModeBar = F),
@@ -1025,8 +1062,12 @@ server <- function(input, output, session) {
   })
 
   output$plot_seniority_eth <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
-      plot_seniority_eth(input$geographic_breakdown_e2, input$geographic_level) %>%
+      plot_seniority_eth(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -1150,9 +1191,9 @@ server <- function(input, output, session) {
 
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -1245,6 +1286,10 @@ server <- function(input, output, session) {
 
   # CLA rate regional plot
   output$plot_cla_rate_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cla_rate_reg() %>%
         config(displayModeBar = F),
@@ -1270,6 +1315,10 @@ server <- function(input, output, session) {
 
   # CLA rate LA plot
   output$plot_cla_rate_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cla_rate_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -1332,6 +1381,10 @@ server <- function(input, output, session) {
 
   # cin rate plot by region
   output$plot_cin_rate_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cin_rate_reg() %>%
         config(displayModeBar = F),
@@ -1399,6 +1452,10 @@ server <- function(input, output, session) {
 
   # cin rate chart by LA
   output$plot_cin_rates_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cin_rates_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -1420,9 +1477,9 @@ server <- function(input, output, session) {
 
   # CIN rate plot
   output$plot_cin_rate <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -1512,9 +1569,9 @@ server <- function(input, output, session) {
 
   ## CIN referral plot
   output$plot_cin_referral <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -1661,6 +1718,10 @@ server <- function(input, output, session) {
 
   # cin referral plot by region
   output$plot_cin_referral_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cin_referral_reg() %>%
         config(displayModeBar = F),
@@ -1670,6 +1731,10 @@ server <- function(input, output, session) {
 
   # cin referral chart by LA
   output$plot_cin_referral_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cin_referral_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -1678,6 +1743,10 @@ server <- function(input, output, session) {
   })
 
   output$plot_uasc <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_uasc(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -1705,6 +1774,10 @@ server <- function(input, output, session) {
   })
 
   output$plot_uasc_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_uasc_reg() %>%
         config(displayModeBar = F),
@@ -1729,6 +1802,10 @@ server <- function(input, output, session) {
   })
 
   output$plot_uasc_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -1779,9 +1856,9 @@ server <- function(input, output, session) {
 
   # CLA Rate chart for March
   output$plot_cla_rate_march <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -1874,6 +1951,10 @@ server <- function(input, output, session) {
 
   # CLA rate March regional plot
   output$plot_cla_march_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cla_march_reg() %>%
         config(displayModeBar = F),
@@ -1899,6 +1980,10 @@ server <- function(input, output, session) {
 
   # CLA rate March LA plot
   output$plot_cla_march_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     ggplotly(
       plot_cla_march_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
@@ -2041,9 +2126,9 @@ server <- function(input, output, session) {
   # SGO ----
   # time series and table
   output$SGO_time_series <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o2), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o2), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
@@ -2132,6 +2217,10 @@ server <- function(input, output, session) {
   # SGO by region -----
 
   output$plot_sgo_ceased_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
     ggplotly(
@@ -2159,6 +2248,10 @@ server <- function(input, output, session) {
   ##
   # SGO by la ----
   output$plot_SGO_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
@@ -2210,9 +2303,9 @@ server <- function(input, output, session) {
   # CAO ----
   # time series and table
   output$CAO_time_series <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o2), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o2), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
@@ -2300,6 +2393,10 @@ server <- function(input, output, session) {
 
   # by region
   output$plot_cao_ceased_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     ggplotly(
@@ -2326,6 +2423,10 @@ server <- function(input, output, session) {
 
   # by la
   output$plot_cao_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
