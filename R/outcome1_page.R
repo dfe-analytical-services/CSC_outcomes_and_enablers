@@ -591,22 +591,21 @@ outcome1_tab <- function() {
                         )
                       )
                     ),
-                    gov_row(
-                      h2("Absence rate by region"),
-                      p("This chart will react to social care group selection but it will not react to geographical level and breakdown selected in the filters at the top."),
-                      br(),
-                      plotlyOutput("plot_absence_reg"),
-                      br(),
-                      br(),
-                      details(
-                        inputId = "tbl_absence_reg",
-                        label = "View chart as a table",
-                        help_text = (
-                          dataTableOutput("table_absence_reg")
-                        )
+                  ),
+                  gov_row(
+                    h2("Absence rate by region"),
+                    p("This chart will react to social care group selection but it will not react to geographical level and breakdown selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_absence_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_absence_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_absence_reg")
                       )
-                    ),
-                  )
+                    )
+                  ),
                 ),
                 accordion_panel(
                   "Persistent absence",

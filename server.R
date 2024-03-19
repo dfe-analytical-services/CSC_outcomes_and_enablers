@@ -2031,12 +2031,19 @@ server <- function(input, output, session) {
 
   # Absence rate regional plot
   output$plot_absence_reg <- plotly::renderPlotly({
+    data <- outcomes_absence %>%
+      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+
     ggplotly(
-      plot_absence_reg() %>%
+      by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
+
+
 
   # Absence rate regional table
   output$table_absence_reg <- renderDataTable({
@@ -2047,9 +2054,9 @@ server <- function(input, output, session) {
       ) %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_overall, `Overall absence (%)`
+          t_pupils, pt_overall # , `Overall absence (%)`
         ) %>%
-        arrange(desc(`Overall absence (%)`)),
+        arrange(desc(`pt_overall`)),
       colnames = c(
         "Time period", "Geographical breakdown", "Social care group",
         "School type", "Total number of pupils", "Overall absence (%)"

@@ -1525,36 +1525,3 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
   return(p)
 }
-
-
-# child well being ----
-# Absence rate
-# bar chart by region
-plot_absence_reg <- function() {
-  outcomes_absence_data <- outcomes_absence %>%
-    filter(
-      geographic_level == "Regional", time_period == max(time_period),
-      school_type == "Total"
-    ) %>%
-    select(time_period, geo_breakdown, `Overall absence (%)`) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -`Overall absence (%)`)) # Order by turnover rate
-
-  ggplot(outcomes_absence_data, aes(`geo_breakdown`, `Overall absence (%)`, fill = factor(time_period))) +
-    geom_col(position = position_dodge()) +
-    ylab("Overall absence (%)") +
-    xlab("Region") +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
-      axis.title.x = element_blank(),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
-    ) +
-    scale_y_continuous(limits = c(0, 100)) +
-    scale_fill_manual(
-      "Time period",
-      # breaks = unique(c("England", inputArea)),
-      values = "#12436D" # gss_colour_pallette
-    )
-}
