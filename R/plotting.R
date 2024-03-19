@@ -1525,3 +1525,40 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
   return(p)
 }
+
+# Statistical Neighbours function ----
+statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  neighbours_list <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
+    as.list()
+
+  filtered_data <- workforce_data %>%
+    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    select(geo_breakdown, `yvalue`) %>%
+    mutate(
+      geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+    ) %>%
+    rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`)) +
+    geom_col(position = position_dodge()) +
+    ylab(yaxis_title) +
+    xlab("") +
+    theme_classic() +
+    theme(
+      text = element_text(size = 12),
+      axis.title.y = element_text(margin = margin(r = 12)),
+      axis.line = element_line(size = 1.0),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    ) +
+    scale_y_continuous(limits = c(0, ylim_upper)) +
+    scale_fill_manual(
+      "LA Selection",
+      values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
+    )
+}
+
+# statistical_neighbours_plot(workforce_data, "Liverpool", "Local authority", "turnover_rate_fte", "Turnover Rate %", 100)
