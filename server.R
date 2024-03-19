@@ -2269,6 +2269,15 @@ server <- function(input, output, session) {
 
   ## Enabler 2 ------
   ### Turnover rate -----
+  ## Button logic
+  output$SN_turnover <- renderUI({
+    if (input$turnover_stats_toggle == "All local authorities") {
+      plotlyOutput("plot_turnover_la")
+    } else {
+      plotlyOutput("turnover_SN_plot")
+    }
+  })
+  # SN plot
   output$turnover_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
