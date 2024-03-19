@@ -799,49 +799,28 @@ server <- function(input, output, session) {
 
 
   # Caseload ----
-  # Caseload headline box
-  # output$caseload_txt <- renderText({
-  #   previous_year <- workforce_data %>%
-  #     filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-  #     select(caseload_fte)
-  #   current_year <- workforce_data %>%
-  #     filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-  #     select(caseload_fte)
-  #
-  #   if (current_year < previous_year) {
-  #     paste0(
-  #       format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1), "<br>",
-  #       "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), " down from ", previous_year, " in ", (max(workforce_data$time_period) - 1), "</p>"
-  #     )
-  #   } else {
-  #     paste0(
-  #       format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1), "<br>",
-  #       "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), " up from ", previous_year, " in ", (max(workforce_data$time_period) - 1), "</p>"
-  #     )
-  #   }
-  # })
 
   output$caseload_txt <- renderText({
-    previous_year_value <- workforce_data %>%
-      filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-      select(caseload_fte)
-    current_year_value <- workforce_data %>%
-      filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-      select(caseload_fte)
-
     if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
       paste0(stat, "%", "<br>")
-    } else if ((current_year_value < previous_year_value)) {
-      context <- "down from"
-      stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1)
     } else {
-      context <- "up from"
+      previous_year_value <- workforce_data %>%
+        filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(caseload_fte)
+
+      current_year_value <- workforce_data %>%
+        filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(caseload_fte)
+
+      if ((current_year_value < previous_year_value)) {
+        context <- " down from "
+      } else {
+        context <- " up from "
+      }
       stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1)
+      paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, (max(workforce_data$time_period) - 1), "</p>")
     }
-    paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, (max(workforce_data$time_period) - 1), "</p>",
-    )
   })
 
   # Caseload benchmarking plot ----
