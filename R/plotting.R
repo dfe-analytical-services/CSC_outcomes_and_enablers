@@ -1560,5 +1560,3 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
     )
 }
-
-# statistical_neighbours_plot(workforce_data, "Liverpool", "Local authority", "turnover_rate_fte", "Turnover Rate %", 100)

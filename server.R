@@ -154,7 +154,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Confirmation sentence E2 -------
+  ## Confirmation sentence E2 -------
   # This function gets the selected region to put into the confirmation text below
 
   workforce_region <- reactive({
@@ -189,8 +189,8 @@ server <- function(input, output, session) {
   })
 
 
-  # Social worker turnover rate headline box
-  # Turnover rate plot and table -----
+  ## Social worker turnover rate headline box
+  ## Turnover rate plot and table -----
   output$s_w_headline_txt <- renderText({
     stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(turnover_rate_fte), nsmall = 1)
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
@@ -278,7 +278,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # turnover rate by region plot----
+  ### turnover rate by region plot----
   output$plot_turnover_reg <- plotly::renderPlotly({
     ggplotly(
       # plot_turnover_reg() %>%
@@ -304,7 +304,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Turnover Rate by LA plot ----
+  ### Turnover Rate by LA plot ----
   output$plot_turnover_la <- plotly::renderPlotly({
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate (FTE) %") %>%
@@ -353,13 +353,13 @@ server <- function(input, output, session) {
   })
 
 
-  # Agency Rate ----
+  ## Agency Rate ----
   output$agency_rate_txt <- renderText({
     stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(agency_rate_fte), nsmall = 1)
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>")
   })
 
-  # Agency worker rate benchmarking plot ----
+  ### Agency worker rate benchmarking plot ----
   output$plot_agency_worker <- plotly::renderPlotly({
     validate(
       need(!is.null(input$select_geography_e2), "Select a geography level."),
@@ -455,7 +455,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # agency rate plot by region ----
+  ### agency rate plot by region ----
   output$plot_agency_reg <- plotly::renderPlotly({
     ggplotly(
       by_region_bar_plot(workforce_data, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
@@ -481,7 +481,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # agency rate by la plot -----
+  ### agency rate by la plot -----
   output$plot_agency_rate_la <- plotly::renderPlotly({
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %") %>%
@@ -530,7 +530,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Vacancy Rate -----
+  ## Vacancy Rate -----
   # Vacancy rate headline box
   output$vacancy_rate_txt <- renderText({
     paste0(
@@ -539,7 +539,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Vacancy Rate benchmarking plot ----
+  ### Vacancy Rate benchmarking plot ----
   output$plot_vacancy_rate <- plotly::renderPlotly({
     validate(
       need(!is.null(input$select_geography_e2), "Select a geography level."),
@@ -623,7 +623,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # vacancy rate by la plot ----
+  ### vacancy rate by la plot ----
   output$plot_vacancy_rate_la <- plotly::renderPlotly({
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
@@ -673,7 +673,7 @@ server <- function(input, output, session) {
   })
 
 
-  # vacancy rate plot by region ----
+  ### vacancy rate plot by region ----
   output$plot_vacancy_reg <- plotly::renderPlotly({
     ggplotly(
       by_region_bar_plot(workforce_data, "vacancy_rate_fte", "Vacancy rate (FTE) %") %>%
@@ -703,7 +703,7 @@ server <- function(input, output, session) {
 
 
 
-  # Caseload ----
+  ## Caseload ----
   # Caseload headline box
   output$caseload_txt <- renderText({
     previous_year <- workforce_data %>%
@@ -726,7 +726,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Caseload benchmarking plot ----
+  ### Caseload benchmarking plot ----
   output$caseload_plot <- plotly::renderPlotly({
     validate(
       need(!is.null(input$select_geography_e2), "Select a geography level."),
@@ -816,7 +816,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Caseload by region ----
+  ### Caseload by region ----
   output$plot_caseload_reg <- plotly::renderPlotly({
     ggplotly(
       by_region_bar_plot(workforce_data, "caseload_fte", "Average Caseload (FTE)") %>%
@@ -841,7 +841,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # caseload by la -----
+  ### caseload by la -----
   output$plot_caseload_la <- plotly::renderPlotly({
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)") %>%
@@ -891,7 +891,7 @@ server <- function(input, output, session) {
   })
 
 
-  # Ethnicity and Diversity Domain-----
+  ## Ethnicity and Diversity Domain-----
   # output$white_ethnicity_txt <- renderText({
   #   paste0(format(workforce_eth %>% filter(time_period == max(workforce_eth$time_period)
   #                                          & geo_breakdown %in% input$geographic_breakdown_e2
@@ -1045,7 +1045,7 @@ server <- function(input, output, session) {
   })
 
 
-  # CLA rate headline ----
+  ## CLA rate headline ----
   output$cla_rate_headline_txt <- renderText({
     stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
       geo_breakdown %in% input$geographic_breakdown_o1 &
@@ -1244,7 +1244,7 @@ server <- function(input, output, session) {
 
 
 
-  # CIN rate headline ----
+  ## CIN rate headline ----
   output$cin_rate_headline_txt <- renderText({
     stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
       %>% select(CIN_rate), nsmall = 1)
@@ -1906,23 +1906,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Headline stat1 -----
-  # output$SGO_headline_txt <- renderText({
-  #   numerator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                           & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                           & cla_group == "Reason episode ceased"
-  #                                           & characteristic == "Special guardianship orders") %>% select(number)
-  #
-  #   denominator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                             & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                             & cla_group == "Reason episode ceased"
-  #                                             & characteristic == "Total") %>% select(number)
-  #   percent <- (numerator/denominator)*100
-  #
-  #   stat <- round(percent, digits = 1)
-  #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
-  # })
-  #
+  ## Headline stats -----
   output$SGO_headline_txt <- renderText({
     stat <- ceased_cla_data %>%
       filter(time_period == max(ceased_cla_data$time_period) &
@@ -1947,7 +1931,7 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
 
-  # SGO ----
+  ## SGO ----
   # time series and table
   output$SGO_time_series <- plotly::renderPlotly({
     validate(
@@ -2038,8 +2022,7 @@ server <- function(input, output, session) {
     )
   })
   ##
-  # SGO by region -----
-
+  ## SGO by region plot
   output$plot_sgo_ceased_reg <- plotly::renderPlotly({
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
@@ -2050,7 +2033,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # turnover rate by region table
+  # SGO by region table
   output$table_sgo_ceased_reg <- renderDataTable({
     datatable(
       ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
@@ -2065,8 +2048,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ##
-  # SGO by la ----
+  ## By SGO by LA
   output$plot_SGO_la <- plotly::renderPlotly({
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
@@ -2116,7 +2098,7 @@ server <- function(input, output, session) {
 
 
 
-  # CAO ----
+  ## CAO ----
   # time series and table
   output$CAO_time_series <- plotly::renderPlotly({
     validate(
@@ -2281,6 +2263,22 @@ server <- function(input, output, session) {
     )
   })
 
+  # ALL statistical neighbours -----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ## Outcome 1 ------
+
+  ## Enabler 2 ------
+  ### Turnover rate -----
+  output$turnover_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
 
   # Don't touch the code below -----------------------
 
