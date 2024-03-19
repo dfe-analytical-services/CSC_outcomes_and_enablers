@@ -651,7 +651,21 @@ outcome1_tab <- function() {
                         )
                       )
                     ),
-                  )
+                  ),
+                  gov_row(
+                    h2("Persistent absence by region"),
+                    p("This chart will react to social care group selection but it will not react to geographical level and breakdown selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_persistent_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_persistence_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_persistent_reg")
+                      )
+                    )
+                  ),
                 ),
                 open = FALSE
               )

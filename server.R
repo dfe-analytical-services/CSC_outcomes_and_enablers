@@ -2043,8 +2043,6 @@ server <- function(input, output, session) {
     )
   })
 
-
-
   # Absence rate regional table
   output$table_absence_reg <- renderDataTable({
     datatable(
@@ -2067,12 +2065,6 @@ server <- function(input, output, session) {
       )
     )
   })
-
-
-
-
-
-
 
 
   # persistent absence timeseries chart
@@ -2171,6 +2163,43 @@ server <- function(input, output, session) {
     )
   })
 
+
+  # Persistence absence regional plot
+  output$plot_persistent_reg <- plotly::renderPlotly({
+    data <- outcomes_absence %>%
+      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+
+    ggplotly(
+      by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Persistence Absence  regional table
+  output$table_persistent_reg <- renderDataTable({
+    datatable(
+      outcomes_absence %>% filter(
+        geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
+        school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
+      ) %>%
+        select(
+          time_period, geo_breakdown, social_care_group, school_type,
+          t_pupils, pt_pupils_pa_10_exact # , `Overall absence (%)`
+        ) %>%
+        arrange(desc(`pt_pupils_pa_10_exact`)),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social care group",
+        "School type", "Total number of pupils", "Persistent absentees (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
 
 
   # Education attainment
