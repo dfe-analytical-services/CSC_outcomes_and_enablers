@@ -769,9 +769,18 @@ outcome1_tab <- function() {
                         objectives in the child’s Personal Education Plan."),
                     insert_text(inputId = "ks4_definition", text = paste(
                       "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
-                      "Average achievement of pupils in up to 8 qualifications, including English language, English literature and maths, for CINO at 31 March, CPPO at 31 March,
-                      CLA 12 months at 31 March (definitions found in additional information)."
+                      htmlOutput("outcome1_choice_social_care_group_text_3")
                     )),
+                    plotlyOutput("plot_ks4"),
+                    br(),
+                    # Expandable for the table alternative
+                    details(
+                      inputId = "table_ks4",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_ks4")
+                      )
+                    ),
                     details(
                       inputId = "ks4_info",
                       label = "Additional information:",
