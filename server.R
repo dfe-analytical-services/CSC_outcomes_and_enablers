@@ -262,6 +262,10 @@ server <- function(input, output, session) {
 
   # Social worker turnover rate benchmarking table alternative
   output$table_s_w_turnover <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
@@ -318,6 +322,10 @@ server <- function(input, output, session) {
 
   # turnover rate by region table
   output$table_turnover_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
@@ -334,6 +342,10 @@ server <- function(input, output, session) {
 
   # Turnover Rate by LA plot ----
   output$plot_turnover_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate (FTE) %") %>%
         config(displayModeBar = F),
@@ -455,6 +467,10 @@ server <- function(input, output, session) {
 
   # Agency worker rate table alternative
   output$table_agency_worker <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
@@ -511,6 +527,10 @@ server <- function(input, output, session) {
 
   # agency rate table by region
   output$table_agency_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
@@ -541,6 +561,10 @@ server <- function(input, output, session) {
 
   # agency rate by la table alternative
   output$table_agency_rate_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
         # Include both Inner London and Outer London
@@ -638,6 +662,10 @@ server <- function(input, output, session) {
 
   # Vacancy Rate benchmarking table alternative
   output$table_vacancy_rate <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
@@ -694,6 +722,10 @@ server <- function(input, output, session) {
 
   # vacancy rate by la table alternative
   output$table_vacancy_rate_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
         # Include both Inner London and Outer London
@@ -862,6 +894,10 @@ server <- function(input, output, session) {
 
   # caseload benchamrking table alternative
   output$table_caseload <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
@@ -917,6 +953,10 @@ server <- function(input, output, session) {
 
   # Caseload by region table
   output$table_caseload_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
         time_period, geo_breakdown,
@@ -947,6 +987,10 @@ server <- function(input, output, session) {
 
   # Caseload by LA table
   output$table_caseload_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_e2 == "Regional") {
       if (input$geographic_breakdown_e2 == "London") {
         # Include both Inner London and Outer London
@@ -1028,6 +1072,10 @@ server <- function(input, output, session) {
   })
 
   output$table_ethnicity_rate <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       workforce_eth %>%
         filter(
@@ -1046,6 +1094,10 @@ server <- function(input, output, session) {
 
 
   output$table_population_ethnicity_rate <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       combined_ethnicity_data %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
@@ -1076,6 +1128,10 @@ server <- function(input, output, session) {
   cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
 
   output$table_seniority_eth <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a breakdown.")
+    )
     datatable(
       workforce_eth_seniority[, cols] %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
@@ -1241,6 +1297,10 @@ server <- function(input, output, session) {
 
   # CLA rate TABLE
   output$table_cla_rate <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
@@ -1299,6 +1359,10 @@ server <- function(input, output, session) {
 
   # CLA rate regional table
   output$table_cla_rate_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
         time_period, geo_breakdown,
@@ -1328,6 +1392,10 @@ server <- function(input, output, session) {
 
   # CLA rate La table
   output$table_cla_rate_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -1395,6 +1463,10 @@ server <- function(input, output, session) {
 
   # cin rate table by region
   output$table_cin_rates_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       cin_rates %>% filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>% select(
         time_period, geo_breakdown,
@@ -1413,6 +1485,10 @@ server <- function(input, output, session) {
 
   # cin rate table by LA
   output$table_cin_rates_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -1525,6 +1601,10 @@ server <- function(input, output, session) {
 
   # CIN rate table
   output$table_cin_rate <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
@@ -1609,6 +1689,10 @@ server <- function(input, output, session) {
 
   # CIN referral table
   output$table_cin_referral <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
@@ -1653,6 +1737,10 @@ server <- function(input, output, session) {
 
   # cin referral table by region
   output$table_cin_referral_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       cin_referrals %>% filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>% select(
         time_period, geo_breakdown,
@@ -1672,6 +1760,10 @@ server <- function(input, output, session) {
 
   # cin referral table by LA
   output$table_cin_referral_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -1755,6 +1847,10 @@ server <- function(input, output, session) {
   })
 
   output$table_uasc <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       combined_cla_data %>%
         filter(
@@ -1786,6 +1882,10 @@ server <- function(input, output, session) {
   })
 
   output$table_uasc_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       combined_cla_data %>% filter(
         geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
@@ -1814,6 +1914,10 @@ server <- function(input, output, session) {
   })
 
   output$table_uasc_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -1906,6 +2010,10 @@ server <- function(input, output, session) {
 
   # CLA rate march TABLE
   output$table_cla_rate_march <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
@@ -1964,6 +2072,10 @@ server <- function(input, output, session) {
 
   # CLA rate March regional table
   output$table_cla_march_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     datatable(
       cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
         time_period, geo_breakdown,
@@ -1993,6 +2105,10 @@ server <- function(input, output, session) {
 
   # CLA rate March La table
   output$table_cla_march_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -2170,6 +2286,10 @@ server <- function(input, output, session) {
 
 
   output$table_sgo_ceased <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       filtered_data <- ceased_cla_data %>%
@@ -2232,6 +2352,10 @@ server <- function(input, output, session) {
 
   # turnover rate by region table
   output$table_sgo_ceased_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     datatable(
       ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
@@ -2262,6 +2386,10 @@ server <- function(input, output, session) {
 
   # Special Guardianship orders by LA table
   output$table_sgo_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o2 == "Regional") {
       if (input$geographic_breakdown_o2 == "London") {
         # Include both Inner London and Outer London
@@ -2347,6 +2475,10 @@ server <- function(input, output, session) {
 
 
   output$table_cao_ceased <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       filtered_data <- ceased_cla_data %>%
@@ -2408,6 +2540,10 @@ server <- function(input, output, session) {
 
   # turnover rate by region table
   output$table_cao_ceased_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     datatable(
       ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
@@ -2437,6 +2573,10 @@ server <- function(input, output, session) {
 
   # CAO by LA table
   output$table_cao_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o2 != "", "Select a breakdown.")
+    )
     if (input$select_geography_o2 == "Regional") {
       if (input$geographic_breakdown_o2 == "London") {
         # Include both Inner London and Outer London
