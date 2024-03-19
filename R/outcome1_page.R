@@ -726,6 +726,14 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("plot_ks2_expected"),
                     br(),
+                    # Expandable for the table alternative
+                    details(
+                      inputId = "table_ks2",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_ks2_expected")
+                      )
+                    ),
                     details(
                       inputId = "ks2_info",
                       label = "Additional information:",

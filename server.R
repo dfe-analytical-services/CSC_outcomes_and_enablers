@@ -2186,14 +2186,14 @@ server <- function(input, output, session) {
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
-        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
+      #  mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+      # mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2201,8 +2201,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- outcomes_ks2 %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+      # mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2210,8 +2210,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- outcomes_ks2 %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
+      #  mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
     }
 
     filtered_data <- filtered_data %>%
@@ -2226,6 +2226,57 @@ server <- function(input, output, session) {
     ggplotly(p, height = 420) %>%
       layout(yaxis = list(range = c(0, 100)))
   })
+
+
+  # persistent rate TABLE
+  output$table_ks2_expected <- renderDataTable({
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_ks2 %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
+      filtered_data <- outcomes_ks2 %>%
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_ks2 %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o1)
+
+      filtered_data <- outcomes_ks2 %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+    }
+
+    datatable(
+      filtered_data %>%
+        filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard),
+      colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of eligible pupils", "Expected standard reading writing maths (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
+
+
 
 
   # Outcome 2 -----
