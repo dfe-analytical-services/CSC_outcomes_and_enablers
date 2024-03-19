@@ -2029,6 +2029,45 @@ server <- function(input, output, session) {
     )
   })
 
+  # Absence rate regional plot
+  output$plot_absence_reg <- plotly::renderPlotly({
+    ggplotly(
+      plot_absence_reg() %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Absence rate regional table
+  output$table_absence_reg <- renderDataTable({
+    datatable(
+      outcomes_absence %>% filter(
+        geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
+        school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
+      ) %>%
+        select(
+          time_period, geo_breakdown, social_care_group, school_type,
+          t_pupils, pt_overall, `Overall absence (%)`
+        ) %>%
+        arrange(desc(`Overall absence (%)`)),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social care group",
+        "School type", "Total number of pupils", "Overall absence (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
+
+
+
+
+
+
   # persistent absence timeseries chart
   output$persistence_time_series <- plotly::renderPlotly({
     validate(
