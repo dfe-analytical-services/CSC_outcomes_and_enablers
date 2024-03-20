@@ -2050,6 +2050,8 @@ server <- function(input, output, session) {
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
         school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
           t_pupils, pt_overall # , `Overall absence (%)`
@@ -2178,13 +2180,15 @@ server <- function(input, output, session) {
     )
   })
 
-  # Persistence Absence  regional table
+  # Persistence Absence regional table
   output$table_persistent_reg <- renderDataTable({
     datatable(
       outcomes_absence %>% filter(
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
         school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
           t_pupils, pt_pupils_pa_10_exact # , `Overall absence (%)`
@@ -2306,7 +2310,7 @@ server <- function(input, output, session) {
   })
 
 
-  # persistent rate TABLE
+  # ks2 TABLE
   output$table_ks2_expected <- renderDataTable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2351,6 +2355,48 @@ server <- function(input, output, session) {
       )
     )
   })
+
+
+  # KS2 regional plot
+  output$plot_ks2_reg <- plotly::renderPlotly({
+    data <- outcomes_ks2 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+
+    ggplotly(
+      by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS2 regional table
+  output$table_ks2_reg <- renderDataTable({
+    datatable(
+      outcomes_ks2 %>% filter(
+        geographic_level == "Regional", time_period == max(outcomes_ks2$time_period),
+        social_care_group %in% input$wellbeing_extra_breakdown
+      ) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        %>%
+        select(
+          time_period, geo_breakdown, social_care_group,
+          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+        ) %>%
+        arrange(desc(`pt_rwm_met_expected_standard`)),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social care group",
+        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
 
   # KS4 % expected plot
   output$plot_ks4 <- plotly::renderPlotly({
@@ -2447,6 +2493,45 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8),
       colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of pupils", "Average attainment 8 score"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+  # KS4 regional plot
+  output$plot_ks4_reg <- plotly::renderPlotly({
+    data <- outcomes_ks4 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+
+    ggplotly(
+      by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS4 regional table
+  output$table_ks4_reg <- renderDataTable({
+    datatable(
+      outcomes_ks4 %>% filter(
+        geographic_level == "Regional", time_period == max(outcomes_ks4$time_period),
+        social_care_group %in% input$wellbeing_extra_breakdown
+      ) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+        %>%
+        select(
+          time_period, geo_breakdown, social_care_group,
+          t_pupils, avg_att8
+        ) %>%
+        arrange(desc(`avg_att8`)),
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social care group",
+        "Total number of pupils", "Average Attainment 8 score"
+      ),
       options = list(
         scrollx = FALSE,
         paging = TRUE

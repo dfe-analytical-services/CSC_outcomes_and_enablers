@@ -594,7 +594,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Absence rate by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_absence_reg"),
                     br(),
@@ -654,7 +654,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Persistent absence by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_persistent_reg"),
                     br(),
@@ -784,7 +784,21 @@ outcome1_tab <- function() {
                         )
                       )
                     ),
-                  )
+                  ),
+                  gov_row(
+                    h2("KS2 attainment by region"),
+                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_ks2_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_ks2_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_ks2_reg")
+                      )
+                    )
+                  ),
                 ),
                 accordion_panel(
                   "Key stage 4",
@@ -832,7 +846,21 @@ outcome1_tab <- function() {
                         )
                       )
                     ),
-                  )
+                  ),
+                  gov_row(
+                    h2("KS4 attainment by region"),
+                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_ks4_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_ks4_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_ks4_reg")
+                      )
+                    )
+                  ),
                 ),
                 open = FALSE
               )
