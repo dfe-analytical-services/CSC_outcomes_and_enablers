@@ -682,6 +682,22 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  gov_row(
+                    h2("Persistent absence rate by local authority"),
+                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
+                    br(),
+                    plotlyOutput("plot_persistent_absence_la"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_persistent_absence_la",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_persistent_absence_la")
+                      )
+                    )
+                  ),
                 ),
                 open = FALSE
               )
@@ -815,6 +831,22 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  gov_row(
+                    h2("KS2 attainment by local authority"),
+                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The graph represents data from %s.", max(outcomes_ks2$time_period))),
+                    br(),
+                    plotlyOutput("plot_KS2_la"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_KS2_la",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_KS2_la")
+                      )
+                    )
+                  ),
                 ),
                 accordion_panel(
                   "Key stage 4",
@@ -874,6 +906,22 @@ outcome1_tab <- function() {
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_ks4_reg")
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("KS4 attainment by local authority"),
+                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The graph represents data from %s.", max(outcomes_ks4$time_period))),
+                    br(),
+                    plotlyOutput("plot_KS4_la"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_KS4_la",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_KS4_la")
                       )
                     )
                   ),

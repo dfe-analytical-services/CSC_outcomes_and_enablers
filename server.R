@@ -2098,6 +2098,7 @@ server <- function(input, output, session) {
       data <- outcomes_absence %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
           t_pupils, pt_overall
@@ -2107,6 +2108,7 @@ server <- function(input, output, session) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
           social_care_group, school_type, t_pupils, pt_overall
@@ -2265,6 +2267,70 @@ server <- function(input, output, session) {
       )
     )
   })
+
+
+
+  # persistent absence by la
+  output$plot_persistent_absence_la <- plotly::renderPlotly({
+    data <- outcomes_absence %>%
+      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Persistent Absence by LA table
+  output$table_persistent_absence_la <- renderDataTable({
+    if (input$select_geography_o1 == "Regional") {
+      if (input$geographic_breakdown_o1 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o1) %>%
+          pull(la_name)
+      }
+
+      data <- outcomes_absence %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown, social_care_group, school_type,
+          t_pupils, pt_pupils_pa_10_exact
+        ) %>%
+        arrange(desc(pt_pupils_pa_10_exact))
+    } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
+      data <- outcomes_absence %>%
+        filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
+        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown,
+          social_care_group, school_type, t_pupils, pt_pupils_pa_10_exact
+        ) %>%
+        arrange(desc(pt_pupils_pa_10_exact))
+    }
+
+    datatable(
+      data,
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social Care Group", "School type",
+        "Total number of pupils", "Persistent absentees (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
 
 
   # Education attainment
@@ -2458,6 +2524,66 @@ server <- function(input, output, session) {
   })
 
 
+  # KS2 by la
+  output$plot_KS2_la <- plotly::renderPlotly({
+    data <- outcomes_ks2 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS2 by LA table
+  output$table_KS2_la <- renderDataTable({
+    if (input$select_geography_o1 == "Regional") {
+      if (input$geographic_breakdown_o1 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o1) %>%
+          pull(la_name)
+      }
+
+      data <- outcomes_ks2 %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown, social_care_group,
+          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+        ) %>%
+        arrange(desc(pt_rwm_met_expected_standard))
+    } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
+      data <- outcomes_ks2 %>%
+        filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
+        filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown,
+          social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+        ) %>%
+        arrange(desc(pt_rwm_met_expected_standard))
+    }
+
+    datatable(
+      data,
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social Care Group",
+        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
 
   # KS4 % expected plot
   output$plot_ks4 <- plotly::renderPlotly({
@@ -2600,6 +2726,65 @@ server <- function(input, output, session) {
     )
   })
 
+  # KS4 by la
+  output$plot_KS4_la <- plotly::renderPlotly({
+    data <- outcomes_ks4 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS4 by LA table
+  output$table_KS4_la <- renderDataTable({
+    if (input$select_geography_o1 == "Regional") {
+      if (input$geographic_breakdown_o1 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o1) %>%
+          pull(la_name)
+      }
+
+      data <- outcomes_ks4 %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown, social_care_group,
+          t_pupils, avg_att8
+        ) %>%
+        arrange(desc(avg_att8))
+    } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
+      data <- outcomes_ks4 %>%
+        filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
+        filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+        select(
+          time_period, geo_breakdown,
+          social_care_group, t_pupils, avg_att8
+        ) %>%
+        arrange(desc(avg_att8))
+    }
+
+    datatable(
+      data,
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social Care Group",
+        "Total number of pupils", "Average attainment 8 score"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
 
 
 
