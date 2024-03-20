@@ -158,7 +158,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children starting in care during the year by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_rate_reg"),
                     br(),
@@ -205,7 +205,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children starting in care by region who were UASC"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
                     plotlyOutput("plot_uasc_reg"),
@@ -270,7 +270,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children in care on 31 March by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_march_reg"),
                     br(),
@@ -371,7 +371,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Children In Need rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cin_rate_reg"),
                     br(),
@@ -445,7 +445,7 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Re-referrals by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cin_referral_reg"),
                     br(),
