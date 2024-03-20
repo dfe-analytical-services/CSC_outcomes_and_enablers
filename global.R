@@ -89,11 +89,13 @@ source("R/read_data.R")
 
 # read in the definitions data
 # NOT important
-definitions <- read_definitions()
-colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-definitions <- definitions[, 1:4]
+
+# definitions <- read_definitions()
+# colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
+# definitions <- definitions[,1:4]
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
+
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
@@ -115,13 +117,14 @@ combined_cla_data <- merge_cla_dataframes()
 cin_rates <- read_cin_rate_data()
 cin_referrals <- read_cin_referral_data()
 
+
 # Read in the outcomes data (outcome 1)
 outcomes_absence <- read_outcomes_absence_data()
 outcomes_ks2 <- read_outcomes_ks2_data()
 outcomes_ks4 <- read_outcomes_ks4_data()
 
 # Read in outcome 2 data
-ceased_cla_data <- read_outcome2()
+ceased_cla_data <- suppressWarnings(read_outcome2())
 
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
@@ -141,30 +144,30 @@ dropdown_choices <- cla_rates # %>%
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
 # Read in the data
-dfRevBal <- read_revenue_data()
-# Get geographical levels from data
-dfAreas <- dfRevBal %>%
-  select(
-    geographic_level, country_name, country_code,
-    region_name, region_code,
-    la_name, old_la_code, new_la_code
-  ) %>%
-  distinct()
-
-choicesLAs <- dfAreas %>%
-  filter(geographic_level == "Local authority") %>%
-  select(geographic_level, area_name = la_name) %>%
-  arrange(area_name)
-
-choicesAreas <- dfAreas %>%
-  filter(geographic_level == "National") %>%
-  select(geographic_level, area_name = country_name) %>%
-  rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
-  rbind(choicesLAs)
-
-choicesYears <- unique(dfRevBal$time_period)
-
-choicesPhase <- unique(dfRevBal$school_phase)
+# dfRevBal <- read_revenue_data()
+# # Get geographical levels from data
+# dfAreas <- dfRevBal %>%
+#   select(
+#     geographic_level, country_name, country_code,
+#     region_name, region_code,
+#     la_name, old_la_code, new_la_code
+#   ) %>%
+#   distinct()
+#
+# choicesLAs <- dfAreas %>%
+#   filter(geographic_level == "Local authority") %>%
+#   select(geographic_level, area_name = la_name) %>%
+#   arrange(area_name)
+#
+# choicesAreas <- dfAreas %>%
+#   filter(geographic_level == "National") %>%
+#   select(geographic_level, area_name = country_name) %>%
+#   rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
+#   rbind(choicesLAs)
+#
+# choicesYears <- unique(dfRevBal$time_period)
+#
+# choicesPhase <- unique(dfRevBal$school_phase)
 
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(
