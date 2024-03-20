@@ -2054,7 +2054,7 @@ server <- function(input, output, session) {
         %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_overall # , `Overall absence (%)`
+          t_pupils, pt_overall
         ) %>%
         arrange(desc(`pt_overall`)),
       colnames = c(
@@ -2067,6 +2067,67 @@ server <- function(input, output, session) {
       )
     )
   })
+
+
+  # absence by la
+  output$plot_absence_la <- plotly::renderPlotly({
+    data <- outcomes_absence %>%
+      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Absence by LA table
+  output$table_absence_la <- renderDataTable({
+    if (input$select_geography_o1 == "Regional") {
+      if (input$geographic_breakdown_o1 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o1) %>%
+          pull(la_name)
+      }
+
+      data <- outcomes_absence %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        select(
+          time_period, geo_breakdown, social_care_group, school_type,
+          t_pupils, pt_overall
+        ) %>%
+        arrange(desc(pt_overall))
+    } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
+      data <- outcomes_absence %>%
+        filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
+        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        select(
+          time_period, geo_breakdown,
+          social_care_group, school_type, t_pupils, pt_overall
+        ) %>%
+        arrange(desc(pt_overall))
+    }
+
+    datatable(
+      data,
+      colnames = c(
+        "Time period", "Geographical breakdown", "Social Care Group", "School type",
+        "Total number of pupils", "Overall absence (%)"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+
 
 
   # persistent absence timeseries chart
@@ -2191,7 +2252,7 @@ server <- function(input, output, session) {
         %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_pupils_pa_10_exact # , `Overall absence (%)`
+          t_pupils, pt_pupils_pa_10_exact
         ) %>%
         arrange(desc(`pt_pupils_pa_10_exact`)),
       colnames = c(
