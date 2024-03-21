@@ -161,7 +161,7 @@ outcome2_tab <- function() {
                   ),
                   gov_row(
                     h2("Special Guardianship Order (SGO) by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top.
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The graph represents data from 2023."),
                     br(),
@@ -211,7 +211,7 @@ The graph represents data from 2023."),
                   ),
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO) by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top.
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The graph represents data from 2023."),
                     br(),
