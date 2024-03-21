@@ -1560,3 +1560,21 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
     )
 }
+
+stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
+  neighbours_list <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
+    as.list()
+
+  filtered_data <- workforce_data %>%
+    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    select(geo_breakdown, `yvalue`) %>%
+    mutate(
+      geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+    ) %>%
+    rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " "))) %>%
+    arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+}
