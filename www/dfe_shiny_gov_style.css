@@ -229,6 +229,13 @@ template. 80% works well here to reduce white space on the right hand side.*/
 }
 
 
+.shiny-output-error-validation {
+  color:red !important;
+  font-size: 18px !important;
+  font-weight: bold !important;
+}
+
+
 /*CSS for extra dropdown details */
 /*.govuk-details {
     padding: 19px;
