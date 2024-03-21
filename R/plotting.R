@@ -214,7 +214,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
     theme_classic() +
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      axis.text.x = element_text(angle = 45),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
