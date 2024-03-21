@@ -169,7 +169,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Confirmation sentence E2 -------
+  ## Confirmation sentence E2 -------
   # This function gets the selected region to put into the confirmation text below
 
   workforce_region <- reactive({
@@ -205,8 +205,7 @@ server <- function(input, output, session) {
 
 
   # Social worker turnover rate headline box
-  # Turnover rate plot and table -----
-
+  ## Turnover rate plot and table -----
   output$s_w_headline_txt <- renderText({
     if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
@@ -306,7 +305,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # turnover rate by region plot----
+  ### turnover rate by region plot----
   output$plot_turnover_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -340,7 +339,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Turnover Rate by LA plot ----
+  ### Turnover Rate by LA plot ----
   output$plot_turnover_la <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -397,7 +396,7 @@ server <- function(input, output, session) {
   })
 
 
-  # Agency Rate ----
+  ## Agency Rate ----
   output$agency_rate_txt <- renderText({
     if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
@@ -411,7 +410,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Agency worker rate benchmarking plot ----
+  ### Agency worker rate benchmarking plot ----
   output$plot_agency_worker <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -511,7 +510,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # agency rate plot by region ----
+  ### agency rate plot by region ----
   output$plot_agency_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -545,7 +544,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # agency rate by la plot -----
+  ### agency rate by la plot -----
   output$plot_agency_rate_la <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -602,7 +601,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Vacancy Rate -----
+  ## Vacancy Rate -----
   # Vacancy rate headline box
 
   output$vacancy_rate_txt <- renderText({
@@ -618,7 +617,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Vacancy Rate benchmarking plot ----
+  ### Vacancy Rate benchmarking plot ----
   output$plot_vacancy_rate <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -706,7 +705,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # vacancy rate by la plot ----
+  ### vacancy rate by la plot ----
   output$plot_vacancy_rate_la <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -764,7 +763,7 @@ server <- function(input, output, session) {
   })
 
 
-  # vacancy rate plot by region ----
+  ### vacancy rate plot by region ----
   output$plot_vacancy_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -794,11 +793,8 @@ server <- function(input, output, session) {
     )
   })
 
-
-
-
-
-  # Caseload ----
+  ## Caseload ----
+  # Caseload headline box
 
   output$caseload_txt <- renderText({
     if (input$geographic_breakdown_e2 == "") {
@@ -823,7 +819,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Caseload benchmarking plot ----
+  ### Caseload benchmarking plot ----
   output$caseload_plot <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -917,7 +913,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Caseload by region ----
+  ### Caseload by region ----
   output$plot_caseload_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -950,7 +946,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # caseload by la -----
+  ### caseload by la -----
   output$plot_caseload_la <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
@@ -1006,7 +1002,6 @@ server <- function(input, output, session) {
       )
     )
   })
-
 
   # Ethnicity and Diversity Domain-----
 
@@ -1201,7 +1196,7 @@ server <- function(input, output, session) {
 
 
 
-  # CLA rate headline ----
+  ## CLA rate headline ----
   output$cla_rate_headline_txt <- renderText({
     if (input$geographic_breakdown_o1 == "") {
       stat <- "NA"
@@ -1430,7 +1425,7 @@ server <- function(input, output, session) {
 
 
 
-  # CIN rate headline ----
+  ## CIN rate headline ----
   output$cin_rate_headline_txt <- renderText({
     if (input$geographic_breakdown_o1 == "") {
       stat <- "NA"
@@ -2172,8 +2167,6 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
-
-
   # persistent absentees headline ----
   # CIN
   output$persistent_CIN_headline_txt <- renderText({
@@ -2297,7 +2290,6 @@ server <- function(input, output, session) {
     data <- outcomes_absence %>%
       filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-
 
     ggplotly(
       by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)") %>%
@@ -3113,6 +3105,8 @@ server <- function(input, output, session) {
   #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
   # })
   #
+    
+  ## Headline stats ----- 
   output$SGO_headline_txt <- renderText({
     if (input$geographic_breakdown_o2 == "") {
       stat <- "NA"
@@ -3255,7 +3249,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # turnover rate by region table
+  # SGO by region table
   output$table_sgo_ceased_reg <- renderDataTable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
@@ -3274,8 +3268,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ##
-  # SGO by la ----
+  ## By SGO by LA
   output$plot_SGO_la <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
@@ -3333,7 +3326,7 @@ server <- function(input, output, session) {
 
 
 
-  # CAO ----
+  ## CAO ----
   # time series and table
   output$CAO_time_series <- plotly::renderPlotly({
     shiny::validate(
@@ -3517,6 +3510,138 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  # ALL statistical neighbours -----
+  # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  ## Outcome 1 ------
+
+  ## Enabler 2 ------
+  ### Turnover rate -----
+  ## Button logic for turnover by LA
+  output$SN_turnover <- renderUI({
+    if (input$turnover_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_turnover_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_turnover_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_turnover_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("turnover_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_turnover",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_turnover_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_turnover_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$turnover_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_turnover_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte"),
+      colnames = c("Geographical breakdown", "Turnover rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+  ### Agency Rate ------
+  output$SN_agency <- renderUI({
+    if (input$agency_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_agency_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_agency_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_agency_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("agency_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_agency",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_agency_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_agency_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$agency_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_agency_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte"),
+      colnames = c("Geographical breakdown", "Agency worker rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
 
 
 

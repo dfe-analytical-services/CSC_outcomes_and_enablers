@@ -682,7 +682,6 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
   return(joined)
 }
 
-
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
   outcomes_absence_data <- read.csv(file)
@@ -804,4 +803,22 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 
 
   return(outcomes_ks4_data)
+
+# Statistical Neighbours ------------
+statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
+  stats_neighbours <- read.csv(file)
+
+  # Create a lookup table
+  lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
+
+  df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
+
+
+  for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
+    df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
+  }
+
+
+  return(df)
+
 }

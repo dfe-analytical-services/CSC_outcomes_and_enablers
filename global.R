@@ -122,6 +122,12 @@ outcomes_ks4 <- read_outcomes_ks4_data()
 # Read in outcome 2 data
 ceased_cla_data <- suppressWarnings(read_outcome2())
 
+# Read in stats neighbours
+stats_neighbours <- head(statistical_neighbours(), 152)
+
+# Dropdowns
+# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
+# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
 
 dropdown_choices <- cla_rates # %>%
 #   mutate(geo_breakdown = case_when(
