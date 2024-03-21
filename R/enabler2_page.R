@@ -171,7 +171,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Turnover rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_turnover_reg"),
                     br(),
@@ -238,7 +238,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Agency rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_agency_reg"),
                     br(),
@@ -310,7 +310,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Vacancy rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_vacancy_reg"),
                     br(),
@@ -398,7 +398,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_caseload_reg"),
                     br(),
