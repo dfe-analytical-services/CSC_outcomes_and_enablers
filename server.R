@@ -2623,21 +2623,21 @@ server <- function(input, output, session) {
   output$KS4_CIN_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS4_CPP_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS4_CLA_headline_txt <- renderText({
     stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
       %>% select(`Average Attainment 8`), nsmall = 1)
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
 
@@ -3105,8 +3105,8 @@ server <- function(input, output, session) {
   #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
   # })
   #
-    
-  ## Headline stats ----- 
+
+  ## Headline stats -----
   output$SGO_headline_txt <- renderText({
     if (input$geographic_breakdown_o2 == "") {
       stat <- "NA"
