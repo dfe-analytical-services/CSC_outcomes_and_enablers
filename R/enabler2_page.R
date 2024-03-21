@@ -186,6 +186,8 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Turnover rates by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    # Radio button for Stats neighbours
                     radioGroupButtons(
                       "turnover_stats_toggle",
                       label = NULL,
@@ -193,20 +195,6 @@ enabler2_tab <- function() {
                       selected = "All local authorities"
                     ),
                     uiOutput("SN_turnover"),
-                    br(),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    # plotlyOutput("plot_turnover_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_turnover_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_turnover_la")
-                      )
-                    ),
                   ),
                 ),
                 accordion_panel(

@@ -2269,15 +2269,40 @@ server <- function(input, output, session) {
 
   ## Enabler 2 ------
   ### Turnover rate -----
-  ## Button logic
+  ## Button logic for turnover by LA
   output$SN_turnover <- renderUI({
     if (input$turnover_stats_toggle == "All local authorities") {
-      plotlyOutput("plot_turnover_la")
+      tagList(
+        plotlyOutput("plot_turnover_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_turnover_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_turnover_la")
+          )
+        ),
+      )
     } else {
-      plotlyOutput("turnover_SN_plot")
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("turnover_SN_plot"),
+        br(),
+        details(
+          inputId = "testing",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_turnover_tbl")
+          )
+        ),
+      )
     }
   })
-  # SN plot
+  # turnover SN plot and table alternative
   output$turnover_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -2288,6 +2313,19 @@ server <- function(input, output, session) {
       height = 420
     )
   })
+
+  output$SN_turnover_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte"),
+      colnames = c("Geographical breakdown", "Turnover rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+
 
   # Don't touch the code below -----------------------
 
