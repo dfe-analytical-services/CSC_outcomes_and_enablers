@@ -2293,12 +2293,19 @@ server <- function(input, output, session) {
         plotlyOutput("turnover_SN_plot"),
         br(),
         details(
-          inputId = "testing",
+          inputId = "tbl_sn_turnover",
           label = "View chart as a table",
           help_text = (
             dataTableOutput("SN_turnover_tbl")
           )
         ),
+        details(
+          inputId = "sn_turnover_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
       )
     }
   })
