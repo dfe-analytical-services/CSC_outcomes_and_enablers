@@ -2331,6 +2331,68 @@ server <- function(input, output, session) {
       )
     )
   })
+  ### Agency Rate ------
+  output$SN_agency <- renderUI({
+    if (input$agency_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_agency_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_agency_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_agency_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("agency_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_agency",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_agency_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_agency_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$agency_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_agency_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte"),
+      colnames = c("Geographical breakdown", "Agency worker rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
 
 
 
