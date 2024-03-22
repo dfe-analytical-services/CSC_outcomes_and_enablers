@@ -397,19 +397,26 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_caseload_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_caseload_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_caseload_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_caseload_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_caseload_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_caseload_la")
+                    #   )
+                    # )
+                    radioGroupButtons(
+                      "caseload_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_caseload"),
                   )
                 ),
                 open = FALSE

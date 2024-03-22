@@ -3515,6 +3515,9 @@ server <- function(input, output, session) {
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------
 
+
+  ## Outcome 2 ------
+
   ## Enabler 2 ------
   ### Turnover rate -----
   ## Button logic for turnover by LA
@@ -3706,7 +3709,68 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Caseload ---------------------------------
+  output$SN_caseload <- renderUI({
+    if (input$caseload_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_caseload_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_caseload_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_caseload_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("caseload_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_caseload",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_caseload_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_caseload_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$caseload_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
 
+  output$SN_caseload_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte"),
+      colnames = c("Geographical breakdown", "Average Caseload (FTE)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
 
 
 
