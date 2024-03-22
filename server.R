@@ -3584,6 +3584,71 @@ server <- function(input, output, session) {
   })
 
   ### CAO --------------------
+  output$SN_cao <- renderUI({
+    if (input$cao_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cao_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cao_ceased_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cao_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("cao_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_cao",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_cao_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_cao_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # CAO SN plot and table alternative
+  output$cao_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_cao_tbl <- renderDataTable({
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+    datatable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+
 
   ## Enabler 2 ------
   ### Turnover rate -----

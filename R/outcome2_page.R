@@ -253,7 +253,7 @@ outcome2_tab <- function() {
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    # uiOutput("SN_cao"),
+                    uiOutput("SN_cao"),
                   )
                 ),
                 open = FALSE
