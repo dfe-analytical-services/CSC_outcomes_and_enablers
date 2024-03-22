@@ -3645,7 +3645,7 @@ server <- function(input, output, session) {
   ### Vacancy rate --------------------------------------------------------------
 
   output$SN_vacancy <- renderUI({
-    if (input$agency_stats_toggle == "All local authorities") {
+    if (input$vacancy_stats_toggle == "All local authorities") {
       tagList(
         plotlyOutput("plot_vacancy_rate_la"),
         br(),
