@@ -116,14 +116,14 @@ outcome2_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of children who cease being looked after due to moving into Special Guardianship Order (SGO)",
+                    title = "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
                     value = htmlOutput("SGO_headline_txt")
                   )
                 ),
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of children who cease being looked after due to moving into Residence order or Child Arrangement Order (CAO)",
+                    title = "Percentage of children who cease being looked after due to Residence order or Child Arrangement Order (CAO)",
                     value = htmlOutput("CAO_headline_txt")
                   )
                 ),
@@ -133,7 +133,7 @@ outcome2_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to moving into Special Guardianship Order (SGO)",
+                  "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
                   gov_row(
                     h2("Special Guardianship Order (SGO)"),
                     # p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
@@ -193,7 +193,7 @@ The graph represents data from 2023."),
                   )
                 ),
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to moving into Care Arrangement Order (CAO)",
+                  "Percentage of children who cease being looked after due to child Arrangement Order (CAO)",
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
                     p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.

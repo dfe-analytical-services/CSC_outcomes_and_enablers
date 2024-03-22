@@ -121,10 +121,12 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
       "turnover_rate_headcount", "agency_rate_headcount", "caseload_fte"
     ) %>%
+    # removing old Dorset
+    filter(new_la_code != "E10000009") %>%
     distinct()
 
   workforce_data <- convert_perc_cols_to_numeric(workforce_data)
@@ -168,7 +170,9 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
       inpost_FTE, inpost_FTE_percentage, inpost_headcount, inpost_headcount_percentage
-    )
+    ) %>%
+    # removing old Dorset
+    filter(new_la_code != "E10000009")
 
   workforce_ethnicity_data$new_la_code[workforce_ethnicity_data$new_la_code == ""] <- NA
   workforce_ethnicity_data$region_code[workforce_ethnicity_data$region_code == ""] <- NA
@@ -196,7 +200,9 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
       inpost_FTE, inpost_FTE_percentage, inpost_headcount, inpost_headcount_percentage
     ) %>%
-    filter(breakdown_topic == "Ethnicity major")
+    filter(breakdown_topic == "Ethnicity major") %>%
+    # removing old Dorset
+    filter(new_la_code != "E10000009")
 
   workforce_ethnicity_seniority_data$new_la_code[workforce_ethnicity_seniority_data$new_la_code == ""] <- NA
   workforce_ethnicity_seniority_data$region_code[workforce_ethnicity_seniority_data$region_code == ""] <- NA
@@ -441,7 +447,9 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       rate_per_10000 == "x" ~ NA,
       TRUE ~ as.numeric(rate_per_10000)
     )) %>%
-    filter(!is.na(rate_per_10000)) %>%
+    # filter(!is.na(rate_per_10000)) %>%
+    # removing old Dorset, Poole, Bournemouth, Northamptonshire
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, population_count, population_estimate, number, rate_per_10000) %>%
     distinct()
 
@@ -463,7 +471,9 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       percentage == "x" ~ NA,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    filter(!is.na(percentage)) %>%
+    #  filter(!is.na(percentage)) %>%
+    # removing old Dorset, Poole, Bournemouth, Northamptonshire
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, cla_group, characteristic, number, percentage) %>%
     distinct()
 
