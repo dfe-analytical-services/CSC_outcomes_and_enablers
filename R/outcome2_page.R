@@ -177,19 +177,27 @@ outcome2_tab <- function() {
                   ),
                   gov_row(
                     h2("Special Guardianship Order (SGO) by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region.
-
-The graph represents data from 2023."),
-                    br(),
-                    plotlyOutput("plot_SGO_la"),
-                    br(),
-                    details(
-                      inputId = "tbl_sgo_ceased_la",
-                      label = "View chart as table",
-                      help_text = (
-                        dataTableOutput("table_sgo_la")
-                      )
-                    )
+                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
+                    #                     p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region.
+                    #
+                    # The graph represents data from 2023."),
+                    # br(),
+                    # plotlyOutput("plot_SGO_la"),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_sgo_ceased_la",
+                    #   label = "View chart as table",
+                    #   help_text = (
+                    #     dataTableOutput("table_sgo_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "sgo_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_sgo"),
                   )
                 ),
                 accordion_panel(
@@ -227,19 +235,25 @@ The graph represents data from 2023."),
                   ),
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO) by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region.
+                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
 
-The graph represents data from 2023."),
-                    br(),
-                    plotlyOutput("plot_cao_la"),
-                    br(),
-                    details(
-                      inputId = "table_cao_la",
-                      label = "View chart as table",
-                      help_text = (
-                        dataTableOutput("table_cao_la")
-                      )
+                    # br(),
+                    # plotlyOutput("plot_cao_la"),
+                    # br(),
+                    # details(
+                    #   inputId = "table_cao_la",
+                    #   label = "View chart as table",
+                    #   help_text = (
+                    #     dataTableOutput("table_cao_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "cao_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
                     ),
+                    # uiOutput("SN_cao"),
                   )
                 ),
                 open = FALSE

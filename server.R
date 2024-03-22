@@ -3517,6 +3517,73 @@ server <- function(input, output, session) {
 
 
   ## Outcome 2 ------
+  ### SGO ------------
+  output$SN_sgo <- renderUI({
+    if (input$sgo_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_SGO_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_sgo_ceased_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_sgo_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("sgo_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_sgo",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_sgo_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_sgo_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # SGO SN plot and table alternative
+  output$sgo_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_sgo_tbl <- renderDataTable({
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+
+    datatable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+  ### CAO --------------------
 
   ## Enabler 2 ------
   ### Turnover rate -----
