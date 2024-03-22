@@ -2148,53 +2148,77 @@ server <- function(input, output, session) {
 
   # CIN
   output$absence_CIN_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-      %>% select(`Overall absence (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(`Overall absence (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$absence_CPP_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-      %>% select(`Overall absence (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(`Overall absence (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$absence_CLA_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-      %>% select(`Overall absence (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(`Overall absence (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # persistent absentees headline ----
   # CIN
   output$persistent_CIN_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-      %>% select(`Persistent absentees (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(`Persistent absentees (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$persistent_CPP_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-      %>% select(`Persistent absentees (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(`Persistent absentees (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$persistent_CLA_headline_txt <- renderText({
-    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-      %>% select(`Persistent absentees (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(`Persistent absentees (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
 
   # overall absence timeseries chart
   output$absence_time_series <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2326,6 +2350,10 @@ server <- function(input, output, session) {
 
   # absence by la
   output$plot_absence_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     data <- outcomes_absence %>%
       filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
@@ -2337,6 +2365,10 @@ server <- function(input, output, session) {
 
   # Absence by LA table
   output$table_absence_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -2385,13 +2417,11 @@ server <- function(input, output, session) {
   })
 
 
-
-
   # persistent absence timeseries chart
   output$persistence_time_series <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2527,6 +2557,10 @@ server <- function(input, output, session) {
 
   # persistent absence by la
   output$plot_persistent_absence_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     data <- outcomes_absence %>%
       filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
@@ -2538,6 +2572,10 @@ server <- function(input, output, session) {
 
   # Persistent Absence by LA table
   output$table_persistent_absence_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -2599,53 +2637,77 @@ server <- function(input, output, session) {
 
   # CIN
   output$KS2_CIN_headline_txt <- renderText({
-    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
+        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS2_CPP_headline_txt <- renderText({
-    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
+        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS2_CLA_headline_txt <- renderText({
-    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-      %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
+        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+    }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # KS4 headline ----
   # CIN
   output$KS4_CIN_headline_txt <- renderText({
-    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-      %>% select(`Average Attainment 8`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
+        %>% select(`Average Attainment 8`), nsmall = 1)
+    }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS4_CPP_headline_txt <- renderText({
-    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-      %>% select(`Average Attainment 8`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
+        %>% select(`Average Attainment 8`), nsmall = 1)
+    }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS4_CLA_headline_txt <- renderText({
-    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-      %>% select(`Average Attainment 8`), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
+        %>% select(`Average Attainment 8`), nsmall = 1)
+    }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
 
   # KS2 % expected plot
   output$plot_ks2_expected <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2781,6 +2843,10 @@ server <- function(input, output, session) {
 
   # KS2 by la
   output$plot_KS2_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     data <- outcomes_ks2 %>%
       filter(social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
@@ -2792,6 +2858,10 @@ server <- function(input, output, session) {
 
   # KS2 by LA table
   output$table_KS2_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
@@ -2842,9 +2912,9 @@ server <- function(input, output, session) {
 
   # KS4 % expected plot
   output$plot_ks4 <- plotly::renderPlotly({
-    validate(
-      need(!is.null(input$select_geography_o1), "Select a geography level."),
-      need(!is.null(input$geographic_breakdown_o1), "Select a breakdown.")
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2896,7 +2966,7 @@ server <- function(input, output, session) {
   })
 
 
-  # persistent rate TABLE
+  # KS4 rate TABLE
   output$table_ks4 <- renderDataTable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
@@ -2983,6 +3053,10 @@ server <- function(input, output, session) {
 
   # KS4 by la
   output$plot_KS4_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     data <- outcomes_ks4 %>%
       filter(social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
@@ -2994,6 +3068,10 @@ server <- function(input, output, session) {
 
   # KS4 by LA table
   output$table_KS4_la <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     if (input$select_geography_o1 == "Regional") {
       if (input$geographic_breakdown_o1 == "London") {
         # Include both Inner London and Outer London
