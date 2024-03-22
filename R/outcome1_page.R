@@ -172,19 +172,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children starting in care by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
-                    br(),
-                    plotlyOutput("plot_cla_rate_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cla_rate_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_cla_rate_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_cla_rate_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_cla_rate_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_cla_rate_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "cla_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_cla"),
                   )
                 ),
                 accordion_panel(
@@ -221,19 +228,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children starting in care by LA who were UASC"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_uasc_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_uasc_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_uasc_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_uasc_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_uasc_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_uasc_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "uasc_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_uasc"),
                   )
                 ),
                 accordion_panel(
@@ -288,16 +302,23 @@ outcome1_tab <- function() {
                     p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
                     br(),
-                    plotlyOutput("plot_cla_march_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cla_march_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_cla_march_la")
-                      )
-                    )
+                    # plotlyOutput("plot_cla_march_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_cla_march_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_cla_march_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "cla_march_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_cla_march"),
                   )
                 ),
                 open = FALSE

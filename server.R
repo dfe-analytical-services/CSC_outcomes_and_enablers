@@ -3514,6 +3514,152 @@ server <- function(input, output, session) {
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------
+  ### CLA ------
+  output$SN_cla <- renderUI({
+    if (input$cla_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cla_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cla_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cla_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cla",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cla_march_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cla_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cla stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### UASC -------
+  output$SN_uasc <- renderUI({
+    if (input$uasc_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_uasc_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_uasc_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_uasc_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_uasc",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_uasc_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_usac_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # UASC stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### CLA march -------
+  output$SN_cla_march <- renderUI({
+    if (input$cla_march_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cla_march_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cla_march_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cla_march_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cla_march",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cla_march_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cla_march_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cla march stats neighbours chart and table here
+  #
+  #
+  #
+
+
+  ### CIN -------
 
 
   ## Outcome 2 ------
