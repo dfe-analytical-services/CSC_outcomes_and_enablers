@@ -3642,7 +3642,69 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Vacancy rate --------------------------------------------------------------
 
+  output$SN_vacancy <- renderUI({
+    if (input$agency_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_vacancy_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_vacancy_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_vacancy_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("vacancy_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_vacancy",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_vacancy_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_vacancy_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$vacancy_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_vacancy_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
+      colnames = c("Geographical breakdown", "vacancy rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
 
 
 
