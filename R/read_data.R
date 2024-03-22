@@ -26,32 +26,46 @@ convert_perc_cols_to_numeric <- function(x) {
   return(x)
 }
 
-# sample data functions we dont need this~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-read_revenue_data <- function(file = "data/la_maintained_schools_revenue_reserve_final.csv") {
-  # This reads in an example file. For the purposes of this demo, we're using the
-  # latest LA expenditure data downloaded from the EES release.
-  dfRevenue <- read.csv(file)
-  # The time period column name has some non-ascii characters so we're just going to rename it here.
-  colnames(dfRevenue)[1] <- "time_period"
-  dfRevenue <- dfRevenue %>% mutate(
-    year = as.numeric(paste0("20", substr(format(time_period), 5, 6))),
-    area_name = case_when(
-      geographic_level == "National" ~ country_name,
-      geographic_level == "Regional" ~ region_name,
-      TRUE ~ la_name
-    )
-  )
-  return(dfRevenue)
+remove_old_la_data <- function(data) {
+  ons_la_data <- read.csv("data/Lower_Tier_Local_Authority_to_Upper_Tier_Local_Authority_(April_2023)_Lookup_in_England_and_Wales.csv")
+  ons_la_data <- ons_la_data %>%
+    select(UTLA23CD, UTLA23NM) %>%
+    filter(!str_starts(UTLA23CD, "W")) %>%
+    unique()
+
+  removed_old_las <- data %>% filter(new_la_code == "" | new_la_code %in% (ons_la_data$UTLA23CD))
+
+  return(removed_old_las)
 }
 
+
+# # sample data functions we dont need this~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# read_revenue_data <- function(file = "data/la_maintained_schools_revenue_reserve_final.csv") {
+#   # This reads in an example file. For the purposes of this demo, we're using the
+#   # latest LA expenditure data downloaded from the EES release.
+#   dfRevenue <- read.csv(file)
+#   # The time period column name has some non-ascii characters so we're just going to rename it here.
+#   colnames(dfRevenue)[1] <- "time_period"
+#   dfRevenue <- dfRevenue %>% mutate(
+#     year = as.numeric(paste0("20", substr(format(time_period), 5, 6))),
+#     area_name = case_when(
+#       geographic_level == "National" ~ country_name,
+#       geographic_level == "Regional" ~ region_name,
+#       TRUE ~ la_name
+#     )
+#   )
+#   return(dfRevenue)
+# }
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Test not important
-read_definitions <- function(file = "data/definitions.csv") {
-  definitions <- read.csv(file)
-  # colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-  #  definitions <- definitions[,1:4]
-  return(definitions)
-}
+# read_definitions <- function(file = "data/definitions.csv") {
+#   definitions <- read.csv(file)
+#   # colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
+#   #  definitions <- definitions[,1:4]
+#   return(definitions)
+# }
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -621,39 +635,35 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 # }
 
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
-  ceased_cla_data <- read.csv(file)
-  old_dorset <- ceased_cla_data %>% filter(time_period <= 2019, new_la_code == "E10000009")
-  new_dorset <- ceased_cla_data %>% filter(time_period > 2019, new_la_code == "E06000059")
-  data_without_dorset <- ceased_cla_data %>% filter(la_name != "Dorset")
+  read_data <- read.csv(file)
+  # Call remove old la data function to remove the old
+  # final_filtered_data <- remove_old_la_data(read_data)
+  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
 
-  dorset_data <- bind_rows(new_dorset, old_dorset)
-  final_filtered_data <- bind_rows(data_without_dorset, dorset_data)
-
+  final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
   ceased_cla_data <- final_filtered_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(number = case_when(
+    mutate(number_num = case_when(
       number == "z" ~ NA,
       number == "x" ~ NA,
       number == "c" ~ NA,
       TRUE ~ as.numeric(number)
     )) %>%
-    filter("new_la_code" != "E10000009") %>%
-    select("time_period", "geographic_level", "geo_breakdown", "cla_group", "characteristic", "number", "percentage")
+    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")
 
   totals <- ceased_cla_data %>%
-    filter(characteristic == "Total" & cla_group == "Reason episode ceased") %>%
-    rename("Total" = "number") %>%
-    select(time_period, geographic_level, geo_breakdown, cla_group, Total)
+    filter(characteristic == "Total") %>%
+    rename("Total_num" = "number_num") %>%
+    mutate("Total" = number) %>%
+    select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
 
+  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
+  joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
 
-  test <- ceased_cla_data %>% filter(cla_group == "Reason episode ceased" & characteristic != "Total")
-
-  joined <- left_join(test, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
-  joined$perc <- round((joined$number / joined$Total) * 100, digits = 1)
   joined <- joined %>%
     mutate(perc = case_when(
       percentage == "z" ~ "z",
@@ -669,12 +679,134 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       percentage == "x" ~ NA,
       TRUE ~ as.numeric(perc)
     ))
-
   return(joined)
 }
 
+# Outcome 1 Outcomes absence data for child well being and development
+read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
+  outcomes_absence_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_absence_data <- outcomes_absence_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
+      school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
+      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
+    )
+
+  # Make % columns numeric
+  outcomes_absence_data <- outcomes_absence_data %>%
+    mutate(`Overall absence (%)` = case_when(
+      pt_overall == "z" ~ NA,
+      pt_overall == "c" ~ NA,
+      pt_overall == "k" ~ NA,
+      pt_overall == "x" ~ NA,
+      TRUE ~ as.numeric(pt_overall)
+    )) %>%
+    mutate(`Persistent absentees (%)` = case_when(
+      pt_pupils_pa_10_exact == "z" ~ NA,
+      pt_pupils_pa_10_exact == "c" ~ NA,
+      pt_pupils_pa_10_exact == "k" ~ NA,
+      pt_pupils_pa_10_exact == "x" ~ NA,
+      TRUE ~ as.numeric(pt_pupils_pa_10_exact)
+    )) %>%
+    mutate(`Authorised absence (%)` = case_when(
+      pt_sess_authorised == "z" ~ NA,
+      pt_sess_authorised == "c" ~ NA,
+      pt_sess_authorised == "k" ~ NA,
+      pt_sess_authorised == "x" ~ NA,
+      TRUE ~ as.numeric(pt_sess_authorised)
+    )) %>%
+    mutate(`Unauthorised absence (%)` = case_when(
+      pt_sess_unauthorised == "z" ~ NA,
+      pt_sess_unauthorised == "c" ~ NA,
+      pt_sess_unauthorised == "k" ~ NA,
+      pt_sess_unauthorised == "x" ~ NA,
+      TRUE ~ as.numeric(pt_sess_unauthorised)
+    ))
+
+
+  return(outcomes_absence_data)
+}
+
+
+# Outcome 1 Outcomes KS2 data for education attainment
+read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
+  outcomes_ks2_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
+      t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
+      pt_mat_met_expected_standard, t_rwm_eligible_pupils, t_rwm_met_expected_standard, pt_rwm_met_expected_standard,
+      t_gps_eligible_pupils, t_gps_met_expected_standard, pt_gps_met_expected_standard, t_scita_eligible_pupils,
+      t_scita_met_expected_standard, pt_scita_met_expected_standard, t_read_progress_eligible_pupils,
+      t_read_progress_score, avg_read_progress_score, avg_read_progress_score_lower_CI, avg_read_progress_score_upper_CI,
+      t_writta_progress_eligible_pupils, t_writta_progress_score, avg_writta_progress_score, avg_writta_progress_score_lower_CI,
+      avg_writta_progress_score_upper_CI, t_mat_progress_eligible_pupils, t_mat_progress_score, avg_mat_progress_score,
+      avg_mat_progress_score_lower_CI, avg_mat_progress_score_upper_CI
+    )
+
+  # Make % columns numeric
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    mutate(`Expected standard reading writing maths (%)` = case_when(
+      pt_rwm_met_expected_standard == "z" ~ NA,
+      pt_rwm_met_expected_standard == "c" ~ NA,
+      pt_rwm_met_expected_standard == "k" ~ NA,
+      pt_rwm_met_expected_standard == "x" ~ NA,
+      TRUE ~ as.numeric(pt_rwm_met_expected_standard)
+    ))
+
+
+  return(outcomes_ks2_data)
+}
+
+# Outcome 1 Outcomes KS4 data for education attainment
+read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
+  outcomes_ks4_data <- read.csv(file)
+  # Select only columns we want
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
+      t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
+      t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
+    )
+
+  # Make number columns numeric
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    mutate(`Average Attainment 8` = case_when(
+      avg_att8 == "z" ~ NA,
+      avg_att8 == "c" ~ NA,
+      avg_att8 == "k" ~ NA,
+      avg_att8 == "x" ~ NA,
+      TRUE ~ as.numeric(avg_att8)
+    ))
+
+
+  return(outcomes_ks4_data)
+}
+
 # Statistical Neighbours ------------
-statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
+statistical_neighbours <- function(file = "data/Dummy_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
 
   # Create a lookup table

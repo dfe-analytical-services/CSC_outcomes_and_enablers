@@ -77,22 +77,22 @@ enabler2_tab <- function() {
           condition = "(input.geographic_breakdown_e2 == 'North Northamptonshire / West Northamptonshire')",
           p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
         ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
-          p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Poole')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
+        #   p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
+        #   p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Poole')",
+        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
+        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
         # p(htmlOutput("enabler2_choice_text2")),
         br(),
         div(
@@ -171,7 +171,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Turnover rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_turnover_reg"),
                     br(),
@@ -234,7 +234,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Agency rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_agency_reg"),
                     br(),
@@ -301,7 +301,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Vacancy rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_vacancy_reg"),
                     br(),
@@ -389,7 +389,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_caseload_reg"),
                     br(),

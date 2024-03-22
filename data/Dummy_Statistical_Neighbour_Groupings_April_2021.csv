@@ -1,0 +1,153 @@
+LA num,LA Name,LA number,GOInd,GOReg,SN1,SNP,SN2,SNP,SN3,SNP,SN4,SNP,SN5,SNP,SN6,SNP,SN7,SNP,SN8,SNP,SN9,SNP,SN10,SNP
+201,City of London,201,3,London (Inner),201,Not Close,202,Not Close,203,Not Close,204,Not Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+202,Camden,202,3,London (Inner),201,Very Close,202,Close,203,Close,204,Close,205,Somewhat close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+203,Greenwich,203,3,London (Outer),201,Close,202,Close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+204,Hackney,204,3,London (Inner),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+205,Hammersmith and Fulham,205,3,London (Inner),201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Not Close
+206,Islington,206,3,London (Inner),201,Close,202,Close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Not Close,209,Not Close,210,Not Close
+207,Kensington and Chelsea,207,3,London (Inner),201,Close,202,Close,203,Close,204,Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+208,Lambeth,208,3,London (Inner),201,Close,202,Close,203,Close,204,Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+209,Lewisham,209,3,London (Inner),201,Close,202,Close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+210,Southwark,210,3,London (Inner),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+211,Tower Hamlets,211,3,London (Inner),201,Not Close,202,Not Close,203,Not Close,204,Not Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+212,Wandsworth,212,3,London (Inner),201,Very Close,202,Close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Not Close,209,Not Close,210,Not Close
+213,Westminster,213,3,London (Inner),201,Very Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+301,Barking and Dagenham,301,3,London (Outer),201,Close,202,Somewhat close,203,Somewhat close,204,Somewhat close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+302,Barnet,302,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Somewhat close,210,Somewhat close
+303,Bexley,303,3,London (Outer),201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+304,Brent,304,3,London (Outer),201,Somewhat close,202,Somewhat close,203,Somewhat close,204,Not Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+305,Bromley,305,3,London (Outer),201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+306,Croydon,306,3,London (Outer),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+307,Ealing,307,3,London (Outer),201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+308,Enfield,308,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+309,Haringey,309,3,London (Inner),201,Close,202,Close,203,Close,204,Close,205,Close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+310,Harrow,310,3,London (Outer),201,Close,202,Close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+311,Havering,311,3,London (Outer),201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+312,Hillingdon,312,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Somewhat close
+313,Hounslow,313,3,London (Outer),201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+314,Kingston upon Thames,314,3,London (Outer),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+315,Merton,315,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+316,Newham,316,3,London (Inner),201,Not Close,202,Not Close,203,Not Close,204,Not Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+317,Redbridge,317,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+318,Richmond upon Thames,318,3,London (Outer),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+319,Sutton,319,3,London (Outer),201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+320,Waltham Forest,320,3,London (Outer),201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+330,Birmingham,330,3,West Midlands,201,Close,202,Close,203,Close,204,Close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+331,Coventry,331,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+332,Dudley,332,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+333,Sandwell,333,3,West Midlands,201,Very Close,202,Very Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+334,Solihull,334,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+335,Walsall,335,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Close,210,Close
+336,Wolverhampton,336,3,West Midlands,201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+340,Knowsley,340,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+341,Liverpool,341,3,North West,201,Very Close,202,Very Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+342,St. Helens,342,3,North West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+343,Sefton,343,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+344,Wirral,344,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+350,Bolton,350,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+351,Bury,351,3,North West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+352,Manchester,352,3,North West,201,Very Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+353,Oldham,353,3,North West,201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+354,Rochdale,354,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+355,Salford,355,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+356,Stockport,356,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+357,Tameside,357,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+358,Trafford,358,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+359,Wigan,359,3,North West,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+370,Barnsley,370,3,Yorkshire and the Humber,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+371,Doncaster,371,3,Yorkshire and the Humber,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+372,Rotherham,372,3,Yorkshire and the Humber,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+373,Sheffield,373,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+380,Bradford,380,3,Yorkshire and the Humber,201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+381,Calderdale,381,3,Yorkshire and the Humber,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+382,Kirklees,382,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+383,Leeds,383,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+384,Wakefield,384,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+390,Gateshead,390,3,North East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+391,Newcastle upon Tyne,391,3,North East,201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+392,North Tyneside,392,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+393,South Tyneside,393,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+394,Sunderland,394,3,North East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+420,Isles of Scilly,420,3,South West,201,Not Close,202,Not Close,203,Not Close,204,Not Close,205,Not Close,206,Not Close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+800,Bath and North East Somerset,800,3,South West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+801,"Bristol, City of",801,3,South West,201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+802,North Somerset,802,3,South West,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+803,South Gloucestershire,803,3,South West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Extremely Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+805,Hartlepool,805,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+806,Middlesbrough,806,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+807,Redcar and Cleveland,807,3,North East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+808,Stockton-on-Tees,808,3,North East,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+810,"Kingston Upon Hull, City of",810,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+811,East Riding of Yorkshire,811,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+812,North East Lincolnshire,812,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+813,North Lincolnshire,813,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+815,North Yorkshire,815,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+816,York,816,3,Yorkshire and the Humber,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+821,Luton,821,3,East of England,201,Close,202,Close,203,Close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+822,Bedford Borough,822,3,East of England,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+823,Central Bedfordshire,823,3,East of England,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+825,Buckinghamshire,825,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+826,Milton Keynes,826,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+830,Derbyshire,830,3,East Midlands,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+831,Derby,831,3,East Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+838,Dorset,838,3,South West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+839,"Bournemouth, Christchurch & Poole",839,3,South West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+840,Durham,840,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+841,Darlington,841,3,North East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+845,East Sussex,845,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+846,Brighton and Hove,846,3,South East,201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+850,Hampshire,850,3,South East,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+851,Portsmouth,851,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Close,208,Close,209,Close,210,Close
+852,Southampton,852,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Close,207,Close,208,Close,209,Close,210,Close
+855,Leicestershire,855,3,East Midlands,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+856,Leicester,856,3,East Midlands,201,Somewhat close,202,Somewhat close,203,Somewhat close,204,Somewhat close,205,Somewhat close,206,Somewhat close,207,Not Close,208,Not Close,209,Not Close,210,Not Close
+857,Rutland,857,3,East Midlands,201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+860,Staffordshire,860,3,West Midlands,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+861,Stoke-on-Trent,861,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+865,Wiltshire,865,3,South West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+866,Swindon,866,3,South West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+867,Bracknell Forest,867,3,South East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+868,Windsor and Maidenhead,868,3,South East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Close,209,Close,210,Close
+869,West Berkshire,869,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+870,Reading,870,3,South East,201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+871,Slough,871,3,South East,201,Close,202,Close,203,Close,204,Close,205,Somewhat close,206,Somewhat close,207,Somewhat close,208,Somewhat close,209,Somewhat close,210,Somewhat close
+872,Wokingham,872,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+873,Cambridgeshire,873,3,East of England,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+874,Peterborough,874,3,East of England,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+876,Halton,876,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+877,Warrington,877,3,North West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+878,Devon,878,3,South West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Extremely Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+879,Plymouth,879,3,South West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+880,Torbay,880,3,South West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+881,Essex,881,3,East of England,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+882,Southend-on-Sea,882,3,East of England,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+883,Thurrock,883,3,East of England,201,Very Close,202,Very Close,203,Very Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+884,Herefordshire,884,3,West Midlands,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+885,Worcestershire,885,3,West Midlands,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+886,Kent,886,3,South East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+887,Medway,887,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+888,Lancashire,888,3,North West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+889,Blackburn with Darwen,889,3,North West,201,Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Close
+890,Blackpool,890,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Close,207,Close,208,Close,209,Close,210,Close
+891,Nottinghamshire,891,3,East Midlands,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+892,Nottingham,892,3,East Midlands,201,Very Close,202,Close,203,Close,204,Close,205,Close,206,Close,207,Close,208,Close,209,Close,210,Somewhat close
+893,Shropshire,893,3,West Midlands,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+894,Telford and Wrekin,894,3,West Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+895,Cheshire East,895,3,North West,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+896,Cheshire West and Chester,896,3,North West,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+908,Cornwall,908,3,South West,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+909,Cumbria,909,3,North West,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+916,Gloucestershire,916,3,South West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+919,Hertfordshire,919,3,East of England,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+921,Isle of Wight,921,3,South East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+925,Lincolnshire,925,3,East Midlands,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+926,Norfolk,926,3,East of England,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+929,Northumberland,929,3,North East,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+931,Oxfordshire,931,3,South East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+933,Somerset,933,3,South West,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Extremely Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+935,Suffolk,935,3,East of England,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+936,Surrey,936,3,South East,201,Extremely Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Close
+937,Warwickshire,937,3,West Midlands,201,Extremely Close,202,Extremely Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+938,West Sussex,938,3,South East,201,Extremely Close,202,Extremely Close,203,Extremely Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+940,North Northamptonshire,940,3,East Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
+941,West Northamptonshire,941,3,East Midlands,201,Very Close,202,Very Close,203,Very Close,204,Very Close,205,Very Close,206,Very Close,207,Very Close,208,Very Close,209,Very Close,210,Very Close
