@@ -409,17 +409,24 @@ outcome1_tab <- function() {
                     h2("CIN rates by local authority"),
                     p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(cin_rates$time_period))),
-                    br(),
-                    plotlyOutput("plot_cin_rates_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cin_rates_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_cin_rates_la")
-                      )
+                    # br(),
+                    # plotlyOutput("plot_cin_rates_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_cin_rates_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_cin_rates_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "cin_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
                     ),
+                    uiOutput("SN_cin"),
                   )
                 ),
                 accordion_panel(
@@ -493,7 +500,14 @@ outcome1_tab <- function() {
                       help_text = (
                         dataTableOutput("table_cin_referral_la")
                       )
-                    )
+                    ),
+                    radioGroupButtons(
+                      "cin_referral_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_cin_referral"),
                   )
                 ),
                 open = FALSE
@@ -629,19 +643,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Absence rate by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
-                    br(),
-                    plotlyOutput("plot_absence_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_absence_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_absence_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_absence_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_absence_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_absence_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "absence_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_absence"),
                   ),
                 ),
                 accordion_panel(
@@ -705,19 +726,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Persistent absence rate by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
-                    br(),
-                    plotlyOutput("plot_persistent_absence_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_persistent_absence_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_persistent_absence_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_persistent_absence_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_persistent_absence_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_persistent_absence_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "persis_abs_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_persistent_abs"),
                   ),
                 ),
                 open = FALSE
@@ -854,19 +882,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("KS2 attainment by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(outcomes_ks2$time_period))),
-                    br(),
-                    plotlyOutput("plot_KS2_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_KS2_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_KS2_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_KS2_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_KS2_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_KS2_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "ks2_attainment_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_ks2_attainment"),
                   ),
                 ),
                 accordion_panel(
@@ -932,19 +967,26 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("KS4 attainment by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The graph represents data from %s.", max(outcomes_ks4$time_period))),
-                    br(),
-                    plotlyOutput("plot_KS4_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_KS4_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_KS4_la")
-                      )
-                    )
+                    # br(),
+                    # plotlyOutput("plot_KS4_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_KS4_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_KS4_la")
+                    #   )
+                    # ),
+                    radioGroupButtons(
+                      "ks4_attainment_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_ks4_attainment"),
                   ),
                 ),
                 open = FALSE
