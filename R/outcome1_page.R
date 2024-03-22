@@ -534,7 +534,24 @@ outcome1_tab <- function() {
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
-                  )
+                  ),
+                  details(
+                    inputId = "social_definitions_info",
+                    label = "Social care group definitions:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                        tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                        tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
                 ),
                 br(),
               ),
@@ -758,7 +775,24 @@ outcome1_tab <- function() {
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
-                  )
+                  ),
+                  details(
+                    inputId = "social_definitions_info_2",
+                    label = "Social care group definitions:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                        tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                        tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
                 ),
                 br(),
               ),
