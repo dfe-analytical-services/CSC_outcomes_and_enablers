@@ -89,16 +89,8 @@ outcome2_tab <- function() {
         br(),
         p(htmlOutput("outcome2_choice_text1"), htmlOutput("outcome2_choice_text2")),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_o2 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire"), "or", strong("West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_o2 == 'Poole')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_o2 == 'Bournemouth')",
-          p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+          condition = "(input.geographic_breakdown_o2 == 'Cumbria')",
+          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
       gov_row(
