@@ -1533,7 +1533,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  filtered_data <- workforce_data %>%
+  filtered_data <- dataset %>%
     filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, `yvalue`) %>%
     mutate(
@@ -1567,7 +1567,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  filtered_data <- workforce_data %>%
+  filtered_data <- dataset %>%
     filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, `yvalue`) %>%
     mutate(

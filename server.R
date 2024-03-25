@@ -3598,6 +3598,592 @@ server <- function(input, output, session) {
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------
+  ### CLA ------
+  output$SN_cla <- renderUI({
+    if (input$cla_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cla_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cla_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cla_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cla",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cla_march_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cla_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cla stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### UASC -------
+  output$SN_uasc <- renderUI({
+    if (input$uasc_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_uasc_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_uasc_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_uasc_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_uasc",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_uasc_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_usac_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # UASC stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### CLA march -------
+  output$SN_cla_march <- renderUI({
+    if (input$cla_march_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cla_march_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cla_march_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cla_march_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cla_march",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cla_march_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cla_march_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cla march stats neighbours chart and table here
+  #
+  #
+  #
+
+
+  ### CIN -------
+  output$SN_cin <- renderUI({
+    if (input$cin_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cin_rates_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cin_rates_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cin_rates_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cin",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cin_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cin_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cin stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### Repeat referrals ----------------------
+  output$SN_cin_referral <- renderUI({
+    if (input$cin_referral_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cin_referral_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cin_referral_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cin_referral_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_cin_referral",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cin_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_cin_referral_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # cin referral stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### school attendance -------
+  output$SN_absence <- renderUI({
+    if (input$absence_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_absence_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_absence_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_absence_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("absence_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_absence",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_absence_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_absence_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # For some reason this does not produce a chart
+  output$absence_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_absence %>% filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+  # this doesn't produce anything either
+  output$SN_absence_tbl <- renderDataTable({
+    filtered_data <- outcomes_absence %>% filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    datatable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
+      colnames = c("Geographical breakdown", "Overall absence (%)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+  ### persistent absence ------------
+  output$SN_persistent_abs <- renderUI({
+    if (input$persis_abs_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_persistent_absence_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_persistent_absence_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_persistent_absence_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_persistent_abs",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cin_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_persistent_abs_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # persistent absence stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### KS2 attainment -------
+  output$SN_ks2_attainment <- renderUI({
+    if (input$ks2_attainment_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_KS2_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_KS2_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_KS2_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_ks2",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cin_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_ks2_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # ks2 attainment stats neighbours chart and table here
+  #
+  #
+  #
+
+  ### KS4 attainment ------
+  output$SN_ks4_attainment <- renderUI({
+    if (input$ks4_attainment_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_KS4_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_KS4_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_KS4_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("cla_march_SN_plot"),
+        p("This is under development."),
+        br(),
+        details(
+          inputId = "tbl_sn_ks4",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_cin_tbl")
+            p("This is under development.")
+          )
+        ),
+        details(
+          inputId = "sn_ks4_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # ks4 attainment stats neighbours chart and table here
+  #
+  #
+  #
+
+  ## Outcome 2 ------
+  ### SGO ------------
+  output$SN_sgo <- renderUI({
+    if (input$sgo_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_SGO_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_sgo_ceased_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_sgo_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("sgo_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_sgo",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_sgo_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_sgo_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # SGO SN plot and table alternative
+  output$sgo_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_sgo_tbl <- renderDataTable({
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+
+    datatable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+  ### CAO --------------------
+  output$SN_cao <- renderUI({
+    if (input$cao_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cao_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_cao_ceased_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_cao_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("cao_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_cao",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_cao_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_cao_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # CAO SN plot and table alternative
+  output$cao_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_cao_tbl <- renderDataTable({
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+    datatable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
+
+
 
   ## Enabler 2 ------
   ### Turnover rate -----
@@ -3726,9 +4312,132 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Vacancy rate --------------------------------------------------------------
 
+  output$SN_vacancy <- renderUI({
+    if (input$vacancy_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_vacancy_rate_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_vacancy_rate_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_vacancy_rate_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("vacancy_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_vacancy",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_vacancy_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_vacancy_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$vacancy_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
 
+  output$SN_vacancy_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
+      colnames = c("Geographical breakdown", "vacancy rate (FTE) %", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
 
+  ### Caseload ---------------------------------
+  output$SN_caseload <- renderUI({
+    if (input$caseload_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_caseload_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_caseload_la",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("table_caseload_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("caseload_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_caseload",
+          label = "View chart as a table",
+          help_text = (
+            dataTableOutput("SN_caseload_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_caseload_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+  # turnover SN plot and table alternative
+  output$caseload_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_caseload_tbl <- renderDataTable({
+    datatable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte"),
+      colnames = c("Geographical breakdown", "Average Caseload (FTE)", "LA Selection"),
+      options = list(
+        scrollx = FALSE,
+        paging = FALSE
+      )
+    )
+  })
 
 
 
