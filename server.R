@@ -1460,10 +1460,10 @@ server <- function(input, output, session) {
     datatable(
       cin_rates %>% filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>% select(
         time_period, geo_breakdown,
-        CIN_rate
+        At31_episodes, At31_episodes_rate
       ) %>%
-        arrange(desc(CIN_rate)),
-      colnames = c("Time period", "Geographical breakdown", "CIN rate per 10,000"),
+        arrange(desc(At31_episodes_rate)),
+      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1494,21 +1494,21 @@ server <- function(input, output, session) {
 
       data <- cin_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, CIN_rate) %>%
-        arrange(desc(CIN_rate))
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate) %>%
+        arrange(desc(At31_episodes_rate))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cin_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cin_rates$time_period)) %>%
         select(
           time_period, geo_breakdown,
-          CIN_rate
+          At31_episodes, At31_episodes_rate
         ) %>%
-        arrange(desc(CIN_rate))
+        arrange(desc(At31_episodes_rate))
     }
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "CIN rates per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rates per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1599,13 +1599,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1614,7 +1614,7 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1623,13 +1623,13 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, CIN_number, CIN_rate)
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
     }
 
     datatable(
       filtered_data %>%
-        select(time_period, geo_breakdown, CIN_number, CIN_rate),
-      colnames = c("Time period", "Geographical breakdown", "CIN at 31 March", "CIN rate per 10,000"),
+        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate),
+      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
