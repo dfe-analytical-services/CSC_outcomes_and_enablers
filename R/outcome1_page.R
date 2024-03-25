@@ -165,7 +165,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     # br(),
                     # plotlyOutput("plot_cla_rate_la"),
                     # br(),
@@ -205,7 +205,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
+                    p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
                     plotlyOutput("plot_uasc_reg"),
                     br(),
@@ -221,7 +221,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     # br(),
                     # plotlyOutput("plot_uasc_la"),
                     # br(),
@@ -291,8 +291,8 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children in care on 31 March by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
                     # plotlyOutput("plot_cla_march_la"),
                     # br(),
@@ -399,8 +399,8 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("CIN rates by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cin_rates$time_period))),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
                     # br(),
                     # plotlyOutput("plot_cin_rates_la"),
                     # br(),
@@ -480,19 +480,19 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Re-referrals by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cin_referrals$time_period))),
-                    br(),
-                    plotlyOutput("plot_cin_referral_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cin_referral_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_cin_referral_la")
-                      )
-                    ),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
+                    #  br(),
+                    #  plotlyOutput("plot_cin_referral_la"),
+                    #  br(),
+                    # br(),
+                    # details(
+                    #  inputId = "tbl_cin_referral_la",
+                    #  label = "View chart as a table",
+                    #  help_text = (
+                    #  dataTableOutput("table_cin_referral_la")
+                    #  )
+                    #   ),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
                       label = NULL,
@@ -653,7 +653,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Absence rate by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     # br(),
                     # plotlyOutput("plot_absence_la"),
                     # br(),
@@ -736,7 +736,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Persistent absence rate by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     # br(),
                     # plotlyOutput("plot_persistent_absence_la"),
                     # br(),
@@ -909,7 +909,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("KS2 attainment by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_ks2$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
                     # br(),
                     # plotlyOutput("plot_KS2_la"),
                     # br(),
@@ -994,7 +994,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("KS4 attainment by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_ks4$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                     # br(),
                     # plotlyOutput("plot_KS4_la"),
                     # br(),
