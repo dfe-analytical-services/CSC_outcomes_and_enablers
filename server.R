@@ -4368,7 +4368,7 @@ server <- function(input, output, session) {
   output$SN_vacancy_tbl <- renderDataTable({
     datatable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
-      colnames = c("Geographical breakdown", "vacancy rate (FTE) %", "LA Selection"),
+      colnames = c("Geographical breakdown", "Vacancy rate (FTE) %", "LA Selection"),
       options = list(
         scrollx = FALSE,
         paging = FALSE
