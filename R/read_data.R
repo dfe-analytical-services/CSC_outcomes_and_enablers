@@ -816,7 +816,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 }
 
 # Statistical Neighbours ------------
-statistical_neighbours <- function(file = "data/Dummy_Statistical_Neighbour_Groupings_April_2021.csv") {
+statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
 
   # Create a lookup table
