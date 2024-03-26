@@ -547,40 +547,42 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(Referrals = case_when(
+    mutate(Referrals_num = case_when(
       Referrals == "Z" ~ NA,
       Referrals == "x" ~ NA,
       Referrals == "c" ~ NA,
       TRUE ~ as.numeric(Referrals)
     )) %>%
-    mutate(Re_referrals = case_when(
+    mutate(Re_referrals_num = case_when(
       Re_referrals == "Z" ~ NA,
       Re_referrals == "x" ~ NA,
       Re_referrals == "c" ~ NA,
       TRUE ~ as.numeric(Re_referrals)
     )) %>%
-    mutate(Re_referrals_percent = case_when(
+    mutate(Re_referrals_percentage = case_when(
       Re_referrals_percent == "Z" ~ NA,
       Re_referrals_percent == "x" ~ NA,
       Re_referrals_percent == "c" ~ NA,
       TRUE ~ as.numeric(Re_referrals_percent)
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name, Referrals, Re_referrals, Re_referrals_percent) %>%
+    select(
+      time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name,
+      Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage
+    ) %>%
     distinct()
 
 
   # Calculate the number of referrals not including re-referrals
-  referrals <- cin_referral_data %>%
-    group_by(time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name) %>%
-    summarise(
-      referrals_not_including_re_referrals_perc = round((Referrals - Re_referrals) / Referrals * 100, 1),
-      referrals_not_including_re_referrals = Referrals - Re_referrals,
-      .groups = "drop"
-    )
+  #  referrals <- cin_referral_data %>%
+  #   group_by(time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name) %>%
+  #  summarise(
+  #  referrals_not_including_re_referrals_perc = round((Referrals - Re_referrals) / Referrals * 100, 1),
+  # referrals_not_including_re_referrals = Referrals - Re_referrals,
+  # )
 
   # Join the referall back to the original dataframe
-  cin_referral_data <- merge(referrals, cin_referral_data) %>%
-    arrange(desc(time_period))
+  # cin_referral_data <- merge(referrals, cin_referral_data) %>%
+  #  arrange(desc(time_period))
 
 
   return(cin_referral_data)

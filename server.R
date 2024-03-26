@@ -1535,7 +1535,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
+        %>% select(Re_referrals_percentage), nsmall = 1)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
@@ -1671,7 +1671,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re_referrals_percent", "Re-referrals (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
