@@ -1424,10 +1424,10 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
 plot_cin_referral_reg <- function() {
   referral_reg_data <- cin_referrals %>%
     filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-    select(time_period, geo_breakdown, Re_referrals_percent) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percent)) # Order by turnover rate
+    select(time_period, geo_breakdown, Re_referrals_percentage) %>%
+    mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage)) # Order by turnover rate
 
-  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percent`, fill = factor(time_period))) +
+  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = factor(time_period))) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals (%)") +
     xlab("Region") +
@@ -1463,17 +1463,17 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   if (selected_geo_lvl == "Local authority") {
     LA_referral_data <- cin_referrals %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, Re_referrals_percent) %>%
+      select(time_period, geo_breakdown, Re_referrals_percentage) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percent), # Order by vacancy rate
+        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage), # Order by vacancy rate
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
       )
   } else if (selected_geo_lvl == "National") {
     LA_referral_data <- cin_referrals %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, Re_referrals_percent) %>%
+      select(time_period, geo_breakdown, Re_referrals_percentage) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percent), # Order by vacancy rate
+        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage), # Order by vacancy rate
         is_selected = "Not Selected"
       )
   } else if (selected_geo_lvl == "Regional") {
@@ -1492,15 +1492,15 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
     LA_referral_data <- cin_referrals %>%
       filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, Re_referrals_percent) %>%
+      select(time_period, geo_breakdown, Re_referrals_percentage) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percent), # Order by vacancy rate
+        geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage),
         is_selected = "Selected"
       )
   }
 
 
-  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percent`, fill = `is_selected`)) +
+  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = `is_selected`)) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals  (%)") +
     xlab("") +
