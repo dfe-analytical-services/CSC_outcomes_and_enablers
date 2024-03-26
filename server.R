@@ -1179,11 +1179,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome1_choice_social_care_group_text <- renderText({
-    paste0("Percentage of overall absence for ", tags$b(input$wellbeing_extra_breakdown), ".")
+    paste0("Percentage of overall absence for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
   })
 
   output$outcome1_choice_social_care_group_text_1 <- renderText({
-    paste0("Percentage of persistent absentees for ", tags$b(input$wellbeing_extra_breakdown), ".")
+    paste0("Percentage of persistent absentees for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
   })
 
   output$outcome1_choice_social_care_group_text_2 <- renderText({
@@ -2230,14 +2230,14 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # regional only
@@ -2247,7 +2247,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # both selected
@@ -2257,7 +2257,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
     }
 
@@ -2304,7 +2304,7 @@ server <- function(input, output, session) {
 
     datatable(
       filtered_data %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`),
       colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Overall absence (%)"),
@@ -2318,7 +2318,7 @@ server <- function(input, output, session) {
   # Absence rate regional plot
   output$plot_absence_reg <- plotly::renderPlotly({
     data <- outcomes_absence %>%
-      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     ggplotly(
@@ -2333,7 +2333,7 @@ server <- function(input, output, session) {
     datatable(
       outcomes_absence %>% filter(
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
-        school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
+        school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
         %>%
@@ -2361,7 +2361,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_absence %>%
-      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)") %>%
         config(displayModeBar = F),
@@ -2390,7 +2390,7 @@ server <- function(input, output, session) {
 
       data <- outcomes_absence %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
@@ -2400,7 +2400,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
-        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
@@ -2433,14 +2433,14 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
       # regional only
@@ -2450,7 +2450,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
 
@@ -2461,7 +2461,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
     }
 
@@ -2508,7 +2508,7 @@ server <- function(input, output, session) {
 
     datatable(
       filtered_data %>%
-        filter(school_type == "Total" & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`),
       colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Persistence absentees (%)"),
@@ -2523,7 +2523,7 @@ server <- function(input, output, session) {
   # Persistence absence regional plot
   output$plot_persistent_reg <- plotly::renderPlotly({
     data <- outcomes_absence %>%
-      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
 
@@ -2539,7 +2539,7 @@ server <- function(input, output, session) {
     datatable(
       outcomes_absence %>% filter(
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
-        school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown
+        school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
         %>%
@@ -2568,7 +2568,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_absence %>%
-      filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)") %>%
         config(displayModeBar = F),
@@ -2597,7 +2597,7 @@ server <- function(input, output, session) {
 
       data <- outcomes_absence %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
@@ -2607,7 +2607,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
-        filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown) %>%
+        filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
@@ -2628,8 +2628,6 @@ server <- function(input, output, session) {
       )
     )
   })
-
-
 
 
   # Education attainment
@@ -3887,7 +3885,7 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_absence %>% filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", 100) %>%
         config(displayModeBar = F),
@@ -3896,7 +3894,7 @@ server <- function(input, output, session) {
   })
   # this doesn't produce anything either
   output$SN_absence_tbl <- renderDataTable({
-    filtered_data <- outcomes_absence %>% filter(school_type == "Total", social_care_group %in% input$wellbeing_extra_breakdown)
+    filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
     datatable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
       colnames = c("Geographical breakdown", "Overall absence (%)", "LA Selection"),
