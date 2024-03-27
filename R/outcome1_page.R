@@ -560,12 +560,21 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data for the following social care groups: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
-                  p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
+                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
+                  p("It also breakdowns the data by school type: total, primary, secondary (the headline boxes above show data for 'total' school type)."),
+                  p("Please use the dropdowns to select which social care group and school type you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "wellbeing_extra_breakdown",
                     label = "Select a social care group:",
                     choices = c("CINO at 31 March", "CPPO at 31 March", "CLA 12 months at 31 March"),
+                    selected = NULL,
+                    multiple = FALSE,
+                    options = NULL
+                  ),
+                  selectizeInput(
+                    inputId = "wellbeing_school_breakdown",
+                    label = "Select a school type:",
+                    choices = c("Total", "State-funded primary", "State-funded secondary"),
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
@@ -577,7 +586,24 @@ outcome1_tab <- function() {
                       tags$ul(
                         tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                         tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                        tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$li("CLA 12 months refers to Children Looked After for 12 months (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
+                  details(
+                    inputId = "school_definitions_info",
+                    label = "School type information:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and pupil referall units."),
+                        tags$li("Breakdowns for special schools and pupil referall units are not available on the dashboard due to high levels of supression in the published local authority level data.
+                                You can view data for all breakdowns via the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes publication."), ),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
@@ -815,7 +841,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data for the following social care groups: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
+                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
                   p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "attainment_extra_breakdown",
