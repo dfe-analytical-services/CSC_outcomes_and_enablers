@@ -1195,6 +1195,31 @@ server <- function(input, output, session) {
   })
 
 
+  outcomes_time_period_max <- outcomes_absence %>%
+    filter(time_period == max(outcomes_absence$time_period)) %>%
+    filter(geographic_level == "National", school_type == "Total", social_care_group == "CINO at 31 March") %>%
+    mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+    pull(time_period)
+
+
+
+  output$outcome1_time_period_text <- renderText({
+    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+  })
+
+  output$outcome1_time_period_text_2 <- renderText({
+    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+  })
+
+  output$outcome1_time_period_text_3 <- renderText({
+    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+  })
+
+  output$outcome1_time_period_text_4 <- renderText({
+    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+  })
+
+
 
   ## CLA rate headline ----
   output$cla_rate_headline_txt <- renderText({
