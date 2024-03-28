@@ -1,9 +1,11 @@
-library(shinytest2)
-
 test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   app <- AppDriver$new(
-    variant = platform_variant(), name = "CSC_outcomes_and_enablers_error_test",
-    height = 886, width = 1203
+    name = "CSC_outcomes_and_enablers_error_test",
+    load_timeout = 45 * 1000,
+    timeout = 20 * 1000,
+    wait = TRUE,
+    height = 886, width = 1203,
+    variant = NULL
   )
   app$set_inputs(navlistPanel = "outcome1_page")
   app$set_window_size(width = 1203, height = 886)
