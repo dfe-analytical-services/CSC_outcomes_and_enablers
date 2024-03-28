@@ -1179,11 +1179,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome1_choice_social_care_group_text <- renderText({
-    paste0("Percentage of overall absence for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
+    paste0("Percentage of overall absence, total of authorised and unauthorised absence, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
   })
 
   output$outcome1_choice_social_care_group_text_1 <- renderText({
-    paste0("Percentage of persistent absentees for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
+    paste0("Percentage of persistent absentees, pupils with overall absence at 10% or more, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
   })
 
   output$outcome1_choice_social_care_group_text_2 <- renderText({
