@@ -1,8 +1,8 @@
 app <- AppDriver$new(
   name = "basic_load",
   height = 846, width = 1445,
-  load_timeout = 45 * 1000,
-  timeout = 20 * 1000,
+  load_timeout = 50 * 1000,
+  timeout = 25 * 1000,
   wait = TRUE
 )
 

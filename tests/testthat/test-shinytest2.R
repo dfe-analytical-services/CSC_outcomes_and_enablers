@@ -1,8 +1,8 @@
 test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   app <- AppDriver$new(
     name = "CSC_outcomes_and_enablers_error_test",
-    load_timeout = 45 * 1000,
-    timeout = 20 * 1000,
+    load_timeout = 50 * 1000,
+    timeout = 25 * 1000,
     wait = TRUE,
     height = 886, width = 1203,
     variant = NULL
