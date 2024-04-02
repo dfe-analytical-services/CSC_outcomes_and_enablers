@@ -41,7 +41,7 @@ outcome1_tab <- function() {
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o1",
                   cb_labels = "Compare with National",
-                  checkboxIds = "Yes_national",
+                  checkboxIds = "Yes_national_o1",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -55,7 +55,7 @@ outcome1_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o1",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region",
+                  checkboxIds = "Yes_region_o1",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -123,7 +123,7 @@ outcome1_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_cla_rate",
+                      inputId = "tbl_cla_rate",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_cla_rate")
@@ -356,7 +356,7 @@ outcome1_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_cin_rate",
+                      inputId = "tbl_cin_rate",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_cin_rate")
@@ -440,7 +440,7 @@ outcome1_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_cin_referral",
+                      inputId = "tbl_cin_referral",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_cin_referral")
@@ -984,7 +984,7 @@ outcome1_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_ks4",
+                      inputId = "tbl_ks4",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_ks4")
