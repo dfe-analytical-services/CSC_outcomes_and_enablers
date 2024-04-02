@@ -769,13 +769,63 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 #   return(joined)
 # }
 
+# Used this before the new function below
+# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
+#   read_data <- read.csv(file)
+#   # Call remove old la data function to remove the old
+#   # final_filtered_data <- remove_old_la_data(read_data)
+#   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
+#
+#   final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
+#   ceased_cla_data <- final_filtered_data %>%
+#     mutate(geo_breakdown = case_when(
+#       geographic_level == "National" ~ "National", # NA_character_,
+#       geographic_level == "Regional" ~ region_name,
+#       geographic_level == "Local authority" ~ la_name
+#     )) %>%
+#     mutate(number_num = case_when(
+#       number == "z" ~ NA,
+#       number == "x" ~ NA,
+#       number == "c" ~ NA,
+#       TRUE ~ as.numeric(number)
+#     )) %>%
+#     select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")
+#
+#   totals <- ceased_cla_data %>%
+#     filter(characteristic == "Total") %>%
+#     rename("Total_num" = "number_num") %>%
+#     mutate("Total" = number) %>%
+#     select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
+#
+#   joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
+#   joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
+#
+#   joined <- joined %>%
+#     mutate(perc = case_when(
+#       percentage == "z" ~ "z",
+#       percentage == "c" ~ "c",
+#       percentage == "k" ~ "k",
+#       percentage == "x" ~ "x",
+#       TRUE ~ as.character(perc)
+#     )) %>%
+#     mutate(`Ceased (%)` = case_when(
+#       percentage == "z" ~ NA,
+#       percentage == "c" ~ NA,
+#       percentage == "k" ~ NA,
+#       percentage == "x" ~ NA,
+#       TRUE ~ as.numeric(perc)
+#     ))
+#   return(joined)
+# }
+
+
+# read outcome 2 function but without manual calculation of the percentages.
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
-  read_data <- read.csv(file)
-  # Call remove old la data function to remove the old
-  # final_filtered_data <- remove_old_la_data(read_data)
+  # drop old LA's
+  outcome2_raw <- read.csv("data/la_children_who_ceased_during_the_year.csv")
   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
 
-  final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
+  final_filtered_data <- outcome2_raw %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
   ceased_cla_data <- final_filtered_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
@@ -788,7 +838,13 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       number == "c" ~ NA,
       TRUE ~ as.numeric(number)
     )) %>%
-    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")
+    mutate(`Ceased (%)` = case_when(
+      percentage == "z" ~ NA,
+      percentage == "c" ~ NA,
+      percentage == "k" ~ NA,
+      percentage == "x" ~ NA,
+      TRUE ~ as.numeric(percentage)
+    ))
 
   totals <- ceased_cla_data %>%
     filter(characteristic == "Total") %>%
@@ -797,32 +853,12 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
     select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
 
   joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
-  joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
-
   joined <- joined %>%
-    mutate(perc = case_when(
-      percentage == "z" ~ "z",
-      percentage == "c" ~ "c",
-      percentage == "k" ~ "k",
-      percentage == "x" ~ "x",
-      TRUE ~ as.character(perc)
-    )) %>%
-    mutate(`Ceased (%)` = case_when(
-      percentage == "z" ~ NA,
-      percentage == "c" ~ NA,
-      percentage == "k" ~ NA,
-      percentage == "x" ~ NA,
-      TRUE ~ as.numeric(perc)
-    ))
+    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "Total_num", "Total", "percentage", "Ceased (%)")
+  # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
+  # For charts, char values do not work so use column "Ceased (%)"
   return(joined)
 }
-
-
-# read outcome 2 function but without manual calculation of the percentages.
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
-#   #drop old LA's
-#
-# }
 
 
 # Statistical Neighbours ------------
