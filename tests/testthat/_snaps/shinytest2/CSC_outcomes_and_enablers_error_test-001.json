@@ -1,7 +1,11 @@
 {
   "input": {
-    "Yes_national": false,
-    "Yes_region": false,
+    "Yes_national_e2": false,
+    "Yes_national_o1": false,
+    "Yes_national_o2": false,
+    "Yes_region_e2": false,
+    "Yes_region_o1": false,
+    "Yes_region_o2": false,
     "absence_stats_toggle": "All local authorities",
     "agency_stats_toggle": "All local authorities",
     "attainment_extra_breakdown": "CINO at 31 March",
@@ -19,7 +23,7 @@
     "cookies-cookie_reject": 0,
     "enabler2_panels": "Workforce Stability",
     "geographic_breakdown_e2": "National",
-    "geographic_breakdown_o1": "",
+    "geographic_breakdown_o1": "East Midlands",
     "geographic_breakdown_o2": "National",
     "ks2_attainment_stats_toggle": "All local authorities",
     "ks4_attainment_stats_toggle": "All local authorities",
