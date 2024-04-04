@@ -4043,7 +4043,8 @@ server <- function(input, output, session) {
       columns = list(
         Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      defaultPageSize = 11
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
 
