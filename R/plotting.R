@@ -1567,14 +1567,37 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  filtered_data <- dataset %>%
+  data2 <- dataset %>%
     filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
-    select(geo_breakdown, `yvalue`) %>%
+    select(geo_breakdown, `percentage`) %>%
     mutate(
-      geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
     ) %>%
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " "))) %>%
-    arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+    rename_at("percentage", ~ str_to_title(str_replace_all(., "_", " "))) %>%
+    mutate(Percentage = case_when(
+      Percentage == "z" ~ -400,
+      Percentage == "c" ~ -100,
+      Percentage == "k" ~ -200,
+      Percentage == "x" ~ -300,
+      TRUE ~ as.numeric(Percentage)
+    )) # %>%
+  # arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+
+  filtered_data_sorted <- data2[order(data2$Percentage, decreasing = TRUE), ]
+}
+
+# Ordering tables with suppression
+cellfunc <- function(value) {
+  if (value == -100) {
+    "c"
+  } else if (value == -200) {
+    "k"
+  } else if (value == -300) {
+    "x"
+  } else if (value == -400) {
+    "z"
+  } else {
+    value
+  }
 }

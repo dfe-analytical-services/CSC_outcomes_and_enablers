@@ -3995,7 +3995,8 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_sgo",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_sgo_tbl")
+            # dataTableOutput("SN_sgo_tbl")
+            reactableOutput("SN_sgo_tbl")
           )
         ),
         details(
@@ -4021,16 +4022,28 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_sgo_tbl <- renderDataTable({
+  # output$SN_sgo_tbl <- renderDataTable({
+  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+  #
+  #   datatable(
+  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+  #     options = list(
+  #       scrollx = FALSE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
+
+  output$SN_sgo_tbl <- renderReactable({
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
-    datatable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
-      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+      columns = list(
+        Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11
     )
   })
 
@@ -4090,7 +4103,7 @@ server <- function(input, output, session) {
   output$SN_cao_tbl <- renderDataTable({
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     datatable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
       colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
       options = list(
         scrollx = FALSE,
