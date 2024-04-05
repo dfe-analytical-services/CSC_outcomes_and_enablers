@@ -4075,7 +4075,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cao",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_cao_tbl")
+            reactableOutput("SN_cao_tbl")
           )
         ),
         details(
@@ -4101,18 +4101,30 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_cao_tbl <- renderDataTable({
+  # output$SN_cao_tbl <- renderDataTable({
+  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+  #   datatable(
+  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+  #     options = list(
+  #       scrollx = FALSE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
+
+  output$SN_cao_tbl <- renderReactable({
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-    datatable(
+
+    reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
-      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
-
 
 
   ## Enabler 2 ------
