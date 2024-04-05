@@ -3770,7 +3770,7 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
+        plotlyOutput("UASC_SN_plot"),
         p("This is under development."),
         br(),
         details(
@@ -3793,9 +3793,41 @@ server <- function(input, output, session) {
   })
 
   # UASC stats neighbours chart and table here
-  #
-  #
-  #
+  output$UASC_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(
+      combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+      na.rm = TRUE
+    )
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    ggplotly(
+      statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "placement_per_10000", "Rate per 10,000 children", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # cla UASC stats neighbour tables
+  output$SN_uasc_tbl <- renderReactable({
+    #   filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
+    #
+    #   reactable(
+    #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+    #     columns = list(
+    #       `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+    #     ),
+    #     defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+    #     searchable = TRUE,
+    #   )
+  })
 
   ### CLA march -------
   output$SN_cla_march <- renderUI({

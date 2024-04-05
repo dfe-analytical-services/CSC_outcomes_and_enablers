@@ -1583,6 +1583,67 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     )
 }
 
+statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  neighbours_list <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
+    as.list()
+
+  colors <- c(
+    "Unaccompanied asylum-seeking children (Selected)" = "#28A197",
+    "Non-unaccompanied asylum-seeking children (Selected)" = "#12436D",
+    "Unaccompanied asylum-seeking children (Not Selected)" = "#28A1977F",
+    "Non-unaccompanied asylum-seeking children (Not Selected)" = "#12436D7F"
+  )
+
+  filtered_data <- dataset %>%
+    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(
+      population_count == "Children starting to be looked after each year",
+      characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
+    ) %>%
+    select(geo_breakdown, `yvalue`, characteristic) %>%
+    mutate(
+      geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours"),
+      characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
+    ) %>%
+    rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
+    levels = c(
+      "Unaccompanied asylum-seeking children (Selected)",
+      "Non-unaccompanied asylum-seeking children (Selected)",
+      "Unaccompanied asylum-seeking children (Not Selected)",
+      "Non-unaccompanied asylum-seeking children (Not Selected)"
+    )
+  ))) +
+    geom_bar(stat = "identity") +
+    # geom_col(position = position_dodge()) +
+    ylab(yaxis_title) +
+    xlab("") +
+    theme_classic() +
+    theme(
+      text = element_text(size = 12),
+      axis.title.y = element_text(margin = margin(r = 12)),
+      axis.line = element_line(size = 1.0),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    ) +
+    scale_y_continuous(limits = c(0, ylim_upper)) +
+    scale_fill_manual(
+      "UASC Status",
+      values = colors,
+      labels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    )
+}
+
+
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
   neighbours_list <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
