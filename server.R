@@ -353,7 +353,7 @@ server <- function(input, output, session) {
   })
 
   # Turnover Rate by LA table
-  output$table_turnover_la <- renderDataTable({
+  output$table_turnover_la <- renderDataTable({ # renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -370,7 +370,6 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, turnover_rate_fte) %>%
@@ -384,6 +383,27 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(turnover_rate_fte))
     }
+
+    # data2 <- data %>%
+    #   select(time_period, geo_breakdown, turnover_rate_fte) %>%
+    #   mutate(turnover_rate_fte = case_when(
+    #     turnover_rate_fte == "z" ~ -400,
+    #     turnover_rate_fte == "c" ~ -100,
+    #     turnover_rate_fte == "k" ~ -200,
+    #     turnover_rate_fte == "x" ~ -300,
+    #     TRUE ~ as.numeric(turnover_rate_fte)
+    #   )) %>%
+    #   arrange(desc(turnover_rate_fte)) %>%
+    #   rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Turnover Rate (FTE) %` = `turnover_rate_fte`)
+    #
+    # reactable(
+    #   data2,
+    #   columns = list(
+    #     `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+    #   ),
+    #   defaultPageSize = 15,
+    #   searchable = TRUE,
+    # )
 
     datatable(
       data,
