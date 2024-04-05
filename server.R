@@ -3771,14 +3771,14 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("UASC_SN_plot"),
-        p("This is under development."),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_uasc",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_uasc_tbl")
-            p("This is under development.")
+            reactableOutput("SN_uasc_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3817,16 +3817,16 @@ server <- function(input, output, session) {
 
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
-    #   filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
-    #
-    #   reactable(
-    #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
-    #     columns = list(
-    #       `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
-    #     ),
-    #     defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
-    #     searchable = TRUE,
-    #   )
+    filtered_data <- combined_cla_data %>% filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"))
+
+    reactable(
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+      columns = list(
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
   })
 
   ### CLA march -------
