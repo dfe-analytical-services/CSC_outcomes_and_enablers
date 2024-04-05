@@ -3482,7 +3482,7 @@ server <- function(input, output, session) {
   })
 
   # CAO by LA table
-  output$table_cao_la <- renderDataTable({
+  output$table_cao_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3513,14 +3513,35 @@ server <- function(input, output, session) {
         arrange(desc(perc))
     }
 
-    datatable(
-      data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data2 <- data %>%
+      select(time_period, geo_breakdown, characteristic, perc) %>%
+      mutate(perc = case_when(
+        perc == "z" ~ -400,
+        perc == "c" ~ -100,
+        perc == "k" ~ -200,
+        perc == "x" ~ -300,
+        TRUE ~ as.numeric(perc)
+      )) %>%
+      arrange(desc(perc)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `perc`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # ALL statistical neighbours -----
@@ -4072,7 +4093,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cao_ceased_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cao_la")
+            reactableOutput("table_cao_la")
           )
         ),
       )
