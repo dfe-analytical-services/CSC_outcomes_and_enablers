@@ -4189,7 +4189,8 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_turnover",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_turnover_tbl")
+            # dataTableOutput("SN_turnover_tbl")
+            reactableOutput("SN_turnover_tbl")
           )
         ),
         details(
@@ -4214,16 +4215,17 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_turnover_tbl <- renderDataTable({
-    datatable(
+  output$SN_turnover_tbl <- renderReactable({
+    reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte"),
-      colnames = c("Geographical breakdown", "Turnover rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
+
   ### Agency Rate ------
   output$SN_agency <- renderUI({
     if (input$agency_stats_toggle == "All local authorities") {
@@ -4251,7 +4253,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_agency",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_agency_tbl")
+            reactableOutput("SN_agency_tbl")
           )
         ),
         details(
@@ -4276,14 +4278,14 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_agency_tbl <- renderDataTable({
-    datatable(
+  output$SN_agency_tbl <- renderReactable({
+    reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte"),
-      colnames = c("Geographical breakdown", "Agency worker rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4315,7 +4317,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_vacancy",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_vacancy_tbl")
+            reactableOutput("SN_vacancy_tbl")
           )
         ),
         details(
@@ -4340,14 +4342,14 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_vacancy_tbl <- renderDataTable({
-    datatable(
+  output$SN_vacancy_tbl <- renderReactable({
+    reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
-      colnames = c("Geographical breakdown", "vacancy rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4378,7 +4380,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_caseload",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_caseload_tbl")
+            reactableOutput("SN_caseload_tbl")
           )
         ),
         details(
@@ -4403,16 +4405,18 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_caseload_tbl <- renderDataTable({
-    datatable(
+  output$SN_caseload_tbl <- renderReactable({
+    reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte"),
-      colnames = c("Geographical breakdown", "Average Caseload (FTE)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
+
+
 
 
 
