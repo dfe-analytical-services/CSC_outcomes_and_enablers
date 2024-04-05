@@ -70,18 +70,10 @@ outcome1_tab <- function() {
       gov_row(
         br(),
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_o1 == 'Northamptonshire')",
-        #   p("To view 2021 and onwards data select ", strong("North Northamptonshire"), "or", strong("West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
-        # ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_o1 == 'Poole')",
-        #   p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        # ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_o1 == 'Bournemouth')",
-        #   p("To view 2020 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        # ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_o1 == 'Cumbria')",
+          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        ),
       ),
       gov_row(
         br(),
@@ -173,7 +165,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     # br(),
                     # plotlyOutput("plot_cla_rate_la"),
                     # br(),
@@ -213,7 +205,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
+                    p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
                     plotlyOutput("plot_uasc_reg"),
                     br(),
@@ -229,7 +221,7 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Rate of children starting in care by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(combined_cla_data$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     # br(),
                     # plotlyOutput("plot_uasc_la"),
                     # br(),
@@ -299,8 +291,8 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Rate of children in care on 31 March by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cla_rates$time_period))),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
                     # plotlyOutput("plot_cla_march_la"),
                     # br(),
@@ -407,8 +399,8 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("CIN rates by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cin_rates$time_period))),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
                     # br(),
                     # plotlyOutput("plot_cin_rates_la"),
                     # br(),
@@ -488,19 +480,19 @@ outcome1_tab <- function() {
                   ),
                   gov_row(
                     h2("Re-referrals by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(cin_referrals$time_period))),
-                    br(),
-                    plotlyOutput("plot_cin_referral_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cin_referral_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_cin_referral_la")
-                      )
-                    ),
+                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
+                    #  br(),
+                    #  plotlyOutput("plot_cin_referral_la"),
+                    #  br(),
+                    # br(),
+                    # details(
+                    #  inputId = "tbl_cin_referral_la",
+                    #  label = "View chart as a table",
+                    #  help_text = (
+                    #  dataTableOutput("table_cin_referral_la")
+                    #  )
+                    #   ),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
                       label = NULL,
@@ -544,21 +536,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Persistent absentees for CINO at 31 March",
+                    title = "Persistent absentees for CINO at 31 March (overall absence 10% or more)",
                     value = htmlOutput("persistent_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Persistent absentees for CPPO at 31 March",
+                    title = "Persistent absentees for CPPO at 31 March (overall absence 10% or more)",
                     value = htmlOutput("persistent_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Persistent absentees for CLA 12 months on 31 March",
+                    title = "Persistent absentees for CLA 12 months on 31 March (overall absence 10% or more)",
                     value = htmlOutput("persistent_CLA_headline_txt")
                   )
                 ),
@@ -568,8 +560,9 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data for the following social care groups: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
-                  p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
+                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
+                  p("It also breakdowns the data by school type: total, primary, secondary (the headline boxes above show data for 'total' school type)."),
+                  p("Please use the dropdowns to select which social care group and school type you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "wellbeing_extra_breakdown",
                     label = "Select a social care group:",
@@ -577,7 +570,49 @@ outcome1_tab <- function() {
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
-                  )
+                  ),
+                  selectizeInput(
+                    inputId = "wellbeing_school_breakdown",
+                    label = "Select a school type:",
+                    choices = c("Total", "State-funded primary", "State-funded secondary"),
+                    selected = NULL,
+                    multiple = FALSE,
+                    options = NULL
+                  ),
+                  details(
+                    inputId = "social_definitions_info",
+                    label = "Social care group definitions:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                        tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                        tags$li("CLA 12 months refers to Children Looked After for 12 months (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
+                  details(
+                    inputId = "school_definitions_info",
+                    label = "School type information:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and pupil referall units."),
+                        tags$li("Breakdowns for special schools and pupil referall units are not available on the dashboard due to high levels of supression in the published local authority level data.
+                                You can view data for all breakdowns via the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes publication."), ),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
                 ),
                 br(),
               ),
@@ -609,6 +644,11 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
+                          tags$li(
+                            "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
+                                Unauthorised absence is absence without permission from the school. This includes all unexplained or unjustified absences and arrivals after registration has closed. For further information see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology."),
+                          ),
                           tags$li(
                             "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
@@ -644,8 +684,9 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Absence rate by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
-                    # br(),
+                    # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
+                    htmlOutput("outcome1_time_period_text"),
+                    br(),
                     # plotlyOutput("plot_absence_la"),
                     # br(),
                     # br(),
@@ -691,7 +732,10 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("A pupil enrolment is identified as persistently absent if they have missed 10% or more of their possible sessions in the year to date."),
+                          tags$li(
+                            "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology."),
+                          ),
                           tags$li(
                             "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
@@ -727,8 +771,9 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("Persistent absence rate by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_absence$time_period))),
-                    # br(),
+                    # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
+                    htmlOutput("outcome1_time_period_text_2"),
+                    br(),
                     # plotlyOutput("plot_persistent_absence_la"),
                     # br(),
                     # br(),
@@ -806,7 +851,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains three breakdowns of data for the following social care groups: Child in Need (CINO), Child Protection Plan (CPPO) and Children Looked After (CLA)."),
+                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
                   p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "attainment_extra_breakdown",
@@ -815,7 +860,24 @@ outcome1_tab <- function() {
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
-                  )
+                  ),
+                  details(
+                    inputId = "social_definitions_info_2",
+                    label = "Social care group definitions:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                        tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                        tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+                        )
+                      )
+                    )
+                  ),
                 ),
                 br(),
               ),
@@ -883,8 +945,9 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("KS2 attainment by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_ks2$time_period))),
-                    # br(),
+                    # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
+                    htmlOutput("outcome1_time_period_text_3"),
+                    br(),
                     # plotlyOutput("plot_KS2_la"),
                     # br(),
                     # br(),
@@ -968,8 +1031,9 @@ outcome1_tab <- function() {
                   gov_row(
                     h2("KS4 attainment by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(outcomes_ks4$time_period))),
-                    # br(),
+                    # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
+                    htmlOutput("outcome1_time_period_text_4"),
+                    br(),
                     # plotlyOutput("plot_KS4_la"),
                     # br(),
                     # br(),

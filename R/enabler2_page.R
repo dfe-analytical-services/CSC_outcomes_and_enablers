@@ -77,6 +77,14 @@ enabler2_tab <- function() {
           condition = "(input.geographic_breakdown_e2 == 'North Northamptonshire / West Northamptonshire')",
           p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
         ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e2 == 'Cumberland')",
+          p(" Only 2023 data is available for Cumberland, because Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e2 == 'Westmorland and Furness')",
+          p(" Only 2023 data is available for Westmorland and Furness, because Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        ),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
         #   p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
@@ -249,7 +257,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Agency rates by local authority"),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "agency_stats_toggle",
                       label = NULL,
@@ -317,7 +325,7 @@ enabler2_tab <- function() {
                   gov_row(
                     h2("Vacancy rates by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "vacancy_stats_toggle",
                       label = NULL,
@@ -398,7 +406,7 @@ enabler2_tab <- function() {
                   gov_row(
                     h2("Social worker caseloads by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     # br(),
                     # plotlyOutput("plot_caseload_la"),
                     # br(),
