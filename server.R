@@ -3588,15 +3588,13 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cla_SN_plot"),
         br(),
         details(
           inputId = "tbl_sn_cla",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cla_march_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cla_tbl")
           )
         ),
         details(
@@ -3611,9 +3609,38 @@ server <- function(input, output, session) {
   })
 
   # cla stats neighbours chart and table here
-  #
-  #
-  #
+  output$cla_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    ggplotly(
+      statistical_neighbours_plot(cla_rates, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # cla stats neighbour tables
+  output$SN_cla_tbl <- renderReactable({
+    filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
+
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+      columns = list(
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### UASC -------
   output$SN_uasc <- renderUI({
