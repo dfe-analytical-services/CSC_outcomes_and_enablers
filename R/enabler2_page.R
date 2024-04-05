@@ -40,7 +40,7 @@ enabler2_tab <- function() {
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_e2",
                   cb_labels = "Compare with National",
-                  checkboxIds = "Yes_national",
+                  checkboxIds = "Yes_national_e2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -54,7 +54,7 @@ enabler2_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e2",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region",
+                  checkboxIds = "Yes_region_e2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -78,21 +78,29 @@ enabler2_tab <- function() {
           p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
         ),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
-          p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          condition = "(input.geographic_breakdown_e2 == 'Cumberland')",
+          p(" Only 2023 data is available for Cumberland, because Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
-          p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+          condition = "(input.geographic_breakdown_e2 == 'Westmorland and Furness')",
+          p(" Only 2023 data is available for Westmorland and Furness, because Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Poole')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
-        conditionalPanel(
-          condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
-          p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
+        #   p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
+        #   p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Poole')",
+        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
+        # conditionalPanel(
+        #   condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
+        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
+        # ),
         # p(htmlOutput("enabler2_choice_text2")),
         br(),
         div(
@@ -151,7 +159,7 @@ enabler2_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_s_w_turnover",
+                      inputId = "tbl_s_w_turnover",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_s_w_turnover")
@@ -171,7 +179,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Turnover rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_turnover_reg"),
                     br(),
@@ -186,19 +194,15 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Turnover rates by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_turnover_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_turnover_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_turnover_la")
-                      )
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    # Radio button for Stats neighbours
+                    radioGroupButtons(
+                      "turnover_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
                     ),
+                    uiOutput("SN_turnover"),
                   ),
                 ),
                 accordion_panel(
@@ -213,7 +217,7 @@ enabler2_tab <- function() {
                     br(),
                     br(),
                     details(
-                      inputId = "table_agency_worker",
+                      inputId = "tbl_agency_worker",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_agency_worker")
@@ -238,7 +242,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Agency rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_agency_reg"),
                     br(),
@@ -253,19 +257,14 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Agency rates by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_agency_rate_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_agency_rate_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_agency_rate_la")
-                      )
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    radioGroupButtons(
+                      "agency_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
                     ),
+                    uiOutput("SN_agency"),
                   ),
                 ),
                 accordion_panel(
@@ -310,7 +309,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Vacancy rates by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_vacancy_reg"),
                     br(),
@@ -325,19 +324,15 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Vacancy rates by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_vacancy_rate_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_vacancy_rate_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_vacancy_rate_la")
-                      )
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    radioGroupButtons(
+                      "vacancy_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
                     ),
+                    uiOutput("SN_vacancy"),
                   ),
                 ),
                 open = FALSE
@@ -358,9 +353,6 @@ enabler2_tab <- function() {
                   ),
                 )
               ),
-              # fluidRow(
-              #   column(
-              #     width = 12,
               accordion(
                 accordion_panel(
                   "Social worker caseloads",
@@ -398,7 +390,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by region"),
-                    p("This is a static chart and will not react to geographical level and breakdown selected in the filters at the top."),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_caseload_reg"),
                     br(),
@@ -413,19 +405,26 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by local authority"),
-                    p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    p(sprintf("The graph represents data from %s.", max(workforce_data$time_period))),
-                    br(),
-                    plotlyOutput("plot_caseload_la"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_caseload_la",
-                      label = "View chart as a table",
-                      help_text = (
-                        dataTableOutput("table_caseload_la")
-                      )
-                    )
+                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    # br(),
+                    # plotlyOutput("plot_caseload_la"),
+                    # br(),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_caseload_la",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     dataTableOutput("table_caseload_la")
+                    #   )
+                    # )
+                    radioGroupButtons(
+                      "caseload_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_caseload"),
                   )
                 ),
                 open = FALSE
@@ -439,13 +438,6 @@ enabler2_tab <- function() {
                 br(),
               ),
               fluidRow(
-                # column(
-                # width = 6,
-                # value_box(
-                #  title = "Social Worker White Ethnic Group",
-                #  value = htmlOutput("white_ethnicity_txt")
-                # )
-                #  ),
                 column(
                   width = 6,
                   value_box(

@@ -32,6 +32,7 @@ shhh(library(bslib))
 shhh(library(reshape2))
 shhh(library(tidyverse))
 shhh(library(dfeshiny))
+shhh(library(shinyvalidate))
 
 # shhh(library(shinya11y))
 
@@ -87,41 +88,46 @@ google_analytics_key <- "Q13T4ENF6C"
 
 source("R/read_data.R")
 
-# read in the definitions data
-# NOT important
-definitions <- read_definitions()
-colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-definitions <- definitions[, 1:4]
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
+
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
-# Read in the workforce characteristics data
+# Read in the workforce characteristics data (Enabler 2)
 # workforce_char <- read_workforce_char_data()
-workforce_eth <- read_workforce_eth_data()
-workforce_eth_seniority <- read_workforce_eth_seniority_data()
-population_eth <- read_ethnic_population_data()
-combined_ethnicity_data <- merge_eth_dataframes()
-cla_rates <- read_cla_rate_data()
-cla_placements <- read_cla_placement_data()
-combined_cla_data <- merge_cla_dataframes()
+
+workforce_eth <- suppressWarnings(read_workforce_eth_data())
+workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
+population_eth <- suppressWarnings(read_ethnic_population_data())
+combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
+
+# Read in the CLA data (outcome 1)
+cla_rates <- suppressWarnings(read_cla_rate_data())
+cla_placements <- suppressWarnings(read_cla_placement_data())
+combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 # uasc_data <- test_uasc()
 
-# Read in the CIN  data
-cin_rates <- read_cin_rate_data()
-cin_referrals <- read_cin_referral_data()
+# Read in the CIN  data (outcome 1)
+cin_rates <- suppressWarnings(read_cin_rate_data())
+cin_referrals <- suppressWarnings(read_cin_referral_data())
 
+
+# Read in the outcomes data (outcome 1)
+outcomes_absence <- suppressWarnings(read_outcomes_absence_data())
+outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data())
+outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 
 # Read in outcome 2 data
-ceased_cla_data <- read_outcome2()
+ceased_cla_data <- suppressWarnings(read_outcome2())
+
+# Read in stats neighbours
+stats_neighbours <- head(statistical_neighbours(), 152)
 
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
 # choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
-
-# choices_geographic_level <- dropdown_choices %>% select(geographic_level) %>% distinct()
 
 dropdown_choices <- cla_rates # %>%
 #   mutate(geo_breakdown = case_when(
@@ -135,30 +141,30 @@ dropdown_choices <- cla_rates # %>%
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
 # Read in the data
-dfRevBal <- read_revenue_data()
-# Get geographical levels from data
-dfAreas <- dfRevBal %>%
-  select(
-    geographic_level, country_name, country_code,
-    region_name, region_code,
-    la_name, old_la_code, new_la_code
-  ) %>%
-  distinct()
-
-choicesLAs <- dfAreas %>%
-  filter(geographic_level == "Local authority") %>%
-  select(geographic_level, area_name = la_name) %>%
-  arrange(area_name)
-
-choicesAreas <- dfAreas %>%
-  filter(geographic_level == "National") %>%
-  select(geographic_level, area_name = country_name) %>%
-  rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
-  rbind(choicesLAs)
-
-choicesYears <- unique(dfRevBal$time_period)
-
-choicesPhase <- unique(dfRevBal$school_phase)
+# dfRevBal <- read_revenue_data()
+# # Get geographical levels from data
+# dfAreas <- dfRevBal %>%
+#   select(
+#     geographic_level, country_name, country_code,
+#     region_name, region_code,
+#     la_name, old_la_code, new_la_code
+#   ) %>%
+#   distinct()
+#
+# choicesLAs <- dfAreas %>%
+#   filter(geographic_level == "Local authority") %>%
+#   select(geographic_level, area_name = la_name) %>%
+#   arrange(area_name)
+#
+# choicesAreas <- dfAreas %>%
+#   filter(geographic_level == "National") %>%
+#   select(geographic_level, area_name = country_name) %>%
+#   rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
+#   rbind(choicesLAs)
+#
+# choicesYears <- unique(dfRevBal$time_period)
+#
+# choicesPhase <- unique(dfRevBal$school_phase)
 
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(

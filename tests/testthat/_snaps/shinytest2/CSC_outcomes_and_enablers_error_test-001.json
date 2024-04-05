@@ -23,14 +23,14 @@
     "cookies-cookie_reject": 0,
     "enabler2_panels": "Workforce Stability",
     "geographic_breakdown_e2": "National",
-    "geographic_breakdown_o1": "National",
+    "geographic_breakdown_o1": "East Midlands",
     "geographic_breakdown_o2": "National",
     "ks2_attainment_stats_toggle": "All local authorities",
     "ks4_attainment_stats_toggle": "All local authorities",
     "national_comparison_checkbox_e2": null,
     "national_comparison_checkbox_o1": null,
     "national_comparison_checkbox_o2": null,
-    "navlistPanel": "intro_panel",
+    "navlistPanel": "outcome1_page",
     "outcome1_panels": "Family Stability",
     "outcome2_panels": "Families engaging and receiving support from their family network",
     "persis_abs_stats_toggle": "All local authorities",
@@ -39,7 +39,7 @@
     "region_comparison_checkbox_o2": null,
     "remove": 0,
     "select_geography_e2": "National",
-    "select_geography_o1": "National",
+    "select_geography_o1": "Regional",
     "select_geography_o2": "National",
     "sgo_stats_toggle": "All local authorities",
     "turnover_stats_toggle": "All local authorities",
@@ -50,7 +50,11 @@
     "wellbeing_school_breakdown": "Total"
   },
   "output": {
-
+    "cla_march_rate_headline_txt": "66<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "cla_rate_headline_txt": "25<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "outcome1_choice_text1": "You have selected <b>Regional<\/b> level statistics for <b>East Midlands<\/b>.",
+    "outcome1_choice_text2": "",
+    "uasc_rate_headline_txt": "5<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>"
   },
   "export": {
 
