@@ -4253,12 +4253,15 @@ server <- function(input, output, session) {
 
   # KS2 attainment SN table
   output$SN_ks2_attain_tbl <- renderReactable({
-    data <- outcomes_ks2 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_ks2 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      select(-c("Expected standard reading writing maths (%)"))
+    data <- data %>% rename("Expected standard reading writing maths (%)" = "pt_rwm_met_expected_standard")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "pt_rwm_met_expected_standard"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)"),
       columns = list(
-        `Pt Rwm Met Expected Standard` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
