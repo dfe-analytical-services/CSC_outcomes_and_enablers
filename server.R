@@ -4193,8 +4193,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-  #
-  #
 
   ### KS2 attainment -------
   output$SN_ks2_attainment <- renderUI({
@@ -4217,15 +4215,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("ks2_attain_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks2",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_ks2_attain_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4239,10 +4237,34 @@ server <- function(input, output, session) {
     }
   })
 
-  # ks2 attainment stats neighbours chart and table here
-  #
-  #
-  #
+  # ks2 attainment stats neighbours chart
+  output$ks2_attain_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_ks2 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS2 attainment SN table
+  output$SN_ks2_attain_tbl <- renderReactable({
+    data <- outcomes_ks2 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "pt_rwm_met_expected_standard"),
+      columns = list(
+        `Pt Rwm Met Expected Standard` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### KS4 attainment ------
   output$SN_ks4_attainment <- renderUI({
@@ -4265,15 +4287,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("ks4_attain_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks4",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_ks4_attain_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4287,10 +4309,33 @@ server <- function(input, output, session) {
     }
   })
 
-  # ks4 attainment stats neighbours chart and table here
-  #
-  #
-  #
+  # ks4 attainment stats neighbours chart
+  output$ks4_attain_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_ks4 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS4 attainment SN table
+  output$SN_ks4_attain_tbl <- renderReactable({
+    data <- outcomes_ks4 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8"),
+      columns = list(
+        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ## Outcome 2 ------
   ### SGO ------------
