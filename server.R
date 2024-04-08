@@ -4054,8 +4054,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-  #
-  #
 
   ### school attendance -------
   output$SN_absence <- renderUI({
@@ -4078,15 +4076,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("absence_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("absence_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_absence",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_absence_tbl")
-            p("This is under development.")
+            reactableOutput("SN_absence_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4100,7 +4098,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # For some reason this does not produce a chart
+  # Absence SN plot
   output$absence_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -4112,16 +4110,17 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  # this doesn't produce anything either
-  output$SN_absence_tbl <- renderDataTable({
+  # Absence SN table
+  output$SN_absence_tbl <- renderReactable({
     filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
-    datatable(
+
+    reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
-      colnames = c("Geographical breakdown", "Overall absence (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
 
@@ -4146,15 +4145,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("persistent_absence_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_persistent_abs",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_persistent_absence_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4168,8 +4167,32 @@ server <- function(input, output, session) {
     }
   })
 
-  # persistent absence stats neighbours chart and table here
-  #
+  # persistent absence stats neighbours chart
+  output$persistent_absence_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Persistent Absence SN table
+  output$SN_persistent_absence_tbl <- renderReactable({
+    filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)"),
+      columns = list(
+        `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
   #
   #
 

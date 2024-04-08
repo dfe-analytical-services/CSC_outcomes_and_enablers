@@ -1556,7 +1556,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     as.list()
 
   filtered_data <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, `yvalue`) %>%
     mutate(
       geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -1651,7 +1651,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     as.list()
 
   data2 <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, `yvalue`) %>%
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
