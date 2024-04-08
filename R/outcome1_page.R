@@ -803,21 +803,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "CINO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CINO at 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "CPPO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CPPO at 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "CLA 12 months on 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CLA 12 months on 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CLA_headline_txt")
                   )
                 ),
@@ -827,21 +827,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CINO at 31 March",
+                    title = "Average attainment 8 for CINO at 31 March (KS4)",
                     value = htmlOutput("KS4_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CPPO at 31 March",
+                    title = "Average attainment 8 for CPPO at 31 March (KS4)",
                     value = htmlOutput("KS4_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CLA 12 months on 31 March",
+                    title = "Average attainment 8 for CLA 12 months on 31 March (KS4)",
                     value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),
@@ -883,9 +883,9 @@ outcome1_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Key stage 2",
+                  "Key Stage 2 (KS2)",
                   gov_row(
-                    h2("Key stage 2 attainment"),
+                    h2("Key Stage 2 attainment"),
                     p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
@@ -968,9 +968,9 @@ outcome1_tab <- function() {
                   ),
                 ),
                 accordion_panel(
-                  "Key stage 4",
+                  "Key Stage 4 (KS4)",
                   gov_row(
-                    h2("Key stage 4 attainment"),
+                    h2("Key Stage 4 attainment"),
                     p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
