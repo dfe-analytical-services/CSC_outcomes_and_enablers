@@ -4559,7 +4559,7 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4567,7 +4567,7 @@ server <- function(input, output, session) {
 
   output$SN_turnover_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte"),
       columns = list(
         `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4622,7 +4622,7 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4630,7 +4630,7 @@ server <- function(input, output, session) {
 
   output$SN_agency_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte"),
       columns = list(
         `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4686,7 +4686,7 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4694,7 +4694,7 @@ server <- function(input, output, session) {
 
   output$SN_vacancy_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte"),
       columns = list(
         `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4749,7 +4749,7 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4757,7 +4757,7 @@ server <- function(input, output, session) {
 
   output$SN_caseload_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte"),
       columns = list(
         `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),

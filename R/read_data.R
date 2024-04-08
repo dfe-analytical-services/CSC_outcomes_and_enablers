@@ -129,14 +129,29 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
     filter(new_la_code != "E10000009") %>%
     distinct()
 
-  workforce_data <- convert_perc_cols_to_numeric(workforce_data)
+  workforce_data2 <- suppressWarnings(workforce_data %>%
+    mutate(across(
+      .cols = grep("fte", colnames(workforce_data)),
+      .fns = ~ case_when(
+        . == "c" ~ -100,
+        . == "low" ~ 200,
+        . == "k" ~ -200,
+        . == "u" ~ -250,
+        . == "x" ~ -300,
+        . == "z" ~ -400,
+        TRUE ~ as.numeric(.)
+      ),
+      .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
+    )))
+
+  workforce_data3 <- convert_perc_cols_to_numeric(workforce_data2)
 
   # colnames(workforce_data) <- c("Geographic Level","Geographic Breakdown", "Turnover Rate (FTE) %", "Time Period", "Absence Rate (FTE) %",
   #                             "Agency Worker Rate (FTE) %", "Agency Cover Rate (FTE) %", "Vacancy Rate (FTE) %", "Vacancy Agency Cover Rate (FTE) %",
   #                             "Turnover Rate Headcount %", "Agency Worker Rate Headcount %", "Caseload (FTE)")
   #
   #
-  return(workforce_data)
+  return(workforce_data3)
 }
 
 
