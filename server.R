@@ -3985,9 +3985,6 @@ server <- function(input, output, session) {
     )
   })
 
-  #
-  #
-
   ### Repeat referrals ----------------------
   output$SN_cin_referral <- renderUI({
     if (input$cin_referral_stats_toggle == "All local authorities") {
@@ -4009,15 +4006,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cin_referral_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin_referral",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cin_referral_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4032,7 +4029,31 @@ server <- function(input, output, session) {
   })
 
   # cin referral stats neighbours chart and table here
-  #
+  output$cin_referral_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    ggplotly(
+      statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # # cin stats neighbours tables
+  output$SN_cin_referral_tbl <- renderReactable({
+    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    reactable(
+      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percent"),
+      columns = list(
+        `Re Referrals Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
   #
   #
 
