@@ -978,6 +978,14 @@ plot_uasc_reg <- function() {
 plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
   location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
 
+
+  colors <- c(
+    "Unaccompanied asylum-seeking children (Selected)" = "#28A197",
+    "Non-unaccompanied asylum-seeking children (Selected)" = "#12436D",
+    "Unaccompanied asylum-seeking children (Not Selected)" = "#28A1977F",
+    "Non-unaccompanied asylum-seeking children (Not Selected)" = "#12436D7F"
+  )
+
   if (selected_geo_lvl == "Local authority") {
     cla_data <- combined_cla_data %>%
       filter(
@@ -987,7 +995,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected"),
+        characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
       )
   } else if (selected_geo_lvl == "National") {
     cla_data <- combined_cla_data %>%
@@ -998,7 +1007,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
-        is_selected = "Not Selected"
+        is_selected = "Not Selected",
+        characteristic_selected = paste0(characteristic, " (Not Selected)")
       )
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
@@ -1022,7 +1032,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
-        is_selected = "Selected"
+        is_selected = "Selected",
+        characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
       )
   }
 
@@ -1036,8 +1047,16 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(x = geo_breakdown, y = placement_per_10000, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
-    geom_bar(stat = "identity", aes(alpha = is_selected)) +
+  # Use the new variable in the plot
+  p <- ggplot(cla_data, aes(x = geo_breakdown, y = placement_per_10000, fill = factor(characteristic_selected,
+    levels = c(
+      "Unaccompanied asylum-seeking children (Selected)",
+      "Non-unaccompanied asylum-seeking children (Selected)",
+      "Unaccompanied asylum-seeking children (Not Selected)",
+      "Non-unaccompanied asylum-seeking children (Not Selected)"
+    )
+  ))) +
+    geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("") +
     theme_classic() +
@@ -1049,15 +1068,18 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "UASC Status",
-      values = c("Unaccompanied asylum-seeking children" = "#28A197", "Non-unaccompanied asylum-seeking children" = "#12436D"),
-      labels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
-    ) +
-    scale_alpha_manual(values = c(0.5, 1)) +
-    guides(fill = guide_legend(override.aes = list(is_selected = "Selected")), alpha = FALSE)
+      values = colors,
+      labels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    )
 
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1)) + scale_alpha_manual(values = c(1))
+    p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1))
   } else {
     p <- p + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
   }
