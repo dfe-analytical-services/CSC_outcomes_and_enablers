@@ -1033,7 +1033,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       mutate(
         geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
         is_selected = "Selected",
-        characteristic_selected = paste0(characteristic, "_Selected")
+        characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
       )
   }
 

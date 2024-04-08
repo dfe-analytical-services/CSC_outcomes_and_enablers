@@ -43,7 +43,7 @@ outcome2_tab <- function() {
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o2",
                   cb_labels = "Compare with National",
-                  checkboxIds = "Yes_national",
+                  checkboxIds = "Yes_national_o2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -57,7 +57,7 @@ outcome2_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o2",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region",
+                  checkboxIds = "Yes_region_o2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -218,7 +218,7 @@ outcome2_tab <- function() {
                     plotlyOutput("plot_cao_ceased_reg"),
                     br(),
                     details(
-                      inputId = "table_cao_ceased_reg",
+                      inputId = "tbl_cao_ceased_reg",
                       label = "View chart as table",
                       help_text = (
                         dataTableOutput("table_cao_ceased_reg")
