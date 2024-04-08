@@ -3964,6 +3964,9 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
+    # renaming column
+    # data <- cin_rates %>% rename("CIN_rates_per_10000" = "CIN_rate")
+
     ggplotly(
       statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
         config(displayModeBar = F),
@@ -3975,10 +3978,13 @@ server <- function(input, output, session) {
   output$SN_cin_tbl <- renderReactable({
     # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
+    # renaming column
+    data <- cin_rates %>% rename("CIN_rate_per_10000" = "CIN_rate")
+
     reactable(
-      stats_neighbours_table(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate_per_10000"),
       columns = list(
-        `Cin Rate` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4045,10 +4051,12 @@ server <- function(input, output, session) {
   output$SN_cin_referral_tbl <- renderReactable({
     # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
+    data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
+
     reactable(
-      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percent"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)"),
       columns = list(
-        `Re Referrals Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
