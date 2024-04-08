@@ -3875,7 +3875,6 @@ server <- function(input, output, session) {
   })
 
   # cla march stats neighbours chart and table here
-  # cla stats neighbours chart and table here
   output$cla_march_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -3931,15 +3930,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cin_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cin_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3954,7 +3953,38 @@ server <- function(input, output, session) {
   })
 
   # cin stats neighbours chart and table here
-  #
+  output$cin_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    ggplotly(
+      statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # # cin stats neighbours tables
+  output$SN_cin_tbl <- renderReactable({
+    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    reactable(
+      stats_neighbours_table(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate"),
+      columns = list(
+        `Cin Rate` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
   #
   #
 
