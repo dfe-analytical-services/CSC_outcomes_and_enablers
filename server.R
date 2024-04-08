@@ -3819,12 +3819,14 @@ server <- function(input, output, session) {
 
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
-    filtered_data <- combined_cla_data %>% filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"))
+    filtered_data <- combined_cla_data %>%
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) %>%
+      rename("Placement rate per 10000" = "placement_per_10000")
 
     reactable(
-      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement rate per 10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placement Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,

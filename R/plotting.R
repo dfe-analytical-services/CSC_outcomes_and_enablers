@@ -1597,7 +1597,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   )
 
   filtered_data <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     filter(
       population_count == "Children starting to be looked after each year",
       characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
@@ -1675,7 +1675,7 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
     as.list()
 
   data2 <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == 2023, geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, characteristic, `yvalue`) %>%
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
