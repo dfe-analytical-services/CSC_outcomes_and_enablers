@@ -134,7 +134,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       .cols = grep("fte", colnames(workforce_data)),
       .fns = ~ case_when(
         . == "c" ~ -100,
-        . == "low" ~ 200,
+        . == "low" ~ -200,
         . == "k" ~ -200,
         . == "u" ~ -250,
         . == "x" ~ -300,
@@ -457,6 +457,15 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(`Rate Per 10000` = case_when(
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
+      TRUE ~ as.numeric(rate_per_10000)
+    )) %>%
     mutate(rate_per_10000 = case_when(
       rate_per_10000 == "z" ~ NA,
       rate_per_10000 == "x" ~ NA,
@@ -480,6 +489,15 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(Percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
     )) %>%
     mutate(percentage = case_when(
       percentage == "z" ~ NA,
@@ -521,7 +539,16 @@ merge_cla_dataframes <- function() {
   )
 
   merged_data <- merged_data %>%
-    mutate(placement_per_10000 = round((as.numeric(placements_number) / as.numeric(population_estimate)) * 10000, 0))
+    mutate(placement_per_10000 = round((as.numeric(placements_number) / as.numeric(population_estimate)) * 10000, 0)) %>%
+    mutate(`Placement Rate Per 10000` = case_when(
+      placements_number == "c" ~ -100,
+      placements_number == "low" ~ -200,
+      placements_number == "k" ~ -200,
+      placements_number == "u" ~ -250,
+      placements_number == "x" ~ -300,
+      placements_number == "z" ~ -400,
+      TRUE ~ as.numeric(placement_per_10000)
+    ))
 
 
   return(merged_data)
@@ -578,6 +605,15 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       Re_referrals_percent == "Z" ~ NA,
       Re_referrals_percent == "x" ~ NA,
       Re_referrals_percent == "c" ~ NA,
+      TRUE ~ as.numeric(Re_referrals_percent)
+    )) %>%
+    mutate(`Re-referrals (%)` = case_when(
+      Re_referrals_percent == "c" ~ -100,
+      Re_referrals_percent == "low" ~ -200,
+      Re_referrals_percent == "k" ~ -200,
+      Re_referrals_percent == "u" ~ -250,
+      Re_referrals_percent == "x" ~ -300,
+      Re_referrals_percent == "z" ~ -400,
       TRUE ~ as.numeric(Re_referrals_percent)
     )) %>%
     select(
@@ -705,7 +741,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
     ))
   return(joined)
 }
-
+# Outcome 1 again ----
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
   outcomes_absence_data <- read.csv(file)

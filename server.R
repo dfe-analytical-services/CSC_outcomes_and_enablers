@@ -3741,7 +3741,7 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
       columns = list(
         `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3820,11 +3820,11 @@ server <- function(input, output, session) {
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
-      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) %>%
-      rename("Placement rate per 10000" = "placement_per_10000")
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) # %>%
+    # rename("Placement rate per 10000" = "placement_per_10000")
 
     reactable(
-      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement rate per 10000"),
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000"),
       columns = list(
         `Placement Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3902,7 +3902,7 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
       columns = list(
         `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3966,9 +3966,6 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    # renaming column
-    # data <- cin_rates %>% rename("CIN_rates_per_10000" = "CIN_rate")
-
     ggplotly(
       statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
         config(displayModeBar = F),
@@ -3981,7 +3978,7 @@ server <- function(input, output, session) {
     # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
     # renaming column
-    data <- cin_rates %>% rename("CIN_rate_per_10000" = "CIN_rate")
+    data <- cin_rates %>% rename("CIN_rate_per_10000" = "At31_episodes_rate")
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate_per_10000"),
@@ -4053,10 +4050,10 @@ server <- function(input, output, session) {
   output$SN_cin_referral_tbl <- renderReactable({
     # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
-    data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
+    # data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)"),
+      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)"),
       columns = list(
         `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4122,7 +4119,9 @@ server <- function(input, output, session) {
   })
   # Absence SN table
   output$SN_absence_tbl <- renderReactable({
-    filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    filtered_data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`OA%` = `Overall absence (%)`, `Overall absence (%)` = `pt_overall`)
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
@@ -4192,7 +4191,9 @@ server <- function(input, output, session) {
 
   # Persistent Absence SN table
   output$SN_persistent_absence_tbl <- renderReactable({
-    filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    filtered_data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`PA%` = `Persistent absentees (%)`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)"),
@@ -4338,7 +4339,9 @@ server <- function(input, output, session) {
 
   # KS4 attainment SN table
   output$SN_ks4_attain_tbl <- renderReactable({
-    data <- outcomes_ks4 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_ks4 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`)
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8"),
