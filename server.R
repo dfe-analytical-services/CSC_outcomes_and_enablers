@@ -4124,7 +4124,7 @@ server <- function(input, output, session) {
       rename(`OA%` = `Overall absence (%)`, `Overall absence (%)` = `pt_overall`)
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "social_care_group", "Overall absence (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "social_care_group"),
       columns = list(
         `social_care_group` = colDef(name = "Social care group"), `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
