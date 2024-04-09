@@ -4253,7 +4253,7 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_ks2 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_ks2 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
 
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
@@ -4265,7 +4265,7 @@ server <- function(input, output, session) {
   # KS2 attainment SN table
   output$SN_ks2_attain_tbl <- renderReactable({
     data <- outcomes_ks2 %>%
-      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
       select(-c("Expected standard reading writing maths (%)"))
     data <- data %>% rename("Expected standard reading writing maths (%)" = "pt_rwm_met_expected_standard")
 
@@ -4328,7 +4328,7 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_ks4 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_ks4 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
 
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", 100) %>%
@@ -4340,7 +4340,7 @@ server <- function(input, output, session) {
   # KS4 attainment SN table
   output$SN_ks4_attain_tbl <- renderReactable({
     data <- outcomes_ks4 %>%
-      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
       rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`)
 
     reactable(
