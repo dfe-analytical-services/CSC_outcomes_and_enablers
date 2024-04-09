@@ -475,7 +475,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
     # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, population_count, population_estimate, number, rate_per_10000) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, population_count, population_estimate, number, rate_per_10000, `Rate Per 10000`) %>%
     distinct()
 
 
@@ -619,7 +619,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
     )) %>%
     select(
       time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name,
-      Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage
+      Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage, `Re-referrals (%)`
     ) %>%
     distinct()
 
