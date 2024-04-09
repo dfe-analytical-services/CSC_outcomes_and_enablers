@@ -33,6 +33,7 @@ shhh(library(reshape2))
 shhh(library(tidyverse))
 shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
+shhh(library(reactable))
 
 # shhh(library(shinya11y))
 
