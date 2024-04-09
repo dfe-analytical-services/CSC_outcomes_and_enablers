@@ -3630,27 +3630,27 @@ server <- function(input, output, session) {
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, perc) %>%
-      mutate(perc = case_when(
-        perc == "z" ~ -400,
-        perc == "c" ~ -100,
-        perc == "k" ~ -200,
-        perc == "x" ~ -300,
-        TRUE ~ as.numeric(perc)
-      )) %>%
-      arrange(desc(perc)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `perc`)
+      select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+      # mutate(perc = case_when(
+      #   perc == "z" ~ -400,
+      #   perc == "c" ~ -100,
+      #   perc == "k" ~ -200,
+      #   perc == "x" ~ -300,
+      #   TRUE ~ as.numeric(perc)
+      # )) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `Ceased (%)`)
 
     reactable(
       data2,
@@ -4503,9 +4503,9 @@ server <- function(input, output, session) {
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
       columns = list(
-        Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,

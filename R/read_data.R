@@ -696,7 +696,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 #   return(joined)
 # }
 
-#read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
+# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
 #  read_data <- read.csv(file)
 #  # Call remove old la data function to remove the old
 #  # final_filtered_data <- remove_old_la_data(read_data)
@@ -742,9 +742,8 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 #      TRUE ~ as.numeric(perc)
 #    ))
 #  return(joined)
-#}
-                   
-# Outcome 1 -----
+# }
+
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
   outcomes_absence_data <- read.csv(file)
@@ -940,10 +939,12 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       TRUE ~ as.numeric(number)
     )) %>%
     mutate(`Ceased (%)` = case_when(
-      percentage == "z" ~ NA,
-      percentage == "c" ~ NA,
-      percentage == "k" ~ NA,
-      percentage == "x" ~ NA,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     ))
 
