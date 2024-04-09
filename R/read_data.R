@@ -129,14 +129,29 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
     filter(new_la_code != "E10000009") %>%
     distinct()
 
-  workforce_data <- convert_perc_cols_to_numeric(workforce_data)
+  workforce_data2 <- suppressWarnings(workforce_data %>%
+    mutate(across(
+      .cols = grep("fte", colnames(workforce_data)),
+      .fns = ~ case_when(
+        . == "c" ~ -100,
+        . == "low" ~ -200,
+        . == "k" ~ -200,
+        . == "u" ~ -250,
+        . == "x" ~ -300,
+        . == "z" ~ -400,
+        TRUE ~ as.numeric(.)
+      ),
+      .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
+    )))
+
+  workforce_data3 <- convert_perc_cols_to_numeric(workforce_data2)
 
   # colnames(workforce_data) <- c("Geographic Level","Geographic Breakdown", "Turnover Rate (FTE) %", "Time Period", "Absence Rate (FTE) %",
   #                             "Agency Worker Rate (FTE) %", "Agency Cover Rate (FTE) %", "Vacancy Rate (FTE) %", "Vacancy Agency Cover Rate (FTE) %",
   #                             "Turnover Rate Headcount %", "Agency Worker Rate Headcount %", "Caseload (FTE)")
   #
   #
-  return(workforce_data)
+  return(workforce_data3)
 }
 
 
@@ -443,6 +458,15 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(`Rate Per 10000` = case_when(
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
+      TRUE ~ as.numeric(rate_per_10000)
+    )) %>%
     mutate(rate_per_10000 = case_when(
       rate_per_10000 == "z" ~ NA,
       rate_per_10000 == "x" ~ NA,
@@ -466,6 +490,15 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(Percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
     )) %>%
     mutate(percentage = case_when(
       percentage == "z" ~ NA,
@@ -507,7 +540,16 @@ merge_cla_dataframes <- function() {
   )
 
   merged_data <- merged_data %>%
-    mutate(placement_per_10000 = round((as.numeric(placements_number) / as.numeric(population_estimate)) * 10000, 0))
+    mutate(placement_per_10000 = round((as.numeric(placements_number) / as.numeric(population_estimate)) * 10000, 0)) %>%
+    mutate(`Placement Rate Per 10000` = case_when(
+      placements_number == "c" ~ -100,
+      placements_number == "low" ~ -200,
+      placements_number == "k" ~ -200,
+      placements_number == "u" ~ -250,
+      placements_number == "x" ~ -300,
+      placements_number == "z" ~ -400,
+      TRUE ~ as.numeric(placement_per_10000)
+    ))
 
 
   return(merged_data)
@@ -566,6 +608,15 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       Re_referrals_percent == "c" ~ NA,
       TRUE ~ as.numeric(Re_referrals_percent)
     )) %>%
+    mutate(`Re-referrals (%)` = case_when(
+      Re_referrals_percent == "c" ~ -100,
+      Re_referrals_percent == "low" ~ -200,
+      Re_referrals_percent == "k" ~ -200,
+      Re_referrals_percent == "u" ~ -250,
+      Re_referrals_percent == "x" ~ -300,
+      Re_referrals_percent == "z" ~ -400,
+      TRUE ~ as.numeric(Re_referrals_percent)
+    )) %>%
     select(
       time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name,
       Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage
@@ -588,6 +639,110 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 
   return(cin_referral_data)
 }
+
+# Outcome 2
+# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
+#   ceased_cla_data <- read.csv(file)
+#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
+#     geographic_level == "National" ~ "National",#NA_character_,
+#     geographic_level == "Regional" ~ region_name,
+#     geographic_level == "Local authority" ~ la_name
+#   )) %>%
+#     mutate(number = case_when(
+#       number == "z" ~ NA,
+#       number == "x"  ~ NA,
+#       number == "c"  ~ NA,
+#       TRUE ~ as.numeric(number)
+#     )) %>%
+#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
+# }
+# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
+#   ceased_cla_data <- read.csv(file)
+#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
+#     geographic_level == "National" ~ "National",#NA_character_,
+#     geographic_level == "Regional" ~ region_name,
+#     geographic_level == "Local authority" ~ la_name
+#   )) %>%
+#     mutate(number = case_when(
+#       number == "z" ~ NA,
+#       number == "x"  ~ NA,
+#       number == "c"  ~ NA,
+#       TRUE ~ as.numeric(number)
+#     )) %>%
+#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
+#
+#   totals <- ceased_cla_data %>% filter(characteristic == "Total" & cla_group == "Reason episode ceased") %>%
+#     rename("Total" = "number") %>%
+#     select(time_period, geographic_level, geo_breakdown, cla_group, Total)
+#
+#
+#   test<- ceased_cla_data %>% filter(cla_group == "Reason episode ceased" & characteristic != "Total")
+#
+#   joined <- left_join(test, totals, by = c("time_period", "geographic_level","geo_breakdown", "cla_group"))
+#   joined$perc <- round((joined$number/joined$Total)*100, digits = 1)
+#   joined <- joined %>% mutate(perc = case_when(
+#     percentage == "z" ~ "z",
+#     percentage == "c" ~ "c",
+#     percentage == "k" ~ "k",
+#     percentage == "x" ~ "x",
+#     TRUE ~ as.character(perc))) %>% mutate(`Percentage ceased %` = case_when(
+#       percentage == "z" ~ NA,
+#       percentage == "c" ~ NA,
+#       percentage == "k" ~ NA,
+#       percentage == "x" ~ NA,
+#       TRUE ~ as.numeric(perc)
+#     ))
+#
+#   return(joined)
+# }
+
+# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
+#  read_data <- read.csv(file)
+#  # Call remove old la data function to remove the old
+#  # final_filtered_data <- remove_old_la_data(read_data)
+#  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
+#
+#  final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
+#  ceased_cla_data <- final_filtered_data %>%
+#    mutate(geo_breakdown = case_when(
+#      geographic_level == "National" ~ "National", # NA_character_,
+#      geographic_level == "Regional" ~ region_name,
+#      geographic_level == "Local authority" ~ la_name
+#    )) %>%
+#    mutate(number_num = case_when(
+#      number == "z" ~ NA,
+#      number == "x" ~ NA,
+#      number == "c" ~ NA,
+#      TRUE ~ as.numeric(number)
+#    )) %>%
+#    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")#
+#
+#  totals <- ceased_cla_data %>%
+#    filter(characteristic == "Total") %>%
+#    rename("Total_num" = "number_num") %>%
+#    mutate("Total" = number) %>%
+#    select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
+#
+#  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
+#  joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
+#
+#  joined <- joined %>%
+#    mutate(perc = case_when(
+#      percentage == "z" ~ "z",
+#      percentage == "c" ~ "c",
+#      percentage == "k" ~ "k",
+#      percentage == "x" ~ "x",
+#      TRUE ~ as.character(perc)
+#    )) %>%
+#    mutate(`Ceased (%)` = case_when(
+#      percentage == "z" ~ NA,
+#      percentage == "c" ~ NA,
+#      percentage == "k" ~ NA,
+#      percentage == "x" ~ NA,
+#      TRUE ~ as.numeric(perc)
+#    ))
+#  return(joined)
+# }
 
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
@@ -714,61 +869,6 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 
 
 # Outcome 2 ----
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
-#   ceased_cla_data <- read.csv(file)
-#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#     mutate(number = case_when(
-#       number == "z" ~ NA,
-#       number == "x"  ~ NA,
-#       number == "c"  ~ NA,
-#       TRUE ~ as.numeric(number)
-#     )) %>%
-#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
-# }
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
-#   ceased_cla_data <- read.csv(file)
-#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#     mutate(number = case_when(
-#       number == "z" ~ NA,
-#       number == "x"  ~ NA,
-#       number == "c"  ~ NA,
-#       TRUE ~ as.numeric(number)
-#     )) %>%
-#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
-#
-#   totals <- ceased_cla_data %>% filter(characteristic == "Total" & cla_group == "Reason episode ceased") %>%
-#     rename("Total" = "number") %>%
-#     select(time_period, geographic_level, geo_breakdown, cla_group, Total)
-#
-#
-#   test<- ceased_cla_data %>% filter(cla_group == "Reason episode ceased" & characteristic != "Total")
-#
-#   joined <- left_join(test, totals, by = c("time_period", "geographic_level","geo_breakdown", "cla_group"))
-#   joined$perc <- round((joined$number/joined$Total)*100, digits = 1)
-#   joined <- joined %>% mutate(perc = case_when(
-#     percentage == "z" ~ "z",
-#     percentage == "c" ~ "c",
-#     percentage == "k" ~ "k",
-#     percentage == "x" ~ "x",
-#     TRUE ~ as.character(perc))) %>% mutate(`Percentage ceased %` = case_when(
-#       percentage == "z" ~ NA,
-#       percentage == "c" ~ NA,
-#       percentage == "k" ~ NA,
-#       percentage == "x" ~ NA,
-#       TRUE ~ as.numeric(perc)
-#     ))
-#
-#   return(joined)
-# }
-
 # Used this before the new function below
 # read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
 #   read_data <- read.csv(file)
@@ -839,10 +939,12 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       TRUE ~ as.numeric(number)
     )) %>%
     mutate(`Ceased (%)` = case_when(
-      percentage == "z" ~ NA,
-      percentage == "c" ~ NA,
-      percentage == "k" ~ NA,
-      percentage == "x" ~ NA,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     ))
 

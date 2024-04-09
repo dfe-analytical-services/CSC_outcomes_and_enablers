@@ -353,7 +353,7 @@ server <- function(input, output, session) {
   })
 
   # Turnover Rate by LA table
-  output$table_turnover_la <- renderDataTable({
+  output$table_turnover_la <- renderDataTable({ # renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -370,7 +370,6 @@ server <- function(input, output, session) {
           filter(region_name == input$geographic_breakdown_e2) %>%
           pull(la_name)
       }
-
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, turnover_rate_fte) %>%
@@ -384,6 +383,27 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(turnover_rate_fte))
     }
+
+    # data2 <- data %>%
+    #   select(time_period, geo_breakdown, turnover_rate_fte) %>%
+    #   mutate(turnover_rate_fte = case_when(
+    #     turnover_rate_fte == "z" ~ -400,
+    #     turnover_rate_fte == "c" ~ -100,
+    #     turnover_rate_fte == "k" ~ -200,
+    #     turnover_rate_fte == "x" ~ -300,
+    #     TRUE ~ as.numeric(turnover_rate_fte)
+    #   )) %>%
+    #   arrange(desc(turnover_rate_fte)) %>%
+    #   rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Turnover Rate (FTE) %` = `turnover_rate_fte`)
+    #
+    # reactable(
+    #   data2,
+    #   columns = list(
+    #     `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+    #   ),
+    #   defaultPageSize = 15,
+    #   searchable = TRUE,
+    # )
 
     datatable(
       data,
@@ -3390,7 +3410,7 @@ server <- function(input, output, session) {
   })
 
   # Special Guardianship orders by LA table
-  output$table_sgo_la <- renderDataTable({
+  output$table_sgo_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3421,13 +3441,25 @@ server <- function(input, output, session) {
         arrange(desc(percentage))
     }
 
-    datatable(
-      data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data2 <- data %>%
+      select(time_period, geo_breakdown, characteristic, perc) %>%
+      mutate(perc = case_when(
+        perc == "z" ~ -400,
+        perc == "c" ~ -100,
+        perc == "k" ~ -200,
+        perc == "x" ~ -300,
+        TRUE ~ as.numeric(perc)
+      )) %>%
+      arrange(desc(perc)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `perc`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
     )
   })
 
@@ -3577,7 +3609,7 @@ server <- function(input, output, session) {
   })
 
   # CAO by LA table
-  output$table_cao_la <- renderDataTable({
+  output$table_cao_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3598,24 +3630,45 @@ server <- function(input, output, session) {
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     }
 
-    datatable(
-      data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data2 <- data %>%
+      select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
+      # mutate(perc = case_when(
+      #   perc == "z" ~ -400,
+      #   perc == "c" ~ -100,
+      #   perc == "k" ~ -200,
+      #   perc == "x" ~ -300,
+      #   TRUE ~ as.numeric(perc)
+      # )) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `Ceased (%)`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # ALL statistical neighbours -----
@@ -3642,15 +3695,13 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cla_SN_plot"),
         br(),
         details(
           inputId = "tbl_sn_cla",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cla_march_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cla_tbl")
           )
         ),
         details(
@@ -3665,9 +3716,40 @@ server <- function(input, output, session) {
   })
 
   # cla stats neighbours chart and table here
-  #
-  #
-  #
+  output$cla_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
+
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # cla stats neighbour tables
+  output$SN_cla_tbl <- renderReactable({
+    filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
+
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
+      columns = list(
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### UASC -------
   output$SN_uasc <- renderUI({
@@ -3690,15 +3772,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("UASC_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_uasc",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_uasc_tbl")
-            p("This is under development.")
+            reactableOutput("SN_uasc_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3713,9 +3795,43 @@ server <- function(input, output, session) {
   })
 
   # UASC stats neighbours chart and table here
-  #
-  #
-  #
+  output$UASC_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(
+      combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+      na.rm = TRUE
+    )
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    ggplotly(
+      statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "placement_per_10000", "Rate per 10,000 children", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # cla UASC stats neighbour tables
+  output$SN_uasc_tbl <- renderReactable({
+    filtered_data <- combined_cla_data %>%
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) # %>%
+    # rename("Placement rate per 10000" = "placement_per_10000")
+
+    reactable(
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000"),
+      columns = list(
+        `Placement Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ### CLA march -------
   output$SN_cla_march <- renderUI({
@@ -3738,15 +3854,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cla_march_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cla_march",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cla_march_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cla_march_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3761,10 +3877,39 @@ server <- function(input, output, session) {
   })
 
   # cla march stats neighbours chart and table here
-  #
-  #
-  #
+  output$cla_march_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
 
+    # Set the max y-axis scale
+    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # # cla March stats neighbour tables
+  output$SN_cla_march_tbl <- renderReactable({
+    filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
+      columns = list(
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ### CIN -------
   output$SN_cin <- renderUI({
@@ -3787,15 +3932,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cin_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cin_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3810,9 +3955,40 @@ server <- function(input, output, session) {
   })
 
   # cin stats neighbours chart and table here
-  #
-  #
-  #
+  output$cin_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    ggplotly(
+      statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # # cin stats neighbours tables
+  output$SN_cin_tbl <- renderReactable({
+    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    # renaming column
+    data <- cin_rates %>% rename("CIN_rate_per_10000" = "At31_episodes_rate")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate_per_10000"),
+      columns = list(
+        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ### Repeat referrals ----------------------
   output$SN_cin_referral <- renderUI({
@@ -3835,15 +4011,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("cin_referral_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin_referral",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_cin_referral_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3858,9 +4034,33 @@ server <- function(input, output, session) {
   })
 
   # cin referral stats neighbours chart and table here
-  #
-  #
-  #
+  output$cin_referral_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    ggplotly(
+      statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # # cin stats neighbours tables
+  output$SN_cin_referral_tbl <- renderReactable({
+    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+
+    # data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
+
+    reactable(
+      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)"),
+      columns = list(
+        `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ### school attendance -------
   output$SN_absence <- renderUI({
@@ -3883,15 +4083,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("absence_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("absence_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_absence",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_absence_tbl")
-            p("This is under development.")
+            reactableOutput("SN_absence_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3905,7 +4105,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # For some reason this does not produce a chart
+  # Absence SN plot
   output$absence_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -3917,16 +4117,19 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  # this doesn't produce anything either
-  output$SN_absence_tbl <- renderDataTable({
-    filtered_data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
-    datatable(
+  # Absence SN table
+  output$SN_absence_tbl <- renderReactable({
+    filtered_data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`OA%` = `Overall absence (%)`, `Overall absence (%)` = `pt_overall`)
+
+    reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
-      colnames = c("Geographical breakdown", "Overall absence (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
 
@@ -3951,15 +4154,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("persistent_absence_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_persistent_abs",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_persistent_absence_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -3973,10 +4176,34 @@ server <- function(input, output, session) {
     }
   })
 
-  # persistent absence stats neighbours chart and table here
-  #
-  #
-  #
+  # persistent absence stats neighbours chart
+  output$persistent_absence_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # Persistent Absence SN table
+  output$SN_persistent_absence_tbl <- renderReactable({
+    filtered_data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`PA%` = `Persistent absentees (%)`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
+
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)"),
+      columns = list(
+        `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ### KS2 attainment -------
   output$SN_ks2_attainment <- renderUI({
@@ -3999,15 +4226,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("ks2_attain_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks2",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_ks2_attain_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4021,10 +4248,37 @@ server <- function(input, output, session) {
     }
   })
 
-  # ks2 attainment stats neighbours chart and table here
-  #
-  #
-  #
+  # ks2 attainment stats neighbours chart
+  output$ks2_attain_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_ks2 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS2 attainment SN table
+  output$SN_ks2_attain_tbl <- renderReactable({
+    data <- outcomes_ks2 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      select(-c("Expected standard reading writing maths (%)"))
+    data <- data %>% rename("Expected standard reading writing maths (%)" = "pt_rwm_met_expected_standard")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)"),
+      columns = list(
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### KS4 attainment ------
   output$SN_ks4_attainment <- renderUI({
@@ -4047,15 +4301,15 @@ server <- function(input, output, session) {
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("cla_march_SN_plot"),
-        p("This is under development."),
+        plotlyOutput("ks4_attain_SN_plot"),
+        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks4",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_cin_tbl")
-            p("This is under development.")
+            reactableOutput("SN_ks4_attain_tbl")
+            # p("This is under development.")
           )
         ),
         details(
@@ -4069,10 +4323,35 @@ server <- function(input, output, session) {
     }
   })
 
-  # ks4 attainment stats neighbours chart and table here
-  #
-  #
-  #
+  # ks4 attainment stats neighbours chart
+  output$ks4_attain_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- outcomes_ks4 %>% filter(social_care_group %in% input$wellbeing_extra_breakdown)
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # KS4 attainment SN table
+  output$SN_ks4_attain_tbl <- renderReactable({
+    data <- outcomes_ks4 %>%
+      filter(social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8"),
+      columns = list(
+        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
   ## Outcome 2 ------
   ### SGO ------------
@@ -4087,7 +4366,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sgo_ceased_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_sgo_la")
+            reactableOutput("table_sgo_la")
           )
         ),
       )
@@ -4102,7 +4381,8 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_sgo",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_sgo_tbl")
+            # dataTableOutput("SN_sgo_tbl")
+            reactableOutput("SN_sgo_tbl")
           )
         ),
         details(
@@ -4128,16 +4408,29 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_sgo_tbl <- renderDataTable({
+  # output$SN_sgo_tbl <- renderDataTable({
+  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+  #
+  #   datatable(
+  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+  #     options = list(
+  #       scrollx = FALSE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
+
+  output$SN_sgo_tbl <- renderReactable({
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
-    datatable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
-      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+    reactable(
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+      columns = list(
+        Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
 
@@ -4153,7 +4446,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cao_ceased_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cao_la")
+            reactableOutput("table_cao_la")
           )
         ),
       )
@@ -4168,7 +4461,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cao",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_cao_tbl")
+            reactableOutput("SN_cao_tbl")
           )
         ),
         details(
@@ -4194,18 +4487,30 @@ server <- function(input, output, session) {
     )
   })
 
-  output$SN_cao_tbl <- renderDataTable({
+  # output$SN_cao_tbl <- renderDataTable({
+  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+  #   datatable(
+  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
+  #     options = list(
+  #       scrollx = FALSE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
+
+  output$SN_cao_tbl <- renderReactable({
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-    datatable(
+
+    reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
-      colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+      columns = list(
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
     )
   })
-
 
 
   ## Enabler 2 ------
@@ -4237,7 +4542,8 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_turnover",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_turnover_tbl")
+            # dataTableOutput("SN_turnover_tbl")
+            reactableOutput("SN_turnover_tbl")
           )
         ),
         details(
@@ -4256,22 +4562,23 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte", "Turnover Rate %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  output$SN_turnover_tbl <- renderDataTable({
-    datatable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "turnover_rate_fte"),
-      colnames = c("Geographical breakdown", "Turnover rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+  output$SN_turnover_tbl <- renderReactable({
+    reactable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte"),
+      columns = list(
+        `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
+
   ### Agency Rate ------
   output$SN_agency <- renderUI({
     if (input$agency_stats_toggle == "All local authorities") {
@@ -4299,7 +4606,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_agency",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_agency_tbl")
+            reactableOutput("SN_agency_tbl")
           )
         ),
         details(
@@ -4318,20 +4625,20 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte", "Agency worker rate (FTE) %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  output$SN_agency_tbl <- renderDataTable({
-    datatable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "agency_rate_fte"),
-      colnames = c("Geographical breakdown", "Agency worker rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+  output$SN_agency_tbl <- renderReactable({
+    reactable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte"),
+      columns = list(
+        `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4363,7 +4670,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_vacancy",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_vacancy_tbl")
+            reactableOutput("SN_vacancy_tbl")
           )
         ),
         details(
@@ -4382,20 +4689,20 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte", "Vacancy rate (FTE) %", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  output$SN_vacancy_tbl <- renderDataTable({
-    datatable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "vacancy_rate_fte"),
-      colnames = c("Geographical breakdown", "Vacancy rate (FTE) %", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+  output$SN_vacancy_tbl <- renderReactable({
+    reactable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte"),
+      columns = list(
+        `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4426,7 +4733,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_caseload",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("SN_caseload_tbl")
+            reactableOutput("SN_caseload_tbl")
           )
         ),
         details(
@@ -4445,22 +4752,24 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     ggplotly(
-      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte", "Average Caseload (FTE)", 100) %>%
+      statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  output$SN_caseload_tbl <- renderDataTable({
-    datatable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "caseload_fte"),
-      colnames = c("Geographical breakdown", "Average Caseload (FTE)", "LA Selection"),
-      options = list(
-        scrollx = FALSE,
-        paging = FALSE
-      )
+  output$SN_caseload_tbl <- renderReactable({
+    reactable(
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte"),
+      columns = list(
+        `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
+
+
 
 
 
