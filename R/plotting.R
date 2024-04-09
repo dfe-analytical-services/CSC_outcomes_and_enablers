@@ -1644,7 +1644,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
 }
 
 
-stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
+stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn, yvalue) {
   neighbours_list <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
@@ -1652,7 +1652,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
 
   data2 <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
-    select(geo_breakdown, `yvalue`) %>%
+    select(geo_breakdown, `selectedcolumn`, `yvalue`) %>%
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
     ) %>%
