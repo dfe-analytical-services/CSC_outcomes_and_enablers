@@ -200,7 +200,7 @@ outcome2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to child Arrangement Order (CAO)",
+                  "Percentage of children who cease being looked after due to Child Arrangement Order (CAO)",
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
@@ -217,7 +217,7 @@ outcome2_tab <- function() {
                       )
                     ),
                     details(
-                      inputId = "sgo_info",
+                      inputId = "cao_info",
                       label = "Additional information:",
                       help_text = (
                         p(
