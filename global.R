@@ -122,6 +122,9 @@ outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 # Read in outcome 2 data
 ceased_cla_data <- suppressWarnings(read_outcome2())
 
+# Read in outcome 3 data
+cpp_in_year <- suppressWarnings(read_cpp_in_year_data())
+
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 
