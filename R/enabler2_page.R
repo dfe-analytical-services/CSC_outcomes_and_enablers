@@ -40,7 +40,7 @@ enabler2_tab <- function() {
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_e2",
                   cb_labels = "Compare with National",
-                  checkboxIds = "Yes_national",
+                  checkboxIds = "Yes_national_e2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -54,7 +54,7 @@ enabler2_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e2",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region",
+                  checkboxIds = "Yes_region_e2",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -159,7 +159,7 @@ enabler2_tab <- function() {
                     br(),
                     # Expandable for the table alternative
                     details(
-                      inputId = "table_s_w_turnover",
+                      inputId = "tbl_s_w_turnover",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_s_w_turnover")
@@ -217,7 +217,7 @@ enabler2_tab <- function() {
                     br(),
                     br(),
                     details(
-                      inputId = "table_agency_worker",
+                      inputId = "tbl_agency_worker",
                       label = "View chart as a table",
                       help_text = (
                         dataTableOutput("table_agency_worker")

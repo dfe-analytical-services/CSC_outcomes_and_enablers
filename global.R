@@ -115,12 +115,15 @@ cin_referrals <- suppressWarnings(read_cin_referral_data())
 
 
 # Read in the outcomes data (outcome 1)
-outcomes_absence <- read_outcomes_absence_data()
-outcomes_ks2 <- read_outcomes_ks2_data()
-outcomes_ks4 <- read_outcomes_ks4_data()
+outcomes_absence <- suppressWarnings(read_outcomes_absence_data())
+outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data())
+outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 
 # Read in outcome 2 data
 ceased_cla_data <- suppressWarnings(read_outcome2())
+
+# Read in outcome 3 data
+cpp_in_year <- suppressWarnings(read_cpp_in_year_data())
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
