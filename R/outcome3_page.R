@@ -78,6 +78,9 @@ outcome3_tab <- function() {
             tabPanel(
               "Child safety – general",
               fluidRow(
+                br(),
+              ),
+              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -86,6 +89,37 @@ outcome3_tab <- function() {
                   )
                 ),
                 br(),
+              ),
+              accordion(
+                accordion_panel(
+                  "Percentage of Child Protection Plans (CPP) longer than 2 years, and repeat CPP",
+                  # p("plots go here"),
+                  plotlyOutput("cpp_time_series"),
+                  br(),
+                  # Expandable for the table alternative
+                  details(
+                    inputId = "tbl_cpp_in_year",
+                    label = "View chart as a table",
+                    help_text = (
+                      dataTableOutput("")
+                    )
+                  ),
+                  details(
+                    inputId = "cpp_in_year_info",
+                    label = "Additional information:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("The metric shown in the graph refers to the percentage of children who have been entered into a CPP during the year, where this plan was at least their second."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                          tags$br(),
+                          "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+                        )
+                      )
+                    )
+                  )
+                ),
               ),
             ),
             tabPanel(
