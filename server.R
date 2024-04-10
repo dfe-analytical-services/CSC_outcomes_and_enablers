@@ -3304,7 +3304,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3352,7 +3352,7 @@ server <- function(input, output, session) {
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason", "Number", "Total ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3370,7 +3370,7 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3387,7 +3387,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Special guardianship orders") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3403,7 +3403,7 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3442,21 +3442,21 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, perc) %>%
-      mutate(perc = case_when(
-        perc == "z" ~ -400,
-        perc == "c" ~ -100,
-        perc == "k" ~ -200,
-        perc == "x" ~ -300,
-        TRUE ~ as.numeric(perc)
+      select(time_period, geo_breakdown, characteristic, percentage) %>%
+      mutate(percentage = case_when(
+        percentage == "z" ~ -400,
+        percentage == "c" ~ -100,
+        percentage == "k" ~ -200,
+        percentage == "x" ~ -300,
+        TRUE ~ as.numeric(percentage)
       )) %>%
-      arrange(desc(perc)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `perc`)
+      arrange(desc(percentage)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason` = `characteristic`, `Reason ceased (%)` = `percentage`)
 
     reactable(
       data2,
       columns = list(
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Reason ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3504,7 +3504,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3552,7 +3552,7 @@ server <- function(input, output, session) {
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason", "Number", "Total ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3569,13 +3569,13 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  # turnover rate by region table
+  # ceased by region table
   output$table_cao_ceased_reg <- renderDataTable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
@@ -3586,7 +3586,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3602,7 +3602,7 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3650,12 +3650,12 @@ server <- function(input, output, session) {
       #   TRUE ~ as.numeric(perc)
       # )) %>%
       arrange(desc(`Ceased (%)`)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `Ceased (%)`)
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason` = `characteristic`, `Reason ceased (%)` = `Ceased (%)`)
 
     reactable(
       data2,
       columns = list(
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Reason ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
