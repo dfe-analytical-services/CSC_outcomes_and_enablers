@@ -867,6 +867,49 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   return(outcomes_ks4_data)
 }
 
+# Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans
+read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2023.csv") {
+  cpp_in_year_data <- read.csv(file)
+
+  # Select only columns we want
+  cpp_in_year_data <- cpp_in_year_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(
+      time_period, geographic_level, country_code, region_code, region_name, new_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
+    )
+
+  # Make number columns
+  cpp_in_year_data <- cpp_in_year_data %>%
+    mutate(`CPP_start` = case_when(
+      CPP_start == "z" ~ NA,
+      CPP_start == "c" ~ NA,
+      CPP_start == "k" ~ NA,
+      CPP_start == "x" ~ NA,
+      TRUE ~ as.numeric(CPP_start)
+    ))
+
+  cpp_in_year_data <- cpp_in_year_data %>%
+    mutate(`CPP_subsequent` = case_when(
+      CPP_subsequent == "z" ~ NA,
+      CPP_subsequent == "c" ~ NA,
+      CPP_subsequent == "k" ~ NA,
+      CPP_subsequent == "x" ~ NA,
+      TRUE ~ as.numeric(CPP_subsequent)
+    ))
+
+  cpp_in_year_data <- cpp_in_year_data %>%
+    mutate(`CPP_subsequent_percent` = case_when(
+      CPP_subsequent_percent == "z" ~ NA,
+      CPP_subsequent_percent == "c" ~ NA,
+      CPP_subsequent_percent == "k" ~ NA,
+      CPP_subsequent_percent == "x" ~ NA,
+      TRUE ~ as.numeric(CPP_subsequent_percent)
+    ))
+}
 
 # Outcome 2 ----
 # Used this before the new function below
