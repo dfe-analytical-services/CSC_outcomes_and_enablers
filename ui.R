@@ -128,7 +128,7 @@ ui <- function(input, output, session) {
       # dashboard_panel(),
       outcome1_tab(),
       outcome2_tab(),
-      # outcome3_tab(),
+      outcome3_tab(),
       # outcome4_tab(),
       enabler1_tab(),
       enabler2_tab(),

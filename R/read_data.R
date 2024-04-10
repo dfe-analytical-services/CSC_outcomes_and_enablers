@@ -879,7 +879,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      time_period, geographic_level, country_code, region_code, region_name, new_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
     )
 
   # Make number columns

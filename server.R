@@ -143,6 +143,9 @@ server <- function(input, output, session) {
   # outcome2
   iv$add_rule("select_geography_o2", sv_required())
   iv$add_rule("geographic_breakdown_o2", sv_required())
+  # outcome3
+  iv$add_rule("select_geography_o3", sv_required())
+  iv$add_rule("geographic_breakdown_o3", sv_required())
   # enabler2
   iv$add_rule("select_geography_e2", sv_required())
   iv$add_rule("geographic_breakdown_e2", sv_required())
@@ -1278,7 +1281,6 @@ server <- function(input, output, session) {
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
-
 
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
@@ -3669,6 +3671,108 @@ server <- function(input, output, session) {
     #     paging = TRUE
     #   )
     # )
+  })
+
+
+  # Outcome 3 -----
+  # Geographic breakdown o3 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_o3
+  }, {
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == 2023), "geo_breakdown"]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_o3",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+
+  # outcome 3 confirmation text
+
+  region_for_la_o3 <- reactive({
+    selected_la <- input$geographic_breakdown_o3
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$outcome3_choice_text1 <- renderText({
+    if (input$select_geography_o3 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_o3 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ".")
+    } else if (input$select_geography_o3 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ", in ", region_for_la_o3(), ".")
+    }
+  })
+
+  output$outcome3_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  # Child protection plan during year headline box
+  output$cpp_in_year_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cpp_in_year %>%
+        filter(time_period == max(cpp_in_year$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(CPP_subsequent_percent), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cpp_in_year$time_period), ")", "</p>"
+    )
+  })
+
+  # time series and table
+  output$cpp_time_series <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- cpp_in_year %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- cpp_in_year %>%
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- cpp_in_year %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- cpp_in_year %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
+    }
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_subsequent_percent", "CPP Subsequent (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
   })
 
   # ALL statistical neighbours -----
