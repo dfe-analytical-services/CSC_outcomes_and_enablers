@@ -3683,19 +3683,19 @@ server <- function(input, output, session) {
   })
 
   # time series and table
-  output$cpp_time_series <- plotly::renderPlotly({
+  output$repeat_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # not both
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- cpp_in_year %>%
+      filtered_data <- repeat_cpp %>%
         filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- cpp_in_year %>%
+      filtered_data <- repeat_cpp %>%
         filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
 
       # regional only
@@ -3703,7 +3703,7 @@ server <- function(input, output, session) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o3)
 
-      filtered_data <- cpp_in_year %>%
+      filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
 
       # both selected
@@ -3711,14 +3711,59 @@ server <- function(input, output, session) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o3)
 
-      filtered_data <- cpp_in_year %>%
+      filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_subsequent_percent", "CPP Subsequent (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_subsequent_percent", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
+    )
+  })
+
+  output$table_repeat_cpp <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- repeat_cpp %>%
+        filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- repeat_cpp %>%
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- repeat_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- repeat_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+    }
+    datatable(
+      filtered_data,
+      colnames = c("Time period", "Geographical breakdown", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
     )
   })
 

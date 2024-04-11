@@ -100,14 +100,14 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) longer than 2 years, and repeat CPP",
                   # p("plots go here"),
-                  plotlyOutput("cpp_time_series"),
+                  plotlyOutput("repeat_cpp_time_series"),
                   br(),
                   # Expandable for the table alternative
                   details(
-                    inputId = "tbl_cpp_in_year",
+                    inputId = "tbl_repeat_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("")
+                      dataTableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
