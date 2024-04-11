@@ -1550,8 +1550,14 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  selected_la <- dataset %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
+    select(geo_breakdown, old_la_code)
+
+  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
+
   neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 

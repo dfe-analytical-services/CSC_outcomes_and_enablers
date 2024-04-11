@@ -121,7 +121,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
       "turnover_rate_headcount", "agency_rate_headcount", "caseload_fte"
     ) %>%
@@ -182,7 +182,7 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
       inpost_FTE, inpost_FTE_percentage, inpost_headcount, inpost_headcount_percentage
     ) %>%
@@ -211,7 +211,7 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
       inpost_FTE, inpost_FTE_percentage, inpost_headcount, inpost_headcount_percentage
     ) %>%
@@ -475,7 +475,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
     # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, population_count, population_estimate, number, rate_per_10000, `Rate Per 10000`) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, rate_per_10000, `Rate Per 10000`) %>%
     distinct()
 
 
@@ -508,7 +508,7 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
     #  filter(!is.na(percentage)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, cla_group, characteristic, number, percentage) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
     distinct()
 
   return(cla_placement_data)
@@ -535,8 +535,8 @@ merge_cla_dataframes <- function() {
 
   # merge two data frames
   merged_data <- merge(cla_rates, cla_placements,
-    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "la_name"),
-    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "la_name")
+    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name")
   )
 
   merged_data <- merged_data %>%
@@ -576,7 +576,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       At31_episodes_rate == "c" ~ NA,
       TRUE ~ as.numeric(At31_episodes_rate)
     )) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
     distinct() %>%
     return(cin_rate_data)
 }
@@ -618,7 +618,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       TRUE ~ as.numeric(Re_referrals_percent)
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name,
+      time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, old_la_code, la_name,
       Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage, `Re-referrals (%)`
     ) %>%
     distinct()
@@ -755,7 +755,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
       school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
       pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
@@ -808,7 +808,7 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
       t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
@@ -846,7 +846,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, time_period,
+      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
       t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
@@ -879,7 +879,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
     )
 
   # Make number columns
