@@ -1009,7 +1009,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
-  data <- read.csv("data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv")
+  data <- read.csv(file)
   columns <- c(
     "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
     "Drug_Misuse_parent", "Drug_Misuse_person", "Domestic_Abuse_child", "Domestic_Abuse_parent",
@@ -1042,7 +1042,6 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
   # rename_with(~str_replace_all(., "", ""))
 }
 
-testing <- suppressWarnings(read_assessment_factors())
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
