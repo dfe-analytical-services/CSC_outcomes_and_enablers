@@ -1227,19 +1227,19 @@ server <- function(input, output, session) {
 
 
   output$outcome1_time_period_text <- renderText({
-    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
   })
 
   output$outcome1_time_period_text_2 <- renderText({
-    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
   })
 
   output$outcome1_time_period_text_3 <- renderText({
-    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$attainment_extra_breakdown, ".")
   })
 
   output$outcome1_time_period_text_4 <- renderText({
-    paste0("The charts below represent data from ", outcomes_time_period_max, ".")
+    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$attainment_extra_breakdown, ".")
   })
 
 
