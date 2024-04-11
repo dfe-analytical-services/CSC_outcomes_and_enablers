@@ -143,6 +143,9 @@ server <- function(input, output, session) {
   # outcome2
   iv$add_rule("select_geography_o2", sv_required())
   iv$add_rule("geographic_breakdown_o2", sv_required())
+  # outcome3
+  iv$add_rule("select_geography_o3", sv_required())
+  iv$add_rule("geographic_breakdown_o3", sv_required())
   # enabler2
   iv$add_rule("select_geography_e2", sv_required())
   iv$add_rule("geographic_breakdown_e2", sv_required())
@@ -1278,7 +1281,6 @@ server <- function(input, output, session) {
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
-
 
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
@@ -3304,7 +3306,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3352,7 +3354,7 @@ server <- function(input, output, session) {
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Number", "Total ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3370,7 +3372,7 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3387,7 +3389,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Special guardianship orders") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3403,7 +3405,7 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3442,21 +3444,21 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, perc) %>%
-      mutate(perc = case_when(
-        perc == "z" ~ -400,
-        perc == "c" ~ -100,
-        perc == "k" ~ -200,
-        perc == "x" ~ -300,
-        TRUE ~ as.numeric(perc)
+      select(time_period, geo_breakdown, characteristic, percentage) %>%
+      mutate(percentage = case_when(
+        percentage == "z" ~ -400,
+        percentage == "c" ~ -100,
+        percentage == "k" ~ -200,
+        percentage == "x" ~ -300,
+        TRUE ~ as.numeric(percentage)
       )) %>%
-      arrange(desc(perc)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `perc`)
+      arrange(desc(percentage)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `percentage`)
 
     reactable(
       data2,
       columns = list(
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Reason ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3504,7 +3506,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3552,7 +3554,7 @@ server <- function(input, output, session) {
     }
     datatable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Number", "Total", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Number", "Total ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3569,13 +3571,13 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
   })
 
-  # turnover rate by region table
+  # ceased by region table
   output$table_cao_ceased_reg <- renderDataTable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
@@ -3586,7 +3588,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
+      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3602,7 +3604,7 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)") %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3650,12 +3652,12 @@ server <- function(input, output, session) {
       #   TRUE ~ as.numeric(perc)
       # )) %>%
       arrange(desc(`Ceased (%)`)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Characteristic` = `characteristic`, `Ceased (%)` = `Ceased (%)`)
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `Ceased (%)`)
 
     reactable(
       data2,
       columns = list(
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Reason ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3669,6 +3671,108 @@ server <- function(input, output, session) {
     #     paging = TRUE
     #   )
     # )
+  })
+
+
+  # Outcome 3 -----
+  # Geographic breakdown o3 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_o3
+  }, {
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == 2023), "geo_breakdown"]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_o3",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+
+  # outcome 3 confirmation text
+
+  region_for_la_o3 <- reactive({
+    selected_la <- input$geographic_breakdown_o3
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$outcome3_choice_text1 <- renderText({
+    if (input$select_geography_o3 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_o3 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ".")
+    } else if (input$select_geography_o3 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ", in ", region_for_la_o3(), ".")
+    }
+  })
+
+  output$outcome3_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  # Child protection plan during year headline box
+  output$cpp_in_year_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cpp_in_year %>%
+        filter(time_period == max(cpp_in_year$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(CPP_subsequent_percent), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cpp_in_year$time_period), ")", "</p>"
+    )
+  })
+
+  # time series and table
+  output$cpp_time_series <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- cpp_in_year %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- cpp_in_year %>%
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- cpp_in_year %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- cpp_in_year %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
+    }
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_subsequent_percent", "CPP Subsequent (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
   })
 
   # ALL statistical neighbours -----
@@ -4402,7 +4506,7 @@ server <- function(input, output, session) {
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4427,7 +4531,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
       columns = list(
-        Percentage = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        Percentage = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4481,7 +4585,7 @@ server <- function(input, output, session) {
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased (%)", 100) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4505,7 +4609,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
       columns = list(
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,

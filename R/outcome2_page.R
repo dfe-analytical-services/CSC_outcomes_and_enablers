@@ -128,6 +128,7 @@ outcome2_tab <- function() {
                   "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
                   gov_row(
                     h2("Special Guardianship Order (SGO)"),
+                    p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
                     # p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
                     # Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
                     br(),
@@ -145,9 +146,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England including adoptions guidance."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions methodology.")
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                       ))
                     )
                   ),
@@ -193,12 +200,13 @@ outcome2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to child Arrangement Order (CAO)",
+                  "Percentage of children who cease being looked after due to Child Arrangement Order (CAO)",
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
-                    p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
-                    br(),
+                    p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
+                    #  p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
+                    #  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
+                    # br(),
                     plotlyOutput("CAO_time_series"),
                     br(),
                     details(
@@ -208,6 +216,22 @@ outcome2_tab <- function() {
                         dataTableOutput("table_cao_ceased")
                       )
                     ),
+                    details(
+                      inputId = "cao_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
+                    )
                   ),
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO) by region"),
