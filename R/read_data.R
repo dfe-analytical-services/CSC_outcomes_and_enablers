@@ -1005,6 +1005,42 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
   return(joined)
 }
 
+# Outcome 3 --------------------------------
+
+## Assessment Factors ------
+read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
+  data <- read.csv(file)
+  columns <- c(
+    "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
+    "Drug_Misuse_parent", "Drug_Misuse_person", "Domestic_Abuse_child", "Domestic_Abuse_parent",
+    "Domestic_Abuse_person", "Mental_Health_child", "Mental_Health_parent", "Mental_Health_person", "Learning_Disability_child",
+    "Learning_Disability_parent", "Learning_Disability_person", "Physical_Disability_child",
+    "Physical_Disability_parent", "Physical_Disability_person", "Young_Carer", "Privately_fostered",
+    "Unaccompanied_asylum_seeker", "Going_missing", "Child_sexual_exploitation", "Trafficking", "Gangs",
+    "Socially_unacceptable_behaviour", "Self_harm", "Neglect", "Emotional_Abuse", "Physical_Abuse_unknown",
+    "Physical_Abuse_child_on_child", "Physical_Abuse_adult_on_child", "Sexual_Abuse_unknown", "Sexual_Abuse_child_on_child",
+    "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
+  )
+
+  new_cols <- str_replace_all(columns, "_", " ")
+
+  data2 <- data %>%
+    mutate(across(
+      .cols = columns,
+      .fns = ~ case_when(
+        . == "c" ~ -100,
+        . == "low" ~ -200,
+        . == "k" ~ -200,
+        . == "u" ~ -250,
+        . == "x" ~ -300,
+        . == "z" ~ -400,
+        TRUE ~ as.numeric(.)
+      ),
+      .names = "{.col}_num"
+    )) %>%
+    rename_with(~ str_replace_all(., "_", " "), .cols = ends_with("_num")) # %>%
+  # rename_with(~str_replace_all(., "", ""))
+}
 
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {

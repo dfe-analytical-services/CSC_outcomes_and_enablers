@@ -125,6 +125,7 @@ ceased_cla_data <- suppressWarnings(read_outcome2())
 
 # Read in outcome 3 data
 cpp_in_year <- suppressWarnings(read_cpp_in_year_data())
+assessment_factors <- suppressWarnings(read_assessment_factors())
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
