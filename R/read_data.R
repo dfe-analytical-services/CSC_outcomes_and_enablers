@@ -144,14 +144,14 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
     )))
 
-  workforce_data3 <- convert_perc_cols_to_numeric(workforce_data2)
+  # workforce_data3 <- convert_perc_cols_to_numeric(workforce_data2)
 
   # colnames(workforce_data) <- c("Geographic Level","Geographic Breakdown", "Turnover Rate (FTE) %", "Time Period", "Absence Rate (FTE) %",
   #                             "Agency Worker Rate (FTE) %", "Agency Cover Rate (FTE) %", "Vacancy Rate (FTE) %", "Vacancy Agency Cover Rate (FTE) %",
   #                             "Turnover Rate Headcount %", "Agency Worker Rate Headcount %", "Caseload (FTE)")
   #
   #
-  return(workforce_data3)
+  return(workforce_data2)
 }
 
 
