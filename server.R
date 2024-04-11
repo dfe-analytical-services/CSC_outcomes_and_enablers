@@ -3245,7 +3245,7 @@ server <- function(input, output, session) {
           geo_breakdown %in% input$geographic_breakdown_o2 &
           cla_group == "Reason episode ceased" &
           characteristic == "Special guardianship orders") %>%
-        select(`Ceased (%)`)
+        select(percentage)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
@@ -3262,7 +3262,7 @@ server <- function(input, output, session) {
           geo_breakdown %in% input$geographic_breakdown_o2 &
           cla_group == "Reason episode ceased" &
           characteristic == "Residence order or child arrangement order granted") %>%
-        select(`Ceased (%)`)
+        select(percentage)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
