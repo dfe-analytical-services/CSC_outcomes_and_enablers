@@ -124,7 +124,7 @@ outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 ceased_cla_data <- suppressWarnings(read_outcome2())
 
 # Read in outcome 3 data
-cpp_in_year <- suppressWarnings(read_cpp_in_year_data())
+repeat_cpp <- suppressWarnings(read_cpp_in_year_data())
 assessment_factors <- suppressWarnings(read_assessment_factors())
 
 # Read in stats neighbours

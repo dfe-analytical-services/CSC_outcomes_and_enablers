@@ -69,7 +69,13 @@ outcome3_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("Confirmation Sentence"),
+        p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
+          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+        ),
+      ),
+      gov_row(
         br(),
         div(
           tabsetPanel(
@@ -94,14 +100,14 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) longer than 2 years, and repeat CPP",
                   # p("plots go here"),
-                  plotlyOutput("cpp_time_series"),
+                  plotlyOutput("repeat_cpp_time_series"),
                   br(),
                   # Expandable for the table alternative
                   details(
-                    inputId = "tbl_cpp_in_year",
+                    inputId = "tbl_repeat_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("")
+                      dataTableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
