@@ -95,10 +95,19 @@ outcome3_tab <- function() {
                   )
                 ),
                 br(),
+                p("Child protection is focused on investigating and addressing
+                  significant harm that children might experience. Remaining
+                  on a CPP for a longer period of time or having multiple
+                  repeat plans, suggests that children and families are not
+                  receiving the help that they need to address their issues.")
               ),
               accordion(
                 accordion_panel(
-                  "Percentage of Child Protection Plans (CPP) longer than 2 years, and repeat CPP",
+                  "Percentage of Child Protection Plans starting during year, which were a second or subsequent plan",
+                  insert_text(inputId = "CIN_CPP_definition", text = paste(
+                    "<b>", "Child Protection Plan (CPP)", "</b><br>",
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                  )),
                   # p("plots go here"),
                   plotlyOutput("repeat_cpp_time_series"),
                   br(),
@@ -116,6 +125,56 @@ outcome3_tab <- function() {
                     help_text = (
                       tags$ul(
                         tags$li("The metric shown in the graph refers to the percentage of children who have been entered into a CPP during the year, where this plan was at least their second."),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                          tags$br(),
+                          "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Repeat CPP by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    #  plotlyOutput("plot_cin_referral_reg"),
+                    br(),
+                    br(),
+                    # details(
+                    #  inputId = "tbl_CPP_repeat_reg",
+                    #  label = "View chart as a table",
+                    #  help_text = (
+                    # dataTableOutput("table_cin_referral_reg")
+                    #  )
+                    # )
+                  )
+                ),
+              ),
+              accordion(
+                accordion_panel(
+                  "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                  insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
+                    "<b>", "Child Protection Plan (CPP)", "</b><br>",
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                  )),
+                  # p("plots go here"),
+                  # plotlyOutput("#"),
+                  br(),
+                  # Expandable for the table alternative
+                  # details(
+                  #  inputId = "tbl_repeat_cpp",
+                  #  label = "View chart as a table",
+                  # help_text = (
+                  #   dataTableOutput("table_repeat_cpp")
+                  #   )
+                  #    ),
+                  details(
+                    inputId = "cpp_longer_info",
+                    label = "Additional information:",
+                    help_text = (
+                      tags$ul(
+                        tags$li("The metric shown in the graph refers to the percentage of children who have been ."),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
