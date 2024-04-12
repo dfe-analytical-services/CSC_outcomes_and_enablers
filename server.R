@@ -3721,17 +3721,17 @@ server <- function(input, output, session) {
     }
   })
 
-  # Child protection plan during year headline box
+  # Child protection plan repeated during year headline box
   output$cpp_in_year_txt <- renderText({
     if (input$geographic_breakdown_o3 == "") {
       stat <- "NA"
     } else {
-      stat <- format(cpp_in_year %>%
-        filter(time_period == max(cpp_in_year$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+      stat <- format(repeat_cpp %>%
+        filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
         select(CPP_subsequent_percent), nsmall = 1)
     }
     paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cpp_in_year$time_period), ")", "</p>"
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
     )
   })
 
