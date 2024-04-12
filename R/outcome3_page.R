@@ -131,13 +131,77 @@ outcome3_tab <- function() {
             tabPanel(
               "Child abuse / neglect",
               fluidRow(
-                p("testing")
+                br()
+              ),
+              fluidRow(
+                column(
+                  width = 6,
+                  value_box(
+                    title = "Title here",
+                    value = p("value here")
+                  )
+                ),
+                column(
+                  width = 6,
+                  value_box(
+                    title = "Title here",
+                    value = p("value here")
+                  )
+                ),
+                br(),
+              ),
+              gov_row(
+                div(
+                  class = "input_box",
+                  style = "min-height:100%; height = 100%; overflow-y: visible",
+                  p("Explanation for the extra dropdown goes here:"),
+                  selectizeInput(
+                    inputId = "assessment_factors_1",
+                    label = "Assessment factors",
+                    choices = c("choice 1", "choice 2", "choice 3"),
+                    selected = NULL,
+                    multiple = FALSE,
+                    options = NULL
+                  ),
+                ),
+                br(),
+              ),
+              accordion(
+                accordion_panel(
+                  "Assessment factor includes child abuse or neglect",
+                  gov_row(
+                    p("time_series chart")
+                  ),
+                  gov_row(
+                    p("by region chart")
+                  ),
+                  gov_row(
+                    p("by la chart")
+                  )
+                ),
               )
             ),
             tabPanel(
               "Harms outside the home",
               fluidRow(
                 p("testing")
+              ),
+              fluidRow(
+                column(
+                  width = 6,
+                  value_box(
+                    title = "Title here",
+                    value = p("value here")
+                  )
+                ),
+                column(
+                  width = 6,
+                  value_box(
+                    title = "Title here",
+                    value = p("value here")
+                  )
+                ),
+                br(),
               )
             )
           )
