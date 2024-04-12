@@ -1476,7 +1476,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(CIN_rate), nsmall = 1)
+        %>% select(At31_episodes_rate), nsmall = 1)
     }
 
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
