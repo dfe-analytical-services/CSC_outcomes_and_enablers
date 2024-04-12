@@ -1580,7 +1580,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percentage), nsmall = 1)
+        %>% select(Re_referrals_percent), nsmall = 1)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
@@ -2203,7 +2203,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(`Overall absence (%)`), nsmall = 1)
+        %>% select(pt_overall), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2214,7 +2214,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(`Overall absence (%)`), nsmall = 1)
+        %>% select(pt_overall), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2225,7 +2225,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(`Overall absence (%)`), nsmall = 1)
+        %>% select(pt_overall), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2237,7 +2237,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(`Persistent absentees (%)`), nsmall = 1)
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2248,7 +2248,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(`Persistent absentees (%)`), nsmall = 1)
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2259,7 +2259,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(`Persistent absentees (%)`), nsmall = 1)
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
