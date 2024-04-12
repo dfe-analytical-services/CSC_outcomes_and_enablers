@@ -883,30 +883,32 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     )
 
   # Make number columns
-  cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(`CPP_start` = case_when(
-      CPP_start == "z" ~ NA,
-      CPP_start == "c" ~ NA,
-      CPP_start == "k" ~ NA,
-      CPP_start == "x" ~ NA,
-      TRUE ~ as.numeric(CPP_start)
-    ))
+  #  cpp_in_year_data <- cpp_in_year_data %>%
+  # mutate(`CPP_start` = case_when(
+  #  CPP_start == "z" ~ NA,
+  #  CPP_start == "c" ~ NA,
+  # CPP_start == "k" ~ NA,
+  #  CPP_start == "x" ~ NA,
+  # TRUE ~ as.numeric(CPP_start)
+  #  ))
+
+  # cpp_in_year_data <- cpp_in_year_data %>%
+  #  mutate(`CPP_subsequent` = case_when(
+  #  CPP_subsequent == "z" ~ NA,
+  #  CPP_subsequent == "c" ~ NA,
+  #  CPP_subsequent == "k" ~ NA,
+  #  CPP_subsequent == "x" ~ NA,
+  #  TRUE ~ as.numeric(CPP_subsequent)
+  # ))
 
   cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(`CPP_subsequent` = case_when(
-      CPP_subsequent == "z" ~ NA,
-      CPP_subsequent == "c" ~ NA,
-      CPP_subsequent == "k" ~ NA,
-      CPP_subsequent == "x" ~ NA,
-      TRUE ~ as.numeric(CPP_subsequent)
-    ))
-
-  cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(`CPP_subsequent_percent` = case_when(
-      CPP_subsequent_percent == "z" ~ NA,
-      CPP_subsequent_percent == "c" ~ NA,
-      CPP_subsequent_percent == "k" ~ NA,
-      CPP_subsequent_percent == "x" ~ NA,
+    mutate(`Repeat_CPP_percent` = case_when(
+      CPP_subsequent_percent == "c" ~ -100,
+      CPP_subsequent_percent == "low" ~ -200,
+      CPP_subsequent_percent == "k" ~ -200,
+      CPP_subsequent_percent == "u" ~ -250,
+      CPP_subsequent_percent == "x" ~ -300,
+      CPP_subsequent_percent == "z" ~ -400,
       TRUE ~ as.numeric(CPP_subsequent_percent)
     ))
 }
