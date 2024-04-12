@@ -1590,8 +1590,14 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
 }
 
 statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  selected_la <- dataset %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
+    select(geo_breakdown, old_la_code)
+
+  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
+
   neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
@@ -1651,8 +1657,14 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
 
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
+  selected_la <- dataset %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
+    select(geo_breakdown, old_la_code)
+
+  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
+
   neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
@@ -1675,11 +1687,16 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
 }
 
 stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
+  selected_la <- dataset %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
+    select(geo_breakdown, old_la_code)
+
+  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
+
   neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
-
   data2 <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, characteristic, `yvalue`) %>%
