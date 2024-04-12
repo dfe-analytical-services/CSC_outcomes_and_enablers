@@ -135,19 +135,30 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Repeat CPP by region"),
+                    h2("Repeat Child Protection Plan (CPP) by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
-                    #  plotlyOutput("plot_cin_referral_reg"),
+                    plotlyOutput("plot_cpp_repeat_reg"),
                     br(),
                     br(),
-                    # details(
-                    #  inputId = "tbl_CPP_repeat_reg",
-                    #  label = "View chart as a table",
-                    #  help_text = (
-                    # dataTableOutput("table_cin_referral_reg")
-                    #  )
-                    # )
+                    details(
+                      inputId = "tbl_CPP_repeat_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_cpp_repeat_reg")
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Repeat Child Protection Plan (CPP)  by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(repeat_cpp$time_period))),
+                    radioGroupButtons(
+                      "CPP_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_CPP"),
                   )
                 ),
               ),
@@ -163,10 +174,10 @@ outcome3_tab <- function() {
                   br(),
                   # Expandable for the table alternative
                   # details(
-                  #  inputId = "tbl_repeat_cpp",
+                  #  inputId = "tbl_long_cpp",
                   #  label = "View chart as a table",
                   # help_text = (
-                  #   dataTableOutput("table_repeat_cpp")
+                  #   dataTableOutput("table_long_cpp")
                   #   )
                   #    ),
                   details(
