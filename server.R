@@ -2690,7 +2690,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
@@ -2701,7 +2701,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
@@ -2712,7 +2712,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-        %>% select(`Expected standard reading writing maths (%)`), nsmall = 1)
+        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
@@ -2724,7 +2724,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-        %>% select(`Average Attainment 8`), nsmall = 1)
+        %>% select(avg_att8), nsmall = 1)
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
@@ -2735,7 +2735,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-        %>% select(`Average Attainment 8`), nsmall = 1)
+        %>% select(avg_att8), nsmall = 1)
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
@@ -2746,7 +2746,7 @@ server <- function(input, output, session) {
       stat <- "NA"
     } else {
       stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-        %>% select(`Average Attainment 8`), nsmall = 1)
+        %>% select(avg_att8), nsmall = 1)
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
