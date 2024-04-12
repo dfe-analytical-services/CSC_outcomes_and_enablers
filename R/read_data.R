@@ -467,11 +467,11 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       rate_per_10000 == "z" ~ -400,
       TRUE ~ as.numeric(rate_per_10000)
     )) %>%
-    mutate(rate_per_10000 = case_when(
-      rate_per_10000 == "z" ~ NA,
-      rate_per_10000 == "x" ~ NA,
-      TRUE ~ as.numeric(rate_per_10000)
-    )) %>%
+    # mutate(rate_per_10000 = case_when(
+    #   rate_per_10000 == "z" ~ NA,
+    #   rate_per_10000 == "x" ~ NA,
+    #   TRUE ~ as.numeric(rate_per_10000)
+    # )) %>%
     # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
@@ -500,11 +500,11 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    mutate(percentage = case_when(
-      percentage == "z" ~ NA,
-      percentage == "x" ~ NA,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
+    # mutate(percentage = case_when(
+    #   percentage == "z" ~ NA,
+    #   percentage == "x" ~ NA,
+    #   TRUE ~ as.numeric(percentage)
+    # )) %>%
     #  filter(!is.na(percentage)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
@@ -549,6 +549,15 @@ merge_cla_dataframes <- function() {
       placements_number == "x" ~ -300,
       placements_number == "z" ~ -400,
       TRUE ~ as.numeric(placement_per_10000)
+    )) %>%
+    mutate("placement_per_10000" = case_when(
+      placements_number == "c" ~ "c",
+      placements_number == "low" ~ "low",
+      placements_number == "k" ~ "k",
+      placements_number == "u" ~ "u",
+      placements_number == "x" ~ "x",
+      placements_number == "z" ~ "z",
+      TRUE ~ as.character(placement_per_10000)
     ))
 
 

@@ -1317,12 +1317,12 @@ server <- function(input, output, session) {
       filter(population_count == "Children starting to be looked after each year")
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "rate_per_10000", "Rate of children starting in care, per 10,000", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate of children starting in care, per 10,000", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -1340,13 +1340,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1355,7 +1355,7 @@ server <- function(input, output, session) {
 
       filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1364,13 +1364,13 @@ server <- function(input, output, session) {
 
       filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
     datatable(
       filtered_data %>%
         filter(population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000),
+        select(time_period, geo_breakdown, number, `Rate Per 10000`),
       colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
       options = list(
         scrollx = FALSE,
@@ -1401,9 +1401,9 @@ server <- function(input, output, session) {
     datatable(
       cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
         time_period, geo_breakdown,
-        number, rate_per_10000
+        number, "Rate Per 10000"
       ) %>%
-        arrange(desc(rate_per_10000)),
+        arrange(desc(`Rate Per 10000`)),
       colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
       options = list(
         scrollx = FALSE,
@@ -1446,16 +1446,16 @@ server <- function(input, output, session) {
 
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000) %>%
-        arrange(desc(rate_per_10000))
+        select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+        arrange(desc(`Rate Per 10000`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
         select(
           time_period, geo_breakdown,
-          number, rate_per_10000
+          number, `Rate Per 10000`
         ) %>%
-        arrange(desc(rate_per_10000))
+        arrange(desc(`Rate Per 10000`))
     }
 
     datatable(
@@ -1868,7 +1868,7 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-
+  ## UASC ------
   # UASC chart
   output$plot_uasc <- plotly::renderPlotly({
     shiny::validate(
@@ -1895,7 +1895,7 @@ server <- function(input, output, session) {
           characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
           population_count == "Children starting to be looked after each year"
         ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, placement_per_10000) %>%
+        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(time_period)),
       colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
       options = list(
@@ -1931,7 +1931,7 @@ server <- function(input, output, session) {
         population_count == "Children starting to be looked after each year",
         time_period == max(time_period)
       ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, placement_per_10000),
+        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
       colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
@@ -1977,16 +1977,16 @@ server <- function(input, output, session) {
           geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
           population_count == "Children starting to be looked after each year",
         ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, placement_per_10000) %>%
-        arrange(desc(placement_per_10000))
+        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+        arrange(desc(`Placement Rate Per 10000`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- combined_cla_data %>%
         filter(
           geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
           population_count == "Children starting to be looked after each year",
         ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, placement_per_10000) %>%
-        arrange(desc(placement_per_10000))
+        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+        arrange(desc(`Placement Rate Per 10000`))
     }
 
     datatable(
@@ -1999,7 +1999,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # CLA Rate chart for March
+  ## CLA Rate chart for March ----
   output$plot_cla_rate_march <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
@@ -2036,12 +2036,12 @@ server <- function(input, output, session) {
       filter(population_count == "Children looked after at 31 March each year")
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -2059,13 +2059,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cla_rates %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2074,7 +2074,7 @@ server <- function(input, output, session) {
 
       filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2083,13 +2083,13 @@ server <- function(input, output, session) {
 
       filtered_data <- cla_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, number, rate_per_10000, population_count)
+        select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
     datatable(
       filtered_data %>%
         filter(population_count == "Children looked after at 31 March each year") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000),
+        select(time_period, geo_breakdown, number, `Rate Per 10000`),
       colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
@@ -2120,9 +2120,9 @@ server <- function(input, output, session) {
     datatable(
       cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
         time_period, geo_breakdown,
-        number, rate_per_10000
+        number, `Rate Per 10000`
       ) %>%
-        arrange(desc(rate_per_10000)),
+        arrange(desc(`Rate Per 10000`)),
       colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
@@ -2165,16 +2165,16 @@ server <- function(input, output, session) {
 
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
-        select(time_period, geo_breakdown, number, rate_per_10000) %>%
-        arrange(desc(rate_per_10000))
+        select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+        arrange(desc(`Rate Per 10000`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
         select(
           time_period, geo_breakdown,
-          number, rate_per_10000
+          number, `Rate Per 10000`
         ) %>%
-        arrange(desc(rate_per_10000))
+        arrange(desc(`Rate Per 10000`))
     }
 
     datatable(
@@ -3824,7 +3824,7 @@ server <- function(input, output, session) {
     )
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
@@ -3832,7 +3832,7 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
 
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3904,7 +3904,7 @@ server <- function(input, output, session) {
 
     # Set the max y-axis scale
     max_rate <- max(
-      combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+      combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
         combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
       na.rm = TRUE
     )
@@ -3913,7 +3913,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 50) * 50
 
     ggplotly(
-      statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "placement_per_10000", "Rate per 10,000 children", max_rate) %>%
+      statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3985,7 +3985,7 @@ server <- function(input, output, session) {
     )
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
@@ -3993,7 +3993,7 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "rate_per_10000", "Rate per 10,000 children", max_rate) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
       height = 420
     )

@@ -902,12 +902,12 @@ plot_uasc <- function(geo_break, geo_lvl) {
     filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break &
       characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
       population_count == "Children starting to be looked after each year") %>%
-    select(time_period, geo_breakdown, placement_per_10000, characteristic)
+    select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic)
 
 
   # Set the max y-axis scale
   max_rate <- max(
-    combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
     na.rm = TRUE
   )
@@ -915,7 +915,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`time_period`, `placement_per_10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Time period") +
@@ -942,12 +942,12 @@ plot_uasc_reg <- function() {
     filter(geographic_level == "Regional" &
       characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
       population_count == "Children starting to be looked after each year" & time_period == max(time_period)) %>%
-    select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -placement_per_10000))
+    select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
+    mutate(geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`))
 
   # Set the max y-axis scale
   max_rate <- max(
-    combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
     na.rm = TRUE
   )
@@ -955,7 +955,7 @@ plot_uasc_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`geo_breakdown`, `placement_per_10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -992,9 +992,9 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
         geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year",
         characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
       ) %>%
-      select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
+      select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`), # Order by placement_per_10000
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected"),
         characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
       )
@@ -1004,9 +1004,9 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
         geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year",
         characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
       ) %>%
-      select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
+      select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`), # Order by placement_per_10000
         is_selected = "Not Selected",
         characteristic_selected = paste0(characteristic, " (Not Selected)")
       )
@@ -1029,9 +1029,9 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
         geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year", rate_per_10000 != "NA",
         characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
       ) %>%
-      select(time_period, geo_breakdown, placement_per_10000, characteristic) %>%
+      select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -placement_per_10000), # Order by placement_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`), # Order by placement_per_10000
         is_selected = "Selected",
         characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
       )
@@ -1039,7 +1039,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
 
   # Set the max y-axis scale
   max_rate <- max(
-    combined_cla_data$placement_per_10000[combined_cla_data$population_count == "Children starting to be looked after each year" &
+    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
     na.rm = TRUE
   )
@@ -1048,7 +1048,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   max_rate <- ceiling(max_rate / 50) * 50
 
   # Use the new variable in the plot
-  p <- ggplot(cla_data, aes(x = geo_breakdown, y = placement_per_10000, fill = factor(characteristic_selected,
+  p <- ggplot(cla_data, aes(x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
     levels = c(
       "Unaccompanied asylum-seeking children (Selected)",
       "Non-unaccompanied asylum-seeking children (Selected)",
@@ -1093,16 +1093,16 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
 plot_cla_rate_reg <- function() {
   cla_reg_data <- cla_rates %>%
     filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-    select(time_period, geo_breakdown, rate_per_10000) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -rate_per_10000)) # Order by cla rate
+    select(time_period, geo_breakdown, `Rate Per 10000`) %>%
+    mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `rate_per_10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1136,17 +1136,17 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
       )
   } else if (selected_geo_lvl == "National") {
     cla_data <- cla_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = "Not Selected"
       )
   } else if (selected_geo_lvl == "Regional") {
@@ -1165,20 +1165,20 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
 
     cla_data <- cla_rates %>%
       filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year", rate_per_10000 != "NA") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = "Selected"
       )
   }
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `rate_per_10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1209,16 +1209,16 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
 plot_cla_march_reg <- function() {
   cla_reg_data <- cla_rates %>%
     filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
-    select(time_period, geo_breakdown, rate_per_10000) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -rate_per_10000)) # Order by cla rate
+    select(time_period, geo_breakdown, `Rate Per 10000`) %>%
+    mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `rate_per_10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1252,17 +1252,17 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
       )
   } else if (selected_geo_lvl == "National") {
     cla_data <- cla_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = "Not Selected"
       )
   } else if (selected_geo_lvl == "Regional") {
@@ -1281,20 +1281,20 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
 
     cla_data <- cla_rates %>%
       filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year", rate_per_10000 != "NA") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
+      select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
-        geo_breakdown = reorder(geo_breakdown, -rate_per_10000), # Order by rate_per_10000
+        geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
         is_selected = "Selected"
       )
   }
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$rate_per_10000[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `rate_per_10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
