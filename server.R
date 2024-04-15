@@ -3860,12 +3860,12 @@ server <- function(input, output, session) {
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    data <- repeat_cpp %>%
-      ggplotly(
-        by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
-          config(displayModeBar = F),
-        height = 420
-      )
+    data <- repeat_cpp
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
   })
 
   # CPP by LA table
