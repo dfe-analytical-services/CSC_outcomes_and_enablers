@@ -90,21 +90,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care, per 10,000 children",
+                    title = "Rate of children starting to be looked after, per 10,000 children",
                     value = htmlOutput("cla_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care who were UASC, per 10,000 children",
+                    title = "Rate of children starting to be looked after who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children in care on 31 March, per 10,000 children",
+                    title = "Rate of children looked after on 31 March, per 10,000 children",
                     value = htmlOutput("cla_march_rate_headline_txt")
                   )
                 ),
@@ -112,11 +112,12 @@ outcome1_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Rate of new entrants to care",
+                  "Children starting to be looked after each year",
                   gov_row(
+                    h2("Children starting to be looked after each year"),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
-                      "The children in care rate is calculated as the number of children in care per 10,000 children in the general population."
+                      "The children looked after rate is calculated as the number of children looked after per 10,000 children in the general population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
@@ -149,7 +150,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care during the year by region"),
+                    h2("Rate of children starting to be looked after by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_rate_reg"),
@@ -163,7 +164,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by local authority"),
+                    h2("Rate of children starting to be looked after by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     # br(),
@@ -187,9 +188,9 @@ outcome1_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Rate of new entrants to care, with a breakdown by whether new entrants to care are Unaccompanied Asylum Seeking Children (UASC)",
+                  "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children starting in care who were UASC"),
+                    h2("Rate of children starting to be looked after who were UASC"),
                     br(),
                     plotlyOutput("plot_uasc"),
                     br(),
@@ -223,7 +224,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by region who were UASC"),
+                    h2("Rate of children starting to be looked after by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -239,7 +240,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by LA who were UASC"),
+                    h2("Rate of children starting to be looked after by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     # br(),
@@ -263,9 +264,9 @@ outcome1_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Rate of children in care on 31 March",
+                  "Rate of children looked after on 31 March",
                   gov_row(
-                    h2("Rate of children in care on 31 March"),
+                    h2("Rate of children looked after on 31 March"),
                     br(),
                     plotlyOutput("plot_cla_rate_march"),
                     br(),
@@ -295,7 +296,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by region"),
+                    h2("Rate of children looked after on 31 March by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_march_reg"),
@@ -310,7 +311,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by local authority"),
+                    h2("Rate of children looked after on 31 March by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),

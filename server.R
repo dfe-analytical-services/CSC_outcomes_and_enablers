@@ -3767,7 +3767,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_subsequent_percent", "Repeat CPP (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3817,6 +3817,149 @@ server <- function(input, output, session) {
       )
     )
   })
+
+
+  # by region
+  output$plot_cpp_repeat_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- repeat_cpp
+
+    ggplotly(
+      by_region_bar_plot(data, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # cpp by region table
+  output$table_cpp_repeat_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    datatable(
+      repeat_cpp %>% filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+        arrange(desc(Repeat_CPP_percent)),
+      colnames = c("Time period", "Geographical breakdown", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+  # by la
+  output$plot_cpp_repeat_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- repeat_cpp
+    ggplotly(
+      by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # CPP by LA table
+  output$table_cpp_repeat_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    if (input$select_geography_o3 == "Regional") {
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+
+      data <- repeat_cpp %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
+        arrange(desc(`Repeat_CPP_percent`))
+    } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
+      data <- repeat_cpp %>%
+        filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
+        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
+        arrange(desc(`Repeat_CPP_percent`))
+    }
+
+    data2 <- data %>%
+      select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
+      # mutate(perc = case_when(
+      #   perc == "z" ~ -400,
+      #   perc == "c" ~ -100,
+      #   perc == "k" ~ -200,
+      #   perc == "x" ~ -300,
+      #   TRUE ~ as.numeric(perc)
+      # )) %>%
+      arrange(desc(`Repeat_CPP_percent`)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
+    )
+  })
+
+  # output all LA chart or stats neighbour chart for CPP repeat
+  output$SN_CPP <- renderUI({
+    if (input$CPP_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cpp_repeat_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_repeat_cpp_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("table_cpp_repeat_la")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("cpp_repeat_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_cpp",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_sgo_tbl")
+            reactableOutput("SN_cpp_repeat_tbl")
+          )
+        ),
+        details(
+          inputId = "sn_cpp_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
 
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -4912,6 +5055,31 @@ server <- function(input, output, session) {
         `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # Repeat CPP SN plot and table alternative
+  output$cpp_repeat_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    filtered_data <- repeat_cpp
+    ggplotly(
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+
+  output$SN_cpp_repeat_tbl <- renderReactable({
+    reactable(
+      stats_neighbours_table(repeat_cpp, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent"),
+      columns = list(
+        `Repeat Cpp Percent` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
     )
   })
