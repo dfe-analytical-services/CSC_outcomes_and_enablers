@@ -90,7 +90,7 @@ outcome3_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Percentage of Child Protection Plans starting during year, which were a second or subsequent plan",
+                    title = "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
                     value = htmlOutput("cpp_in_year_txt")
                   )
                 ),
@@ -103,7 +103,7 @@ outcome3_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Percentage of Child Protection Plans starting during year, which were a second or subsequent plan",
+                  "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
