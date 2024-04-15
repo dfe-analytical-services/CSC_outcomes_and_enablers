@@ -114,9 +114,10 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Rate of new entrants to care",
                   gov_row(
+                    h2("Rate of new entrants to care"),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
-                      "The children in care rate is calculated as the number of children in care per 10,000 children in the general population."
+                      "The children looked after rate is calculated as the number of children in care per 10,000 children in the general population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
