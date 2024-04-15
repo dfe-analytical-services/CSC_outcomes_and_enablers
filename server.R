@@ -3961,6 +3961,77 @@ server <- function(input, output, session) {
   })
 
 
+  ### Child abuse/neglect ----
+  output$child_abuse_all_af_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    ggplotly(
+      all_assessment_factors_plot(assessment_factors, af_child_abuse_extra_filter, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # table alternative for all factors plot
+  output$child_abuse_all_af_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- assessment_factors %>%
+      filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (af_child_abuse_extra_filter), time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
+      dplyr::arrange(desc(Number))
+
+    reactable(
+      data,
+      columns = list(
+        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  ### Harms outside the home ------
+  output$extra_familial_all_af_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    ggplotly(
+      all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # table alternative for all factors plot
+  output$extra_familial_all_af_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- assessment_factors %>%
+      filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (extra_familial_harm_af), time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
+      dplyr::arrange(desc(Number))
+
+    reactable(
+      data,
+      columns = list(
+        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------

@@ -221,6 +221,19 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
+                p("All assessment factors that include child abuse or neglect (2023)."),
+                plotlyOutput("child_abuse_all_af_plot"),
+                br(),
+                # Expandable for the table alternative
+                details(
+                  inputId = "tbl_all_child_abuse_factors",
+                  label = "View chart as a table",
+                  help_text = (
+                    reactableOutput("child_abuse_all_af_tbl")
+                  )
+                ),
+              ),
+              gov_row(
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
@@ -228,7 +241,7 @@ outcome3_tab <- function() {
                   selectizeInput(
                     inputId = "assessment_factors_1",
                     label = "Assessment factors",
-                    choices = c("choice 1", "choice 2", "choice 3"),
+                    choices = unique(af_child_abuse_extra_filter %>% str_sort()),
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
@@ -272,7 +285,36 @@ outcome3_tab <- function() {
                   )
                 ),
                 br(),
-              )
+              ),
+              gov_row(
+                p("All assessment factors that include extra familial harm (2023)."),
+                plotlyOutput("extra_familial_all_af_plot"),
+                br(),
+                # Expandable for the table alternative
+                details(
+                  inputId = "tbl_all_extra_fam_factors",
+                  label = "View chart as a table",
+                  help_text = (
+                    reactableOutput("extra_familial_all_af_tbl")
+                  )
+                ),
+              ),
+              gov_row(
+                div(
+                  class = "input_box",
+                  style = "min-height:100%; height = 100%; overflow-y: visible",
+                  p("Explanation for the extra dropdown goes here:"),
+                  selectizeInput(
+                    inputId = "assessment_factors_2",
+                    label = "Assessment factors",
+                    choices = unique(extra_familial_harm_af %>% str_sort()),
+                    selected = NULL,
+                    multiple = FALSE,
+                    options = NULL
+                  ),
+                ),
+                br(),
+              ),
             )
           )
         )

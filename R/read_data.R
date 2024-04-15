@@ -1022,6 +1022,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
   data <- read.csv(file)
   columns <- c(
+    "Episodes_with_assessment_factor",
     "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
     "Drug_Misuse_parent", "Drug_Misuse_person", "Domestic_Abuse_child", "Domestic_Abuse_parent",
     "Domestic_Abuse_person", "Mental_Health_child", "Mental_Health_parent", "Mental_Health_person", "Learning_Disability_child",
@@ -1033,25 +1034,30 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
-  new_cols <- str_replace_all(columns, "_", " ")
-
-  data2 <- data %>%
-    mutate(across(
-      .cols = columns,
-      .fns = ~ case_when(
-        . == "c" ~ -100,
-        . == "low" ~ -200,
-        . == "k" ~ -200,
-        . == "u" ~ -250,
-        . == "x" ~ -300,
-        . == "z" ~ -400,
-        TRUE ~ as.numeric(.)
-      ),
-      .names = "{.col}_num"
+  data %>%
+    pivot_longer(
+      cols = columns,
+      names_to = "assessment_factor",
+      values_to = "value"
+    ) %>%
+    mutate(Number = case_when(
+      value == "c" ~ -100,
+      value == "low" ~ -200,
+      value == "k" ~ -200,
+      value == "u" ~ -250,
+      value == "x" ~ -300,
+      value == "z" ~ -400,
+      TRUE ~ as.numeric(value)
     )) %>%
-    rename_with(~ str_replace_all(., "_", " "), .cols = ends_with("_num")) # %>%
-  # rename_with(~str_replace_all(., "", ""))
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
+    select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
 }
+
 
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {

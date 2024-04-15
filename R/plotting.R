@@ -1548,6 +1548,21 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   return(p)
 }
 
+# Outcome 3 ----
+
+all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_breakdown = NULL) {
+  data <- assessment_factors %>%
+    filter(assessment_factor %in% (factorslist)) %>%
+    filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
+
+  ggplot(data, aes(x = reorder(assessment_factor, Number), y = Number)) +
+    geom_bar(stat = "identity", fill = "#12436D") +
+    scale_y_continuous(limits = c(0, NA)) +
+    coord_flip() +
+    xlab("Assessment factor") +
+    ylab("Number of cases")
+}
+
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
   selected_la <- dataset %>%

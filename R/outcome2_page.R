@@ -17,7 +17,7 @@ outcome2_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o2",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% pull("geographic_level")),
+              choices = unique(ceased_cla_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
