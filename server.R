@@ -5076,11 +5076,10 @@ server <- function(input, output, session) {
 
 
   output$SN_cpp_repeat_tbl <- renderReactable({
-    filtered_data <- repeat_cpp
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent"),
+      stats_neighbours_table(repeat_cpp, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent"),
       columns = list(
-        `Repeat_CPP_percent` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat Cpp Percent` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
