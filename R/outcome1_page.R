@@ -115,9 +115,10 @@ outcome1_tab <- function() {
                   "Children starting to be looked after each year",
                   gov_row(
                     h2("Children starting to be looked after each year"),
+                    p("This measures the flow of those children moving into care."),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
-                      "The children looked after rate is calculated as the number of children looked after per 10,000 children in the general population."
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
@@ -191,6 +192,11 @@ outcome1_tab <- function() {
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
                     h2("Rate of children starting to be looked after who were UASC"),
+                    p("This measures the flow of those children moving into care. Where UASC are placed within an authority, this will represent an unavoidable increase in numbers of children entering the system. This breakdown is provided for context."),
+                    insert_text(inputId = "cla_rate__starting_definition", text = paste(
+                      "<b>", "Rate of children who started to be looked after", "</b><br>",
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_uasc"),
                     br(),
@@ -267,6 +273,11 @@ outcome1_tab <- function() {
                   "Rate of children looked after on 31 March",
                   gov_row(
                     h2("Rate of children looked after on 31 March"),
+                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
+                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
+                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_cla_rate_march"),
                     br(),
@@ -370,7 +381,7 @@ outcome1_tab <- function() {
 
                     insert_text(inputId = "CIN_definition", text = paste(
                       "<b>", "Children In Need (CIN) rate", "</b><br>",
-                      "Rate of Children In Need at 31 March, per 10,000 children in the population."
+                      "The Children In Need rate is calculated as the number of Children In Need at 31 March, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cin_rate"),

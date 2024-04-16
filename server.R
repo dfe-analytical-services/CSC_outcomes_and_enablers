@@ -1322,7 +1322,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate of children starting in care, per 10,000", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -1371,7 +1371,7 @@ server <- function(input, output, session) {
       filtered_data %>%
         filter(population_count == "Children starting to be looked after each year") %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1404,7 +1404,7 @@ server <- function(input, output, session) {
         number, "Rate Per 10000"
       ) %>%
         arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1460,7 +1460,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1897,7 +1897,7 @@ server <- function(input, output, session) {
         ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(time_period)),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE,
@@ -1932,7 +1932,7 @@ server <- function(input, output, session) {
         time_period == max(time_period)
       ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1991,7 +1991,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -4033,7 +4033,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4116,7 +4116,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000"),
       columns = list(
-        `Placement Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placement Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4194,7 +4194,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
