@@ -4338,12 +4338,8 @@ server <- function(input, output, session) {
 
   # # cin stats neighbours tables
   output$SN_cin_referral_tbl <- renderReactable({
-    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
-
-    data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
-
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
+      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
       columns = list(
         `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
