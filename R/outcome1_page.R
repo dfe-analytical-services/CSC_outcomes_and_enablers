@@ -90,21 +90,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care, per 10,000 children",
+                    title = "Rate of children starting to be looked after, per 10,000 children",
                     value = htmlOutput("cla_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care who were UASC, per 10,000 children",
+                    title = "Rate of children starting to be looked after who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children in care on 31 March, per 10,000 children",
+                    title = "Rate of children looked after on 31 March, per 10,000 children",
                     value = htmlOutput("cla_march_rate_headline_txt")
                   )
                 ),
@@ -112,11 +112,13 @@ outcome1_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Rate of new entrants to care",
+                  "Children starting to be looked after each year",
                   gov_row(
+                    h2("Children starting to be looked after each year"),
+                    p("This measures the flow of those children moving into care."),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
-                      "The children in care rate is calculated as the number of children in care per 10,000 children in the general population."
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
@@ -134,22 +136,22 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("Rates are calculated using published number of children starting in care figures which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Figures exclude children looked after under a series of short-term placements. Only the first occasion on which a child started to be looked after in the year has been counted."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                           )
                         )
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care during the year by region"),
+                    h2("Rate of children starting to be looked after by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_rate_reg"),
@@ -163,7 +165,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by local authority"),
+                    h2("Rate of children starting to be looked after by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     # br(),
@@ -187,9 +189,14 @@ outcome1_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Rate of new entrants to care, with a breakdown by whether new entrants to care are Unaccompanied Asylum Seeking Children (UASC)",
+                  "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children starting in care who were UASC"),
+                    h2("Rate of children starting to be looked after who were UASC"),
+                    p("This measures the flow of those children moving into care. Where UASC are placed within an authority, this will represent an unavoidable increase in numbers of children entering the system. This breakdown is provided for context."),
+                    insert_text(inputId = "cla_rate__starting_definition", text = paste(
+                      "<b>", "Rate of children who started to be looked after", "</b><br>",
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_uasc"),
                     br(),
@@ -201,9 +208,29 @@ outcome1_tab <- function() {
                         dataTableOutput("table_uasc")
                       )
                     ),
+                    details(
+                      inputId = "cla_UASC_rate_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by region who were UASC"),
+                    h2("Rate of children starting to be looked after by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -219,7 +246,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by LA who were UASC"),
+                    h2("Rate of children starting to be looked after by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     # br(),
@@ -243,9 +270,14 @@ outcome1_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Rate of children in care on 31 March",
+                  "Rate of children looked after on 31 March",
                   gov_row(
-                    h2("Rate of children in care on 31 March"),
+                    h2("Rate of children looked after on 31 March"),
+                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
+                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
+                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_cla_rate_march"),
                     br(),
@@ -266,16 +298,16 @@ outcome1_tab <- function() {
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                           )
                         )
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by region"),
+                    h2("Rate of children looked after on 31 March by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_march_reg"),
@@ -290,7 +322,7 @@ outcome1_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by local authority"),
+                    h2("Rate of children looked after on 31 March by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
@@ -349,7 +381,7 @@ outcome1_tab <- function() {
 
                     insert_text(inputId = "CIN_definition", text = paste(
                       "<b>", "Children In Need (CIN) rate", "</b><br>",
-                      "Rate of Children In Need at 31 March, per 10,000 children in the population."
+                      "The Children In Need rate is calculated as the number of Children In Need at 31 March, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cin_rate"),
