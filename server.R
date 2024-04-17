@@ -332,7 +332,7 @@ server <- function(input, output, session) {
       workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
         arrange(desc(`Turnover Rate Fte`)),
-      colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
+      colnames = c("Time period", "Region", "Turnover rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -408,7 +408,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
+      colnames = c("Time period", "Local authority", "Turnover rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -557,7 +557,7 @@ server <- function(input, output, session) {
         `Agency Rate Fte`
       ) %>%
         arrange(desc(`Agency Rate Fte`)),
-      colnames = c("Time period", "Geographical breakdown", "Agency worker rate (FTE) %"),
+      colnames = c("Time period", "Region", "Agency worker rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -614,7 +614,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Agency worker rate (FTE) %"),
+      colnames = c("Time period", "Local authority", "Agency worker rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -775,7 +775,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Vacancy rate (FTE) %"),
+      colnames = c("Time period", "Local authority", "Vacancy rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -806,7 +806,7 @@ server <- function(input, output, session) {
         `Vacancy Rate Fte`
       ) %>%
         arrange(desc(`Vacancy Rate Fte`)),
-      colnames = c("Time period", "Geographical breakdown", "Vacancy rate (FTE) %"),
+      colnames = c("Time period", "Region", "Vacancy rate (FTE) %"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -959,7 +959,7 @@ server <- function(input, output, session) {
         "Caseload Fte"
       ) %>%
         arrange(desc(`Caseload Fte`)),
-      colnames = c("Time period", "Geographical breakdown", "Average caseload (FTE)"),
+      colnames = c("Time period", "Region", "Average caseload (FTE)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1016,7 +1016,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Average caseload (FTE)"),
+      colnames = c("Time period", "Local authority", "Average caseload (FTE)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1404,7 +1404,7 @@ server <- function(input, output, session) {
         number, "Rate Per 10000"
       ) %>%
         arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
+      colnames = c("Time period", "Region", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1460,7 +1460,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
+      colnames = c("Time period", "Local authority", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1508,7 +1508,7 @@ server <- function(input, output, session) {
         At31_episodes, At31_episodes_rate
       ) %>%
         arrange(desc(At31_episodes_rate)),
-      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
+      colnames = c("Time period", "Region", "CIN number at 31 March", "CIN rate per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1553,7 +1553,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rates per 10,000"),
+      colnames = c("Time period", "Local authority", "CIN number at 31 March", "CIN rates per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1783,7 +1783,7 @@ server <- function(input, output, session) {
       ) %>%
         arrange(desc(Re_referrals_percent)),
       colnames = c(
-        "Time period", "Geographical breakdown", "Referrals in the year",
+        "Time period", "Region", "Referrals in the year",
         "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
       ),
       options = list(
@@ -1832,7 +1832,7 @@ server <- function(input, output, session) {
     datatable(
       data,
       colnames = c(
-        "Time period", "Geographical breakdown", "Referrals in the year",
+        "Time period", "Local authority", "Referrals in the year",
         "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
       ),
       options = list(
@@ -1932,7 +1932,7 @@ server <- function(input, output, session) {
         time_period == max(time_period)
       ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
+      colnames = c("Time period", "Region", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1991,7 +1991,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
+      colnames = c("Time period", "Local authority", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -2123,7 +2123,7 @@ server <- function(input, output, session) {
         number, `Rate Per 10000`
       ) %>%
         arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
+      colnames = c("Time period", "Region", "Number of children looked after on 31 March", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -2179,7 +2179,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
+      colnames = c("Time period", "Local authority", "Number of children looked after on 31 March", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -2388,7 +2388,7 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(`pt_overall`)),
       colnames = c(
-        "Time period", "Geographical breakdown", "Social care group",
+        "Time period", "Region", "Social care group",
         "School type", "Total number of pupils", "Overall absence (%)"
       ),
       options = list(
@@ -2457,7 +2457,7 @@ server <- function(input, output, session) {
     datatable(
       data,
       colnames = c(
-        "Time period", "Geographical breakdown", "Social Care Group", "School type",
+        "Time period", "Local authority", "Social Care Group", "School type",
         "Total number of pupils", "Overall absence (%)"
       ),
       options = list(
@@ -2594,7 +2594,7 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(`pt_pupils_pa_10_exact`)),
       colnames = c(
-        "Time period", "Geographical breakdown", "Social care group",
+        "Time period", "Region", "Social care group",
         "School type", "Total number of pupils", "Persistent absentees (%)"
       ),
       options = list(
@@ -2664,7 +2664,7 @@ server <- function(input, output, session) {
     datatable(
       data,
       colnames = c(
-        "Time period", "Geographical breakdown", "Social Care Group", "School type",
+        "Time period", "Local authority", "Social Care Group", "School type",
         "Total number of pupils", "Persistent absentees (%)"
       ),
       options = list(
@@ -2879,7 +2879,7 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(`pt_rwm_met_expected_standard`)),
       colnames = c(
-        "Time period", "Geographical breakdown", "Social care group",
+        "Time period", "Region", "Social care group",
         "Total number of eligible pupils", "Expected standard reading writing maths (%)"
       ),
       options = list(
@@ -2948,7 +2948,7 @@ server <- function(input, output, session) {
     datatable(
       data,
       colnames = c(
-        "Time period", "Geographical breakdown", "Social Care Group",
+        "Time period", "Local authority", "Social Care Group",
         "Total number of eligible pupils", "Expected standard reading writing maths (%)"
       ),
       options = list(
@@ -3090,7 +3090,7 @@ server <- function(input, output, session) {
         ) %>%
         arrange(desc(`avg_att8`)),
       colnames = c(
-        "Time period", "Geographical breakdown", "Social care group",
+        "Time period", "Region", "Social care group",
         "Total number of pupils", "Average Attainment 8 score"
       ),
       options = list(
@@ -3158,7 +3158,7 @@ server <- function(input, output, session) {
     datatable(
       data,
       colnames = c(
-        "Time period", "Geographical breakdown", "Social Care Group",
+        "Time period", "Local authority", "Social Care Group",
         "Total number of pupils", "Average attainment 8 score"
       ),
       options = list(
@@ -3387,7 +3387,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Special guardianship orders") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Reason ceased (%)"),
+      colnames = c("Time period", "Region", "Reason ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3451,7 +3451,7 @@ server <- function(input, output, session) {
         TRUE ~ as.numeric(percentage)
       )) %>%
       arrange(desc(percentage)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `percentage`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `percentage`)
 
     reactable(
       data2,
@@ -3586,7 +3586,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Residence order or child arrangement order granted") %>%
         select(time_period, geo_breakdown, characteristic, percentage) %>%
         arrange(desc(percentage)),
-      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Reason ceased (%)"),
+      colnames = c("Time period", "Region", "Reason ceased", "Reason ceased (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3650,7 +3650,7 @@ server <- function(input, output, session) {
       #   TRUE ~ as.numeric(perc)
       # )) %>%
       arrange(desc(`Ceased (%)`)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `Ceased (%)`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Reason ceased (%)` = `Ceased (%)`)
 
     reactable(
       data2,
@@ -3844,7 +3844,7 @@ server <- function(input, output, session) {
       repeat_cpp %>% filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
         select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
         arrange(desc(Repeat_CPP_percent)),
-      colnames = c("Time period", "Geographical breakdown", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
+      colnames = c("Time period", "Region", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -3906,7 +3906,7 @@ server <- function(input, output, session) {
       #   TRUE ~ as.numeric(perc)
       # )) %>%
       arrange(desc(`Repeat_CPP_percent`)) %>%
-      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
 
     reactable(
       data2,
