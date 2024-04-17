@@ -451,7 +451,7 @@ enabler2_tab <- function() {
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
-                      "Percentage of headcount children and family social workers in post at 30 September by ethnicity group."
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicty."
                     )),
                     plotlyOutput("plot_ethnicity_rate"),
                     br(),
@@ -469,7 +469,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li(tags$b("Ethnicity groups"), " are based on ethnic origin and are provided on a headcount basis."),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$li(tags$b("Headcount"), "is a count of all individual children and family social workers, regardless of their working pattern."),
                           tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
                           tags$br(),
@@ -487,6 +487,10 @@ enabler2_tab <- function() {
                   "Ethnic diversity of workforce vs. general population",
                   gov_row(
                     h2("Ethnic diversity of workforce vs. general population"),
+                    insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
+                      "<b>", "Ethnicity of social workers (headcount) vs. ethnicity of general population", "</b><br>",
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicty, compared to known ethnicity breakdown of general population."
+                    )),
                     br(),
                     plotlyOutput("plot_population_ethnicity_rate"),
                     br(),
@@ -505,7 +509,7 @@ enabler2_tab <- function() {
                         tags$ul(
                           tags$li("Population data is taken from the latest available", a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS Census data (2021).")),
                           tags$li(sprintf("The Workforce data comparison uses the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
@@ -521,6 +525,10 @@ enabler2_tab <- function() {
                   "Ethnic diversity of workforce by seniority level",
                   gov_row(
                     h2("Ethnic diversity of workforce by seniority level"),
+                    insert_text(inputId = "Ethnicity_by_role_definition", text = paste(
+                      "<b>", "Ethnicity (headcount)", "</b><br>",
+                      "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicty."
+                    )),
                     br(),
                     plotlyOutput("plot_seniority_eth"),
                     br(),
@@ -538,7 +546,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li(sprintf("The data used is from the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group are calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$li("Seniority level relates to social worker role. Manager roles have been grouped and include first line managers, middle managers and senior managers."),
                           tags$li("A Senior Practitioner works in a local authority in a children’s services department as a team leader, supervising social worker or senior social worker."),
                           tags$li("A case holder is a children and family social worker that manages cases, but is not in a manager or senior practitioner role (however, cases can be hold by those not in case holder roles)."),
