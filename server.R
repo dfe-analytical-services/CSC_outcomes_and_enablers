@@ -3741,9 +3741,9 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "rate_per_10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children starting to be looked after")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -3902,9 +3902,9 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "rate_per_10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children looked after on 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -3981,9 +3981,9 @@ server <- function(input, output, session) {
     data <- cin_rates %>% rename("CIN_rate_per_10000" = "At31_episodes_rate")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "CIN_rate_per_10000"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "At31_episodes", yvalue = "CIN_rate_per_10000"),
       columns = list(
-        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `At31_episodes` = colDef(name = "CIN number at 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
