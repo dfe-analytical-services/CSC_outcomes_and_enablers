@@ -1722,7 +1722,7 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
     ) %>%
-    rename(`Breakdown` = `geo_breakdown`, `UASC status` = `characteristic`, `Selection` = `is_selected`) %>%
+    rename(`Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Selection` = `is_selected`) %>%
     rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
     mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
       . == "z" ~ -400,

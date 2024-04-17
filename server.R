@@ -4033,7 +4033,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children starting to be looked after")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children starting to be looked after")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4194,7 +4194,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children looked after on 31 March")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children looked after on 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4273,7 +4273,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "At31_episodes", yvalue = "CIN_rate_per_10000"),
       columns = list(
-        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `At31_episodes` = colDef(name = "CIN number at 31 March")
+        `Cin Rate Per 10000` = colDef(name = "CIN rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `At31_episodes` = colDef(name = "CIN number at 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
