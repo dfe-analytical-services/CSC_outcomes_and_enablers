@@ -4124,7 +4124,81 @@ server <- function(input, output, session) {
     )
   })
 
-  # By LA and stats neighbours further down in the stats neighbours section
+  # stats neighbours further down in the stats neighbours section
+  output$plot_child_abuse_by_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+    )
+    data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
+
+    max_y_lim <- max(data$Number) + 500
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # by la table alt
+  output$table_child_ab_neg_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+    )
+    if (input$select_geography_o3 == "Regional") {
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+
+      data <- assessment_factors %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(assessment_factor == input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number) %>%
+        arrange(desc(Number))
+    } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
+      data <- assessment_factors %>%
+        filter(geographic_level == "Local authority", time_period == max(assessment_factors$time_period)) %>%
+        filter(assessment_factor == input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number) %>%
+        arrange(desc(Number))
+    }
+
+    data2 <- data %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      mutate(Number = case_when(
+        Number == "z" ~ -400,
+        Number == "c" ~ -100,
+        Number == "k" ~ -200,
+        Number == "x" ~ -300,
+        TRUE ~ as.numeric(Number)
+      )) %>%
+      arrange(desc(Number)) %>%
+      rename(`Time period` = `time_period`, `Geographical breakdown` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
 
   ### Harms outside the home ------
   output$extra_familial_all_af_plot <- renderPlotly({
@@ -5005,6 +5079,51 @@ server <- function(input, output, session) {
     )
   })
 
+  ## Outcome 3 -----
+  ### Child abuse/Neglect ------
+  output$SN_child_ab_neg <- renderUI({
+    if (input$child_abuse_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_child_abuse_by_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_child_ab_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("table_child_ab_neg_la")
+            # p("table here")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("turnover_SN_plot"),
+        p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_turnover",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_turnover_tbl")
+            # reactableOutput("SN_turnover_tbl")
+            p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_turnover_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
 
   ## Enabler 2 ------
   ### Turnover rate -----

@@ -333,8 +333,8 @@ outcome3_tab <- function() {
                       choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities"
                     ),
-                    # uiOutput("")
-                    p("by la chart"),
+                    uiOutput("SN_child_ab_neg")
+                    # p("by la chart"),
                   )
                 ),
                 open = FALSE
