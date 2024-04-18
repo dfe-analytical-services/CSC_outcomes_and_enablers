@@ -4090,7 +4090,8 @@ server <- function(input, output, session) {
   output$child_abuse_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
 
     data <- assessment_factors %>%
@@ -4108,7 +4109,19 @@ server <- function(input, output, session) {
   })
 
   output$child_abuse_region_tbl <- renderReactable({
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_1, time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      arrange(desc(Number))
 
+    datatable(
+      data,
+      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
   })
 
   # By LA and stats neighbours further down in the stats neighbours section
