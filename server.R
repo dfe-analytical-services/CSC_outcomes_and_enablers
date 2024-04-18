@@ -5102,16 +5102,16 @@ server <- function(input, output, session) {
         need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("turnover_SN_plot"),
-        p("stats neighbours plot here"),
+        plotlyOutput("abuse_neg_SN_plot"),
+        # p("stats neighbours plot here"),
         br(),
         details(
-          inputId = "tbl_sn_turnover",
+          inputId = "tbl_sn_ch_ab_neg",
           label = "View chart as a table",
           help_text = (
             # dataTableOutput("SN_turnover_tbl")
-            # reactableOutput("SN_turnover_tbl")
-            p("table here")
+            reactableOutput("abuse_neg_SN_tbl")
+            # p("table here")
           )
         ),
         details(
@@ -5123,6 +5123,39 @@ server <- function(input, output, session) {
         )
       )
     }
+  })
+
+  # child abuse/neglect SN plot and table alternative
+  output$abuse_neg_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+    )
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
+
+    max_y_lim <- max(data$Number) + 500
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$abuse_neg_SN_tbl <- renderReactable({
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Number of cases" = "value")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Number of cases"),
+      columns = list(
+        `Number Of Cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
   })
 
   ## Enabler 2 ------
