@@ -451,7 +451,7 @@ enabler2_tab <- function() {
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
-                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicty."
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity."
                     )),
                     plotlyOutput("plot_ethnicity_rate"),
                     br(),
@@ -489,7 +489,7 @@ enabler2_tab <- function() {
                     h2("Ethnic diversity of workforce vs. general population"),
                     insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
                       "<b>", "Ethnicity of social workers (headcount) vs. ethnicity of general population", "</b><br>",
-                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicty, compared to known ethnicity breakdown of general population."
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity, compared to known ethnicity breakdown of general population."
                     )),
                     br(),
                     plotlyOutput("plot_population_ethnicity_rate"),
