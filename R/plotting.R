@@ -198,7 +198,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 
 # By Region bar chart repeat function -----
 
-by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
+by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
   reg_data <- dataset %>%
     filter(geographic_level == "Regional", time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, `yvalue`) %>%
@@ -219,7 +219,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
     ) +
-    scale_y_continuous(limits = c(0, 100)) +
+    scale_y_continuous(limits = c(0, yupperlim)) +
     scale_fill_manual(
       "Time Period",
       # breaks = unique(c("England", inputArea)),
