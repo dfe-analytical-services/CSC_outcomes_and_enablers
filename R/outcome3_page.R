@@ -198,27 +198,11 @@ outcome3_tab <- function() {
                 ),
               ),
             ),
+            # Child abuse / neglect -----
             tabPanel(
               "Child abuse / neglect",
               fluidRow(
                 br()
-              ),
-              fluidRow(
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Title here",
-                    value = p("value here")
-                  )
-                ),
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Title here",
-                    value = p("value here")
-                  )
-                ),
-                br(),
               ),
               gov_row(
                 p("All assessment factors that include child abuse or neglect (2023)."),
@@ -268,23 +252,6 @@ outcome3_tab <- function() {
               "Harms outside the home",
               fluidRow(
                 p("testing")
-              ),
-              fluidRow(
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Title here",
-                    value = p("value here")
-                  )
-                ),
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Title here",
-                    value = p("value here")
-                  )
-                ),
-                br(),
               ),
               gov_row(
                 p("All assessment factors that include extra familial harm (2023)."),

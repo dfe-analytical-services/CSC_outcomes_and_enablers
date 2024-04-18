@@ -3996,6 +3996,10 @@ server <- function(input, output, session) {
     )
   })
 
+  # by region chart
+
+  # By LA and stats neighbours further down in the stats neighbours section
+
   ### Harms outside the home ------
   output$extra_familial_all_af_plot <- renderPlotly({
     shiny::validate(
