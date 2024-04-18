@@ -1671,7 +1671,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
 }
 
 
-stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
+stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
@@ -1683,22 +1683,41 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  data2 <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
-    select(geo_breakdown, `yvalue`) %>%
-    mutate(
-      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
-    ) %>%
-    rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-    rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
-    mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
-      . == "z" ~ -400,
-      . == "c" ~ -100,
-      . == "k" ~ -200,
-      . == "x" ~ -300,
-      TRUE ~ as.numeric(.)
-    )) %>%
-    arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+  if (is.null(selectedcolumn)) {
+    data2 <- dataset %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      select(time_period, geo_breakdown, `yvalue`) %>%
+      mutate(
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
+      mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
+        . == "z" ~ -400,
+        . == "c" ~ -100,
+        . == "k" ~ -200,
+        . == "x" ~ -300,
+        TRUE ~ as.numeric(.)
+      )) %>%
+      arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+  } else {
+    data2 <- dataset %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      select(all_of(c("time_period", "geo_breakdown", selectedcolumn, yvalue))) %>%
+      mutate(
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
+      mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
+        . == "z" ~ -400,
+        . == "c" ~ -100,
+        . == "k" ~ -200,
+        . == "x" ~ -300,
+        TRUE ~ as.numeric(.)
+      )) %>%
+      arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+  }
 }
 
 stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
@@ -1718,7 +1737,7 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
     ) %>%
-    rename(`Breakdown` = `geo_breakdown`, `UASC status` = `characteristic`, `Selection` = `is_selected`) %>%
+    rename(`Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Selection` = `is_selected`) %>%
     rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
     mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
       . == "z" ~ -400,

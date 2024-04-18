@@ -1322,7 +1322,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate of children starting in care, per 10,000", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -1371,7 +1371,7 @@ server <- function(input, output, session) {
       filtered_data %>%
         filter(population_count == "Children starting to be looked after each year") %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1404,7 +1404,7 @@ server <- function(input, output, session) {
         number, "Rate Per 10000"
       ) %>%
         arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1460,7 +1460,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting in care", "Rate of children starting in care, per 10,000"),
+      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1897,7 +1897,7 @@ server <- function(input, output, session) {
         ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(time_period)),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE,
@@ -1932,7 +1932,7 @@ server <- function(input, output, session) {
         time_period == max(time_period)
       ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -1991,7 +1991,7 @@ server <- function(input, output, session) {
 
     datatable(
       data,
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting in care", "Rate per 10,000 children"),
+      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
       options = list(
         scrollx = FALSE,
         paging = TRUE
@@ -4106,9 +4106,9 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children starting to be looked after")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4189,9 +4189,9 @@ server <- function(input, output, session) {
     # rename("Placement rate per 10000" = "placement_per_10000")
 
     reactable(
-      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000"),
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
       columns = list(
-        `Placement Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placement Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4267,9 +4267,9 @@ server <- function(input, output, session) {
     filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
       columns = list(
-        `Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children looked after on 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4346,9 +4346,9 @@ server <- function(input, output, session) {
     data <- cin_rates %>% rename("CIN_rate_per_10000" = "At31_episodes_rate")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate_per_10000"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "At31_episodes", yvalue = "CIN_rate_per_10000"),
       columns = list(
-        `Cin Rate Per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Cin Rate Per 10000` = colDef(name = "CIN rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `At31_episodes` = colDef(name = "CIN number at 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4413,12 +4413,8 @@ server <- function(input, output, session) {
 
   # # cin stats neighbours tables
   output$SN_cin_referral_tbl <- renderReactable({
-    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
-
-    # data <- cin_referrals %>% rename("Re-referrals (%)" = "Re_referrals_percentage")
-
     reactable(
-      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)"),
+      stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
       columns = list(
         `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4486,12 +4482,13 @@ server <- function(input, output, session) {
   output$SN_absence_tbl <- renderReactable({
     filtered_data <- outcomes_absence %>%
       filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
-      rename(`OA%` = `Overall absence (%)`, `Overall absence (%)` = `pt_overall`)
+      rename(`OA%` = `Overall absence (%)`, `Overall absence (%)` = `pt_overall`) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "t_pupils"), yvalue = "Overall absence (%)"),
       columns = list(
-        `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `t_pupils` = colDef(name = "Total number of pupils"), `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4558,12 +4555,14 @@ server <- function(input, output, session) {
   output$SN_persistent_absence_tbl <- renderReactable({
     filtered_data <- outcomes_absence %>%
       filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
-      rename(`PA%` = `Persistent absentees (%)`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
+      rename(`PA%` = `Persistent absentees (%)`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "t_pupils"), yvalue = "Persistent absentees (%)"),
       columns = list(
-        `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `t_pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4632,12 +4631,14 @@ server <- function(input, output, session) {
     data <- outcomes_ks2 %>%
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
       select(-c("Expected standard reading writing maths (%)"))
-    data <- data %>% rename("Expected standard reading writing maths (%)" = "pt_rwm_met_expected_standard")
+    data <- data %>%
+      rename("Expected standard reading writing maths (%)" = "pt_rwm_met_expected_standard") %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_rwm_eligible_pupils"), yvalue = "Expected standard reading writing maths (%)"),
       columns = list(
-        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4706,12 +4707,13 @@ server <- function(input, output, session) {
   output$SN_ks4_attain_tbl <- renderReactable({
     data <- outcomes_ks4 %>%
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`)
+      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_pupils"), yvalue = "Average Attainment 8"),
       columns = list(
-        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_pupils` = colDef(name = "Total number of pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -4790,7 +4792,7 @@ server <- function(input, output, session) {
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, yvalue = "percentage"),
       columns = list(
         Percentage = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4868,7 +4870,7 @@ server <- function(input, output, session) {
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, yvalue = "Ceased (%)"),
       columns = list(
         `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4935,7 +4937,7 @@ server <- function(input, output, session) {
 
   output$SN_turnover_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Turnover Rate Fte"),
       columns = list(
         `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4998,7 +5000,7 @@ server <- function(input, output, session) {
 
   output$SN_agency_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Agency Rate Fte"),
       columns = list(
         `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -5062,7 +5064,7 @@ server <- function(input, output, session) {
 
   output$SN_vacancy_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Vacancy Rate Fte"),
       columns = list(
         `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -5125,7 +5127,7 @@ server <- function(input, output, session) {
 
   output$SN_caseload_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Caseload Fte"),
       columns = list(
         `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -5150,7 +5152,7 @@ server <- function(input, output, session) {
 
   output$SN_cpp_repeat_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(repeat_cpp, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent"),
+      stats_neighbours_table(repeat_cpp, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Repeat_CPP_percent"),
       columns = list(
         `Repeat Cpp Percent` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
