@@ -316,7 +316,7 @@ server <- function(input, output, session) {
     )
     ggplotly(
       # plot_turnover_reg() %>%
-      by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %") %>%
+      by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -538,7 +538,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
     ggplotly(
-      by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %") %>%
+      by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         # plot_agency_reg() %>%
         config(displayModeBar = F),
       height = 420
@@ -791,7 +791,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
     ggplotly(
-      by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %") %>%
+      by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         # plot_vacancy_reg() %>%
         config(displayModeBar = F),
       height = 420
@@ -941,7 +941,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
     ggplotly(
-      by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)") %>%
+      by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -2367,7 +2367,7 @@ server <- function(input, output, session) {
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     ggplotly(
-      by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)") %>%
+      by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -2573,7 +2573,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(
-      by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)") %>%
+      by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -2858,7 +2858,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(
-      by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)") %>%
+      by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3069,7 +3069,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(
-      by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8") %>%
+      by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3370,7 +3370,7 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3569,7 +3569,7 @@ server <- function(input, output, session) {
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
     ggplotly(
-      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)") %>%
+      by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3828,7 +3828,7 @@ server <- function(input, output, session) {
     data <- repeat_cpp
 
     ggplotly(
-      by_region_bar_plot(data, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
+      by_region_bar_plot(data, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -3996,7 +3996,120 @@ server <- function(input, output, session) {
     )
   })
 
+  # time series chart
+  # the time series chart, by region and la charts will need to be filtered by the extra dropdown
+  output$child_abuse_ts_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+    )
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
+    }
+
+    max_y_lim <- max(filtered_data$Number) + 100
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Number", "Number", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # child abuse ts table alternative
+  output$ca_ts_tbl <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+    )
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+    }
+
+    datatable(
+      filtered_data,
+      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
   # by region chart
+  output$child_abuse_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_1) %>%
+      rename("Number_of_cases" = "Number") %>%
+      filter(time_period == max(time_period), geographic_level == "Regional")
+
+    max_lim <- max(data$Number_of_cases) + 500
+
+    ggplotly(
+      by_region_bar_plot(data, "Number_of_cases", "Number of cases", max_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$child_abuse_region_tbl <- renderReactable({
+
+  })
 
   # By LA and stats neighbours further down in the stats neighbours section
 
