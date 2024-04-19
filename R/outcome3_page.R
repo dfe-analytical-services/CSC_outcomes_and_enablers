@@ -273,7 +273,7 @@ outcome3_tab <- function() {
                       label = "View the chart as a table",
                       help_text = (
                         # p("table goes here")
-                        dataTableOutput("ca_ts_tbl")
+                        reactableOutput("ca_ts_tbl")
                       )
                     ),
                     details(
