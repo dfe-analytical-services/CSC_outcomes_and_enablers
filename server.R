@@ -4245,6 +4245,220 @@ server <- function(input, output, session) {
     )
   })
 
+  # time series chart
+  # the time series chart, by region and la charts will need to be filtered by the extra dropdown
+  output$efh_ts_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_2)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_2)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
+    }
+
+    max_y_lim <- max(filtered_data$Number) + 500
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Number", "Number", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # child abuse ts table alternative
+  output$efh_ts_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- assessment_factors %>%
+        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- assessment_factors %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number)
+    }
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by region chart
+  output$efh_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_2) %>%
+      rename("Number_of_cases" = "Number") %>%
+      filter(time_period == max(time_period), geographic_level == "Regional")
+
+    max_lim <- max(data$Number_of_cases) + 500
+
+    ggplotly(
+      by_region_bar_plot(data, "Number_of_cases", "Number of cases", max_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$efh_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_2, time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      arrange(desc(Number))
+
+    datatable(
+      data,
+      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+  # stats neighbours further down in the stats neighbours section
+  output$plot_efh_by_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+    data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period))
+
+    max_y_lim <- max(data$Number) + 500
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # by la table alt
+  output$table_efh_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+    if (input$select_geography_o3 == "Regional") {
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+
+      data <- assessment_factors %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(assessment_factor == input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number) %>%
+        arrange(desc(Number))
+    } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
+      data <- assessment_factors %>%
+        filter(geographic_level == "Local authority", time_period == max(assessment_factors$time_period)) %>%
+        filter(assessment_factor == input$assessment_factors_2) %>%
+        select(time_period, geo_breakdown, assessment_factor, Number) %>%
+        arrange(desc(Number))
+    }
+
+    data2 <- data %>%
+      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      mutate(Number = case_when(
+        Number == "z" ~ -400,
+        Number == "c" ~ -100,
+        Number == "k" ~ -200,
+        Number == "x" ~ -300,
+        TRUE ~ as.numeric(Number)
+      )) %>%
+      arrange(desc(Number)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
 
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -5125,7 +5339,7 @@ server <- function(input, output, session) {
           )
         ),
         details(
-          inputId = "sn_turnover_info",
+          inputId = "sn_abuse_neg_info",
           label = "Additional information",
           help_text = (
             p("Additional information about stats neighbours file.")
@@ -5156,6 +5370,84 @@ server <- function(input, output, session) {
   output$abuse_neg_SN_tbl <- renderReactable({
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Number of cases" = "value")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Number of cases"),
+      columns = list(
+        `Number Of Cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  ### Extra Familial harm ------
+  output$SN_extra_familial_harm <- renderUI({
+    if (input$extra_familial_harm_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_efh_by_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_extra_fam_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("table_efh_la")
+            # p("table here")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("efh_SN_plot"),
+        # p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_efh",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_turnover_tbl")
+            reactableOutput("efh_SN_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_efh_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  # child abuse/neglect SN plot and table alternative
+  output$efh_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+    )
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period))
+
+    max_y_lim <- max(data$Number) + 500
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$efh_SN_tbl <- renderReactable({
+    data <- assessment_factors %>%
+      filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Number of cases" = "value")
 
     reactable(
