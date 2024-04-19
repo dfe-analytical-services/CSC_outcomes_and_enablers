@@ -1045,7 +1045,8 @@ server <- function(input, output, session) {
   output$plot_ethnicity_rate <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      need(nrow(table) == 0, "No known ethnicity recorded for social workers.")
     )
     ggplotly(
       plot_ethnicity_rate(input$geographic_breakdown_e2, input$select_geography_e2) %>%
