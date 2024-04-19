@@ -633,8 +633,8 @@ outcome1_tab <- function() {
                     label = "School type information:",
                     help_text = (
                       tags$ul(
-                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and pupil referall units."),
-                        tags$li("Breakdowns for special schools and pupil referall units are not available on the dashboard due to high levels of supression in the published local authority level data.
+                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and state-funded alternative provision schools."),
+                        tags$li("Breakdowns for special schools and state-funded alternative provision schools are not available on the dashboard due to high levels of supression in the published local authority level data.
                                 You can view data for all breakdowns via the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes publication."), ),
                         tags$br(),
                         p(
@@ -944,7 +944,7 @@ outcome1_tab <- function() {
                         tags$ul(
                           tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
                           tags$li(
-                            "Attainment in reading, writing and maths combined is not directly comparable to some earlier years (2016/17) because of changes to writing teacher assessment frameworks in 2018. For more detailed information on this see ",
+                            "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment."),
                           ),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
@@ -1033,6 +1033,8 @@ outcome1_tab <- function() {
                                  directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
                           ),
+                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
