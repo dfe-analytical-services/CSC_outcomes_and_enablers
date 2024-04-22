@@ -198,7 +198,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 
 # By Region bar chart repeat function -----
 
-by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
+by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
   reg_data <- dataset %>%
     filter(geographic_level == "Regional", time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, `yvalue`) %>%
@@ -219,7 +219,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title) {
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
     ) +
-    scale_y_continuous(limits = c(0, 100)) +
+    scale_y_continuous(limits = c(0, yupperlim)) +
     scale_fill_manual(
       "Time Period",
       # breaks = unique(c("England", inputArea)),
@@ -1552,6 +1552,21 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   }
 
   return(p)
+}
+
+# Outcome 3 ----
+
+all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_breakdown = NULL) {
+  data <- assessment_factors %>%
+    filter(assessment_factor %in% (factorslist)) %>%
+    filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
+
+  ggplot(data, aes(x = reorder(assessment_factor, Number), y = Number)) +
+    geom_bar(stat = "identity", fill = "#12436D") +
+    scale_y_continuous(limits = c(0, NA)) +
+    coord_flip() +
+    xlab("Assessment factor") +
+    ylab("Number of cases")
 }
 
 # Statistical Neighbours function ----
