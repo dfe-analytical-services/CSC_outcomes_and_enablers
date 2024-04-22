@@ -130,7 +130,9 @@ af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
   select(assessment_factor) %>%
   pull("assessment_factor")
-extra_familial_harm_af <- c("Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
+
+extra_familial_harm_af <- c("Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
+# "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
