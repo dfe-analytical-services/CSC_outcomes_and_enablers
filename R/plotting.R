@@ -759,7 +759,7 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
     workforce_eth$geo_breakdown %in% geo_breakdown &
       workforce_eth$role == "Total" &
       workforce_eth$breakdown_topic == "Ethnicity major" &
-      workforce_eth$breakdown != "Known" &
+      !(workforce_eth$breakdown %in% c("Known", "Total", "Not known")) &
       workforce_eth$time_period >= (max(workforce_eth$time_period) - 3),
     c(
       "time_period", "geo_breakdown", "breakdown_topic", "breakdown",
@@ -793,7 +793,11 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
       limits = custom_x_order,
       labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
     )
-
+  # print(all((is.na(ethnicity_data$percentage))))
+  # print((is.na(ethnicity_data$percentage)))
+  if (all(is.na(ethnicity_data$percentage))) {
+    p <- p + annotate(x = 3, y = 50, geom = "text", label = "There is no available data due to zero social workers with known ethnicity", color = "red")
+  }
   return(p)
 }
 
@@ -891,7 +895,9 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
       limits = custom_x_order,
       labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
     )
-
+  if (all(is.na(ethnicity_data_sen$Percentage))) {
+    p <- p + annotate(x = 3, y = 50, geom = "text", label = "There is no available data due to zero social workers with known ethnicity", color = "red")
+  }
   return(p)
 }
 

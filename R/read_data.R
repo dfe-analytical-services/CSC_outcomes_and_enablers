@@ -234,8 +234,8 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
 
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     mutate(inpost_headcount = case_when(
-      inpost_headcount == "Z" ~ NA,
-      inpost_headcount == "x" ~ NA,
+      inpost_headcount == "Z" ~ 0,
+      inpost_headcount == "x" ~ 0,
       TRUE ~ as.numeric(inpost_headcount)
     ))
 
