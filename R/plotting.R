@@ -1561,12 +1561,20 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     filter(assessment_factor %in% (factorslist)) %>%
     filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
 
-  ggplot(data, aes(x = reorder(assessment_factor, Number), y = Number)) +
+  p <- ggplot(data, aes(x = reorder(assessment_factor, Number), y = Number)) +
     geom_bar(stat = "identity", fill = "#12436D") +
     scale_y_continuous(limits = c(0, NA)) +
     coord_flip() +
     xlab("Assessment factor") +
     ylab("Number of cases")
+
+  # logic to check if the table is empty or not
+  annotate_x <- length(unique(data$assessment_factor)) / 2
+  annotate_y <- 0
+  if (max(data$Number) == 0) {
+    p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
+  }
+  return(p)
 }
 
 # Statistical Neighbours function ----
