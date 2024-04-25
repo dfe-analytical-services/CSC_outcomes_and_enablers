@@ -129,8 +129,9 @@ outcome2_tab <- function() {
                   gov_row(
                     h2("Special Guardianship Order (SGO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
-                    # p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                    # Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
+                    insert_text(inputId = "SGO_def", text = paste(
+                      tags$b("Special guardianship order"), " - A private law order made under the Children Act 1989 appointing one or more individuals to be a child's 'special guardian'. It is intended for those children who cannot live with their birth parents and who would benefit from a legally secure placement."
+                    )),
                     br(),
                     plotlyOutput("SGO_time_series"),
                     br(),
@@ -204,6 +205,7 @@ outcome2_tab <- function() {
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
+
                     #  p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
                     #  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
                     # br(),
