@@ -1104,6 +1104,34 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
 
 
+
+## Care leavers activity -----
+read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activity.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
+}
+
+## Care leavers accommodation -----
+read_care_leavers_accommodation_suitability <- function(file = "data/la_care_leavers_accommodation_suitability.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
+}
+
+
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
