@@ -199,7 +199,22 @@ outcome3_tab <- function() {
                         )
                       )
                     )
-                  )
+                  ),
+                  gov_row(
+                    h2("Child Protection Plans (CPP) longer than 2 years, by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_cpp_duration_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_CPP_duration_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_cpp_duration_reg")
+                      )
+                    )
+                  ),
                 ),
                 open = FALSE
               ),

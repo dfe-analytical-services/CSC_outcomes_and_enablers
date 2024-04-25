@@ -4063,6 +4063,39 @@ server <- function(input, output, session) {
     )
   })
 
+  # by region
+  output$plot_cpp_duration_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- duration_cpp
+
+    ggplotly(
+      by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # by region table
+  output$table_cpp_duration_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    datatable(
+      duration_cpp %>% filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
+        arrange(desc(X2_years_or_more_percent)),
+      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
   ### Child abuse/neglect ----
   output$child_abuse_all_af_plot <- renderPlotly({
     shiny::validate(
