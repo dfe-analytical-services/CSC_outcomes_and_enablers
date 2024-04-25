@@ -922,6 +922,37 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     ))
 }
 
+read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2023.csv") {
+  cpp_by_duration_data <- read.csv(file) %>%
+    filter(geographic_level != "Local authority")
+
+  cpp_by_duration_data <- cpp_by_duration_data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name
+    )) %>%
+    select(
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
+      CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
+      more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
+    ) %>%
+    mutate(`X1_year_less_than_2_years` = as.numeric(`X1_year_less_than_2_years`)) %>%
+    mutate(`X2_years_or_more` = as.numeric(`X2_years_or_more`)) %>%
+    mutate(`CPP_At31` = as.numeric(`CPP_At31`)) %>%
+    mutate(one_year_plus = `X1_year_less_than_2_years` + `X2_years_or_more`) %>%
+    mutate(one_year_plus_percent = (one_year_plus / CPP_At31) * 100) %>%
+    mutate(one_year_plus_percent = round(one_year_plus_percent, 1)) %>%
+    select(
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
+      CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
+      more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`,
+      one_year_plus, one_year_plus_percent
+    )
+}
+
+
+
+
 # Outcome 2 ----
 # Used this before the new function below
 # read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {

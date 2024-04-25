@@ -125,6 +125,7 @@ ceased_cla_data <- suppressWarnings(read_outcome2())
 
 # Read in outcome 3 data
 repeat_cpp <- suppressWarnings(read_cpp_in_year_data())
+duration_cpp <- suppressWarnings(read_cpp_by_duration_data())
 assessment_factors <- suppressWarnings(read_assessment_factors())
 af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
