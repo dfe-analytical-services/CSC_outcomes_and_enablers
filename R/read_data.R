@@ -936,18 +936,16 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
       CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
       more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
     ) %>%
-    mutate(`X1_year_less_than_2_years` = as.numeric(`X1_year_less_than_2_years`)) %>%
-    mutate(`X2_years_or_more` = as.numeric(`X2_years_or_more`)) %>%
-    mutate(`CPP_At31` = as.numeric(`CPP_At31`)) %>%
-    mutate(one_year_plus = `X1_year_less_than_2_years` + `X2_years_or_more`) %>%
-    mutate(one_year_plus_percent = (one_year_plus / CPP_At31) * 100) %>%
-    mutate(one_year_plus_percent = round(one_year_plus_percent, 1)) %>%
-    select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
-      CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
-      more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`,
-      one_year_plus, one_year_plus_percent
-    )
+    cpp_by_duration_data() <- cpp_by_duration_data %>%
+    mutate(`X2_years_or_more` = case_when(
+      `X2_years_or_more` == "c" ~ -100,
+      `X2_years_or_more` == "low" ~ -200,
+      `X2_years_or_more` == "k" ~ -200,
+      `X2_years_or_more` == "u" ~ -250,
+      `X2_years_or_more` == "x" ~ -300,
+      `X2_years_or_more` == "z" ~ -400,
+      TRUE ~ as.numeric(X2_years_or_more)
+    ))
 }
 
 
