@@ -129,7 +129,7 @@ ui <- function(input, output, session) {
       outcome1_tab(),
       outcome2_tab(),
       outcome3_tab(),
-      # outcome4_tab(),
+      outcome4_tab(),
       enabler1_tab(),
       enabler2_tab(),
       # enabler3_tab(),
