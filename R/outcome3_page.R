@@ -94,6 +94,13 @@ outcome3_tab <- function() {
                     value = htmlOutput("cpp_in_year_txt")
                   )
                 ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                    value = htmlOutput("cpp_duration_txt")
+                  )
+                ),
                 br(),
                 p("Child protection is focused on investigating and addressing
                   significant harm that children might experience. Remaining

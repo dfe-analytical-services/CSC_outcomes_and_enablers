@@ -3960,6 +3960,21 @@ server <- function(input, output, session) {
     }
   })
 
+  # Child protection plan longer than two years headline box
+  output$cpp_duration_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else if (input$select_geography_o3 == "Local authority") {
+      stat <- "NA"
+    } else {
+      stat <- format(duration_cpp %>%
+        filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(X2_years_or_more_percent), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(duration_cpp$time_period), ")", "</p>"
+    )
+  })
 
   ### Child abuse/neglect ----
   output$child_abuse_all_af_plot <- renderPlotly({
@@ -5740,7 +5755,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
 
 
 
