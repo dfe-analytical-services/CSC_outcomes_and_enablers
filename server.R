@@ -3961,6 +3961,17 @@ server <- function(input, output, session) {
   })
 
 
+  #### child abuse titles -----
+  output$ca_header1 <- renderUI({
+    h2(paste(input$assessment_factors_1, " cases"))
+  })
+  output$ca_header2 <- renderUI({
+    h2(paste(input$assessment_factors_1, " cases, by region"))
+  })
+  output$ca_header3 <- renderUI({
+    h2(paste(input$assessment_factors_1, " cases, by local authority"))
+  })
+
   ### Child abuse/neglect ----
   output$child_abuse_all_af_plot <- renderPlotly({
     shiny::validate(
@@ -4208,6 +4219,17 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
+  })
+
+  #### EFH titles -------
+  output$efh_header1 <- renderUI({
+    h2(paste(input$assessment_factors_2, " cases"))
+  })
+  output$efh_header2 <- renderUI({
+    h2(paste(input$assessment_factors_2, " cases, by region"))
+  })
+  output$efh_header3 <- renderUI({
+    h2(paste(input$assessment_factors_2, " cases, by local authority"))
   })
 
   ### Harms outside the home ------
