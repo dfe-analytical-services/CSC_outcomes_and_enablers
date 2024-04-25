@@ -175,16 +175,16 @@ outcome3_tab <- function() {
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
                   # p("plots go here"),
-                  # plotlyOutput("#"),
+                  plotlyOutput("duration_cpp_time_series"),
                   br(),
                   # Expandable for the table alternative
-                  # details(
-                  #  inputId = "tbl_long_cpp",
-                  #  label = "View chart as a table",
-                  # help_text = (
-                  #   dataTableOutput("table_long_cpp")
-                  #   )
-                  #    ),
+                  details(
+                    inputId = "tbl_duration_cpp",
+                    label = "View chart as a table",
+                    help_text = (
+                      dataTableOutput("table_duration_cpp")
+                    )
+                  ),
                   details(
                     inputId = "cpp_longer_info",
                     label = "Additional information:",
