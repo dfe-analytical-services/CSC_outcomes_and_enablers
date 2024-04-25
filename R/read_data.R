@@ -1059,6 +1059,35 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 }
 
 
+
+# Outcome 4 -----
+## Number of placements -----
+
+read_number_placements_data <- function(file = "data/la_cla_placement_stability.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
+    mutate(percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    rename("Percentage" = "percentage", "Number" = "number")
+
+  return(data2)
+}
+
+
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
