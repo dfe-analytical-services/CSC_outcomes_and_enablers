@@ -111,8 +111,8 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March living in foster placement",
-                    value = p("value")
+                    title = "% CLA on 31 March living in foster placements",
+                    value = htmlOutput("foster_placement_txt")
                   )
                 ),
                 column(

@@ -4616,6 +4616,21 @@ server <- function(input, output, session) {
     )
   })
 
+  # Outcome 4 - Placement type headline boxes, charts and tables
+  output$foster_placement_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_data %>%
+        filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        filter(characteristic == "Foster placements") %>%
+        select(percentage), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
+    )
+  })
+
 
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
