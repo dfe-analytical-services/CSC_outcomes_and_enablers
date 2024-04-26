@@ -18,7 +18,7 @@ outcome4_tab <- function() {
               inputId = "select_geography_o4",
               label = "Select a geographical level:",
               # Change this to look at the relevant dataset for outcome 4
-              choices = unique(ceased_cla_data %>% pull("geographic_level")),
+              choices = unique(placement_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -58,7 +58,7 @@ outcome4_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region_o3",
+                  checkboxIds = "Yes_region_o4",
                   label = "",
                   hint_label = NULL,
                   small = TRUE

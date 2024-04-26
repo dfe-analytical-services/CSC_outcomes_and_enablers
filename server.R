@@ -146,6 +146,9 @@ server <- function(input, output, session) {
   # outcome3
   iv$add_rule("select_geography_o3", sv_required())
   iv$add_rule("geographic_breakdown_o3", sv_required())
+  # outcome4
+  iv$add_rule("select_geography_o4", sv_required())
+  iv$add_rule("geographic_breakdown_o4", sv_required())
   # enabler2
   iv$add_rule("select_geography_e2", sv_required())
   iv$add_rule("geographic_breakdown_e2", sv_required())
@@ -3171,7 +3174,7 @@ server <- function(input, output, session) {
 
 
   # Outcome 2 -----
-  # Geographic breakdown o1 (list of either LA names or Region names)
+  # Geographic breakdown o2 (list of either LA names or Region names)
   observeEvent(eventExpr = {
     input$select_geography_o2
   }, {
@@ -4616,13 +4619,58 @@ server <- function(input, output, session) {
     )
   })
 
+  # Outcome 4 -----
+  # Geographic breakdown o4 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_o4
+  }, {
+    choices <- sort(unique(placement_data[(placement_data$geographic_level == input$select_geography_o4 & placement_data$time_period == max(placement_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_o4",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+
+  region_for_la_o2 <- reactive({
+    selected_la <- input$geographic_breakdown_o4
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$outcome4_choice_text1 <- renderText({
+    if (input$select_geography_o4 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_o4 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics for ", tags$b(input$geographic_breakdown_o4), ".")
+    } else if (input$select_geography_o4 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics for ", tags$b(input$geographic_breakdown_o4), ", in ", region_for_la_o4(), ".")
+    }
+  })
+
+  output$outcome4_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
   # Outcome 4 - Placement type headline boxes, charts and tables
   output$foster_placement_txt <- renderText({
-    if (input$geographic_breakdown_o3 == "") {
+    if (input$geographic_breakdown_o4 == "") {
       stat <- "NA"
     } else {
       stat <- format(placement_data %>%
-        filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
         filter(characteristic == "Foster placements") %>%
         select(percentage), nsmall = 1)
     }
