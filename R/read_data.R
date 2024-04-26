@@ -1132,6 +1132,22 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
 }
 
 
+## Wellbeing of child -----
+
+read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_cla.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+}
+
+
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
