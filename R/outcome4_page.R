@@ -164,16 +164,15 @@ outcome4_tab <- function() {
                   "Percentage of children living in foster, residential care, or secure children’s homes",
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
-                    p("add extra dropdown here for: 'foster placements', 'secure units, children's homes or semi-independent living accommodation' and 'living in other residential settings'."),
+                    p("This indicator contains breakdowns of data for the following assessment factors: ", paste(unique(placement_type_filter %>% str_sort()), collapse = ", ")),
                     div(
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
-                      # p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
                       p("Please use the dropdown below to select which placement type you would like to see in this accordion:"),
                       selectizeInput(
                         inputId = "placement_type_breakdown",
                         label = "Select a placement type:",
-                        choices = c("foster placements", "secure units, children's homes or semi-independent living accommodation", "living in other residential settings"), # unique(af_child_abuse_extra_filter %>% str_sort()),
+                        choices = unique(placement_type_filter %>% str_sort()),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL

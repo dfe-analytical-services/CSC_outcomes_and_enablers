@@ -137,6 +137,10 @@ extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Traff
 
 # Read in outcome 4 data
 placement_data <- suppressWarnings(read_placement_info_data())
+placement_type_filter <- placement_data %>%
+  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings")) %>%
+  select(characteristic) %>%
+  pull("characteristic")
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
