@@ -94,6 +94,13 @@ outcome3_tab <- function() {
                     value = htmlOutput("cpp_in_year_txt")
                   )
                 ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                    value = htmlOutput("cpp_duration_txt")
+                  )
+                ),
                 br(),
                 p("Child protection is focused on investigating and addressing
                   significant harm that children might experience. Remaining
@@ -168,16 +175,16 @@ outcome3_tab <- function() {
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
                   # p("plots go here"),
-                  # plotlyOutput("#"),
+                  plotlyOutput("duration_cpp_time_series"),
                   br(),
                   # Expandable for the table alternative
-                  # details(
-                  #  inputId = "tbl_long_cpp",
-                  #  label = "View chart as a table",
-                  # help_text = (
-                  #   dataTableOutput("table_long_cpp")
-                  #   )
-                  #    ),
+                  details(
+                    inputId = "tbl_duration_cpp",
+                    label = "View chart as a table",
+                    help_text = (
+                      dataTableOutput("table_duration_cpp")
+                    )
+                  ),
                   details(
                     inputId = "cpp_longer_info",
                     label = "Additional information:",
@@ -192,7 +199,22 @@ outcome3_tab <- function() {
                         )
                       )
                     )
-                  )
+                  ),
+                  gov_row(
+                    h2("Child Protection Plans (CPP) longer than 2 years, by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_cpp_duration_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_CPP_duration_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("table_cpp_duration_reg")
+                      )
+                    )
+                  ),
                 ),
                 open = FALSE
               ),
@@ -264,7 +286,8 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Assessment factor includes child abuse or neglect",
                   gov_row(
-                    h2("Assessment factor includes child abuse or neglect"),
+                    uiOutput("ca_header1"),
+                    # h2("Assessment factor includes child abuse or neglect"),
                     # p("time_series chart"),
                     plotlyOutput("child_abuse_ts_plot"),
                     br(),
@@ -297,7 +320,8 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Assessment factor includes child abuse or neglect by region"),
+                    uiOutput("ca_header2"),
+                    # h2("Assessment factor includes child abuse or neglect by region"),
                     # p("by region chart"),
                     plotlyOutput("child_abuse_region_plot"),
                     details(
@@ -326,7 +350,8 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Assessment factor includes child abuse or neglect by local authority"),
+                    uiOutput("ca_header3"),
+                    # h2("Assessment factor includes child abuse or neglect by local authority"),
                     radioGroupButtons(
                       "child_abuse_toggle",
                       label = NULL,
@@ -376,7 +401,7 @@ outcome3_tab <- function() {
                   p("Please use the dropdown below to select which assessment factor you would like to see in the below accordians:"),
                   selectizeInput(
                     inputId = "assessment_factors_2",
-                    label = "Assessment factors",
+                    label = "Select an assessment factor:",
                     choices = unique(extra_familial_harm_af %>% str_sort()),
                     selected = NULL,
                     multiple = FALSE,
@@ -390,7 +415,8 @@ outcome3_tab <- function() {
                   "Assessment factor includes extra familial harm",
                   gov_row(
                     # ts
-                    h2("Assessment factor includes extra familial harm"),
+                    uiOutput("efh_header1"),
+                    # h2("Assessment factor includes extra familial harm"),
                     plotlyOutput("efh_ts_plot"),
                     br(),
                     details(
@@ -423,7 +449,8 @@ outcome3_tab <- function() {
                   ),
                   gov_row(
                     # by region
-                    h2("Assessment factor includes extra familial harm by region"),
+                    uiOutput("efh_header2"),
+                    # h2("Assessment factor includes extra familial harm by region"),
                     # p("by region chart"),
                     plotlyOutput("efh_region_plot"),
                     details(
@@ -456,7 +483,8 @@ outcome3_tab <- function() {
                   ),
                   gov_row(
                     # by la and stats neighbours
-                    h2("Assessment factor includes extra familial harm by local authority"),
+                    uiOutput("efh_header3"),
+                    # h2("Assessment factor includes extra familial harm by local authority"),
                     radioGroupButtons(
                       "extra_familial_harm_toggle",
                       label = NULL,
