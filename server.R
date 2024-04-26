@@ -3980,7 +3980,7 @@ server <- function(input, output, session) {
   output$duration_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA not available"),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # not both
@@ -4020,7 +4020,7 @@ server <- function(input, output, session) {
   output$table_duration_cpp <- renderDataTable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA not available"),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # neither checkboxes
