@@ -135,6 +135,13 @@ af_child_abuse_extra_filter <- assessment_factors %>%
 extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
 # "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
 
+
+# Read in outcome 4 data
+
+
+care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data())
+care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())
+
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 

@@ -4616,6 +4616,69 @@ server <- function(input, output, session) {
     )
   })
 
+  # Outcome 4 -----------------
+  # Geographic breakdown o4 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_o4
+  }, {
+    choices <- sort(unique(care_leavers_activity_data[(care_leavers_activity_data$geographic_level == input$select_geography_o4 & care_leavers_activity_data$time_period == max(care_leavers_activity_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_o4",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+
+
+  ## care leavers ---------
+  ### care leavers employment----
+  # Headline stat
+  # output$care_leavers_employment_txt <- renderText({
+  #   if (input$geographic_breakdown_o4 == "") {
+  #     stat <- "NA"
+  #   } else {
+  #     stat <- care_leavers_activity_data %>%
+  #       filter(time_period == max(care_leavers_activity_data$time_period) &
+  #                geo_breakdown %in% input$geographic_breakdown_o4 &
+  #                age == "Aged 17 to 18") %>%
+  #       select(percentage)
+  #   }
+  #
+  #   paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
+  # })
+  #
+
+  ### care leavers accommodation----
+  # Headline stat
+  output$care_leavers_accommodation_txt1 <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- care_leavers_accommodation_data %>%
+        filter(time_period == max(time_period) &
+          geo_breakdown %in% input$geographic_breakdown_o4 &
+          age == "17 to 18 years" &
+          accommodation_suitability == "Accommodation considered suitable") %>%
+        select(percentage)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
+  })
+
+  output$care_leavers_accommodation_txt2 <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- care_leavers_accommodation_data %>%
+        filter(time_period == max(time_period) &
+          geo_breakdown %in% input$geographic_breakdown_o4 &
+          age == "19 to 21 years" &
+          accommodation_suitability == "Accommodation considered suitable") %>%
+        select(percentage)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
+  })
 
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

@@ -1144,6 +1144,9 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
+
+  # Need to do some aggregation so that the activity type is In education/training/employment and NOT in education/training/employment
+  # be careful with suppression
 }
 
 ## Care leavers accommodation -----

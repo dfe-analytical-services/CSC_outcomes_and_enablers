@@ -280,15 +280,15 @@ outcome4_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers % Accommodation considered suitable as quite a few LAs supressed for not suitable. (17 to 18)",
-                    value = p("headline stats 3")
+                    title = "Care leavers in Accommodation considered suitable (17 to 18 years)",
+                    value = htmlOutput("care_leavers_accommodation_txt1")
                   )
                 ),
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers % Accommodation considered suitable as quite a few LAs supressed for not suitable. (19 to 21)",
-                    value = p("headline stats 4")
+                    title = "Care leavers in Accommodation considered suitable(19 to 21 years)",
+                    value = htmlOutput("care_leavers_accommodation_txt2")
                   )
                 ),
                 br(),
