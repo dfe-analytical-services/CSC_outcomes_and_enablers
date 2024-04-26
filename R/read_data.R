@@ -1087,6 +1087,95 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 }
 
 
+
+# Outcome 4 -----
+## Number of placements -----
+
+read_number_placements_data <- function(file = "data/la_cla_placement_stability.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
+    mutate(percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    rename("Percentage" = "percentage", "Number" = "number")
+
+  return(data2)
+}
+
+## Placement type and distance----
+read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+}
+
+# Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
+
+
+
+## Care leavers activity -----
+read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activity.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
+}
+
+## Care leavers accommodation -----
+read_care_leavers_accommodation_suitability <- function(file = "data/la_care_leavers_accommodation_suitability.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
+}
+
+
+## Wellbeing of child -----
+
+read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_cla.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+}
+
+
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
