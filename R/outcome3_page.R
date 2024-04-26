@@ -190,7 +190,8 @@ outcome3_tab <- function() {
                     label = "Additional information:",
                     help_text = (
                       tags$ul(
-                        tags$li("The metric shown in the graph refers to the percentage of children who have been ."),
+                        tags$li("The metric shown in the graph refers to the percentage of children who have been on a Child Protection Plan (CPP) for longer than 2 years."),
+                        tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
