@@ -3960,6 +3960,141 @@ server <- function(input, output, session) {
     }
   })
 
+  # Child protection plan longer than two years headline box
+  output$cpp_duration_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else if (input$select_geography_o3 == "Local authority") {
+      stat <- "NA"
+    } else {
+      stat <- format(duration_cpp %>%
+        filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(X2_years_or_more_percent), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(duration_cpp$time_period), ")", "</p>"
+    )
+  })
+
+  # time series and table
+  output$duration_cpp_time_series <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- duration_cpp %>%
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- duration_cpp %>%
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- duration_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- duration_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
+    }
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$table_duration_cpp <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- duration_cpp %>%
+        filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
+      filtered_data <- duration_cpp %>%
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- duration_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o3)
+
+      filtered_data <- duration_cpp %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
+    }
+    datatable(
+      filtered_data,
+      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+  # by region
+  output$plot_cpp_duration_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- duration_cpp
+
+    ggplotly(
+      by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  # by region table
+  output$table_cpp_duration_reg <- renderDataTable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    datatable(
+      duration_cpp %>% filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
+        arrange(desc(X2_years_or_more_percent)),
+      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
 
   #### child abuse titles -----
   output$ca_header1 <- renderUI({
@@ -5762,7 +5897,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
 
 
 
