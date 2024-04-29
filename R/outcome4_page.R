@@ -379,12 +379,22 @@ outcome4_tab <- function() {
                   "Percentage of care leavers in suitable accommodation",
                   # p("contents for panel 2"),
                   gov_row(
-                    h2("Time Series"),
+                    # h2("Time Series"),
                     uiOutput("care_leavers_header4"),
+                    plotlyOutput("care_accommodation_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "cl_accommodation_tbl",
+                      label = "View chart as table",
+                      help_text = (
+                        reactableOutput("cl_accommodation_ts_tbl")
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("By Region"),
                     uiOutput("care_leavers_header5"),
+                    # plotlyOutput("")
                   ),
                   gov_row(
                     # h2("By local authority"),
