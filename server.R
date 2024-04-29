@@ -5012,6 +5012,49 @@ server <- function(input, output, session) {
     )
   })
 
+  # care leavers accommodation by region
+  output$cl_accommodation_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$leavers_age != "", "Select an age range.")
+    )
+
+    data <- care_leavers_accommodation_data %>%
+      filter(age == input$leavers_age & accommodation_suitability == "Accommodation considered suitable" & time_period == max(time_period) & geographic_level == "Regional")
+
+    ggplotly(
+      by_region_bar_plot(data, "percent", "Percent", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$cl_accommodation_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$leavers_age != "", "Select an age range.")
+    )
+
+    data <- care_leavers_accommodation_data %>%
+      filter(age == input$leavers_age & time_period == max(time_period) & geographic_level == "Regional" & accommodation_suitability == "Accommodation considered suitable") %>%
+      select(time_period, geo_breakdown, accommodation_suitability, age, percentage) %>%
+      arrange(desc(percentage))
+
+    data <- data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percentage`)
+
+    reactable(
+      data,
+      columns = list(
+        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------

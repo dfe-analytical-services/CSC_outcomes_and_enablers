@@ -392,12 +392,19 @@ outcome4_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("By Region"),
+                    # h2("By Region"),
                     uiOutput("care_leavers_header5"),
-                    # plotlyOutput("")
+                    plotlyOutput("cl_accommodation_region_plot"),
+                    br(),
+                    details(
+                      inputId = "cl_accommodation_reg_tbl",
+                      label = "View chart as table",
+                      help_text = (
+                        reactableOutput("cl_accommodation_region_tbl")
+                      )
+                    )
                   ),
                   gov_row(
-                    # h2("By local authority"),
                     uiOutput("care_leavers_header6"),
                     radioGroupButtons(
                       "cl_accommodation_toggle",
