@@ -18,7 +18,7 @@ outcome4_tab <- function() {
               inputId = "select_geography_o4",
               label = "Select a geographical level:",
               # Change this to look at the relevant dataset for outcome 4
-              choices = unique(ceased_cla_data %>% pull("geographic_level")),
+              choices = unique(care_leavers_accommodation_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -58,7 +58,7 @@ outcome4_tab <- function() {
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
                   cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region_o3",
+                  checkboxIds = "Yes_region_o4",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -257,22 +257,22 @@ outcome4_tab <- function() {
             tabPanel(
               "Quality of life for care experienced people",
               fluidRow(
-                p("testing"),
+                #  p("testing"),
                 br()
               ),
               fluidRow(
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers % Total in education, employment or training (17 to 18)",
-                    value = p("Headline stats 1")
+                    title = "Care leavers in education, employment or training (17 to 18 years)",
+                    value = htmlOutput("care_leavers_employment_txt1")
                   )
                 ),
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers % Total in education, employment or training (19 to 21)",
-                    value = p("Headline stats 2")
+                    title = "Care leavers in education, employment or training (19 to 21 years)",
+                    value = htmlOutput("care_leavers_employment_txt2")
                   )
                 ),
               ),
@@ -280,14 +280,14 @@ outcome4_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers in Accommodation considered suitable (17 to 18 years)",
+                    title = "Care leavers in accommodation considered suitable (17 to 18 years)",
                     value = htmlOutput("care_leavers_accommodation_txt1")
                   )
                 ),
                 column(
                   width = 6,
                   value_box(
-                    title = "Care leavers in Accommodation considered suitable(19 to 21 years)",
+                    title = "Care leavers in accommodation considered suitable (19 to 21 years)",
                     value = htmlOutput("care_leavers_accommodation_txt2")
                   )
                 ),
@@ -299,12 +299,12 @@ outcome4_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  # p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
+                  p("This domain contains breakdowns of data for the following age ranges: 17 to 18 years and 19 to 21 years."),
                   p("Please use the dropdown below to select which age range of care leavers you would like to see in the accordions below:"),
                   selectizeInput(
                     inputId = "leavers_age",
                     label = "Select an age range:",
-                    choices = c("17 to 18", "19 to 21"), # unique(af_child_abuse_extra_filter %>% str_sort()),
+                    choices = unique(care_leavers_accommodation_data$age %>% str_sort()),
                     selected = NULL,
                     multiple = FALSE,
                     options = NULL
@@ -318,28 +318,84 @@ outcome4_tab <- function() {
               accordion(
                 accordion_panel(
                   "Care leavers employment, education and training rate",
-                  p("contents for panel 1"),
                   gov_row(
-                    h2("Time Series")
+                    uiOutput("care_leavers_header1"),
+                    plotlyOutput("care_activity_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "cl_activity_tbl",
+                      label = "View chart as table",
+                      help_text = (
+                        reactableOutput("cl_activity_ts_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "cl_activity_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
+                    )
                   ),
                   gov_row(
-                    h2("By Region")
+                    uiOutput("care_leavers_header2"),
+                    plotlyOutput("cl_activity_region_plot"),
+                    br(),
+                    details(
+                      inputId = "cl_act_region_tbl",
+                      label = "View chart as table",
+                      help_text = (
+                        reactableOutput("cl_activity_region_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "cl_act_region_info",
+                      label = "Additional information:",
+                      help_text = (p("additional text here"))
+                    )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    uiOutput("care_leavers_header3"),
+                    radioGroupButtons(
+                      "cl_activity_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_care_leavers_activity")
                   )
                 ),
+                # Accommodation panel
                 accordion_panel(
-                  "Percentage of care leavers in unsuitable accommodation",
-                  p("contents for panel 2"),
+                  "Percentage of care leavers in suitable accommodation",
+                  # p("contents for panel 2"),
                   gov_row(
-                    h2("Time Series")
+                    h2("Time Series"),
+                    uiOutput("care_leavers_header4"),
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("By Region"),
+                    uiOutput("care_leavers_header5"),
                   ),
                   gov_row(
-                    h2("By local authority")
+                    # h2("By local authority"),
+                    uiOutput("care_leavers_header6"),
+                    radioGroupButtons(
+                      "cl_accommodation_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    # uiOutput("")
                   )
                 ),
                 open = FALSE
