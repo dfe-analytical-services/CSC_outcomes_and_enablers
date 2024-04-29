@@ -1147,6 +1147,26 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
 
   # Need to do some aggregation so that the activity type is In education/training/employment and NOT in education/training/employment
   # be careful with suppression
+
+  data3 <- data2 %>%
+    mutate(percent = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
+
+  # Age column needs to be uniform with the accommodation data as they share the same age range filter
+  # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
+  data3["age"][data3["age"] == "Aged 17 to 18"] <- "17 to 18 years"
+  data3["age"][data3["age"] == "Aged 19 to 21"] <- "19 to 21 years"
+
+  return(data3)
 }
 
 ## Care leavers accommodation -----
