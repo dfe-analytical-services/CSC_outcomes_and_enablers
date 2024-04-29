@@ -1180,6 +1180,22 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
+
+  data3 <- data2 %>%
+    mutate(percent = case_when(
+      # percent is numeric, percentage is character
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
+
+  return(data3)
 }
 
 
