@@ -187,12 +187,31 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_type",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("placement_type_tbl")
+                        reactableOutput("placement_type_tbl")
                       )
                     ),
+                    details(
+                      inputId = "cpp_in_year_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p("Placeholder")
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("placement_type_region_plot"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_type_region_tbl")
+                      )
+                    )
                   ),
                   gov_row(
                     h2("By local authority")

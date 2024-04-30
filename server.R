@@ -4664,7 +4664,7 @@ server <- function(input, output, session) {
     }
   })
 
-  # Outcome 4 - Placement type headline boxes, charts and tables
+  ### Placement type headline boxes, charts and tables----
   output$foster_placement_txt <- renderText({
     if (input$geographic_breakdown_o4 == "") {
       stat <- "NA"
@@ -4784,6 +4784,51 @@ server <- function(input, output, session) {
     }
 
     data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Percentage` = `percentage`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by region chart
+  output$placement_type_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$placement_type_breakdown != "", "Select a placement type.")
+    )
+
+    data <- placement_data %>%
+      filter(characteristic == input$placement_type_breakdown) %>%
+      filter(time_period == max(time_period), geographic_level == "Regional")
+
+    ggplotly(
+      by_region_bar_plot(data, "percentage", "Percentage (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_type_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$placement_type_breakdown != "", "Select a placement type.")
+    )
+
+    data <- placement_data %>%
+      filter(characteristic == input$placement_type_breakdown, time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, characteristic, percentage) %>%
+      arrange(desc(percentage))
+
+    data <- data %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Percentage` = `percentage`)
 
 
