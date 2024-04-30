@@ -4672,10 +4672,128 @@ server <- function(input, output, session) {
       stat <- format(placement_data %>%
         filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
         filter(characteristic == "Foster placements") %>%
-        select(percentage), nsmall = 1)
+        select(percentage), nsmall = 0)
     }
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
+    )
+  })
+
+  output$secure_unit_placement_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_data %>%
+        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(characteristic == "Secure units, children's homes and semi-independent living accommodation") %>%
+        select(percentage), nsmall = 0)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
+    )
+  })
+
+  output$residential_placement_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_data %>%
+        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(characteristic == "Other residential settings") %>%
+        select(percentage), nsmall = 0)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
+    )
+  })
+
+  # Time series chart
+  output$placement_type_ts_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$placement_type_breakdown != "", "Select a placement type.")
+    )
+    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_data %>%
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_data %>%
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown)
+    }
+
+    ggplotly(
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "percentage", "Placements (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_type_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$placement_type_breakdown != "", "Select a placement type.")
+    )
+    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_data %>%
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown) %>%
+        select(time_period, geo_breakdown, characteristic, percentage)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_data %>%
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
+        select(time_period, geo_breakdown, characteristic, percentage)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown) %>%
+        select(time_period, geo_breakdown, characteristic, percentage)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
+        select(time_period, geo_breakdown, characteristic, percentage)
+    }
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Percentage` = `percentage`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

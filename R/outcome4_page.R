@@ -119,14 +119,14 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% living in in secure units, children's homes or semi-independent living accommodation",
-                    value = p("value")
+                    value = htmlOutput("secure_unit_placement_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "% living in other residential settings",
-                    value = p("value"),
+                    value = htmlOutput("residential_placement_txt"),
                   )
                 ),
                 br(),
@@ -180,9 +180,16 @@ outcome4_tab <- function() {
                     ),
                     br(),
                   ),
-                  p("contents for panel 3"),
                   gov_row(
-                    h2("Time Series")
+                    plotlyOutput("placement_type_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("placement_type_tbl")
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("By Region")

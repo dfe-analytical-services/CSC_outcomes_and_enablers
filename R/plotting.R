@@ -1769,6 +1769,8 @@ cellfunc <- function(value) {
     "c"
   } else if (value == -200) {
     "k"
+  } else if (value == -250) {
+    "u"
   } else if (value == -300) {
     "x"
   } else if (value == -400) {
