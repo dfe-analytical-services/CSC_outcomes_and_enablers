@@ -4790,7 +4790,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4835,7 +4835,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4897,10 +4897,10 @@ server <- function(input, output, session) {
     data2 <- data %>%
       select(time_period, geo_breakdown, characteristic, percentage) %>%
       mutate(percentage = case_when(
-        Number == "z" ~ -400,
-        Number == "c" ~ -100,
-        Number == "k" ~ -200,
-        Number == "x" ~ -300,
+        percentage == "z" ~ -400,
+        percentage == "c" ~ -100,
+        percentage == "k" ~ -200,
+        percentage == "x" ~ -300,
         TRUE ~ as.numeric(percentage)
       )) %>%
       arrange(desc(percentage)) %>%
@@ -5994,6 +5994,82 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
+  ## Outcome 4 -----
+  ### Placement type ------
+  output$SN_placement_type <- renderUI({
+    if (input$placement_type_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("placement_type_la_plot"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_placement_type_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("placement_type_la_tbl")
+            # p("table here")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("placement_type_SN_plot"),
+        # p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_placement_type",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("SN_turnover_tbl")
+            reactableOutput("placement_type_SN_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_placement_type_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  output$placement_type_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$placement_type_breakdown != "", "Select a placement type.")
+    )
+    data <- placement_data %>%
+      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percentage", "Placements (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_type_SN_tbl <- renderReactable({
+    data <- placement_data %>%
+      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = `percentage`),
+      columns = list(
+        `percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
 
   ## Enabler 2 ------
   ### Turnover rate -----
