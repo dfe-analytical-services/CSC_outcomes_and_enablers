@@ -412,7 +412,7 @@ outcome4_tab <- function() {
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    # uiOutput("")
+                    uiOutput("SN_care_leavers_accommodation")
                   )
                 ),
                 open = FALSE
