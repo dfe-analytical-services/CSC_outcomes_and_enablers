@@ -293,7 +293,15 @@ outcome4_tab <- function() {
                 ),
                 br(),
                 p("Care leavers should be supported to access education, employment and
-                  training that supports them and allows them to achieve their aspirations and goals.")
+                  training that supports them and allows them to achieve their aspirations and goals."),
+                insert_text(
+                  inputId = "care_leavers_def",
+                  text = paste(
+                    tags$b("Data collected on care leavers"), tags$br(), "Local authorities provide information about children who were previously looked after, who turned 17 to 21 in the year.
+                              These were CLA for at least 13 weeks after their 14th birthday, including some time after their 16th birthday.
+                              The information provided relates to contact around their birthday in the year."
+                  )
+                ),
               ),
               fluidRow(
                 div(
@@ -334,11 +342,10 @@ outcome4_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
-                          tags$li("Percentages rounded to the nearest whole number."),
-                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
-                          tags$li("Figures exclude children looked after under a series of short-term placements."),
-                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                          tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
+                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
                           tags$br(),
                           "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
                           tags$br(),
@@ -360,7 +367,17 @@ outcome4_tab <- function() {
                     details(
                       inputId = "cl_act_region_info",
                       label = "Additional information:",
-                      help_text = (p("additional text here"))
+                      help_text = (
+                        p(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                          tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
+                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
                     )
                   ),
                   gov_row(
