@@ -6063,7 +6063,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = `percentage`),
       columns = list(
-        `percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
