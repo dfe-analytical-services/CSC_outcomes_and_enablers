@@ -1434,7 +1434,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate La table
-  output$table_cla_rate_la <- renderDataTable({
+  output$table_cla_rate_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1466,13 +1466,17 @@ server <- function(input, output, session) {
         arrange(desc(`Rate Per 10000`))
     }
 
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Number of children starting to be looked after` = `number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4640,7 +4644,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cla_rate_la")
+            reactableOutput("table_cla_rate_la")
           )
         ),
       )
