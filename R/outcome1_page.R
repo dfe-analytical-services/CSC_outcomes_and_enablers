@@ -128,7 +128,6 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate",
                       label = "View chart as a table",
                       help_text = (
-                        # dataTableOutput("table_cla_rate")
                         reactableOutput("table_cla_rate")
                       )
                     ),
@@ -161,7 +160,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_reg")
+                        reactableOutput("table_cla_rate_reg")
                       )
                     )
                   ),
