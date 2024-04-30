@@ -114,17 +114,17 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
       "Location",
       values = gss_colour_pallette
     )
-  print(filtered_data)
+  #  print(filtered_data)
 
   # logic to check if the table is empty or not
-  annotate_x <- length(unique(filtered_data$time_period)) / 2
-  annotate_y <- ylim_upper / 2
-  # print(annotate_x)
-  # print(annotate_y)
-  # print(max(filtered_data[3]))
-  if (max(filtered_data[3]) <= 0) {
-    p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
-  }
+  # annotate_x <- length(unique(filtered_data$time_period)) / 2
+  # annotate_y <- ylim_upper / 2
+  # # print(annotate_x)
+  # # print(annotate_y)
+  # # print(max(filtered_data[3]))
+  # if (max(filtered_data[3]) <= 0) {
+  #   p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
+  # }
   return(p)
 }
 
