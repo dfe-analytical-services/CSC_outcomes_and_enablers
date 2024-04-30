@@ -200,7 +200,7 @@ outcome4_tab <- function() {
                   ),
                   gov_row(
                     h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("placement_type_region_plot"),
                     br(),
@@ -214,7 +214,15 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                    radioGroupButtons(
+                      "placement_type_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_type"),
                   )
                 ),
                 accordion_panel(
