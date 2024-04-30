@@ -90,51 +90,52 @@ server <- function(input, output, session) {
   # Time period dropdown also does not need to appear here - does not need to be reactive
 
   # Simple server stuff goes here ------------------------------------------------------------
-  reactiveRevBal <- reactive({
-    dfRevBal %>% filter(
-      area_name == input$selectArea | area_name == "England",
-      school_phase == input$selectPhase
-    )
-  })
+  # reactiveRevBal <- reactive({
+  #   dfRevBal %>% filter(
+  #     area_name == input$selectArea | area_name == "England",
+  #     school_phase == input$selectPhase
+  #   )
+  # })
 
   # Define server logic required to draw a histogram
-  output$lineRevBal <- renderPlotly({
-    ggplotly(createAvgRevTimeSeries(reactiveRevBal(), input$selectArea)) %>%
-      config(displayModeBar = F) %>%
-      layout(legend = list(orientation = "h", x = 0, y = -0.2))
-  })
+  # output$lineRevBal <- renderPlotly({
+  #   ggplotly(createAvgRevTimeSeries(reactiveRevBal(), input$selectArea)) %>%
+  #     config(displayModeBar = F) %>%
+  #     layout(legend = list(orientation = "h", x = 0, y = -0.2))
+  # })
+  #
+  # reactiveBenchmark <- reactive({
+  #   dfRevBal %>%
+  #     filter(
+  #       area_name %in% c(input$selectArea, input$selectBenchLAs),
+  #       school_phase == input$selectPhase,
+  #       year == max(year)
+  #     )
+  # })
+  #
+  # output$colBenchmark <- renderPlotly({
+  #   ggplotly(
+  #     plotAvgRevBenchmark(reactiveBenchmark()) %>%
+  #       config(displayModeBar = F),
+  #     height = 420
+  #   )
+  # })
+  #
+  # output$tabBenchmark <- renderDataTable({
+  #   datatable(
+  #     reactiveBenchmark() %>%
+  #       select(
+  #         Area = area_name,
+  #         `Average Revenue Balance (£)` = average_revenue_balance,
+  #         `Total Revenue Balance (£m)` = total_revenue_balance_million
+  #       ),
+  #     options = list(
+  #       scrollX = TRUE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
 
-  reactiveBenchmark <- reactive({
-    dfRevBal %>%
-      filter(
-        area_name %in% c(input$selectArea, input$selectBenchLAs),
-        school_phase == input$selectPhase,
-        year == max(year)
-      )
-  })
-
-  output$colBenchmark <- renderPlotly({
-    ggplotly(
-      plotAvgRevBenchmark(reactiveBenchmark()) %>%
-        config(displayModeBar = F),
-      height = 420
-    )
-  })
-
-  output$tabBenchmark <- renderDataTable({
-    datatable(
-      reactiveBenchmark() %>%
-        select(
-          Area = area_name,
-          `Average Revenue Balance (£)` = average_revenue_balance,
-          `Total Revenue Balance (£m)` = total_revenue_balance_million
-        ),
-      options = list(
-        scrollX = TRUE,
-        paging = FALSE
-      )
-    )
-  })
   # Dropdown Validation -----
   iv <- InputValidator$new()
   # outcome1
@@ -1331,7 +1332,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate TABLE
-  output$table_cla_rate <- renderDataTable({
+  output$table_cla_rate <- renderReactable({ # renderDataTable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1367,15 +1368,19 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(population_count == "Children starting to be looked after each year") %>%
+      select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
