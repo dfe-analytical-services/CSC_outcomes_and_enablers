@@ -407,6 +407,28 @@ outcome4_tab <- function() {
                         reactableOutput("cl_accommodation_ts_tbl")
                       )
                     ),
+                    details(
+                      inputId = "cl_accommodation_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
+                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
+                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
+                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
+                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
+                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                          tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
+                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
+                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
+                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
+                    )
                   ),
                   gov_row(
                     # h2("By Region"),
@@ -419,6 +441,28 @@ outcome4_tab <- function() {
                       help_text = (
                         reactableOutput("cl_accommodation_region_tbl")
                       )
+                    ),
+                    details(
+                      inputId = "cla_accomm_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
+                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
+                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
+                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
+                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
+                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                          tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
+                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
+                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
+                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
                     )
                   ),
                   gov_row(

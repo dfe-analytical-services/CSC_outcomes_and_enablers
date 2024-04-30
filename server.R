@@ -6237,6 +6237,7 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "cl_la_accomm_info",
+          label = "Additional information:",
           help_text = (
             p(
               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
