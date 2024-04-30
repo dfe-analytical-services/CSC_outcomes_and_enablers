@@ -6061,7 +6061,7 @@ server <- function(input, output, session) {
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = `percentage`),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "percentage"),
       columns = list(
         `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
