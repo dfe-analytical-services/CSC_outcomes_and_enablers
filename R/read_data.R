@@ -1136,7 +1136,9 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       percentage == "x" ~ -300,
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
-    ))
+    )) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
 }
 
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
