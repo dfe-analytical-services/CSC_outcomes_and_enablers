@@ -1137,6 +1137,7 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
+    replace_na(list(percentage = 0)) %>%
     # filter out old dorset code
     filter(new_la_code != "E10000009")
 }
