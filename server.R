@@ -6058,12 +6058,13 @@ server <- function(input, output, session) {
 
   output$placement_type_SN_tbl <- renderReactable({
     data <- placement_data %>%
-      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
+      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Placements (%)" = "percentage")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = `percentage`),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Placements (%)"),
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
