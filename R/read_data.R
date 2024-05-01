@@ -1110,7 +1110,8 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    rename("Percentage" = "percentage", "Number" = "number")
+    rename("Percentage" = "percentage", "Number" = "number") %>%
+    filter(new_la_code != "E10000009")
 
   return(data2)
 }

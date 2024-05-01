@@ -176,7 +176,15 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Percentage of CLA with 3 or more placements during the year by LA"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_changes_data$time_period))),
+                    radioGroupButtons(
+                      "placement_changes_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_changes"),
                   )
                 ),
                 accordion_panel(
