@@ -161,7 +161,19 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Percentage of CLA with 3 or more placements during the year by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("placement_changes_region_plot"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_changes_region_tbl")
+                      )
+                    )
                   ),
                   gov_row(
                     h2("By local authority")
