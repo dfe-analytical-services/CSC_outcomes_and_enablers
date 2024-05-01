@@ -4664,7 +4664,21 @@ server <- function(input, output, session) {
     }
   })
 
-  ### Placement type headline boxes, charts and tables----
+  ### Headline boxes ----
+  output$placement_changes_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_changes_data %>%
+        filter(time_period == max(placement_changes_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(placement_stability == "With 3 or more placements during the year") %>%
+        select(Percentage), nsmall = 0)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_changes_data$time_period), ")", "</p>"
+    )
+  })
+
   output$foster_placement_txt <- renderText({
     if (input$geographic_breakdown_o4 == "") {
       stat <- "NA"
@@ -4707,6 +4721,7 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Placement type charts and tables ----
   # Time series chart
   output$placement_type_ts_plot <- renderPlotly({
     shiny::validate(
@@ -4915,6 +4930,7 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
 
   # ALL statistical neighbours -----
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~

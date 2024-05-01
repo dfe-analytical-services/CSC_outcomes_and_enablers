@@ -89,7 +89,7 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% CLA on 31 March with 3 or more placements during the year",
-                    value = p("Headline stats 1")
+                    value = htmlOutput("placement_changes_txt")
                   )
                 ),
                 column(
