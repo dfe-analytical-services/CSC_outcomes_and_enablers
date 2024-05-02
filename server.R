@@ -4727,26 +4727,26 @@ server <- function(input, output, session) {
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
+
       filtered_data <- placement_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown)
-      
+
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
-    filtered_data <- placement_data %>%
+
+      filtered_data <- placement_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown)
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "percentage", "Placements (%)", 100) %>%  
-      config(displayModeBar = F),
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "percentage", "Placements (%)", 100) %>%
+        config(displayModeBar = F),
       height = 420
     )
   })
-  
+
   output$placement_type_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
@@ -4763,7 +4763,7 @@ server <- function(input, output, session) {
       filtered_data <- placement_data %>%
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
         select(time_period, geo_breakdown, characteristic, percentage)
-      
+
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
@@ -4772,12 +4772,12 @@ server <- function(input, output, session) {
       filtered_data <- placement_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown) %>%
         select(time_period, geo_breakdown, characteristic, percentage)
-      
+
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
+
       filtered_data <- placement_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
         select(time_period, geo_breakdown, characteristic, percentage)
@@ -4785,7 +4785,7 @@ server <- function(input, output, session) {
 
     data <- filtered_data %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Placements (%)` = `percentage`)
-      
+
     reactable(
       data,
       columns = list(
@@ -4795,7 +4795,7 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-  
+
   # by region chart and table
   output$placement_type_region_plot <- renderPlotly({
     shiny::validate(
@@ -4810,12 +4810,12 @@ server <- function(input, output, session) {
 
     ggplotly(
       by_region_bar_plot(data, "percentage", "Placements (%)", 100) %>%
-      config(displayModeBar = F),
+        config(displayModeBar = F),
       height = 420
     )
   })
-  
-    output$placement_type_region_tbl <- renderReactable({
+
+  output$placement_type_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
@@ -4829,17 +4829,17 @@ server <- function(input, output, session) {
 
     data <- data %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Placements (%)` = `percentage`)
-      reactable(
+    reactable(
       data,
       columns = list(
-      `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
     )
   })
 
-    # by LA chart and table
+  # by LA chart and table
   output$placement_type_la_plot <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
@@ -4850,7 +4850,7 @@ server <- function(input, output, session) {
 
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percentage", "Placements (%)") +
-    scale_y_continuous(limits = c(0, 100))
+      scale_y_continuous(limits = c(0, 100))
 
     ggplotly(
       p %>%
@@ -4858,13 +4858,13 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-      
-   output$placement_type_la_tbl <- renderReactable({
+
+  output$placement_type_la_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
-          )
+    )
     if (input$select_geography_o4 == "Regional") {
       if (input$geographic_breakdown_o4 == "London") {
         # Include both Inner London and Outer London
@@ -4901,17 +4901,17 @@ server <- function(input, output, session) {
       )) %>%
       arrange(desc(percentage)) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement type` = `characteristic`, `Placements (%)` = `percentage`)
-      
-      reactable(
+
+    reactable(
       data2,
       columns = list(
-      `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
     )
   })
-      
+
 
   ## care leavers ---------
   ### care leavers employment----
@@ -5222,7 +5222,7 @@ server <- function(input, output, session) {
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
+
       filtered_data <- care_leavers_accommodation_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable")
 
@@ -5264,7 +5264,7 @@ server <- function(input, output, session) {
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
+
       filtered_data <- care_leavers_accommodation_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
         select(time_period, geo_breakdown, accommodation_suitability, age, percent)
@@ -5273,7 +5273,7 @@ server <- function(input, output, session) {
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
-      
+
       filtered_data <- care_leavers_accommodation_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
         select(time_period, geo_breakdown, accommodation_suitability, age, percent)
@@ -5281,7 +5281,7 @@ server <- function(input, output, session) {
 
     data <- filtered_data %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percent`)
-    
+
     reactable(
       data,
       columns = list(
@@ -5324,7 +5324,7 @@ server <- function(input, output, session) {
 
     data <- data %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percentage`)
-    
+
     reactable(
       data,
       columns = list(
@@ -6404,7 +6404,7 @@ server <- function(input, output, session) {
 
   ## Outcome 4 ----------------
   ### Placement type --------------------
-    output$SN_placement_type <- renderUI({
+  output$SN_placement_type <- renderUI({
     if (input$placement_type_stats_toggle == "All local authorities") {
       tagList(
         plotlyOutput("placement_type_la_plot"),
@@ -6434,7 +6434,7 @@ server <- function(input, output, session) {
           help_text = (
             # dataTableOutput("SN_turnover_tbl")
             reactableOutput("placement_type_SN_tbl")
-             # p("table here")
+            # p("table here")
           )
         ),
         details(
@@ -6447,8 +6447,8 @@ server <- function(input, output, session) {
       )
     }
   })
-  
-    output$placement_type_SN_plot <- plotly::renderPlotly({
+
+  output$placement_type_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
@@ -6458,12 +6458,12 @@ server <- function(input, output, session) {
 
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percentage", "Placements (%)", 100) %>%
-      config(displayModeBar = F),
+        config(displayModeBar = F),
       height = 420
     )
   })
-  
-    output$placement_type_SN_tbl <- renderReactable({
+
+  output$placement_type_SN_tbl <- renderReactable({
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements (%)" = "percentage")
@@ -6472,13 +6472,13 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Placements (%)"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
-        ),
+      ),
       defaultPageSize = 15,
       searchable = TRUE,
     )
   })
 
-  
+
   ### Care leavers activity -------------
   output$SN_care_leavers_activity <- renderUI({
     if (input$cl_activity_toggle == "All local authorities") {
@@ -6559,14 +6559,14 @@ server <- function(input, output, session) {
       height = 420
     )
   })
-  
+
   output$cl_activity_SN_tbl <- renderReactable({
     data <- care_leavers_activity_data %>%
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
       rename("Percent" = "percent")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "percent"),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
       columns = list(
         `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -6626,7 +6626,7 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cl_accomm",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("cl_activity_SN_tbl")
+            reactableOutput("cl_acccomm_SN_tbl")
             # p("table here")
           )
         ),
@@ -6659,7 +6659,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$cl_activity_SN_tbl <- renderReactable({
+  output$cl_acccomm_SN_tbl <- renderReactable({
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
       rename("Percent" = "percent")
