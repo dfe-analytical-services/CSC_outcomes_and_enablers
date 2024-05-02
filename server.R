@@ -1895,26 +1895,29 @@ server <- function(input, output, session) {
   })
 
   # UASC table
-  output$table_uasc <- renderDataTable({
+  output$table_uasc <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      combined_cla_data %>%
-        filter(
-          geo_breakdown %in% input$geographic_breakdown_o1,
-          characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-          population_count == "Children starting to be looked after each year"
-        ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
-        arrange(desc(time_period)),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE,
-        target = "column"
-      )
+    data <- combined_cla_data %>%
+      filter(
+        geo_breakdown %in% input$geographic_breakdown_o1,
+        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        population_count == "Children starting to be looked after each year"
+      ) %>%
+      select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+      arrange(desc(time_period)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
