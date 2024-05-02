@@ -1126,7 +1126,20 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+    mutate(percentage = as.numeric(percentage)) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
+    mutate(percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    replace_na(list(percentage = 0)) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
 }
 
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
@@ -1144,6 +1157,29 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
+
+  # Need to do some aggregation so that the activity type is In education/training/employment and NOT in education/training/employment
+  # be careful with suppression
+
+  data3 <- data2 %>%
+    mutate(percent = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
+
+  # Age column needs to be uniform with the accommodation data as they share the same age range filter
+  # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
+  data3["age"][data3["age"] == "Aged 17 to 18"] <- "17 to 18 years"
+  data3["age"][data3["age"] == "Aged 19 to 21"] <- "19 to 21 years"
+
+  return(data3)
 }
 
 ## Care leavers accommodation -----
@@ -1157,6 +1193,22 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
+
+  data3 <- data2 %>%
+    mutate(percent = case_when(
+      # percent is numeric, percentage is character
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    # filter out old dorset code
+    filter(new_la_code != "E10000009")
+
+  return(data3)
 }
 
 
