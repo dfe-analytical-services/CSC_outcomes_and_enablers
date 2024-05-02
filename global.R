@@ -135,9 +135,12 @@ af_child_abuse_extra_filter <- assessment_factors %>%
 extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
 # "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
 
-
 # Read in outcome 4 data
-
+placement_data <- suppressWarnings(read_placement_info_data())
+placement_type_filter <- placement_data %>%
+  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings")) %>%
+  select(characteristic) %>%
+  pull("characteristic")
 
 care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data())
 care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())

@@ -1708,8 +1708,8 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
-
   if (is.null(selectedcolumn)) {
+    # print("2")
     data2 <- dataset %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%
@@ -1781,6 +1781,8 @@ cellfunc <- function(value) {
     "c"
   } else if (value == -200) {
     "k"
+  } else if (value == -250) {
+    "u"
   } else if (value == -300) {
     "x"
   } else if (value == -400) {

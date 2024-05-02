@@ -18,7 +18,7 @@ outcome4_tab <- function() {
               inputId = "select_geography_o4",
               label = "Select a geographical level:",
               # Change this to look at the relevant dataset for outcome 4
-              choices = unique(care_leavers_accommodation_data %>% pull("geographic_level")),
+              choices = unique(placement_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -111,22 +111,22 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March living in foster placement",
-                    value = p("value")
+                    title = "% CLA on 31 March living in foster placements",
+                    value = htmlOutput("foster_placement_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "% living in in secure units, children's homes or semi-independent living accommodation",
-                    value = p("value")
+                    value = htmlOutput("secure_unit_placement_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
                     title = "% living in other residential settings",
-                    value = p("value"),
+                    value = htmlOutput("residential_placement_txt"),
                   )
                 ),
                 br(),
@@ -164,16 +164,15 @@ outcome4_tab <- function() {
                   "Percentage of children living in foster, residential care, or secure children’s homes",
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
-                    p("add extra dropdown here for: 'foster placements', 'secure units, children's homes or semi-independent living accommodation' and 'living in other residential settings'."),
+                    p("This indicator contains breakdowns of data for the following assessment factors: ", paste(unique(placement_type_filter %>% str_sort()), collapse = ", ")),
                     div(
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
-                      # p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
                       p("Please use the dropdown below to select which placement type you would like to see in this accordion:"),
                       selectizeInput(
                         inputId = "placement_type_breakdown",
                         label = "Select a placement type:",
-                        choices = c("foster placements", "secure units, children's homes or semi-independent living accommodation", "living in other residential settings"), # unique(af_child_abuse_extra_filter %>% str_sort()),
+                        choices = unique(placement_type_filter %>% str_sort()),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL
@@ -181,15 +180,55 @@ outcome4_tab <- function() {
                     ),
                     br(),
                   ),
-                  p("contents for panel 3"),
                   gov_row(
-                    h2("Time Series")
+                    plotlyOutput("placement_type_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_type_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "cpp_in_year_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
+                    p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("placement_type_region_plot"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_type_region_tbl")
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                    radioGroupButtons(
+                      "placement_type_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_type"),
                   )
                 ),
                 accordion_panel(

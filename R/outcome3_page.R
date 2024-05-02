@@ -455,7 +455,7 @@ outcome3_tab <- function() {
                     # p("by region chart"),
                     plotlyOutput("efh_region_plot"),
                     details(
-                      inputId = "efh_region_tbl",
+                      inputId = "efh_region_table",
                       label = "View chart as a table",
                       help_text = (
                         # p("table")
