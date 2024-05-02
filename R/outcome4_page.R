@@ -89,7 +89,7 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% CLA on 31 March with 3 or more placements during the year",
-                    value = p("Headline stats 1")
+                    value = htmlOutput("placement_changes_txt")
                   )
                 ),
                 column(
@@ -135,16 +135,56 @@ outcome4_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Average number of placement changes children have",
-                  p("contents for panel 1"),
+                  "Percentage of CLA with 3 or more placements during the year",
                   gov_row(
-                    h2("Time Series")
+                    plotlyOutput("placement_changes_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_changes_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_changes_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Percentage of CLA with 3 or more placements during the year by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("placement_changes_region_plot"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_type_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_changes_region_tbl")
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Percentage of CLA with 3 or more placements during the year by LA"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_changes_data$time_period))),
+                    radioGroupButtons(
+                      "placement_changes_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_changes"),
                   )
                 ),
                 accordion_panel(
@@ -191,7 +231,7 @@ outcome4_tab <- function() {
                       )
                     ),
                     details(
-                      inputId = "cpp_in_year_info",
+                      inputId = "placement_type_info",
                       label = "Additional information:",
                       help_text = (
                         tags$ul(

@@ -142,8 +142,11 @@ placement_type_filter <- placement_data %>%
   select(characteristic) %>%
   pull("characteristic")
 
+placement_changes_data <- suppressWarnings(read_number_placements_data())
+
 care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data())
 care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())
+
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
