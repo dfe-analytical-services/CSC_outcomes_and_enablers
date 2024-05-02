@@ -4634,7 +4634,7 @@ server <- function(input, output, session) {
     )
   })
 
-  region_for_la_o2 <- reactive({
+  region_for_la_o4 <- reactive({
     selected_la <- input$geographic_breakdown_o4
     location_data %>%
       filter(la_name == selected_la) %>%
