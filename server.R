@@ -4938,7 +4938,6 @@ server <- function(input, output, session) {
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
-
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- placement_changes_data %>%
         filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year")
@@ -4954,7 +4953,10 @@ server <- function(input, output, session) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
 
-      # Both selected
+      filtered_data <- placement_changes_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year")
+
+      # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       location <- location_data %>%
         filter(la_name %in% input$geographic_breakdown_o4)
@@ -4967,6 +4969,170 @@ server <- function(input, output, session) {
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percentage", "Percentage", 100) %>%
         config(displayModeBar = F),
       height = 420
+    )
+  })
+
+  output$placement_changes_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+    )
+    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_changes_data %>%
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- placement_changes_data %>%
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage)
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_changes_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage)
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- placement_changes_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage)
+    }
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percentage`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by region chart and table
+  output$placement_changes_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+    )
+
+    data <- placement_changes_data %>%
+      filter(placement_stability == "With 3 or more placements during the year") %>%
+      filter(time_period == max(time_period), geographic_level == "Regional")
+
+    ggplotly(
+      by_region_bar_plot(data, "Percentage", "Percentage", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_changes_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+    )
+
+    data <- placement_changes_data %>%
+      filter(placement_stability == "With 3 or more placements during the year", time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, Percentage) %>%
+      arrange(desc(Percentage))
+
+    data <- data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percentage`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by LA chart and table
+  output$placement_changes_la_plot <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+    )
+    data <- placement_changes_data %>% filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period))
+
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percentage", "Percentage") +
+      scale_y_continuous(limits = c(0, 100))
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_changes_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+    )
+    if (input$select_geography_o4 == "Regional") {
+      if (input$geographic_breakdown_o4 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o4) %>%
+          pull(la_name)
+      }
+
+      data <- placement_changes_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage) %>%
+        arrange(desc(Percentage))
+    } else if (input$select_geography_o4 %in% c("Local authority", "National")) {
+      data <- placement_changes_data %>%
+        filter(geographic_level == "Local authority", time_period == max(placement_data$time_period)) %>%
+        filter(placement_stability == "With 3 or more placements during the year") %>%
+        select(time_period, geo_breakdown, Percentage) %>%
+        arrange(desc(Percentage))
+    }
+
+    data2 <- data %>%
+      select(time_period, geo_breakdown, Percentage) %>%
+      mutate(Percentage = case_when(
+        Percentage == "z" ~ -400,
+        Percentage == "c" ~ -100,
+        Percentage == "k" ~ -200,
+        Percentage == "x" ~ -300,
+        TRUE ~ as.numeric(Percentage)
+      )) %>%
+      arrange(desc(Percentage)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percentage`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
