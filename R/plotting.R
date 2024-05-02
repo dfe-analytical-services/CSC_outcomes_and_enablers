@@ -97,7 +97,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
     rename(`Breakdown` = `geo_breakdown`) %>%
     rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Breakdown`)) +
+  p <- ggplot(filtered_data, aes(x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Breakdown`)) +
     geom_path(group = 1) +
     ylab(yaxis_title) +
     xlab("Time period") +
@@ -114,6 +114,18 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
       "Location",
       values = gss_colour_pallette
     )
+  #  print(filtered_data)
+
+  # logic to check if the table is empty or not
+  # annotate_x <- length(unique(filtered_data$time_period)) / 2
+  # annotate_y <- ylim_upper / 2
+  # # print(annotate_x)
+  # # print(annotate_y)
+  # # print(max(filtered_data[3]))
+  # if (max(filtered_data[3]) <= 0) {
+  #   p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
+  # }
+  return(p)
 }
 
 
