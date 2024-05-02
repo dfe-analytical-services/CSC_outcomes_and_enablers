@@ -2179,7 +2179,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate March La table
-  output$table_cla_march_la <- renderDataTable({
+  output$table_cla_march_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2200,7 +2200,8 @@ server <- function(input, output, session) {
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
-        arrange(desc(`Rate Per 10000`))
+        arrange(desc(`Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
@@ -2208,16 +2209,18 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           number, `Rate Per 10000`
         ) %>%
-        arrange(desc(`Rate Per 10000`))
+        arrange(desc(`Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Number of children looked after on 31 March", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -5607,7 +5610,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_march_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cla_march_la")
+            reactableOutput("table_cla_march_la")
           )
         ),
       )
