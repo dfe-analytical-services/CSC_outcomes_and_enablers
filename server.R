@@ -2076,7 +2076,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate march TABLE
-  output$table_cla_rate_march <- renderDataTable({
+  output$table_cla_rate_march <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2112,15 +2112,20 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(population_count == "Children looked after at 31 March each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(population_count == "Children looked after at 31 March each year") %>%
+      select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

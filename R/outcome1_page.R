@@ -286,7 +286,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_march",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_march")
+                        reactableOutput("table_cla_rate_march")
                       )
                     ),
                     details(
