@@ -241,7 +241,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_uasc_reg")
+                        reactableOutput("table_uasc_reg")
                       )
                     )
                   ),

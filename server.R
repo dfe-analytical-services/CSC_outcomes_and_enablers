@@ -1935,23 +1935,28 @@ server <- function(input, output, session) {
   })
 
   # UASC table by region
-  output$table_uasc_reg <- renderDataTable({
+  output$table_uasc_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      combined_cla_data %>% filter(
+    data <- combined_cla_data %>%
+      filter(
         geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
         population_count == "Children starting to be looked after each year",
         time_period == max(time_period)
       ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
-      colnames = c("Time period", "Region", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
