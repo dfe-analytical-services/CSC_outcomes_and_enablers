@@ -6771,7 +6771,7 @@ server <- function(input, output, session) {
       rename(`Percentage2` = `Percentage`, `Percentage` = `Percent`)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percentage"),
       columns = list(
         `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
