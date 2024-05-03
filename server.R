@@ -1512,22 +1512,27 @@ server <- function(input, output, session) {
 
 
   # cin rate table by region
-  output$table_cin_rates_reg <- renderDataTable({
+  output$table_cin_rates_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cin_rates %>% filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>% select(
-        time_period, geo_breakdown,
-        At31_episodes, At31_episodes_rate
+    data <- cin_rates %>%
+      filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>%
+      select(
+        time_period, geo_breakdown, At31_episodes, CIN_rate
       ) %>%
-        arrange(desc(At31_episodes_rate)),
-      colnames = c("Time period", "Region", "CIN number at 31 March", "CIN rate per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      arrange(desc(CIN_rate)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rate per 10,000` = `CIN_rate`)
+
+    reactable(
+      data,
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

@@ -418,7 +418,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rates_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rates_reg")
+                        reactableOutput("table_cin_rates_reg")
                       )
                     )
                   ),
