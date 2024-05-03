@@ -134,6 +134,7 @@ outcome4_tab <- function() {
                   training that supports them and allows them to achieve their aspirations and goals.")
               ),
               accordion(
+                ## Placement changes during year -----------
                 accordion_panel(
                   "Percentage of CLA with 3 or more placements during the year",
                   gov_row(
@@ -202,6 +203,21 @@ outcome4_tab <- function() {
                         reactableOutput("placement_dist_tbl")
                       )
                     ),
+                    details(
+                      inputId = "placement_dist_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("Placements more than 20 miles from home by region"),
@@ -212,6 +228,21 @@ outcome4_tab <- function() {
                       label = "View chart as a table",
                       help_text = (
                         reactableOutput("placement_dist_region_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_dist_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
                       )
                     ),
                   ),
@@ -227,6 +258,7 @@ outcome4_tab <- function() {
                     uiOutput("SN_placement_distance"),
                   )
                 ),
+                ## Type of placement ----------------
                 accordion_panel(
                   "Percentage of children living in foster, residential care, or secure children’s homes",
                   gov_row(

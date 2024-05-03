@@ -6994,6 +6994,21 @@ server <- function(input, output, session) {
             reactableOutput("placement_dist_la_tbl")
           )
         ),
+        details(
+          inputId = "placement_dist_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
