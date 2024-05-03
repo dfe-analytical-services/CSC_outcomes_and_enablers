@@ -216,7 +216,15 @@ outcome4_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Placements more than 20 miles from home by local authority")
+                    h2("Placements more than 20 miles from home by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                    radioGroupButtons(
+                      "placement_dist_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_distance"),
                   )
                 ),
                 accordion_panel(

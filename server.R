@@ -5327,7 +5327,69 @@ server <- function(input, output, session) {
     )
   })
 
+  # by LA chart and table
+  output$placement_dist_la_plot <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+    data <- placement_data %>% filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period))
 
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)") +
+      scale_y_continuous(limits = c(0, 100))
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_dist_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+    if (input$select_geography_o4 == "Regional") {
+      if (input$geographic_breakdown_o4 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o4) %>%
+          pull(la_name)
+      }
+      data <- placement_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        filter(characteristic == "Placed more than 20 miles from home") %>%
+        select(time_period, geo_breakdown, characteristic, Percent) %>%
+        arrange(desc(Percent))
+    } else if (input$select_geography_o4 %in% c("Local authority", "National")) {
+      data <- placement_data %>%
+        filter(geographic_level == "Local authority", time_period == max(placement_data$time_period)) %>%
+        filter(characteristic == "Placed more than 20 miles from home") %>%
+        select(time_period, geo_breakdown, characteristic, Percent) %>%
+        arrange(desc(Percent))
+    }
+
+    data2 <- data %>%
+      select(time_period, geo_breakdown, characteristic, Percent) %>%
+      arrange(desc(Percent)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Placements (%)` = `Percent`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
 
 
 
@@ -6918,8 +6980,76 @@ server <- function(input, output, session) {
   })
 
   ### Placement Distance ------------------
+  output$SN_placement_distance <- renderUI({
+    if (input$placement_dist_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("placement_dist_la_plot"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_placement_changes_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("placement_dist_la_tbl")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("placement_dist_SN_plot"),
+        # p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_placement_changes",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("placement_dist_SN_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_placement_changes_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
 
+  output$placement_dist_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+    )
+    data <- placement_data %>%
+      filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period))
 
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_dist_SN_tbl <- renderReactable({
+    data <- placement_data %>%
+      filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename(`Placements (%)` = `Percent`)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Placements (%)"),
+      columns = list(
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
 
 
   ### Care leavers activity -------------
