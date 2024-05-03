@@ -96,7 +96,7 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% CLA on 31 March placed more than 20 miles from home",
-                    value = p("Headline stats 2")
+                    value = htmlOutput("placement_distance_txt")
                   )
                 ),
                 column(

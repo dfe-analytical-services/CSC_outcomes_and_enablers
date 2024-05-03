@@ -5123,19 +5123,21 @@ server <- function(input, output, session) {
   })
 
   ## Placement Distance -------------
-  # output$placement_distance_txt <- renderText({
-  #   if (input$geographic_breakdown_o4 == "") {
-  #     stat <- "NA"
-  #   } else {
-  #     stat <- format(placement_data %>%
-  #                      filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-  #                      filter(characteristic == "Placed more than 20 miles from home") %>%
-  #                      select(percentage), nsmall = 0)
-  #   }
-  #   paste0(
-  #     stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
-  #   )
-  # })
+  output$placement_distance_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_data %>%
+        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(characteristic == "Placed more than 20 miles from home") %>%
+        select(percentage), nsmall = 0)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
+    )
+  })
+
+
 
 
   ## care leavers ---------
