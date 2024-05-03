@@ -187,17 +187,27 @@ outcome4_tab <- function() {
                     uiOutput("SN_placement_changes"),
                   )
                 ),
+                ## Distance of placements -----
                 accordion_panel(
                   "Distance of placements from home",
-                  p("contents for panel 2"),
+                  # p("contents for panel 2"),
                   gov_row(
-                    h2("Time Series")
+                    h2("Placements more than 20 miles from home"),
+                    plotlyOutput("placement_distance_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_dist",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_dist_tbl")
+                      )
+                    ),
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Placements more than 20 miles from home by Region")
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Placements more than 20 miles from home by local authority")
                   )
                 ),
                 accordion_panel(
