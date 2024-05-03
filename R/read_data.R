@@ -1101,7 +1101,7 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
       geographic_level == "Local authority" ~ la_name
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
-    mutate(percentage = case_when(
+    mutate(Percent = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
       percentage == "k" ~ -200,
@@ -1127,9 +1127,9 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    mutate(percentage = as.numeric(percentage)) %>%
+    # mutate(percentage = as.numeric(percentage)) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
-    mutate(percentage = case_when(
+    mutate(Percent = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
       percentage == "k" ~ -200,
@@ -1138,7 +1138,7 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    replace_na(list(percentage = 0)) %>%
+    # replace_na(list(percentage = 0)) %>%
     # filter out old dorset code
     filter(new_la_code != "E10000009")
 }
