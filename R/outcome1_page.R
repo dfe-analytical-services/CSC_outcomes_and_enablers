@@ -168,17 +168,6 @@ outcome1_tab <- function() {
                     h2("Rate of children starting to be looked after by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cla_rate_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cla_rate_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cla_rate_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cla_stats_toggle",
                       label = NULL,
@@ -188,6 +177,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cla"),
                   )
                 ),
+                ## CLA UASC -------------
                 accordion_panel(
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
@@ -269,6 +259,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_uasc"),
                   )
                 ),
+                ## CLA on 31 March ---------
                 accordion_panel(
                   "Rate of children looked after on 31 March",
                   gov_row(
@@ -348,6 +339,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # Domain 2 --------------
             tabPanel(
               "Access to support and getting help",
               fluidRow(
@@ -371,6 +363,7 @@ outcome1_tab <- function() {
                 ),
               ),
               accordion(
+                ## CIN ------------------
                 accordion_panel(
                   "Rate of Child In Need (CIN)",
                   gov_row(
@@ -433,17 +426,6 @@ outcome1_tab <- function() {
                     h2("CIN rates by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cin_rates_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cin_rates_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cin_rates_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cin_stats_toggle",
                       label = NULL,
@@ -453,6 +435,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cin"),
                   )
                 ),
+                ## Repeat referrals --------------
                 accordion_panel(
                   "Repeat referrals (within 12 months)",
                   gov_row(

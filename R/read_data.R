@@ -574,15 +574,27 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(CIN_number = case_when(
-      At31_episodes == "Z" ~ NA,
-      At31_episodes == "x" ~ NA,
-      At31_episodes == "c" ~ NA,
+      # At31_episodes == "Z" ~ NA,
+      # At31_episodes == "x" ~ NA,
+      # At31_episodes == "c" ~ NA,
+      At31_episodes == "c" ~ -100,
+      At31_episodes == "low" ~ -200,
+      At31_episodes == "k" ~ -200,
+      At31_episodes == "u" ~ -250,
+      At31_episodes == "x" ~ -300,
+      At31_episodes == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes)
     )) %>%
     mutate(CIN_rate = case_when(
-      At31_episodes_rate == "Z" ~ NA,
-      At31_episodes_rate == "x" ~ NA,
-      At31_episodes_rate == "c" ~ NA,
+      # At31_episodes_rate == "Z" ~ NA,
+      # At31_episodes_rate == "x" ~ NA,
+      # At31_episodes_rate == "c" ~ NA,
+      At31_episodes_rate == "c" ~ -100,
+      At31_episodes_rate == "low" ~ -200,
+      At31_episodes_rate == "k" ~ -200,
+      At31_episodes_rate == "u" ~ -250,
+      At31_episodes_rate == "x" ~ -300,
+      At31_episodes_rate == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes_rate)
     )) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%

@@ -1534,7 +1534,7 @@ server <- function(input, output, session) {
 
 
   # cin rate table by LA
-  output$table_cin_rates_la <- renderDataTable({
+  output$table_cin_rates_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1554,25 +1554,26 @@ server <- function(input, output, session) {
 
       data <- cin_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate) %>%
-        arrange(desc(At31_episodes_rate))
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        arrange(desc(CIN_rate)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cin_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cin_rates$time_period)) %>%
         select(
-          time_period, geo_breakdown,
-          At31_episodes, At31_episodes_rate
+          time_period, geo_breakdown, At31_episodes, CIN_rate
         ) %>%
-        arrange(desc(At31_episodes_rate))
+        arrange(desc(CIN_rate)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     }
-
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "CIN number at 31 March", "CIN rates per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -5914,7 +5915,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_rates_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cin_rates_la")
+            reactableOutput("table_cin_rates_la")
           )
         ),
       )
