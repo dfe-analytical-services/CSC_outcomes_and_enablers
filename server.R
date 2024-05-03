@@ -5231,7 +5231,7 @@ server <- function(input, output, session) {
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Percent", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -5274,12 +5274,53 @@ server <- function(input, output, session) {
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Percent Of Placements` = `Percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Placements (%)` = `Percent`)
 
     reactable(
       data,
       columns = list(
-        `Percent Of Placements` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by region chart and table
+  output$placement_dist_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+
+    data <- placement_data %>%
+      filter(characteristic == "Placed more than 20 miles from home") %>%
+      filter(time_period == max(time_period), geographic_level == "Regional")
+
+    ggplotly(
+      by_region_bar_plot(data, "Percent", "Placements (%)", 100) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$placement_dist_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+
+    data <- placement_data %>%
+      filter(characteristic == "Placed more than 20 miles from home", time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, characteristic, Percent) %>%
+      arrange(desc(Percent))
+
+    data <- data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Placements (%)` = `Percent`)
+    reactable(
+      data,
+      columns = list(
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,

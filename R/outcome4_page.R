@@ -204,7 +204,16 @@ outcome4_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Placements more than 20 miles from home by Region")
+                    h2("Placements more than 20 miles from home by region"),
+                    plotlyOutput("placement_dist_region_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_dist_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_dist_region_tbl")
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("Placements more than 20 miles from home by local authority")
