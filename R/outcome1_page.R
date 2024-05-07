@@ -792,6 +792,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # attainment domain ----
             tabPanel(
               "Educational attainment",
               br(),
@@ -877,6 +878,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              ## ks2 -----
               accordion(
                 accordion_panel(
                   "Key Stage 2 (KS2)",
@@ -898,7 +900,7 @@ outcome1_tab <- function() {
                       inputId = "table_ks2",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_expected")
+                        reactableOutput("table_ks2_expected")
                       )
                     ),
                     details(

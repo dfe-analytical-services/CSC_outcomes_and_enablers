@@ -761,10 +761,16 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
   # Make % columns numeric
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(`Expected standard reading writing maths (%)` = case_when(
-      pt_rwm_met_expected_standard == "z" ~ NA,
-      pt_rwm_met_expected_standard == "c" ~ NA,
-      pt_rwm_met_expected_standard == "k" ~ NA,
-      pt_rwm_met_expected_standard == "x" ~ NA,
+      # pt_rwm_met_expected_standard == "z" ~ NA,
+      # pt_rwm_met_expected_standard == "c" ~ NA,
+      # pt_rwm_met_expected_standard == "k" ~ NA,
+      # pt_rwm_met_expected_standard == "x" ~ NA,
+      pt_rwm_met_expected_standard == "c" ~ -100,
+      pt_rwm_met_expected_standard == "low" ~ -200,
+      pt_rwm_met_expected_standard == "k" ~ -200,
+      pt_rwm_met_expected_standard == "u" ~ -250,
+      pt_rwm_met_expected_standard == "x" ~ -300,
+      pt_rwm_met_expected_standard == "z" ~ -400,
       TRUE ~ as.numeric(pt_rwm_met_expected_standard)
     ))
 
@@ -793,10 +799,16 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   # Make number columns numeric
   outcomes_ks4_data <- outcomes_ks4_data %>%
     mutate(`Average Attainment 8` = case_when(
-      avg_att8 == "z" ~ NA,
-      avg_att8 == "c" ~ NA,
-      avg_att8 == "k" ~ NA,
-      avg_att8 == "x" ~ NA,
+      #   avg_att8 == "z" ~ NA,
+      #   avg_att8 == "c" ~ NA,
+      #   avg_att8 == "k" ~ NA,
+      #   avg_att8 == "x" ~ NA,
+      avg_att8 == "c" ~ -100,
+      avg_att8 == "low" ~ -200,
+      avg_att8 == "k" ~ -200,
+      avg_att8 == "u" ~ -250,
+      avg_att8 == "x" ~ -300,
+      avg_att8 == "z" ~ -400,
       TRUE ~ as.numeric(avg_att8)
     ))
 

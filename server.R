@@ -2851,7 +2851,7 @@ server <- function(input, output, session) {
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
-
+  ## KS2 attainment -----
   # KS2 % expected plot
   output$plot_ks2_expected <- plotly::renderPlotly({
     shiny::validate(
@@ -2904,18 +2904,18 @@ server <- function(input, output, session) {
 
 
   # ks2 TABLE
-  output$table_ks2_expected <- renderDataTable({
+  output$table_ks2_expected <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2924,7 +2924,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_ks2 %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2933,19 +2933,23 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_ks2 %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of eligible pupils", "Expected standard reading writing maths (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3058,7 +3062,7 @@ server <- function(input, output, session) {
     )
   })
 
-
+  ## KS4 attainment -----
   # KS4 % expected plot
   output$plot_ks4 <- plotly::renderPlotly({
     shiny::validate(
