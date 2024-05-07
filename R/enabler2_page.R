@@ -430,7 +430,7 @@ enabler2_tab <- function() {
 
             # Third tab panel -----
             tabPanel(
-              "Societal and cultural awareness and diversity",
+              "Social worker ethnicity",
               fluidRow(
                 br(),
               ),
@@ -445,9 +445,9 @@ enabler2_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Ethnic diversity of workforce",
+                  "Social worker ethnicity",
                   gov_row(
-                    h2("Ethnic diversity of workforce"),
+                    h2("Social worker ethnicity"),
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
@@ -484,9 +484,9 @@ enabler2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Ethnic diversity of workforce vs. general population",
+                  "Social worker ethnicity vs. general population",
                   gov_row(
-                    h2("Ethnic diversity of workforce vs. general population"),
+                    h2("Social worker ethnicity vs. general population"),
                     insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
                       "<b>", "Ethnicity of social workers (headcount) vs. ethnicity of general population", "</b><br>",
                       "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity, compared to known ethnicity breakdown of general population."
@@ -522,9 +522,9 @@ enabler2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Ethnic diversity of workforce by seniority level",
+                  "Social worker ethnicity by seniority level",
                   gov_row(
-                    h2("Ethnic diversity of workforce by seniority level"),
+                    h2("Social worker ethnicity by seniority level"),
                     insert_text(inputId = "Ethnicity_by_role_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
                       "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicty."
