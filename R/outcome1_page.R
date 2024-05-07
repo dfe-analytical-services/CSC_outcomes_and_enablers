@@ -760,7 +760,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_persistence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_reg")
+                        reactableOutput("table_persistent_reg")
                       )
                     )
                   ),

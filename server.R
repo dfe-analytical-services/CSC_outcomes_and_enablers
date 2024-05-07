@@ -2633,7 +2633,7 @@ server <- function(input, output, session) {
       filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistence absentees (%)` = `pt_pupils_pa_10_exact`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
 
     # datatable(
     #   ,
@@ -2648,7 +2648,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistence absentees (%)` = colDef(cell = cellfunc)
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2671,27 +2671,25 @@ server <- function(input, output, session) {
   })
 
   # Persistence Absence regional table
-  output$table_persistent_reg <- renderDataTable({
-    datatable(
-      outcomes_absence %>% filter(
+  output$table_persistent_reg <- renderReactable({
+    data <- outcomes_absence %>%
+      filter(
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
         school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_pupils_pa_10_exact
-        ) %>%
-        arrange(desc(`pt_pupils_pa_10_exact`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "School type", "Total number of pupils", "Persistent absentees (%)"
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, pt_pupils_pa_10_exact) %>%
+      arrange(desc(`pt_pupils_pa_10_exact`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
