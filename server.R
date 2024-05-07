@@ -2393,7 +2393,7 @@ server <- function(input, output, session) {
 
 
   # absence rate TABLE
-  output$table_absence_rate <- renderDataTable({
+  output$table_absence_rate <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
@@ -2425,16 +2425,21 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Overall absence (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    filtered_data2 <- filtered_data %>%
+      filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School Type` = `school_type`, `Total number of pupils` = `t_pupils`, `Overall absence (%)` = `pt_overall`)
+
+
+    reactable(
+      filtered_data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Overall absence (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

@@ -640,7 +640,7 @@ outcome1_tab <- function() {
                       inputId = "table_absence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_absence_rate")
+                        reactableOutput("table_absence_rate")
                       )
                     ),
                     details(
