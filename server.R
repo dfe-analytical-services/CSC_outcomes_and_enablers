@@ -1595,17 +1595,6 @@ server <- function(input, output, session) {
     )
   })
 
-  # CIN referral headline
-  output$cin_referral_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
-    }
-
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
-  })
 
   # CIN rate plot
   output$plot_cin_rate <- plotly::renderPlotly({
@@ -1656,7 +1645,7 @@ server <- function(input, output, session) {
   })
 
   # CIN rate table
-  output$table_cin_rate <- renderDataTable({
+  output$table_cin_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1665,13 +1654,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1680,7 +1671,8 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1689,18 +1681,41 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     }
 
-    datatable(
-      filtered_data %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate),
-      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    reactable(
+      filtered_data,
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   filtered_data %>%
+    #     select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate),
+    #   colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
+  })
+
+  # CIN referral headline ----
+  output$cin_referral_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+        %>% select(Re_referrals_percent), nsmall = 1)
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
   })
 
   ## CIN referral plot
@@ -1889,6 +1904,9 @@ server <- function(input, output, session) {
       height = 420
     )
   })
+
+
+
   ## UASC ------
   # UASC chart
   output$plot_uasc <- plotly::renderPlotly({

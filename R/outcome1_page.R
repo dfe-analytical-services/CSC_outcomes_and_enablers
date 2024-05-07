@@ -384,7 +384,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rate")
+                        reactableOutput("table_cin_rate")
                       )
                     ),
                     # expandable for the additional info links
