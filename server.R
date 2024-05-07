@@ -1799,16 +1799,6 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
-
-    # datatable(
-    #   filtered_data %>%
-    #     select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent),
-    #   colnames = c("Time period", "Geographical breakdown", "Referrals in the year", "Re-referrals within 12 months of a previous referral", "Re-referrals (%)"),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
   })
 
   # cin referral table by region
@@ -1850,7 +1840,7 @@ server <- function(input, output, session) {
   })
 
   # cin referral table by LA
-  output$table_cin_referral_la <- renderDataTable({
+  output$table_cin_referral_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1870,32 +1860,39 @@ server <- function(input, output, session) {
 
       data <- cin_referrals %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          Referrals, Re_referrals, Re_referrals_percent
-        ) %>%
-        arrange(desc(Re_referrals_percent))
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        arrange(desc(`Re-referrals (%)`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cin_referrals %>%
         filter(geographic_level == "Local authority", time_period == max(cin_referrals$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          Referrals, Re_referrals, Re_referrals_percent
-        ) %>%
-        arrange(desc(Re_referrals_percent))
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        arrange(desc(`Re-referrals (%)`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c(
-        "Time period", "Local authority", "Referrals in the year",
-        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      columns = list(
+        `Referrals in the year` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Referrals in the year",
+    #     "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -6037,7 +6034,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_referral_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cin_referral_la")
+            reactableOutput("table_cin_referral_la")
           )
         ),
       )
