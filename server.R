@@ -2602,13 +2602,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2617,7 +2617,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2626,14 +2626,14 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
     }
 
     data <- filtered_data %>%
       filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     # datatable(
     #   ,
@@ -2678,9 +2678,9 @@ server <- function(input, output, session) {
         school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, pt_pupils_pa_10_exact) %>%
-      arrange(desc(`pt_pupils_pa_10_exact`)) %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `pt_pupils_pa_10_exact`)
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`) %>%
+      arrange(desc(`Persistent absentees (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data,
@@ -2711,7 +2711,7 @@ server <- function(input, output, session) {
   })
 
   # Persistent Absence by LA table
-  output$table_persistent_absence_la <- renderDataTable({
+  output$table_persistent_absence_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2734,33 +2734,44 @@ server <- function(input, output, session) {
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_pupils_pa_10_exact
+          time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(pt_pupils_pa_10_exact))
+        arrange(desc(`Persistent absentees (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown,
-          social_care_group, school_type, t_pupils, pt_pupils_pa_10_exact
+          time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(pt_pupils_pa_10_exact))
+        arrange(desc(`Persistent absentees (%)`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group", "School type",
-        "Total number of pupils", "Persistent absentees (%)"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Social Care Group", "School type",
+    #     "Total number of pupils", "Persistent absentees (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -6185,7 +6196,7 @@ server <- function(input, output, session) {
           inputId = "tbl_persistent_absence_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_persistent_absence_la")
+            reactableOutput("table_persistent_absence_la")
           )
         ),
       )
