@@ -2308,40 +2308,6 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
-  # persistent absentees headline ----
-  # CIN
-  output$persistent_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CPPO
-  output$persistent_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CLA
-  output$persistent_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
 
   # overall absence timeseries chart
   output$absence_time_series <- plotly::renderPlotly({
@@ -2543,6 +2509,40 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
+  })
+
+  # persistent absentees headline ----
+  # CIN
+  output$persistent_CIN_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # CPPO
+  output$persistent_CPP_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # CLA
+  output$persistent_CLA_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
 
