@@ -2969,28 +2969,39 @@ server <- function(input, output, session) {
   })
 
   # KS2 regional table
-  output$table_ks2_reg <- renderDataTable({
-    datatable(
-      outcomes_ks2 %>% filter(
+  output$table_ks2_reg <- renderReactable({
+    data <- outcomes_ks2 %>%
+      filter(
         geographic_level == "Regional", time_period == max(outcomes_ks2$time_period),
         social_care_group %in% input$attainment_extra_breakdown
       ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
-        ) %>%
-        arrange(desc(`pt_rwm_met_expected_standard`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
+      arrange(desc(`Expected standard reading writing maths (%)`)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   ,
+    #   colnames = c(
+    #     "Time period", "Region", "Social care group",
+    #     "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 

@@ -936,7 +936,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks2_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_reg")
+                        reactableOutput("table_ks2_reg")
                       )
                     )
                   ),
