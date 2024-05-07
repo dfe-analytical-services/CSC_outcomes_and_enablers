@@ -612,15 +612,27 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(Referrals_num = case_when(
-      Referrals == "Z" ~ NA,
-      Referrals == "x" ~ NA,
-      Referrals == "c" ~ NA,
+      # Referrals == "Z" ~ NA,
+      # Referrals == "x" ~ NA,
+      # Referrals == "c" ~ NA,
+      Referrals == "c" ~ -100,
+      Referrals == "low" ~ -200,
+      Referrals == "k" ~ -200,
+      Referrals == "u" ~ -250,
+      Referrals == "x" ~ -300,
+      Referrals == "z" ~ -400,
       TRUE ~ as.numeric(Referrals)
     )) %>%
     mutate(Re_referrals_num = case_when(
-      Re_referrals == "Z" ~ NA,
-      Re_referrals == "x" ~ NA,
-      Re_referrals == "c" ~ NA,
+      # Re_referrals == "Z" ~ NA,
+      # Re_referrals == "x" ~ NA,
+      # Re_referrals == "c" ~ NA,
+      Re_referrals == "c" ~ -100,
+      Re_referrals == "low" ~ -200,
+      Re_referrals == "k" ~ -200,
+      Re_referrals == "u" ~ -250,
+      Re_referrals == "x" ~ -300,
+      Re_referrals == "z" ~ -400,
       TRUE ~ as.numeric(Re_referrals)
     )) %>%
     mutate(Re_referrals_percentage = case_when(

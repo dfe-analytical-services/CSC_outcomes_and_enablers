@@ -458,7 +458,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_referral")
+                        reactableOutput("table_cin_referral")
                       )
                     ),
                     details(
