@@ -2460,9 +2460,9 @@ server <- function(input, output, session) {
     data <- outcomes_absence %>%
       filter(geographic_level == "Regional" & time_period == max(outcomes_absence$time_period) & school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, pt_overall) %>%
-      arrange(desc(`pt_overall`)) %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Overall absence (%)` = `pt_overall`)
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Overall absence (%)`) %>%
+      arrange(desc(`Overall absence (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Overall absence (%)` = `Overall absence (%)`)
 
     reactable(
       data,
@@ -2473,18 +2473,6 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
-
-    # datatable(
-    #   ,
-    #   colnames = c(
-    #     "Time period", "Region", "Social care group",
-    #     "School type", "Total number of pupils", "Overall absence (%)"
-    #   ),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
   })
 
 
@@ -2504,7 +2492,7 @@ server <- function(input, output, session) {
   })
 
   # Absence by LA table
-  output$table_absence_la <- renderDataTable({
+  output$table_absence_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2528,9 +2516,9 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_overall
+          t_pupils, `Overall absence (%)`
         ) %>%
-        arrange(desc(pt_overall))
+        arrange(desc(`Overall absence (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -2538,21 +2526,22 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
-          social_care_group, school_type, t_pupils, pt_overall
+          social_care_group, school_type, t_pupils, `Overall absence (%)`
         ) %>%
-        arrange(desc(pt_overall))
+        arrange(desc(`Overall absence (%)`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group", "School type",
-        "Total number of pupils", "Overall absence (%)"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Overall absence (%)` = `Overall absence (%)`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Overall absence (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -6113,7 +6102,7 @@ server <- function(input, output, session) {
           inputId = "tbl_absence_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_absence_la")
+            reactableOutput("table_absence_la")
           )
         ),
       )

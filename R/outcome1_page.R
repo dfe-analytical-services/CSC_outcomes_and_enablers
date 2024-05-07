@@ -691,16 +691,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     htmlOutput("outcome1_time_period_text"),
                     br(),
-                    # plotlyOutput("plot_absence_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_absence_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_absence_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "absence_stats_toggle",
                       label = NULL,
