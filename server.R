@@ -1759,14 +1759,14 @@ server <- function(input, output, session) {
       filtered_data <- cin_referrals %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
         select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals (%)` = `Re-referrals (%)`)
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
         select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals (%)` = `Re-referrals (%)`)
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1776,7 +1776,7 @@ server <- function(input, output, session) {
       filtered_data <- cin_referrals %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
         select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals (%)` = `Re-referrals (%)`)
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1786,7 +1786,7 @@ server <- function(input, output, session) {
       filtered_data <- cin_referrals %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
         select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals (%)` = `Re-referrals (%)`)
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     }
 
     reactable(
@@ -1794,7 +1794,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1812,26 +1812,41 @@ server <- function(input, output, session) {
   })
 
   # cin referral table by region
-  output$table_cin_referral_reg <- renderDataTable({
+  output$table_cin_referral_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cin_referrals %>% filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>% select(
-        time_period, geo_breakdown,
-        Referrals, Re_referrals, Re_referrals_percent
+    data <- cin_referrals %>%
+      filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>%
+      select(
+        time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`
       ) %>%
-        arrange(desc(Re_referrals_percent)),
-      colnames = c(
-        "Time period", "Region", "Referrals in the year",
-        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      arrange(desc(`Re-referrals (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Referrals in the year` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   ,
+    #   colnames = c(
+    #     "Time period", "Region", "Referrals in the year",
+    #     "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # cin referral table by LA
