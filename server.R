@@ -2597,7 +2597,7 @@ server <- function(input, output, session) {
 
 
   # persistent rate TABLE
-  output$table_persistent_rate <- renderDataTable({
+  output$table_persistent_rate <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
@@ -2629,16 +2629,29 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Persistence absentees (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistence absentees (%)` = `pt_pupils_pa_10_exact`)
+
+    # datatable(
+    #   ,
+    #   colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Persistence absentees (%)"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistence absentees (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

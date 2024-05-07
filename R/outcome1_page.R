@@ -620,6 +620,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              # absence -----
               accordion(
                 accordion_panel(
                   "School attendance",
@@ -700,6 +701,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_absence"),
                   ),
                 ),
+                ## Persistent absence ----
                 accordion_panel(
                   "Persistent absence",
                   gov_row(
@@ -718,7 +720,7 @@ outcome1_tab <- function() {
                       inputId = "table_persistence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_rate")
+                        reactableOutput("table_persistent_rate")
                       )
                     ),
                     details(
