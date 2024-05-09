@@ -1045,6 +1045,17 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 }
 
 # Outcome 3 --------------------------------
+## Hospital admissions ------
+# Data for this indicator is from an API and only shows the latest data
+# LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+# Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+
+read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
+  la_admissions <- read.csv(la_file)
+  region_admissions <- read.csv(region_file)
+}
+
+
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
