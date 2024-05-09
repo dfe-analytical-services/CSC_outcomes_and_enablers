@@ -253,6 +253,15 @@ outcome3_tab <- function() {
                   ),
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority"),
+                    br(),
+                    # plotlyOutput("admissions_la_plot")
+                    radioGroupButtons(
+                      "hosp_admission_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_hosp_admissions")
                   )
                 ),
                 open = FALSE

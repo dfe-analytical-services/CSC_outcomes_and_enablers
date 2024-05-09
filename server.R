@@ -4111,7 +4111,7 @@ server <- function(input, output, session) {
           geo_breakdown %in% input$geographic_breakdown_o3) %>%
         select(rate_per_10000), nsmall = 1)
     }
-    paste0(format(stat, nsmall = 1), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$`Time period`), ")", "</p>")
+    paste0(format(stat, nsmall = 1), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
   })
 
 
@@ -4143,6 +4143,55 @@ server <- function(input, output, session) {
       filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional") %>%
       select(time_period, geo_breakdown, Value) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Rate per 10,000` = `Value`)
+
+    reactable(
+      data,
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  output$admissions_la_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority")
+
+    national_data <- hospital_admissions %>%
+      filter(geographic_level == "National") %>%
+      select(time_period, geo_breakdown, Value)
+
+    max_y_lim <- max(data$Value) + 50
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Value", "Rate per 10,000") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+    #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
+    # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+      # tooltip = "text",
+    )
+  })
+
+  output$admissions_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
+      select(time_period, geo_breakdown, rate_per_10000) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `rate_per_10000`)
 
 
     reactable(
@@ -6528,6 +6577,24 @@ server <- function(input, output, session) {
 
   ## Outcome 3 -----
   ### Hospital admissions -----
+  output$SN_hosp_admissions <- renderUI({
+    if (input$hosp_admission_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("admissions_la_plot"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_hosp_admission_la",
+          label = "View chart as table",
+          help_text = (
+            reactableOutput("admissions_la_tbl")
+            # p("table here")
+          )
+        )
+      )
+    }
+  })
 
 
   ### Child abuse/Neglect ------
