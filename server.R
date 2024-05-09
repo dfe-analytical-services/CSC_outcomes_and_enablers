@@ -3021,7 +3021,7 @@ server <- function(input, output, session) {
   })
 
   # KS2 by LA table
-  output$table_KS2_la <- renderDataTable({
+  output$table_KS2_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -3045,9 +3045,9 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group,
-          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+          t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(pt_rwm_met_expected_standard))
+        arrange(desc(`Expected standard reading writing maths (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks2 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -3055,22 +3055,34 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
-          social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+          social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(pt_rwm_met_expected_standard))
+        arrange(desc(`Expected standard reading writing maths (%)`))
     }
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group",
-        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    reactable(
+      data2,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Social Care Group",
+    #     "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   ## KS4 attainment -----
@@ -6285,7 +6297,7 @@ server <- function(input, output, session) {
           inputId = "tbl_KS2_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_KS2_la")
+            reactableOutput("table_KS2_la")
           )
         ),
       )
