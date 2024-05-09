@@ -4101,6 +4101,61 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Hospital admissions -----
+  output$hosp_admissions_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(hospital_admissions %>%
+        filter(time_period == max(hospital_admissions$time_period) &
+          geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(rate_per_10000), nsmall = 1)
+    }
+    paste0(format(stat, nsmall = 1), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$`Time period`), ")", "</p>")
+  })
+
+
+  output$admissions_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional")
+
+    max_lim <- max(data$Value) + 50
+
+    ggplotly(
+      by_region_bar_plot(data, "Value", "Rate per 10,000", max_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$admissions_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, Value) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Rate per 10,000` = `Value`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
   #### child abuse titles -----
   output$ca_header1 <- renderUI({
     h2(paste(input$assessment_factors_1, " cases"))
@@ -6472,6 +6527,9 @@ server <- function(input, output, session) {
   })
 
   ## Outcome 3 -----
+  ### Hospital admissions -----
+
+
   ### Child abuse/Neglect ------
   output$SN_child_ab_neg <- renderUI({
     if (input$child_abuse_toggle == "All local authorities") {

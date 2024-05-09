@@ -101,6 +101,13 @@ outcome3_tab <- function() {
                     value = htmlOutput("cpp_duration_txt")
                   )
                 ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = HTML("Hospital admissions caused by unintentional and deliberate injuries to children and young people <br> (0 to 14 years)"),
+                    value = htmlOutput("hosp_admissions_txt")
+                  )
+                ),
                 br(),
                 p("Child protection is focused on investigating and addressing
                   significant harm that children might experience. Remaining
@@ -216,6 +223,37 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
+                ),
+                ### Hospital admissions ------
+                accordion_panel(
+                  "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
+                  gov_row(
+                    insert_text(
+                      inputId = "admissions_warning",
+                      text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")
+                    ),
+                  ),
+                  gov_row(
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    # p("chart here"),
+                    br(),
+                    plotlyOutput("admissions_region_plot"),
+                    br(),
+                    details(
+                      inputId = "admissions_region_table",
+                      label = "View chart as a table",
+                      help_text = (reactableOutput("admissions_region_tbl"))
+                    ),
+                    details(
+                      inputId = "admissions_region_info",
+                      label = "Additional information:",
+                      help_text = (p("additional information links here"))
+                    )
+                  ),
+                  gov_row(
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority"),
+                  )
                 ),
                 open = FALSE
               ),
