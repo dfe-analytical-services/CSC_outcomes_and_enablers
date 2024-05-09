@@ -1053,6 +1053,26 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
   la_admissions <- read.csv(la_file)
   region_admissions <- read.csv(region_file)
+
+  region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
+  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+    select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
+    rename(`Time period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
+    distinct()
+
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Region"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
+  admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
+
+  admissions_data <- admissions_data_joined %>%
+    mutate(Value = case_when(
+      is.na(Value) ~ -300,
+      TRUE ~ as.numeric(Value)
+    ))
+
+
+  return(admissions_data)
 }
 
 
