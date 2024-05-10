@@ -4121,6 +4121,7 @@ server <- function(input, output, session) {
     ggplotly(
       all_assessment_factors_plot(assessment_factors, af_child_abuse_extra_filter, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
         config(displayModeBar = F),
+      tooltip = "text",
       height = 420
     )
   })
