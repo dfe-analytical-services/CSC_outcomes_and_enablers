@@ -4134,14 +4134,15 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>%
       filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (af_child_abuse_extra_filter), time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
-      dplyr::arrange(desc(Number))
+      dplyr::arrange(desc(rate_per_10000)) %>%
+      rename(`Rate per 10000` = `rate_per_10000`)
 
     reactable(
       data,
       columns = list(
-        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,

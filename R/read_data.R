@@ -1098,7 +1098,18 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 
   data4$rate_per_10000 <- round(data4$rate_per_10000, digits = 0)
 
-  return(data4)
+  data5 <- data4 %>%
+    mutate(rate_per_10000 = case_when(
+      value == "c" ~ -100,
+      value == "low" ~ -200,
+      value == "k" ~ -200,
+      value == "u" ~ -250,
+      value == "x" ~ -300,
+      value == "z" ~ -400,
+      TRUE ~ as.numeric(value)
+    ))
+
+  return(data5)
 }
 
 
