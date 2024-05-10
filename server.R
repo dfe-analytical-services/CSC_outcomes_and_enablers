@@ -4387,6 +4387,7 @@ server <- function(input, output, session) {
     ggplotly(
       all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
         config(displayModeBar = F),
+      tooltip = "text",
       height = 420
     )
   })
@@ -4399,14 +4400,14 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>%
       filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (extra_familial_harm_af), time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
-      dplyr::arrange(desc(Number))
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor", "Rate per 10,000" = "rate_per_10000") %>%
+      dplyr::arrange(desc(`Rate per 10,000`))
 
     reactable(
       data,
       columns = list(
-        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
