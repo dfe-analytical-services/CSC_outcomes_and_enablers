@@ -4253,13 +4253,13 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1) %>%
-      rename("Number_of_cases" = "Number") %>%
+      # rename("rate_per_10000" = "Rate per 10,000") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
-    max_lim <- max(data$Number_of_cases) + 500
+    max_lim <- max(data$rate_per_10000) + 100
 
     ggplotly(
-      by_region_bar_plot(data, "Number_of_cases", "Number of cases", max_lim) %>%
+      by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4274,17 +4274,28 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, time_period == max(time_period), geographic_level == "Regional") %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      arrange(desc(Number))
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
-    datatable(
+
+    reactable(
       data,
-      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # stats neighbours further down in the stats neighbours section
