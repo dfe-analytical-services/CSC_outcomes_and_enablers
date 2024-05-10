@@ -1079,9 +1079,15 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
       Value == -300 ~ "x",
       TRUE ~ as.character(Value)
     ))
+  # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
+  la_codes <- suppressWarnings(read_cin_rate_data()) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+    select(old_la_code, new_la_code) %>%
+    distinct()
 
+  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
 
-  return(admissions_data2)
+  return(admissions_data3)
 }
 
 

@@ -6591,10 +6591,86 @@ server <- function(input, output, session) {
             reactableOutput("admissions_la_tbl")
             # p("table here")
           )
+        ),
+        details(
+          inputId = "admissions_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+              tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+              tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+              tags$br(),
+              p(
+                "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer."),
+                tags$br(),
+                "For more information on the definitions and methodology, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.")
+              )
+            )
+          )
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+
+      tagList(
+        plotlyOutput("hosp_admissions_SN_plot"),
+        # p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_hosp_ad",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("hosp_admissions_SN_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_hosp_ad_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
         )
       )
     }
   })
+
+  output$hosp_admissions_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- hospital_admissions %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename(`Rate per 10,000` = `Value`)
+
+    max_y_lim <- max(data$`Rate per 10,000`) + 50
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$hosp_admissions_SN_tbl <- renderReactable({
+    data <- hospital_admissions %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename(`Rate per 10,000` = `Value`)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Rate per 10,000"),
+      columns = list(
+        `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
 
 
   ### Child abuse/Neglect ------

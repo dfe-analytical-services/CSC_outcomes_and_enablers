@@ -248,7 +248,19 @@ outcome3_tab <- function() {
                     details(
                       inputId = "admissions_region_info",
                       label = "Additional information:",
-                      help_text = (p("additional information links here"))
+                      help_text = (
+                        tags$ul(
+                          tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+                          tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+                          tags$br(),
+                          p(
+                            "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer."),
+                            tags$br(),
+                            "For more information on the definitions and methodology, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.")
+                          )
+                        )
+                      )
                     )
                   ),
                   gov_row(
