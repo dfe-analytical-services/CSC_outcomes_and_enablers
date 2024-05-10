@@ -459,7 +459,7 @@ outcome3_tab <- function() {
                       label = "View chart as a table",
                       help_text = (
                         # p("table")
-                        dataTableOutput("efh_region_tbl")
+                        reactableOutput("efh_region_tbl")
                       )
                     ),
                     details(
