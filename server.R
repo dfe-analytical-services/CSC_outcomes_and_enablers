@@ -4307,9 +4307,9 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 100
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
 
     ggplotly(
@@ -4342,32 +4342,25 @@ server <- function(input, output, session) {
       data <- assessment_factors %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(assessment_factor == input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
       data <- assessment_factors %>%
         filter(geographic_level == "Local authority", time_period == max(assessment_factors$time_period)) %>%
         filter(assessment_factor == input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      mutate(Number = case_when(
-        Number == "z" ~ -400,
-        Number == "c" ~ -100,
-        Number == "k" ~ -200,
-        Number == "x" ~ -300,
-        TRUE ~ as.numeric(Number)
-      )) %>%
-      arrange(desc(Number)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
     reactable(
       data2,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
