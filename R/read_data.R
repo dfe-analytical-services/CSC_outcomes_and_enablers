@@ -1106,7 +1106,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
       value == "u" ~ -250,
       value == "x" ~ -300,
       value == "z" ~ -400,
-      TRUE ~ as.numeric(value)
+      TRUE ~ as.numeric(rate_per_10000)
     ))
 
   return(data5)

@@ -4183,10 +4183,10 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
     }
 
-    max_y_lim <- max(filtered_data$Number) + 100
+    max_y_lim <- max(filtered_data$rate_per_10000) + 100
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Number", "Number", max_y_lim) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4202,13 +4202,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4217,7 +4217,7 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4226,17 +4226,17 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
 
     reactable(
       data,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
