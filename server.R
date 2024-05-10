@@ -6532,10 +6532,10 @@ server <- function(input, output, session) {
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 100
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases", max_y_lim) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -6544,12 +6544,12 @@ server <- function(input, output, session) {
   output$abuse_neg_SN_tbl <- renderReactable({
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period)) %>%
-      rename("Number of cases" = "value")
+      rename("Rate per 10,000" = "rate_per_10000", "Assessment factor" = `assessment_factor`)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Number of cases"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("Assessment factor"), yvalue = "Rate per 10,000"),
       columns = list(
-        `Number Of Cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
