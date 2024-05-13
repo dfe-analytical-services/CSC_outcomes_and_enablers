@@ -1045,6 +1045,52 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 }
 
 # Outcome 3 --------------------------------
+## Hospital admissions ------
+# Data for this indicator is from an API and only shows the latest data
+# LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+# Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+
+read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
+  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
+  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
+
+  la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
+  region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
+
+  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+    select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
+    rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
+    distinct()
+
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
+  admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
+
+  admissions_data <- admissions_data_joined %>%
+    mutate(Value = case_when(
+      is.na(Value) ~ -300,
+      TRUE ~ as.numeric(Value)
+    ))
+  admissions_data$Value <- round(admissions_data$Value, digits = 1)
+
+  admissions_data2 <- admissions_data %>%
+    mutate(rate_per_10000 = case_when(
+      Value == -300 ~ "x",
+      TRUE ~ as.character(Value)
+    ))
+  # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
+  la_codes <- suppressWarnings(read_cin_rate_data()) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+    select(old_la_code, new_la_code) %>%
+    distinct()
+
+  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
+
+  return(admissions_data3)
+}
+
+
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {

@@ -31,4 +31,5 @@ data/la_cla_on_31_march_by_characteristics.csv,published
 data/la_care_leavers_accommodation_suitability.csv,published
 data/la_care_leavers_activity.csv,published
 data/la_conviction_health_outcome_cla.csv,published
-
+data/la_hospital_admissions_2223.csv,published
+data/region_hospital_admissions_2223.csv,published

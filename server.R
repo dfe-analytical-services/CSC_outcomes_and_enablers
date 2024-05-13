@@ -4101,6 +4101,110 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Hospital admissions -----
+  output$hosp_admissions_txt <- renderText({
+    if (input$geographic_breakdown_o3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(hospital_admissions %>%
+        filter(time_period == max(hospital_admissions$time_period) &
+          geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        select(rate_per_10000), nsmall = 1)
+    }
+    paste0(format(stat, nsmall = 1), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
+  })
+
+
+  output$admissions_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional")
+
+    max_lim <- max(data$Value) + 50
+
+    ggplotly(
+      by_region_bar_plot(data, "Value", "Rate per 10,000", max_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$admissions_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, Value) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Rate per 10,000` = `Value`)
+
+    reactable(
+      data,
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  output$admissions_la_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority")
+
+    national_data <- hospital_admissions %>%
+      filter(geographic_level == "National") %>%
+      select(time_period, geo_breakdown, Value)
+
+    max_y_lim <- max(data$Value) + 50
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Value", "Rate per 10,000") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+    #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
+    # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      height = 420
+      # tooltip = "text",
+    )
+  })
+
+  output$admissions_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+
+    data <- hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
+      select(time_period, geo_breakdown, rate_per_10000) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `rate_per_10000`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
   #### child abuse titles -----
   output$ca_header1 <- renderUI({
     h2(paste(input$assessment_factors_1, " cases"))
@@ -6672,6 +6776,103 @@ server <- function(input, output, session) {
   })
 
   ## Outcome 3 -----
+  ### Hospital admissions -----
+  output$SN_hosp_admissions <- renderUI({
+    if (input$hosp_admission_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("admissions_la_plot"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_hosp_admission_la",
+          label = "View chart as table",
+          help_text = (
+            reactableOutput("admissions_la_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "admissions_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+              tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+              tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+              tags$br(),
+              p(
+                "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer."),
+                tags$br(),
+                "For more information on the definitions and methodology, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.")
+              )
+            )
+          )
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+
+      tagList(
+        plotlyOutput("hosp_admissions_SN_plot"),
+        # p("stats neighbours plot here"),
+        br(),
+        details(
+          inputId = "tbl_sn_hosp_ad",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("hosp_admissions_SN_tbl")
+            # p("table here")
+          )
+        ),
+        details(
+          inputId = "sn_hosp_ad_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  output$hosp_admissions_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- hospital_admissions %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename(`Rate per 10,000` = `Value`)
+
+    max_y_lim <- max(data$`Rate per 10,000`) + 50
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000", max_y_lim) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$hosp_admissions_SN_tbl <- renderReactable({
+    data <- hospital_admissions %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename(`Rate per 10,000` = `Value`)
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Rate per 10,000"),
+      columns = list(
+        `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
+
+
   ### Child abuse/Neglect ------
   output$SN_child_ab_neg <- renderUI({
     if (input$child_abuse_toggle == "All local authorities") {

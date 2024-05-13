@@ -101,6 +101,13 @@ outcome3_tab <- function() {
                     value = htmlOutput("cpp_duration_txt")
                   )
                 ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = HTML("Hospital admissions caused by unintentional and deliberate injuries to children and young people <br> (0 to 14 years)"),
+                    value = htmlOutput("hosp_admissions_txt")
+                  )
+                ),
                 br(),
                 p("Child protection is focused on investigating and addressing
                   significant harm that children might experience. Remaining
@@ -216,6 +223,58 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
+                ),
+                ### Hospital admissions ------
+                accordion_panel(
+                  "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
+                  gov_row(
+                    insert_text(
+                      inputId = "admissions_warning",
+                      text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")
+                    ),
+                  ),
+                  gov_row(
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    # p("chart here"),
+                    br(),
+                    plotlyOutput("admissions_region_plot"),
+                    br(),
+                    details(
+                      inputId = "admissions_region_table",
+                      label = "View chart as a table",
+                      help_text = (reactableOutput("admissions_region_tbl"))
+                    ),
+                    details(
+                      inputId = "admissions_region_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+                          tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+                          tags$br(),
+                          p(
+                            "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer."),
+                            tags$br(),
+                            "For more information on the definitions and methodology, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority"),
+                    br(),
+                    # plotlyOutput("admissions_la_plot")
+                    radioGroupButtons(
+                      "hosp_admission_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_hosp_admissions")
+                  )
                 ),
                 open = FALSE
               ),
