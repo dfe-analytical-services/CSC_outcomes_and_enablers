@@ -327,13 +327,26 @@ outcome4_tab <- function() {
                         tags$b("Strengths and Difficulties Questionnaire (SDQ) scores"), " -  The SDQ is a behavioural screening questionnaire. Its primary purpose is to give social workers and health professionals information about a child’s wellbeing. A score of 0 to 13 is considered normal, 14 to 16 is borderline, and 17 to 40 is a cause for concern."
                       )
                     ),
-                    plotlyOutput("sdq_time_series_plot")
+                    plotlyOutput("sdq_time_series_plot"),
+                    br(),
+                    details(
+                      inputId = "sdq_ts_tbl",
+                      label = "View chart as table",
+                      help_text = reactableOutput("sqd_ts_table")
+                    ),
+                    details(
+                      inputId = "ts_additional_info",
+                      label = "Additional information:",
+                      help_text = p("additional info")
+                    )
                   ),
                   gov_row(
-                    h2("SDQ score by Region")
+                    h2("SDQ score by Region"),
+                    br(),
                   ),
                   gov_row(
-                    h2("SDQ score by local authority")
+                    h2("SDQ score by local authority"),
+                    br(),
                   )
                 ),
                 open = FALSE
