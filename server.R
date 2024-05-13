@@ -5137,6 +5137,86 @@ server <- function(input, output, session) {
   #   )
   # })
 
+  ## Wellbeing SDQ score ----------------
+  output$wellbeing_score_stat <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else {
+      stat_prev <- format(wellbeing_sdq_data %>%
+        filter(time_period == (max(wellbeing_sdq_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(characteristic == "SDQ average score") %>%
+        select(number), nsmall = 1)
+
+      stat_current <- format(wellbeing_sdq_data %>%
+        filter(time_period == max(wellbeing_sdq_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(characteristic == "SDQ average score") %>%
+        select(number), nsmall = 1)
+      if ((stat_current < stat_prev)) {
+        context <- " down from "
+      } else {
+        context <- " up from "
+      }
+    }
+    paste0(
+      stat_current, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(wellbeing_sdq_data$time_period), context, stat_prev, " in ", (max(wellbeing_sdq_data$time_period) - 1), "</p>"
+    )
+  })
+
+  # time series plot and chart for SDQ score
+  output$sdq_time_series_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- wellbeing_sdq_data %>%
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic == "SDQ average score")
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
+      filtered_data <- wellbeing_sdq_data %>%
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic == "SDQ average score")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- wellbeing_sdq_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "SDQ average score")
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_o4)
+
+      filtered_data <- wellbeing_sdq_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic == "SDQ average score")
+    }
+
+    final_data <- filtered_data %>%
+      select(time_period, geographic_level, geo_breakdown, characteristic, number_num) %>%
+      rename("Score" = "number_num")
+
+    max_y_lim <- (max(final_data$Score) + 5)
+
+    plot <- ggplotly(
+      plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim) +
+        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+        %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$sqd_ts_table <- renderReactable({
+
+  })
+
+
+
 
   ## care leavers ---------
   ### care leavers employment----
@@ -5198,9 +5278,6 @@ server <- function(input, output, session) {
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_activity_data %>%
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training")
-
-      filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & activity == "Total in education, employment or training")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {

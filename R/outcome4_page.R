@@ -291,42 +291,49 @@ outcome4_tab <- function() {
             tabPanel(
               "Wellbeing of child",
               fluidRow(
-                p("testing"),
+                # p("testing"),
                 br()
               ),
               fluidRow(
                 column(
                   width = 6,
                   value_box(
-                    title = "Headline stat 1",
-                    value = p("Headline stats 1")
+                    title = "Average SDQ score",
+                    value = htmlOutput("wellbeing_score_stat")
                   )
                 ),
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Headline stat 2",
-                    value = p("Headline stats 2")
-                  )
-                ),
+                # column(
+                #   width = 6,
+                #   value_box(
+                #     title = "Headline stat 2",
+                #     value = p("Headline stats 2")
+                #   )
+                # ),
                 br(),
               ),
               fluidRow(
-                br()
+                br(),
+                p("Understanding the emotional and behavioural need of CLA is important to ensure that they are receiving the care and support they need to thrive. The SDQ score uses a series of carer-reported measures to calculate an overall score to assess the emotional wellbeing of CLA."),
               ),
               accordion(
                 accordion_panel(
                   "Strengths and difficulties questionnaire (SDQ score)",
-                  p("contents for panel 1"),
-                  p("Understanding the emotional and behavioural need of CLA is important to ensure that they are receiving the care and support they need to thrive. The SDQ score uses a series of carer-reported measures to calculate an overall score to assess the emotional wellbeing of CLA."),
+                  # p("contents for panel 1"),
                   gov_row(
-                    h2("Time Series")
+                    h2("Strengths and difficulties questionnaire (SDQ score)"),
+                    insert_text(
+                      inputId = "sdq_definition",
+                      text = paste(
+                        tags$b("Strengths and Difficulties Questionnaire (SDQ) scores"), " -  The SDQ is a behavioural screening questionnaire. Its primary purpose is to give social workers and health professionals information about a child’s wellbeing. A score of 0 to 13 is considered normal, 14 to 16 is borderline, and 17 to 40 is a cause for concern."
+                      )
+                    ),
+                    plotlyOutput("sdq_time_series_plot")
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("SDQ score by Region")
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("SDQ score by local authority")
                   )
                 ),
                 open = FALSE
