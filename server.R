@@ -4121,6 +4121,7 @@ server <- function(input, output, session) {
     ggplotly(
       all_assessment_factors_plot(assessment_factors, af_child_abuse_extra_filter, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
         config(displayModeBar = F),
+      tooltip = "text",
       height = 420
     )
   })
@@ -4133,14 +4134,15 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>%
       filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (af_child_abuse_extra_filter), time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
-      dplyr::arrange(desc(Number))
+      dplyr::arrange(desc(rate_per_10000)) %>%
+      rename(`Rate per 10000` = `rate_per_10000`)
 
     reactable(
       data,
       columns = list(
-        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4181,10 +4183,10 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
     }
 
-    max_y_lim <- max(filtered_data$Number) + 100
+    max_y_lim <- max(filtered_data$rate_per_10000) + 100
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Number", "Number", max_y_lim) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4200,13 +4202,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4215,7 +4217,7 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4224,17 +4226,17 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
 
     reactable(
       data,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4251,13 +4253,13 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1) %>%
-      rename("Number_of_cases" = "Number") %>%
+      # rename("rate_per_10000" = "Rate per 10,000") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
-    max_lim <- max(data$Number_of_cases) + 500
+    max_lim <- max(data$rate_per_10000) + 100
 
     ggplotly(
-      by_region_bar_plot(data, "Number_of_cases", "Number of cases", max_lim) %>%
+      by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4272,17 +4274,28 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, time_period == max(time_period), geographic_level == "Regional") %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      arrange(desc(Number))
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
-    datatable(
+
+    reactable(
       data,
-      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # stats neighbours further down in the stats neighbours section
@@ -4294,9 +4307,9 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 100
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
 
     ggplotly(
@@ -4329,32 +4342,25 @@ server <- function(input, output, session) {
       data <- assessment_factors %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(assessment_factor == input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
       data <- assessment_factors %>%
         filter(geographic_level == "Local authority", time_period == max(assessment_factors$time_period)) %>%
         filter(assessment_factor == input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      mutate(Number = case_when(
-        Number == "z" ~ -400,
-        Number == "c" ~ -100,
-        Number == "k" ~ -200,
-        Number == "x" ~ -300,
-        TRUE ~ as.numeric(Number)
-      )) %>%
-      arrange(desc(Number)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
     reactable(
       data2,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4381,6 +4387,7 @@ server <- function(input, output, session) {
     ggplotly(
       all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
         config(displayModeBar = F),
+      tooltip = "text",
       height = 420
     )
   })
@@ -4393,14 +4400,14 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>%
       filter(geo_breakdown == input$geographic_breakdown_o3, assessment_factor %in% (extra_familial_harm_af), time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor") %>%
-      dplyr::arrange(desc(Number))
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Assessment factor" = "assessment_factor", "Rate per 10,000" = "rate_per_10000") %>%
+      dplyr::arrange(desc(`Rate per 10,000`))
 
     reactable(
       data,
       columns = list(
-        `Number` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4441,10 +4448,10 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
     }
 
-    max_y_lim <- max(filtered_data$Number) + 500
+    max_y_lim <- max(filtered_data$rate_per_10000) + 10
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Number", "Number", max_y_lim) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4460,13 +4467,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- assessment_factors %>%
         filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4475,7 +4482,7 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4484,17 +4491,17 @@ server <- function(input, output, session) {
 
       filtered_data <- assessment_factors %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number)
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
 
     reactable(
       data,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4511,13 +4518,12 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_2) %>%
-      rename("Number_of_cases" = "Number") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
-    max_lim <- max(data$Number_of_cases) + 500
+    max_lim <- max(data$rate_per_10000) + 10
 
     ggplotly(
-      by_region_bar_plot(data, "Number_of_cases", "Number of cases", max_lim) %>%
+      by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -4532,16 +4538,18 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_2, time_period == max(time_period), geographic_level == "Regional") %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      arrange(desc(Number))
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
-    datatable(
+
+    reactable(
       data,
-      colnames = c("Time period", "Location", "Assessment factor", "Number of cases"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4554,9 +4562,9 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
 
     ggplotly(
@@ -4589,32 +4597,25 @@ server <- function(input, output, session) {
       data <- assessment_factors %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(assessment_factor == input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
       data <- assessment_factors %>%
         filter(geographic_level == "Local authority", time_period == max(assessment_factors$time_period)) %>%
         filter(assessment_factor == input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, Number) %>%
-        arrange(desc(Number))
+        select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+        arrange(desc(rate_per_10000))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, assessment_factor, Number) %>%
-      mutate(Number = case_when(
-        Number == "z" ~ -400,
-        Number == "c" ~ -100,
-        Number == "k" ~ -200,
-        Number == "x" ~ -300,
-        TRUE ~ as.numeric(Number)
-      )) %>%
-      arrange(desc(Number)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Number of cases` = `Number`)
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
+      arrange(desc(rate_per_10000)) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
     reactable(
       data2,
       columns = list(
-        `Number of cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6526,10 +6527,10 @@ server <- function(input, output, session) {
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 100
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases", max_y_lim) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -6538,12 +6539,12 @@ server <- function(input, output, session) {
   output$abuse_neg_SN_tbl <- renderReactable({
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period)) %>%
-      rename("Number of cases" = "value")
+      rename("Rate per 10,000" = "rate_per_10000", "Assessment factor" = `assessment_factor`)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Number of cases"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("Assessment factor"), yvalue = "Rate per 10,000"),
       columns = list(
-        `Number Of Cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6604,10 +6605,10 @@ server <- function(input, output, session) {
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$Number) + 500
+    max_y_lim <- max(data$rate_per_10000) + 10
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Number", "Number of cases", max_y_lim) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
         config(displayModeBar = F),
       height = 420
     )
@@ -6616,12 +6617,12 @@ server <- function(input, output, session) {
   output$efh_SN_tbl <- renderReactable({
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period)) %>%
-      rename("Number of cases" = "value")
+      rename("Rate per 10,000" = "rate_per_10000", "Assessment factor" = "assessment_factor")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Number of cases"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = "Assessment factor", yvalue = "Rate per 10,000"),
       columns = list(
-        `Number Of Cases` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,

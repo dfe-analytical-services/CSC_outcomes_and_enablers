@@ -1062,7 +1062,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
-  data %>%
+  data2 <- data %>%
     pivot_longer(
       cols = columns,
       names_to = "assessment_factor",
@@ -1084,6 +1084,32 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     )) %>%
     mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
     select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
+
+  # Data needs to be rates per 10,000
+  # Using the population data from CLA rates data
+  populations <- suppressWarnings(read_cla_rate_data()) %>%
+    filter(time_period == max(time_period)) %>%
+    select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
+    distinct()
+
+  data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
+  data4 <- data3 %>%
+    mutate(`rate_per_10000` = (data3$Number / as.numeric(data3$population_estimate)) * 10000)
+
+  data4$rate_per_10000 <- round(data4$rate_per_10000, digits = 0)
+
+  data5 <- data4 %>%
+    mutate(rate_per_10000 = case_when(
+      value == "c" ~ -100,
+      value == "low" ~ -200,
+      value == "k" ~ -200,
+      value == "u" ~ -250,
+      value == "x" ~ -300,
+      value == "z" ~ -400,
+      TRUE ~ as.numeric(rate_per_10000)
+    ))
+
+  return(data5)
 }
 
 
