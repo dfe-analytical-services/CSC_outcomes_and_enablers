@@ -1226,6 +1226,27 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
     )) %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+
+  data3 <- data2 %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    )) %>%
+    mutate(percentage_num = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    ))
+  return(data3)
 }
 
 
