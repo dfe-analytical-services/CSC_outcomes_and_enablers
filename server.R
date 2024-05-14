@@ -3681,6 +3681,7 @@ server <- function(input, output, session) {
     input$select_geography_o3
   }, {
     choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == 2023), "geo_breakdown"]), decreasing = FALSE)
+    # choices <- sort(unique(hospital_admissions[(hospital_admissions$geographic_level == input$select_geography_o3 & hospital_admissions$time_period == max(hospital_admissions$time_period)), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,

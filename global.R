@@ -95,6 +95,7 @@ source("R/read_data.R")
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
+la_lookup <- location_la_lookup()
 
 # Read in the workforce characteristics data (Enabler 2)
 # workforce_char <- read_workforce_char_data()
