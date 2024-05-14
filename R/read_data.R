@@ -87,7 +87,8 @@ remove_old_la_data <- function(data) {
 
 
 # Need a fact table for the LA's and their Regions
-GET_location <- function(file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
+# Using the most up to date data file
+GET_location <- function(file = "data/csww_indicators_2017_to_2023.csv") {
   FACT_location <- read.csv(file)
   FACT_location <- FACT_location %>%
     select(region_name, la_name) %>%
@@ -104,6 +105,15 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2023.csv
     select(region_name, la_name) %>%
     filter((la_name != "")) %>%
     unique()
+}
+
+location_la_lookup <- function(file = "data/csww_indicators_2017_to_2023.csv") {
+  data <- read.csv(file)
+  location_codes <- data %>%
+    select(region_name, la_name, new_la_code, old_la_code) %>%
+    filter((la_name != "")) %>%
+    unique() %>%
+    separate_rows(c(la_name, new_la_code, old_la_code), sep = "/ ")
 }
 
 
@@ -1080,12 +1090,13 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
       TRUE ~ as.character(Value)
     ))
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-  la_codes <- suppressWarnings(read_cin_rate_data()) %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-    select(old_la_code, new_la_code) %>%
-    distinct()
+  la_codes <- suppressWarnings(location_la_lookup()) %>%
+    rename(geo_breakdown = la_name)
+  # filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+  # select(old_la_code, new_la_code) %>%
+  # distinct()
 
-  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
+  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("geo_breakdown", "new_la_code"))
 
   return(admissions_data3)
 }

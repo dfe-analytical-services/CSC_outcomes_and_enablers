@@ -1149,7 +1149,7 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   #     unique()
   # }
   #
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location()
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
@@ -1265,7 +1265,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   #     unique()
   # }
   #
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location()
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
@@ -1386,7 +1386,7 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   #     unique()
   # }
 
-  location_data <- GET_location("data/b1_children_in_need_2013_to_2023.csv")
+  location_data <- GET_location()
 
   if (selected_geo_lvl == "Local authority") {
     cin_data <- cin_rates %>%
@@ -1498,7 +1498,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   #     unique()
   # }
 
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location()
 
   if (selected_geo_lvl == "Local authority") {
     LA_referral_data <- cin_referrals %>%
