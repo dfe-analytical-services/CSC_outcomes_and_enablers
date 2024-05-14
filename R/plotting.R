@@ -969,7 +969,15 @@ plot_uasc <- function(geo_break, geo_lvl) {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
+    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Location: ", geo_breakdown, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Time period") +
@@ -1009,7 +1017,15 @@ plot_uasc_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
+    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1102,14 +1118,23 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   max_rate <- ceiling(max_rate / 50) * 50
 
   # Use the new variable in the plot
-  p <- ggplot(cla_data, aes(x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
-    levels = c(
-      "Unaccompanied asylum-seeking children (Selected)",
-      "Non-unaccompanied asylum-seeking children (Selected)",
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+  p <- ggplot(cla_data, aes(
+    x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
+      levels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    ),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Selection: ", is_selected, "<br>",
+      "Time period: ", `time_period`
     )
-  ))) +
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1708,14 +1733,23 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
-    levels = c(
-      "Unaccompanied asylum-seeking children (Selected)",
-      "Non-unaccompanied asylum-seeking children (Selected)",
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+  ggplot(filtered_data, aes(
+    x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
+      levels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    ),
+    text = paste0(
+      "Placement rate per 10,000: ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Local authority: ", Breakdown, "<br>",
+      "Selection: ", Selection, "<br>",
+      "Time period: ", max(dataset$time_period)
     )
-  ))) +
+  )) +
     geom_bar(stat = "identity") +
     # geom_col(position = position_dodge()) +
     ylab(yaxis_title) +

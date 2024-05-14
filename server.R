@@ -1898,7 +1898,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_uasc(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1935,7 +1936,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_uasc_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1969,7 +1971,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6029,7 +6032,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
