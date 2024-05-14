@@ -365,8 +365,8 @@ outcome4_tab <- function() {
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    plotlyOutput("sdq_by_la_plot")
-                    # uiOutput("SN_care_leavers_activity")
+                    # plotlyOutput("sdq_by_la_plot"),
+                    uiOutput("SN_wellbeing_SDQ")
                   )
                 ),
                 open = FALSE

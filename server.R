@@ -5296,12 +5296,12 @@ server <- function(input, output, session) {
       arrange(desc(number_num))
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Average SDQ score` = `number_num`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
 
     reactable(
       data2,
       columns = list(
-        `Average SDQ score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5340,10 +5340,44 @@ server <- function(input, output, session) {
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
-    data <- wellbeing_sdq_data %>%
-      filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, characteristic, number_num) %>%
-      rename(`Time period` = `tme_period`, `Local authority` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
+    if (input$select_geography_o4 == "Regional") {
+      if (input$geographic_breakdown_o4 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o4) %>%
+          pull(la_name)
+      }
+
+      data <- wellbeing_sdq_data %>%
+        filter(geo_breakdown %in% location, time_period == max(wellbeing_sdq_data$time_period)) %>%
+        filter(characteristic == "SDQ average score") %>%
+        select(time_period, geo_breakdown, characteristic, number_num) %>%
+        arrange(desc(number_num))
+    } else if (input$select_geography_o4 %in% c("Local authority", "National")) {
+      data <- wellbeing_sdq_data %>%
+        filter(geographic_level == "Local authority", time_period == max(wellbeing_sdq_data$time_period)) %>%
+        filter(characteristic == "SDQ average score") %>%
+        select(time_period, geo_breakdown, characteristic, number_num) %>%
+        arrange(desc(number_num))
+    }
+
+    data2 <- data %>%
+      arrange(desc(number_num)) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
   })
 
 
@@ -6991,6 +7025,88 @@ server <- function(input, output, session) {
   ### Placement Distance ------------------
 
 
+  ### Wellbeing - SDQ Score -------------
+  output$SN_wellbeing_SDQ <- renderUI({
+    if (input$sdq_score_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("sdq_by_la_plot"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_sdq_score_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("sdq_by_la_tbl")
+          )
+        ),
+        details(
+          inputId = "sdq_score_la_info",
+          label = "Additional information:",
+          help_text = (
+            p(tags$li("testing")))
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("SN_sdq_plot"),
+        # p("stats neighours chart here"),
+        br(),
+        details(
+          inputId = "tbl_sn_sdq_score",
+          label = "View chart as a table",
+          help_text = (
+            # p("table")
+            reactableOutput("SN_sdq_table")
+          )
+        ),
+        details(
+          inputId = "sn_sdq_score_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  output$SN_sdq_plot <- renderPlotly({
+    validate(
+      need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score", geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Score" = "number_num")
+
+    max_y_lim <- (max(data$Score) + 5)
+
+    ggplotly(
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", max_y_lim) +
+        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+        config(displayModeBar = F),
+      height = 420
+    )
+  })
+
+  output$SN_sdq_table <- renderReactable({
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
+      rename("SDQ characteristic" = characteristic, "Score" = "number_num")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "SDQ characteristic", yvalue = "Score"),
+      columns = list(
+        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
 
 
   ### Care leavers activity -------------
