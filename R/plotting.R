@@ -150,7 +150,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   } else if (selected_geo_lvl == "National") {
     la_data <- dataset %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -160,7 +160,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = "Not Selected"
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
     if (selected_geo_breakdown == "London") {
@@ -183,11 +183,19 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = "Selected"
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   }
 
 
-  p <- ggplot(la_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`)) +
+  p <- ggplot(la_data, aes(
+    x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+    text = paste0(
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Local authority: ", Breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", Selection
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     xlab("") +
@@ -225,7 +233,14 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
     rename(`Breakdown` = `geo_breakdown`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(reg_data, aes(x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period))) +
+  ggplot(reg_data, aes(
+    x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+    text = paste0(
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Region: ", `Breakdown`, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     # ylab("Turnover rate (FTE) %") +

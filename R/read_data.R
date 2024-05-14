@@ -1225,6 +1225,7 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
+    filter(new_la_code != "E10000009") %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
 
   data3 <- data2 %>%

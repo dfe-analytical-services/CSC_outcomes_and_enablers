@@ -5258,6 +5258,94 @@ server <- function(input, output, session) {
     )
   })
 
+  ## SDQ by region chart and table
+  # by region chart and table
+  output$SDQ_region_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score") %>%
+      filter(time_period == max(time_period), geographic_level == "Regional") %>%
+      rename("Score" = "number_num")
+
+    max_y_lim <- (max(data$Score) + 5)
+
+
+    ggplotly(
+      by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim) +
+        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$SDQ_region_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score", time_period == max(time_period), geographic_level == "Regional") %>%
+      select(time_period, geo_breakdown, characteristic, number_num) %>%
+      arrange(desc(number_num))
+
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Average SDQ score` = `number_num`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Average SDQ score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
+  # SDQ by la chart and table
+  output$sdq_by_la_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
+      rename(`Score` = `number_num`)
+
+    max_y_lim <- (max(data$`Score`) + 5)
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score") +
+      scale_y_continuous(limits = c(0, max_y_lim)) +
+      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+
+    ggplotly(
+      p %>%
+        config(displayModeBar = F),
+      tooltip = "text",
+      height = 420
+    )
+  })
+
+  output$sdq_by_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o4 != "", "Select a location.")
+    )
+    data <- wellbeing_sdq_data %>%
+      filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, characteristic, number_num) %>%
+      rename(`Time period` = `tme_period`, `Local authority` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
+  })
+
 
 
 

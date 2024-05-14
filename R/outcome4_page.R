@@ -343,10 +343,30 @@ outcome4_tab <- function() {
                   gov_row(
                     h2("SDQ score by Region"),
                     br(),
+                    plotlyOutput("SDQ_region_plot"),
+                    br(),
+                    details(
+                      inputId = "sdq_region_tbl",
+                      label = "View chart as table",
+                      help_text = reactableOutput("SDQ_region_tbl")
+                    ),
+                    details(
+                      inputId = "sdq_reg_info",
+                      label = "Additional information: ",
+                      help_text = p("additional info")
+                    )
                   ),
                   gov_row(
                     h2("SDQ score by local authority"),
                     br(),
+                    radioGroupButtons(
+                      "sdq_score_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    plotlyOutput("sdq_by_la_plot")
+                    # uiOutput("SN_care_leavers_activity")
                   )
                 ),
                 open = FALSE
