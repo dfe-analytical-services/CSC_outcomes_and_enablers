@@ -236,7 +236,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
   ggplot(reg_data, aes(
     x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
     text = paste0(
-      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
       "Region: ", `Breakdown`, "<br>",
       "Time period: ", `time_period`
     )
@@ -806,7 +806,14 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
 
   custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
 
-  p <- ggplot(ethnicity_data, aes(x = breakdown, y = percentage, fill = factor(time_period))) +
+  p <- ggplot(ethnicity_data, aes(
+    x = breakdown, y = percentage, fill = factor(time_period),
+    text = paste0(
+      "Ethnic group: ", breakdown, "<br>",
+      "Percentage of workforce: ", percentage, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -908,7 +915,14 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
   custom_fill_order <- c("Manager", "Senior practitioner", "Case holder", "Qualified without cases")
 
 
-  p <- ggplot(ethnicity_data_sen, aes(x = breakdown, y = Percentage, fill = factor(seniority, levels = custom_fill_order))) +
+  p <- ggplot(ethnicity_data_sen, aes(
+    x = breakdown, y = Percentage, fill = factor(seniority, levels = custom_fill_order),
+    text = paste0(
+      "Ethnic group: ", breakdown, "<br>",
+      "Percentage: ", Percentage, "<br>",
+      "Seniority level: ", factor(seniority, levels = custom_fill_order)
+    )
+  )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -1634,7 +1648,15 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`)) +
+  ggplot(filtered_data, aes(
+    x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+    text = paste0(
+      str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Local authority: ", `Breakdown`, "<br>",
+      "Time period: ", max(dataset$time_period), "<br>",
+      "Selection: ", `Selection`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     xlab("") +

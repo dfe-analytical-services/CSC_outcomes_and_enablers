@@ -261,7 +261,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Turnover Rate Fte", "Turnover rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -321,7 +322,8 @@ server <- function(input, output, session) {
       # plot_turnover_reg() %>%
       by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -352,7 +354,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate (FTE) %") %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -470,7 +473,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -544,7 +548,8 @@ server <- function(input, output, session) {
       by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         # plot_agency_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -578,7 +583,8 @@ server <- function(input, output, session) {
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %") %>%
         # plot_agency_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -677,7 +683,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -739,7 +746,8 @@ server <- function(input, output, session) {
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %") %>%
         # plot_vacancy_rate_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -797,7 +805,8 @@ server <- function(input, output, session) {
       by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         # plot_vacancy_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -886,7 +895,10 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
 
@@ -946,7 +958,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -980,7 +993,8 @@ server <- function(input, output, session) {
       by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)") %>%
         # plot_caseload_la(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1053,7 +1067,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_ethnicity_rate(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1066,6 +1081,7 @@ server <- function(input, output, session) {
       plot_population_ethnicity_rate(input$geographic_breakdown_e2) %>%
         config(displayModeBar = F),
       height = 420
+      # This one does not need to have a customised tooltip
     )
   })
 
@@ -1119,7 +1135,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_seniority_eth(input$geographic_breakdown_e2, input$select_geography_e2) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7089,7 +7106,8 @@ server <- function(input, output, session) {
         geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
         geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7356,7 +7374,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7419,7 +7438,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7483,7 +7503,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7546,7 +7567,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
