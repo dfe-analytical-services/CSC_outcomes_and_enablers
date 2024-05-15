@@ -1311,7 +1311,14 @@ plot_cla_march_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = factor(time_period),
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Region: ", `geo_breakdown`, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1387,7 +1394,15 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = `is_selected`,
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Local authority: ", `geo_breakdown`, "<br>",
+      "Selection: ", `is_selected`, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1428,7 +1443,14 @@ plot_cin_rate_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`, fill = factor(time_period))) +
+  ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`,
+    fill = factor(time_period),
+    text = paste0(
+      "CIN rate per 10,000: ", `CIN_rate`, "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
     xlab("Region") +
@@ -1508,7 +1530,15 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN_rate`, fill = `is_selected`)) +
+  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN_rate`,
+    fill = `is_selected`,
+    text = paste0(
+      "CIN rate per 10,000: ", `CIN_rate`, "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", `is_selected`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
     xlab("") +

@@ -1513,7 +1513,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cin_rate_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1592,20 +1593,9 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cin_rates_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
-  })
-
-  # CIN referral headline
-  output$cin_referral_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
-    }
-
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
   })
 
   # CIN rate plot
@@ -1652,7 +1642,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
 
@@ -1702,6 +1692,19 @@ server <- function(input, output, session) {
         paging = TRUE
       )
     )
+  })
+
+
+  ## CIN referral headline -----
+  output$cin_referral_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+        %>% select(Re_referrals_percent), nsmall = 1)
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
   })
 
   ## CIN referral plot
@@ -2070,7 +2073,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
 
@@ -2132,7 +2135,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cla_march_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -2165,7 +2169,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cla_march_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6116,7 +6121,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6192,7 +6198,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
