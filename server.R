@@ -3349,7 +3349,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3415,7 +3416,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3448,7 +3450,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3549,7 +3552,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3614,7 +3618,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3647,7 +3652,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)") %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6654,7 +6660,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6733,7 +6740,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Reason ceased (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
