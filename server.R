@@ -2837,7 +2837,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, 100)))
   })
 
@@ -2899,7 +2899,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -2940,7 +2941,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)") %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3049,7 +3051,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
 
@@ -3110,7 +3112,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -3150,7 +3153,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score") %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6499,7 +6503,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -6576,7 +6581,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
