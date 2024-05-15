@@ -1346,7 +1346,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
 
 
-    ggplotly(p, height = 420) %>%
+    ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate)))
   })
 
@@ -1408,7 +1408,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cla_rate_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1441,7 +1442,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cla_rate_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5951,7 +5953,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 

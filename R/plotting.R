@@ -1181,7 +1181,14 @@ plot_cla_rate_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = factor(time_period),
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Region: ", `geo_breakdown`, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1257,7 +1264,14 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = `is_selected`,
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Local authority: ", `geo_breakdown`, "<br>",
+      "Selection: ", `is_selected`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
