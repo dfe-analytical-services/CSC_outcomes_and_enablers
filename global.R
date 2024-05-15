@@ -94,6 +94,12 @@ source("R/read_data.R")
 
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
+cumbria_split_rows <- data.frame(
+  region_name = c("North West", "North West"),
+  la_name = c("Cumberland", "Westmorland and Furness")
+)
+location_data <- rbind(location_data, cumbria_split_rows) # Add Cumberland/Westmorland and Furness LA mapping data
+
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
 # Read in the workforce characteristics data (Enabler 2)
@@ -106,6 +112,24 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())
+cumbria_split_rows_o3 <- data.frame(
+  geographic_level = c("Local authority", "Local authority"),
+  geo_breakdown = c("Cumberland", "Westmorland and Furness"),
+  time_period = c(max(cla_rates$time_period), max(cla_rates$time_period)),
+  region_code = c("", ""),
+  region_name = c("North West", "North West"),
+  new_la_code = c("E06000063", "E06000064"),
+  old_la_code = c(NA, NA),
+  la_name = c("Cumberland", "Westmorland and Furness"),
+  population_count = c("", ""),
+  population_estimate = c("", ""),
+  number = c("", ""),
+  rate_per_10000 = c("", ""),
+  `Rate Per 10000` = c("", ""),
+  check.names = FALSE
+)
+cla_rates <- rbind(cla_rates, cumbria_split_rows_o3) # Add Cumberland and Westmorland and Furness to cla_rates so they are included in o3 dropdown
+
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 # uasc_data <- test_uasc()
@@ -153,17 +177,6 @@ care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodat
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 
-# New/old LA dataframe
-hosp_admissions_la <- hospital_admissions %>%
-  filter(time_period == max(time_period), geographic_level == "Local authority") %>%
-  select(geo_breakdown, new_la_code)
-
-cpp_la <- cpp_in_year %>%
-  filter(time_period == max(time_period), geographic_level == "Local authority") %>%
-  select(geo_breakdown, new_la_code)
-
-# Combine the dataframes
-new_old_la_df <- full_join(hosp_admissions_la, cpp_la, by = "new_la_code")
 
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
