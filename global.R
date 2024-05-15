@@ -153,6 +153,18 @@ care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodat
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 
+# New/old LA dataframe
+hosp_admissions_la <- hospital_admissions %>%
+  filter(time_period == max(time_period), geographic_level == "Local authority") %>%
+  select(geo_breakdown, new_la_code)
+
+cpp_la <- cpp_in_year %>%
+  filter(time_period == max(time_period), geographic_level == "Local authority") %>%
+  select(geo_breakdown, new_la_code)
+
+# Combine the dataframes
+new_old_la_df <- full_join(hosp_admissions_la, cpp_la, by = "new_la_code")
+
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
 # choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
