@@ -1572,7 +1572,14 @@ plot_cin_referral_reg <- function() {
     select(time_period, geo_breakdown, Re_referrals_percentage) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage)) # Order by turnover rate
 
-  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = factor(time_period))) +
+  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
+    fill = factor(time_period),
+    text = paste0(
+      "Re-referrals (%): ", `Re_referrals_percentage`, "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals (%)") +
     xlab("Region") +
@@ -1645,7 +1652,15 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   }
 
 
-  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = `is_selected`)) +
+  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
+    fill = `is_selected`,
+    text = paste0(
+      "Re-referrals (%): ", Re_referrals_percentage, "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", is_selected
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals  (%)") +
     xlab("") +

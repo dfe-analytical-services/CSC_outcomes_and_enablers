@@ -1743,7 +1743,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1877,7 +1878,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cin_referral_reg() %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -1890,7 +1892,8 @@ server <- function(input, output, session) {
     ggplotly(
       plot_cin_referral_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
   ## UASC ------
@@ -6272,7 +6275,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
