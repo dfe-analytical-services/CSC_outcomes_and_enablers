@@ -4986,12 +4986,14 @@ server <- function(input, output, session) {
     )
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- placement_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown)
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown) %>%
+        rename("Placements (%)" = "Percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- placement_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown)
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
+        rename("Placements (%)" = "Percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -4999,7 +5001,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown)
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown) %>%
+        rename("Placements (%)" = "Percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5007,11 +5010,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown)
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
+        rename("Placements (%)" = "Percent")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Placements (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5077,10 +5081,11 @@ server <- function(input, output, session) {
 
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown) %>%
-      filter(time_period == max(time_period), geographic_level == "Regional")
+      filter(time_period == max(time_period), geographic_level == "Regional") %>%
+      rename("Placements (%)" = "Percent")
 
     ggplotly(
-      by_region_bar_plot(data, "Percent", "Placements (%)", 100) %>%
+      by_region_bar_plot(data, "Placements (%)", "Placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5118,10 +5123,12 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
-    data <- placement_data %>% filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
+    data <- placement_data %>%
+      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Placements (%)" = "Percent")
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)") +
       scale_y_continuous(limits = c(0, 100))
 
     ggplotly(
@@ -7471,10 +7478,11 @@ server <- function(input, output, session) {
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
     data <- placement_data %>%
-      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period))
+      filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("Placements (%)" = "Percent")
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)", 100) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -7484,10 +7492,10 @@ server <- function(input, output, session) {
   output$placement_type_SN_tbl <- renderReactable({
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
-      rename("Placements (%)" = "Percent")
+      rename("Placements (%)" = "Percent", "Placement Type" = "characteristic")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Placements (%)"),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Type", yvalue = "Placements (%)"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
