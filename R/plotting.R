@@ -1492,7 +1492,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   } else if (selected_geo_lvl == "National") {
     cin_data <- cin_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -1500,7 +1501,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = "Not Selected"
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
     if (selected_geo_breakdown == "London") {
@@ -1521,7 +1523,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = "Selected"
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   }
 
   # Set the max y-axis scale
@@ -1530,10 +1533,10 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN_rate`,
+  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN rate per 10,000`,
     fill = `is_selected`,
     text = paste0(
-      "CIN rate per 10,000: ", `CIN_rate`, "<br>",
+      "CIN rate per 10,000: ", `CIN rate per 10,000`, "<br>",
       "Local authority: ", geo_breakdown, "<br>",
       "Time period: ", time_period, "<br>",
       "Selection: ", `is_selected`
