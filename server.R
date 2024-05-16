@@ -3802,12 +3802,14 @@ server <- function(input, output, session) {
     # not both
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
+        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
-        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
+        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
+        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -3815,7 +3817,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o3)
 
       filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
+        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -3823,11 +3826,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o3)
 
       filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
+        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -3886,10 +3890,11 @@ server <- function(input, output, session) {
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    data <- repeat_cpp
+    data <- repeat_cpp %>%
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
     ggplotly(
-      by_region_bar_plot(data, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
+      by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -3920,9 +3925,10 @@ server <- function(input, output, session) {
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    data <- repeat_cpp
+    data <- repeat_cpp %>%
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
     ggplotly(
-      by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)") %>%
+      by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)") %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -8169,9 +8175,10 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    filtered_data <- repeat_cpp
+    filtered_data <- repeat_cpp %>%
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat_CPP_percent", "Repeat CPP (%)", 100) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -8180,10 +8187,12 @@ server <- function(input, output, session) {
 
 
   output$SN_cpp_repeat_tbl <- renderReactable({
+    data <- repeat_cpp %>%
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
     reactable(
-      stats_neighbours_table(repeat_cpp, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Repeat_CPP_percent"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Repeat CPP (%)"),
       columns = list(
-        `Repeat Cpp Percent` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
