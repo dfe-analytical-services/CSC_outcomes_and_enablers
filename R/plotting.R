@@ -1697,7 +1697,9 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     x = reorder(assessment_factor, rate_per_10000), y = rate_per_10000,
     text = paste(
       "Assessment factor: ", assessment_factor, "<br>",
-      "Rate per 10,000: ", rate_per_10000
+      "Rate per 10,000: ", rate_per_10000, "<br>",
+      "Location: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
     )
   )) +
     geom_bar(stat = "identity", fill = "#12436D") +
