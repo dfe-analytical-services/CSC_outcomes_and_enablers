@@ -1334,7 +1334,8 @@ server <- function(input, output, session) {
     }
 
     filtered_data <- filtered_data %>%
-      filter(population_count == "Children starting to be looked after each year")
+      filter(population_count == "Children starting to be looked after each year") %>%
+      rename("Rate per 10,000" = "Rate Per 10000")
 
     # Set the max y-axis scale
     max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
@@ -1342,7 +1343,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -1607,12 +1608,14 @@ server <- function(input, output, session) {
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
-        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
+        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
+        rename("CIN rate per 10,000" = CIN_rate)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
+        rename("CIN rate per 10,000" = CIN_rate)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1620,7 +1623,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
+        rename("CIN rate per 10,000" = CIN_rate)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1628,7 +1632,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
+        rename("CIN rate per 10,000" = CIN_rate)
     }
 
 
@@ -1638,7 +1643,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "CIN_rate", "CIN rate per 10,000 Children", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "CIN rate per 10,000", "CIN rate per 10,000 Children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -1716,12 +1721,14 @@ server <- function(input, output, session) {
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
-        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1)
+        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) # %>%
+      # rename("Re_referrals_percentage" = "Re-referrals (%)")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National")
+        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") # %>%
+      # rename("Re_referrals_percentage" = "Re-referrals (%)")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1729,7 +1736,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name)))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) # %>%
+      # rename("Re_referrals_percentage" = "Re-referrals (%)")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1737,11 +1745,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o1)
 
       filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National"))
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) # %>%
+      # rename("Re_referrals_percentage" = "Re-referrals (%)")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -2064,7 +2073,8 @@ server <- function(input, output, session) {
     }
 
     filtered_data <- filtered_data %>%
-      filter(population_count == "Children looked after at 31 March each year")
+      filter(population_count == "Children looked after at 31 March each year") %>%
+      rename("Rate per 10,000" = "Rate Per 10000")
 
     # Set the max y-axis scale
     max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
@@ -2072,7 +2082,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
 
 
@@ -6303,10 +6313,12 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    filtered_data <- cla_rates %>% filter(population_count == "Children starting to be looked after each year")
+    filtered_data <- cla_rates %>%
+      filter(population_count == "Children starting to be looked after each year") %>%
+      rename("Rate per 10,000" = "Rate Per 10000")
 
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -6466,10 +6478,12 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
-    filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+    filtered_data <- cla_rates %>%
+      filter(population_count == "Children looked after at 31 March each year") %>%
+      rename("Rate per 10,000" = "Rate Per 10000")
 
     ggplotly(
-      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
+      statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -6545,8 +6559,11 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
 
+    data <- cin_rates %>%
+      rename("CIN rate per 10,000" = "CIN_rate")
+
     ggplotly(
-      statistical_neighbours_plot(cin_rates, input$geographic_breakdown_o1, input$select_geography_o1, "CIN_rate", "CIN rates per 10,000", max_rate) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN rate per 10,000", "CIN rate per 10,000", max_rate) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -6619,8 +6636,11 @@ server <- function(input, output, session) {
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
 
+    # data <- cin_referrals %>%
+    #  rename("Re_referrals_percentage" = "Re-referrals (%)")
+
     ggplotly(
-      statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re_referrals_percentage", "Re-referrals (%)", 100) %>%
+      statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
