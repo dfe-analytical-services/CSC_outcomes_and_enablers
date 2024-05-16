@@ -63,6 +63,7 @@
     "region_comparison_checkbox_o3": null,
     "region_comparison_checkbox_o4": null,
     "remove": 0,
+    "sdq_score_toggle": "All local authorities",
     "select_geography_e2": "National",
     "select_geography_o1": "National",
     "select_geography_o2": "National",
