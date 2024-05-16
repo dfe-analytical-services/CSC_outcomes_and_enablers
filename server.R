@@ -4995,7 +4995,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5063,7 +5064,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5107,7 +5109,8 @@ server <- function(input, output, session) {
     ggplotly(
       p %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5196,7 +5199,8 @@ server <- function(input, output, session) {
     ggplotly(
       plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Percentage", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5263,7 +5267,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Percent", "Percentage", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5307,7 +5312,8 @@ server <- function(input, output, session) {
     ggplotly(
       p %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5464,7 +5470,8 @@ server <- function(input, output, session) {
     ggplotly(
       by_region_bar_plot(data, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -5506,7 +5513,8 @@ server <- function(input, output, session) {
     ggplotly(
       p %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7402,7 +7410,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7477,7 +7486,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
@@ -7564,7 +7574,8 @@ server <- function(input, output, session) {
     ggplotly(
       statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Placements (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420
+      height = 420,
+      tooltip = "text"
     )
   })
 
