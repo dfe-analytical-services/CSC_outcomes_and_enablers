@@ -6076,12 +6076,14 @@ server <- function(input, output, session) {
     )
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_accommodation_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable")
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_accommodation_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable")
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -6089,7 +6091,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -6097,11 +6100,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "percent", "Percent", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -6118,13 +6122,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_accommodation_data %>%
         filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent)
+        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_accommodation_data %>%
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent)
+        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -6133,7 +6139,8 @@ server <- function(input, output, session) {
 
       filtered_data <- care_leavers_accommodation_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent)
+        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -6142,16 +6149,17 @@ server <- function(input, output, session) {
 
       filtered_data <- care_leavers_accommodation_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent)
+        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
+        rename("Care leavers in suitable accommodation (%)" = "percent")
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`)
 
     reactable(
       data,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6167,12 +6175,13 @@ server <- function(input, output, session) {
     )
 
     data <- care_leavers_accommodation_data %>%
-      filter(age == input$leavers_age & accommodation_suitability == "Accommodation considered suitable" & time_period == max(time_period) & geographic_level == "Regional")
+      filter(age == input$leavers_age & accommodation_suitability == "Accommodation considered suitable" & time_period == max(time_period) & geographic_level == "Regional") %>%
+      rename("Care leavers in suitable accommodation (%)" = "percent")
 
     ggplotly(
-      by_region_bar_plot(data, "percent", "Percent", 100) %>%
+      by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
         config(displayModeBar = F),
-      height = 420,
+      height = 430,
       tooltip = "text"
     )
   })
@@ -6187,15 +6196,16 @@ server <- function(input, output, session) {
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & time_period == max(time_period) & geographic_level == "Regional" & accommodation_suitability == "Accommodation considered suitable") %>%
       select(time_period, geo_breakdown, accommodation_suitability, age, percentage) %>%
-      arrange(desc(percentage))
+      arrange(desc(percentage)) %>%
+      rename("Care leavers in suitable accommodation (%)" = "percentage")
 
     data <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percentage`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`)
 
     reactable(
       data,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6209,11 +6219,13 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
-    data <- care_leavers_accommodation_data %>% filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable")
+    data <- care_leavers_accommodation_data %>%
+      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
+      rename("Care leavers in suitable accommodation (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percent", "Percent") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)") +
       scale_y_continuous(limits = c(0, 100))
 
     ggplotly(
@@ -6258,12 +6270,12 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Percent` = `percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`, `Care leavers in suitable accommodation (%)` = `percent`)
 
     reactable(
       data2,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -7889,12 +7901,13 @@ server <- function(input, output, session) {
       need(input$leavers_age != "", "Select an age range.")
     )
     data <- care_leavers_accommodation_data %>%
-      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable")
+      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
+      rename("Care leavers in suitable accommodation (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percent", "Percent", 100) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -7904,12 +7917,12 @@ server <- function(input, output, session) {
   output$cl_acccomm_SN_tbl <- renderReactable({
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
-      rename("Percent" = "percent")
+      rename("Care leavers in suitable accommodation (%)" = "percent")
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Care leavers in suitable accommodation (%)"),
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
