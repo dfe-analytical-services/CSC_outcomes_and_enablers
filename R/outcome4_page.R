@@ -72,7 +72,7 @@ outcome4_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("Confirmation Sentence"),
+        p(htmlOutput("outcome4_choice_text1"), htmlOutput("outcome4_choice_text2")),
         br(),
         div(
           tabsetPanel(
