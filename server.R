@@ -5857,12 +5857,14 @@ server <- function(input, output, session) {
     )
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_activity_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & activity == "Total in education, employment or training")
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
+        rename("Care leavers in education, employment or training (%)" = "percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- care_leavers_activity_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training")
+        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
+        rename("Care leavers in education, employment or training (%)" = "percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5870,7 +5872,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & activity == "Total in education, employment or training")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
+        rename("Care leavers in education, employment or training (%)" = "percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5878,11 +5881,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
+        rename("Care leavers in education, employment or training (%)" = "percent")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "percent", "Percent", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5927,12 +5931,12 @@ server <- function(input, output, session) {
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Percent` = `percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Care leavers in education, employment or training (%)` = `percent`)
 
     reactable(
       data,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5948,10 +5952,11 @@ server <- function(input, output, session) {
     )
 
     data <- care_leavers_activity_data %>%
-      filter(age == input$leavers_age & activity == "Total in education, employment or training" & time_period == max(time_period) & geographic_level == "Regional")
+      filter(age == input$leavers_age & activity == "Total in education, employment or training" & time_period == max(time_period) & geographic_level == "Regional") %>%
+      rename("Care leavers in education, employment or training (%)" = "percent")
 
     ggplotly(
-      by_region_bar_plot(data, "percent", "Percent", 100) %>%
+      by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5971,12 +5976,12 @@ server <- function(input, output, session) {
       arrange(desc(percentage))
 
     data <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Percent` = `percentage`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Care leavers in education, employment or training (%)` = `percentage`)
 
     reactable(
       data,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5991,11 +5996,13 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
-    data <- care_leavers_activity_data %>% filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training")
+    data <- care_leavers_activity_data %>%
+      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
+      rename("Care leavers in education, employment or training (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percent", "Percent") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)") +
       scale_y_continuous(limits = c(0, 100))
 
     ggplotly(
@@ -6040,12 +6047,12 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Percent` = `percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Care leavers in education, employment or training (%)` = `percent`)
 
     reactable(
       data2,
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -7801,12 +7808,13 @@ server <- function(input, output, session) {
       need(input$leavers_age != "", "Select an age range.")
     )
     data <- care_leavers_activity_data %>%
-      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training")
+      filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
+      rename("Care leavers in education, employment or training (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "percent", "Percent", 100) %>%
+      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -7821,7 +7829,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
       columns = list(
-        `Percent` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
