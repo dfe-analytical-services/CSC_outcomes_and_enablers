@@ -4189,12 +4189,13 @@ server <- function(input, output, session) {
     )
 
     data <- hospital_admissions %>%
-      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional")
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional") %>%
+      rename("Rate per 10,000" = `Value`)
 
-    max_lim <- max(data$Value) + 50
+    max_lim <- max(data$`Rate per 10,000`) + 50
 
     ggplotly(
-      by_region_bar_plot(data, "Value", "Rate per 10,000", max_lim) %>%
+      by_region_bar_plot(data, "Rate per 10,000", "Rate per 10,000", max_lim) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -4229,15 +4230,16 @@ server <- function(input, output, session) {
     )
 
     data <- hospital_admissions %>%
-      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority")
+      filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
+      rename("Rate per 10,000" = `Value`)
 
     national_data <- hospital_admissions %>%
       filter(geographic_level == "National") %>%
       select(time_period, geo_breakdown, Value)
 
-    max_y_lim <- max(data$Value) + 50
+    max_y_lim <- max(data$`Rate per 10,000`) + 50
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Value", "Rate per 10,000") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
     #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
     # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
@@ -5187,13 +5189,15 @@ server <- function(input, output, session) {
     )
     if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- placement_changes_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year")
+        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year") %>%
+        rename("CLA with 3 or more placements (%)" = "Percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
       filtered_data <- placement_changes_data %>%
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") &
-          placement_stability == "With 3 or more placements during the year")
+          placement_stability == "With 3 or more placements during the year") %>%
+        rename("CLA with 3 or more placements (%)" = "Percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5201,7 +5205,8 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year") %>%
+        rename("CLA with 3 or more placements (%)" = "Percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5209,11 +5214,12 @@ server <- function(input, output, session) {
         filter(la_name %in% input$geographic_breakdown_o4)
 
       filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year")
+        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
+        rename("CLA with 3 or more placements (%)" = "Percent")
     }
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Percent", "Percentage", 100) %>%
+      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5256,13 +5262,13 @@ server <- function(input, output, session) {
     }
 
     data <- filtered_data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CLA with 3 or more placements during the year(%)` = `Percent`)
 
 
     reactable(
       data,
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5278,10 +5284,11 @@ server <- function(input, output, session) {
 
     data <- placement_changes_data %>%
       filter(placement_stability == "With 3 or more placements during the year") %>%
-      filter(time_period == max(time_period), geographic_level == "Regional")
+      filter(time_period == max(time_period), geographic_level == "Regional") %>%
+      rename("CLA with 3 or more placements (%)" = "Percent")
 
     ggplotly(
-      by_region_bar_plot(data, "Percent", "Percentage", 100) %>%
+      by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5297,16 +5304,14 @@ server <- function(input, output, session) {
     data <- placement_changes_data %>%
       filter(placement_stability == "With 3 or more placements during the year", time_period == max(time_period), geographic_level == "Regional") %>%
       select(time_period, geo_breakdown, Percent) %>%
-      arrange(desc(Percent))
-
-    data <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percent`)
+      arrange(desc(Percent)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CLA with 3 or more placements (%)` = `Percent`)
 
 
     reactable(
       data,
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5319,10 +5324,12 @@ server <- function(input, output, session) {
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
-    data <- placement_changes_data %>% filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period))
+    data <- placement_changes_data %>%
+      filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period)) %>%
+      rename("CLA with 3 or more placements (%)" = "Percent")
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)") +
       scale_y_continuous(limits = c(0, 100))
 
     ggplotly(
@@ -5367,12 +5374,12 @@ server <- function(input, output, session) {
     data2 <- data %>%
       select(time_period, geo_breakdown, Percent) %>%
       arrange(desc(Percent)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Percentage` = `Percent`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CLA with 3 or more placements (%)` = `Percent`)
 
     reactable(
       data2,
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
