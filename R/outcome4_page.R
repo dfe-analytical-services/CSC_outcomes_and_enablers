@@ -396,7 +396,17 @@ outcome4_tab <- function() {
                     details(
                       inputId = "ts_additional_info",
                       label = "Additional information:",
-                      help_text = p("additional info")
+                      help_text = (
+                        p(
+                          tags$li("Average SDQ scores have been rounded to the nearest one decimal place."),
+                          tags$li("An SDQ score is required of all children aged 4-16 on the date of last assessment. Date of assessment is not collected so data in this table is restricted to children aged 5 to 16 years."),
+                          tags$li("A higher score indicates more emotional difficulties. 0-13 is considered normal, 14-16 is borderline cause for concern and 17-40 is cause for concern."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                        )
+                      )
                     )
                   ),
                   gov_row(
@@ -412,7 +422,15 @@ outcome4_tab <- function() {
                     details(
                       inputId = "sdq_reg_info",
                       label = "Additional information: ",
-                      help_text = p("additional info")
+                      help_text = p(
+                        tags$li("Average SDQ scores have been rounded to the nearest one decimal place."),
+                        tags$li("An SDQ score is required of all children aged 4-16 on the date of last assessment. Date of assessment is not collected so data in this table is restricted to children aged 5 to 16 years."),
+                        tags$li("A higher score indicates more emotional difficulties. 0-13 is considered normal, 14-16 is borderline cause for concern and 17-40 is cause for concern."),
+                        tags$br(),
+                        "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                        tags$br(),
+                        "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      )
                     )
                   ),
                   gov_row(
