@@ -2641,13 +2641,13 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2656,7 +2656,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2665,23 +2665,14 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
     }
 
     data <- filtered_data %>%
       filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
-
-    # datatable(
-    #   ,
-    #   colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Persistence absentees (%)"),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data,
@@ -2718,9 +2709,9 @@ server <- function(input, output, session) {
         school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-      select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
       arrange(desc(`Persistent absentees (%)`)) %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data,
@@ -2775,7 +2766,7 @@ server <- function(input, output, session) {
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
         arrange(desc(`Persistent absentees (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
@@ -2784,13 +2775,13 @@ server <- function(input, output, session) {
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown, social_care_group, school_type, t_pupils, `Persistent absentees (%)`
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
         arrange(desc(`Persistent absentees (%)`))
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `t_pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data2,
@@ -2801,18 +2792,6 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
-
-    # datatable(
-    #   data,
-    #   colnames = c(
-    #     "Time period", "Local authority", "Social Care Group", "School type",
-    #     "Total number of pupils", "Persistent absentees (%)"
-    #   ),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
   })
 
 
@@ -6967,9 +6946,9 @@ server <- function(input, output, session) {
 
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "t_pupils"), yvalue = "Persistent absentees (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `t_pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
