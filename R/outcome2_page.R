@@ -199,7 +199,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased")
+                        reactableOutput("table_cao_ceased")
                       )
                     ),
                     details(
@@ -231,7 +231,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased_reg")
+                        reactableOutput("table_cao_ceased_reg")
                       )
                     ),
                   ),
