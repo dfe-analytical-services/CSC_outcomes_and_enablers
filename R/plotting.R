@@ -94,10 +94,17 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
   filtered_data <- dataset %>%
     select(time_period, geo_breakdown, `yvalue`) %>%
     mutate(`Time period` = as.character(`time_period`)) %>%
-    rename(`Breakdown` = `geo_breakdown`) %>%
+    rename(`Location` = `geo_breakdown`) %>%
     rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
 
-  p <- ggplot(filtered_data, aes(x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Breakdown`)) +
+  p <- ggplot(filtered_data, aes(
+    x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
+    text = paste0(
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Location: ", `Location`, "<br>",
+      "Time period: ", `Time period`
+    )
+  )) +
     geom_path(group = 1) +
     ylab(yaxis_title) +
     xlab("Time period") +
@@ -143,7 +150,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   } else if (selected_geo_lvl == "National") {
     la_data <- dataset %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -153,7 +160,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = "Not Selected"
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
     if (selected_geo_breakdown == "London") {
@@ -176,11 +183,19 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         is_selected = "Selected"
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
   }
 
 
-  p <- ggplot(la_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`)) +
+  p <- ggplot(la_data, aes(
+    x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+    text = paste0(
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Local authority: ", Breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", Selection
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     xlab("") +
@@ -218,7 +233,14 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
     rename(`Breakdown` = `geo_breakdown`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(reg_data, aes(x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period))) +
+  ggplot(reg_data, aes(
+    x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+    text = paste0(
+      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Region: ", `Breakdown`, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     # ylab("Turnover rate (FTE) %") +
@@ -784,7 +806,14 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
 
   custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
 
-  p <- ggplot(ethnicity_data, aes(x = breakdown, y = percentage, fill = factor(time_period))) +
+  p <- ggplot(ethnicity_data, aes(
+    x = breakdown, y = percentage, fill = factor(time_period),
+    text = paste0(
+      "Ethnic group: ", breakdown, "<br>",
+      "Percentage of workforce: ", percentage, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -886,7 +915,14 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
   custom_fill_order <- c("Manager", "Senior practitioner", "Case holder", "Qualified without cases")
 
 
-  p <- ggplot(ethnicity_data_sen, aes(x = breakdown, y = Percentage, fill = factor(seniority, levels = custom_fill_order))) +
+  p <- ggplot(ethnicity_data_sen, aes(
+    x = breakdown, y = Percentage, fill = factor(seniority, levels = custom_fill_order),
+    text = paste0(
+      "Ethnic group: ", breakdown, "<br>",
+      "Percentage: ", Percentage, "<br>",
+      "Seniority level: ", factor(seniority, levels = custom_fill_order)
+    )
+  )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     ylab("Percentage") +
     xlab("Ethnicity") +
@@ -933,7 +969,15 @@ plot_uasc <- function(geo_break, geo_lvl) {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
+    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Location: ", geo_breakdown, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Time period") +
@@ -973,7 +1017,15 @@ plot_uasc_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`, fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")))) +
+  ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
+    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1066,14 +1118,23 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   max_rate <- ceiling(max_rate / 50) * 50
 
   # Use the new variable in the plot
-  p <- ggplot(cla_data, aes(x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
-    levels = c(
-      "Unaccompanied asylum-seeking children (Selected)",
-      "Non-unaccompanied asylum-seeking children (Selected)",
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+  p <- ggplot(cla_data, aes(
+    x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
+      levels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    ),
+    text = paste0(
+      "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Selection: ", is_selected, "<br>",
+      "Time period: ", `time_period`
     )
-  ))) +
+  )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1120,7 +1181,14 @@ plot_cla_rate_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = factor(time_period),
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Region: ", `geo_breakdown`, "<br>",
+      "Time period: ", `time_period`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1196,7 +1264,14 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = `is_selected`,
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Local authority: ", `geo_breakdown`, "<br>",
+      "Selection: ", `is_selected`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1236,7 +1311,14 @@ plot_cla_march_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = factor(time_period))) +
+  ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = factor(time_period),
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Region: ", `geo_breakdown`, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("Region") +
@@ -1312,7 +1394,15 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`, fill = `is_selected`)) +
+  p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
+    fill = `is_selected`,
+    text = paste0(
+      "Rate per 10,000: ", `Rate Per 10000`, "<br>",
+      "Local authority: ", `geo_breakdown`, "<br>",
+      "Selection: ", `is_selected`, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
     xlab("") +
@@ -1353,7 +1443,14 @@ plot_cin_rate_reg <- function() {
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`, fill = factor(time_period))) +
+  ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`,
+    fill = factor(time_period),
+    text = paste0(
+      "CIN rate per 10,000: ", `CIN_rate`, "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
     xlab("Region") +
@@ -1395,7 +1492,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   } else if (selected_geo_lvl == "National") {
     cin_data <- cin_rates %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -1403,7 +1501,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = "Not Selected"
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
     if (selected_geo_breakdown == "London") {
@@ -1424,7 +1523,8 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       mutate(
         geo_breakdown = reorder(geo_breakdown, -CIN_rate), # Order by cin rate
         is_selected = "Selected"
-      )
+      ) %>%
+      rename("CIN rate per 10,000" = CIN_rate)
   }
 
   # Set the max y-axis scale
@@ -1433,7 +1533,15 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   # Round the max_rate to the nearest 50
   max_rate <- ceiling(max_rate / 50) * 50
 
-  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN_rate`, fill = `is_selected`)) +
+  p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN rate per 10,000`,
+    fill = `is_selected`,
+    text = paste0(
+      "CIN rate per 10,000: ", `CIN rate per 10,000`, "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", `is_selected`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
     xlab("") +
@@ -1467,7 +1575,14 @@ plot_cin_referral_reg <- function() {
     select(time_period, geo_breakdown, Re_referrals_percentage) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage)) # Order by turnover rate
 
-  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = factor(time_period))) +
+  ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
+    fill = factor(time_period),
+    text = paste0(
+      "Re-referrals (%): ", `Re_referrals_percentage`, "<br>",
+      "Region: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals (%)") +
     xlab("Region") +
@@ -1540,7 +1655,15 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   }
 
 
-  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`, fill = `is_selected`)) +
+  p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
+    fill = `is_selected`,
+    text = paste0(
+      "Re-referrals (%): ", Re_referrals_percentage, "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Time period: ", time_period, "<br>",
+      "Selection: ", is_selected
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals  (%)") +
     xlab("") +
@@ -1573,17 +1696,25 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     filter(assessment_factor %in% (factorslist)) %>%
     filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
 
-  p <- ggplot(data, aes(x = reorder(assessment_factor, Number), y = Number)) +
+  p <- ggplot(data, aes(
+    x = reorder(assessment_factor, rate_per_10000), y = rate_per_10000,
+    text = paste(
+      "Assessment factor: ", assessment_factor, "<br>",
+      "Rate per 10,000: ", rate_per_10000, "<br>",
+      "Location: ", geo_breakdown, "<br>",
+      "Time period: ", time_period
+    )
+  )) +
     geom_bar(stat = "identity", fill = "#12436D") +
     scale_y_continuous(limits = c(0, NA)) +
     coord_flip() +
     xlab("Assessment factor") +
-    ylab("Number of cases")
+    ylab("Rate per 10,000")
 
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
   annotate_y <- 0
-  if (max(data$Number) == 0) {
+  if (max(data$rate_per_10000) == 0) {
     p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
   }
   return(p)
@@ -1612,7 +1743,15 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`)) +
+  ggplot(filtered_data, aes(
+    x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+    text = paste0(
+      str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+      "Local authority: ", `Breakdown`, "<br>",
+      "Time period: ", max(dataset$time_period), "<br>",
+      "Selection: ", `Selection`
+    )
+  )) +
     geom_col(position = position_dodge()) +
     ylab(yaxis_title) +
     xlab("") +
@@ -1664,14 +1803,23 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
-    levels = c(
-      "Unaccompanied asylum-seeking children (Selected)",
-      "Non-unaccompanied asylum-seeking children (Selected)",
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+  ggplot(filtered_data, aes(
+    x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
+      levels = c(
+        "Unaccompanied asylum-seeking children (Selected)",
+        "Non-unaccompanied asylum-seeking children (Selected)",
+        "Unaccompanied asylum-seeking children (Not Selected)",
+        "Non-unaccompanied asylum-seeking children (Not Selected)"
+      )
+    ),
+    text = paste0(
+      "Placement rate per 10,000: ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "Local authority: ", Breakdown, "<br>",
+      "Selection: ", Selection, "<br>",
+      "Time period: ", max(dataset$time_period)
     )
-  ))) +
+  )) +
     geom_bar(stat = "identity") +
     # geom_col(position = position_dodge()) +
     ylab(yaxis_title) +

@@ -985,6 +985,52 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 }
 
 # Outcome 3 --------------------------------
+## Hospital admissions ------
+# Data for this indicator is from an API and only shows the latest data
+# LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+# Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+
+read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
+  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
+  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
+
+  la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
+  region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
+
+  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+    select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
+    rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
+    distinct()
+
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
+  admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
+
+  admissions_data <- admissions_data_joined %>%
+    mutate(Value = case_when(
+      is.na(Value) ~ -300,
+      TRUE ~ as.numeric(Value)
+    ))
+  admissions_data$Value <- round(admissions_data$Value, digits = 1)
+
+  admissions_data2 <- admissions_data %>%
+    mutate(rate_per_10000 = case_when(
+      Value == -300 ~ "x",
+      TRUE ~ as.character(Value)
+    ))
+  # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
+  la_codes <- suppressWarnings(read_cin_rate_data()) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+    select(old_la_code, new_la_code) %>%
+    distinct()
+
+  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
+
+  return(admissions_data3)
+}
+
+
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
@@ -1002,7 +1048,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
-  data %>%
+  data2 <- data %>%
     pivot_longer(
       cols = columns,
       names_to = "assessment_factor",
@@ -1024,6 +1070,32 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     )) %>%
     mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
     select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
+
+  # Data needs to be rates per 10,000
+  # Using the population data from CLA rates data
+  populations <- suppressWarnings(read_cla_rate_data()) %>%
+    filter(time_period == max(time_period)) %>%
+    select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
+    distinct()
+
+  data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
+  data4 <- data3 %>%
+    mutate(`rate_per_10000` = (data3$Number / as.numeric(data3$population_estimate)) * 10000)
+
+  data4$rate_per_10000 <- round(data4$rate_per_10000, digits = 0)
+
+  data5 <- data4 %>%
+    mutate(rate_per_10000 = case_when(
+      value == "c" ~ -100,
+      value == "low" ~ -200,
+      value == "k" ~ -200,
+      value == "u" ~ -250,
+      value == "x" ~ -300,
+      value == "z" ~ -400,
+      TRUE ~ as.numeric(rate_per_10000)
+    ))
+
+  return(data5)
 }
 
 
@@ -1165,7 +1237,29 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
+    filter(new_la_code != "E10000009") %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+
+  data3 <- data2 %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    )) %>%
+    mutate(percentage_num = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    ))
+  return(data3)
 }
 
 

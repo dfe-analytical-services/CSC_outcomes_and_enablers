@@ -96,7 +96,7 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% CLA on 31 March placed more than 20 miles from home",
-                    value = p("Headline stats 2")
+                    value = htmlOutput("placement_distance_txt")
                   )
                 ),
                 column(
@@ -134,6 +134,7 @@ outcome4_tab <- function() {
                   training that supports them and allows them to achieve their aspirations and goals.")
               ),
               accordion(
+                ## Placement changes during year -----------
                 accordion_panel(
                   "Percentage of CLA with 3 or more placements during the year",
                   gov_row(
@@ -187,19 +188,77 @@ outcome4_tab <- function() {
                     uiOutput("SN_placement_changes"),
                   )
                 ),
+                ## Distance of placements -----
                 accordion_panel(
                   "Distance of placements from home",
-                  p("contents for panel 2"),
+                  # p("contents for panel 2"),
                   gov_row(
-                    h2("Time Series")
+                    h2("Placements more than 20 miles from home"),
+                    plotlyOutput("placement_distance_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_dist",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_dist_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_dist_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("Placements more than 20 miles from home by region"),
+                    plotlyOutput("placement_dist_region_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_dist_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_dist_region_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_dist_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("Placements more than 20 miles from home by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                    radioGroupButtons(
+                      "placement_dist_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    uiOutput("SN_placement_distance"),
                   )
                 ),
+                ## Type of placement ----------------
                 accordion_panel(
                   "Percentage of children living in foster, residential care, or secure children’s homes",
                   gov_row(
@@ -291,42 +350,100 @@ outcome4_tab <- function() {
             tabPanel(
               "Wellbeing of child",
               fluidRow(
-                p("testing"),
+                # p("testing"),
                 br()
               ),
               fluidRow(
                 column(
                   width = 6,
                   value_box(
-                    title = "Headline stat 1",
-                    value = p("Headline stats 1")
+                    title = "Average SDQ score",
+                    value = htmlOutput("wellbeing_score_stat")
                   )
                 ),
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Headline stat 2",
-                    value = p("Headline stats 2")
-                  )
-                ),
+                # column(
+                #   width = 6,
+                #   value_box(
+                #     title = "Headline stat 2",
+                #     value = p("Headline stats 2")
+                #   )
+                # ),
                 br(),
               ),
               fluidRow(
-                br()
+                br(),
+                p("Understanding the emotional and behavioural need of CLA is important to ensure that they are receiving the care and support they need to thrive. The SDQ score uses a series of carer-reported measures to calculate an overall score to assess the emotional wellbeing of CLA."),
               ),
               accordion(
                 accordion_panel(
                   "Strengths and difficulties questionnaire (SDQ score)",
-                  p("contents for panel 1"),
-                  p("Understanding the emotional and behavioural need of CLA is important to ensure that they are receiving the care and support they need to thrive. The SDQ score uses a series of carer-reported measures to calculate an overall score to assess the emotional wellbeing of CLA."),
+                  # p("contents for panel 1"),
                   gov_row(
-                    h2("Time Series")
+                    h2("Strengths and difficulties questionnaire (SDQ score)"),
+                    insert_text(
+                      inputId = "sdq_definition",
+                      text = paste(
+                        tags$b("Strengths and Difficulties Questionnaire (SDQ) scores"), " -  The SDQ is a behavioural screening questionnaire. Its primary purpose is to give social workers and health professionals information about a child’s wellbeing. A score of 0 to 13 is considered normal, 14 to 16 is borderline, and 17 to 40 is a cause for concern."
+                      )
+                    ),
+                    plotlyOutput("sdq_time_series_plot"),
+                    br(),
+                    details(
+                      inputId = "sdq_ts_tbl",
+                      label = "View chart as table",
+                      help_text = reactableOutput("sqd_ts_table")
+                    ),
+                    details(
+                      inputId = "ts_additional_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Average SDQ scores have been rounded to the nearest one decimal place."),
+                          tags$li("An SDQ score is required of all children aged 4-16 on the date of last assessment. Date of assessment is not collected so data in this table is restricted to children aged 5 to 16 years."),
+                          tags$li("A higher score indicates more emotional difficulties. 0-13 is considered normal, 14-16 is borderline cause for concern and 17-40 is cause for concern."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                        )
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By Region")
+                    h2("SDQ score by Region"),
+                    br(),
+                    plotlyOutput("SDQ_region_plot"),
+                    br(),
+                    details(
+                      inputId = "sdq_region_tbl",
+                      label = "View chart as table",
+                      help_text = reactableOutput("SDQ_region_tbl")
+                    ),
+                    details(
+                      inputId = "sdq_reg_info",
+                      label = "Additional information: ",
+                      help_text = p(
+                        tags$li("Average SDQ scores have been rounded to the nearest one decimal place."),
+                        tags$li("An SDQ score is required of all children aged 4-16 on the date of last assessment. Date of assessment is not collected so data in this table is restricted to children aged 5 to 16 years."),
+                        tags$li("A higher score indicates more emotional difficulties. 0-13 is considered normal, 14-16 is borderline cause for concern and 17-40 is cause for concern."),
+                        tags$br(),
+                        "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                        tags$br(),
+                        "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("By local authority")
+                    h2("SDQ score by local authority"),
+                    br(),
+                    radioGroupButtons(
+                      "sdq_score_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      selected = "All local authorities"
+                    ),
+                    # plotlyOutput("sdq_by_la_plot"),
+                    uiOutput("SN_wellbeing_SDQ")
                   )
                 ),
                 open = FALSE
