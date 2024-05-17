@@ -68,22 +68,6 @@ outcome2_tab <- function() {
           )
         )
       ),
-      # gov_row(
-      #   div(
-      #     class = "input_box",
-      #     style = "min-height:100%; height = 100%; overflow-y: visible",
-      #     gov_row(
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       ),
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       )
-      #     )
-      #   )
-      # ),
       br(),
       gov_row(
         br(),
@@ -139,7 +123,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased")
+                        reactableOutput("table_sgo_ceased")
                       )
                     ),
                     details(
@@ -171,7 +155,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased_reg")
+                        reactableOutput("table_sgo_ceased_reg")
                       )
                     )
                   ),

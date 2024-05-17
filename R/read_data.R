@@ -968,12 +968,12 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(number_num = case_when(
-      number == "z" ~ NA,
-      number == "x" ~ NA,
-      number == "c" ~ NA,
-      TRUE ~ as.numeric(number)
-    )) %>%
+    # mutate(number_num = case_when(
+    #   number == "z" ~ NA,
+    #   number == "x" ~ NA,
+    #   number == "c" ~ NA,
+    #   TRUE ~ as.numeric(number)
+    # )) %>%
     mutate(`Ceased (%)` = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -982,17 +982,26 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       percentage == "x" ~ -300,
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
+    )) %>%
+    mutate(`Number ceased` = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
     ))
 
   totals <- ceased_cla_data %>%
     filter(characteristic == "Total") %>%
-    rename("Total_num" = "number_num") %>%
+    rename("Total_num" = "Number ceased") %>%
     mutate("Total" = number) %>%
     select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
 
   joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
   joined <- joined %>%
-    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "Total_num", "Total", "percentage", "Ceased (%)")
+    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
   # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
   # For charts, char values do not work so use column "Ceased (%)"
   return(joined)

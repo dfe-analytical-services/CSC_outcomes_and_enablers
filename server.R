@@ -3366,24 +3366,6 @@ server <- function(input, output, session) {
     }
   })
 
-  # Headline stat1 -----
-  # output$SGO_headline_txt <- renderText({
-  #   numerator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                           & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                           & cla_group == "Reason episode ceased"
-  #                                           & characteristic == "Special guardianship orders") %>% select(number)
-  #
-  #   denominator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                             & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                             & cla_group == "Reason episode ceased"
-  #                                             & characteristic == "Total") %>% select(number)
-  #   percent <- (numerator/denominator)*100
-  #
-  #   stat <- round(percent, digits = 1)
-  #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
-  # })
-  #
-
   ## Headline stats -----
   output$SGO_headline_txt <- renderText({
     if (input$geographic_breakdown_o2 == "") {
@@ -3463,7 +3445,7 @@ server <- function(input, output, session) {
   })
 
 
-  output$table_sgo_ceased <- renderDataTable({
+  output$table_sgo_ceased <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3473,14 +3455,14 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       filtered_data <- ceased_cla_data %>%
         filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3490,7 +3472,7 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3500,15 +3482,20 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
     }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Number", "Total ceased", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
   ##
@@ -3530,21 +3517,28 @@ server <- function(input, output, session) {
   })
 
   # SGO by region table
-  output$table_sgo_ceased_reg <- renderDataTable({
+  output$table_sgo_ceased_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    datatable(
-      ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage)),
-      colnames = c("Time period", "Region", "Reason ceased", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- ceased_cla_data %>%
+      filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
+      filter(characteristic == "Special guardianship orders") %>%
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Reason ceased" = "characteristic", "Total ceased" = "Total_num")
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3585,31 +3579,26 @@ server <- function(input, output, session) {
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, percentage) %>%
-      mutate(percentage = case_when(
-        percentage == "z" ~ -400,
-        percentage == "c" ~ -100,
-        percentage == "k" ~ -200,
-        percentage == "x" ~ -300,
-        TRUE ~ as.numeric(percentage)
-      )) %>%
-      arrange(desc(percentage)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Ceased (%)` = `percentage`)
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
       data2,
       columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
         `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
@@ -7164,26 +7153,15 @@ server <- function(input, output, session) {
     )
   })
 
-  # output$SN_sgo_tbl <- renderDataTable({
-  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
-  #
-  #   datatable(
-  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
-  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-  #     options = list(
-  #       scrollx = FALSE,
-  #       paging = FALSE
-  #     )
-  #   )
-  # })
-
   output$SN_sgo_tbl <- renderReactable({
-    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    filtered_data <- ceased_cla_data %>%
+      filter(characteristic == "Special guardianship orders") %>%
+      rename(`Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, yvalue = "percentage"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, selectedcolumn = c("Reason ceased", "Number ceased", "Total ceased"), yvalue = "Ceased (%)"),
       columns = list(
-        Percentage = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
