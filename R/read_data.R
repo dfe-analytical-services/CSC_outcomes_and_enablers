@@ -732,6 +732,15 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
       pt_sess_unauthorised == "x" ~ -300,
       pt_sess_unauthorised == "z" ~ -400,
       TRUE ~ as.numeric(pt_sess_unauthorised)
+    )) %>%
+    mutate(`Total pupils` = case_when(
+      t_pupils == "c" ~ -100,
+      t_pupils == "low" ~ -200,
+      t_pupils == "k" ~ -200,
+      t_pupils == "u" ~ -250,
+      t_pupils == "x" ~ -300,
+      t_pupils == "z" ~ -400,
+      TRUE ~ as.numeric(t_pupils)
     ))
 
 
