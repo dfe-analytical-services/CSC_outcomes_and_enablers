@@ -3216,7 +3216,6 @@ server <- function(input, output, session) {
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
-
     ggplotly(
       by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", 100) %>%
         config(displayModeBar = F),
@@ -3226,27 +3225,22 @@ server <- function(input, output, session) {
   })
 
   # KS4 regional table
-  output$table_ks4_reg <- renderDataTable({
-    datatable(
-      outcomes_ks4 %>% filter(
-        geographic_level == "Regional", time_period == max(outcomes_ks4$time_period),
-        social_care_group %in% input$attainment_extra_breakdown
-      ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_pupils, avg_att8
-        ) %>%
-        arrange(desc(`avg_att8`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "Total number of pupils", "Average Attainment 8 score"
+  output$table_ks4_reg <- renderReactable({
+    data <- outcomes_ks4 %>%
+      filter(geographic_level == "Regional", time_period == max(outcomes_ks4$time_period), social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+      arrange(desc(`Average Attainment 8`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3312,17 +3306,6 @@ server <- function(input, output, session) {
       defaultPageSize = 15,
       searchable = TRUE,
     )
-    # datatable(
-    #   data,
-    #   colnames = c(
-    #     "Time period", "Local authority", "Social Care Group",
-    #     "Total number of pupils", "Average attainment 8 score"
-    #   ),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
   })
 
 
