@@ -72,7 +72,7 @@ outcome4_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("Confirmation Sentence"),
+        p(htmlOutput("outcome4_choice_text1"), htmlOutput("outcome4_choice_text2")),
         br(),
         div(
           tabsetPanel(
@@ -137,6 +137,7 @@ outcome4_tab <- function() {
                 ## Placement changes during year -----------
                 accordion_panel(
                   "Percentage of CLA with 3 or more placements during the year",
+                  h2("Percentage of CLA with 3 or more placements during the year"),
                   gov_row(
                     plotlyOutput("placement_changes_ts_plot"),
                     br(),
@@ -261,6 +262,7 @@ outcome4_tab <- function() {
                 ## Type of placement ----------------
                 accordion_panel(
                   "Percentage of children living in foster, residential care, or secure children’s homes",
+                  h2("Percentage of children living in foster, residential care, or secure children’s homes"),
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
                     p("This indicator contains breakdowns of data for the following assessment factors: ", paste(unique(placement_type_filter %>% str_sort()), collapse = ", ")),

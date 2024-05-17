@@ -106,6 +106,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
     )
   )) +
     geom_path(group = 1) +
+    geom_point() +
     ylab(yaxis_title) +
     xlab("Time period") +
     theme_classic() +

@@ -118,6 +118,7 @@ outcome3_tab <- function() {
               accordion(
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
+                  h2("Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
@@ -177,6 +178,7 @@ outcome3_tab <- function() {
                 ),
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                  h2("Percentage of Child Protection Plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
