@@ -1034,16 +1034,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                     htmlOutput("outcome1_time_period_text_4"),
                     br(),
-                    # plotlyOutput("plot_KS4_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_KS4_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_KS4_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "ks4_attainment_stats_toggle",
                       label = NULL,

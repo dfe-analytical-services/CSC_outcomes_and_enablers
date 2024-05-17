@@ -3267,7 +3267,7 @@ server <- function(input, output, session) {
   })
 
   # KS4 by LA table
-  output$table_KS4_la <- renderDataTable({
+  output$table_KS4_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -3289,34 +3289,40 @@ server <- function(input, output, session) {
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_pupils, avg_att8
-        ) %>%
-        arrange(desc(avg_att8))
+        select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+        arrange(desc(`Average Attainment 8`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks4 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(
-          time_period, geo_breakdown,
-          social_care_group, t_pupils, avg_att8
-        ) %>%
-        arrange(desc(avg_att8))
+        select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+        arrange(desc(`Average Attainment 8`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group",
-        "Total number of pupils", "Average attainment 8 score"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Social Care Group",
+    #     "Total number of pupils", "Average attainment 8 score"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -7029,7 +7035,7 @@ server <- function(input, output, session) {
           inputId = "tbl_KS4_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_KS4_la")
+            reactableOutput("table_KS4_la")
           )
         ),
       )
@@ -7079,15 +7085,17 @@ server <- function(input, output, session) {
   output$SN_ks4_attain_tbl <- renderReactable({
     data <- outcomes_ks4 %>%
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`) %>%
-      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      arrange(desc(`Average Attainment 8`)) %>%
+      rename(`Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_pupils"), yvalue = "Average Attainment 8"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("Social care group", "Total number of pupils"), yvalue = "Average attainment 8 score"),
       columns = list(
-        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_pupils` = colDef(name = "Total number of pupils"), `social_care_group` = colDef(name = "Social care group")
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average Attainment 8 Score` = colDef(cell = cellfunc)
       ),
-      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      defaultPageSize = 15,
       searchable = TRUE,
     )
   })

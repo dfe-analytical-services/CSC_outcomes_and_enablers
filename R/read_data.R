@@ -824,6 +824,15 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
       avg_att8 == "x" ~ -300,
       avg_att8 == "z" ~ -400,
       TRUE ~ as.numeric(avg_att8)
+    )) %>%
+    mutate(`Total pupils` = case_when(
+      t_pupils == "c" ~ -100,
+      t_pupils == "low" ~ -200,
+      t_pupils == "k" ~ -200,
+      t_pupils == "u" ~ -250,
+      t_pupils == "x" ~ -300,
+      t_pupils == "z" ~ -400,
+      TRUE ~ as.numeric(t_pupils)
     ))
 
 
