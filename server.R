@@ -1477,20 +1477,19 @@ server <- function(input, output, session) {
 
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+        select(time_period, geo_breakdown, Number, `Rate Per 10000`) %>%
         arrange(desc(`Rate Per 10000`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
         select(
-          time_period, geo_breakdown,
-          number, `Rate Per 10000`
+          time_period, geo_breakdown, Number, `Rate Per 10000`
         ) %>%
         arrange(desc(`Rate Per 10000`))
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Number of children starting to be looked after` = `number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Number of children starting to be looked after` = `Number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
 
     reactable(
       data2,

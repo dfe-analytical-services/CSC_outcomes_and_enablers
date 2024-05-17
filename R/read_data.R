@@ -467,15 +467,20 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       rate_per_10000 == "z" ~ -400,
       TRUE ~ as.numeric(rate_per_10000)
     )) %>%
-    # mutate(rate_per_10000 = case_when(
-    #   rate_per_10000 == "z" ~ NA,
-    #   rate_per_10000 == "x" ~ NA,
-    #   TRUE ~ as.numeric(rate_per_10000)
+    mutate(Number = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    )) %>%
     # )) %>%
     # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, rate_per_10000, `Rate Per 10000`) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
     distinct()
 
 
