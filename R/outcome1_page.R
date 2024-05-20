@@ -128,7 +128,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate")
+                        reactableOutput("table_cla_rate")
                       )
                     ),
                     details(
@@ -160,7 +160,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_reg")
+                        reactableOutput("table_cla_rate_reg")
                       )
                     )
                   ),
@@ -168,17 +168,6 @@ outcome1_tab <- function() {
                     h2("Rate of children starting to be looked after by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cla_rate_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cla_rate_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cla_rate_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cla_stats_toggle",
                       label = NULL,
@@ -188,6 +177,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cla"),
                   )
                 ),
+                ## CLA UASC -------------
                 accordion_panel(
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
@@ -205,7 +195,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_uasc")
+                        reactableOutput("table_uasc")
                       )
                     ),
                     details(
@@ -241,7 +231,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_uasc_reg")
+                        reactableOutput("table_uasc_reg")
                       )
                     )
                   ),
@@ -269,6 +259,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_uasc"),
                   )
                 ),
+                ## CLA on 31 March ---------
                 accordion_panel(
                   "Rate of children looked after on 31 March",
                   gov_row(
@@ -286,7 +277,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_march",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_march")
+                        reactableOutput("table_cla_rate_march")
                       )
                     ),
                     details(
@@ -317,7 +308,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_march_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_march_reg")
+                        reactableOutput("table_cla_march_reg")
                       )
                     )
                   ),
@@ -348,6 +339,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # Domain 2 --------------
             tabPanel(
               "Access to support and getting help",
               fluidRow(
@@ -371,6 +363,7 @@ outcome1_tab <- function() {
                 ),
               ),
               accordion(
+                ## CIN ------------------
                 accordion_panel(
                   "Rate of Child In Need (CIN)",
                   gov_row(
@@ -391,7 +384,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rate")
+                        reactableOutput("table_cin_rate")
                       )
                     ),
                     # expandable for the additional info links
@@ -425,7 +418,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rates_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rates_reg")
+                        reactableOutput("table_cin_rates_reg")
                       )
                     )
                   ),
@@ -433,17 +426,6 @@ outcome1_tab <- function() {
                     h2("CIN rates by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cin_rates_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cin_rates_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cin_rates_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cin_stats_toggle",
                       label = NULL,
@@ -453,6 +435,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cin"),
                   )
                 ),
+                ## Repeat referrals --------------
                 accordion_panel(
                   "Repeat referrals (within 12 months)",
                   gov_row(
@@ -475,7 +458,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_referral")
+                        reactableOutput("table_cin_referral")
                       )
                     ),
                     details(
@@ -506,7 +489,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_referral_reg")
+                        reactableOutput("table_cin_referral_reg")
                       )
                     )
                   ),
@@ -514,17 +497,6 @@ outcome1_tab <- function() {
                     h2("Re-referrals by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
-                    #  br(),
-                    #  plotlyOutput("plot_cin_referral_la"),
-                    #  br(),
-                    # br(),
-                    # details(
-                    #  inputId = "tbl_cin_referral_la",
-                    #  label = "View chart as a table",
-                    #  help_text = (
-                    #  dataTableOutput("table_cin_referral_la")
-                    #  )
-                    #   ),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
                       label = NULL,
@@ -648,6 +620,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              # absence -----
               accordion(
                 accordion_panel(
                   "School attendance",
@@ -668,7 +641,7 @@ outcome1_tab <- function() {
                       inputId = "table_absence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_absence_rate")
+                        reactableOutput("table_absence_rate")
                       )
                     ),
                     details(
@@ -709,7 +682,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_absence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_absence_reg")
+                        reactableOutput("table_absence_reg")
                       )
                     )
                   ),
@@ -719,16 +692,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     htmlOutput("outcome1_time_period_text"),
                     br(),
-                    # plotlyOutput("plot_absence_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_absence_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_absence_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "absence_stats_toggle",
                       label = NULL,
@@ -738,6 +701,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_absence"),
                   ),
                 ),
+                ## Persistent absence ----
                 accordion_panel(
                   "Persistent absence",
                   gov_row(
@@ -756,7 +720,7 @@ outcome1_tab <- function() {
                       inputId = "table_persistence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_rate")
+                        reactableOutput("table_persistent_rate")
                       )
                     ),
                     details(
@@ -796,7 +760,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_persistence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_reg")
+                        reactableOutput("table_persistent_reg")
                       )
                     )
                   ),
@@ -828,6 +792,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # attainment domain ----
             tabPanel(
               "Educational attainment",
               br(),
@@ -913,6 +878,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              ## ks2 -----
               accordion(
                 accordion_panel(
                   "Key Stage 2 (KS2)",
@@ -934,7 +900,7 @@ outcome1_tab <- function() {
                       inputId = "table_ks2",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_expected")
+                        reactableOutput("table_ks2_expected")
                       )
                     ),
                     details(
@@ -970,7 +936,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks2_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_reg")
+                        reactableOutput("table_ks2_reg")
                       )
                     )
                   ),
@@ -1058,7 +1024,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks4_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks4_reg")
+                        reactableOutput("table_ks4_reg")
                       )
                     )
                   ),
@@ -1068,16 +1034,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                     htmlOutput("outcome1_time_period_text_4"),
                     br(),
-                    # plotlyOutput("plot_KS4_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_KS4_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_KS4_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "ks4_attainment_stats_toggle",
                       label = NULL,

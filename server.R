@@ -90,51 +90,52 @@ server <- function(input, output, session) {
   # Time period dropdown also does not need to appear here - does not need to be reactive
 
   # Simple server stuff goes here ------------------------------------------------------------
-  reactiveRevBal <- reactive({
-    dfRevBal %>% filter(
-      area_name == input$selectArea | area_name == "England",
-      school_phase == input$selectPhase
-    )
-  })
+  # reactiveRevBal <- reactive({
+  #   dfRevBal %>% filter(
+  #     area_name == input$selectArea | area_name == "England",
+  #     school_phase == input$selectPhase
+  #   )
+  # })
 
   # Define server logic required to draw a histogram
-  output$lineRevBal <- renderPlotly({
-    ggplotly(createAvgRevTimeSeries(reactiveRevBal(), input$selectArea)) %>%
-      config(displayModeBar = F) %>%
-      layout(legend = list(orientation = "h", x = 0, y = -0.2))
-  })
+  # output$lineRevBal <- renderPlotly({
+  #   ggplotly(createAvgRevTimeSeries(reactiveRevBal(), input$selectArea)) %>%
+  #     config(displayModeBar = F) %>%
+  #     layout(legend = list(orientation = "h", x = 0, y = -0.2))
+  # })
+  #
+  # reactiveBenchmark <- reactive({
+  #   dfRevBal %>%
+  #     filter(
+  #       area_name %in% c(input$selectArea, input$selectBenchLAs),
+  #       school_phase == input$selectPhase,
+  #       year == max(year)
+  #     )
+  # })
+  #
+  # output$colBenchmark <- renderPlotly({
+  #   ggplotly(
+  #     plotAvgRevBenchmark(reactiveBenchmark()) %>%
+  #       config(displayModeBar = F),
+  #     height = 420
+  #   )
+  # })
+  #
+  # output$tabBenchmark <- renderDataTable({
+  #   datatable(
+  #     reactiveBenchmark() %>%
+  #       select(
+  #         Area = area_name,
+  #         `Average Revenue Balance (£)` = average_revenue_balance,
+  #         `Total Revenue Balance (£m)` = total_revenue_balance_million
+  #       ),
+  #     options = list(
+  #       scrollX = TRUE,
+  #       paging = FALSE
+  #     )
+  #   )
+  # })
 
-  reactiveBenchmark <- reactive({
-    dfRevBal %>%
-      filter(
-        area_name %in% c(input$selectArea, input$selectBenchLAs),
-        school_phase == input$selectPhase,
-        year == max(year)
-      )
-  })
-
-  output$colBenchmark <- renderPlotly({
-    ggplotly(
-      plotAvgRevBenchmark(reactiveBenchmark()) %>%
-        config(displayModeBar = F),
-      height = 420
-    )
-  })
-
-  output$tabBenchmark <- renderDataTable({
-    datatable(
-      reactiveBenchmark() %>%
-        select(
-          Area = area_name,
-          `Average Revenue Balance (£)` = average_revenue_balance,
-          `Total Revenue Balance (£m)` = total_revenue_balance_million
-        ),
-      options = list(
-        scrollX = TRUE,
-        paging = FALSE
-      )
-    )
-  })
   # Dropdown Validation -----
   iv <- InputValidator$new()
   # outcome1
@@ -1352,7 +1353,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate TABLE
-  output$table_cla_rate <- renderDataTable({
+  output$table_cla_rate <- renderReactable({ # renderDataTable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1388,15 +1389,19 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(population_count == "Children starting to be looked after each year") %>%
+      select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1415,22 +1420,25 @@ server <- function(input, output, session) {
   })
 
   # CLA rate regional table
-  output$table_cla_rate_reg <- renderDataTable({
+  output$table_cla_rate_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>% select(
-        time_period, geo_breakdown,
-        number, "Rate Per 10000"
-      ) %>%
-        arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Region", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- cla_rates %>%
+      filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
+      select(time_period, geo_breakdown, number, "Rate Per 10000") %>%
+      arrange(desc(`Rate Per 10000`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Number of children starting to be looked after` = `number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1449,7 +1457,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate La table
-  output$table_cla_rate_la <- renderDataTable({
+  output$table_cla_rate_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1469,25 +1477,28 @@ server <- function(input, output, session) {
 
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+        select(time_period, geo_breakdown, Number, `Rate Per 10000`) %>%
         arrange(desc(`Rate Per 10000`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
         select(
-          time_period, geo_breakdown,
-          number, `Rate Per 10000`
+          time_period, geo_breakdown, Number, `Rate Per 10000`
         ) %>%
         arrange(desc(`Rate Per 10000`))
     }
 
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Number of children starting to be looked after", "Rate of children starting to be looked after, per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Number of children starting to be looked after` = `Number`, `Rate of children starting to be looked after, per 10,000` = `Rate Per 10000`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1521,29 +1532,34 @@ server <- function(input, output, session) {
 
 
   # cin rate table by region
-  output$table_cin_rates_reg <- renderDataTable({
+  output$table_cin_rates_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cin_rates %>% filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>% select(
-        time_period, geo_breakdown,
-        At31_episodes, At31_episodes_rate
+    data <- cin_rates %>%
+      filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>%
+      select(
+        time_period, geo_breakdown, At31_episodes, CIN_rate
       ) %>%
-        arrange(desc(At31_episodes_rate)),
-      colnames = c("Time period", "Region", "CIN number at 31 March", "CIN rate per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      arrange(desc(CIN_rate)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rate per 10,000` = `CIN_rate`)
+
+    reactable(
+      data,
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
 
 
   # cin rate table by LA
-  output$table_cin_rates_la <- renderDataTable({
+  output$table_cin_rates_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1563,25 +1579,26 @@ server <- function(input, output, session) {
 
       data <- cin_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate) %>%
-        arrange(desc(At31_episodes_rate))
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        arrange(desc(CIN_rate)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cin_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cin_rates$time_period)) %>%
         select(
-          time_period, geo_breakdown,
-          At31_episodes, At31_episodes_rate
+          time_period, geo_breakdown, At31_episodes, CIN_rate
         ) %>%
-        arrange(desc(At31_episodes_rate))
+        arrange(desc(CIN_rate)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     }
-
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "CIN number at 31 March", "CIN rates per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1652,7 +1669,7 @@ server <- function(input, output, session) {
   })
 
   # CIN rate table
-  output$table_cin_rate <- renderDataTable({
+  output$table_cin_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1661,13 +1678,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_rates %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1676,7 +1695,8 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1685,20 +1705,20 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_rates %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate)
+        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
     }
 
-    datatable(
-      filtered_data %>%
-        select(time_period, geo_breakdown, At31_episodes, At31_episodes_rate),
-      colnames = c("Time period", "Geographical breakdown", "CIN number at 31 March", "CIN rate per 10,000"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    reactable(
+      filtered_data,
+      columns = list(
+        `CIN number at 31 March` = colDef(cell = cellfunc),
+        `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
-
 
   ## CIN referral headline -----
   output$cin_referral_headline_txt <- renderText({
@@ -1758,7 +1778,7 @@ server <- function(input, output, session) {
   })
 
   # CIN referral table
-  output$table_cin_referral <- renderDataTable({
+  output$table_cin_referral <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1767,13 +1787,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1782,7 +1804,8 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_referrals %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -1791,45 +1814,62 @@ server <- function(input, output, session) {
 
       filtered_data <- cin_referrals %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent)
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     }
 
-    datatable(
-      filtered_data %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, Re_referrals_percent),
-      colnames = c("Time period", "Geographical breakdown", "Referrals in the year", "Re-referrals within 12 months of a previous referral", "Re-referrals (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    reactable(
+      filtered_data,
+      columns = list(
+        `Referrals in the year` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
   # cin referral table by region
-  output$table_cin_referral_reg <- renderDataTable({
+  output$table_cin_referral_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cin_referrals %>% filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>% select(
-        time_period, geo_breakdown,
-        Referrals, Re_referrals, Re_referrals_percent
+    data <- cin_referrals %>%
+      filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>%
+      select(
+        time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`
       ) %>%
-        arrange(desc(Re_referrals_percent)),
-      colnames = c(
-        "Time period", "Region", "Referrals in the year",
-        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      arrange(desc(`Re-referrals (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Referrals in the year` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   ,
+    #   colnames = c(
+    #     "Time period", "Region", "Referrals in the year",
+    #     "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
   # cin referral table by LA
-  output$table_cin_referral_la <- renderDataTable({
+  output$table_cin_referral_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -1849,32 +1889,39 @@ server <- function(input, output, session) {
 
       data <- cin_referrals %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          Referrals, Re_referrals, Re_referrals_percent
-        ) %>%
-        arrange(desc(Re_referrals_percent))
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        arrange(desc(`Re-referrals (%)`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cin_referrals %>%
         filter(geographic_level == "Local authority", time_period == max(cin_referrals$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          Referrals, Re_referrals, Re_referrals_percent
-        ) %>%
-        arrange(desc(Re_referrals_percent))
+        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
+        arrange(desc(`Re-referrals (%)`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c(
-        "Time period", "Local authority", "Referrals in the year",
-        "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+      columns = list(
+        `Referrals in the year` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Referrals in the year",
+    #     "Re-referrals within 12 months of a previous referral", "Re-referrals within 12 months (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -1905,6 +1952,9 @@ server <- function(input, output, session) {
       tooltip = "text"
     )
   })
+
+
+
   ## UASC ------
   # UASC chart
   output$plot_uasc <- plotly::renderPlotly({
@@ -1921,26 +1971,29 @@ server <- function(input, output, session) {
   })
 
   # UASC table
-  output$table_uasc <- renderDataTable({
+  output$table_uasc <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      combined_cla_data %>%
-        filter(
-          geo_breakdown %in% input$geographic_breakdown_o1,
-          characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
-          population_count == "Children starting to be looked after each year"
-        ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
-        arrange(desc(time_period)),
-      colnames = c("Time period", "Geographical breakdown", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE,
-        target = "column"
-      )
+    data <- combined_cla_data %>%
+      filter(
+        geo_breakdown %in% input$geographic_breakdown_o1,
+        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        population_count == "Children starting to be looked after each year"
+      ) %>%
+      select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+      arrange(desc(time_period)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1959,23 +2012,28 @@ server <- function(input, output, session) {
   })
 
   # UASC table by region
-  output$table_uasc_reg <- renderDataTable({
+  output$table_uasc_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      combined_cla_data %>% filter(
+    data <- combined_cla_data %>%
+      filter(
         geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
         population_count == "Children starting to be looked after each year",
         time_period == max(time_period)
       ) %>%
-        select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`),
-      colnames = c("Time period", "Region", "UASC status", "Number of children starting to be looked", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -1994,7 +2052,7 @@ server <- function(input, output, session) {
   })
 
   # UASC table by LA
-  output$table_uasc_la <- renderDataTable({
+  output$table_uasc_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2018,7 +2076,8 @@ server <- function(input, output, session) {
           population_count == "Children starting to be looked after each year",
         ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
-        arrange(desc(`Placement Rate Per 10000`))
+        arrange(desc(`Placement Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- combined_cla_data %>%
         filter(
@@ -2026,16 +2085,18 @@ server <- function(input, output, session) {
           population_count == "Children starting to be looked after each year",
         ) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
-        arrange(desc(`Placement Rate Per 10000`))
+        arrange(desc(`Placement Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "UASC status", "Number of children starting to be looked after", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2091,7 +2152,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate march TABLE
-  output$table_cla_rate_march <- renderDataTable({
+  output$table_cla_rate_march <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2127,15 +2188,20 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, number, `Rate Per 10000`, population_count)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(population_count == "Children looked after at 31 March each year") %>%
-        select(time_period, geo_breakdown, number, `Rate Per 10000`),
-      colnames = c("Time period", "Geographical breakdown", "Number of children looked after on 31 March", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(population_count == "Children looked after at 31 March each year") %>%
+      select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2154,22 +2220,25 @@ server <- function(input, output, session) {
   })
 
   # CLA rate March regional table
-  output$table_cla_march_reg <- renderDataTable({
+  output$table_cla_march_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    datatable(
-      cla_rates %>% filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>% select(
-        time_period, geo_breakdown,
-        number, `Rate Per 10000`
-      ) %>%
-        arrange(desc(`Rate Per 10000`)),
-      colnames = c("Time period", "Region", "Number of children looked after on 31 March", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- cla_rates %>%
+      filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
+      select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2188,7 +2257,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate March La table
-  output$table_cla_march_la <- renderDataTable({
+  output$table_cla_march_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2209,7 +2278,8 @@ server <- function(input, output, session) {
       data <- cla_rates %>%
         filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
-        arrange(desc(`Rate Per 10000`))
+        arrange(desc(`Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
         filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
@@ -2217,16 +2287,18 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           number, `Rate Per 10000`
         ) %>%
-        arrange(desc(`Rate Per 10000`))
+        arrange(desc(`Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Number of children looked after on 31 March", "Rate per 10,000 children"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2269,40 +2341,6 @@ server <- function(input, output, session) {
     } else {
       stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
         %>% select(pt_overall), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # persistent absentees headline ----
-  # CIN
-  output$persistent_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CPPO
-  output$persistent_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CLA
-  output$persistent_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
@@ -2359,18 +2397,18 @@ server <- function(input, output, session) {
 
 
   # absence rate TABLE
-  output$table_absence_rate <- renderDataTable({
+  output$table_absence_rate <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `pt_overall`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `pt_overall`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2379,7 +2417,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `pt_overall`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2388,19 +2426,23 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `pt_overall`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_overall`),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Overall absence (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    filtered_data2 <- filtered_data %>%
+      filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `pt_overall`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School Type` = `school_type`, `Total number of pupils` = `Total pupils`, `Overall absence (%)` = `pt_overall`)
+
+    reactable(
+      filtered_data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Overall absence (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2419,27 +2461,22 @@ server <- function(input, output, session) {
   })
 
   # Absence rate regional table
-  output$table_absence_reg <- renderDataTable({
-    datatable(
-      outcomes_absence %>% filter(
-        geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
-        school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
-      ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_overall
-        ) %>%
-        arrange(desc(`pt_overall`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "School type", "Total number of pupils", "Overall absence (%)"
+  output$table_absence_reg <- renderReactable({
+    data <- outcomes_absence %>%
+      filter(geographic_level == "Regional" & time_period == max(outcomes_absence$time_period) & school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`) %>%
+      arrange(desc(`Overall absence (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Overall absence (%)` = `Overall absence (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Overall absence (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2461,7 +2498,7 @@ server <- function(input, output, session) {
   })
 
   # Absence by LA table
-  output$table_absence_la <- renderDataTable({
+  output$table_absence_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2484,33 +2521,66 @@ server <- function(input, output, session) {
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_overall
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`
         ) %>%
-        arrange(desc(pt_overall))
+        arrange(desc(`Overall absence (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown,
-          social_care_group, school_type, t_pupils, pt_overall
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`
         ) %>%
-        arrange(desc(pt_overall))
+        arrange(desc(`Overall absence (%)`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group", "School type",
-        "Total number of pupils", "Overall absence (%)"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Overall absence (%)` = `Overall absence (%)`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Overall absence (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+  })
+
+  # persistent absentees headline ----
+  # CIN
+  output$persistent_CIN_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # CPPO
+  output$persistent_CPP_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # CLA
+  output$persistent_CLA_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
 
@@ -2566,18 +2636,18 @@ server <- function(input, output, session) {
 
 
   # persistent rate TABLE
-  output$table_persistent_rate <- renderDataTable({
+  output$table_persistent_rate <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2586,7 +2656,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2595,19 +2665,23 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_absence %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`)
+        select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, school_type, t_pupils, `pt_pupils_pa_10_exact`),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "School type", "Total number of pupils", "Persistence absentees (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2628,27 +2702,25 @@ server <- function(input, output, session) {
   })
 
   # Persistence Absence regional table
-  output$table_persistent_reg <- renderDataTable({
-    datatable(
-      outcomes_absence %>% filter(
+  output$table_persistent_reg <- renderReactable({
+    data <- outcomes_absence %>%
+      filter(
         geographic_level == "Regional", time_period == max(outcomes_absence$time_period),
         school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown
       ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_pupils_pa_10_exact
-        ) %>%
-        arrange(desc(`pt_pupils_pa_10_exact`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "School type", "Total number of pupils", "Persistent absentees (%)"
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
+      arrange(desc(`Persistent absentees (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2671,7 +2743,7 @@ server <- function(input, output, session) {
   })
 
   # Persistent Absence by LA table
-  output$table_persistent_absence_la <- renderDataTable({
+  output$table_persistent_absence_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2694,32 +2766,31 @@ server <- function(input, output, session) {
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown, social_care_group, school_type,
-          t_pupils, pt_pupils_pa_10_exact
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(pt_pupils_pa_10_exact))
+        arrange(desc(`Persistent absentees (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
-          time_period, geo_breakdown,
-          social_care_group, school_type, t_pupils, pt_pupils_pa_10_exact
+          time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(pt_pupils_pa_10_exact))
+        arrange(desc(`Persistent absentees (%)`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group", "School type",
-        "Total number of pupils", "Persistent absentees (%)"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Persistent absentees (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2800,7 +2871,7 @@ server <- function(input, output, session) {
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
-
+  ## KS2 attainment -----
   # KS2 % expected plot
   output$plot_ks2_expected <- plotly::renderPlotly({
     shiny::validate(
@@ -2853,18 +2924,18 @@ server <- function(input, output, session) {
 
 
   # ks2 TABLE
-  output$table_ks2_expected <- renderDataTable({
+  output$table_ks2_expected <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
         filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
         filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2873,7 +2944,7 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_ks2 %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
@@ -2882,19 +2953,23 @@ server <- function(input, output, session) {
 
       filtered_data <- outcomes_ks2 %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard)
+        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`)
     }
 
-    datatable(
-      filtered_data %>%
-        filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of eligible pupils", "Expected standard reading writing maths (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -2915,28 +2990,39 @@ server <- function(input, output, session) {
   })
 
   # KS2 regional table
-  output$table_ks2_reg <- renderDataTable({
-    datatable(
-      outcomes_ks2 %>% filter(
+  output$table_ks2_reg <- renderReactable({
+    data <- outcomes_ks2 %>%
+      filter(
         geographic_level == "Regional", time_period == max(outcomes_ks2$time_period),
         social_care_group %in% input$attainment_extra_breakdown
       ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
-        ) %>%
-        arrange(desc(`pt_rwm_met_expected_standard`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
+      arrange(desc(`Expected standard reading writing maths (%)`)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   ,
+    #   colnames = c(
+    #     "Time period", "Region", "Social care group",
+    #     "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -2957,7 +3043,7 @@ server <- function(input, output, session) {
   })
 
   # KS2 by LA table
-  output$table_KS2_la <- renderDataTable({
+  output$table_KS2_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -2981,9 +3067,9 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown, social_care_group,
-          t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+          t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(pt_rwm_met_expected_standard))
+        arrange(desc(`Expected standard reading writing maths (%)`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks2 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -2991,25 +3077,37 @@ server <- function(input, output, session) {
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(
           time_period, geo_breakdown,
-          social_care_group, t_rwm_eligible_pupils, pt_rwm_met_expected_standard
+          social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(pt_rwm_met_expected_standard))
+        arrange(desc(`Expected standard reading writing maths (%)`))
     }
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group",
-        "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    reactable(
+      data2,
+      columns = list(
+        `Total number of eligible pupils` = colDef(cell = cellfunc),
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c(
+    #     "Time period", "Local authority", "Social Care Group",
+    #     "Total number of eligible pupils", "Expected standard reading writing maths (%)"
+    #   ),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
-
+  ## KS4 attainment -----
   # KS4 % expected plot
   output$plot_ks4 <- plotly::renderPlotly({
     shiny::validate(
@@ -3118,7 +3216,6 @@ server <- function(input, output, session) {
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
-
     ggplotly(
       by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", 100) %>%
         config(displayModeBar = F),
@@ -3128,27 +3225,22 @@ server <- function(input, output, session) {
   })
 
   # KS4 regional table
-  output$table_ks4_reg <- renderDataTable({
-    datatable(
-      outcomes_ks4 %>% filter(
-        geographic_level == "Regional", time_period == max(outcomes_ks4$time_period),
-        social_care_group %in% input$attainment_extra_breakdown
-      ) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-        %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_pupils, avg_att8
-        ) %>%
-        arrange(desc(`avg_att8`)),
-      colnames = c(
-        "Time period", "Region", "Social care group",
-        "Total number of pupils", "Average Attainment 8 score"
+  output$table_ks4_reg <- renderReactable({
+    data <- outcomes_ks4 %>%
+      filter(geographic_level == "Regional", time_period == max(outcomes_ks4$time_period), social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+      arrange(desc(`Average Attainment 8`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
+
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3169,7 +3261,7 @@ server <- function(input, output, session) {
   })
 
   # KS4 by LA table
-  output$table_KS4_la <- renderDataTable({
+  output$table_KS4_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -3191,33 +3283,28 @@ server <- function(input, output, session) {
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(
-          time_period, geo_breakdown, social_care_group,
-          t_pupils, avg_att8
-        ) %>%
-        arrange(desc(avg_att8))
+        select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+        arrange(desc(`Average Attainment 8`))
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks4 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(
-          time_period, geo_breakdown,
-          social_care_group, t_pupils, avg_att8
-        ) %>%
-        arrange(desc(avg_att8))
+        select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
+        arrange(desc(`Average Attainment 8`))
     }
 
-    datatable(
-      data,
-      colnames = c(
-        "Time period", "Local authority", "Social Care Group",
-        "Total number of pupils", "Average attainment 8 score"
+    data2 <- data %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
+
+    reactable(
+      data2,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3267,24 +3354,6 @@ server <- function(input, output, session) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
     }
   })
-
-  # Headline stat1 -----
-  # output$SGO_headline_txt <- renderText({
-  #   numerator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                           & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                           & cla_group == "Reason episode ceased"
-  #                                           & characteristic == "Special guardianship orders") %>% select(number)
-  #
-  #   denominator <- ceased_cla_data %>% filter(time_period == max(ceased_cla_data$time_period)
-  #                                             & geo_breakdown %in% input$geographic_breakdown_o2
-  #                                             & cla_group == "Reason episode ceased"
-  #                                             & characteristic == "Total") %>% select(number)
-  #   percent <- (numerator/denominator)*100
-  #
-  #   stat <- round(percent, digits = 1)
-  #   paste0(stat,"%","<br>","<p style='font-size:16px; font-weight:500;'>","(",max(ceased_cla_data$time_period),")", "</p>")
-  # })
-  #
 
   ## Headline stats -----
   output$SGO_headline_txt <- renderText({
@@ -3365,7 +3434,7 @@ server <- function(input, output, session) {
   })
 
 
-  output$table_sgo_ceased <- renderDataTable({
+  output$table_sgo_ceased <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3375,14 +3444,14 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       filtered_data <- ceased_cla_data %>%
         filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3392,7 +3461,7 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3402,15 +3471,20 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
     }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Number", "Total ceased", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
   ##
@@ -3432,21 +3506,28 @@ server <- function(input, output, session) {
   })
 
   # SGO by region table
-  output$table_sgo_ceased_reg <- renderDataTable({
+  output$table_sgo_ceased_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    datatable(
-      ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage)),
-      colnames = c("Time period", "Region", "Reason ceased", "Ceased (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- ceased_cla_data %>%
+      filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
+      filter(characteristic == "Special guardianship orders") %>%
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Reason ceased" = "characteristic", "Total ceased" = "Total_num")
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3487,31 +3568,26 @@ server <- function(input, output, session) {
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`))
     }
 
     data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, percentage) %>%
-      mutate(percentage = case_when(
-        percentage == "z" ~ -400,
-        percentage == "c" ~ -100,
-        percentage == "k" ~ -200,
-        percentage == "x" ~ -300,
-        TRUE ~ as.numeric(percentage)
-      )) %>%
-      arrange(desc(percentage)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Ceased (%)` = `percentage`)
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
       data2,
       columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
         `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
@@ -3568,7 +3644,7 @@ server <- function(input, output, session) {
   })
 
 
-  output$table_cao_ceased <- renderDataTable({
+  output$table_cao_ceased <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
@@ -3578,14 +3654,14 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
       filtered_data <- ceased_cla_data %>%
         filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3595,7 +3671,7 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
@@ -3605,15 +3681,21 @@ server <- function(input, output, session) {
       filtered_data <- ceased_cla_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, number, Total, percentage)
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
     }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Reason ceased", "Number", "Total ceased", "Ceased due to CAO (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
     )
   })
 
@@ -3634,21 +3716,27 @@ server <- function(input, output, session) {
   })
 
   # ceased by region table
-  output$table_cao_ceased_reg <- renderDataTable({
+  output$table_cao_ceased_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    datatable(
-      ceased_cla_data %>% filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, percentage) %>%
-        arrange(desc(percentage)),
-      colnames = c("Time period", "Region", "Reason ceased", "Ceased due to CAO (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- ceased_cla_data %>%
+      filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
+      filter(characteristic == "Residence order or child arrangement order granted") %>%
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+      arrange(desc(`Ceased (%)`)) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
+
+    reactable(
+      data,
+      columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      searchable = TRUE,
     )
   })
 
@@ -3689,45 +3777,28 @@ server <- function(input, output, session) {
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
-        arrange(desc(`Ceased (%)`))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`)) %>%
+        rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
-        arrange(desc(`Ceased (%)`))
+        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
+        arrange(desc(`Ceased (%)`)) %>%
+        rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
     }
 
-    data2 <- data %>%
-      select(time_period, geo_breakdown, characteristic, `Ceased (%)`) %>%
-      # mutate(perc = case_when(
-      #   perc == "z" ~ -400,
-      #   perc == "c" ~ -100,
-      #   perc == "k" ~ -200,
-      #   perc == "x" ~ -300,
-      #   TRUE ~ as.numeric(perc)
-      # )) %>%
-      arrange(desc(`Ceased (%)`)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`) # , `Reason ceased (%)` = `Ceased (%)`)
-
     reactable(
-      data2,
+      data,
       columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
         `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
     )
-
-    # datatable(
-    #   data,
-    #   colnames = c("Time period", "Geographical breakdown", "Characteristic", "Ceased (%)"),
-    #   options = list(
-    #     scrollx = FALSE,
-    #     paging = TRUE
-    #   )
-    # )
   })
 
 
@@ -6319,7 +6390,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cla_rate_la")
+            reactableOutput("table_cla_rate_la")
           )
         ),
       )
@@ -6399,7 +6470,7 @@ server <- function(input, output, session) {
           inputId = "tbl_uasc_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_uasc_la")
+            reactableOutput("table_uasc_la")
           )
         ),
       )
@@ -6458,7 +6529,7 @@ server <- function(input, output, session) {
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
       filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) # %>%
-    # rename("Placement rate per 10000" = "placement_per_10000")
+    #   rename("Placement rate per 10000" = "placement_per_10000")
 
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
@@ -6482,7 +6553,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_march_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cla_march_la")
+            reactableOutput("table_cla_march_la")
           )
         ),
       )
@@ -6563,7 +6634,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_rates_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cin_rates_la")
+            reactableOutput("table_cin_rates_la")
           )
         ),
       )
@@ -6646,7 +6717,7 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_referral_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_cin_referral_la")
+            reactableOutput("table_cin_referral_la")
           )
         ),
       )
@@ -6718,7 +6789,7 @@ server <- function(input, output, session) {
           inputId = "tbl_absence_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_absence_la")
+            reactableOutput("table_absence_la")
           )
         ),
       )
@@ -6770,9 +6841,12 @@ server <- function(input, output, session) {
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "t_pupils"), yvalue = "Overall absence (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Overall absence (%)"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `t_pupils` = colDef(name = "Total number of pupils"), `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"),
+        `school_type` = colDef(name = "School type"),
+        `Total pupils` = colDef(name = "Total number of pupils"),
+        `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -6791,7 +6865,7 @@ server <- function(input, output, session) {
           inputId = "tbl_persistent_absence_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_persistent_absence_la")
+            reactableOutput("table_persistent_absence_la")
           )
         ),
       )
@@ -6845,9 +6919,9 @@ server <- function(input, output, session) {
 
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "t_pupils"), yvalue = "Persistent absentees (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `t_pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -6866,7 +6940,7 @@ server <- function(input, output, session) {
           inputId = "tbl_KS2_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_KS2_la")
+            reactableOutput("table_KS2_la")
           )
         ),
       )
@@ -6944,7 +7018,7 @@ server <- function(input, output, session) {
           inputId = "tbl_KS4_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_KS4_la")
+            reactableOutput("table_KS4_la")
           )
         ),
       )
@@ -6994,15 +7068,17 @@ server <- function(input, output, session) {
   output$SN_ks4_attain_tbl <- renderReactable({
     data <- outcomes_ks4 %>%
       filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-      rename(`AA8` = `Average Attainment 8`, `Average Attainment 8` = `avg_att8`) %>%
-      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      arrange(desc(`Average Attainment 8`)) %>%
+      rename(`Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_pupils"), yvalue = "Average Attainment 8"),
+      stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("Social care group", "Total number of pupils"), yvalue = "Average attainment 8 score"),
       columns = list(
-        `Average Attainment 8` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_pupils` = colDef(name = "Total number of pupils"), `social_care_group` = colDef(name = "Social care group")
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average Attainment 8 Score` = colDef(cell = cellfunc)
       ),
-      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      defaultPageSize = 15,
       searchable = TRUE,
     )
   })
@@ -7063,26 +7139,17 @@ server <- function(input, output, session) {
     )
   })
 
-  # output$SN_sgo_tbl <- renderDataTable({
-  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
-  #
-  #   datatable(
-  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
-  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-  #     options = list(
-  #       scrollx = FALSE,
-  #       paging = FALSE
-  #     )
-  #   )
-  # })
-
   output$SN_sgo_tbl <- renderReactable({
-    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    filtered_data <- ceased_cla_data %>%
+      filter(characteristic == "Special guardianship orders") %>%
+      rename(`Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, yvalue = "percentage"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, selectedcolumn = c("Reason ceased", "Number ceased", "Total ceased"), yvalue = "Ceased (%)"),
       columns = list(
-        Percentage = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -7143,24 +7210,16 @@ server <- function(input, output, session) {
     )
   })
 
-  # output$SN_cao_tbl <- renderDataTable({
-  #   filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-  #   datatable(
-  #     stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "percentage"),
-  #     colnames = c("Geographical breakdown", "Ceased (%)", "LA Selection"),
-  #     options = list(
-  #       scrollx = FALSE,
-  #       paging = FALSE
-  #     )
-  #   )
-  # })
-
   output$SN_cao_tbl <- renderReactable({
-    filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
+    filtered_data <- ceased_cla_data %>%
+      filter(characteristic == "Residence order or child arrangement order granted") %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, yvalue = "Ceased (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, selectedcolumn = c("Reason ceased", "Number ceased", "Total ceased"), yvalue = "Ceased (%)"),
       columns = list(
+        `Number ceased` = colDef(cell = cellfunc),
+        `Total ceased` = colDef(cell = cellfunc),
         `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?

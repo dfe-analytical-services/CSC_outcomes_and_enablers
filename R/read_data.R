@@ -467,15 +467,20 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       rate_per_10000 == "z" ~ -400,
       TRUE ~ as.numeric(rate_per_10000)
     )) %>%
-    # mutate(rate_per_10000 = case_when(
-    #   rate_per_10000 == "z" ~ NA,
-    #   rate_per_10000 == "x" ~ NA,
-    #   TRUE ~ as.numeric(rate_per_10000)
+    mutate(Number = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    )) %>%
     # )) %>%
     # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, rate_per_10000, `Rate Per 10000`) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
     distinct()
 
 
@@ -574,15 +579,27 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(CIN_number = case_when(
-      At31_episodes == "Z" ~ NA,
-      At31_episodes == "x" ~ NA,
-      At31_episodes == "c" ~ NA,
+      # At31_episodes == "Z" ~ NA,
+      # At31_episodes == "x" ~ NA,
+      # At31_episodes == "c" ~ NA,
+      At31_episodes == "c" ~ -100,
+      At31_episodes == "low" ~ -200,
+      At31_episodes == "k" ~ -200,
+      At31_episodes == "u" ~ -250,
+      At31_episodes == "x" ~ -300,
+      At31_episodes == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes)
     )) %>%
     mutate(CIN_rate = case_when(
-      At31_episodes_rate == "Z" ~ NA,
-      At31_episodes_rate == "x" ~ NA,
-      At31_episodes_rate == "c" ~ NA,
+      # At31_episodes_rate == "Z" ~ NA,
+      # At31_episodes_rate == "x" ~ NA,
+      # At31_episodes_rate == "c" ~ NA,
+      At31_episodes_rate == "c" ~ -100,
+      At31_episodes_rate == "low" ~ -200,
+      At31_episodes_rate == "k" ~ -200,
+      At31_episodes_rate == "u" ~ -250,
+      At31_episodes_rate == "x" ~ -300,
+      At31_episodes_rate == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes_rate)
     )) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
@@ -600,15 +617,27 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(Referrals_num = case_when(
-      Referrals == "Z" ~ NA,
-      Referrals == "x" ~ NA,
-      Referrals == "c" ~ NA,
+      # Referrals == "Z" ~ NA,
+      # Referrals == "x" ~ NA,
+      # Referrals == "c" ~ NA,
+      Referrals == "c" ~ -100,
+      Referrals == "low" ~ -200,
+      Referrals == "k" ~ -200,
+      Referrals == "u" ~ -250,
+      Referrals == "x" ~ -300,
+      Referrals == "z" ~ -400,
       TRUE ~ as.numeric(Referrals)
     )) %>%
     mutate(Re_referrals_num = case_when(
-      Re_referrals == "Z" ~ NA,
-      Re_referrals == "x" ~ NA,
-      Re_referrals == "c" ~ NA,
+      # Re_referrals == "Z" ~ NA,
+      # Re_referrals == "x" ~ NA,
+      # Re_referrals == "c" ~ NA,
+      Re_referrals == "c" ~ -100,
+      Re_referrals == "low" ~ -200,
+      Re_referrals == "k" ~ -200,
+      Re_referrals == "u" ~ -250,
+      Re_referrals == "x" ~ -300,
+      Re_referrals == "z" ~ -400,
       TRUE ~ as.numeric(Re_referrals)
     )) %>%
     mutate(Re_referrals_percentage = case_when(
@@ -649,110 +678,6 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
   return(cin_referral_data)
 }
 
-# Outcome 2
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
-#   ceased_cla_data <- read.csv(file)
-#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#     mutate(number = case_when(
-#       number == "z" ~ NA,
-#       number == "x"  ~ NA,
-#       number == "c"  ~ NA,
-#       TRUE ~ as.numeric(number)
-#     )) %>%
-#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
-# }
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv"){
-#   ceased_cla_data <- read.csv(file)
-#   ceased_cla_data <- ceased_cla_data %>% mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#     mutate(number = case_when(
-#       number == "z" ~ NA,
-#       number == "x"  ~ NA,
-#       number == "c"  ~ NA,
-#       TRUE ~ as.numeric(number)
-#     )) %>%
-#     select("time_period", "geographic_level","geo_breakdown", "cla_group","characteristic", "number", "percentage")
-#
-#   totals <- ceased_cla_data %>% filter(characteristic == "Total" & cla_group == "Reason episode ceased") %>%
-#     rename("Total" = "number") %>%
-#     select(time_period, geographic_level, geo_breakdown, cla_group, Total)
-#
-#
-#   test<- ceased_cla_data %>% filter(cla_group == "Reason episode ceased" & characteristic != "Total")
-#
-#   joined <- left_join(test, totals, by = c("time_period", "geographic_level","geo_breakdown", "cla_group"))
-#   joined$perc <- round((joined$number/joined$Total)*100, digits = 1)
-#   joined <- joined %>% mutate(perc = case_when(
-#     percentage == "z" ~ "z",
-#     percentage == "c" ~ "c",
-#     percentage == "k" ~ "k",
-#     percentage == "x" ~ "x",
-#     TRUE ~ as.character(perc))) %>% mutate(`Percentage ceased %` = case_when(
-#       percentage == "z" ~ NA,
-#       percentage == "c" ~ NA,
-#       percentage == "k" ~ NA,
-#       percentage == "x" ~ NA,
-#       TRUE ~ as.numeric(perc)
-#     ))
-#
-#   return(joined)
-# }
-
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
-#  read_data <- read.csv(file)
-#  # Call remove old la data function to remove the old
-#  # final_filtered_data <- remove_old_la_data(read_data)
-#  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
-#
-#  final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
-#  ceased_cla_data <- final_filtered_data %>%
-#    mutate(geo_breakdown = case_when(
-#      geographic_level == "National" ~ "National", # NA_character_,
-#      geographic_level == "Regional" ~ region_name,
-#      geographic_level == "Local authority" ~ la_name
-#    )) %>%
-#    mutate(number_num = case_when(
-#      number == "z" ~ NA,
-#      number == "x" ~ NA,
-#      number == "c" ~ NA,
-#      TRUE ~ as.numeric(number)
-#    )) %>%
-#    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")#
-#
-#  totals <- ceased_cla_data %>%
-#    filter(characteristic == "Total") %>%
-#    rename("Total_num" = "number_num") %>%
-#    mutate("Total" = number) %>%
-#    select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
-#
-#  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
-#  joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
-#
-#  joined <- joined %>%
-#    mutate(perc = case_when(
-#      percentage == "z" ~ "z",
-#      percentage == "c" ~ "c",
-#      percentage == "k" ~ "k",
-#      percentage == "x" ~ "x",
-#      TRUE ~ as.character(perc)
-#    )) %>%
-#    mutate(`Ceased (%)` = case_when(
-#      percentage == "z" ~ NA,
-#      percentage == "c" ~ NA,
-#      percentage == "k" ~ NA,
-#      percentage == "x" ~ NA,
-#      TRUE ~ as.numeric(perc)
-#    ))
-#  return(joined)
-# }
-
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
   outcomes_absence_data <- read.csv(file)
@@ -773,32 +698,49 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
   # Make % columns numeric
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(`Overall absence (%)` = case_when(
-      pt_overall == "z" ~ NA,
-      pt_overall == "c" ~ NA,
-      pt_overall == "k" ~ NA,
-      pt_overall == "x" ~ NA,
+      pt_overall == "c" ~ -100,
+      pt_overall == "low" ~ -200,
+      pt_overall == "k" ~ -200,
+      pt_overall == "u" ~ -250,
+      pt_overall == "x" ~ -300,
+      pt_overall == "z" ~ -400,
       TRUE ~ as.numeric(pt_overall)
     )) %>%
     mutate(`Persistent absentees (%)` = case_when(
-      pt_pupils_pa_10_exact == "z" ~ NA,
-      pt_pupils_pa_10_exact == "c" ~ NA,
-      pt_pupils_pa_10_exact == "k" ~ NA,
-      pt_pupils_pa_10_exact == "x" ~ NA,
+      pt_pupils_pa_10_exact == "c" ~ -100,
+      pt_pupils_pa_10_exact == "low" ~ -200,
+      pt_pupils_pa_10_exact == "k" ~ -200,
+      pt_pupils_pa_10_exact == "u" ~ -250,
+      pt_pupils_pa_10_exact == "x" ~ -300,
+      pt_pupils_pa_10_exact == "z" ~ -400,
       TRUE ~ as.numeric(pt_pupils_pa_10_exact)
     )) %>%
     mutate(`Authorised absence (%)` = case_when(
-      pt_sess_authorised == "z" ~ NA,
-      pt_sess_authorised == "c" ~ NA,
-      pt_sess_authorised == "k" ~ NA,
-      pt_sess_authorised == "x" ~ NA,
+      pt_sess_authorised == "c" ~ -100,
+      pt_sess_authorised == "low" ~ -200,
+      pt_sess_authorised == "k" ~ -200,
+      pt_sess_authorised == "u" ~ -250,
+      pt_sess_authorised == "x" ~ -300,
+      pt_sess_authorised == "z" ~ -400,
       TRUE ~ as.numeric(pt_sess_authorised)
     )) %>%
     mutate(`Unauthorised absence (%)` = case_when(
-      pt_sess_unauthorised == "z" ~ NA,
-      pt_sess_unauthorised == "c" ~ NA,
-      pt_sess_unauthorised == "k" ~ NA,
-      pt_sess_unauthorised == "x" ~ NA,
+      pt_sess_unauthorised == "c" ~ -100,
+      pt_sess_unauthorised == "low" ~ -200,
+      pt_sess_unauthorised == "k" ~ -200,
+      pt_sess_unauthorised == "u" ~ -250,
+      pt_sess_unauthorised == "x" ~ -300,
+      pt_sess_unauthorised == "z" ~ -400,
       TRUE ~ as.numeric(pt_sess_unauthorised)
+    )) %>%
+    mutate(`Total pupils` = case_when(
+      t_pupils == "c" ~ -100,
+      t_pupils == "low" ~ -200,
+      t_pupils == "k" ~ -200,
+      t_pupils == "u" ~ -250,
+      t_pupils == "x" ~ -300,
+      t_pupils == "z" ~ -400,
+      TRUE ~ as.numeric(t_pupils)
     ))
 
 
@@ -833,10 +775,16 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
   # Make % columns numeric
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(`Expected standard reading writing maths (%)` = case_when(
-      pt_rwm_met_expected_standard == "z" ~ NA,
-      pt_rwm_met_expected_standard == "c" ~ NA,
-      pt_rwm_met_expected_standard == "k" ~ NA,
-      pt_rwm_met_expected_standard == "x" ~ NA,
+      # pt_rwm_met_expected_standard == "z" ~ NA,
+      # pt_rwm_met_expected_standard == "c" ~ NA,
+      # pt_rwm_met_expected_standard == "k" ~ NA,
+      # pt_rwm_met_expected_standard == "x" ~ NA,
+      pt_rwm_met_expected_standard == "c" ~ -100,
+      pt_rwm_met_expected_standard == "low" ~ -200,
+      pt_rwm_met_expected_standard == "k" ~ -200,
+      pt_rwm_met_expected_standard == "u" ~ -250,
+      pt_rwm_met_expected_standard == "x" ~ -300,
+      pt_rwm_met_expected_standard == "z" ~ -400,
       TRUE ~ as.numeric(pt_rwm_met_expected_standard)
     ))
 
@@ -865,11 +813,26 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   # Make number columns numeric
   outcomes_ks4_data <- outcomes_ks4_data %>%
     mutate(`Average Attainment 8` = case_when(
-      avg_att8 == "z" ~ NA,
-      avg_att8 == "c" ~ NA,
-      avg_att8 == "k" ~ NA,
-      avg_att8 == "x" ~ NA,
+      #   avg_att8 == "z" ~ NA,
+      #   avg_att8 == "c" ~ NA,
+      #   avg_att8 == "k" ~ NA,
+      #   avg_att8 == "x" ~ NA,
+      avg_att8 == "c" ~ -100,
+      avg_att8 == "low" ~ -200,
+      avg_att8 == "k" ~ -200,
+      avg_att8 == "u" ~ -250,
+      avg_att8 == "x" ~ -300,
+      avg_att8 == "z" ~ -400,
       TRUE ~ as.numeric(avg_att8)
+    )) %>%
+    mutate(`Total pupils` = case_when(
+      t_pupils == "c" ~ -100,
+      t_pupils == "low" ~ -200,
+      t_pupils == "k" ~ -200,
+      t_pupils == "u" ~ -250,
+      t_pupils == "x" ~ -300,
+      t_pupils == "z" ~ -400,
+      TRUE ~ as.numeric(t_pupils)
     ))
 
 
@@ -1014,12 +977,12 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(number_num = case_when(
-      number == "z" ~ NA,
-      number == "x" ~ NA,
-      number == "c" ~ NA,
-      TRUE ~ as.numeric(number)
-    )) %>%
+    # mutate(number_num = case_when(
+    #   number == "z" ~ NA,
+    #   number == "x" ~ NA,
+    #   number == "c" ~ NA,
+    #   TRUE ~ as.numeric(number)
+    # )) %>%
     mutate(`Ceased (%)` = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -1028,17 +991,26 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       percentage == "x" ~ -300,
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
+    )) %>%
+    mutate(`Number ceased` = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
     ))
 
   totals <- ceased_cla_data %>%
     filter(characteristic == "Total") %>%
-    rename("Total_num" = "number_num") %>%
+    rename("Total_num" = "Number ceased") %>%
     mutate("Total" = number) %>%
     select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
 
   joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
   joined <- joined %>%
-    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "Total_num", "Total", "percentage", "Ceased (%)")
+    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
   # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
   # For charts, char values do not work so use column "Ceased (%)"
   return(joined)
