@@ -3807,7 +3807,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_o3
   }, {
-    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == 2023), "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == max(cla_rates$time_period)), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
@@ -4256,7 +4256,7 @@ server <- function(input, output, session) {
   output$admissions_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
 
     data <- hospital_admissions %>%
@@ -4331,8 +4331,9 @@ server <- function(input, output, session) {
 
     data <- hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `rate_per_10000`)
+      select(time_period, geo_breakdown, Value) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`) %>%
+      arrange(desc(`Rate per 10,000`))
 
 
     reactable(
@@ -7251,6 +7252,7 @@ server <- function(input, output, session) {
             tags$ul(
               tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
               tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+              tags$li("Until all data publications for Outcome 3 indicators are updated with local authority changes, Cumberland and Westmorland and Furness have been combined into Cumbria for hospital admissions data."),
               tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
               tags$br(),
               p(
