@@ -104,6 +104,63 @@ ui <- function(input, output, session) {
         href = "dfe_shiny_gov_style.css"
       )
     ),
+    # Javascript for the download handler
+    # tags$head(
+    #   tags$script(HTML(
+    #     "Shiny.addCustomMessageHandler('reactableDownload', function(message) {
+    #      Reactable.downloadDataCSV(message.id, message.filename);
+    #    });"
+    #   ))
+    # ),
+    tags$head(
+      tags$script(HTML(
+        "function downloadDataWithTransformation(id, filename) {
+       console.log('Table ID:', id);
+       console.log('Filename:', filename);
+       var tableData = Reactable.getData(id);
+       console.log('Table Data:', tableData);
+
+       // Iterate through each row and cell to apply transformations
+       var transformedData = tableData.map(function(rowArray) {
+         return rowArray.map(function(value) {
+           // Apply transformation
+           if (value == -100) {
+             return 'c';
+           } else if (value == -200) {
+             return 'k';
+           } else if (value == -250) {
+             return 'u';
+           } else if (value == -300) {
+             return 'x';
+           } else if (value == -400) {
+             return 'z';
+           } else {
+             return value;
+           }
+         });
+       });
+
+       console.log('Transformed Data:', transformedData);
+       var csvContent = 'data:text/csv;charset=utf-8,' + transformedData.map(row => row.join(',')).join('\\n');
+       var encodedUri = encodeURI(csvContent);
+       var link = document.createElement('a');
+       link.setAttribute('href', encodedUri);
+       link.setAttribute('download', filename);
+       document.body.appendChild(link);
+       link.click();
+    }
+
+    // Attach click event listener to download buttons
+    $(document).on('click', '.csv-download-button', function() {
+       var id = $(this).data('table-id');
+       var filename = $(this).data('filename');
+       console.log('Download button clicked!');
+       console.log('Table ID:', id);
+       console.log('Filename:', filename);
+       downloadDataWithTransformation(id, filename);
+    });"
+      ))
+    ),
     shinyGovstyle::header(
       main_text = "",
       main_link = "https://www.gov.uk/government/organisations/department-for-education",

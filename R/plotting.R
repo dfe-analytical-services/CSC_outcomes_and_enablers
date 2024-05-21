@@ -1927,16 +1927,16 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
 # Ordering tables with suppression
 cellfunc <- function(value) {
   if (value == -100) {
-    "c"
+    return("c")
   } else if (value == -200) {
-    "k"
+    return("k")
   } else if (value == -250) {
-    "u"
+    return("u")
   } else if (value == -300) {
-    "x"
+    return("x")
   } else if (value == -400) {
-    "z"
+    return("z")
   } else {
-    value
+    return(value)
   }
 }

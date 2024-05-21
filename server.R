@@ -135,6 +135,12 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  # Download handler
+  csvDownloadHandler <- function(id, filename) {
+    session$sendCustomMessage("downloadDataWithTransformation", list(id = id, filename = filename))
+  }
+
   # Dropdown Validation -----
   iv <- InputValidator$new()
   # outcome1
@@ -5068,6 +5074,10 @@ server <- function(input, output, session) {
       ),
       defaultPageSize = 15,
       searchable = TRUE,
+      showDownloadButton = TRUE,
+      onDownload = function(state) {
+        filtered_data
+      }
     )
   })
 
@@ -7774,7 +7784,10 @@ server <- function(input, output, session) {
           inputId = "tbl_cl_activity_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cl_activity_la")
+            HTML(paste0(
+              csvDownloadButton("table_cl_activity_la", filename = "Care_leavers_activity_LA.csv"),
+              reactableOutput("table_cl_activity_la")
+            ))
             # p("table here")
           )
         ),

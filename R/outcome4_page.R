@@ -559,7 +559,10 @@ outcome4_tab <- function() {
                       inputId = "cl_act_region_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("cl_activity_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("cl_activity_region_tbl", filename = "Care_leavers_activity_region.csv"),
+                          reactableOutput("cl_activity_region_tbl")
+                        ))
                       )
                     ),
                     details(
