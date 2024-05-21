@@ -1071,6 +1071,10 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     mutate(Value = case_when(
       is.na(Value) ~ -300,
       TRUE ~ as.numeric(Value)
+    )) %>%
+    mutate(Denominator = case_when(
+      is.na(Denominator) ~ -300,
+      TRUE ~ as.numeric(Denominator)
     ))
   admissions_data$Value <- round(admissions_data$Value, digits = 1)
 
@@ -1081,10 +1085,11 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-  la_codes <- suppressWarnings(read_cin_rate_data()) %>%
+  la_codes <- suppressWarnings(read_workforce_data()) %>%
     filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
     select(old_la_code, new_la_code) %>%
-    distinct()
+    distinct() %>%
+    separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
 
   admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
   admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))

@@ -94,7 +94,6 @@ source("R/read_data.R")
 
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
-location_data <- rbind(location_data, cumbria_split_rows) # Add Cumberland/Westmorland and Furness LA mapping data
 
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
@@ -108,7 +107,6 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())
-cla_rates <- rbind(cla_rates, cumbria_split_rows_o3) # Add Cumberland and Westmorland and Furness to cla_rates so they are included in o3 dropdown
 
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())

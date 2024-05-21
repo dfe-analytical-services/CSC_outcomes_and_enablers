@@ -4191,7 +4191,8 @@ server <- function(input, output, session) {
     data <- hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
       select(time_period, geo_breakdown, Value) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`) %>%
+      arrange(desc(`Rate per 10,000`))
 
 
     reactable(
