@@ -4190,8 +4190,8 @@ server <- function(input, output, session) {
 
     data <- hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period), geographic_level == "Local authority") %>%
-      select(time_period, geo_breakdown, rate_per_10000) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `rate_per_10000`)
+      select(time_period, geo_breakdown, Value) %>%
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`)
 
 
     reactable(
@@ -6799,6 +6799,7 @@ server <- function(input, output, session) {
             tags$ul(
               tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
               tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+              tags$li("Until all data publications for Outcome 3 indicators are updated with local authority changes, Cumberland and Westmorland and Furness have been combined into Cumbria for hospital admissions data."),
               tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
               tags$br(),
               p(
