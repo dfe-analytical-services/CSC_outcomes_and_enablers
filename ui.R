@@ -132,7 +132,7 @@ ui <- function(input, output, session) {
       outcome4_tab(),
       enabler1_tab(),
       enabler2_tab(),
-      # enabler3_tab(),
+      enabler3_tab(),
       # homepage_panel(),
       a11y_panel(),
       support_links(),
