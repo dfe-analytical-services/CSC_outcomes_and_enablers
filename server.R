@@ -5667,14 +5667,18 @@ server <- function(input, output, session) {
 
     suppressWarnings(
       plot <- ggplotly(
-        plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim) +
-          geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-          geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
-          %>%
+        plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim, add_rect = TRUE) #+
+        # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        # # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+        # geom_rect( colour = NA, fill = "green",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13")))+
+        # geom_rect( colour = NA, fill = "orange",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16")))+
+        # geom_rect( colour = NA, fill = "red",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 17, ymax = max_y_lim, text = paste("Cause for concern SDQ score: 17-40")))
+        %>%
           config(displayModeBar = F),
         height = 420,
         tooltip = "text"
-      )
+      ) %>%
+        layout(hovermode = "x")
     )
   })
 
@@ -5740,13 +5744,15 @@ server <- function(input, output, session) {
 
 
     ggplotly(
-      by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim) +
-        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+      by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
+      # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+      # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+      %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(hovermode = "x")
   })
 
   output$SDQ_region_tbl <- renderReactable({
@@ -5787,17 +5793,18 @@ server <- function(input, output, session) {
 
     max_y_lim <- (max(data$`Score`) + 5)
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score") +
-      scale_y_continuous(limits = c(0, max_y_lim)) +
-      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", yupperlim = max_y_lim, add_rect = TRUE) +
+      scale_y_continuous(limits = c(0, max_y_lim)) #+
+    # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+    # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
 
     ggplotly(
       p %>%
         config(displayModeBar = F),
       tooltip = "text",
       height = 420
-    )
+    ) %>%
+      layout(hovermode = "x")
   })
 
   output$sdq_by_la_tbl <- renderReactable({
