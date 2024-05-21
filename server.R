@@ -4105,8 +4105,6 @@ server <- function(input, output, session) {
   output$hosp_admissions_txt <- renderText({
     if (input$geographic_breakdown_o3 == "") {
       stat <- "NA"
-    } else if (input$geographic_breakdown_o3 == "Cumbria") {
-      stat <- "NA"
     } else {
       stat <- format(hospital_admissions %>%
         filter(time_period == max(hospital_admissions$time_period) &
@@ -4159,8 +4157,7 @@ server <- function(input, output, session) {
   output$admissions_la_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
-      need(input$geographic_breakdown_o3 != "Cumbria", "Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness. Please select one of these two new authorities instead.")
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
 
     data <- hospital_admissions %>%
@@ -4188,8 +4185,7 @@ server <- function(input, output, session) {
   output$admissions_la_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
-      need(input$geographic_breakdown_o3 != "Cumbria", "Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness. Please select one of these two new authorities instead.")
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
 
     data <- hospital_admissions %>%
@@ -6816,8 +6812,7 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-        need(input$geographic_breakdown_o3 != "Cumbria", "Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness. Please select one of these two new authorities instead.")
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
 
       tagList(

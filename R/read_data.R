@@ -1067,6 +1067,9 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
 
+
+
+
   admissions_data <- admissions_data_joined %>%
     mutate(Value = case_when(
       is.na(Value) ~ -300,
@@ -1079,6 +1082,8 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
       Value == -300 ~ "x",
       TRUE ~ as.character(Value)
     ))
+
+
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_cin_rate_data()) %>%
     filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -1086,6 +1091,38 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     distinct()
 
   admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
+
+  admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
+  admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
+
+  admissions_data3 <- admissions_data3 %>%
+    mutate(rate_per_10000 = case_when(
+      is.na(rate_per_10000) ~ -300,
+      TRUE ~ as.numeric(rate_per_10000)
+    ))
+
+  # COMBINE CUMBERLAND/WESTMORLAND AND FURNESS UNTIL ALL PUBLICATION/STATS NEIGHBOURS FILES INCLUDE THEM INDIVIDUALLY
+  df_to_combine <- admissions_data3 %>%
+    filter(geo_breakdown %in% c("Cumberland", "Westmorland and Furness"))
+
+  # Combine the rows
+  combined_row <- df_to_combine %>%
+    summarise(
+      time_period = first(time_period),
+      geographic_level = first(geographic_level),
+      geo_breakdown = "Cumbria",
+      new_la_code = "E10000006",
+      Value = sum(Value),
+      Count = sum(Count),
+      Denominator = sum(Denominator),
+      rate_per_10000 = sum(rate_per_10000),
+      old_la_code = NA
+    )
+
+  admissions_data3 <- admissions_data3 %>%
+    filter(!(geo_breakdown %in% c("Cumberland", "Westmorland and Furness")))
+
+  admissions_data3 <- rbind(admissions_data3, combined_row)
 
   return(admissions_data3)
 }
