@@ -109,6 +109,7 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 # Read in ofsted leadership data (Enabler 3)
 
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
+ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
 
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())

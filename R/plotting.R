@@ -1196,6 +1196,8 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   return(p)
 }
 
+
+
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
   selected_la <- dataset %>%
