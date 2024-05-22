@@ -479,17 +479,16 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
   ofsted_leadership_data$geographic_level <- "Local authority"
 
-  # Create a new dataframe with 'geo_breakdown' column as the region name from 'region' column
-  region_counts <- ofsted_leadership_data %>% mutate(geo_breakdown = region)
-
-  # Create four new columns to the dataframe: 'requires_improvement_count', 'inadequate_count', 'good_count', and 'outstanding_count'
-  region_counts <- region_counts %>%
+  ofsted_leadership_data <- ofsted_leadership_data %>%
     mutate(
       inadequate_count = ifelse(impact_of_leaders == "Inadequate", 1, 0),
       requires_improvement_count = ifelse(impact_of_leaders == "Requires improvement to be good", 1, 0),
       good_count = ifelse(impact_of_leaders == "Good", 1, 0),
       outstanding_count = ifelse(impact_of_leaders == "Outstanding", 1, 0)
     )
+
+  # Create a new dataframe with 'geo_breakdown' column as the region name from 'region' column
+  region_counts <- ofsted_leadership_data %>% mutate(geo_breakdown = region)
 
   # Summarise the counts for each region
   region_counts <- region_counts %>%
@@ -519,7 +518,6 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
 
   # Combine the new data with the existing data
   ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, national_counts)
-
 
   return(ofsted_leadership_data)
 }
