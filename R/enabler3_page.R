@@ -77,7 +77,8 @@ enabler3_tab <- function() {
             tabPanel(
               "Spending",
               fluidRow(
-                p("testing")
+                plotlyOutput("plot_ofsted"),
+                br(),
               )
             ),
             tabPanel(
