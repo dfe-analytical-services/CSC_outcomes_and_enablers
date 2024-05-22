@@ -479,6 +479,11 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
   ofsted_leadership_data$geographic_level <- "Local authority"
 
+  # Get old_la_code values from cla_rates
+  cla_rates_selected <- cla_rates %>% select(geo_breakdown, old_la_code)
+  cla_rates_selected <- cla_rates_selected %>% distinct(geo_breakdown, old_la_code, .keep_all = TRUE)
+  ofsted_leadership_data <- left_join(ofsted_leadership_data, cla_rates_selected, by = c("geo_breakdown" = "geo_breakdown"))
+
   ofsted_leadership_data <- ofsted_leadership_data %>%
     mutate(
       inadequate_count = ifelse(impact_of_leaders == "Inadequate", 1, 0),
