@@ -76,15 +76,13 @@ enabler3_tab <- function() {
             type = "tabs",
             tabPanel(
               "Spending",
-              fluidRow(
-                plotlyOutput("plot_ofsted"),
-                br(),
-              )
+              fluidRow()
             ),
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
               fluidRow(
-                p("testing")
+                plotlyOutput("plot_ofsted"),
+                br(),
               )
             )
           )
