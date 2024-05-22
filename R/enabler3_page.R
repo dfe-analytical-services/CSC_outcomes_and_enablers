@@ -17,7 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% pull("geographic_level")),
+              choices = unique(ofsted_leadership_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -68,7 +68,7 @@ enabler3_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("Confirmation Sentence"),
+        p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         br(),
         div(
           tabsetPanel(

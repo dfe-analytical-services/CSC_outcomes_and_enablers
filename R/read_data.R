@@ -519,6 +519,9 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
   # Combine the new data with the existing data
   ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, national_counts)
 
+  # Flip the data so the geographic_levels are in order for the dropdown
+  ofsted_leadership_data <- ofsted_leadership_data[nrow(ofsted_leadership_data):1, ]
+
   return(ofsted_leadership_data)
 }
 
