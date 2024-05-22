@@ -151,6 +151,8 @@ care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodat
 
 wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 
+placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
+
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 

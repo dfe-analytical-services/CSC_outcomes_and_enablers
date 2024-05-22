@@ -1294,6 +1294,13 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
   return(data3)
 }
 
+## Placement order and match data ----
+read_placement_order_match_data <- function(file = "data/Local-Level-ASG-Agency-Level-Data-Q4-2022-2023.xlsx") {
+  data <- readxl::read_xlsx(file, sheet = "Adoption LAs")
+
+
+  return(data)
+}
 
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
