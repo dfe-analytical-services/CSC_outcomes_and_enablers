@@ -449,6 +449,13 @@ merge_eth_dataframes <- function() {
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
+# Spending
+# read_spending_data <- function(file = ""){
+#   raw_spending_data <- read.csv(file)
+#
+# }
+
+
 # Ofsted leadership data
 read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
