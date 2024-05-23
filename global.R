@@ -33,6 +33,8 @@ shhh(library(reshape2))
 shhh(library(tidyverse))
 shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
+shhh(library(git2r))
+shhh(library(rsconnect))
 
 # shhh(library(shinya11y))
 
