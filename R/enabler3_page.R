@@ -17,8 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              # Change this to look at the relevant dataset for outcome 4
-              choices = unique(placement_data %>% pull("geographic_level")),
+              choices = unique(ofsted_leadership_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -40,7 +39,7 @@ enabler3_tab <- function() {
             conditionalPanel(
               condition = "input.select_geography_e3 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_e3",
                   cb_labels = "Compare with National",
@@ -52,9 +51,9 @@ enabler3_tab <- function() {
               )
             ),
             conditionalPanel(
-              condition = "(input.select_geography_o4 == 'Local authority')",
+              condition = "(input.select_geography_e3 == 'Local authority')",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e3",
                   cb_labels = "Compare with Region",
@@ -72,7 +71,7 @@ enabler3_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("Confirmation Sentence"),
+        p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         br(),
       ),
       gov_row(

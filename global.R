@@ -34,6 +34,7 @@ shhh(library(tidyverse))
 shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
 shhh(library(reactable))
+shhh(library(readODS))
 
 # shhh(library(shinya11y))
 
@@ -104,6 +105,11 @@ workforce_eth <- suppressWarnings(read_workforce_eth_data())
 workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
 combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
+
+# Read in ofsted leadership data (Enabler 3)
+
+ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
+ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
 
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())

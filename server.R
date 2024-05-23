@@ -153,6 +153,9 @@ server <- function(input, output, session) {
   # enabler2
   iv$add_rule("select_geography_e2", sv_required())
   iv$add_rule("geographic_breakdown_e2", sv_required())
+  # enabler3
+  iv$add_rule("select_geography_e3", sv_required())
+  iv$add_rule("geographic_breakdown_e3", sv_required())
 
 
   iv$enable()
@@ -1160,6 +1163,71 @@ server <- function(input, output, session) {
       )
     )
   })
+
+  # Enabler 3 -----
+  # Geographic breakdown e3 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_e3
+  }, {
+    choices <- sort(unique(ofsted_leadership_data[ofsted_leadership_data$geographic_level == input$select_geography_e3, ][["geo_breakdown"]]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_e3",
+      selected = choices[1],
+      choices = choices
+    )
+  })
+
+  ## Confirmation sentence E3 -------
+  # This function gets the selected region to put into the confirmation text below
+
+  workforce_region <- reactive({
+    location_data %>%
+      filter(la_name == input$geographic_breakdown_e3) %>%
+      pull(region_name) %>%
+      as.character() # Convert to character
+  })
+
+  # First sentence for the dropdown choices
+  output$enabler3_choice_text1 <- renderText({
+    if (input$select_geography_e3 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_e3 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ".")
+    } else if (input$select_geography_e3 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region(), ".")
+    }
+  })
+
+  output$enabler3_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+
+  ## Ofsted leadership rating ----
+  output$plot_ofsted <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    ggplotly(
+      plot_ofsted(input$geographic_breakdown_e3, input$select_geography_e3) %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
 
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
