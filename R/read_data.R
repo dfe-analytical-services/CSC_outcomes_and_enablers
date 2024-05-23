@@ -450,10 +450,18 @@ merge_eth_dataframes <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
 # Spending
-# read_spending_data <- function(file = ""){
-#   raw_spending_data <- read.csv(file)
-#
-# }
+read_spending_data <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
+  raw_spending_data1 <- read_ods(file, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "A12:G428")
+  raw_spending_data2 <- read_ods(file, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "CN12:CU428")
+  combined_data <- cbind(raw_spending_data1, raw_spending_data2)
+
+  # Filter out the classes we want
+  # UA, MD, LB, SC, ENG
+
+  data <- combined_data %>% filter(combined_data$Class %in% c("UA", "MD", "LB", "SC", "ENG"))
+
+  return(data)
+}
 
 
 # Ofsted leadership data
