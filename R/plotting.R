@@ -1197,48 +1197,30 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
 }
 
 # Enabler 3 ----
-plot_ofsted <- function(geo_break, geo_lvl) {
+plot_ofsted <- function() {
   ofsted_data <- ofsted_leadership_data_long %>%
-    filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break &
-      Rating %in% c("inadequate_count", "requires_improvement_count", "good_count", "outstanding_count")) %>%
+    filter(geographic_level == "National", time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, Rating, Count)
 
-
   # Set the max y-axis scale
-  max_rate <- max(
-    ofsted_leadership_data_long$Count,
-    na.rm = TRUE
-  )
+  max_rate <- max(ofsted_leadership_data_long$Count, na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
-  ggplot(ofsted_data, aes(`geo_breakdown`, `Count`,
-    fill = factor(Rating, levels = c("inadequate_count", "requires_improvement_count", "good_count", "outstanding_count")),
-    text = paste0(
-      "Count: ", `Count`, "<br>",
-      "UASC status: ", factor(Rating, c("inadequate_count", "requires_improvement_count", "good_count", "outstanding_count")), "<br>",
-      "Location: ", geo_breakdown, "<br>",
-      "Time period: ", `time_period`
-    )
-  )) +
+  values <- c("#12436D", "#28A197", "#801650", "#F46A25") # gss_colour_pallette
+
+  p <- ggplot(data = ofsted_data, aes(x = Rating, y = Count)) +
+    text <- paste0(
+    "Latest inspection: ", max(ofsted_data$time_period), "<br>",
+    "Rating: ", ofsted_data$Rating, "<br>",
+    "Count: ", ofsted_data$Count
+  ) +
     geom_bar(stat = "identity") +
-    ylab("Count") +
-    xlab("geo_breakdown") +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
-      axis.title.x = element_blank(),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
-    ) +
-    scale_y_continuous(limits = c(0, max(max_rate))) +
-    scale_fill_manual(
-      "Ofsted Leadership Rating",
-      # breaks = unique(c("England", inputArea)),
-      values = c("inadequate_count" = "#12436D", "requires_improvement_count" = "#28A197", "good_count" = "#801650", "outstanding_count" = "#F46A25")
-    )
+    scale_fill_manual(values = values) +
+    theme_classic()
+
+  return(p)
 }
 
 

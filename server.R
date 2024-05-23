@@ -1216,18 +1216,13 @@ server <- function(input, output, session) {
 
   ## Ofsted leadership rating ----
   output$plot_ofsted <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
-    )
     ggplotly(
-      plot_ofsted(input$geographic_breakdown_e3, input$select_geography_e3) %>%
+      plot_ofsted() %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
     )
   })
-
 
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
