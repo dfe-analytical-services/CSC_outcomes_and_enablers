@@ -547,7 +547,7 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
 
 pivot_ofsted_data <- function() {
   # Pivoted version
-  ofsted_leadership_data_long <- ofsted_leadership_data %>%
+  ofsted_leadership_data_long <- read_ofsted_leadership_data() %>%
     pivot_longer(
       cols = c(inadequate_count, requires_improvement_count, good_count, outstanding_count),
       names_to = "Rating",
