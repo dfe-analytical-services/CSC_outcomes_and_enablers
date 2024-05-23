@@ -1,0 +1,31 @@
+name: Release-$(rev:r)
+
+pool:
+  name: RSConnect
+
+trigger:
+  branches:
+    include:
+    - main
+  paths:
+    exclude:
+    - azure-pipelines.yml
+
+resources:
+  repositories:
+    - repository: posit-deploy
+      type: git
+      name: ESFA-Data-Science/posit-deploy
+
+extends:
+  template: deploy.yml@posit-deploy
+  parameters:
+    appName: csc-outcomes-and-enablers
+    environments:
+    - name: Pre-Production
+      appId: none
+    - name: Production
+      appId: none
+    approvers: |
+      approver@education.gov.uk
+      another.approver@education.gov.uk
