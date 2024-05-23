@@ -1208,17 +1208,10 @@ plot_ofsted <- function() {
   # Round the max_rate to the nearest 10
   max_rate <- ceiling(max_rate / 10) * 10
 
-  values <- c("#12436D", "#28A197", "#801650", "#F46A25") # gss_colour_pallette
-
-  p <- ggplot(data = ofsted_data, aes(x = Rating, y = Count)) +
-    text <- paste0(
-    "Latest inspection: ", max(ofsted_data$time_period), "<br>",
-    "Rating: ", ofsted_data$Rating, "<br>",
-    "Count: ", ofsted_data$Count
-  ) +
-    geom_bar(stat = "identity") +
-    scale_fill_manual(values = values) +
-    theme_classic()
+  p <- ggplot(ofsted_data, aes(x = Rating, y = Count)) +
+    geom_bar(stat = "identity", fill = "#12436D") +
+    coord_flip() +
+    scale_x_discrete(limits = c("inadequate_count", "requires_improvement_count", "good_count", "outstanding_count"))
 
   return(p)
 }
