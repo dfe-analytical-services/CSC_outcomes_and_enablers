@@ -83,6 +83,14 @@ enabler3_tab <- function() {
               fluidRow(
                 plotlyOutput("plot_ofsted"),
                 br(),
+                br(),
+                details(
+                  inputId = "tbl_ofsted",
+                  label = "View chart as a table",
+                  help_text = (
+                    dataTableOutput("ofsted_tbl")
+                  )
+                ),
               )
             )
           )
