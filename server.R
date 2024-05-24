@@ -5079,10 +5079,13 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
         rename("Placements (%)" = "Percent")
     }
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%)")
+    p <- p + ggtitle(title_placements)
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5150,9 +5153,13 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("Placements (%)" = "Percent")
 
+    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by region")
+    p <- p + ggtitle(title_placements)
+
     ggplotly(
-      by_region_bar_plot(data, "Placements (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5196,6 +5203,8 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)") +
       scale_y_continuous(limits = c(0, 100))
+    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by local authority")
+    p <- p + ggtitle(title_placements)
 
     ggplotly(
       p %>%
@@ -5290,10 +5299,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
         rename("CLA with 3 or more placements (%)" = "Percent")
     }
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year")
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5360,9 +5371,12 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("CLA with 3 or more placements (%)" = "Percent")
 
+    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
+
     ggplotly(
-      by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5404,6 +5418,7 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)") +
       scale_y_continuous(limits = c(0, 100))
+    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
 
     ggplotly(
       p %>%
@@ -5499,10 +5514,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
         rename("Placements more then 20 miles from home (%)" = "Percent")
     }
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of placements more than 20 miles from home")
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5569,9 +5586,12 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("Placements more then 20 miles from home (%)" = "Percent")
 
+    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
+
     ggplotly(
-      by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5613,6 +5633,7 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)") +
       scale_y_continuous(limits = c(0, 100))
+    p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
 
     ggplotly(
       p %>%
@@ -5730,14 +5751,16 @@ server <- function(input, output, session) {
       rename("Score" = "number_num")
 
     max_y_lim <- (max(final_data$Score) + 5)
+    p <- plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim) +
+      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+      config(displayModeBar = F)
+
+    p <- p + ggtitle("Average SDQ score")
 
     suppressWarnings(
-      plot <- ggplotly(
-        plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim) +
-          geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-          geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
-          %>%
-          config(displayModeBar = F),
+      ggplotly(
+        p,
         height = 420,
         tooltip = "text"
       )
@@ -5804,12 +5827,16 @@ server <- function(input, output, session) {
 
     max_y_lim <- (max(data$Score) + 5)
 
+    p <- by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim) +
+      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+      config(displayModeBar = F)
+
+    p <- p + ggtitle("Average SDQ score by region")
+
 
     ggplotly(
-      by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim) +
-        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -5857,6 +5884,8 @@ server <- function(input, output, session) {
       scale_y_continuous(limits = c(0, max_y_lim)) +
       geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
       geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+
+    p <- p + ggtitle("Average SDQ score by local authority")
 
     ggplotly(
       p %>%
@@ -5965,10 +5994,13 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
         rename("Care leavers in education, employment or training (%)" = "percent")
     }
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ")")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -6036,9 +6068,13 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & activity == "Total in education, employment or training" & time_period == max(time_period) & geographic_level == "Regional") %>%
       rename("Care leavers in education, employment or training (%)" = "percent")
 
+    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region")
+    p <- p + ggtitle(age_title)
+
     ggplotly(
-      by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -6085,6 +6121,8 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)") +
       scale_y_continuous(limits = c(0, 100))
+    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by local authority")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
       p %>%
@@ -6192,9 +6230,12 @@ server <- function(input, output, session) {
         rename("Care leavers in suitable accommodation (%)" = "percent")
     }
 
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ")")
+    p <- p + ggtitle(age_title)
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -6265,10 +6306,13 @@ server <- function(input, output, session) {
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & accommodation_suitability == "Accommodation considered suitable" & time_period == max(time_period) & geographic_level == "Regional") %>%
       rename("Care leavers in suitable accommodation (%)" = "percent")
+    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
-      by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 430,
       tooltip = "text"
     )
@@ -6315,6 +6359,8 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)") +
       scale_y_continuous(limits = c(0, 100))
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
       p %>%
@@ -7647,10 +7693,13 @@ server <- function(input, output, session) {
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements (%)" = "Percent")
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    placements_title <- paste("Children living in", input$placement_type_breakdown, "(%) by statistical neighbours")
+    p <- p + ggtitle(placements_title)
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -7724,9 +7773,12 @@ server <- function(input, output, session) {
     data <- placement_changes_data %>%
       filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period))
 
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
+
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -7813,9 +7865,12 @@ server <- function(input, output, session) {
       filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements more then 20 miles from home (%)" = "Percent")
 
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
+
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -7902,12 +7957,14 @@ server <- function(input, output, session) {
       rename("Score" = "number_num")
 
     max_y_lim <- (max(data$Score) + 5)
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", max_y_lim) +
+      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average SDQ score by statistical neighbours")
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", max_y_lim) +
-        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -8003,10 +8060,13 @@ server <- function(input, output, session) {
       rename("Care leavers in education, employment or training (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -8104,10 +8164,13 @@ server <- function(input, output, session) {
       rename("Care leavers in suitable accommodation (%)" = "percent")
 
     # max_y_lim <- max(data$Number) + 500
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+      config(displayModeBar = F)
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours")
+    p <- p + ggtitle(age_title)
 
     ggplotly(
-      statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
