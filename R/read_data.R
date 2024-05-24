@@ -57,32 +57,6 @@ remove_old_la_data <- function(data) {
 #   return(dfRevenue)
 # }
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Test not important
-# read_definitions <- function(file = "data/definitions.csv") {
-#   definitions <- read.csv(file)
-#   # colnames(definitions) <- c("Outcome/Enabler", "Domain", "Indicator", "Rationale/Description")
-#   #  definitions <- definitions[,1:4]
-#   return(definitions)
-# }
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Workforce data
-# read_workforce_data <- function(file = "data/csww_headline_measures_2017_to_2022.csv") {
-#   workforce_data <- read.csv(file)
-#   # Select only the columns we want
-#   workforce_data <- colClean(workforce_data) %>% select(
-#     "time_period", "geographic_level", "region_name", "la_name", "turnover_rate_fte_perc", "absence_rate_fte_perc",
-#     "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
-#     "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte"
-#   )
-#   workforce_data <- convert_perc_cols_to_numeric(workforce_data)
-#   return(workforce_data)
-# }
-
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -153,21 +127,6 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
   #
   return(workforce_data2)
 }
-
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Workforce characteristics data
-# read_workforce_char_data <- function(file = "data/csww_workforce_characteristics_2017_to_2022.csv") {
-#   workforce_characteristics <- read.csv(file)
-#   # Select only the columns we want
-#   workforce_char_data <- colClean(workforce_characteristics)
-#   workforce_char_data <- workforce_char_data %>% filter(characteristic_type != "Total") %>% select(
-#     "time_period", "geographic_level", "region_name", "characteristic", "characteristic_type", "percentage"
-#   )
-#   workforce_char_data <- convert_perc_cols_to_numeric(workforce_char_data)
-#   return(workforce_char_data)
-# }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
@@ -616,13 +575,6 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    # mutate(percentage = case_when(
-    #   percentage == "z" ~ NA,
-    #   percentage == "x" ~ NA,
-    #   TRUE ~ as.numeric(percentage)
-    # )) %>%
-    #  filter(!is.na(percentage)) %>%
-    # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
     distinct()
@@ -772,20 +724,6 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
     ) %>%
     distinct()
 
-
-  # Calculate the number of referrals not including re-referrals
-  #  referrals <- cin_referral_data %>%
-  #   group_by(time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, la_name) %>%
-  #  summarise(
-  #  referrals_not_including_re_referrals_perc = round((Referrals - Re_referrals) / Referrals * 100, 1),
-  # referrals_not_including_re_referrals = Referrals - Re_referrals,
-  # )
-
-  # Join the referall back to the original dataframe
-  # cin_referral_data <- merge(referrals, cin_referral_data) %>%
-  #  arrange(desc(time_period))
-
-
   return(cin_referral_data)
 }
 
@@ -886,10 +824,6 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
   # Make % columns numeric
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(`Expected standard reading writing maths (%)` = case_when(
-      # pt_rwm_met_expected_standard == "z" ~ NA,
-      # pt_rwm_met_expected_standard == "c" ~ NA,
-      # pt_rwm_met_expected_standard == "k" ~ NA,
-      # pt_rwm_met_expected_standard == "x" ~ NA,
       pt_rwm_met_expected_standard == "c" ~ -100,
       pt_rwm_met_expected_standard == "low" ~ -200,
       pt_rwm_met_expected_standard == "k" ~ -200,
@@ -924,10 +858,6 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   # Make number columns numeric
   outcomes_ks4_data <- outcomes_ks4_data %>%
     mutate(`Average Attainment 8` = case_when(
-      #   avg_att8 == "z" ~ NA,
-      #   avg_att8 == "c" ~ NA,
-      #   avg_att8 == "k" ~ NA,
-      #   avg_att8 == "x" ~ NA,
       avg_att8 == "c" ~ -100,
       avg_att8 == "low" ~ -200,
       avg_att8 == "k" ~ -200,
@@ -964,25 +894,6 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     select(
       time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
     )
-
-  # Make number columns
-  #  cpp_in_year_data <- cpp_in_year_data %>%
-  # mutate(`CPP_start` = case_when(
-  #  CPP_start == "z" ~ NA,
-  #  CPP_start == "c" ~ NA,
-  # CPP_start == "k" ~ NA,
-  #  CPP_start == "x" ~ NA,
-  # TRUE ~ as.numeric(CPP_start)
-  #  ))
-
-  # cpp_in_year_data <- cpp_in_year_data %>%
-  #  mutate(`CPP_subsequent` = case_when(
-  #  CPP_subsequent == "z" ~ NA,
-  #  CPP_subsequent == "c" ~ NA,
-  #  CPP_subsequent == "k" ~ NA,
-  #  CPP_subsequent == "x" ~ NA,
-  #  TRUE ~ as.numeric(CPP_subsequent)
-  # ))
 
   cpp_in_year_data <- cpp_in_year_data %>%
     mutate(`Repeat_CPP_percent` = case_when(
@@ -1025,56 +936,6 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
 
 
 # Outcome 2 ----
-# Used this before the new function below
-# read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
-#   read_data <- read.csv(file)
-#   # Call remove old la data function to remove the old
-#   # final_filtered_data <- remove_old_la_data(read_data)
-#   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
-#
-#   final_filtered_data <- read_data %>% filter(new_la_code != "E10000009", !la_name %in% las_to_remove)
-#   ceased_cla_data <- final_filtered_data %>%
-#     mutate(geo_breakdown = case_when(
-#       geographic_level == "National" ~ "National", # NA_character_,
-#       geographic_level == "Regional" ~ region_name,
-#       geographic_level == "Local authority" ~ la_name
-#     )) %>%
-#     mutate(number_num = case_when(
-#       number == "z" ~ NA,
-#       number == "x" ~ NA,
-#       number == "c" ~ NA,
-#       TRUE ~ as.numeric(number)
-#     )) %>%
-#     select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "number_num", "percentage")
-#
-#   totals <- ceased_cla_data %>%
-#     filter(characteristic == "Total") %>%
-#     rename("Total_num" = "number_num") %>%
-#     mutate("Total" = number) %>%
-#     select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
-#
-#   joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
-#   joined$perc <- round((joined$number_num / joined$Total_num) * 100, digits = 1)
-#
-#   joined <- joined %>%
-#     mutate(perc = case_when(
-#       percentage == "z" ~ "z",
-#       percentage == "c" ~ "c",
-#       percentage == "k" ~ "k",
-#       percentage == "x" ~ "x",
-#       TRUE ~ as.character(perc)
-#     )) %>%
-#     mutate(`Ceased (%)` = case_when(
-#       percentage == "z" ~ NA,
-#       percentage == "c" ~ NA,
-#       percentage == "k" ~ NA,
-#       percentage == "x" ~ NA,
-#       TRUE ~ as.numeric(perc)
-#     ))
-#   return(joined)
-# }
-
-
 # read outcome 2 function but without manual calculation of the percentages.
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
   # drop old LA's
