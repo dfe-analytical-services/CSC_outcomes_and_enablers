@@ -409,17 +409,45 @@ merge_eth_dataframes <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
 # Spending
+# read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 = "data/RSX_2022-23_data_by_LA.ods") {
+#   raw_spending_data1 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "A12:G428")
+#   raw_spending_data2 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "CN12:CU428")
+#   combined_data <- cbind(raw_spending_data1, raw_spending_data2)
+#
+#   # Filter out the classes we want
+#   # UA, MD, LB, SC, ENG
+#
+#   data <- combined_data %>% filter(combined_data$Class %in% c("UA", "MD", "LB", "SC", "ENG"))
+#
+#   return(data)
+# }
+
 read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 = "data/RSX_2022-23_data_by_LA.ods") {
-  raw_spending_data1 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "A12:G428")
-  raw_spending_data2 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "CN12:CU428")
-  combined_data <- cbind(raw_spending_data1, raw_spending_data2)
+  # numerator_data <- read_ods(file1, )
+  # denominator_data <- read_ods(file2,)
+  data <- read_ods(file2, sheet = "RSX_LA_Data_2022-23", range = "A11:CW438")
+  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
 
-  # Filter out the classes we want
-  # UA, MD, LB, SC, ENG
-
-  data <- combined_data %>% filter(combined_data$Class %in% c("UA", "MD", "LB", "SC", "ENG"))
-
-  return(data)
+  data3 <- data2 %>%
+    filter(data2$Class %in% c("UA", "MD", "LB", "SC", "Eng")) %>%
+    rename(`CS Expenditure` = "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", `Total Expenditure` = "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)") %>%
+    mutate_all(~ gsub("\\[x\\]", "x", .)) %>%
+    mutate(exp = case_when(
+      `CS Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric(`CS Expenditure`)
+    )) %>%
+    mutate(total_exp = case_when(
+      `Total Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric(`Total Expenditure`)
+    )) %>%
+    mutate(cs_share = case_when(
+      `CS Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric((exp / total_exp) * 100)
+    )) %>%
+    mutate(`CS Share` = case_when(
+      `CS Expenditure` == "x" ~ "x",
+      TRUE ~ as.character(format((exp / total_exp) * 100), digits = 2)
+    ))
 }
 
 
