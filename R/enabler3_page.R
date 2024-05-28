@@ -86,28 +86,52 @@ enabler3_tab <- function() {
               ),
               fluidRow(
                 column(
-                  width = 6,
+                  width = 4,
                   value_box(
-                    title = "title",
+                    title = "Share of total spend on Children's services",
                     value = "value"
                   )
                 ),
                 column(
-                  width = 6,
+                  width = 4,
                   value_box(
-                    title = "title",
+                    title = "Average per child spend",
+                    value = "value"
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Share of total spend on Children's services
+                    minus CLA",
                     value = "value"
                   )
                 ),
                 br(),
-                p("Rationale here")
               ),
               accordion(
                 accordion_panel(
-                  "Accordion one",
+                  "Share of local authority total spend on Children’s Services, and per child spend",
                   gov_row(
-                    h2("Share of local authority total spend on Children’s Services, and per child spend."),
-                    #
+                    h2("Share of local authority total spend on Children’s Services, and per child spend"),
+                    p("This metric provides contextual information on the resource prioritisation within each Local Authority."),
+                    # extra dropdown for choice to view per child spend or share of spending
+                    div(
+                      class = "input_box",
+                      style = "min-height:100%; height = 100%; overflow-y: visible",
+                      p("This domain contains two levels of data: Share of total spend on children's services and spend per child on children's services"),
+                      p("Please use the dropdown below to select which level of spending data you would like to see in the charts below:"),
+                      selectizeInput(
+                        inputId = "spending_choice",
+                        label = "Select a spending level:",
+                        choices = c("Share of total spend on children's services", "Spend per child on children's services"),
+                        selected = NULL,
+                        multiple = FALSE,
+                        options = NULL,
+                        width = "50%"
+                      ),
+                    ),
+                    br(),
                     #
                     br(),
                     plotlyOutput(""),
@@ -164,7 +188,7 @@ enabler3_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "title",
+                    title = "Ofsted leadership and rating score",
                     value = "value"
                   )
                 ),
