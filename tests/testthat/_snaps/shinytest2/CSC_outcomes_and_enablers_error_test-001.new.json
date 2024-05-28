@@ -38,7 +38,7 @@
     "extra_familial_harm_toggle": "All local authorities",
     "geographic_breakdown_e2": "National",
     "geographic_breakdown_e3": "National",
-    "geographic_breakdown_o1": "National",
+    "geographic_breakdown_o1": "East Midlands",
     "geographic_breakdown_o2": "National",
     "geographic_breakdown_o3": "National",
     "geographic_breakdown_o4": "National",
@@ -52,7 +52,7 @@
     "national_comparison_checkbox_o2": null,
     "national_comparison_checkbox_o3": null,
     "national_comparison_checkbox_o4": null,
-    "navlistPanel": "intro_panel",
+    "navlistPanel": "outcome1_page",
     "ofted_stats_toggle": "All local authorities",
     "outcome1_panels": "Family Stability",
     "outcome2_panels": "Families engaging and receiving support from their family network",
@@ -73,7 +73,7 @@
     "sdq_score_toggle": "All local authorities",
     "select_geography_e2": "National",
     "select_geography_e3": "National",
-    "select_geography_o1": "National",
+    "select_geography_o1": "Regional",
     "select_geography_o2": "National",
     "select_geography_o3": "National",
     "select_geography_o4": "National",
@@ -89,7 +89,11 @@
     "wellbeing_school_breakdown": "Total"
   },
   "output": {
-
+    "cla_march_rate_headline_txt": "66<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "cla_rate_headline_txt": "25<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "outcome1_choice_text1": "You have selected <b>Regional<\/b> level statistics for <b>East Midlands<\/b>.",
+    "outcome1_choice_text2": "",
+    "uasc_rate_headline_txt": "5<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>"
   },
   "export": {
 

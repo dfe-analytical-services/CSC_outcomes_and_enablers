@@ -176,7 +176,8 @@ enabler3_tab <- function() {
                       selected = "All local authorities"
                     ),
                   )
-                )
+                ),
+                open = FALSE
               )
             ),
             tabPanel(
