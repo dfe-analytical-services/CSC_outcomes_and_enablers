@@ -89,7 +89,7 @@ enabler3_tab <- function() {
                   width = 4,
                   value_box(
                     title = "Share of total spend on Children's services",
-                    value = "value"
+                    value = htmlOutput("total_spending_txt")
                   )
                 ),
                 column(
@@ -134,7 +134,7 @@ enabler3_tab <- function() {
                     br(),
                     #
                     br(),
-                    plotlyOutput(""),
+                    # plotlyOutput("plot_spending_ts"),
                     br(),
                     # details(
                     #   inputId = "",
