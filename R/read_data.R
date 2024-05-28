@@ -409,23 +409,8 @@ merge_eth_dataframes <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
 # Spending
-# read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 = "data/RSX_2022-23_data_by_LA.ods") {
-#   raw_spending_data1 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "A12:G428")
-#   raw_spending_data2 <- read_ods(file1, sheet = "RO3_LA_Data_2022-23", skip = 10, n_max = 428, range = "CN12:CU428")
-#   combined_data <- cbind(raw_spending_data1, raw_spending_data2)
-#
-#   # Filter out the classes we want
-#   # UA, MD, LB, SC, ENG
-#
-#   data <- combined_data %>% filter(combined_data$Class %in% c("UA", "MD", "LB", "SC", "ENG"))
-#
-#   return(data)
-# }
-
-read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 = "data/RSX_2022-23_data_by_LA.ods") {
-  # numerator_data <- read_ods(file1, )
-  # denominator_data <- read_ods(file2,)
-  data <- read_ods(file2, sheet = "RSX_LA_Data_2022-23", range = "A11:CW438")
+read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RSX_LA_Data_2022-23", range = "A11:CW438")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
 
   data3 <- data2 %>%
@@ -452,7 +437,7 @@ read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 
       TRUE ~ as.numeric(cs_share)
     ))
 
-  merged_data <- merge(location_data, data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
+  merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
   merged_data$time_period <- "2022/23"
@@ -500,6 +485,86 @@ read_spending_data <- function(file1 = "data/RO3_2022-23_data_by_LA.ods", file2 
       TRUE ~ as.character(cs_share)
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share, "CS Share")
+  final_dataset$cs_share <- round(final_dataset$cs_share, digits = 2)
+
+  return(final_dataset)
+}
+
+read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RO3_LA_Data_2022-23", range = "A12:CP439")
+  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")
+
+  data3 <- data2 %>%
+    filter(data2$Class %in% c("UA", "MD", "LB", "SC", "Eng")) %>%
+    rename(`CLA Expenditure` = "Total Expenditure\n (C3 = C1 + C2)4", `Total Expenditure` = "Total Expenditure\n (C3 = C1 + C2)53") %>%
+    # replace "[x]" values with x
+    mutate_all(~ gsub("\\[x\\]", "x", .)) %>%
+    # replace & in local authority names with "and"
+    mutate_all(~ gsub("\\&", "and", .)) %>%
+    mutate(`Local authority` = gsub(" UA", "", `Local authority`)) %>%
+    mutate(cla_exp = case_when(
+      `CLA Expenditure` == "x" ~ 0,
+      TRUE ~ as.numeric(`CLA Expenditure`)
+    )) %>%
+    mutate(total_exp = case_when(
+      `Total Expenditure` == "x" ~ 0,
+      TRUE ~ as.numeric(`Total Expenditure`)
+    ))
+  # calculate the share of the
+  data3$minus_cla_share <- round(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100, digits = 2)
+  data3 <- data3 %>%
+    mutate(minus_cla_share = case_when(
+      `CLA Expenditure` == "x" ~ 0,
+      TRUE ~ as.numeric(minus_cla_share)
+    ))
+  merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
+  merged_data$geographic_level <- "Local authority"
+  merged_data$geo_breakdown <- merged_data$la_name
+  merged_data$time_period <- "2022/23"
+  merged_data <- merged_data %>%
+    select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
+
+  # get national level data
+  national_data <- data3 %>% filter(data3$Class == "Eng")
+  national_data$geographic_level <- "National"
+  national_data$geo_breakdown <- "National"
+  national_data$time_period <- "2022/23"
+  national_data$new_la_code <- as.character("")
+  national_data$old_la_code <- as.numeric("")
+  national_data <- national_data %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
+
+  regional_spending <- merged_data %>%
+    group_by(region_name) %>%
+    summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
+    rename("geo_breakdown" = "region_name")
+  regional_spending$minus_cla_share <- round(regional_spending$minus_cla_share, digits = 2)
+  regional_spending$geographic_level <- "Regional"
+  regional_spending$time_period <- "2022/23"
+  regional_spending$new_la_code <- as.character("")
+  regional_spending$old_la_code <- as.numeric("")
+
+  df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CLA Expenditure", "Total Expenditure", "cla_exp", "total_exp", "minus_cla_share"))
+  df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
+
+  final_dataset <- df2 %>%
+    mutate(exp = case_when(
+      `CLA Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric(exp)
+    )) %>%
+    mutate(total_exp = case_when(
+      `Total Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric(total_exp)
+    )) %>%
+    mutate(minus_cla_share = case_when(
+      `Total Expenditure` == "x" ~ -300,
+      TRUE ~ as.numeric(minus_cla_share)
+    )) %>%
+    mutate(`Excluding CLA Share` = case_when(
+      minus_cla_share == -300 ~ "x",
+      TRUE ~ as.character(minus_cla_share)
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
   final_dataset$cs_share <- round(final_dataset$cs_share, digits = 2)
 
   return(final_dataset)
