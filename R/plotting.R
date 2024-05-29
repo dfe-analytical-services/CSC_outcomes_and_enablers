@@ -1219,7 +1219,7 @@ plot_ofsted <- function() {
     ))
 
   # Set the max y-axis scale
-  max_rate <- max(ofsted_leadership_data_long$Count, na.rm = TRUE)
+  max_rate <- max(ofsted_data$Count, na.rm = TRUE)
 
   # Round the max_rate to the nearest 10
   max_rate <- ceiling(max_rate / 10) * 10
@@ -1244,6 +1244,57 @@ plot_ofsted <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_x_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     xlab("Ofsted leadership rating") +
+    ylab("Count")
+
+  return(p)
+}
+
+
+plot_ofsted_reg <- function() {
+  ofsted_data <- ofsted_leadership_data_long %>%
+    filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+    select(time_period, geo_breakdown, Rating, Count)
+
+  # Set the factor levels for Rating in the desired order
+  ofsted_data$Rating <- factor(ofsted_data$Rating, levels = c(
+    "outstanding_count",
+    "good_count",
+    "requires_improvement_count",
+    "inadequate_count"
+  ))
+
+  ofsted_data <- ofsted_data %>%
+    mutate(Rating = recode(Rating,
+      "inadequate_count" = "Inadequate",
+      "requires_improvement_count" = "Requires Improvement",
+      "good_count" = "Good",
+      "outstanding_count" = "Outstanding"
+    ))
+
+  # Set the max y-axis scale
+  max_rate <- max(ofsted_data$Count, na.rm = TRUE)
+
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
+
+  p <- ggplot(ofsted_data, aes(
+    x = geo_breakdown, y = Count, fill = factor(Rating),
+    text = paste(
+      "Breakdown:", "National", "<br>",
+      "Ofsted leadership rating:", Rating, "<br>",
+      "Count:", Count, "<br>",
+      "Latest inspection:", time_period
+    )
+  )) +
+    geom_bar(stat = "identity", position = position_dodge()) +
+    theme_classic() +
+    scale_fill_manual(
+      "Ofsted leadership rating", # Change legend title
+      values = gss_colour_pallette,
+      breaks = c("Outstanding", "Good", "Requires Improvement", "Inadequate")
+    ) +
+    scale_y_continuous(limits = c(0, max_rate)) +
+    xlab("Region") +
     ylab("Count")
 
   return(p)

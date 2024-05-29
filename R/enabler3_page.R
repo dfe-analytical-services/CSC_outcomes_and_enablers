@@ -203,14 +203,14 @@ enabler3_tab <- function() {
                   column(
                     width = 6,
                     value_box(
-                      title = '"Outstanding" leadership ratings',
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Outstanding",
                       value = htmlOutput("ofsted_outstanding_headline")
                     )
                   ),
                   column(
                     width = 6,
                     value_box(
-                      title = '"Good" leadership ratings',
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Good",
                       value = htmlOutput("ofsted_good_headline")
                     )
                   )
@@ -219,29 +219,25 @@ enabler3_tab <- function() {
                   column(
                     width = 6,
                     value_box(
-                      title = '"Requires Improvement" leadership ratings',
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Requires Improvement",
                       value = htmlOutput("ofsted_improvement_headline")
                     )
                   ),
                   column(
                     width = 6,
                     value_box(
-                      title = '"Inadequate" leadership ratings',
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Inadequate",
                       value = htmlOutput("ofsted_inadequate_headline")
                     )
                   )
                 ),
               ),
-              fluidRow(
-                br(),
-                p(htmlOutput("ofsted_latest_inspection")),
-                br()
-              ),
               accordion(
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
-                    h2("Ofsted – The impact of leaders on social work practice with children and families"),
+                    h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     plotlyOutput("plot_ofsted"),
                     br(),
                     details(
@@ -250,20 +246,25 @@ enabler3_tab <- function() {
                       help_text = (
                         dataTableOutput("ofsted_tbl")
                       )
+                    ),
+                    details(
+                      inputId = "ofsted_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("The latest inspection year is calculated by retrieving the latest year"),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
                     )
                   ),
                   gov_row(
-                    h2("by region"),
-                  ),
-                  gov_row(
-                    h2("by la"),
-                    radioGroupButtons(
-                      "ofted_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    # uiOutput("SN_sgo"),
+                    h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    plotlyOutput("plot_ofsted_reg"),
                   )
                 )
               )
