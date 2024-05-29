@@ -1202,6 +1202,14 @@ plot_ofsted <- function() {
     filter(geographic_level == "National", time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, Rating, Count)
 
+  # Set the factor levels for Rating in the desired order
+  ofsted_data$Rating <- factor(ofsted_data$Rating, levels = c(
+    "outstanding_count",
+    "good_count",
+    "requires_improvement_count",
+    "inadequate_count"
+  ))
+
   ofsted_data <- ofsted_data %>%
     mutate(Rating = recode(Rating,
       "inadequate_count" = "Inadequate",
@@ -1217,7 +1225,7 @@ plot_ofsted <- function() {
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(ofsted_data, aes(
-    x = Rating, y = Count,
+    x = Rating, y = Count, fill = factor(Rating),
     text = paste(
       "Breakdown:", "National", "<br>",
       "Ofsted leadership rating:", Rating, "<br>",
@@ -1225,8 +1233,15 @@ plot_ofsted <- function() {
       "Latest inspection:", time_period
     )
   )) +
-    geom_bar(stat = "identity", fill = "#12436D") +
+    geom_bar(stat = "identity", position = position_dodge()) +
+    theme_classic() +
     coord_flip() +
+    scale_fill_manual(
+      "Ofsted leadership rating", # Change legend title
+      values = gss_colour_pallette,
+      breaks = c("Outstanding", "Good", "Requires Improvement", "Inadequate")
+    ) +
+    scale_y_continuous(limits = c(0, max_rate)) +
     scale_x_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     xlab("Ofsted leadership rating") +
     ylab("Count")

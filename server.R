@@ -1311,6 +1311,13 @@ server <- function(input, output, session) {
   })
 
 
+  output$ofsted_latest_inspection <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3)
+
+    paste0("The latest available Ofsted inspection in ", tags$b(input$geographic_breakdown_e3), " is ", tags$b(max(data$time_period)), ".")
+  })
+
   ## Ofsted leadership rating ----
   output$plot_ofsted <- plotly::renderPlotly({
     ggplotly(
@@ -1321,18 +1328,18 @@ server <- function(input, output, session) {
     )
   })
 
-  output$ofsted_tbl <- renderReactable({ # renderDataTable({
-
-    data <- ofsted_leadership_data_long %>%
-      filter(geographic_level == "National", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, Rating, Count)
-
-    reactable(
-      data,
-      defaultPageSize = 15,
-      searchable = TRUE,
-    )
-  })
+  # output$ofsted_tbl <- renderReactable({ # renderDataTable({
+  #
+  #   data <- ofsted_leadership_data_long %>%
+  #     filter(geographic_level == "National", time_period == max(time_period)) %>%
+  #     select(time_period, geo_breakdown, Rating, Count)
+  #
+  #   reactable(
+  #     data,
+  #     defaultPageSize = 15,
+  #     searchable = TRUE,
+  #   )
+  # })
 
   output$ofsted_tbl <- renderDataTable({
     datatable(

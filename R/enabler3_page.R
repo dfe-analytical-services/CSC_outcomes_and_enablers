@@ -183,7 +183,7 @@ enabler3_tab <- function() {
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
               fluidRow(
-                # p("testing")
+                br()
               ),
               fluidRow(
                 column(
@@ -194,13 +194,22 @@ enabler3_tab <- function() {
                   )
                 ),
                 br(),
-                p("Rationale"),
+                p(htmlOutput("ofsted_latest_inspection")),
               ),
               accordion(
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families"),
+                    plotlyOutput("plot_ofsted"),
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("ofsted_tbl")
+                      )
+                    )
                   ),
                   gov_row(
                     h2("by region"),
