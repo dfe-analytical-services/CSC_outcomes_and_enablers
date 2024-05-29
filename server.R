@@ -1439,6 +1439,29 @@ server <- function(input, output, session) {
     )
   })
 
+  output$ofsted_reg_tbl <- renderDataTable({
+    datatable(
+      ofsted_leadership_data_long %>%
+        filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
+        mutate(Rating = recode(Rating,
+          "inadequate_count" = "Inadequate",
+          "requires_improvement_count" = "Requires Improvement",
+          "good_count" = "Good",
+          "outstanding_count" = "Outstanding"
+        )) %>%
+        arrange(desc(`Count`)),
+      colnames = c(
+        "Latest Inspection", "Geographic Level",
+        "Breakdown", "Ofsted leadership rating", "Count"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {

@@ -252,10 +252,8 @@ enabler3_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("The latest inspection year is calculated by retrieving the latest year"),
-                          tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
                           )
                         )
                       )
@@ -265,6 +263,14 @@ enabler3_tab <- function() {
                     h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     plotlyOutput("plot_ofsted_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("ofsted_reg_tbl")
+                      )
+                    ),
                   )
                 )
               )
