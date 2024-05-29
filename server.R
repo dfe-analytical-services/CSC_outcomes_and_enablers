@@ -8613,8 +8613,19 @@ server <- function(input, output, session) {
     )
   })
 
-
-
+  # Enabler 3 ----
+  ## Ofsted leadership rating ----
+  output$ofsted_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
 
   # Don't touch the code below -----------------------
 

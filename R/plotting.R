@@ -1425,6 +1425,56 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     )
 }
 
+statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) {
+  # Find the old_la_code for the selected geo_breakdown
+  selected_la_code <- dataset %>%
+    filter(geo_breakdown == selected_geo_breakdown) %>%
+    pull(old_la_code) %>%
+    unique()
+
+  # Get the list of statistical neighbours for the selected old_la_code
+  neighbours_list <- stats_neighbours %>%
+    filter(LA.number == selected_la_code) %>%
+    select(starts_with("SN")) %>%
+    unlist() %>%
+    as.character()
+
+  # Filter the main dataset for the selected geo_breakdown and its neighbours
+  # and only include rows where Count equals 1
+  filtered_data <- dataset %>%
+    filter(geo_breakdown %in% c(selected_geo_breakdown, neighbours_list), Count == 1) %>%
+    mutate(Rating = recode(Rating,
+      "inadequate_count" = "Inadequate",
+      "requires_improvement_count" = "Requires Improvement",
+      "good_count" = "Good",
+      "outstanding_count" = "Outstanding"
+    )) %>%
+    group_by(geo_breakdown) %>%
+    mutate(latest_inspection = max(time_period)) %>%
+    ungroup() %>%
+    select(geo_breakdown, Rating, latest_inspection)
+
+  # Ensure 'Rating' is treated as a discrete variable
+  filtered_data$Rating <- factor(filtered_data$Rating, levels = c("Inadequate", "Requires Improvement", "Good", "Outstanding"))
+
+  # Create the scatter plot
+  ggplot(filtered_data, aes(
+    x = geo_breakdown, y = Rating, fill = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours"),
+    text = paste0(
+      "Rating: ", Rating, "<br>",
+      "Local authority: ", geo_breakdown, "<br>",
+      "Latest inspection: ", latest_inspection
+    )
+  )) +
+    geom_point(shape = 23, size = 4) +
+    labs(x = "Geographic Breakdown", y = "Latest leadership rating", fill = "LA Selection") +
+    scale_fill_manual(values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")) +
+    theme_classic() +
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+}
+
+
+
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
   selected_la <- dataset %>%

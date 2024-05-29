@@ -270,7 +270,13 @@ enabler3_tab <- function() {
                       help_text = (
                         dataTableOutput("ofsted_reg_tbl")
                       )
-                    ),
+                    )
+                  ),
+                  gov_row(
+                    h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
+                    p("Hover over each data point to see the year of their last Ofsted inspection."),
+                    plotlyOutput("ofsted_SN_plot"),
+                    br()
                   )
                 )
               )
