@@ -186,15 +186,56 @@ enabler3_tab <- function() {
                 br()
               ),
               fluidRow(
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Ofsted leadership and rating score",
-                    value = "value"
+                conditionalPanel(
+                  condition = "input.select_geography_e3 == 'Local authority'",
+                  column(
+                    width = 4,
+                    value_box(
+                      title = "LA Ofsted leadership rating",
+                      value = htmlOutput("ofsted_la_headline")
+                    )
+                  )
+                )
+              ),
+              conditionalPanel(
+                condition = "input.select_geography_e3 != 'Local authority'",
+                fluidRow(
+                  column(
+                    width = 6,
+                    value_box(
+                      title = '"Outstanding" leadership ratings',
+                      value = htmlOutput("ofsted_outstanding_headline")
+                    )
+                  ),
+                  column(
+                    width = 6,
+                    value_box(
+                      title = '"Good" leadership ratings',
+                      value = htmlOutput("ofsted_good_headline")
+                    )
                   )
                 ),
+                fluidRow(
+                  column(
+                    width = 6,
+                    value_box(
+                      title = '"Requires Improvement" leadership ratings',
+                      value = htmlOutput("ofsted_improvement_headline")
+                    )
+                  ),
+                  column(
+                    width = 6,
+                    value_box(
+                      title = '"Inadequate" leadership ratings',
+                      value = htmlOutput("ofsted_inadequate_headline")
+                    )
+                  )
+                ),
+              ),
+              fluidRow(
                 br(),
                 p(htmlOutput("ofsted_latest_inspection")),
+                br()
               ),
               accordion(
                 accordion_panel(

@@ -1311,6 +1311,7 @@ server <- function(input, output, session) {
   })
 
 
+  ## Ofsted leadership rating ----
   output$ofsted_latest_inspection <- renderText({
     data <- ofsted_leadership_data_long %>%
       filter(geo_breakdown == input$geographic_breakdown_e3)
@@ -1318,7 +1319,91 @@ server <- function(input, output, session) {
     paste0("The latest available Ofsted inspection in ", tags$b(input$geographic_breakdown_e3), " is ", tags$b(max(data$time_period)), ".")
   })
 
-  ## Ofsted leadership rating ----
+  output$ofsted_la_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Rating[which.max(data$Count)])
+    }
+  })
+
+  output$ofsted_outstanding_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Outstanding")])
+    }
+  })
+
+  output$ofsted_good_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Good")])
+    }
+  })
+
+  output$ofsted_improvement_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Requires Improvement")])
+    }
+  })
+
+  output$ofsted_inadequate_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Inadequate")])
+    }
+  })
+
   output$plot_ofsted <- plotly::renderPlotly({
     ggplotly(
       plot_ofsted() %>%
