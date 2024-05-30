@@ -1473,6 +1473,7 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
     geom_point(shape = 23, size = 4) +
     labs(x = "Geographic Breakdown", y = "Latest leadership rating", fill = "LA Selection") +
     scale_fill_manual(values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")) +
+    scale_y_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     theme_classic() +
     theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
