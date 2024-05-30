@@ -8627,17 +8627,6 @@ server <- function(input, output, session) {
     )
   })
 
-  # output$ofsted_SN_tbl <- renderReactable({
-  #   validate(
-  #     need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
-  #   )
-  #   reactable(
-  #     stats_neighbours_table_ofsted(data, selected_geo_breakdown = input$geographic_breakdown_e3),
-  #     defaultPageSize = 11,
-  #     searchable = TRUE
-  #   )
-  # })
-
   output$ofsted_SN_tbl <- renderReactable({
     validate(
       need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
@@ -8654,7 +8643,7 @@ server <- function(input, output, session) {
       ungroup()
     reactable(
       stats_neighbours_table_ofsted(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Rating"),
-      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      defaultPageSize = 11,
       searchable = TRUE,
     )
   })
