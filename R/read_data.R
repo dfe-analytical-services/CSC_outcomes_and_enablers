@@ -490,6 +490,76 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
   return(final_dataset)
 }
 
+read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
+  population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
+  test_df <- population_estimates
+  test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
+  test_df2 <- test_df[grepl("^E10|^E06|^E08|^E09", test_df$Code), ]
+  local_authority_pop <- test_df2 %>% select("Code", "Name", "Geography", "under18")
+
+  regional_pop <- test_df[grepl("^E12", test_df$Code), ]
+  regional_pop$Name <- str_to_title((regional_pop$Name))
+  regional_pop$Name[regional_pop$Name == "Yorkshire And The Humber"] <- "Yorkshire and The Humber"
+  regional_pop$Name[regional_pop$Name == "East"] <- "East of England"
+  regional_pop <- regional_pop %>% select("Code", "Name", "Geography", "under18")
+
+  # Join local authority and regional pop together
+  population <- rbind(local_authority_pop, regional_pop)
+  # Get national data
+  national_pop <- sum(population[population$Geography == "Region", "under18"], na.rm = FALSE)
+  new_row <- data.frame(Code = "E92000001", Name = "National", Geography = "National", under18 = national_pop)
+  population2 <- rbind(population, new_row)
+  # Correct formatting
+  population3 <- population2 %>%
+    mutate(geographic_level = case_when(
+      Geography == "Region" ~ "Regional",
+      Geography == "County" ~ "Local authority",
+      Geography == "London Borough" ~ "Local authority",
+      Geography == "Metropolitan District" ~ "Local authority",
+      Geography == "Unitary Authority" ~ "Local authority",
+      TRUE ~ as.character(Geography)
+    )) %>%
+    select("Code", "Name", "geographic_level", "under18") %>%
+    rename("new_la_code" = "Code", "geo_breakdown" = "Name")
+
+  # Need to make sure the LA's in population estimates are the same as the spending data LA's
+  # Joining west moreland + cumberland to get cumbria
+  cumbria_pop <- sum(population3[(population3$geo_breakdown == "Westmorland and Furness" | population3$geo_breakdown == "Cumberland"), "under18"], na.rm = FALSE)
+  new_row1 <- data.frame(new_la_code = "E10000006", geographic_level = "Local authority", geo_breakdown = "Cumbria", under18 = cumbria_pop)
+  population4 <- rbind(population3, new_row1)
+
+  # Joining up LA's to get population Estimates for inner and outer london
+  outer_london_list <- c("E09000002", "E09000003", "E09000004", "E09000005", "E09000006", "E09000008", "E09000009", "E09000010", "E09000011", "E09000015", "E09000016", "E09000017", "E09000018", "E09000021", "E09000024", "E09000026", "E09000027", "E09000029", "E09000031")
+  inner_london_list <- c("E09000007", "E09000001", "E09000012", "E09000013", "E09000014", "E09000019", "E09000020", "E09000022", "E09000023", "E09000025", "E09000028", "E09000030", "E09000032", "E09000033")
+  inner_london <- sum(population4[(population4$new_la_code %in% inner_london_list), "under18"], na.rm = FALSE)
+  outer_london <- sum(population4[(population4$new_la_code %in% outer_london_list), "under18"], na.rm = FALSE)
+  inner_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Inner London", under18 = inner_london)
+  outer_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Outer London", under18 = outer_london)
+
+  population5 <- rbind(population4, inner_row) %>%
+    rbind(outer_row) %>%
+    select(-c(new_la_code))
+
+  spending_data <- suppressWarnings(read_spending_data())
+  joined_data <- left_join(spending_data, population5, by = c("geographic_level", "geo_breakdown"))
+  joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 2)
+
+  joined_data2 <- joined_data %>%
+    mutate(`Cost per child` = case_when(
+      exp == -300 ~ "x",
+      TRUE ~ as.character(`Cost per child`)
+    )) %>%
+    mutate(cost_per_capita = case_when(
+      exp == -300 ~ -300,
+      TRUE ~ as.numeric((exp / under18) * 1000)
+    ))
+
+  joined_data2$`Cost per child` <- formatC(joined_data2$`Cost per child`, format = "f", big.mark = ",", digits = 0)
+  joined_data2$cost_per_capita <- format(joined_data2$cost_per_capita, digits = 2)
+
+  return(joined_data2)
+}
+
 read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RO3_LA_Data_2022-23", range = "A12:CP439")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")

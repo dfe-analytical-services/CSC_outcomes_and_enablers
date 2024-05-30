@@ -35,6 +35,8 @@ shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
 shhh(library(reactable))
 shhh(library(readODS))
+shhh(library(readxl))
+
 
 # shhh(library(shinya11y))
 
@@ -110,6 +112,7 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
 spending_data <- suppressWarnings(read_spending_data())
 spending_data_no_cla <- suppressWarnings(read_spending_data2())
+spending_per_capita <- suppressWarnings(read_per_capita_spending())
 
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
 ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
