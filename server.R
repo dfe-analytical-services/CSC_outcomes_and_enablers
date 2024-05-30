@@ -1253,62 +1253,63 @@ server <- function(input, output, session) {
   # })
 
   ##### Time series plot
-  output$plot_spending_ts <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location."),
-      need(input$spending_choice != "", "Select spending level.")
-    )
-
-    # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
-      # collect the data and
-      if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
-        filtered_data <- spending_data %>%
-          filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
-
-        # national only
-      } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
-        filtered_data <- spending_data %>%
-          filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
-
-        # regional only
-      } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
-        location <- location_data %>%
-          filter(la_name %in% input$geographic_breakdown_e3)
-
-        filtered_data <- spending_data %>%
-          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
-
-        # both selected
-      } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
-        location <- location_data %>%
-          filter(la_name %in% input$geographic_breakdown_e3)
-
-        filtered_data <- spending_data %>%
-          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
-      }
-
-      filtered_data <- filtered_data %>%
-        rename("Share of total spend on children's services" = "cs_share")
-
-      # Set the max y-axis scale
-      max_rate <- max(spending_data$cs_share, na.rm = TRUE)
-
-      # Round the max_rate to the nearest 50
-      max_rate <- ceiling(max_rate / 50) * 50
-
-      p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Share of total spend on children's services", "Share of total spend on children's services", max_rate) %>%
-        config(displayModeBar = F)
-      p <- p + ggtitle("Share of total spend on Children’s Services")
-
-      ggplotly(p, height = 420, tooltip = "text") %>%
-        layout(yaxis = list(range = c(0, max_rate)))
-    } else {
-
-
-    }
-  })
+  # output$plot_spending_ts <- plotly::renderPlotly({
+  #   shiny::validate(
+  #     need(input$select_geography_e3 != "", "Select a geography level."),
+  #     need(input$geographic_breakdown_e3 != "", "Select a location."),
+  #     need(input$spending_choice != "", "Select spending level.")
+  #   )
+  #
+  #   # Need an if statement to look at the spending level choice this will determine the data in the chart
+  #   if (input$spending_choice == "Share of total spend on children's services") {
+  #     # collect the data and
+  #     if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+  #       filtered_data <- spending_data %>%
+  #         filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+  #
+  #       # national only
+  #     } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+  #       filtered_data <- spending_data %>%
+  #         filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+  #
+  #       # regional only
+  #     } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+  #       location <- location_data %>%
+  #         filter(la_name %in% input$geographic_breakdown_e3)
+  #
+  #       filtered_data <- spending_data %>%
+  #         filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+  #
+  #       # both selected
+  #     } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+  #       location <- location_data %>%
+  #         filter(la_name %in% input$geographic_breakdown_e3)
+  #
+  #       filtered_data <- spending_data %>%
+  #         filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+  #     }
+  #
+  #     filtered_data <- filtered_data %>%
+  #       rename("Share of total spend on children's services" = "cs_share")
+  #
+  #     # Set the max y-axis scale
+  #     max_rate <- max(spending_data$cs_share, na.rm = TRUE)
+  #
+  #     # Round the max_rate to the nearest 50
+  #     max_rate <- ceiling(max_rate / 50) * 50
+  #
+  #     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Share of total spend on children's services", "Share of total spend on children's services", max_rate) %>%
+  #       config(displayModeBar = F)
+  #     p <- p + ggtitle("Share of total spend on Children’s Services")
+  #
+  #     ggplotly(p, height = 420, tooltip = "text") %>%
+  #       layout(yaxis = list(range = c(0, max_rate)))
+  #
+  #   } else {
+  #
+  #
+  #   }
+  # })
 
 
   ## Ofsted leadership rating ----
