@@ -153,6 +153,9 @@ server <- function(input, output, session) {
   # enabler2
   iv$add_rule("select_geography_e2", sv_required())
   iv$add_rule("geographic_breakdown_e2", sv_required())
+  # enabler3
+  iv$add_rule("select_geography_e3", sv_required())
+  iv$add_rule("geographic_breakdown_e3", sv_required())
 
 
   iv$enable()
@@ -1156,6 +1159,304 @@ server <- function(input, output, session) {
         scrollx = FALSE,
         paging = TRUE,
         target = "column"
+      )
+    )
+  })
+
+  # Enabler 3 -----
+  # Geographic breakdown e3 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_e3
+  }, {
+    choices <- sort(unique(ofsted_leadership_data[ofsted_leadership_data$geographic_level == input$select_geography_e3, ][["geo_breakdown"]]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_e3",
+      selected = choices[1],
+      choices = choices
+    )
+  })
+
+  ## Confirmation sentence E3 -------
+  # This function gets the selected region to put into the confirmation text below
+
+  workforce_region <- reactive({
+    location_data %>%
+      filter(la_name == input$geographic_breakdown_e3) %>%
+      pull(region_name) %>%
+      as.character() # Convert to character
+  })
+
+  # First sentence for the dropdown choices
+  output$enabler3_choice_text1 <- renderText({
+    if (input$select_geography_e3 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_e3 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ".")
+    } else if (input$select_geography_e3 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region(), ".")
+    }
+  })
+
+  output$enabler3_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  ## Spending -----
+
+  ##### Headline stats
+  # Share of total spend on CS
+  output$total_spending_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(spending_data %>% filter(time_period == "2022/23" &
+        geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(`CS Share`), nsmall = 2)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data$time_period), ")", "</p>")
+  })
+
+  # Average spend per child
+  # output$avg_spend_per_child <- renderText({
+  #   if (input$geographic_breakdown_e3 == "") {
+  #     stat <- "NA"
+  #   } else {
+  #     stat <- format(spending_data %>% filter(time_period == max(spending_data$time_period) &
+  #       geo_breakdown %in% input$geographic_breakdown_e3) %>%
+  #       select())
+  #   }
+  #
+  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
+  # })
+
+  # Share of total spend on children's services minus CLA
+  # output$spend_minus_cla <- renderText({
+  #   if (input$geographic_breakdown_e3 == "") {
+  #     stat <- "NA"
+  #   } else {
+  #
+  #   }
+  #
+  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
+  # })
+
+  ##### Time series plot
+  output$plot_spending_ts <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
+      need(input$spending_choice != "", "Select spending level.")
+    )
+
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      # collect the data and
+      if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+        filtered_data <- spending_data %>%
+          filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+
+        # national only
+      } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+        filtered_data <- spending_data %>%
+          filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+
+        # regional only
+      } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+        location <- location_data %>%
+          filter(la_name %in% input$geographic_breakdown_e3)
+
+        filtered_data <- spending_data %>%
+          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+
+        # both selected
+      } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+        location <- location_data %>%
+          filter(la_name %in% input$geographic_breakdown_e3)
+
+        filtered_data <- spending_data %>%
+          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+      }
+
+      filtered_data <- filtered_data %>%
+        rename("Share of total spend on children's services" = "cs_share")
+
+      # Set the max y-axis scale
+      max_rate <- max(spending_data$cs_share, na.rm = TRUE)
+
+      # Round the max_rate to the nearest 50
+      max_rate <- ceiling(max_rate / 50) * 50
+
+      p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Share of total spend on children's services", "Share of total spend on children's services", max_rate) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on Children’s Services")
+
+      ggplotly(p, height = 420, tooltip = "text") %>%
+        layout(yaxis = list(range = c(0, max_rate)))
+    } else {
+
+
+    }
+  })
+
+
+  ## Ofsted leadership rating ----
+  output$ofsted_la_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "" || nrow(data) == 0) {
+      return("NA")
+    } else {
+      paste0(data$Rating[which.max(data$Count)], "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+    }
+  })
+
+
+  output$ofsted_outstanding_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Outstanding")])
+    }
+  })
+
+  output$ofsted_good_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Good")])
+    }
+  })
+
+  output$ofsted_improvement_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Requires Improvement")])
+    }
+  })
+
+  output$ofsted_inadequate_headline <- renderText({
+    data <- ofsted_leadership_data_long %>%
+      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      ))
+
+    if (input$geographic_breakdown_e3 == "") {
+      paste0("NA")
+    } else {
+      paste0(data$Count[which(data$Rating == "Inadequate")])
+    }
+  })
+
+  output$plot_ofsted <- plotly::renderPlotly({
+    ggplotly(
+      plot_ofsted() %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$plot_ofsted_reg <- plotly::renderPlotly({
+    ggplotly(
+      plot_ofsted_reg() %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$ofsted_tbl <- renderDataTable({
+    datatable(
+      ofsted_leadership_data_long %>%
+        filter(geographic_level == "National", time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, Rating, Count) %>%
+        mutate(Rating = recode(Rating,
+          "inadequate_count" = "Inadequate",
+          "requires_improvement_count" = "Requires Improvement",
+          "good_count" = "Good",
+          "outstanding_count" = "Outstanding"
+        )) %>%
+        arrange(desc(`Count`)),
+      colnames = c(
+        "Latest Inspection",
+        "Breakdown", "Ofsted leadership rating", "Count"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
+      )
+    )
+  })
+
+  output$ofsted_reg_tbl <- renderDataTable({
+    datatable(
+      ofsted_leadership_data_long %>%
+        filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
+        mutate(Rating = recode(Rating,
+          "inadequate_count" = "Inadequate",
+          "requires_improvement_count" = "Requires Improvement",
+          "good_count" = "Good",
+          "outstanding_count" = "Outstanding"
+        )) %>%
+        arrange(desc(`Count`)),
+      colnames = c(
+        "Latest Inspection", "Geographic Level",
+        "Breakdown", "Ofsted leadership rating", "Count"
+      ),
+      options = list(
+        scrollx = FALSE,
+        paging = TRUE
       )
     )
   })
@@ -8463,7 +8764,40 @@ server <- function(input, output, session) {
 
 
 
+  # Enabler 3 ----
+  ## Ofsted leadership rating ----
+  output$ofsted_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    ggplotly(
+      statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
+        config(displayModeBar = F),
+      height = 420,
+      tooltip = "text"
+    )
+  })
 
+  output$ofsted_SN_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- ofsted_leadership_data_long %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      group_by(geo_breakdown) %>%
+      mutate(latest_rating = max(time_period)) %>%
+      ungroup()
+    reactable(
+      stats_neighbours_table_ofsted(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Rating"),
+      defaultPageSize = 11,
+      searchable = TRUE,
+    )
+  })
 
 
   # Don't touch the code below -----------------------
