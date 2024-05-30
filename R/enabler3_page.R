@@ -252,7 +252,8 @@ enabler3_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          p(
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'"), " guidance."),
+                          tags$li(
                             "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
                           )
                         )
@@ -276,7 +277,14 @@ enabler3_tab <- function() {
                     h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
                     p("Hover over each data point to see the year of their last Ofsted inspection."),
                     plotlyOutput("ofsted_SN_plot"),
-                    br()
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted_SN",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("ofsted_SN_tbl")
+                      )
+                    )
                   )
                 )
               )

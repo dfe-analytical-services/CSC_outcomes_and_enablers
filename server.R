@@ -8627,6 +8627,39 @@ server <- function(input, output, session) {
     )
   })
 
+  # output$ofsted_SN_tbl <- renderReactable({
+  #   validate(
+  #     need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
+  #   )
+  #   reactable(
+  #     stats_neighbours_table_ofsted(data, selected_geo_breakdown = input$geographic_breakdown_e3),
+  #     defaultPageSize = 11,
+  #     searchable = TRUE
+  #   )
+  # })
+
+  output$ofsted_SN_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
+    )
+    data <- ofsted_leadership_data_long %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      group_by(geo_breakdown) %>%
+      mutate(latest_rating = max(time_period)) %>%
+      ungroup()
+    reactable(
+      stats_neighbours_table_ofsted(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Rating"),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
+
   # Don't touch the code below -----------------------
 
   observeEvent(input$go, {

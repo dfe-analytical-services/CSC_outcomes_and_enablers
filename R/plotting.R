@@ -1230,7 +1230,7 @@ plot_ofsted <- function() {
       "Breakdown:", "National", "<br>",
       "Ofsted leadership rating:", Rating, "<br>",
       "Count:", Count, "<br>",
-      "Latest inspection:", time_period
+      "Latest data publication:", time_period
     )
   )) +
     geom_bar(stat = "identity", position = position_dodge()) +
@@ -1283,7 +1283,7 @@ plot_ofsted_reg <- function() {
       "Breakdown:", "National", "<br>",
       "Ofsted leadership rating:", Rating, "<br>",
       "Count:", Count, "<br>",
-      "Latest inspection:", time_period
+      "Latest data publication:", time_period
     )
   )) +
     geom_bar(stat = "identity", position = position_dodge()) +
@@ -1442,28 +1442,32 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
   # Filter the main dataset for the selected geo_breakdown and its neighbours
   # and only include rows where Count equals 1
   filtered_data <- dataset %>%
-    filter(geo_breakdown %in% c(selected_geo_breakdown, neighbours_list), Count == 1) %>%
+    filter(
+      geo_breakdown %in% c(selected_geo_breakdown, neighbours_list),
+      Count == 1,
+      geographic_level == "Local authority"
+    ) %>%
     mutate(Rating = recode(Rating,
       "inadequate_count" = "Inadequate",
       "requires_improvement_count" = "Requires Improvement",
       "good_count" = "Good",
       "outstanding_count" = "Outstanding"
     )) %>%
+    filter(geographic_level == "Local authority") %>%
     group_by(geo_breakdown) %>%
-    mutate(latest_inspection = max(time_period)) %>%
+    mutate(latest_rating = max(time_period)) %>%
     ungroup() %>%
-    select(geo_breakdown, Rating, latest_inspection)
+    select(geo_breakdown, Rating, latest_rating)
 
   # Ensure 'Rating' is treated as a discrete variable
   filtered_data$Rating <- factor(filtered_data$Rating, levels = c("Inadequate", "Requires Improvement", "Good", "Outstanding"))
 
-  # Create the scatter plot
   ggplot(filtered_data, aes(
     x = geo_breakdown, y = Rating, fill = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours"),
     text = paste0(
       "Rating: ", Rating, "<br>",
       "Local authority: ", geo_breakdown, "<br>",
-      "Latest inspection: ", latest_inspection
+      "Last rated: ", latest_rating
     )
   )) +
     geom_point(shape = 23, size = 4) +
@@ -1553,6 +1557,56 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
     )) %>%
     arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
 }
+
+stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
+  selected_la <- dataset %>%
+    filter(geographic_level == "Local authority", geo_breakdown == selected_geo_breakdown, Count == 1) %>%
+    select(geo_breakdown, old_la_code)
+
+  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
+
+  neighbours_list <- stats_neighbours %>%
+    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
+    as.list()
+
+  if (is.null(selectedcolumn)) {
+    data2 <- dataset %>%
+      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list), Count == 1) %>%
+      select(latest_rating, geo_breakdown, `yvalue`) %>%
+      mutate(
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Last rated` = `latest_rating`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
+      mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
+        . == "z" ~ "-400",
+        . == "c" ~ "-100",
+        . == "k" ~ "-200",
+        . == "x" ~ "-300",
+        TRUE ~ as.character(.)
+      )) %>%
+      arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+  } else {
+    data2 <- dataset %>%
+      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      select(all_of(c("latest_rating", "geo_breakdown", selectedcolumn, yvalue))) %>%
+      mutate(
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Last rated` = `latest_rating`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
+      mutate_at(str_to_title(str_replace_all(yvalue, "_", " ")), ~ case_when(
+        . == "z" ~ "-400",
+        . == "c" ~ "-100",
+        . == "k" ~ "-200",
+        . == "x" ~ "-300",
+        TRUE ~ as.character(.)
+      )) %>%
+      arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
+  }
+}
+
 
 # Ordering tables with suppression
 cellfunc <- function(value) {
