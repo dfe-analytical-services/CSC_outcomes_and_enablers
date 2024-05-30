@@ -1242,15 +1242,16 @@ server <- function(input, output, session) {
   # })
 
   # Share of total spend on children's services minus CLA
-  # output$spend_minus_cla <- renderText({
-  #   if (input$geographic_breakdown_e3 == "") {
-  #     stat <- "NA"
-  #   } else {
-  #
-  #   }
-  #
-  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
-  # })
+  output$spend_minus_cla_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(spending_data_no_cla %>% filter(time_period == "2022/23" &
+        geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(`Excluding CLA Share`), nsmall = 2)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data_no_cla$time_period), ")", "</p>")
+  })
 
   ##### Time series plot
   # output$plot_spending_ts <- plotly::renderPlotly({

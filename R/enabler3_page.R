@@ -104,7 +104,7 @@ enabler3_tab <- function() {
                   value_box(
                     title = "Share of total spend on Children's services
                     minus CLA",
-                    value = "value"
+                    value = htmlOutput("spend_minus_cla_txt")
                   )
                 ),
                 br(),

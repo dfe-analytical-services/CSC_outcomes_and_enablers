@@ -510,7 +510,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       `Total Expenditure` == "x" ~ 0,
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
-  # calculate the share of the
+  # calculate the share of the expenditure not for CLA
   data3$minus_cla_share <- round(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100, digits = 2)
   data3 <- data3 %>%
     mutate(minus_cla_share = case_when(
@@ -532,7 +532,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
 
   regional_spending <- merged_data %>%
     group_by(region_name) %>%
@@ -550,7 +550,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   final_dataset <- df2 %>%
     mutate(exp = case_when(
       `CLA Expenditure` == "x" ~ -300,
-      TRUE ~ as.numeric(exp)
+      TRUE ~ as.numeric(cla_exp)
     )) %>%
     mutate(total_exp = case_when(
       `Total Expenditure` == "x" ~ -300,
@@ -564,8 +564,8 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       minus_cla_share == -300 ~ "x",
       TRUE ~ as.character(minus_cla_share)
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
-  final_dataset$cs_share <- round(final_dataset$cs_share, digits = 2)
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
+  final_dataset$minus_cla_share <- round(final_dataset$minus_cla_share, digits = 2)
 
   return(final_dataset)
 }
