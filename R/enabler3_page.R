@@ -149,6 +149,20 @@ enabler3_tab <- function() {
                     br(),
                     plotlyOutput("plot_spending_region"),
                     br(),
+                    details(
+                      inputId = "spend1_region_tbl",
+                      label = "View chart as table",
+                      help_text = (
+                        reactableOutput("table_tot_spending_reg")
+                      )
+                    ),
+                    details(
+                      inputId = "spend1_region_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p("table")
+                      )
+                    )
                   ),
                   gov_row(
                     htmlOutput("spending_header2"),
