@@ -96,7 +96,7 @@ enabler3_tab <- function() {
                   width = 4,
                   value_box(
                     title = "Average per child spend",
-                    value = "value"
+                    value = htmlOutput("avg_spend_per_child")
                   )
                 ),
                 column(
@@ -145,10 +145,13 @@ enabler3_tab <- function() {
                     # )
                   ),
                   gov_row(
-                    h2("by region"),
+                    htmlOutput("spending_header1"),
+                    br(),
+                    plotlyOutput("plot_spending_region"),
+                    br(),
                   ),
                   gov_row(
-                    h2("by la"),
+                    htmlOutput("spending_header2"),
                     # p(),
                     radioGroupButtons(
                       "spending1_stats_toggle",
@@ -156,7 +159,8 @@ enabler3_tab <- function() {
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    # uiOutput("SN_sgo"),
+                    # plotlyOutput("plot_spending_la")
+                    uiOutput("SN_total_spending"),
                   )
                 ),
                 accordion_panel(

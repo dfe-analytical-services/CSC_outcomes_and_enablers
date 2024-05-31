@@ -542,7 +542,8 @@ read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
 
   spending_data <- suppressWarnings(read_spending_data())
   joined_data <- left_join(spending_data, population5, by = c("geographic_level", "geo_breakdown"))
-  joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 2)
+  joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
+  joined_data$cost_per_capita <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
 
   joined_data2 <- joined_data %>%
     mutate(`Cost per child` = case_when(
@@ -551,11 +552,11 @@ read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
     )) %>%
     mutate(cost_per_capita = case_when(
       exp == -300 ~ -300,
-      TRUE ~ as.numeric((exp / under18) * 1000)
+      TRUE ~ as.numeric(cost_per_capita)
     ))
 
   joined_data2$`Cost per child` <- formatC(joined_data2$`Cost per child`, format = "f", big.mark = ",", digits = 0)
-  joined_data2$cost_per_capita <- format(joined_data2$cost_per_capita, digits = 2)
+  joined_data2$cost_per_capita <- round(joined_data2$cost_per_capita, digits = 2)
 
   return(joined_data2)
 }

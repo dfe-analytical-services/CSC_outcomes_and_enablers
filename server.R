@@ -1229,17 +1229,17 @@ server <- function(input, output, session) {
   })
 
   # Average spend per child
-  # output$avg_spend_per_child <- renderText({
-  #   if (input$geographic_breakdown_e3 == "") {
-  #     stat <- "NA"
-  #   } else {
-  #     stat <- format(spending_data %>% filter(time_period == max(spending_data$time_period) &
-  #       geo_breakdown %in% input$geographic_breakdown_e3) %>%
-  #       select())
-  #   }
-  #
-  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
-  # })
+  output$avg_spend_per_child <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(spending_per_capita %>% filter(time_period == max(spending_per_capita$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(`Cost per child`))
+    }
+
+    paste0("~ £", stat, " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
+  })
 
   # Share of total spend on children's services minus CLA
   output$spend_minus_cla_txt <- renderText({
@@ -1311,6 +1311,91 @@ server <- function(input, output, session) {
   #
   #   }
   # })
+
+  # Dynamic titles
+  output$spending_header1 <- renderUI({
+    h2(paste(input$spending_choice, " by region"))
+  })
+  output$spending_header2 <- renderUI({
+    h2(paste(input$spending_choice, " by local authority"))
+  })
+
+
+  ## Regional plot for spending
+  output$plot_spending_region <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
+
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on children's services (%)")
+    } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cost_per_capita) %>%
+        rename("Spend per child (£)" = "cost_per_capita")
+
+      max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
+
+      p <- by_region_bar_plot(data, "Spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£)")
+    }
+
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Local authority spending
+  output$plot_spending_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
+
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e3, selected_geo_lvl = input$select_geography_e3, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)") %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on children's services (%)") +
+        scale_y_continuous(limits = c(0, max_y_lim))
+    } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cost_per_capita) %>%
+        rename("Spend per child (£)" = "cost_per_capita")
+
+      max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
+
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e3, selected_geo_lvl = input$select_geography_e3, yvalue = "Spend per child (£)", yaxis_title = "Average spend per child (£)") %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£)") +
+        scale_y_continuous(limits = c(0, max_y_lim))
+    }
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
 
 
   ## Ofsted leadership rating ----
@@ -8478,6 +8563,94 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
+  ## Enabler 3----------------
+  ### Spending total ----
+  output$SN_total_spending <- renderUI({
+    if (input$spending1_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_spending_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_caseload_la",
+          label = "View chart as a table",
+          help_text = (
+            # dataTableOutput("table_caseload_la")
+            p("la table here")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("total_spending_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_total_spending",
+          label = "View chart as a table",
+          help_text = (
+            # reactableOutput("SN_caseload_tbl")
+            p("table")
+          )
+        ),
+        details(
+          inputId = "sn_caseload_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
+
+  output$total_spending_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data
+
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e3, input$select_geography_e3, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
+    } else {
+      data <- spending_per_capita %>%
+        rename("Spend per child (£)" = "cost_per_capita")
+
+      max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
+
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e3, input$select_geography_e3, "Spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
+    }
+
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+
+    # filtered_data <- repeat_cpp %>%
+    #   rename("Repeat CPP (%)" = "Repeat_CPP_percent")
+    # ggplotly(
+    #   statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
+    #     config(displayModeBar = F),
+    #   height = 420,
+    #   tooltip = "text"
+    # )
+  })
+
+
+  ### Spending Excluding CLA -----
 
 
 
