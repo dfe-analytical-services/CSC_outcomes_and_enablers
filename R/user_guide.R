@@ -27,7 +27,8 @@ tutorialPanel <- function() {
               tags$li("z - observation is not applicable.")
             ),
             tags$li("Select ‘Additional information’ underneath charts and tables where available, to view footnotes regarding the data source and limitations for context."),
-            tags$li("If you have selected ‘Local Authority’ as the geographic level you can also select to view a chart called ‘10 statistical neighbours’.  For more information on statistical neighbours, see…..<insert links or publication here>")
+            tags$li("If you have selected ‘Local Authority’ as the geographic level you can also select to view a chart called ‘10 statistical neighbours’."),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )
         )
       ),
@@ -46,7 +47,8 @@ tutorialPanel <- function() {
             tags$h6("Using the Key", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px; font-weight: bold"),
             tags$li("Double clicking a line/value in the key will isolate the value in the plot."),
             tags$li("Double clicking the same value again will restore the original plot"),
-            tags$li("Single clicking a line/value in the key will remove that line/value from the plot")
+            tags$li("Single clicking a line/value in the key will remove that line/value from the plot"),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )
         )
       ),
