@@ -149,10 +149,8 @@ enabler2_tab <- function() {
                     # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
 
                     insert_text(inputId = "social_work_turnover_definition", text = paste(
-                      "<b>", "Turnover rate", "</b><br>",
-                      "The turnover rate is calculated as the number of FTE (full-time equivalent)
-                                  children and family social worker leavers in the year divided by the number of FTE children and
-                                  family social workers in post at the 30 September."
+                      "The ", "<b>", "turnover rate", "</b>", " is calculated as (the number of) FTE children and family social worker leavers in the year to 30 September divided by FTE children and family social workers in
+                      post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."
                     )),
                     plotlyOutput("plot_s_w_turnover"),
                     br(),
@@ -212,6 +210,10 @@ enabler2_tab <- function() {
                     h2("Agency rates"),
                     p("Prioritising a stable and permanent workforce allows children, young people and families to maintain consistent relationships with practitioners.
                            Agency workers should only be used as per the national agency rules from Autumn 2024."),
+                    insert_text(inputId = "agency_rates_definition", text = paste(
+                      "<b>", "Agency workers", "</b>", "are children and family social workers not directly paid by the local authority. These may be social workers who are paid by an agency rather than the local authority or who are self-employed.", "<br>", "<br>",
+                      "The ", "<b>", "agency worker rate", "</b>", ", as at 30 September, is calculated as (the number of) FTE (full-time equivalent) agency (children and family) social workers divided by the sum of FTE agency social workers and FTE social workers."
+                    )),
                     br(),
                     plotlyOutput("plot_agency_worker"),
                     br(),
@@ -228,9 +230,6 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li(tags$b("Agency workers"), " are child and family social workers not directly paid by the local authority. These may be social workers who are paid by an agency rather than the local authority or who are self-employed."),
-                          tags$li("The ", tags$b("FTE agency worker rate"), " is calculated as the number of FTE agency staff working as (children and family) social workers at 30 September divided by the sum of the number of FTE agency staff working as social workers at 30 September and the number of FTE social workers."),
-                          tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
@@ -273,11 +272,10 @@ enabler2_tab <- function() {
                   gov_row(
                     h2("Vacancy rates"),
                     p("A workforce strategy should develop and maintain an effective workforce. With a well-supported workforce vacancy rates should remain low."),
-                    # insert_text(inputId = "vacancy_rates_rationale", text = paste(
-                    #   "A workforce strategy should develop and maintain an effective workforce.
-                    #        With a well-supported workforce vacancy rates should remain low."
-                    # )),
-                    # p("The vacancy rate is calculated as the number of FTE vacancies at 30 September divided by the sum of the number of FTE vacancies at 30 September and the number of FTE social workers at 30 September."),
+                    insert_text(inputId = "vacancy_rates_definition", text = paste(
+                      "<b>", "Vacancies", "</b>", "  are defined as any FTE (child and family social worker) vacancy at 30 September within a local authority’s organisational structure, including vacancies that are not being actively recruited for, and those covered by agency workers.", "<br>", "<br>",
+                      "The ", "<b>", "vacancy rate", "</b>", ", as at 30 September, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."
+                    )),
                     br(),
                     plotlyOutput("plot_vacancy_rate"),
                     # p("plots go here"),
@@ -295,9 +293,6 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li(tags$b("Vacancies"), " are defined as any FTE (child and family social worker) vacancy within a local authority’s organisational structure, including vacancies that are not being actively recruited for, and those covered by agency workers."),
-                          tags$li("The ", tags$b("vacancy rate"), " is calculated as the number of FTE vacancies at 30 September divided by the sum of the number of  FTE vacancies at 30 September and the number of FTE social workers at 30 September."),
-                          tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
@@ -360,6 +355,11 @@ enabler2_tab <- function() {
                     h2("Social worker caseloads"),
                     p("Ensuring that practitioners have an appropriate caseload supports recruitment and
                          retention and allows practitioners to deliver impactful services."),
+                    insert_text(inputId = "caseload_definition", text = paste(
+                      "A", "<b>", " case ", "</b>", " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role.", "<br>", "<br>",
+                      "<b>", "Average caseload", "</b>", "at 30 September is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases.", "<br><br>",
+                      "The number of cases held doesn’t account for the complexity of the cases held and this should also be taken into consideration when interpreting the caseload figures."
+                    )),
                     br(),
                     plotlyOutput("caseload_plot"),
                     br(),
@@ -376,9 +376,6 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("A", tags$b("case"), " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role."),
-                          tags$li("The ", tags$b("average caseload"), " is calculated as the total number of cases held by FTE social workers (including agency workers) in post at 30 September divided by the number of FTE social workers (including agency workers) in post at 30 September that hold one or more cases."),
-                          tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
                             tags$br(),
@@ -433,7 +430,7 @@ enabler2_tab <- function() {
 
             # Third tab panel -----
             tabPanel(
-              "Societal and cultural awareness and diversity",
+              "Social worker ethnicity",
               fluidRow(
                 br(),
               ),
@@ -448,14 +445,13 @@ enabler2_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Ethnic diversity of workforce",
+                  "Social worker ethnicity",
                   gov_row(
-                    h2("Ethnic diversity of workforce"),
+                    h2("Social worker ethnicity"),
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
-                    br(),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
-                      "Percentage of headcount children and family social workers in post at 30 September by ethnicity group."
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity."
                     )),
                     plotlyOutput("plot_ethnicity_rate"),
                     br(),
@@ -473,7 +469,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li(tags$b("Ethnicity groups"), " are based on ethnic origin and are provided on a headcount basis."),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$li(tags$b("Headcount"), "is a count of all individual children and family social workers, regardless of their working pattern."),
                           tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
                           tags$br(),
@@ -488,9 +484,13 @@ enabler2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Ethnic diversity of workforce vs. general population",
+                  "Social worker ethnicity vs. general population",
                   gov_row(
-                    h2("Ethnic diversity of workforce vs. general population"),
+                    h2("Social worker ethnicity vs. general population"),
+                    insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
+                      "<b>", "Ethnicity of social workers (headcount) vs. ethnicity of general population", "</b><br>",
+                      "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity, compared to known ethnicity breakdown of general population."
+                    )),
                     br(),
                     plotlyOutput("plot_population_ethnicity_rate"),
                     br(),
@@ -509,7 +509,7 @@ enabler2_tab <- function() {
                         tags$ul(
                           tags$li("Population data is taken from the latest available", a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS Census data (2021).")),
                           tags$li(sprintf("The Workforce data comparison uses the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
@@ -522,9 +522,13 @@ enabler2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Ethnic diversity of workforce by seniority level",
+                  "Social worker ethnicity by seniority level",
                   gov_row(
-                    h2("Ethnic diversity of workforce by seniority level"),
+                    h2("Social worker ethnicity by seniority level"),
+                    insert_text(inputId = "Ethnicity_by_role_definition", text = paste(
+                      "<b>", "Ethnicity (headcount)", "</b><br>",
+                      "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicty."
+                    )),
                     br(),
                     plotlyOutput("plot_seniority_eth"),
                     br(),
@@ -542,7 +546,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li(sprintf("The data used is from the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period))),
+                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group are calculated using the headcount of social workers with known ethnicity as the denominator."),
                           tags$li("Seniority level relates to social worker role. Manager roles have been grouped and include first line managers, middle managers and senior managers."),
                           tags$li("A Senior Practitioner works in a local authority in a children’s services department as a team leader, supervising social worker or senior social worker."),
                           tags$li("A case holder is a children and family social worker that manages cases, but is not in a manager or senior practitioner role (however, cases can be hold by those not in case holder roles)."),

@@ -33,6 +33,8 @@ shhh(library(reshape2))
 shhh(library(tidyverse))
 shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
+shhh(library(reactable))
+shhh(library(readODS))
 
 # shhh(library(shinya11y))
 
@@ -93,6 +95,7 @@ source("R/read_data.R")
 
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
+
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
 # Read in the workforce characteristics data (Enabler 2)
@@ -103,8 +106,16 @@ workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
 combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
+# Read in ofsted leadership data (Enabler 3)
+
+spending_data <- suppressWarnings(read_spending_data())
+
+ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
+ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
+
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())
+
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 # uasc_data <- test_uasc()
@@ -122,8 +133,37 @@ outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 # Read in outcome 2 data
 ceased_cla_data <- suppressWarnings(read_outcome2())
 
+# Read in outcome 3 data
+repeat_cpp <- suppressWarnings(read_cpp_in_year_data())
+duration_cpp <- suppressWarnings(read_cpp_by_duration_data())
+assessment_factors <- suppressWarnings(read_assessment_factors())
+af_child_abuse_extra_filter <- assessment_factors %>%
+  filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
+  select(assessment_factor) %>%
+  pull("assessment_factor")
+
+extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
+# "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
+
+hospital_admissions <- suppressWarnings(read_a_and_e_data())
+
+# Read in outcome 4 data
+placement_data <- suppressWarnings(read_placement_info_data())
+placement_type_filter <- placement_data %>%
+  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings")) %>%
+  select(characteristic) %>%
+  pull("characteristic")
+
+placement_changes_data <- suppressWarnings(read_number_placements_data())
+
+care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data())
+care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())
+
+wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
+
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
+
 
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()

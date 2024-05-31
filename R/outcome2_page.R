@@ -17,7 +17,7 @@ outcome2_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o2",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% pull("geographic_level")),
+              choices = unique(ceased_cla_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -68,22 +68,6 @@ outcome2_tab <- function() {
           )
         )
       ),
-      # gov_row(
-      #   div(
-      #     class = "input_box",
-      #     style = "min-height:100%; height = 100%; overflow-y: visible",
-      #     gov_row(
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       ),
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       )
-      #     )
-      #   )
-      # ),
       br(),
       gov_row(
         br(),
@@ -128,8 +112,11 @@ outcome2_tab <- function() {
                   "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
                   gov_row(
                     h2("Special Guardianship Order (SGO)"),
-                    # p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                    # Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
+                    p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
+                    insert_text(inputId = "SGO_def", text = paste(
+                      # tags$b("Special guardianship order"), " - A private law order made under the Children Act 1989 appointing one or more individuals to be a child's 'special guardian'. It is intended for those children who cannot live with their birth parents and who would benefit from a legally secure placement."
+                      tags$b("Speical guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
+                    )),
                     br(),
                     plotlyOutput("SGO_time_series"),
                     br(),
@@ -137,7 +124,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased")
+                        reactableOutput("table_sgo_ceased")
                       )
                     ),
                     details(
@@ -145,9 +132,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England including adoptions guidance."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions methodology.")
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                       ))
                     )
                   ),
@@ -163,7 +156,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased_reg")
+                        reactableOutput("table_sgo_ceased_reg")
                       )
                     )
                   ),
@@ -193,21 +186,42 @@ outcome2_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to child Arrangement Order (CAO)",
+                  "Percentage of children who cease being looked after due to Child Arrangement Order (CAO)",
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
-                    p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
-                    br(),
+                    p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
+                    insert_text(inputId = "CAO_def", text = paste(
+                      tags$b("Child Arrangements Order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A Child Arrangements Order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
+                    )),
+
+                    #  p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
+                    #  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
+                    # br(),
                     plotlyOutput("CAO_time_series"),
                     br(),
                     details(
                       inputId = "tbl_cao_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased")
+                        reactableOutput("table_cao_ceased")
                       )
                     ),
+                    details(
+                      inputId = "cao_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
+                    )
                   ),
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO) by region"),
@@ -221,7 +235,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased_reg")
+                        reactableOutput("table_cao_ceased_reg")
                       )
                     ),
                   ),

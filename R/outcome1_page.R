@@ -90,21 +90,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care, per 10,000 children",
+                    title = "Rate of children starting to be looked after, per 10,000 children",
                     value = htmlOutput("cla_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children starting in care who were UASC, per 10,000 children",
+                    title = "Rate of children starting to be looked after who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_rate_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Rate of children in care on 31 March, per 10,000 children",
+                    title = "Rate of children looked after on 31 March, per 10,000 children",
                     value = htmlOutput("cla_march_rate_headline_txt")
                   )
                 ),
@@ -112,11 +112,13 @@ outcome1_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Rate of new entrants to care",
+                  "Children starting to be looked after each year",
                   gov_row(
+                    h2("Children starting to be looked after each year"),
+                    p("This measures the flow of those children moving into care."),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
-                      "The children in care rate is calculated as the number of children in care per 10,000 children in the general population."
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
@@ -126,7 +128,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate")
+                        reactableOutput("table_cla_rate")
                       )
                     ),
                     details(
@@ -134,22 +136,22 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("Rates are calculated using published number of children starting in care figures which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Figures exclude children looked after under a series of short-term placements. Only the first occasion on which a child started to be looked after in the year has been counted."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                           )
                         )
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care during the year by region"),
+                    h2("Rate of children starting to be looked after by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_rate_reg"),
@@ -158,25 +160,14 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_reg")
+                        reactableOutput("table_cla_rate_reg")
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by local authority"),
+                    h2("Rate of children starting to be looked after by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cla_rate_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cla_rate_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cla_rate_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cla_stats_toggle",
                       label = NULL,
@@ -186,10 +177,16 @@ outcome1_tab <- function() {
                     uiOutput("SN_cla"),
                   )
                 ),
+                ## CLA UASC -------------
                 accordion_panel(
-                  "Rate of new entrants to care, with a breakdown by whether new entrants to care are Unaccompanied Asylum Seeking Children (UASC)",
+                  "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children starting in care who were UASC"),
+                    h2("Rate of children starting to be looked after who were UASC"),
+                    p("This measures the flow of those children moving into care. Where UASC are placed within an authority, this will represent an unavoidable increase in numbers of children entering the system. This breakdown is provided for context."),
+                    insert_text(inputId = "cla_rate__starting_definition", text = paste(
+                      "<b>", "Rate of children who started to be looked after", "</b><br>",
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_uasc"),
                     br(),
@@ -198,12 +195,32 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_uasc")
+                        reactableOutput("table_uasc")
                       )
                     ),
+                    details(
+                      inputId = "cla_UASC_rate_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
+                            tags$br(),
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          )
+                        )
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by region who were UASC"),
+                    h2("Rate of children starting to be looked after by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -214,12 +231,12 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_uasc_reg")
+                        reactableOutput("table_uasc_reg")
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children starting in care by LA who were UASC"),
+                    h2("Rate of children starting to be looked after by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     # br(),
@@ -242,10 +259,16 @@ outcome1_tab <- function() {
                     uiOutput("SN_uasc"),
                   )
                 ),
+                ## CLA on 31 March ---------
                 accordion_panel(
-                  "Rate of children in care on 31 March",
+                  "Rate of children looked after on 31 March",
                   gov_row(
-                    h2("Rate of children in care on 31 March"),
+                    h2("Rate of children looked after on 31 March"),
+                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
+                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
+                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                    )),
                     br(),
                     plotlyOutput("plot_cla_rate_march"),
                     br(),
@@ -254,7 +277,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_march",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_rate_march")
+                        reactableOutput("table_cla_rate_march")
                       )
                     ),
                     details(
@@ -266,16 +289,16 @@ outcome1_tab <- function() {
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children in care data guidance."),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
                             tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children in care methodology.")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
                           )
                         )
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by region"),
+                    h2("Rate of children looked after on 31 March by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_march_reg"),
@@ -285,12 +308,12 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_march_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cla_march_reg")
+                        reactableOutput("table_cla_march_reg")
                       )
                     )
                   ),
                   gov_row(
-                    h2("Rate of children in care on 31 March by local authority"),
+                    h2("Rate of children looked after on 31 March by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
@@ -316,6 +339,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # Domain 2 --------------
             tabPanel(
               "Access to support and getting help",
               fluidRow(
@@ -339,6 +363,7 @@ outcome1_tab <- function() {
                 ),
               ),
               accordion(
+                ## CIN ------------------
                 accordion_panel(
                   "Rate of Child In Need (CIN)",
                   gov_row(
@@ -349,7 +374,7 @@ outcome1_tab <- function() {
 
                     insert_text(inputId = "CIN_definition", text = paste(
                       "<b>", "Children In Need (CIN) rate", "</b><br>",
-                      "Rate of Children In Need at 31 March, per 10,000 children in the population."
+                      "The Children In Need rate is calculated as the number of Children In Need at 31 March, per 10,000 children in the population."
                     )),
                     # p("plots go here"),
                     plotlyOutput("plot_cin_rate"),
@@ -359,7 +384,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rate")
+                        reactableOutput("table_cin_rate")
                       )
                     ),
                     # expandable for the additional info links
@@ -393,7 +418,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rates_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_rates_reg")
+                        reactableOutput("table_cin_rates_reg")
                       )
                     )
                   ),
@@ -401,17 +426,6 @@ outcome1_tab <- function() {
                     h2("CIN rates by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_cin_rates_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cin_rates_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cin_rates_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cin_stats_toggle",
                       label = NULL,
@@ -421,6 +435,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cin"),
                   )
                 ),
+                ## Repeat referrals --------------
                 accordion_panel(
                   "Repeat referrals (within 12 months)",
                   gov_row(
@@ -443,7 +458,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_referral")
+                        reactableOutput("table_cin_referral")
                       )
                     ),
                     details(
@@ -474,7 +489,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cin_referral_reg")
+                        reactableOutput("table_cin_referral_reg")
                       )
                     )
                   ),
@@ -482,17 +497,6 @@ outcome1_tab <- function() {
                     h2("Re-referrals by local authority"),
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
-                    #  br(),
-                    #  plotlyOutput("plot_cin_referral_la"),
-                    #  br(),
-                    # br(),
-                    # details(
-                    #  inputId = "tbl_cin_referral_la",
-                    #  label = "View chart as a table",
-                    #  help_text = (
-                    #  dataTableOutput("table_cin_referral_la")
-                    #  )
-                    #   ),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
                       label = NULL,
@@ -601,8 +605,8 @@ outcome1_tab <- function() {
                     label = "School type information:",
                     help_text = (
                       tags$ul(
-                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and pupil referall units."),
-                        tags$li("Breakdowns for special schools and pupil referall units are not available on the dashboard due to high levels of supression in the published local authority level data.
+                        tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and state-funded alternative provision schools."),
+                        tags$li("Breakdowns for special schools and state-funded alternative provision schools are not available on the dashboard due to high levels of supression in the published local authority level data.
                                 You can view data for all breakdowns via the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes publication."), ),
                         tags$br(),
                         p(
@@ -616,6 +620,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              # absence -----
               accordion(
                 accordion_panel(
                   "School attendance",
@@ -636,7 +641,7 @@ outcome1_tab <- function() {
                       inputId = "table_absence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_absence_rate")
+                        reactableOutput("table_absence_rate")
                       )
                     ),
                     details(
@@ -677,7 +682,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_absence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_absence_reg")
+                        reactableOutput("table_absence_reg")
                       )
                     )
                   ),
@@ -687,16 +692,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     htmlOutput("outcome1_time_period_text"),
                     br(),
-                    # plotlyOutput("plot_absence_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_absence_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_absence_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "absence_stats_toggle",
                       label = NULL,
@@ -706,6 +701,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_absence"),
                   ),
                 ),
+                ## Persistent absence ----
                 accordion_panel(
                   "Persistent absence",
                   gov_row(
@@ -724,7 +720,7 @@ outcome1_tab <- function() {
                       inputId = "table_persistence",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_rate")
+                        reactableOutput("table_persistent_rate")
                       )
                     ),
                     details(
@@ -764,7 +760,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_persistence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_persistent_reg")
+                        reactableOutput("table_persistent_reg")
                       )
                     )
                   ),
@@ -796,6 +792,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
+            # attainment domain ----
             tabPanel(
               "Educational attainment",
               br(),
@@ -803,21 +800,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "CINO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CINO at 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "CPPO at 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CPPO at 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "CLA 12 months on 31 March percentage of pupils achieving expected standard in reading, writing and mathematics (combined)",
+                    title = "CLA 12 months on 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CLA_headline_txt")
                   )
                 ),
@@ -827,21 +824,21 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CINO at 31 March",
+                    title = "Average attainment 8 for CINO at 31 March (KS4)",
                     value = htmlOutput("KS4_CIN_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CPPO at 31 March",
+                    title = "Average attainment 8 for CPPO at 31 March (KS4)",
                     value = htmlOutput("KS4_CPP_headline_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CLA 12 months on 31 March",
+                    title = "Average attainment 8 for CLA 12 months on 31 March (KS4)",
                     value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),
@@ -881,11 +878,12 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              ## ks2 -----
               accordion(
                 accordion_panel(
-                  "Key stage 2",
+                  "Key Stage 2 (KS2)",
                   gov_row(
-                    h2("Key stage 2 attainment"),
+                    h2("Key Stage 2 attainment"),
                     p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
@@ -902,7 +900,7 @@ outcome1_tab <- function() {
                       inputId = "table_ks2",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_expected")
+                        reactableOutput("table_ks2_expected")
                       )
                     ),
                     details(
@@ -912,7 +910,7 @@ outcome1_tab <- function() {
                         tags$ul(
                           tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
                           tags$li(
-                            "Attainment in reading, writing and maths combined is not directly comparable to some earlier years (2016/17) because of changes to writing teacher assessment frameworks in 2018. For more detailed information on this see ",
+                            "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment."),
                           ),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
@@ -938,7 +936,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks2_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks2_reg")
+                        reactableOutput("table_ks2_reg")
                       )
                     )
                   ),
@@ -968,9 +966,9 @@ outcome1_tab <- function() {
                   ),
                 ),
                 accordion_panel(
-                  "Key stage 4",
+                  "Key Stage 4 (KS4)",
                   gov_row(
-                    h2("Key stage 4 attainment"),
+                    h2("Key Stage 4 attainment"),
                     p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
@@ -1001,6 +999,8 @@ outcome1_tab <- function() {
                                  directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
                           ),
+                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
                           tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
@@ -1024,7 +1024,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks4_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks4_reg")
+                        reactableOutput("table_ks4_reg")
                       )
                     )
                   ),
@@ -1034,16 +1034,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                     htmlOutput("outcome1_time_period_text_4"),
                     br(),
-                    # plotlyOutput("plot_KS4_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_KS4_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_KS4_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "ks4_attainment_stats_toggle",
                       label = NULL,
