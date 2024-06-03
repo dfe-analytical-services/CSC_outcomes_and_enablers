@@ -34,6 +34,7 @@ shhh(library(tidyverse))
 shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
 shhh(library(reactable))
+shhh(library(readODS))
 
 shhh(library(htmltools))
 
@@ -96,6 +97,7 @@ source("R/read_data.R")
 
 workforce_data <- read_workforce_data()
 location_data <- GET_location() # fact table linking LA to its region
+
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
 # Read in the workforce characteristics data (Enabler 2)
@@ -106,8 +108,16 @@ workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
 combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
+# Read in ofsted leadership data (Enabler 3)
+
+spending_data <- suppressWarnings(read_spending_data())
+
+ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
+ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
+
 # Read in the CLA data (outcome 1)
 cla_rates <- suppressWarnings(read_cla_rate_data())
+
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 # uasc_data <- test_uasc()
@@ -156,6 +166,7 @@ wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 
+
 # Dropdowns
 # choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
 # choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
@@ -176,7 +187,8 @@ dropdown_choices <- cla_rates # %>%
 csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CSV") {
   tags$button(
     tagList(icon("download"), label),
-    onclick = sprintf("Reactable.downloadDataCSV('%s', '%s')", id, filename),
+    onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
+    # onclick = sprintf("Reactable.downloadDataCSV('%s', '%s')", id, filename),
     class = "btn btn-default"
   )
 }

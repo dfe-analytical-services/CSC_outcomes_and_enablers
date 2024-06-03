@@ -112,55 +112,56 @@ ui <- function(input, output, session) {
     #    });"
     #   ))
     # ),
-    tags$head(
-      tags$script(HTML(
-        "function downloadDataWithTransformation(id, filename) {
-       console.log('Table ID:', id);
-       console.log('Filename:', filename);
-       var tableData = Reactable.getData(id);
-       console.log('Table Data:', tableData);
-
-       // Iterate through each row and cell to apply transformations
-       var transformedData = tableData.map(function(rowArray) {
-         return rowArray.map(function(value) {
-           // Apply transformation
-           if (value == -100) {
-             return 'c';
-           } else if (value == -200) {
-             return 'k';
-           } else if (value == -250) {
-             return 'u';
-           } else if (value == -300) {
-             return 'x';
-           } else if (value == -400) {
-             return 'z';
-           } else {
-             return value;
-           }
-         });
-       });
-
-       console.log('Transformed Data:', transformedData);
-       var csvContent = 'data:text/csv;charset=utf-8,' + transformedData.map(row => row.join(',')).join('\\n');
-       var encodedUri = encodeURI(csvContent);
-       var link = document.createElement('a');
-       link.setAttribute('href', encodedUri);
-       link.setAttribute('download', filename);
-       document.body.appendChild(link);
-       link.click();
+    # tags$head(
+    tags$script(HTML("
+    function cellFunction(value) {
+      if (value == -100) {
+        return 'c';
+      } else if (value == -200) {
+        return 'k';
+      } else if (value == -250) {
+        return 'u';
+      } else if (value == -300) {
+        return 'x';
+      } else if (value == -400) {
+        return 'z';
+      } else {
+        return value;
+      }
     }
 
-    // Attach click event listener to download buttons
-    $(document).on('click', '.csv-download-button', function() {
-       var id = $(this).data('table-id');
-       var filename = $(this).data('filename');
-       console.log('Download button clicked!');
-       console.log('Table ID:', id);
-       console.log('Filename:', filename);
-       downloadDataWithTransformation(id, filename);
-    });"
-      ))
-    ),
+    function customDownloadDataCSV(id, filename) {
+      var table = Reactable.getInstance(id);
+      var csv = [];
+      var headers = table.getState().columnOrder.map(function(col) {
+        return table.getColumn(col).name || col;
+      });
+      csv.push(headers.join(','));
+
+      table.getState().data.forEach(function(row) {
+        var cells = headers.map(function(header) {
+          var cell = row[header];
+          var cellValue = (typeof cell === 'object' && cell !== null) ? cell.value : cell;
+          return cellFunction(cellValue);
+        });
+        csv.push(cells.join(','));
+      });
+
+      var csvString = csv.join('\\n');
+      var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
+      var link = document.createElement('a');
+      if (link.download !== undefined) {
+        var url = URL.createObjectURL(blob);
+        link.setAttribute('href', url);
+        link.setAttribute('download', filename);
+        link.style.visibility = 'hidden';
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    }
+  ")),
+    #  ),
     shinyGovstyle::header(
       main_text = "",
       main_link = "https://www.gov.uk/government/organisations/department-for-education",
@@ -189,7 +190,7 @@ ui <- function(input, output, session) {
       outcome4_tab(),
       enabler1_tab(),
       enabler2_tab(),
-      # enabler3_tab(),
+      enabler3_tab(),
       # homepage_panel(),
       a11y_panel(),
       support_links(),
