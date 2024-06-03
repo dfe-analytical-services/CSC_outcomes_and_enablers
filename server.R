@@ -8867,14 +8867,14 @@ server <- function(input, output, session) {
         need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
-        # plotlyOutput("total_spending_SN_plot"),
+        plotlyOutput("spend_excl_cla_SN_plot"),
         br(),
         details(
           inputId = "tbl_sn_spending",
           label = "View chart as a table",
           help_text = (
-            # reactableOutput("SN_caseload_tbl")
-            p("table")
+            reactableOutput("SN_spend_no_cla_tbl")
+            # p("table")
           )
         ),
         details(
@@ -8886,6 +8886,46 @@ server <- function(input, output, session) {
         )
       )
     }
+  })
+
+
+  output$spend_excl_cla_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    data <- spending_data_no_cla
+    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e3, input$select_geography_e3, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$SN_spend_no_cla_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    data <- spending_data_no_cla %>%
+      rename("Share of spend minus CLA (%)" = "minus_cla_share")
+
+    table <- stats_neighbours_table(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Share of spend minus CLA (%)")
+
+    reactable(
+      table,
+      columns = list(
+        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
   })
 
 
