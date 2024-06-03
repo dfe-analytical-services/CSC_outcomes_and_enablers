@@ -667,7 +667,10 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
       "region" = `Ofsted region`,
       "inspection_date" = `Inspection date`,
       "impact_of_leaders" = `Impact of leaders`
-    )
+    ) %>%
+    mutate(geo_breakdown = recode(geo_breakdown,
+      "Bristol" = "Bristol, City of"
+    ))
 
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
   ofsted_leadership_data$geographic_level <- "Local authority"

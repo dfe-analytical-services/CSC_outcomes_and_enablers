@@ -213,37 +213,129 @@ enabler3_tab <- function() {
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
               fluidRow(
-                # p("testing")
+                br()
               ),
               fluidRow(
-                column(
-                  width = 6,
-                  value_box(
-                    title = "Ofsted leadership and rating score",
-                    value = "value"
+                conditionalPanel(
+                  condition = "input.select_geography_e3 == 'Local authority'",
+                  column(
+                    width = 4,
+                    value_box(
+                      title = "LA Ofsted leadership rating",
+                      value = htmlOutput("ofsted_la_headline")
+                    )
+                  )
+                )
+              ),
+              conditionalPanel(
+                condition = "input.select_geography_e3 != 'Local authority'",
+                fluidRow(
+                  column(
+                    width = 6,
+                    value_box(
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Outstanding",
+                      value = htmlOutput("ofsted_outstanding_headline")
+                    )
+                  ),
+                  column(
+                    width = 6,
+                    value_box(
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Good",
+                      value = htmlOutput("ofsted_good_headline")
+                    )
                   )
                 ),
-                br(),
-                p("Rationale"),
+                fluidRow(
+                  column(
+                    width = 6,
+                    value_box(
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Requires Improvement",
+                      value = htmlOutput("ofsted_improvement_headline")
+                    )
+                  ),
+                  column(
+                    width = 6,
+                    value_box(
+                      title = "Number of local authorities with an Ofsted Leadership Rating of Inadequate",
+                      value = htmlOutput("ofsted_inadequate_headline")
+                    )
+                  )
+                ),
               ),
               accordion(
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
-                    h2("Ofsted – The impact of leaders on social work practice with children and families"),
-                  ),
-                  gov_row(
-                    h2("by region"),
-                  ),
-                  gov_row(
-                    h2("by la"),
-                    radioGroupButtons(
-                      "ofted_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                    h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    p("This chart will also not react to the comparison checkboxes at the top."),
+                    plotlyOutput("plot_ofsted"),
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("ofsted_tbl")
+                      )
                     ),
-                    # uiOutput("SN_sgo"),
+                    details(
+                      inputId = "ofsted_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'"), " guidance."),
+                          tags$li(
+                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    p("This chart will also not react to the comparison checkboxes at the top."),
+                    plotlyOutput("plot_ofsted_reg"),
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        dataTableOutput("ofsted_reg_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "ofsted_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'"), " guidance."),
+                          tags$li(
+                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
+                    p("Hover over each data point to see the year of their last Ofsted inspection."),
+                    plotlyOutput("ofsted_SN_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_ofsted_SN",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("ofsted_SN_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "ofsted_stat_neighbours_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p("Statistical neighbours info")
+                      )
+                    )
                   )
                 )
               )
