@@ -1475,6 +1475,51 @@ server <- function(input, output, session) {
     }
   })
 
+  ## Spending minus CLA -------
+  ## Regional plot for spending
+  output$plot_spend_excl_cla_region <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
+
+    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # region table alternative
+  output$table_spend_excl_cla_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geo_breakdown, minus_cla_share) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spend on children's services minus CLA (%)" = "minus_cla_share")
+
+    reactable(
+      data,
+      columns = list(
+        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
 
   ## Ofsted leadership rating ----
   output$plot_ofsted <- plotly::renderPlotly({
@@ -1489,6 +1534,7 @@ server <- function(input, output, session) {
       tooltip = "text"
     )
   })
+
 
 
   # Outcome 1 -----
@@ -8719,7 +8765,46 @@ server <- function(input, output, session) {
 
 
   ### Spending Excluding CLA -----
-
+  output$SN_spending_minus_cla <- renderUI({
+    if (input$spending2_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput(""),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_tot_spend_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("")
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        # plotlyOutput("total_spending_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_spending",
+          label = "View chart as a table",
+          help_text = (
+            # reactableOutput("SN_caseload_tbl")
+            p("table")
+          )
+        ),
+        details(
+          inputId = "sn_spend_excl_cla_info",
+          label = "Additional information",
+          help_text = (
+            p("Additional information about stats neighbours file.")
+          )
+        )
+      )
+    }
+  })
 
 
 

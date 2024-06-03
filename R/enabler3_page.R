@@ -180,13 +180,24 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Share of Children and Young People Services spend minus spend on CLA",
                   gov_row(
-                    h2("time series")
+                    h2("Share of Children and Young People Services spend minus spend on CLA by region"),
+                    plotlyOutput("plot_spend_excl_cla_region"),
+                    br(),
+                    details(
+                      inputId = "minus_cla_reg_tbl",
+                      label = "View chart as table",
+                      help_text = reactableOutput("table_spend_excl_cla_reg")
+                    ),
+                    details(
+                      inputId = "minus_cla_info",
+                      label = "Additional information:",
+                      help_text = p(
+                        "additional info here"
+                      )
+                    )
                   ),
                   gov_row(
-                    h2("by region")
-                  ),
-                  gov_row(
-                    h2("by la"),
+                    h2("Share of Children and Young People Services spend minus spend on CLA by local authority"),
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,
