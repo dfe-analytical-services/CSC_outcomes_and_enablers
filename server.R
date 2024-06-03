@@ -8716,12 +8716,12 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_total_spending",
           label = "View chart as a table",
           help_text = (
-            # reactableOutput("SN_caseload_tbl")
-            p("table")
+            reactableOutput("SN_tot_spend_tbl")
+            # p("table")
           )
         ),
         details(
-          inputId = "sn_caseload_info",
+          inputId = "sn_tot_spend_info",
           label = "Additional information",
           help_text = (
             p("Additional information about stats neighbours file.")
@@ -8761,6 +8761,42 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     )
+  })
+
+  output$SN_tot_spend_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        rename("Children's services share (%)" = "cs_share")
+
+      table <- stats_neighbours_table(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Children's services share (%)")
+
+      reactable(
+        table,
+        columns = list(
+          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+        searchable = TRUE,
+      )
+    } else {
+      data <- spending_per_capita %>%
+        rename("Average spend per child (£)" = "cost_per_capita")
+
+      table <- stats_neighbours_table(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Average spend per child (£)")
+
+      reactable(
+        table,
+        columns = list(
+          `Average Spend Per Child (£)` = colDef(name = "Average spend per child (£)", cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+        searchable = TRUE,
+      )
+    }
   })
 
 
