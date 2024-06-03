@@ -342,7 +342,8 @@ enabler3_tab <- function() {
                       )
                     )
                   )
-                )
+                ),
+                open = FALSE,
               )
             )
           )
