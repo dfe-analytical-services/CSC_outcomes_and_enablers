@@ -9072,6 +9072,22 @@ server <- function(input, output, session) {
             reactableOutput("table_tot_spending_la")
           )
         ),
+        details(
+          inputId = "tot_spend_la_information",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total expenditure."),
+              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "for children aged 0 to 17 years and total children’s services expenditure."),
+              tags$li("Average per child spend has been rounded to the nearest whole number."),
+              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -9177,12 +9193,26 @@ server <- function(input, output, session) {
         p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
         br(),
         details(
-          inputId = "tbl_tot_spend_la",
+          inputId = "tbl_tot_no_cla_spend_la",
           label = "View chart as a table",
           help_text = (
             reactableOutput("spend_excl_cla_la_tbl")
           )
         ),
+        details(
+          inputId = "no_cla_spend_information",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total expenditure."),
+              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
