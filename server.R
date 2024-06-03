@@ -1520,6 +1520,52 @@ server <- function(input, output, session) {
     )
   })
 
+  # SPending minus CLA by local authority plot and table
+  output$plot_spend_excl_cla_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, minus_cla_share) %>%
+      rename("Share minus CLA (%)" = "minus_cla_share")
+
+    max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
+
+    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e3, selected_geo_lvl = input$select_geography_e3, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$spend_excl_cla_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geo_breakdown, minus_cla_share) %>%
+      arrange(desc(minus_cla_share)) %>%
+      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share minus CLA (%)" = "minus_cla_share")
+
+    reactable(
+      data,
+      columns = list(
+        `Share minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
 
   ## Ofsted leadership rating ----
   output$plot_ofsted <- plotly::renderPlotly({
@@ -8804,7 +8850,7 @@ server <- function(input, output, session) {
   output$SN_spending_minus_cla <- renderUI({
     if (input$spending2_stats_toggle == "All local authorities") {
       tagList(
-        plotlyOutput(""),
+        plotlyOutput("plot_spend_excl_cla_la"),
         br(),
         p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
         br(),
@@ -8812,7 +8858,7 @@ server <- function(input, output, session) {
           inputId = "tbl_tot_spend_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("")
+            reactableOutput("spend_excl_cla_la_tbl")
           )
         ),
       )
