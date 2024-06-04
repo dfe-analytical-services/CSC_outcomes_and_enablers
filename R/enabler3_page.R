@@ -17,7 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              choices = unique(ofsted_leadership_data %>% pull("geographic_level")),
+              choices = unique(spending_data %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -79,6 +79,7 @@ enabler3_tab <- function() {
           tabsetPanel(
             id = "enabler3_panels",
             type = "tabs",
+            ## Spending ----------------
             tabPanel(
               "Spending",
               fluidRow(
@@ -215,6 +216,7 @@ enabler3_tab <- function() {
                 open = FALSE
               )
             ),
+            ## Ofsted ---------------------
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
               fluidRow(
@@ -230,6 +232,41 @@ enabler3_tab <- function() {
                       value = htmlOutput("ofsted_la_headline")
                     )
                   )
+                )
+              ),
+              # fluidRow(
+              #   conditionalPanel(
+              #     condition = "(input.select_geography_e3 != 'Local authority')&&(input.geographic_breakdown_e3 %in% C('Inner London', 'Outer London', 'London'))",
+              #     p("London, Inner London and Outer London have been grouped together.")
+              #   ),
+              # ),
+              # fluidRow(
+              #   conditionalPanel(
+              #     condition = "(input.select_geography_e3 != 'Local authority')&&(input.geographic_breakdown_e3 %in% C('North East', 'Yorkshire and The Humber'))",
+              #     p("North East and Yorkshire and The Humber have been grouped together.")
+              #   ),
+              # ),
+              fluidRow(
+                # Quick fix for now, for some reason the multi conditions wouldn't work
+                conditionalPanel(
+                  condition = "input.geographic_breakdown_e3 == 'Inner London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
+                  p("London, Inner London and Outer London have been grouped together.")
+                ),
+                conditionalPanel(
+                  condition = "input.geographic_breakdown_e3 == 'London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
+                  p("London, Inner London and Outer London have been grouped together.")
+                ),
+                conditionalPanel(
+                  condition = "input.geographic_breakdown_e3 == 'Outer London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
+                  p("London, Inner London and Outer London have been grouped together.")
+                ),
+                conditionalPanel(
+                  condition = "input.geographic_breakdown_e3 == 'North East'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
+                  p("North East and Yorkshire and The Humber have been grouped together.")
+                ),
+                conditionalPanel(
+                  condition = "input.geographic_breakdown_e3 == 'Yorkshire and The Humber'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
+                  p("North East and Yorkshire and The Humber have been grouped together.")
                 )
               ),
               conditionalPanel(

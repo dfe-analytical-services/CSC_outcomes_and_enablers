@@ -464,6 +464,22 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
+  london_com <- regional_spending %>%
+    filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
+    summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
+    mutate(
+      "time_period" = "2022/23",
+      "geographic_level" = "Regional",
+      "geo_breakdown" = "London",
+      "new_la_code" = "",
+      "old_la_code" = as.numeric(""),
+      # "CS Expenditure" = as.character(exp),
+      # "Total Expenditure" = as.character(total_exp),
+      # "CS Share" = as.character(cs_share)
+    )
+
+  regional_spending <- rbind(regional_spending, london_com)
+
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CS Expenditure", "Total Expenditure", "exp", "total_exp", "cs_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "exp", "total_exp", "cs_share"))
 
