@@ -36,6 +36,7 @@ shhh(library(shinyvalidate))
 shhh(library(reactable))
 shhh(library(readODS))
 shhh(library(readxl))
+shhh(library(janitor))
 
 
 # shhh(library(shinya11y))
