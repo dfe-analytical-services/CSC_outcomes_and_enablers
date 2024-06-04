@@ -430,7 +430,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
   # calculate the share of the
-  data3$cs_share <- round(((data3$exp) / (data3$total_exp)) * 100, digits = 2)
+  data3$cs_share <- round(((data3$exp) / (data3$total_exp)) * 100, digits = 0)
   data3 <- data3 %>%
     mutate(cs_share = case_when(
       `CS Expenditure` == "x" ~ 0,
@@ -458,7 +458,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
     group_by(region_name) %>%
     summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$cs_share <- round(regional_spending$cs_share, digits = 2)
+  regional_spending$cs_share <- round(regional_spending$cs_share, digits = 0)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2022/23"
   regional_spending$new_la_code <- as.character("")
@@ -477,6 +477,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       # "Total Expenditure" = as.character(total_exp),
       # "CS Share" = as.character(cs_share)
     )
+  london_com$cs_share <- round(london_com$cs_share, digits = 0)
 
   regional_spending <- rbind(regional_spending, london_com)
 
@@ -598,7 +599,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
   # calculate the share of the expenditure not for CLA
-  data3$minus_cla_share <- round(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100, digits = 2)
+  data3$minus_cla_share <- round(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100, digits = 0)
   data3 <- data3 %>%
     mutate(minus_cla_share = case_when(
       `CLA Expenditure` == "x" ~ 0,
@@ -625,11 +626,25 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
     group_by(region_name) %>%
     summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$minus_cla_share <- round(regional_spending$minus_cla_share, digits = 2)
+  regional_spending$minus_cla_share <- round(regional_spending$minus_cla_share, digits = 0)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2022/23"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
+
+  london_com <- regional_spending %>%
+    filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
+    summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
+    mutate(
+      "time_period" = "2022/23",
+      "geographic_level" = "Regional",
+      "geo_breakdown" = "London",
+      "new_la_code" = as.character(""),
+      "old_la_code" = as.numeric(""),
+    )
+  london_com$minus_cla_share <- round(london_com$minus_cla_share, digits = 0)
+
+  regional_spending <- rbind(regional_spending, london_com)
 
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CLA Expenditure", "Total Expenditure", "cla_exp", "total_exp", "minus_cla_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
