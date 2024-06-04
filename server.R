@@ -3349,7 +3349,7 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data2,
@@ -3570,7 +3570,7 @@ server <- function(input, output, session) {
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
       arrange(desc(`Expected standard reading writing maths (%)`)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
 
     reactable(
