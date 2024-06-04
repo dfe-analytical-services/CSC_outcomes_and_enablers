@@ -239,17 +239,6 @@ outcome1_tab <- function() {
                     h2("Rate of children starting to be looked after by LA who were UASC"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_uasc_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_uasc_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_uasc_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "uasc_stats_toggle",
                       label = NULL,
@@ -317,16 +306,6 @@ outcome1_tab <- function() {
                     #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
-                    # plotlyOutput("plot_cla_march_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_cla_march_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cla_march_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "cla_march_stats_toggle",
                       label = NULL,
@@ -770,16 +749,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                     htmlOutput("outcome1_time_period_text_2"),
                     br(),
-                    # plotlyOutput("plot_persistent_absence_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_persistent_absence_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_persistent_absence_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "persis_abs_stats_toggle",
                       label = NULL,
@@ -946,16 +915,6 @@ outcome1_tab <- function() {
                     # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
                     htmlOutput("outcome1_time_period_text_3"),
                     br(),
-                    # plotlyOutput("plot_KS2_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_KS2_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_KS2_la")
-                    #   )
-                    # ),
                     radioGroupButtons(
                       "ks2_attainment_stats_toggle",
                       label = NULL,
@@ -985,7 +944,7 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks4",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_ks4")
+                        reactableOutput("table_ks4")
                       )
                     ),
                     details(

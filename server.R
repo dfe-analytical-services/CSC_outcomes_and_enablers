@@ -3717,7 +3717,7 @@ server <- function(input, output, session) {
 
 
   # KS4 rate TABLE
-  output$table_ks4 <- renderDataTable({
+  output$table_ks4 <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks4 %>%
@@ -3748,17 +3748,20 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
         select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8)
     }
+    data <- filtered_data %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Social care group" = "social_care_group", "Total number of pupils" = "t_pupils", "Average attainment 8 score" = "avg_att8")
 
-    datatable(
-      filtered_data %>%
-        filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of pupils", "Average attainment 8 score"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
