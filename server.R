@@ -1168,7 +1168,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
-    choices <- sort(unique(ofsted_leadership_data[ofsted_leadership_data$geographic_level == input$select_geography_e3, ][["geo_breakdown"]]), decreasing = FALSE)
+    choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e3, ][["geo_breakdown"]]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
@@ -1587,7 +1587,7 @@ server <- function(input, output, session) {
 
   output$ofsted_outstanding_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1598,13 +1598,28 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e3 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Outstanding")])
+      if (input$geographic_breakdown_e3 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e3 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e3)
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      }
     }
   })
 
   output$ofsted_good_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1615,13 +1630,29 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e3 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Good")])
+      if (input$geographic_breakdown_e3 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e3 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e3)
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      }
+      # paste0(data$Count[which(data$Rating == "Good")])
     }
   })
 
   output$ofsted_improvement_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1632,13 +1663,29 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e3 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Requires Improvement")])
+      if (input$geographic_breakdown_e3 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e3 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e3)
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      }
+      # paste0(data$Count[which(data$Rating == "Requires Improvement")])
     }
   })
 
   output$ofsted_inadequate_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1649,7 +1696,23 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e3 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Inadequate")])
+      if (input$geographic_breakdown_e3 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e3 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e3)
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      }
+      # paste0(data$Count[which(data$Rating == "Inadequate")])
     }
   })
 
