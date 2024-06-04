@@ -17,7 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              choices = unique(spending_data %>% pull("geographic_level")),
+              choices = c("National", "Regional", "Local authority"),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -35,37 +35,41 @@ enabler3_tab <- function() {
             ),
             col_widths = c(4, 8)
           ),
-          layout_columns(
-            conditionalPanel(
-              condition = "input.select_geography_e3 != 'National'",
-              column(
-                width = 5,
-                checkbox_Input(
-                  inputId = "national_comparison_checkbox_e3",
-                  cb_labels = "Compare with National",
-                  checkboxIds = "Yes_national_e3",
-                  label = "",
-                  hint_label = NULL,
-                  small = TRUE
-                )
-              )
-            ),
-            conditionalPanel(
-              condition = "(input.select_geography_e3 == 'Local authority')",
-              column(
-                width = 5,
-                checkbox_Input(
-                  inputId = "region_comparison_checkbox_e3",
-                  cb_labels = "Compare with Region",
-                  checkboxIds = "Yes_region_e3",
-                  label = "",
-                  hint_label = NULL,
-                  small = TRUE
-                )
-              )
-            ),
-            col_widths = c(4, 8)
+          insert_text(
+            inputId = "no_checkboxes",
+            text = "The indicators in this enabler does not have regional and national comparisons over time"
           )
+          # layout_columns(
+          #   conditionalPanel(
+          #     condition = "input.select_geography_e3 != 'National'",
+          #     column(
+          #       width = 5,
+          #       checkbox_Input(
+          #         inputId = "national_comparison_checkbox_e3",
+          #         cb_labels = "Compare with National",
+          #         checkboxIds = "Yes_national_e3",
+          #         label = "",
+          #         hint_label = NULL,
+          #         small = TRUE
+          #       )
+          #     )
+          #   ),
+          #   conditionalPanel(
+          #     condition = "(input.select_geography_e3 == 'Local authority')",
+          #     column(
+          #       width = 5,
+          #       checkbox_Input(
+          #         inputId = "region_comparison_checkbox_e3",
+          #         cb_labels = "Compare with Region",
+          #         checkboxIds = "Yes_region_e3",
+          #         label = "",
+          #         hint_label = NULL,
+          #         small = TRUE
+          #       )
+          #     )
+          #   ),
+          #   col_widths = c(4, 8)
+          # )
         )
       ),
       br(),
@@ -109,6 +113,10 @@ enabler3_tab <- function() {
                   )
                 ),
                 br(),
+              ),
+              conditionalPanel(
+                condition = "input.geographic_breakdown_e3 == 'London'",
+                p("Inner London and Outer London have been grouped together as London.")
               ),
               accordion(
                 accordion_panel(
