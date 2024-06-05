@@ -37,7 +37,7 @@ enabler3_tab <- function() {
           ),
           insert_text(
             inputId = "no_checkboxes",
-            text = "The indicators in this enabler does not have regional and national comparisons over time"
+            text = "The indicators in this enabler do not have regional or national comparisons over time"
           )
           # layout_columns(
           #   conditionalPanel(
