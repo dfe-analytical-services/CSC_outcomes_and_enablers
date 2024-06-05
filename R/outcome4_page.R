@@ -102,7 +102,7 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average number of months between decision that child should be placed for adoption and matching of child and adopters",
+                    title = "Average number of months between decision that a child should be placed for adoption and matching of child and adopters",
                     value = htmlOutput("placement_order_match_txt")
                   )
                 ),
@@ -334,16 +334,49 @@ outcome4_tab <- function() {
                 ),
                 accordion_panel(
                   "Average time between placement order and match for those children who are adopted",
-                  p("contents for panel 4"),
                   gov_row(
-                    h2("Time Series")
+                    div(
+                      class = "input_box",
+                      style = "min-height:100%; height = 100%; overflow-y: visible",
+                      p("Please use the dropdown below to select which age you would like to see in the below chart."),
+                      p("(Note that this will not affect the headline box at the top)"),
+                      selectizeInput(
+                        inputId = "select_age_group_o4",
+                        label = "Select an age group:",
+                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total"),
+                        selected = NULL,
+                        multiple = FALSE,
+                        options = NULL
+                      ),
+                    ),
+                    br(),
                   ),
                   gov_row(
-                    h2("By Region")
+                    plotlyOutput("placement_order_match_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_order_match",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_order_match_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_order_match_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Due to data availability, only national level stats are available for this chart."),
+                          tags$li("Average time rounded to the nearest month."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
+                    )
                   ),
-                  gov_row(
-                    h2("By local authority")
-                  )
                 ),
                 open = FALSE
               )
