@@ -5702,9 +5702,13 @@ server <- function(input, output, session) {
 
     max_months <- max(placement_order_match_data$months)
 
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "months", "Number of Months", max_months) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average time between placement order and match for those children who are adopted")
+
     ggplotly(
-      plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "months", "Number of Months", max_months) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
