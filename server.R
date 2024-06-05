@@ -5047,6 +5047,22 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
   })
 
+  output$placement_order_match_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else if (input$geographic_breakdown_o4 != "National") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_order_match_data %>%
+        filter(time_period == max(placement_order_match_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(age_start_poc == "Total") %>%
+        select(months), nsmall = 0)
+    }
+    paste0(
+      stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_order_match_data$time_period), ")", "</p>"
+    )
+  })
+
   ### Placement type charts and tables ----
   # Time series chart
   output$placement_type_ts_plot <- renderPlotly({

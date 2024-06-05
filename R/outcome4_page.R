@@ -102,8 +102,8 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average time between an LA receiving court authority to place a child and the LA deciding on a match to an adoptive family? Q1-Q4 2022/23",
-                    value = p("stats")
+                    title = "Average number of months between decision that child should be placed for adoption and matching of child and adopters",
+                    value = htmlOutput("placement_order_match_txt")
                   )
                 ),
               ),

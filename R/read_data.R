@@ -1302,7 +1302,7 @@ read_placement_order_match_data <- function(file = "data/national_cla_adopted_av
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National"
     )) %>%
-    filter(stage_of_adoption_process == "6. Total average time between entry into care and adoption")
+    filter(stage_of_adoption_process == "2. Average time between decision that child should be placed for adoption and matching of child and adopters")
 
   data <- data %>%
     mutate(number_num = case_when(
