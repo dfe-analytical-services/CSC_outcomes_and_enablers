@@ -131,7 +131,7 @@ outcome3_tab <- function() {
                     inputId = "tbl_repeat_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("table_repeat_cpp")
+                      reactableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
@@ -160,7 +160,7 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_repeat_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cpp_repeat_reg")
+                        reactableOutput("table_cpp_repeat_reg")
                       )
                     )
                   ),

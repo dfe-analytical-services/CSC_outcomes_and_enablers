@@ -4485,7 +4485,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$table_repeat_cpp <- renderDataTable({
+  output$table_repeat_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
@@ -4494,13 +4494,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
         filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4509,7 +4511,8 @@ server <- function(input, output, session) {
 
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4518,15 +4521,19 @@ server <- function(input, output, session) {
 
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4552,20 +4559,26 @@ server <- function(input, output, session) {
   })
 
   # cpp by region table
-  output$table_cpp_repeat_reg <- renderDataTable({
+  output$table_cpp_repeat_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    datatable(
-      repeat_cpp %>% filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
-        arrange(desc(Repeat_CPP_percent)),
-      colnames = c("Time period", "Region", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- repeat_cpp %>%
+      filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
+      select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+      arrange(desc(Repeat_CPP_percent)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "Repeat_CPP_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4608,26 +4621,25 @@ server <- function(input, output, session) {
 
       data <- repeat_cpp %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-        arrange(desc(`Repeat_CPP_percent`))
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+        arrange(desc(Repeat_CPP_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP Starts` = `CPP_start`, `Repeat CPP` = `CPP_subsequent`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
     } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
       data <- repeat_cpp %>%
-        filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
-        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-        arrange(desc(`Repeat_CPP_percent`))
+        filter(geographic_level == "Local authority", time_period == max(repeat_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+        arrange(desc(Repeat_CPP_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP Starts` = `CPP_start`, `Repeat CPP` = `CPP_subsequent`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
     }
 
-    data2 <- data %>%
-      select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-      arrange(desc(`Repeat_CPP_percent`)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
-
     reactable(
-      data2,
+      data,
       columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
         `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      defaultPageSize = 15,
       searchable = TRUE,
     )
   })
@@ -7919,10 +7931,13 @@ server <- function(input, output, session) {
 
   output$SN_cpp_repeat_tbl <- renderReactable({
     data <- repeat_cpp %>%
-      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent", "CPP starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent")
+
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Repeat CPP (%)"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("CPP starts", "Repeat CPP"), yvalue = "Repeat CPP (%)"),
       columns = list(
+        `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
+        `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
         `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
