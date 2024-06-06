@@ -275,7 +275,7 @@ server <- function(input, output, session) {
   })
 
   # Social worker turnover rate benchmarking table alternative
-  output$table_s_w_turnover <- renderDataTable({
+  output$table_s_w_turnover <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -284,13 +284,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -299,7 +301,8 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -308,14 +311,14 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
+      columns = list(
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       )
     )
   })
@@ -338,19 +341,21 @@ server <- function(input, output, session) {
   })
 
   # turnover rate by region table
-  output$table_turnover_reg <- renderDataTable({
+  output$table_turnover_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`)),
-      colnames = c("Time period", "Region", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+      arrange(desc(`Turnover Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       )
     )
   })
@@ -372,7 +377,7 @@ server <- function(input, output, session) {
   })
 
   # Turnover Rate by LA table
-  output$table_turnover_la <- renderDataTable({ # renderReactable({
+  output$table_turnover_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -392,7 +397,8 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`))
+        arrange(desc(`Turnover Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover Rate Fte" = "Turnover rate (FTE) %")
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
@@ -400,15 +406,14 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           `Turnover Rate Fte`
         ) %>%
-        arrange(desc(`Turnover Rate Fte`))
+        arrange(desc(`Turnover Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover Rate Fte" = "Turnover rate (FTE) %")
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
+      columns = list(
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       )
     )
   })

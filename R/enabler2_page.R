@@ -85,23 +85,6 @@ enabler2_tab <- function() {
           condition = "(input.geographic_breakdown_e2 == 'Westmorland and Furness')",
           p(" Only 2023 data is available for Westmorland and Furness, because Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_e2 == 'Cumbria')",
-        #   p("To view 2023 and onwards data select ", strong("Cumberland"), "or", strong("Westmorland and Furness"), ". Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
-        # ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_e2 == 'Northamptonshire')",
-        #   p("To view 2021 and onwards data select ", strong("North Northamptonshire / West Northamptonshire"), ". Northamptonshire local authority was replaced with two new unitary authorities, North Northamptonshire and West Northamptonshire, in April 2021.")
-        # ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_e2 == 'Poole')",
-        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        # ),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_e2 == 'Bournemouth')",
-        #   p("To view 2019 and onwards data select ", strong("Bournemouth, Christchurch and Poole"), ". Bournemouth, Christchurch and Poole local authority was formed in April 2019.")
-        # ),
-        # p(htmlOutput("enabler2_choice_text2")),
         br(),
         div(
           tabsetPanel(
@@ -160,7 +143,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_s_w_turnover",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_s_w_turnover")
+                        reactableOutput("table_s_w_turnover")
                       )
                     ),
                     details(
@@ -186,7 +169,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_turnover_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_turnover_reg")
+                        reactableOutput("table_turnover_reg")
                       )
                     )
                   ),
