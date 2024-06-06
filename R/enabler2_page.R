@@ -205,7 +205,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_agency_worker",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_agency_worker")
+                        reactableOutput("table_agency_worker")
                       )
                     ),
                     details(
@@ -233,7 +233,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_agency_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_agency_reg")
+                        reactableOutput("table_agency_reg")
                       )
                     )
                   ),
@@ -268,7 +268,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_vacancy_rate",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_vacancy_rate")
+                        reactableOutput("table_vacancy_rate")
                       )
                     ),
                     details(
@@ -296,7 +296,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_vacancy_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_vacancy_reg")
+                        reactableOutput("table_vacancy_reg")
                       )
                     )
                   ),

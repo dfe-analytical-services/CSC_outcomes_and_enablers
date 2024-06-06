@@ -319,7 +319,9 @@ server <- function(input, output, session) {
       filtered_data,
       columns = list(
         `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
-      )
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -355,8 +357,10 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
-      )
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -398,7 +402,7 @@ server <- function(input, output, session) {
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
         arrange(desc(`Turnover Rate Fte`)) %>%
-        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover Rate Fte" = "Turnover rate (FTE) %")
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
@@ -407,14 +411,16 @@ server <- function(input, output, session) {
           `Turnover Rate Fte`
         ) %>%
         arrange(desc(`Turnover Rate Fte`)) %>%
-        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover Rate Fte" = "Turnover rate (FTE) %")
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     }
 
     reactable(
       data,
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
-      )
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -478,7 +484,7 @@ server <- function(input, output, session) {
   })
 
   # Agency worker rate table alternative
-  output$table_agency_worker <- renderDataTable({
+  output$table_agency_worker <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -487,13 +493,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -502,7 +510,8 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -511,15 +520,17 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -541,22 +552,25 @@ server <- function(input, output, session) {
   })
 
   # agency rate table by region
-  output$table_agency_reg <- renderDataTable({
+  output$table_agency_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        `Agency Rate Fte`
-      ) %>%
-        arrange(desc(`Agency Rate Fte`)),
-      colnames = c("Time period", "Region", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Agency Rate Fte`) %>%
+      arrange(desc(`Agency Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -578,7 +592,7 @@ server <- function(input, output, session) {
   })
 
   # agency rate by la table alternative
-  output$table_agency_rate_la <- renderDataTable({
+  output$table_agency_rate_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -598,25 +612,24 @@ server <- function(input, output, session) {
 
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, agency_rate_fte) %>%
-        arrange(desc(agency_rate_fte))
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        arrange(desc(`Agency Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          "Agency Rate Fte"
-        ) %>%
-        arrange(desc(`Agency Rate Fte`))
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        arrange(desc(`Agency Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -683,7 +696,7 @@ server <- function(input, output, session) {
 
 
   # Vacancy Rate benchmarking table alternative
-  output$table_vacancy_rate <- renderDataTable({
+  output$table_vacancy_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -692,13 +705,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -707,7 +722,8 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -716,15 +732,17 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -747,7 +765,7 @@ server <- function(input, output, session) {
   })
 
   # vacancy rate by la table alternative
-  output$table_vacancy_rate_la <- renderDataTable({
+  output$table_vacancy_rate_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -768,25 +786,33 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
-        arrange(desc(vacancy_rate_fte))
+        arrange(desc(vacancy_rate_fte)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          `Vacancy Rate Fte`
-        ) %>%
-        arrange(desc(`Vacancy Rate Fte`))
+        select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
+        arrange(desc(`Vacancy Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     }
 
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Local authority", "Vacancy rate (FTE) %"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
   })
 
 
@@ -809,18 +835,20 @@ server <- function(input, output, session) {
   })
 
   # vacancy rate table by region
-  output$table_vacancy_reg <- renderDataTable({
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        `Vacancy Rate Fte`
-      ) %>%
-        arrange(desc(`Vacancy Rate Fte`)),
-      colnames = c("Time period", "Region", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$table_vacancy_reg <- renderReactable({
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
+      arrange(desc(`Vacancy Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -8797,7 +8825,7 @@ server <- function(input, output, session) {
           inputId = "tbl_turnover_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_turnover_la")
+            reactableOutput("table_turnover_la")
           )
         ),
       )
@@ -8847,7 +8875,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Turnover Rate Fte"),
       columns = list(
-        `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8866,7 +8894,7 @@ server <- function(input, output, session) {
           inputId = "tbl_agency_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_agency_rate_la")
+            reactableOutput("table_agency_rate_la")
           )
         ),
       )
@@ -8913,7 +8941,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Agency Rate Fte"),
       columns = list(
-        `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8933,7 +8961,7 @@ server <- function(input, output, session) {
           inputId = "tbl_vacancy_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_vacancy_rate_la")
+            reactableOutput("table_vacancy_rate_la")
           )
         ),
       )
@@ -8979,7 +9007,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Vacancy Rate Fte"),
       columns = list(
-        `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
