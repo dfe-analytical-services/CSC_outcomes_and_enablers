@@ -4706,7 +4706,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$table_duration_cpp <- renderDataTable({
+  output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
@@ -4742,13 +4742,18 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
         select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
     }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- filtered_data %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP 2+ Years" = "X2_years_or_more", "CPP 2+ Years (%)" = "X2_years_or_more_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP 2+ Years` = colDef(cell = cellfunc),
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4772,20 +4777,25 @@ server <- function(input, output, session) {
   })
 
   # by region table
-  output$table_cpp_duration_reg <- renderDataTable({
+  output$table_cpp_duration_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    datatable(
-      duration_cpp %>% filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
-        arrange(desc(X2_years_or_more_percent)),
-      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- duration_cpp %>%
+      filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
+      select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
+      arrange(desc(X2_years_or_more_percent)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "CPP 2+ Years" = "X2_years_or_more", "CPP 2+ Years (%)" = "X2_years_or_more_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP 2+ Years` = colDef(cell = cellfunc),
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

@@ -176,6 +176,7 @@ outcome3_tab <- function() {
                     uiOutput("SN_CPP"),
                   )
                 ),
+                ### Repeat CPP 2+ ---------------------------------------------------
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) longer than 2 years",
                   h2("Percentage of Child Protection Plans (CPP) longer than 2 years"),
@@ -191,7 +192,7 @@ outcome3_tab <- function() {
                     inputId = "tbl_duration_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("table_duration_cpp")
+                      reactableOutput("table_duration_cpp")
                     )
                   ),
                   details(
@@ -210,6 +211,7 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
+                  # No local authority level data
                   gov_row(
                     h2("Child Protection Plans (CPP) longer than 2 years, by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -221,7 +223,7 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_duration_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cpp_duration_reg")
+                        reactableOutput("table_cpp_duration_reg")
                       )
                     )
                   ),
