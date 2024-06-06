@@ -351,7 +351,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_caseload",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_caseload")
+                        reactableOutput("table_caseload")
                       )
                     ),
                     details(
@@ -379,7 +379,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_caseload_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_caseload_reg")
+                        reactableOutput("table_caseload_reg")
                       )
                     ),
                   ),
@@ -387,17 +387,6 @@ enabler2_tab <- function() {
                     h2("Social worker caseloads by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
-                    # br(),
-                    # plotlyOutput("plot_caseload_la"),
-                    # br(),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_caseload_la",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     dataTableOutput("table_caseload_la")
-                    #   )
-                    # )
                     radioGroupButtons(
                       "caseload_stats_toggle",
                       label = NULL,

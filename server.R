@@ -930,7 +930,7 @@ server <- function(input, output, session) {
 
 
   # caseload benchamrking table alternative
-  output$table_caseload <- renderDataTable({
+  output$table_caseload <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -939,13 +939,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       filtered_data <- workforce_data %>%
         filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -954,7 +956,8 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
@@ -963,15 +966,17 @@ server <- function(input, output, session) {
 
       filtered_data <- workforce_data %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -993,22 +998,24 @@ server <- function(input, output, session) {
   })
 
   # Caseload by region table
-  output$table_caseload_reg <- renderDataTable({
+  output$table_caseload_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        "Caseload Fte"
-      ) %>%
-        arrange(desc(`Caseload Fte`)),
-      colnames = c("Time period", "Region", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, "Caseload Fte") %>%
+      arrange(desc(`Caseload Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -1029,7 +1036,7 @@ server <- function(input, output, session) {
   })
 
   # Caseload by LA table
-  output$table_caseload_la <- renderDataTable({
+  output$table_caseload_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
@@ -1050,24 +1057,22 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`))
+        arrange(desc(`Caseload Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          "Caseload Fte"
-        ) %>%
-        arrange(desc(`Caseload Fte`))
+        select(time_period, geo_breakdown, "Caseload Fte") %>%
+        arrange(desc(`Caseload Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     }
-
-    datatable(
+    reactable(
       data,
-      colnames = c("Time period", "Local authority", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -9026,7 +9031,7 @@ server <- function(input, output, session) {
           inputId = "tbl_caseload_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_caseload_la")
+            reactableOutput("table_caseload_la")
           )
         ),
       )
@@ -9073,7 +9078,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Caseload Fte"),
       columns = list(
-        `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
