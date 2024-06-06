@@ -1398,18 +1398,24 @@ server <- function(input, output, session) {
   })
 
   output$plot_ofsted <- plotly::renderPlotly({
+    p <- plot_ofsted() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families nationally")
+
     ggplotly(
-      plot_ofsted() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
   })
 
   output$plot_ofsted_reg <- plotly::renderPlotly({
+    p <- plot_ofsted_reg() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families by region")
+
     ggplotly(
-      plot_ofsted_reg() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -8770,9 +8776,12 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
+
+    p <- statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours")
     ggplotly(
-      statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
