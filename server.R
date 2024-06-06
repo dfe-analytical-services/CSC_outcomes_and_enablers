@@ -1397,6 +1397,20 @@ server <- function(input, output, session) {
     }
   })
 
+  output$ofsted_latest_ratings_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data %>%
+      filter(is.na(region) == FALSE) %>%
+      select(geo_breakdown, time_period) %>%
+      arrange(`geo_breakdown`) %>%
+      rename(`Latest Rating` = `time_period`, `Location` = `geo_breakdown`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
   output$plot_ofsted <- plotly::renderPlotly({
     p <- plot_ofsted() %>%
       config(displayModeBar = F)
@@ -1421,49 +1435,43 @@ server <- function(input, output, session) {
     )
   })
 
-  output$ofsted_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "National", time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Publication",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "National", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
-  output$ofsted_reg_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-        select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Publication", "Geographic Level",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_reg_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Geographic Level` = `geographic_level`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 

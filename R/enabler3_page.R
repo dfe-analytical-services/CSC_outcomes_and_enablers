@@ -236,17 +236,28 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table below to see the latest year for each LA."),
+                    # reactableOutput("ofsted_latest_ratings_tbl"),
+                    # br(),
+                    details(
+                      inputId = "tbl_ofsted_latest_ratings",
+                      label = "View latest ratings",
+                      help_text = (
+                        reactableOutput("ofsted_latest_ratings_tbl")
+                      )
+                    )
+                  ),
+                  gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    p("This chart will also not react to the comparison checkboxes at the top."),
+                    p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted"),
                     br(),
                     details(
                       inputId = "tbl_ofsted",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("ofsted_tbl")
+                        reactableOutput("ofsted_tbl")
                       )
                     ),
                     details(
@@ -265,15 +276,14 @@ enabler3_tab <- function() {
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    p("This chart will also not react to the comparison checkboxes at the top."),
+                    p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted_reg"),
                     br(),
                     details(
                       inputId = "tbl_ofsted_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("ofsted_reg_tbl")
+                        reactableOutput("ofsted_reg_tbl")
                       )
                     ),
                     details(
