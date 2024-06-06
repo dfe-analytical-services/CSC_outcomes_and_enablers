@@ -336,10 +336,15 @@ outcome4_tab <- function() {
                   "Average time between placement order and match for those children who are adopted",
                   gov_row(
                     div(
+                      h2("Average time between placement order and match for those children who are adopted"),
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
-                      p("Please use the dropdown below to select which age you would like to see in the below chart."),
-                      p("(Note that this will not affect the headline box at the top)"),
+                      insert_text(
+                        inputId = "placement_order_match_nationl_message",
+                        text = "Due to data availability, only national level stats are available for this chart. However, you can choose different ages to view on the chart using the dropdown below. (Note that this will not affect the headline box at the top)."
+                      ),
+                      # p("Please use the dropdown below to select which age you would like to see in the below chart."),
+                      # p("(Note that this will not affect the headline box at the top)"),
                       selectizeInput(
                         inputId = "select_age_group_o4",
                         label = "Select an age group:",
