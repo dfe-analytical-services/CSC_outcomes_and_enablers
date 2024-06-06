@@ -237,6 +237,7 @@ enabler3_tab <- function() {
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p("This chart will also not react to the comparison checkboxes at the top."),
                     plotlyOutput("plot_ofsted"),
@@ -263,6 +264,7 @@ enabler3_tab <- function() {
                   ),
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p("This chart will also not react to the comparison checkboxes at the top."),
                     plotlyOutput("plot_ofsted_reg"),

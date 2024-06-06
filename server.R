@@ -1434,7 +1434,7 @@ server <- function(input, output, session) {
         )) %>%
         arrange(desc(`Count`)),
       colnames = c(
-        "Latest Inspection",
+        "Latest Publication",
         "Breakdown", "Ofsted leadership rating", "Count"
       ),
       options = list(
@@ -1457,7 +1457,7 @@ server <- function(input, output, session) {
         )) %>%
         arrange(desc(`Count`)),
       colnames = c(
-        "Latest Inspection", "Geographic Level",
+        "Latest Publication", "Geographic Level",
         "Breakdown", "Ofsted leadership rating", "Count"
       ),
       options = list(
