@@ -1124,45 +1124,47 @@ server <- function(input, output, session) {
     )
   })
 
-  output$table_ethnicity_rate <- renderDataTable({
+  output$table_ethnicity_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      workforce_eth %>%
-        filter(
-          geo_breakdown %in% input$geographic_breakdown_e2,
-          role == "Total", breakdown_topic == "Ethnicity major"
-        ) %>%
-        select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage),
-      colnames = c("Time period", "Geographical breakdown", "Ethnicity", "Headcount", "Headcount (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- workforce_eth %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e2, role == "Total", breakdown_topic == "Ethnicity major") %>%
+      select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "inpost_headcount_percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Headcount` = colDef(cell = cellfunc),
+        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
 
 
-  output$table_population_ethnicity_rate <- renderDataTable({
+  output$table_population_ethnicity_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      combined_ethnicity_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage),
-      colnames = c(
-        "Geographical breakdown",
-        "Ethnicity group", "Workforce (%)", "Population (%)"
+    data <- combined_ethnicity_data %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage) %>%
+      rename("Location" = "geo_breakdown", "Ethnicity group" = "breakdown", "Workforce (%)" = "inpost_headcount_percentage", "Population (%)" = "Percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Workforce (%)` = colDef(cell = cellfunc),
+        `Population (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 
@@ -1183,21 +1185,24 @@ server <- function(input, output, session) {
 
   cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
 
-  output$table_seniority_eth <- renderDataTable({
+  output$table_seniority_eth <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
-    datatable(
-      workforce_eth_seniority[, cols] %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
-        select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage),
-      colnames = c("Time period", "Geographical breakdown", "Seniority level", "Ethnicity", "Headcount", "Headcount (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE,
-        target = "column"
-      )
+    data <- workforce_eth_seniority[, cols] %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
+      select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Seniority level" = "seniority", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "Percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Headcount` = colDef(cell = cellfunc),
+        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
     )
   })
 

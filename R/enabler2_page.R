@@ -432,7 +432,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_ethnicity",
                       label = "View Chart as a table",
                       help_text = (
-                        dataTableOutput("table_ethnicity_rate")
+                        reactableOutput("table_ethnicity_rate")
                       )
                     ),
                     details(
@@ -471,7 +471,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_population_ethnicity",
                       label = "View Chart as a table",
                       help_text = (
-                        dataTableOutput("table_population_ethnicity_rate")
+                        reactableOutput("table_population_ethnicity_rate")
                       )
                     ),
                     details(
@@ -509,7 +509,7 @@ enabler2_tab <- function() {
                       inputId = "tbl_seniority_eth",
                       label = "View Chart as a table",
                       help_text = (
-                        dataTableOutput("table_seniority_eth")
+                        reactableOutput("table_seniority_eth")
                       )
                     ),
                     details(
