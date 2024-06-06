@@ -182,7 +182,7 @@ server <- function(input, output, session) {
   ## Confirmation sentence E2 -------
   # This function gets the selected region to put into the confirmation text below
 
-  workforce_region <- reactive({
+  workforce_region_e2 <- reactive({
     location_data_workforce %>%
       filter(la_name == input$geographic_breakdown_e2) %>%
       pull(region_name) %>%
@@ -196,7 +196,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_e2 == "Regional") {
       paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ".")
     } else if (input$select_geography_e2 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region(), ".")
+      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region_e2(), ".")
     }
   })
 
@@ -1181,7 +1181,7 @@ server <- function(input, output, session) {
   ## Confirmation sentence E3 -------
   # This function gets the selected region to put into the confirmation text below
 
-  workforce_region <- reactive({
+  workforce_region_e3 <- reactive({
     location_data %>%
       filter(la_name == input$geographic_breakdown_e3) %>%
       pull(region_name) %>%
@@ -1195,7 +1195,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_e3 == "Regional") {
       paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ".")
     } else if (input$select_geography_e3 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region(), ".")
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region_e3(), ".")
     }
   })
 
