@@ -182,7 +182,7 @@ server <- function(input, output, session) {
   ## Confirmation sentence E2 -------
   # This function gets the selected region to put into the confirmation text below
 
-  workforce_region <- reactive({
+  workforce_region_e2 <- reactive({
     location_data_workforce %>%
       filter(la_name == input$geographic_breakdown_e2) %>%
       pull(region_name) %>%
@@ -196,7 +196,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_e2 == "Regional") {
       paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ".")
     } else if (input$select_geography_e2 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region(), ".")
+      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region_e2(), ".")
     }
   })
 
@@ -1224,7 +1224,7 @@ server <- function(input, output, session) {
   ## Confirmation sentence E3 -------
   # This function gets the selected region to put into the confirmation text below
 
-  workforce_region <- reactive({
+  workforce_region_e3 <- reactive({
     location_data %>%
       filter(la_name == input$geographic_breakdown_e3) %>%
       pull(region_name) %>%
@@ -1238,7 +1238,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_e3 == "Regional") {
       paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ".")
     } else if (input$select_geography_e3 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region(), ".")
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region_e3(), ".")
     }
   })
 
@@ -1759,67 +1759,81 @@ server <- function(input, output, session) {
     }
   })
 
+  output$ofsted_latest_ratings_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data %>%
+      filter(is.na(region) == FALSE) %>%
+      select(geo_breakdown, time_period) %>%
+      arrange(`geo_breakdown`) %>%
+      rename(`Latest Rating` = `time_period`, `Location` = `geo_breakdown`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
   output$plot_ofsted <- plotly::renderPlotly({
+    p <- plot_ofsted() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families nationally")
+
     ggplotly(
-      plot_ofsted() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
   })
 
   output$plot_ofsted_reg <- plotly::renderPlotly({
+    p <- plot_ofsted_reg() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families by region")
+
     ggplotly(
-      plot_ofsted_reg() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
   })
 
-  output$ofsted_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "National", time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Inspection",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "National", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
-  output$ofsted_reg_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-        select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Inspection", "Geographic Level",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_reg_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Geographic Level` = `geographic_level`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -9229,9 +9243,12 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
+
+    p <- statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours")
     ggplotly(
-      statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
