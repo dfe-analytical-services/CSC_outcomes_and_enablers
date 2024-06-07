@@ -8679,6 +8679,19 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "placement_type_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -8768,6 +8781,19 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "placement_changes_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
