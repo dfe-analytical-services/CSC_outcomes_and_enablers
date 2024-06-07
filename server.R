@@ -8246,6 +8246,21 @@ server <- function(input, output, session) {
             reactableOutput("table_cpp_repeat_la")
           )
         ),
+        details(
+          inputId = "cpp_in_year_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The metric shown in the graph refers to the percentage of children who have been entered into a CPP during the year, where this plan was at least their second."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -8313,7 +8328,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ## NO CPP for 2+ years by LA
+  ### NO CPP for 2+ years by LA ----
 
   ### Hospital admissions -----
   output$SN_hosp_admissions <- renderUI({
@@ -8439,7 +8454,25 @@ server <- function(input, output, session) {
           label = "View chart as a table",
           help_text = (
             reactableOutput("table_child_ab_neg_la")
-            # p("table here")
+          )
+        ),
+        details(
+          inputId = "child_abuse_add_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Figures exclude the category ‘no factors identified’."),
+              tags$li("An episode of need may have more than one factor recorded."),
+              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
           )
         ),
       )
@@ -8533,6 +8566,25 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "efh_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Figures exclude the category ‘no factors identified’."),
+              tags$li("An episode of need may have more than one factor recorded."),
+              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
