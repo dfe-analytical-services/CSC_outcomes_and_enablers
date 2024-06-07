@@ -9813,7 +9813,7 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total children’s services expenditure"),
+              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
               tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "for children aged 0 to 17 years and total children’s services expenditure."),
               tags$li("Average per child spend has been rounded to the nearest whole number."),
               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
