@@ -214,6 +214,18 @@ server <- function(input, output, session) {
   })
 
 
+  observeEvent(input$select_geography_e3, {
+    if (input$select_geography_e3 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_e3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_e3", value = FALSE)
+    } else if (input$select_geography_e3 == "National") {
+      updateCheckboxInput(session, "Yes_national_e3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_e3", value = FALSE)
+    }
+  })
+
+
+
   # Social worker turnover rate headline box
   ## Turnover rate plot and table -----
   output$s_w_headline_txt <- renderText({
@@ -1232,7 +1244,7 @@ server <- function(input, output, session) {
   })
 
   # First sentence for the dropdown choices
-  output$enabler3_choice_text1 <- renderText({
+  output$enabler2_choice_text1 <- renderText({
     if (input$select_geography_e2 == "National") {
       paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics on ", tags$b("England"), ".")
     } else if (input$select_geography_e2 == "Regional") {
@@ -1242,7 +1254,7 @@ server <- function(input, output, session) {
     }
   })
 
-  output$enabler3_choice_text2 <- renderText({
+  output$enabler2_choice_text2 <- renderText({
     # Checking to see if they picked national average comparison
     if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
       paste0("You have also selected to compare with the ", tags$b("National Average."))
@@ -1822,16 +1834,13 @@ server <- function(input, output, session) {
     }
   })
 
-  output$outcome1_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox) && is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+  observeEvent(input$select_geography_o1, {
+    if (input$select_geography_o1 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o1", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o1", value = FALSE)
+    } else if (input$select_geography_o1 == "National") {
+      updateCheckboxInput(session, "Yes_national_o1", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o1", value = FALSE)
     }
   })
 
@@ -3972,6 +3981,16 @@ server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$select_geography_o2, {
+    if (input$select_geography_o2 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o2", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o2", value = FALSE)
+    } else if (input$select_geography_o2 == "National") {
+      updateCheckboxInput(session, "Yes_national_o2", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o2", value = FALSE)
+    }
+  })
+
   ## Headline stats -----
   output$SGO_headline_txt <- renderText({
     if (input$geographic_breakdown_o2 == "") {
@@ -4477,6 +4496,16 @@ server <- function(input, output, session) {
       # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  observeEvent(input$select_geography_o3, {
+    if (input$select_geography_o3 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o3", value = FALSE)
+    } else if (input$select_geography_o3 == "National") {
+      updateCheckboxInput(session, "Yes_national_o3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o3", value = FALSE)
     }
   })
 
@@ -5551,6 +5580,16 @@ server <- function(input, output, session) {
       # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  observeEvent(input$select_geography_o4, {
+    if (input$select_geography_o4 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o4", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o4", value = FALSE)
+    } else if (input$select_geography_o4 == "National") {
+      updateCheckboxInput(session, "Yes_national_o4", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o4", value = FALSE)
     }
   })
 
