@@ -1,7 +1,7 @@
 outcome3_tab <- function() {
   tabPanel(
     value = "outcome3_page",
-    "Outcome 3",
+    "3 - Safety",
     gov_main_layout(
       gov_row(
         column(
