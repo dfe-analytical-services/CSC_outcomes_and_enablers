@@ -5731,6 +5731,22 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
   })
 
+  output$placement_order_match_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else if (input$geographic_breakdown_o4 != "National") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_order_match_data %>%
+        filter(time_period == max(placement_order_match_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(age_start_poc == "Total") %>%
+        select(months), nsmall = 0)
+    }
+    paste0(
+      stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(All ages - ", max(placement_order_match_data$time_period), ")", "</p>"
+    )
+  })
+
   ### Placement type charts and tables ----
   # Time series chart
   output$placement_type_ts_plot <- renderPlotly({
@@ -6214,6 +6230,7 @@ server <- function(input, output, session) {
     )
   })
 
+
   # timeseries table alternative
   output$placement_dist_tbl <- renderReactable({
     shiny::validate(
@@ -6371,6 +6388,57 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  ## Placement order and match ----
+  output$placement_order_match_ts_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 == "National", "Regional and local authority level data are not available for this indicator."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$select_age_group_o4 != "", "Select an age.")
+    )
+
+    filtered_data <- placement_order_match_data %>%
+      filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age_start_poc %in% input$select_age_group_o4)
+
+    max_months <- max(placement_order_match_data$months)
+
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "months", "Number of Months", max_months) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average time between placement order and match for those children who are adopted")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # timeseries table alternative
+  output$placement_order_match_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 == "National", "Regional and local authority level data are not available for this indicator."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$select_age_group_o4 != "", "Select an age.")
+    )
+
+    filtered_data <- placement_order_match_data %>%
+      filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age_start_poc %in% input$select_age_group_o4) %>%
+      select(time_period, geographic_level, stage_of_adoption_process, age_start_poc, months)
+
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Geographic Level` = `geographic_level`, `Stage of Adoption Process` = `stage_of_adoption_process`, `Age` = `age_start_poc`, `Months` = `months`)
+
+    reactable(
+      data,
+      columns = list(
+        `Months` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,

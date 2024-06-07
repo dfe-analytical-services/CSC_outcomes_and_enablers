@@ -1560,6 +1560,37 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
   return(data3)
 }
 
+## Placement order and match data ----
+read_placement_order_match_data <- function(file = "data/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
+  data <- read.csv(file)
+
+  data <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National"
+    )) %>%
+    filter(stage_of_adoption_process == "2. Average time between decision that child should be placed for adoption and matching of child and adopters")
+
+  data <- data %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    ))
+
+  data$months <- sapply(strsplit(data$number, ":"), function(x) {
+    years <- as.numeric(x[1])
+    months <- as.numeric(x[2])
+    months <- years * 12 + months
+    return(months)
+  })
+
+
+  return(data)
+}
 
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
