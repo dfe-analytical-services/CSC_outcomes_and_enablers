@@ -1557,7 +1557,17 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     ))
-  return(data3)
+
+  data4 <- data3 %>%
+    mutate(score_label = case_when(
+      (number_num >= 0 & number_num < 14) ~ "Normal",
+      (number_num >= 14 & number_num < 17) ~ "Borderline",
+      (number_num >= 17 & number_num <= 40) ~ "Cause for concern",
+      (number_num < 0) ~ "Supressed Score",
+      TRUE ~ as.character("Error")
+    ))
+
+  return(data4)
 }
 
 ## Placement order and match data ----

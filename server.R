@@ -6456,32 +6456,22 @@ server <- function(input, output, session) {
     }
 
     final_data <- filtered_data %>%
-      select(time_period, geographic_level, geo_breakdown, characteristic, number_num) %>%
-      rename("Score" = "number_num")
+      select(time_period, geographic_level, geo_breakdown, characteristic, score_label, number_num) %>%
+      rename("Average score" = "number_num")
 
-    max_y_lim <- (max(final_data$Score) + 5)
-    p <- plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim) +
-      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+    max_y_lim <- (max(final_data$`Average score`) + 5)
+
+    p <- plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Average score", "SDQ average score", max_y_lim, add_rect = TRUE) %>%
       config(displayModeBar = F)
 
     p <- p + ggtitle("Average SDQ score")
 
-    suppressWarnings(
-      plot <- ggplotly(
-        plotly_time_series_custom_scale(final_data, input$select_geography_o4, input$geographic_breakdown_o4, "Score", "SDQ average score", max_y_lim, add_rect = TRUE) #+
-        # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-        # # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
-        # geom_rect( colour = NA, fill = "green",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13")))+
-        # geom_rect( colour = NA, fill = "orange",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16")))+
-        # geom_rect( colour = NA, fill = "red",alpha = 0.1, aes(xmin = 0, xmax = 6,ymin = 17, ymax = max_y_lim, text = paste("Cause for concern SDQ score: 17-40")))
-        %>%
-          config(displayModeBar = F),
-        height = 420,
-        tooltip = "text"
-      ) %>%
-        layout(hovermode = "x")
-    )
+    plot <- ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      layout(hovermode = "x")
   })
 
   output$sqd_ts_table <- renderReactable({
@@ -6516,13 +6506,13 @@ server <- function(input, output, session) {
     }
 
     final_data <- filtered_data %>%
-      select(time_period, geo_breakdown, characteristic, number_num) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, "Score" = "number_num")
+      select(time_period, geo_breakdown, characteristic, number_num, score_label) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `SDQ score` = `score_label`, "Average score" = "number_num")
 
     reactable(
       final_data,
       columns = list(
-        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6540,20 +6530,21 @@ server <- function(input, output, session) {
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score") %>%
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
-      rename("Score" = "number_num")
+      rename("Average score" = "number_num")
 
-    max_y_lim <- (max(data$Score) + 5)
+    max_y_lim <- (max(data$`Average score`) + 5)
 
-    p <- by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim) +
-      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
-      config(displayModeBar = F)
+    suppressWarnings(
+      p <- by_region_bar_plot(data, "Average score", "Average SDQ score", max_y_lim) +
+        geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+        config(displayModeBar = F)
+    )
 
     p <- p + ggtitle("Average SDQ score by region")
 
-
     ggplotly(
-      by_region_bar_plot(data, "Score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
+      by_region_bar_plot(data, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
       # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
       # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
       %>%
@@ -6572,16 +6563,16 @@ server <- function(input, output, session) {
 
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score", time_period == max(time_period), geographic_level == "Regional") %>%
-      select(time_period, geo_breakdown, characteristic, number_num) %>%
+      select(time_period, geo_breakdown, characteristic, number_num, score_label) %>%
       arrange(desc(number_num))
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Average score` = `number_num`, `SDQ score` = `score_label`)
 
     reactable(
       data2,
       columns = list(
-        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6598,14 +6589,12 @@ server <- function(input, output, session) {
 
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
-      rename(`Score` = `number_num`)
+      rename(`Average score` = `number_num`)
 
-    max_y_lim <- (max(data$`Score`) + 5)
+    max_y_lim <- (max(data$`Average score`) + 5)
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", yupperlim = max_y_lim, add_rect = TRUE) +
-      scale_y_continuous(limits = c(0, max_y_lim)) #+
-    # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-    # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Average score", "Average SDQ score", yupperlim = max_y_lim, add_rect = TRUE) +
+      scale_y_continuous(limits = c(0, max_y_lim))
 
     p <- p + ggtitle("Average SDQ score by local authority")
 
@@ -6617,7 +6606,7 @@ server <- function(input, output, session) {
     ) %>%
       layout(hovermode = "x")
   })
-
+  # table
   output$sdq_by_la_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
@@ -6639,24 +6628,24 @@ server <- function(input, output, session) {
       data <- wellbeing_sdq_data %>%
         filter(geo_breakdown %in% location, time_period == max(wellbeing_sdq_data$time_period)) %>%
         filter(characteristic == "SDQ average score") %>%
-        select(time_period, geo_breakdown, characteristic, number_num) %>%
+        select(time_period, geo_breakdown, characteristic, number_num, score_label) %>%
         arrange(desc(number_num))
     } else if (input$select_geography_o4 %in% c("Local authority", "National")) {
       data <- wellbeing_sdq_data %>%
         filter(geographic_level == "Local authority", time_period == max(wellbeing_sdq_data$time_period)) %>%
         filter(characteristic == "SDQ average score") %>%
-        select(time_period, geo_breakdown, characteristic, number_num) %>%
+        select(time_period, geo_breakdown, characteristic, number_num, score_label) %>%
         arrange(desc(number_num))
     }
 
     data2 <- data %>%
       arrange(desc(number_num)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Score` = `number_num`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `SDQ characteristic` = `characteristic`, `Average score` = `number_num`, `SDQ score` = `score_label`)
 
     reactable(
       data2,
       columns = list(
-        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9144,12 +9133,10 @@ server <- function(input, output, session) {
     )
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score", geographic_level == "Local authority", time_period == max(time_period)) %>%
-      rename("Score" = "number_num")
+      rename("Average score" = "number_num")
 
-    max_y_lim <- (max(data$Score) + 5)
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Score", "Average SDQ score", max_y_lim) +
-      geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-      geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) %>%
+    max_y_lim <- (max(data$`Average score`) + 5)
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average SDQ score by statistical neighbours")
 
@@ -9157,18 +9144,20 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(hovermode = "x")
   })
 
   output$SN_sdq_table <- renderReactable({
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score" & geographic_level == "Local authority" & time_period == max(time_period)) %>%
-      rename("SDQ characteristic" = characteristic, "Score" = "number_num")
+      rename("SDQ characteristic" = characteristic, "Average score" = "number_num", "SDQ score" = score_label)
 
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "SDQ characteristic", yvalue = "Score"),
+      stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = c("SDQ characteristic", "SDQ score"), yvalue = "Average score"),
       columns = list(
-        `Score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average Score` = colDef(name = "Average score", cell = cellfunc, defaultSortOrder = "desc"),
+        `SDQ score` = colDef(name = "SDQ score")
       ),
       defaultPageSize = 15,
       searchable = TRUE,

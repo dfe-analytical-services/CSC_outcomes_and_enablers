@@ -63,50 +63,85 @@ plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
 # This is a repeat use function for all of the time series plots in this dashboard.
 
 plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
-  filtered_data <- dataset %>%
-    select(time_period, geo_breakdown, `yvalue`) %>%
-    mutate(`Time period` = as.character(`time_period`)) %>%
-    rename(`Location` = `geo_breakdown`) %>%
-    rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
-
-
-
-  p <- ggplot(filtered_data, aes(
-    x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
-    text = paste0(
-      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
-      "Location: ", `Location`, "<br>",
-      "Time period: ", `Time period`
-    )
-  )) +
-    ylab(yaxis_title) +
-    xlab("Time period") +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.title.x = element_text(margin = margin(t = 12)),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
-    ) +
-    scale_y_continuous(limits = c(0, ylim_upper)) +
-    labs(color = "Location") +
-    scale_color_manual(
-      "Location",
-      values = gss_colour_pallette
-    )
+  # add_rect is only true for graphs with boundaries - Wellbeing SDQ score charts
   if (add_rect == FALSE) {
+    filtered_data <- dataset %>%
+      select(time_period, geo_breakdown, `yvalue`) %>%
+      mutate(`Time period` = as.character(`time_period`)) %>%
+      rename(`Location` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+
+    p <- ggplot(filtered_data, aes(
+      x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        "Location: ", `Location`, "<br>",
+        "Time period: ", `Time period`
+      )
+    )) +
+      # geom_path(group = 1) +
+      ylab(yaxis_title) +
+      xlab("Time period") +
+      theme_classic() +
+      theme(
+        text = element_text(size = 12),
+        axis.title.x = element_text(margin = margin(t = 12)),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(size = 1.0)
+      ) +
+      scale_y_continuous(limits = c(0, ylim_upper)) +
+      labs(color = "Location") +
+      scale_color_manual(
+        "Location",
+        values = gss_colour_pallette
+      )
     p <- p +
       geom_path(group = 1) +
       geom_point()
   } else {
+    filtered_data <- dataset %>%
+      select(time_period, geo_breakdown, score_label, `yvalue`) %>%
+      mutate(`Time period` = as.character(`time_period`)) %>%
+      rename(`Location` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+
+    p <- ggplot(filtered_data, aes(
+      x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        "SDQ score: ", `score_label`, "<br>",
+        "Location: ", `Location`, "<br>",
+        "Time period: ", `Time period`
+      )
+    )) +
+      # geom_path(group = 1) +
+      ylab(yaxis_title) +
+      xlab("Time period") +
+      theme_classic() +
+      theme(
+        text = element_text(size = 12),
+        axis.title.x = element_text(margin = margin(t = 12)),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(size = 1.0)
+      ) +
+      scale_y_continuous(limits = c(0, ylim_upper)) +
+      labs(color = "Location") +
+      scale_color_manual(
+        "Location",
+        values = gss_colour_pallette
+      )
     max_xaxis <- length(unique(dataset$time_period)) + 1
     # max_yaxis =
-    p <- p +
-      geom_rect(colour = NA, fill = "green", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
-      geom_rect(colour = NA, fill = "orange", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
-      geom_rect(colour = NA, fill = "red", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = ylim_upper, text = paste("Cause for concern SDQ score: 17-40"))) +
-      geom_path(group = 1) +
-      geom_point()
+    suppressWarnings(
+      p <- p +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = ylim_upper, text = paste("Cause for concern SDQ score: 17-40"))) +
+        geom_path(group = 1) +
+        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
+        geom_point()
+    )
   }
   return(p)
 }
@@ -200,25 +235,49 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE) {
   if (selected_geo_lvl == "Local authority") {
-    la_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, `yvalue`) %>%
-      mutate(
-        geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
-      ) %>%
-      rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    if (add_rect == "FALSE") {
+      la_data <- dataset %>%
+        filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    } else {
+      la_data <- dataset %>%
+        filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`, score_label) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    }
   } else if (selected_geo_lvl == "National") {
-    la_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, `yvalue`) %>%
-      mutate(
-        geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = "Not Selected"
-      ) %>%
-      rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    if (add_rect == FALSE) {
+      la_data <- dataset %>%
+        filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = "Not Selected"
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    } else {
+      la_data <- dataset %>%
+        filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`, score_label) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = "Not Selected"
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    }
   } else if (selected_geo_lvl == "Regional") {
     # Check if the selected region is London
     if (selected_geo_breakdown == "London") {
@@ -232,55 +291,92 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         filter(region_name == selected_geo_breakdown) %>%
         pull(la_name)
     }
-
-    la_data <- dataset %>%
-      filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, `yvalue`) %>%
-      mutate(
-        geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = "Selected"
-      ) %>%
-      rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-      rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    if (add_rect == FALSE) {
+      la_data <- dataset %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = "Selected"
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    } else {
+      la_data <- dataset %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `yvalue`, score_label) %>%
+        mutate(
+          geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+          is_selected = "Selected"
+        ) %>%
+        rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+        rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
+    }
   }
 
-  p <- ggplot(la_data, aes(
-    x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-    text = paste0(
-      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
-      "Local authority: ", Breakdown, "<br>",
-      "Time period: ", time_period, "<br>",
-      "Selection: ", Selection
-    )
-  )) +
-    # geom_col(position = position_dodge()) +
-    ylab(yaxis_title) +
-    xlab("") +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
-    ) +
-    scale_y_continuous(limits = c(0, 100)) +
-    scale_fill_manual(
-      "LA Selection",
-      values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
-    )
-
   if (add_rect == FALSE) {
+    p <- ggplot(la_data, aes(
+      x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        "Local authority: ", Breakdown, "<br>",
+        "Time period: ", time_period, "<br>",
+        "Selection: ", Selection
+      )
+    )) +
+      # geom_col(position = position_dodge()) +
+      ylab(yaxis_title) +
+      xlab("") +
+      theme_classic() +
+      theme(
+        text = element_text(size = 12),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(size = 1.0)
+      ) +
+      scale_y_continuous(limits = c(0, 100)) +
+      scale_fill_manual(
+        "LA Selection",
+        values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
+      )
     p1 <- p +
       geom_col(position = position_dodge())
   } else {
+    p <- ggplot(la_data, aes(
+      x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        "SDQ score: ",
+        "Local authority: ", Breakdown, "<br>",
+        "Time period: ", time_period, "<br>",
+        "Selection: ", Selection
+      )
+    )) +
+      # geom_col(position = position_dodge()) +
+      ylab(yaxis_title) +
+      xlab("") +
+      theme_classic() +
+      theme(
+        text = element_text(size = 12),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(size = 1.0)
+      ) +
+      scale_y_continuous(limits = c(0, 100)) +
+      scale_fill_manual(
+        "LA Selection",
+        values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
+      )
+
     max_xaxis <- length(unique(la_data$`Breakdown`)) + 1
-    # max_yaxis =
-    p1 <- p +
-      # geom_col(position = position_dodge())
-      geom_rect(colour = NA, fill = "green", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
-      geom_rect(colour = NA, fill = "orange", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
-      geom_rect(colour = NA, fill = "red", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
-      # geom_bar(stat = "identity", position = position_dodge()) #+
-      geom_col(position = position_dodge())
+
+    suppressWarnings(
+      p1 <- p +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
+        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
+        geom_col(position = position_dodge())
+    )
   }
 
   # Conditionally set the x-axis labels and ticks
@@ -337,39 +433,23 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 # }
 
 by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE) {
-  reg_data <- dataset %>%
-    filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-    select(time_period, geo_breakdown, `yvalue`) %>%
-    mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by turnover rate
-    rename(`Breakdown` = `geo_breakdown`) %>%
-    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
-
-  p <- ggplot(reg_data, aes(
-    x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-    text = paste0(
-      str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-      "Region: ", `Breakdown`, "<br>",
-      "Time period: ", `time_period`
-    )
-  )) #+
-  # geom_col(position = position_dodge()) +
-  # ylab(yaxis_title) +
-  # xlab("Region") +
-  # theme_classic() +
-  # theme(
-  #   text = element_text(size = 12),
-  #   axis.text.x = element_text(angle = 45),
-  #   axis.title.x = element_blank(),
-  #   axis.title.y = element_text(margin = margin(r = 12)),
-  #   axis.line = element_line(size = 1.0)
-  # ) +
-  # scale_y_continuous(limits = c(0, yupperlim)) +
-  # scale_fill_manual(
-  #   "Time Period",
-  #   values = "#12436D" # gss_colour_pallette
-  # )
-
   if (add_rect == FALSE) {
+    reg_data <- dataset %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, `yvalue`) %>%
+      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by turnover rate
+      rename(`Breakdown` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+    p <- ggplot(reg_data, aes(
+      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+        "Region: ", `Breakdown`, "<br>",
+        "Time period: ", `time_period`
+      )
+    ))
+
     p2 <- p +
       geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
@@ -388,30 +468,49 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         values = "#12436D" # gss_colour_pallette
       )
   } else {
+    reg_data <- dataset %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, `yvalue`, score_label) %>%
+      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>%
+      rename(`Breakdown` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+    p <- ggplot(reg_data, aes(
+      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+        "SDQ score: ", `score_label`, "<br>",
+        "Region: ", `Breakdown`, "<br>",
+        "Time period: ", `time_period`
+      )
+    ))
+
     max_xaxis <- length(unique(reg_data$`Breakdown`)) + 1
-    # max_yaxis =
-    p2 <- p +
-      geom_rect(colour = NA, fill = "green", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
-      geom_rect(colour = NA, fill = "orange", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
-      geom_rect(colour = NA, fill = "red", alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
-      # geom_col(position = position_dodge()) +
-      ylab(yaxis_title) +
-      xlab("Region") +
-      theme_classic() +
-      theme(
-        text = element_text(size = 12),
-        axis.text.x = element_text(angle = 45),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
-      ) +
-      scale_y_continuous(limits = c(0, yupperlim)) +
-      scale_fill_manual(
-        "Time Period",
-        values = "#12436D" # gss_colour_pallette
-      ) +
-      geom_col(position = position_dodge(), alpha = 1)
-    # fill = "#003078",
+
+    suppressWarnings(
+      p2 <- p +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
+        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
+        ylab(yaxis_title) +
+        xlab("Region") +
+        theme_classic() +
+        theme(
+          text = element_text(size = 12),
+          axis.text.x = element_text(angle = 45),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(margin = margin(r = 12)),
+          axis.line = element_line(size = 1.0)
+        ) +
+        scale_y_continuous(limits = c(0, yupperlim)) +
+        scale_fill_manual(
+          "Time Period",
+          values = "#12436D" # gss_colour_pallette
+        ) +
+        geom_col(position = position_dodge(), alpha = 1, fill = "#12436D")
+    )
   }
 }
 
@@ -1455,7 +1554,7 @@ plot_ofsted_reg <- function() {
 
 
 # Statistical Neighbours function ----
-statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
@@ -1467,40 +1566,86 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  filtered_data <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
-    select(geo_breakdown, `yvalue`) %>%
-    mutate(
-      geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
-    ) %>%
-    rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-    rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+  if (add_rect == FALSE) {
+    filtered_data <- dataset %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      select(geo_breakdown, `yvalue`) %>%
+      mutate(
+        geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
-  ggplot(filtered_data, aes(
-    x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-    text = paste0(
-      str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-      "Local authority: ", `Breakdown`, "<br>",
-      "Time period: ", max(dataset$time_period), "<br>",
-      "Selection: ", `Selection`
+    ggplot(filtered_data, aes(
+      x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+      text = paste0(
+        str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+        "Local authority: ", `Breakdown`, "<br>",
+        "Time period: ", max(dataset$time_period), "<br>",
+        "Selection: ", `Selection`
+      )
+    )) +
+      geom_col(position = position_dodge()) +
+      ylab(yaxis_title) +
+      xlab("") +
+      theme_classic() +
+      theme(
+        text = element_text(size = 12),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(size = 1.0),
+        axis.text.x = element_text(angle = 45, hjust = 1)
+      ) +
+      scale_y_continuous(limits = c(0, ylim_upper)) +
+      scale_fill_manual(
+        "LA Selection",
+        values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
+      )
+  } else {
+    filtered_data <- dataset %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      select(geo_breakdown, `yvalue`, score_label) %>%
+      mutate(
+        geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+      ) %>%
+      rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+    max_xaxis <- 11 # ten neighbours and selected LA
+    suppressWarnings(
+      p <- ggplot(filtered_data, aes(
+        x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
+        text = paste0(
+          str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+          "SDQ score: ", `score_label`, "<br>",
+          "Local authority: ", `Breakdown`, "<br>",
+          "Time period: ", max(dataset$time_period), "<br>",
+          "Selection: ", `Selection`
+        )
+      )) +
+        geom_col(position = position_dodge()) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = ylim_upper, text = paste("Cause for concern SDQ score: 17-40"))) +
+        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
+        ylab(yaxis_title) +
+        xlab("") +
+        theme_classic() +
+        theme(
+          text = element_text(size = 12),
+          axis.title.y = element_text(margin = margin(r = 12)),
+          axis.line = element_line(size = 1.0),
+          axis.text.x = element_text(angle = 45, hjust = 1)
+        ) +
+        scale_y_continuous(limits = c(0, ylim_upper)) +
+        scale_fill_manual(
+          "LA Selection",
+          values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
+        )
     )
-  )) +
-    geom_col(position = position_dodge()) +
-    ylab(yaxis_title) +
-    xlab("") +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
-      axis.text.x = element_text(angle = 45, hjust = 1)
-    ) +
-    scale_y_continuous(limits = c(0, ylim_upper)) +
-    scale_fill_manual(
-      "LA Selection",
-      values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
-    )
+  }
 }
 
 statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
