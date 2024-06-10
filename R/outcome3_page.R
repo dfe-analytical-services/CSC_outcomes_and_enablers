@@ -1,7 +1,7 @@
 outcome3_tab <- function() {
   tabPanel(
     value = "outcome3_page",
-    "Outcome 3",
+    "3 - Safety",
     gov_main_layout(
       gov_row(
         column(
@@ -72,7 +72,7 @@ outcome3_tab <- function() {
         p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
-          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          p("Cumbria are still in the latest statistics (except for hospital admissions) because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
       gov_row(
@@ -118,6 +118,7 @@ outcome3_tab <- function() {
               accordion(
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
+                  h2("Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
@@ -130,7 +131,7 @@ outcome3_tab <- function() {
                     inputId = "tbl_repeat_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("table_repeat_cpp")
+                      reactableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
@@ -159,9 +160,24 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_repeat_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cpp_repeat_reg")
+                        reactableOutput("table_cpp_repeat_reg")
                       )
-                    )
+                    ),
+                    details(
+                      inputId = "cpp_in_year_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("The metric shown in the graph refers to the percentage of children who have been entered into a CPP during the year, where this plan was at least their second."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                            tags$br(),
+                            "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                   gov_row(
                     h2("Repeat Child Protection Plan (CPP)  by local authority"),
@@ -175,8 +191,10 @@ outcome3_tab <- function() {
                     uiOutput("SN_CPP"),
                   )
                 ),
+                ### Repeat CPP 2+ ---------------------------------------------------
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                  h2("Percentage of Child Protection Plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
@@ -189,7 +207,7 @@ outcome3_tab <- function() {
                     inputId = "tbl_duration_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      dataTableOutput("table_duration_cpp")
+                      reactableOutput("table_duration_cpp")
                     )
                   ),
                   details(
@@ -208,6 +226,7 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
+                  # No local authority level data
                   gov_row(
                     h2("Child Protection Plans (CPP) longer than 2 years, by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -219,9 +238,25 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_duration_reg",
                       label = "View chart as a table",
                       help_text = (
-                        dataTableOutput("table_cpp_duration_reg")
+                        reactableOutput("table_cpp_duration_reg")
                       )
-                    )
+                    ),
+                    details(
+                      inputId = "cpp_longer_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("The metric shown in the graph refers to the percentage of children who have been on a Child Protection Plan (CPP) for longer than 2 years."),
+                          tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                            tags$br(),
+                            "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+                          )
+                        )
+                      )
+                    ),
                   ),
                 ),
                 ### Hospital admissions ------
@@ -452,6 +487,25 @@ outcome3_tab <- function() {
                     reactableOutput("extra_familial_all_af_tbl")
                   )
                 ),
+                details(
+                  inputId = "efh_all_info",
+                  label = "Additional information:",
+                  help_text = (
+                    tags$ul(
+                      tags$li("Figures exclude the category ‘no factors identified’."),
+                      tags$li("An episode of need may have more than one factor recorded."),
+                      tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+                      tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+                      tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+                      tags$br(),
+                      p(
+                        "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                        tags$br(),
+                        "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+                      )
+                    )
+                  )
+                )
               ),
               gov_row(
                 div(

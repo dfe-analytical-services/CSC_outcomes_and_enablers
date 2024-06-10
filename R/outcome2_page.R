@@ -1,7 +1,7 @@
 outcome2_tab <- function() {
   tabPanel(
     value = "outcome2_page",
-    "Outcome 2",
+    "2 - Family Network",
     gov_main_layout(
       gov_row(
         column(
@@ -68,22 +68,6 @@ outcome2_tab <- function() {
           )
         )
       ),
-      # gov_row(
-      #   div(
-      #     class = "input_box",
-      #     style = "min-height:100%; height = 100%; overflow-y: visible",
-      #     gov_row(
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       ),
-      #       column(
-      #         width = 6,
-      #         h2("Inputs go here")
-      #       )
-      #     )
-      #   )
-      # ),
       br(),
       gov_row(
         br(),
@@ -130,7 +114,8 @@ outcome2_tab <- function() {
                     h2("Special Guardianship Order (SGO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
                     insert_text(inputId = "SGO_def", text = paste(
-                      tags$b("Special guardianship order"), " - A private law order made under the Children Act 1989 appointing one or more individuals to be a child's 'special guardian'. It is intended for those children who cannot live with their birth parents and who would benefit from a legally secure placement."
+                      # tags$b("Special guardianship order"), " - A private law order made under the Children Act 1989 appointing one or more individuals to be a child's 'special guardian'. It is intended for those children who cannot live with their birth parents and who would benefit from a legally secure placement."
+                      tags$b("Speical guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
                     )),
                     br(),
                     plotlyOutput("SGO_time_series"),
@@ -139,7 +124,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased")
+                        reactableOutput("table_sgo_ceased")
                       )
                     ),
                     details(
@@ -171,26 +156,29 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_sgo_ceased_reg")
+                        reactableOutput("table_sgo_ceased_reg")
                       )
+                    ),
+                    details(
+                      inputId = "sgo_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
                     )
                   ),
                   gov_row(
                     h2("Special Guardianship Order (SGO) by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
-                    #                     p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region.
-                    #
-                    # The graph represents data from 2023."),
-                    # br(),
-                    # plotlyOutput("plot_SGO_la"),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_sgo_ceased_la",
-                    #   label = "View chart as table",
-                    #   help_text = (
-                    #     dataTableOutput("table_sgo_la")
-                    #   )
-                    # ),
+                    p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "sgo_stats_toggle",
                       label = NULL,
@@ -205,6 +193,9 @@ outcome2_tab <- function() {
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
+                    insert_text(inputId = "CAO_def", text = paste(
+                      tags$b("Child Arrangements Order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A Child Arrangements Order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
+                    )),
 
                     #  p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
                     #  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
@@ -215,7 +206,7 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased")
+                        reactableOutput("table_cao_ceased")
                       )
                     ),
                     details(
@@ -247,24 +238,29 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_reg",
                       label = "View chart as table",
                       help_text = (
-                        dataTableOutput("table_cao_ceased_reg")
+                        reactableOutput("table_cao_ceased_reg")
                       )
                     ),
+                    details(
+                      inputId = "cao_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        p(
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Percentages rounded to the nearest whole number."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$li("Figures exclude children looked after under a series of short-term placements."),
+                          tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+                          tags$br(),
+                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          tags$br(),
+                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                      ))
+                    )
                   ),
                   gov_row(
                     h2("Residence order or Child Arrangement Order (CAO) by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
-
-                    # br(),
-                    # plotlyOutput("plot_cao_la"),
-                    # br(),
-                    # details(
-                    #   inputId = "table_cao_la",
-                    #   label = "View chart as table",
-                    #   help_text = (
-                    #     dataTableOutput("table_cao_la")
-                    #   )
-                    # ),
+                    p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "cao_stats_toggle",
                       label = NULL,
