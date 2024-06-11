@@ -9778,6 +9778,35 @@ server <- function(input, output, session) {
 
   # Enabler 2 ----
   ### Ofsted leadership rating --------
+  output$ofsted_rating_SN_ui <- renderUI({
+    tagList(
+      h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
+      p("Hover over each data point to see the year of their last Ofsted inspection."),
+      plotlyOutput("ofsted_SN_plot"),
+      br(),
+      details(
+        inputId = "tbl_ofsted_SN",
+        label = "View chart as a table",
+        help_text = (
+          HTML(paste0(
+            csvDownloadButton("ofsted_SN_tbl", filename = paste0("Ofsted_leadership_ratings_SN_", input$geographic_breakdown_e2, ".csv")),
+            reactableOutput("ofsted_SN_tbl")
+          ))
+          # reactableOutput("ofsted_SN_tbl")
+        )
+      ),
+      details(
+        inputId = "ofsted_stat_neighbours_info",
+        label = "Additional information:",
+        help_text = (
+          p("Statistical neighbours info")
+        )
+      )
+    )
+  })
+
+
+
   output$ofsted_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -9826,7 +9855,11 @@ server <- function(input, output, session) {
           inputId = "tbl_tot_spend_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_tot_spending_la")
+            HTML(paste0(
+              csvDownloadButton("table_tot_spending_la", filename = "spend_on_CSC_all_LAs.csv"),
+              reactableOutput("table_tot_spending_la")
+            ))
+            # reactableOutput("table_tot_spending_la")
           )
         ),
         details(
@@ -9857,7 +9890,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_total_spending",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_tot_spend_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_tot_spend_tbl", filename = paste0("spend_on_CSC_SN_", input$geographic_breakdown_e2, ".csv")),
+              reactableOutput("SN_tot_spend_tbl")
+            ))
+            # reactableOutput("SN_tot_spend_tbl")
             # p("table")
           )
         ),
@@ -9962,7 +9999,11 @@ server <- function(input, output, session) {
           inputId = "tbl_tot_no_cla_spend_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("spend_excl_cla_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("spend_excl_cla_la_tbl", filename = "spend_on_CSC_excl_CLA_all_LAs.csv"),
+              reactableOutput("spend_excl_cla_la_tbl")
+            ))
+            # reactableOutput("spend_excl_cla_la_tbl")
           )
         ),
         details(
@@ -9991,7 +10032,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_spending",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_spend_no_cla_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_spend_no_cla_tbl", filename = paste0("spend_on_CSC_excl_CLA_SN_", input$geographic_breakdown_e2, ".csv")),
+              reactableOutput("SN_spend_no_cla_tbl")
+            ))
+            # reactableOutput("SN_spend_no_cla_tbl")
             # p("table")
           )
         ),

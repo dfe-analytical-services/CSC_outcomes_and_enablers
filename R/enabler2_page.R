@@ -121,7 +121,11 @@ enabler2_tab <- function() {
                       inputId = "spend1_region_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("table_tot_spending_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
+                          reactableOutput("table_tot_spending_reg")
+                        ))
+                        # reactableOutput("table_tot_spending_reg")
                       )
                     ),
                     details(
@@ -163,7 +167,13 @@ enabler2_tab <- function() {
                     details(
                       inputId = "minus_cla_reg_tbl",
                       label = "View chart as table",
-                      help_text = reactableOutput("table_spend_excl_cla_reg")
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_spend_excl_cla_reg", filename = "spend_on_CSC_excl_CLA_regions.csv"),
+                          reactableOutput("table_spend_excl_cla_reg")
+                        ))
+                        # reactableOutput("table_spend_excl_cla_reg")
+                      )
                     ),
                     details(
                       inputId = "minus_cla_info",
@@ -292,7 +302,12 @@ enabler2_tab <- function() {
                       inputId = "tbl_ofsted_latest_ratings",
                       label = "View latest ratings",
                       help_text = (
-                        reactableOutput("ofsted_latest_ratings_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("ofsted_latest_ratings_tbl", filename = "Ofsted_leadership_ratings_all_LA_rating_date.csv"),
+                          reactableOutput("ofsted_latest_ratings_tbl")
+                        ))
+
+                        # reactableOutput("ofsted_latest_ratings_tbl")
                       )
                     )
                   ),
@@ -306,7 +321,11 @@ enabler2_tab <- function() {
                       inputId = "tbl_ofsted",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("ofsted_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("ofsted_tbl", filename = "Ofsted_leadership_ratings_national.csv"),
+                          reactableOutput("ofsted_tbl")
+                        ))
+                        # reactableOutput("ofsted_tbl")
                       )
                     ),
                     details(
@@ -332,7 +351,11 @@ enabler2_tab <- function() {
                       inputId = "tbl_ofsted_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("ofsted_reg_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("ofsted_reg_tbl", filename = "Ofsted_leadership_ratings_regions.csv"),
+                          reactableOutput("ofsted_reg_tbl")
+                        ))
+                        # reactableOutput("ofsted_reg_tbl")
                       )
                     ),
                     details(
@@ -349,24 +372,29 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
-                    p("Hover over each data point to see the year of their last Ofsted inspection."),
-                    plotlyOutput("ofsted_SN_plot"),
-                    br(),
-                    details(
-                      inputId = "tbl_ofsted_SN",
-                      label = "View chart as a table",
-                      help_text = (
-                        reactableOutput("ofsted_SN_tbl")
-                      )
-                    ),
-                    details(
-                      inputId = "ofsted_stat_neighbours_info",
-                      label = "Additional information:",
-                      help_text = (
-                        p("Statistical neighbours info")
-                      )
-                    )
+                    uiOutput("ofsted_rating_SN_ui"),
+                    # h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
+                    # p("Hover over each data point to see the year of their last Ofsted inspection."),
+                    # plotlyOutput("ofsted_SN_plot"),
+                    # br(),
+                    # details(
+                    #   inputId = "tbl_ofsted_SN",
+                    #   label = "View chart as a table",
+                    #   help_text = (
+                    #     HTML(paste0(
+                    #       csvDownloadButton("ofsted_SN_tbl", filename =  paste0("Ofsted_leadership_ratings_SN_", input$geographic_breakdown_o4, ".csv"))
+                    #       reactableOutput("ofsted_SN_tbl")
+                    #     ))
+                    #     #reactableOutput("ofsted_SN_tbl")
+                    #   )
+                    # ),
+                    # details(
+                    #   inputId = "ofsted_stat_neighbours_info",
+                    #   label = "Additional information:",
+                    #   help_text = (
+                    #     p("Statistical neighbours info")
+                    #   )
+                    # )
                   )
                 ),
                 open = FALSE,
