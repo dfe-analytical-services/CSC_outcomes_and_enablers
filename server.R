@@ -9442,6 +9442,23 @@ server <- function(input, output, session) {
             reactableOutput("table_turnover_la")
           )
         ),
+        details(
+          inputId = "turnover_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$li("The turnover rate is calculated as (the number of) children and family social worker leavers in the year to 30 September divided by children and family social workers in post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+              )
+            )
+
+          )
+        ),
       )
     } else {
       validate(
@@ -9520,6 +9537,21 @@ server <- function(input, output, session) {
             reactableOutput("table_agency_rate_la")
           )
         ),
+        details(
+          inputId = "agency_worker_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -9596,6 +9628,21 @@ server <- function(input, output, session) {
             reactableOutput("table_vacancy_rate_la")
           )
         ),
+        details(
+          inputId = "vacancy_rate_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -9670,6 +9717,21 @@ server <- function(input, output, session) {
             reactableOutput("table_caseload_la")
           )
         ),
+        details(
+          inputId = "caseload_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -9790,7 +9852,7 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total children’s services expenditure"),
+              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
               tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "for children aged 0 to 17 years and total children’s services expenditure."),
               tags$li("Average per child spend has been rounded to the nearest whole number."),
               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
