@@ -167,1013 +167,14 @@ server <- function(input, output, session) {
 
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  # Enabler 2 ----
+  # Enabler 3 ----
   # Geographic level does not need to be here as it does not need to change depending on other dropdowns
 
-  # Geographic breakdown e2 (list of either LA names or Region names)
-  observeEvent(eventExpr = {
-    input$select_geography_e2
-  }, {
-    choices <- sort(unique(workforce_data[(workforce_data$geographic_level == input$select_geography_e2 & workforce_data$time_period == max(workforce_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
-
-    updateSelectizeInput(
-      session = session,
-      inputId = "geographic_breakdown_e2",
-      selected = choices[1],
-      choices = choices
-    )
-  })
-
-  ## Confirmation sentence E2 -------
-  # This function gets the selected region to put into the confirmation text below
-
-  workforce_region <- reactive({
-    location_data_workforce %>%
-      filter(la_name == input$geographic_breakdown_e2) %>%
-      pull(region_name) %>%
-      as.character() # Convert to character
-  })
-
-  # First sentence for the dropdown choices
-  output$enabler2_choice_text1 <- renderText({
-    if (input$select_geography_e2 == "National") {
-      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics on ", tags$b("England"), ".")
-    } else if (input$select_geography_e2 == "Regional") {
-      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ".")
-    } else if (input$select_geography_e2 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region(), ".")
-    }
-  })
-
-  output$enabler2_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-    }
-  })
-
-
-  # Social worker turnover rate headline box
-  ## Turnover rate plot and table -----
-  output$s_w_headline_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(turnover_rate_fte), nsmall = 1)
-    }
-    paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
-    )
-  })
-
-  # Social worker turnover rate benchmarking plot
-  output$plot_s_w_turnover <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # not both
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
-    }
-
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Turnover Rate Fte", "Turnover rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-
-    p <- p + ggtitle("Social worker turnover rate (FTE) %")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # Social worker turnover rate benchmarking table alternative
-  output$table_s_w_turnover <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`)
-    }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### turnover rate by region plot----
-  output$plot_turnover_reg <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # turnover rate by region table
-  output$table_turnover_reg <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`)),
-      colnames = c("Time period", "Region", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### Turnover Rate by LA plot ----
-  output$plot_turnover_la <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate (FTE) %") %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # Turnover Rate by LA table
-  output$table_turnover_la <- renderDataTable({ # renderReactable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    if (input$select_geography_e2 == "Regional") {
-      if (input$geographic_breakdown_e2 == "London") {
-        # Include both Inner London and Outer London
-        location <- location_data %>%
-          filter(region_name %in% c("Inner London", "Outer London")) %>%
-          pull(la_name)
-      } else {
-        # Get the la_name values within the selected region_name
-        location <- location_data %>%
-          filter(region_name == input$geographic_breakdown_e2) %>%
-          pull(la_name)
-      }
-      data <- workforce_data %>%
-        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`))
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>%
-        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          `Turnover Rate Fte`
-        ) %>%
-        arrange(desc(`Turnover Rate Fte`))
-    }
-
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Turnover rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-
-  ## Agency Rate ----
-  output$agency_rate_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(agency_rate_fte), nsmall = 1)
-    }
-    paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
-    )
-  })
-
-  ### Agency worker rate benchmarking plot ----
-  output$plot_agency_worker <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # not both
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
-    }
-
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) %")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # Agency worker rate table alternative
-  output$table_agency_worker <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, "Agency Rate Fte")
-    }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### agency rate plot by region ----
-  output$plot_agency_reg <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-
-    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) % by region")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # agency rate table by region
-  output$table_agency_reg <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        `Agency Rate Fte`
-      ) %>%
-        arrange(desc(`Agency Rate Fte`)),
-      colnames = c("Time period", "Region", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### agency rate by la plot -----
-  output$plot_agency_rate_la <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %") %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # agency rate by la table alternative
-  output$table_agency_rate_la <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    if (input$select_geography_e2 == "Regional") {
-      if (input$geographic_breakdown_e2 == "London") {
-        # Include both Inner London and Outer London
-        location <- location_data %>%
-          filter(region_name %in% c("Inner London", "Outer London")) %>%
-          pull(la_name)
-      } else {
-        # Get the la_name values within the selected region_name
-        location <- location_data %>%
-          filter(region_name == input$geographic_breakdown_e2) %>%
-          pull(la_name)
-      }
-
-      data <- workforce_data %>%
-        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, agency_rate_fte) %>%
-        arrange(desc(agency_rate_fte))
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>%
-        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          "Agency Rate Fte"
-        ) %>%
-        arrange(desc(`Agency Rate Fte`))
-    }
-
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Agency worker rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ## Vacancy Rate -----
-  # Vacancy rate headline box
-
-  output$vacancy_rate_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(vacancy_rate_fte), nsmall = 1)
-    }
-    paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
-    )
-  })
-
-  ### Vacancy Rate benchmarking plot ----
-  output$plot_vacancy_rate <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # not both
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
-    }
-
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) %")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-
-
-  # Vacancy Rate benchmarking table alternative
-  output$table_vacancy_rate <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte")
-    }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### vacancy rate by la plot ----
-  output$plot_vacancy_rate_la <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %") %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # vacancy rate by la table alternative
-  output$table_vacancy_rate_la <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    if (input$select_geography_e2 == "Regional") {
-      if (input$geographic_breakdown_e2 == "London") {
-        # Include both Inner London and Outer London
-        location <- location_data %>%
-          filter(region_name %in% c("Inner London", "Outer London")) %>%
-          pull(la_name)
-      } else {
-        # Get the la_name values within the selected region_name
-        location <- location_data %>%
-          filter(region_name == input$geographic_breakdown_e2) %>%
-          pull(la_name)
-      }
-
-      data <- workforce_data %>%
-        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
-        arrange(desc(vacancy_rate_fte))
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>%
-        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          `Vacancy Rate Fte`
-        ) %>%
-        arrange(desc(`Vacancy Rate Fte`))
-    }
-
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-
-  ### vacancy rate plot by region ----
-  output$plot_vacancy_reg <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-
-    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) % by region")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # vacancy rate table by region
-  output$table_vacancy_reg <- renderDataTable({
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        `Vacancy Rate Fte`
-      ) %>%
-        arrange(desc(`Vacancy Rate Fte`)),
-      colnames = c("Time period", "Region", "Vacancy rate (FTE) %"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ## Caseload ----
-  # Caseload headline box
-
-  output$caseload_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
-      stat <- "NA"
-      paste0(stat, "%", "<br>")
-    } else {
-      previous_year_value <- workforce_data %>%
-        filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(caseload_fte)
-
-      current_year_value <- workforce_data %>%
-        filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(caseload_fte)
-
-      if ((current_year_value < previous_year_value)) {
-        context <- " down from "
-      } else {
-        context <- " up from "
-      }
-      stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e2) %>% select(caseload_fte), nsmall = 1)
-      paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
-    }
-  })
-
-  ### Caseload benchmarking plot ----
-  output$caseload_plot <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # not both
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name)))
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National"))
-    }
-
-    # Set the max y-axis scale
-    max_rate <- max(workforce_data$`Caseload Fte`, na.rm = TRUE)
-
-    # Round the max_rate to the nearest 50
-    max_rate <- ceiling(max_rate / 50) * 50
-
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e2, input$geographic_breakdown_e2, "Caseload Fte", "Average caseload (FTE)", max_rate) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE)")
-
-    ggplotly(p,
-      height = 420,
-      tooltip = "text"
-    ) %>%
-      layout(yaxis = list(range = c(0, max_rate)))
-  })
-
-
-  # caseload benchamrking table alternative
-  output$table_caseload <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
-      filtered_data <- workforce_data %>%
-        filter((geographic_level %in% input$select_geography_e2 & geo_breakdown %in% input$geographic_breakdown_e2) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name))) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_e2)
-
-      filtered_data <- workforce_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_e2, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, `Caseload Fte`)
-    }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### Caseload by region ----
-  output$plot_caseload_reg <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE) by region")
-
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # Caseload by region table
-  output$table_caseload_reg <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      workforce_data %>% filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>% select(
-        time_period, geo_breakdown,
-        "Caseload Fte"
-      ) %>%
-        arrange(desc(`Caseload Fte`)),
-      colnames = c("Time period", "Region", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  ### caseload by la -----
-  output$plot_caseload_la <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)") %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE) by local authority")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  # Caseload by LA table
-  output$table_caseload_la <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    if (input$select_geography_e2 == "Regional") {
-      if (input$geographic_breakdown_e2 == "London") {
-        # Include both Inner London and Outer London
-        location <- location_data %>%
-          filter(region_name %in% c("Inner London", "Outer London")) %>%
-          pull(la_name)
-      } else {
-        # Get the la_name values within the selected region_name
-        location <- location_data %>%
-          filter(region_name == input$geographic_breakdown_e2) %>%
-          pull(la_name)
-      }
-
-      data <- workforce_data %>%
-        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`))
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
-      data <- workforce_data %>%
-        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
-        select(
-          time_period, geo_breakdown,
-          "Caseload Fte"
-        ) %>%
-        arrange(desc(`Caseload Fte`))
-    }
-
-    datatable(
-      data,
-      colnames = c("Time period", "Local authority", "Average caseload (FTE)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  # Ethnicity and Diversity Domain-----
-
-  output$non_white_txt <- renderText({
-    white_stat <- workforce_eth %>%
-      filter(time_period == max(workforce_eth$time_period) &
-        geo_breakdown %in% input$geographic_breakdown_e2 &
-        role == "Total" &
-        breakdown == "White") %>%
-      select(inpost_headcount_percentage)
-
-    if (input$geographic_breakdown_e2 == "") {
-      non_white_stat <- "NA"
-    } else {
-      non_white_stat <- format(100 - as.numeric(white_stat), nsmall = 1)
-    }
-    paste0(non_white_stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
-  })
-
-  output$plot_ethnicity_rate <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location."),
-    )
-    p <- plot_ethnicity_rate(input$geographic_breakdown_e2, input$select_geography_e2) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Social worker ethnicity %")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  output$plot_population_ethnicity_rate <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- plot_population_ethnicity_rate(input$geographic_breakdown_e2) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Social worker ethnicity % vs. general population ethnicity %")
-    ggplotly(
-      p,
-      height = 420
-      # This one does not need to have a customised tooltip
-    )
-  })
-
-  output$table_ethnicity_rate <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      workforce_eth %>%
-        filter(
-          geo_breakdown %in% input$geographic_breakdown_e2,
-          role == "Total", breakdown_topic == "Ethnicity major"
-        ) %>%
-        select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage),
-      colnames = c("Time period", "Geographical breakdown", "Ethnicity", "Headcount", "Headcount (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-
-
-  output$table_population_ethnicity_rate <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      combined_ethnicity_data %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage),
-      colnames = c(
-        "Geographical breakdown",
-        "Ethnicity group", "Workforce (%)", "Population (%)"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
-    )
-  })
-
-  output$plot_seniority_eth <- plotly::renderPlotly({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    p <- plot_seniority_eth(input$geographic_breakdown_e2, input$select_geography_e2) %>%
-      config(displayModeBar = F)
-    p <- p + ggtitle("Social worker ethnicity by seniority level %")
-    ggplotly(
-      p,
-      height = 420,
-      tooltip = "text"
-    )
-  })
-
-  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
-
-  output$table_seniority_eth <- renderDataTable({
-    shiny::validate(
-      need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
-    )
-    datatable(
-      workforce_eth_seniority[, cols] %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_e2, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
-        select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage),
-      colnames = c("Time period", "Geographical breakdown", "Seniority level", "Ethnicity", "Headcount", "Headcount (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE,
-        target = "column"
-      )
-    )
-  })
-
-  # Enabler 3 -----
   # Geographic breakdown e3 (list of either LA names or Region names)
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
-    choices <- sort(unique(ofsted_leadership_data[ofsted_leadership_data$geographic_level == input$select_geography_e3, ][["geo_breakdown"]]), decreasing = FALSE)
+    choices <- sort(unique(workforce_data[(workforce_data$geographic_level == input$select_geography_e3 & workforce_data$time_period == max(workforce_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
@@ -1186,8 +187,8 @@ server <- function(input, output, session) {
   ## Confirmation sentence E3 -------
   # This function gets the selected region to put into the confirmation text below
 
-  workforce_region <- reactive({
-    location_data %>%
+  workforce_region_e3 <- reactive({
+    location_data_workforce %>%
       filter(la_name == input$geographic_breakdown_e3) %>%
       pull(region_name) %>%
       as.character() # Convert to character
@@ -1200,7 +201,7 @@ server <- function(input, output, session) {
     } else if (input$select_geography_e3 == "Regional") {
       paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ".")
     } else if (input$select_geography_e3 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region(), ".")
+      paste0("You have selected ", tags$b(input$select_geography_e3), " level statistics for ", tags$b(input$geographic_breakdown_e3), ", in ", workforce_region_e3(), ".")
     }
   })
 
@@ -1217,108 +218,1360 @@ server <- function(input, output, session) {
     }
   })
 
+
+  observeEvent(input$select_geography_e3, {
+    if (input$select_geography_e3 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_e3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_e3", value = FALSE)
+    } else if (input$select_geography_e3 == "National") {
+      updateCheckboxInput(session, "Yes_national_e3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_e3", value = FALSE)
+    }
+  })
+
+
+
+  # Social worker turnover rate headline box
+  ## Turnover rate plot and table -----
+  output$s_w_headline_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(workforce_data %>%
+        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(turnover_rate_fte), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
+    )
+  })
+
+  # Social worker turnover rate benchmarking plot
+  output$plot_s_w_turnover <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+    }
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+
+    p <- p + ggtitle("Social worker turnover rate (FTE) %")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Social worker turnover rate benchmarking table alternative
+  output$table_s_w_turnover <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name))) %>%
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover Rate (FTE) %" = "Turnover Rate Fte")
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
+    }
+
+    reactable(
+      filtered_data,
+      columns = list(
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### turnover rate by region plot----
+  output$plot_turnover_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # turnover rate by region table
+  output$table_turnover_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+      arrange(desc(`Turnover Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### Turnover Rate by LA plot ----
+  output$plot_turnover_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Turnover Rate by LA table
+  output$table_turnover_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    if (input$select_geography_e3 == "Regional") {
+      if (input$geographic_breakdown_e3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_e3) %>%
+          pull(la_name)
+      }
+      data <- workforce_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
+        arrange(desc(`Turnover Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
+    } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(
+          time_period, geo_breakdown,
+          `Turnover Rate Fte`
+        ) %>%
+        arrange(desc(`Turnover Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
+    }
+
+    reactable(
+      data,
+      columns = list(
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+
+  ## Agency Rate ----
+  output$agency_rate_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(workforce_data %>%
+        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(agency_rate_fte), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
+    )
+  })
+
+  ### Agency worker rate benchmarking plot ----
+  output$plot_agency_worker <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+    }
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Agency worker rate (FTE) %")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Agency worker rate table alternative
+  output$table_agency_worker <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name))) %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+    }
+
+    reactable(
+      filtered_data,
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### agency rate plot by region ----
+  output$plot_agency_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Agency worker rate (FTE) % by region")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # agency rate table by region
+  output$table_agency_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Agency Rate Fte`) %>%
+      arrange(desc(`Agency Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### agency rate by la plot -----
+  output$plot_agency_rate_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # agency rate by la table alternative
+  output$table_agency_rate_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    if (input$select_geography_e3 == "Regional") {
+      if (input$geographic_breakdown_e3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_e3) %>%
+          pull(la_name)
+      }
+
+      data <- workforce_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        arrange(desc(`Agency Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+    } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(time_period, geo_breakdown, "Agency Rate Fte") %>%
+        arrange(desc(`Agency Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
+    }
+
+    reactable(
+      data,
+      columns = list(
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ## Vacancy Rate -----
+  # Vacancy rate headline box
+
+  output$vacancy_rate_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(workforce_data %>%
+        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(vacancy_rate_fte), nsmall = 1)
+    }
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
+    )
+  })
+
+  ### Vacancy Rate benchmarking plot ----
+  output$plot_vacancy_rate <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+    }
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Vacancy rate (FTE) %")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+
+
+  # Vacancy Rate benchmarking table alternative
+  output$table_vacancy_rate <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name))) %>%
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+    }
+
+    reactable(
+      filtered_data,
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### vacancy rate by la plot ----
+  output$plot_vacancy_rate_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # vacancy rate by la table alternative
+  output$table_vacancy_rate_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    if (input$select_geography_e3 == "Regional") {
+      if (input$geographic_breakdown_e3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_e3) %>%
+          pull(la_name)
+      }
+
+      data <- workforce_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
+        arrange(desc(vacancy_rate_fte)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+    } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
+        arrange(desc(`Vacancy Rate Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+    }
+
+    reactable(
+      data,
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+
+    # datatable(
+    #   data,
+    #   colnames = c("Time period", "Local authority", "Vacancy rate (FTE) %"),
+    #   options = list(
+    #     scrollx = FALSE,
+    #     paging = TRUE
+    #   )
+    # )
+  })
+
+
+  ### vacancy rate plot by region ----
+  output$plot_vacancy_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+
+    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Vacancy rate (FTE) % by region")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # vacancy rate table by region
+  output$table_vacancy_reg <- renderReactable({
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
+      arrange(desc(`Vacancy Rate Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ## Caseload ----
+  # Caseload headline box
+
+  output$caseload_txt <- renderText({
+    if (input$geographic_breakdown_e3 == "") {
+      stat <- "NA"
+      paste0(stat, "%", "<br>")
+    } else {
+      previous_year_value <- workforce_data %>%
+        filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(caseload_fte)
+
+      current_year_value <- workforce_data %>%
+        filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(caseload_fte)
+
+      if ((current_year_value < previous_year_value)) {
+        context <- " down from "
+      } else {
+        context <- " up from "
+      }
+      stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
+      paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
+    }
+  })
+
+  ### Caseload benchmarking plot ----
+  output$caseload_plot <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # not both
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
+    }
+
+    # Set the max y-axis scale
+    max_rate <- max(workforce_data$`Caseload Fte`, na.rm = TRUE)
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 50) * 50
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average caseload (FTE)")
+
+    ggplotly(p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      layout(yaxis = list(range = c(0, max_rate)))
+  })
+
+
+  # caseload benchamrking table alternative
+  output$table_caseload <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    # neither checkboxes
+    if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+
+      # national only
+    } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
+      filtered_data <- workforce_data %>%
+        filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National") %>%
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+
+      # regional only
+    } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name))) %>%
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+
+      # both selected
+    } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
+      location <- location_data %>%
+        filter(la_name %in% input$geographic_breakdown_e3)
+
+      filtered_data <- workforce_data %>%
+        filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National")) %>%
+        select(time_period, geo_breakdown, `Caseload Fte`) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+    }
+
+    reactable(
+      filtered_data,
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### Caseload by region ----
+  output$plot_caseload_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average caseload (FTE) by region")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Caseload by region table
+  output$table_caseload_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- workforce_data %>%
+      filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
+      select(time_period, geo_breakdown, "Caseload Fte") %>%
+      arrange(desc(`Caseload Fte`)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+
+    reactable(
+      data,
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  ### caseload by la -----
+  output$plot_caseload_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average caseload (FTE) by local authority")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # Caseload by LA table
+  output$table_caseload_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    if (input$select_geography_e3 == "Regional") {
+      if (input$geographic_breakdown_e3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_e3) %>%
+          pull(la_name)
+      }
+
+      data <- workforce_data %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, "Caseload Fte") %>%
+        arrange(desc(`Caseload Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+    } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
+      data <- workforce_data %>%
+        filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
+        select(time_period, geo_breakdown, "Caseload Fte") %>%
+        arrange(desc(`Caseload Fte`)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
+    }
+    reactable(
+      data,
+      columns = list(
+        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  # Ethnicity and Diversity Domain-----
+
+  output$non_white_txt <- renderText({
+    white_stat <- workforce_eth %>%
+      filter(time_period == max(workforce_eth$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_e3 &
+        role == "Total" &
+        breakdown == "White") %>%
+      select(inpost_headcount_percentage)
+
+    if (input$geographic_breakdown_e3 == "") {
+      non_white_stat <- "NA"
+    } else {
+      non_white_stat <- format(100 - as.numeric(white_stat), nsmall = 1)
+    }
+    paste0(non_white_stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
+  })
+
+  output$plot_ethnicity_rate <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
+    )
+    p <- plot_ethnicity_rate(input$geographic_breakdown_e3, input$select_geography_e3) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Social worker ethnicity %")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$plot_population_ethnicity_rate <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- plot_population_ethnicity_rate(input$geographic_breakdown_e3) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Social worker ethnicity % vs. general population ethnicity %")
+    ggplotly(
+      p,
+      height = 420
+      # This one does not need to have a customised tooltip
+    )
+  })
+
+  output$table_ethnicity_rate <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- workforce_eth %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e3, role == "Total", breakdown_topic == "Ethnicity major") %>%
+      select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "inpost_headcount_percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Headcount` = colDef(cell = cellfunc),
+        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+
+
+  output$table_population_ethnicity_rate <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- combined_ethnicity_data %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage) %>%
+      rename("Location" = "geo_breakdown", "Ethnicity group" = "breakdown", "Workforce (%)" = "inpost_headcount_percentage", "Population (%)" = "Percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Workforce (%)` = colDef(cell = cellfunc),
+        `Population (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  output$plot_seniority_eth <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    p <- plot_seniority_eth(input$geographic_breakdown_e3, input$select_geography_e3) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Social worker ethnicity by seniority level %")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
+
+  output$table_seniority_eth <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
+    data <- workforce_eth_seniority[, cols] %>%
+      filter(geo_breakdown %in% input$geographic_breakdown_e3, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
+      select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Seniority level" = "seniority", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "Percentage")
+
+    reactable(
+      data,
+      columns = list(
+        `Headcount` = colDef(cell = cellfunc),
+        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 10,
+      searchable = TRUE,
+    )
+  })
+
+  # Enabler 2 -----
+  # Geographic breakdown e2 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_e2
+  }, {
+    choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e2, ][["geo_breakdown"]]), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_e2",
+      selected = choices[1],
+      choices = choices
+    )
+  })
+
+  ## Confirmation sentence e2 -------
+  # This function gets the selected region to put into the confirmation text below
+
+  workforce_region_e2 <- reactive({
+    location_data %>%
+      filter(la_name == input$geographic_breakdown_e2) %>%
+      pull(region_name) %>%
+      as.character() # Convert to character
+  })
+
+  # First sentence for the dropdown choices
+  output$enabler2_choice_text1 <- renderText({
+    if (input$select_geography_e2 == "National") {
+      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics on ", tags$b("England"), ".")
+    } else if (input$select_geography_e2 == "Regional") {
+      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ".")
+    } else if (input$select_geography_e2 == "Local authority") {
+      paste0("You have selected ", tags$b(input$select_geography_e2), " level statistics for ", tags$b(input$geographic_breakdown_e2), ", in ", workforce_region_e2(), ".")
+    }
+  })
+
+  output$enabler2_choice_text2 <- renderText({
+    # Checking to see if they picked national average comparison
+    if (!is.null(input$national_comparison_checkbox_e2) && is.null(input$region_comparison_checkbox_e2)) {
+      paste0("You have also selected to compare with the ", tags$b("National Average."))
+      # If they picked regional comparison
+    } else if (is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
+      paste0("You have also selected to compare with the ", tags$b("Regional average."))
+      # Picked both national and regional comparison
+    } else if (!is.null(input$national_comparison_checkbox_e2) && !is.null(input$region_comparison_checkbox_e2)) {
+      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
   ## Spending -----
 
   ##### Headline stats
   # Share of total spend on CS
   output$total_spending_txt <- renderText({
-    if (input$geographic_breakdown_e3 == "") {
+    if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
     } else {
       stat <- format(spending_data %>% filter(time_period == "2022/23" &
-        geo_breakdown %in% input$geographic_breakdown_e3) %>%
+        geo_breakdown %in% input$geographic_breakdown_e2) %>%
         select(`CS Share`), nsmall = 2)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data$time_period), ")", "</p>")
   })
 
   # Average spend per child
-  # output$avg_spend_per_child <- renderText({
-  #   if (input$geographic_breakdown_e3 == "") {
-  #     stat <- "NA"
-  #   } else {
-  #     stat <- format(spending_data %>% filter(time_period == max(spending_data$time_period) &
-  #       geo_breakdown %in% input$geographic_breakdown_e3) %>%
-  #       select())
-  #   }
-  #
-  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
-  # })
+  output$avg_spend_per_child <- renderText({
+    if (input$geographic_breakdown_e2 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(spending_per_capita %>% filter(time_period == max(spending_per_capita$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(`Cost per child`))
+    }
+
+    paste0("~ £", stat, " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
+  })
 
   # Share of total spend on children's services minus CLA
-  # output$spend_minus_cla <- renderText({
-  #   if (input$geographic_breakdown_e3 == "") {
-  #     stat <- "NA"
-  #   } else {
-  #
-  #   }
-  #
-  #   paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
-  # })
+  output$spend_minus_cla_txt <- renderText({
+    if (input$geographic_breakdown_e2 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(spending_data_no_cla %>% filter(time_period == "2022/23" &
+        geo_breakdown %in% input$geographic_breakdown_e2) %>%
+        select(`Excluding CLA Share`), nsmall = 2)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data_no_cla$time_period), ")", "</p>")
+  })
 
-  ##### Time series plot
-  output$plot_spending_ts <- plotly::renderPlotly({
+
+  # Dynamic titles
+  output$spending_header1 <- renderUI({
+    h2(paste(input$spending_choice, " by region"))
+  })
+  output$spending_header2 <- renderUI({
+    h2(paste(input$spending_choice, " by local authority"))
+  })
+
+
+  ## Regional plot for spending
+  output$plot_spending_region <- plotly::renderPlotly({
     shiny::validate(
-      need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location."),
-      need(input$spending_choice != "", "Select spending level.")
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
     )
-
     # Need an if statement to look at the spending level choice this will determine the data in the chart
     if (input$spending_choice == "Share of total spend on children's services") {
-      # collect the data and
-      if (is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
-        filtered_data <- spending_data %>%
-          filter(geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3)
+      data <- spending_data %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
-        # national only
-      } else if (!is.null(input$national_comparison_checkbox_e3) && is.null(input$region_comparison_checkbox_e3)) {
-        filtered_data <- spending_data %>%
-          filter((geographic_level %in% input$select_geography_e3 & geo_breakdown %in% input$geographic_breakdown_e3) | geographic_level == "National")
-
-        # regional only
-      } else if (is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
-        location <- location_data %>%
-          filter(la_name %in% input$geographic_breakdown_e3)
-
-        filtered_data <- spending_data %>%
-          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name)))
-
-        # both selected
-      } else if (!is.null(input$national_comparison_checkbox_e3) && !is.null(input$region_comparison_checkbox_e3)) {
-        location <- location_data %>%
-          filter(la_name %in% input$geographic_breakdown_e3)
-
-        filtered_data <- spending_data %>%
-          filter((geo_breakdown %in% c(input$geographic_breakdown_e3, location$region_name) | geographic_level == "National"))
-      }
-
-      filtered_data <- filtered_data %>%
-        rename("Share of total spend on children's services" = "cs_share")
-
-      # Set the max y-axis scale
-      max_rate <- max(spending_data$cs_share, na.rm = TRUE)
-
-      # Round the max_rate to the nearest 50
-      max_rate <- ceiling(max_rate / 50) * 50
-
-      p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Share of total spend on children's services", "Share of total spend on children's services", max_rate) %>%
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Share of total spend on Children’s Services")
-
-      ggplotly(p, height = 420, tooltip = "text") %>%
-        layout(yaxis = list(range = c(0, max_rate)))
+      p <- p + ggtitle("Share of total spend on children's services (%) by region")
     } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cost_per_capita) %>%
+        rename("Average spend per child (£)" = "cost_per_capita")
 
+      max_y_lim <- ceiling(max(data$`Average spend per child (£)`) / 50) * 50
 
+      p <- by_region_bar_plot(data, "Average spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£) by region")
     }
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # region table alternative
+  output$table_tot_spending_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
+    )
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geo_breakdown, cs_share) %>%
+        arrange(desc(cs_share)) %>%
+        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+
+      table <- reactable(
+        data,
+        columns = list(
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 15,
+        searchable = TRUE,
+      )
+    } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geo_breakdown, cost_per_capita) %>%
+        arrange(desc(cost_per_capita)) %>%
+        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Average spend per child (£)" = "cost_per_capita")
+
+      table <- reactable(
+        data,
+        columns = list(
+          `Average spend per child (£)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 15,
+        searchable = TRUE,
+      )
+    }
+  })
+
+  # Local authority spending
+  output$plot_spending_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
+
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)") %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
+        scale_y_continuous(limits = c(0, max_y_lim))
+    } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geographic_level, geo_breakdown, cost_per_capita) %>%
+        rename("Spend per child (£)" = "cost_per_capita")
+
+      max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
+
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Spend per child (£)", yaxis_title = "Average spend per child (£)") %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£) by local authority") +
+        scale_y_continuous(limits = c(0, max_y_lim))
+    }
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$table_tot_spending_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      need(input$spending_choice != "", "Select a spending level.")
+    )
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geo_breakdown, cs_share) %>%
+        arrange(desc(cs_share)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+
+      table <- reactable(
+        data,
+        columns = list(
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 15,
+        searchable = TRUE,
+      )
+    } else {
+      data <- spending_per_capita %>%
+        filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
+        select(time_period, geo_breakdown, cost_per_capita) %>%
+        arrange(desc(cost_per_capita)) %>%
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average spend per child (£)" = "cost_per_capita")
+
+      table <- reactable(
+        data,
+        columns = list(
+          `Average spend per child (£)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 15,
+        searchable = TRUE,
+      )
+    }
+  })
+
+  ## Spending minus CLA -------
+  ## Regional plot for spending
+  output$plot_spend_excl_cla_region <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location.")
+    )
+
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
+
+    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # region table alternative
+  output$table_spend_excl_cla_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location.")
+    )
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geo_breakdown, minus_cla_share) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spend on children's services minus CLA (%)" = "minus_cla_share")
+
+    reactable(
+      data,
+      columns = list(
+        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # SPending minus CLA by local authority plot and table
+  output$plot_spend_excl_cla_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, minus_cla_share) %>%
+      rename("Share minus CLA (%)" = "minus_cla_share")
+
+    max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
+
+    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)") %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
+      scale_y_continuous(limits = c(0, max_y_lim))
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$spend_excl_cla_la_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e2 != "", "Select a geography level."),
+      need(input$geographic_breakdown_e2 != "", "Select a location.")
+    )
+    data <- spending_data_no_cla %>%
+      filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
+      select(time_period, geo_breakdown, minus_cla_share) %>%
+      arrange(desc(minus_cla_share)) %>%
+      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share minus CLA (%)" = "minus_cla_share")
+
+    reactable(
+      data,
+      columns = list(
+        `Share minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
   })
 
 
   ## Ofsted leadership rating ----
   output$ofsted_la_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      filter(geo_breakdown == input$geographic_breakdown_e2) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1326,7 +1579,7 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       ))
 
-    if (input$geographic_breakdown_e3 == "" || nrow(data) == 0) {
+    if (input$geographic_breakdown_e2 == "" || nrow(data) == 0) {
       return("NA")
     } else {
       paste0(data$Rating[which.max(data$Count)], "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
@@ -1336,7 +1589,7 @@ server <- function(input, output, session) {
 
   output$ofsted_outstanding_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e2) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1344,16 +1597,30 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       ))
 
-    if (input$geographic_breakdown_e3 == "") {
+    if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Outstanding")])
+      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e2)
+        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+        paste0(stat_final)
+      }
     }
   })
 
   output$ofsted_good_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1361,16 +1628,30 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       ))
 
-    if (input$geographic_breakdown_e3 == "") {
+    if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Good")])
+      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e2)
+        stat_final <- stat$Count[which(stat$Rating == "Good")]
+        paste0(stat_final)
+      }
     }
   })
 
   output$ofsted_improvement_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1378,16 +1659,31 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       ))
 
-    if (input$geographic_breakdown_e3 == "") {
+    if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Requires Improvement")])
+      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e2)
+        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+        paste0(stat_final)
+      }
     }
   })
 
   output$ofsted_inadequate_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
-      filter(geo_breakdown == input$geographic_breakdown_e3) %>%
+      # filter(geo_breakdown == input$geographic_breakdown_e2) %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
@@ -1395,76 +1691,107 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       ))
 
-    if (input$geographic_breakdown_e3 == "") {
+    if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      paste0(data$Count[which(data$Rating == "Inadequate")])
+      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+        stat <- data %>%
+          filter(geo_breakdown == "London")
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+        stat <- data %>%
+          filter(geo_breakdown == "North East, Yorkshire and the Humber")
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      } else {
+        stat <- data %>%
+          filter(geo_breakdown == input$geographic_breakdown_e2)
+        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+        paste0(stat_final)
+      }
+      # paste0(data$Count[which(data$Rating == "Inadequate")])
     }
   })
 
+  output$ofsted_latest_ratings_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data %>%
+      filter(is.na(region) == FALSE) %>%
+      select(geo_breakdown, time_period) %>%
+      arrange(`geo_breakdown`) %>%
+      rename(`Latest Rating` = `time_period`, `Location` = `geo_breakdown`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
   output$plot_ofsted <- plotly::renderPlotly({
+    p <- plot_ofsted() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families nationally")
+
     ggplotly(
-      plot_ofsted() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
   })
 
   output$plot_ofsted_reg <- plotly::renderPlotly({
+    p <- plot_ofsted_reg() %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families by region")
+
     ggplotly(
-      plot_ofsted_reg() %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
   })
 
-  output$ofsted_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "National", time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Inspection",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "National", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
-  output$ofsted_reg_tbl <- renderDataTable({
-    datatable(
-      ofsted_leadership_data_long %>%
-        filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-        select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
-        mutate(Rating = recode(Rating,
-          "inadequate_count" = "Inadequate",
-          "requires_improvement_count" = "Requires Improvement",
-          "good_count" = "Good",
-          "outstanding_count" = "Outstanding"
-        )) %>%
-        arrange(desc(`Count`)),
-      colnames = c(
-        "Latest Inspection", "Geographic Level",
-        "Breakdown", "Ofsted leadership rating", "Count"
-      ),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+  output$ofsted_reg_tbl <- renderReactable({
+    filtered_data <- ofsted_leadership_data_long %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geographic_level, geo_breakdown, Rating, Count) %>%
+      mutate(Rating = recode(Rating,
+        "inadequate_count" = "Inadequate",
+        "requires_improvement_count" = "Requires Improvement",
+        "good_count" = "Good",
+        "outstanding_count" = "Outstanding"
+      )) %>%
+      arrange(desc(`Count`)) %>%
+      rename(`Latest Publication` = `time_period`, `Geographic Level` = `geographic_level`, `Breakdown` = `geo_breakdown`, `Ofsted leadership rating` = `Rating`)
+
+    reactable(
+      filtered_data,
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
+
 
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
@@ -1512,16 +1839,13 @@ server <- function(input, output, session) {
     }
   })
 
-  output$outcome1_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox) && is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox) && !is.null(input$region_comparison_checkbox)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+  observeEvent(input$select_geography_o1, {
+    if (input$select_geography_o1 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o1", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o1", value = FALSE)
+    } else if (input$select_geography_o1 == "National") {
+      updateCheckboxInput(session, "Yes_national_o1", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o1", value = FALSE)
     }
   })
 
@@ -3097,7 +3421,7 @@ server <- function(input, output, session) {
     }
 
     data2 <- data %>%
-      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
+      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
       data2,
@@ -3318,7 +3642,7 @@ server <- function(input, output, session) {
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
       arrange(desc(`Expected standard reading writing maths (%)`)) %>%
-      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
 
     reactable(
@@ -3465,7 +3789,7 @@ server <- function(input, output, session) {
 
 
   # KS4 rate TABLE
-  output$table_ks4 <- renderDataTable({
+  output$table_ks4 <- renderReactable({
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks4 %>%
@@ -3496,17 +3820,20 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
         select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8)
     }
+    data <- filtered_data %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
+      select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "Social care group" = "social_care_group", "Total number of pupils" = "t_pupils", "Average attainment 8 score" = "avg_att8")
 
-    datatable(
-      filtered_data %>%
-        filter(social_care_group %in% input$attainment_extra_breakdown) %>%
-        mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
-        select(time_period, geo_breakdown, social_care_group, t_pupils, avg_att8),
-      colnames = c("Time period", "Geographical breakdown", "Social care group", "Total number of pupils", "Average attainment 8 score"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    reactable(
+      data,
+      columns = list(
+        `Total number of pupils` = colDef(cell = cellfunc),
+        `Average attainment 8 score` = colDef(cell = cellfunc)
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -3656,6 +3983,16 @@ server <- function(input, output, session) {
       # Picked both national and regional comparison
     } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
       paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
+    }
+  })
+
+  observeEvent(input$select_geography_o2, {
+    if (input$select_geography_o2 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o2", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o2", value = FALSE)
+    } else if (input$select_geography_o2 == "National") {
+      updateCheckboxInput(session, "Yes_national_o2", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o2", value = FALSE)
     }
   })
 
@@ -4098,7 +4435,7 @@ server <- function(input, output, session) {
         select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
         arrange(desc(`Ceased (%)`)) %>%
         rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
+    } else if (input$select_geography_o2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Residence order or child arrangement order granted") %>%
@@ -4167,6 +4504,16 @@ server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$select_geography_o3, {
+    if (input$select_geography_o3 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o3", value = FALSE)
+    } else if (input$select_geography_o3 == "National") {
+      updateCheckboxInput(session, "Yes_national_o3", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o3", value = FALSE)
+    }
+  })
+
   # Child protection plan repeated during year headline box
   output$cpp_in_year_txt <- renderText({
     if (input$geographic_breakdown_o3 == "") {
@@ -4230,7 +4577,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$table_repeat_cpp <- renderDataTable({
+  output$table_repeat_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
@@ -4239,13 +4586,15 @@ server <- function(input, output, session) {
     if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # national only
     } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
       filtered_data <- repeat_cpp %>%
         filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4254,7 +4603,8 @@ server <- function(input, output, session) {
 
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
       # both selected
     } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
@@ -4263,15 +4613,19 @@ server <- function(input, output, session) {
 
       filtered_data <- repeat_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent)
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
     }
-    datatable(
+
+    reactable(
       filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+      columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4297,20 +4651,26 @@ server <- function(input, output, session) {
   })
 
   # cpp by region table
-  output$table_cpp_repeat_reg <- renderDataTable({
+  output$table_cpp_repeat_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    datatable(
-      repeat_cpp %>% filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
-        arrange(desc(Repeat_CPP_percent)),
-      colnames = c("Time period", "Region", "CPP Starts", "Repeat CPP", "Repeat CPP (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- repeat_cpp %>%
+      filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
+      select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+      arrange(desc(Repeat_CPP_percent)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "Repeat_CPP_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4353,26 +4713,25 @@ server <- function(input, output, session) {
 
       data <- repeat_cpp %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-        arrange(desc(`Repeat_CPP_percent`))
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+        arrange(desc(Repeat_CPP_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP Starts` = `CPP_start`, `Repeat CPP` = `CPP_subsequent`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
     } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
       data <- repeat_cpp %>%
-        filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
-        select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-        arrange(desc(`Repeat_CPP_percent`))
+        filter(geographic_level == "Local authority", time_period == max(repeat_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, Repeat_CPP_percent) %>%
+        arrange(desc(Repeat_CPP_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP Starts` = `CPP_start`, `Repeat CPP` = `CPP_subsequent`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
     }
 
-    data2 <- data %>%
-      select(time_period, geo_breakdown, `Repeat_CPP_percent`) %>%
-      arrange(desc(`Repeat_CPP_percent`)) %>%
-      rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Repeat CPP (%)` = `Repeat_CPP_percent`)
-
     reactable(
-      data2,
+      data,
       columns = list(
+        `CPP Starts` = colDef(cell = cellfunc),
+        `Repeat CPP` = colDef(cell = cellfunc),
         `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
-      defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
+      defaultPageSize = 15,
       searchable = TRUE,
     )
   })
@@ -4439,7 +4798,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$table_duration_cpp <- renderDataTable({
+  output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
@@ -4475,13 +4834,18 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
         select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
     }
-    datatable(
-      filtered_data,
-      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+
+    data <- filtered_data %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP 2+ Years" = "X2_years_or_more", "CPP 2+ Years (%)" = "X2_years_or_more_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP 2+ Years` = colDef(cell = cellfunc),
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -4505,20 +4869,25 @@ server <- function(input, output, session) {
   })
 
   # by region table
-  output$table_cpp_duration_reg <- renderDataTable({
+  output$table_cpp_duration_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    datatable(
-      duration_cpp %>% filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
-        arrange(desc(X2_years_or_more_percent)),
-      colnames = c("Time period", "Geographical breakdown", "CPP 2+ Years", "CPP 2+ Year (%)"),
-      options = list(
-        scrollx = FALSE,
-        paging = TRUE
-      )
+    data <- duration_cpp %>%
+      filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
+      select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
+      arrange(desc(X2_years_or_more_percent)) %>%
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "CPP 2+ Years" = "X2_years_or_more", "CPP 2+ Years (%)" = "X2_years_or_more_percent")
+
+    reactable(
+      data,
+      columns = list(
+        `CPP 2+ Years` = colDef(cell = cellfunc),
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
     )
   })
 
@@ -5219,6 +5588,16 @@ server <- function(input, output, session) {
     }
   })
 
+  observeEvent(input$select_geography_o4, {
+    if (input$select_geography_o4 == "Regional") {
+      updateCheckboxInput(session, "Yes_national_o4", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o4", value = FALSE)
+    } else if (input$select_geography_o4 == "National") {
+      updateCheckboxInput(session, "Yes_national_o4", value = FALSE)
+      updateCheckboxInput(session, "Yes_region_o4", value = FALSE)
+    }
+  })
+
   ### Headline boxes ----
   output$placement_changes_txt <- renderText({
     if (input$geographic_breakdown_o4 == "") {
@@ -5346,6 +5725,22 @@ server <- function(input, output, session) {
         select(percentage)
     }
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
+  })
+
+  output$placement_order_match_txt <- renderText({
+    if (input$geographic_breakdown_o4 == "") {
+      stat <- "NA"
+    } else if (input$geographic_breakdown_o4 != "National") {
+      stat <- "NA"
+    } else {
+      stat <- format(placement_order_match_data %>%
+        filter(time_period == max(placement_order_match_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+        filter(age_start_poc == "Total") %>%
+        select(months), nsmall = 0)
+    }
+    paste0(
+      stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(All ages - ", max(placement_order_match_data$time_period), ")", "</p>"
+    )
   })
 
   ### Placement type charts and tables ----
@@ -5835,6 +6230,7 @@ server <- function(input, output, session) {
     )
   })
 
+
   # timeseries table alternative
   output$placement_dist_tbl <- renderReactable({
     shiny::validate(
@@ -5992,6 +6388,57 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  ## Placement order and match ----
+  output$placement_order_match_ts_plot <- renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o4 == "National", "Regional and local authority level data are not available for this indicator."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$select_age_group_o4 != "", "Select an age.")
+    )
+
+    filtered_data <- placement_order_match_data %>%
+      filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age_start_poc %in% input$select_age_group_o4)
+
+    max_months <- max(placement_order_match_data$months)
+
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "months", "Number of Months", max_months) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Average time between placement order and match for those children who are adopted")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  # timeseries table alternative
+  output$placement_order_match_tbl <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o4 == "National", "Regional and local authority level data are not available for this indicator."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      need(input$select_age_group_o4 != "", "Select an age.")
+    )
+
+    filtered_data <- placement_order_match_data %>%
+      filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age_start_poc %in% input$select_age_group_o4) %>%
+      select(time_period, geographic_level, stage_of_adoption_process, age_start_poc, months)
+
+
+    data <- filtered_data %>%
+      rename(`Time period` = `time_period`, `Geographic Level` = `geographic_level`, `Stage of Adoption Process` = `stage_of_adoption_process`, `Age` = `age_start_poc`, `Months` = `months`)
+
+    reactable(
+      data,
+      columns = list(
+        `Months` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6744,6 +7191,24 @@ server <- function(input, output, session) {
             reactableOutput("table_cla_rate_la")
           )
         ),
+        details(
+          inputId = "cla_rate_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+              tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+              tags$li("Figures exclude children looked after under a series of short-term placements."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -6761,9 +7226,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cla_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -6827,6 +7301,26 @@ server <- function(input, output, session) {
             reactableOutput("table_uasc_la")
           )
         ),
+        details(
+          inputId = "cla_UASC_rate_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+              tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+              tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+              tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -6834,21 +7328,28 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("UASC_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_uasc",
           label = "View chart as a table",
           help_text = (
             reactableOutput("SN_uasc_tbl")
-            # p("This is under development.")
           )
         ),
         details(
           inputId = "sn_usac_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -6913,6 +7414,22 @@ server <- function(input, output, session) {
             reactableOutput("table_cla_march_la")
           )
         ),
+        details(
+          inputId = "cla_rate_march_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -6920,21 +7437,28 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("cla_march_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cla_march",
           label = "View chart as a table",
           help_text = (
             reactableOutput("SN_cla_march_tbl")
-            # p("This is under development.")
           )
         ),
         details(
           inputId = "sn_cla_march_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -6997,6 +7521,24 @@ server <- function(input, output, session) {
             reactableOutput("table_cin_rates_la")
           )
         ),
+        details(
+          inputId = "CIN_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their devlopment or health."),
+              tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021", "mid-year population estimates."), "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
+              tags$li("The rates for 2023 have been calculated based on 2021 population estimates as 2022 estimates were not available at the time of publication. Therefore, some caution is needed when interpreting the 2023 rates, either in isolation or in comparison with other years. The 2023 rates will be revised as part of the next 2024 publication."),
+              tags$li("Revised population estimates for 2012 to 2020 based on 2021 Census data, to calculate revised 2013 to 2021 rates, were not available at the time of publication. Therefore, some caution is needed when interpreting these rates, either in isolation or in comparison with other years. The 2013 to 2021 rates will be revised as part of the next 2024 publication."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7016,9 +7558,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cin_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7083,6 +7634,22 @@ server <- function(input, output, session) {
             reactableOutput("table_cin_referral_la")
           )
         ),
+        details(
+          inputId = "CIN_referral_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
+              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7097,14 +7664,22 @@ server <- function(input, output, session) {
           label = "View chart as a table",
           help_text = (
             reactableOutput("SN_cin_referral_tbl")
-            # p("This is under development.")
           )
         ),
         details(
           inputId = "sn_cin_referral_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7157,6 +7732,33 @@ server <- function(input, output, session) {
             reactableOutput("table_absence_la")
           )
         ),
+        details(
+          inputId = "Attendance_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li(
+                "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
+                                Unauthorised absence is absence without permission from the school. This includes all unexplained or unjustified absences and arrivals after registration has closed. For further information see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology."),
+              ),
+              tags$li(
+                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England."),
+              ),
+              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7176,9 +7778,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_absence_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7236,6 +7847,32 @@ server <- function(input, output, session) {
             reactableOutput("table_persistent_absence_la")
           )
         ),
+        details(
+          inputId = "Persistent_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li(
+                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology."),
+              ),
+              tags$li(
+                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England."),
+              ),
+              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7255,9 +7892,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_persistent_abs_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7313,6 +7959,28 @@ server <- function(input, output, session) {
             reactableOutput("table_KS2_la")
           )
         ),
+        details(
+          inputId = "ks2_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
+              tags$li(
+                "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment."),
+              ),
+              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7332,9 +8000,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_ks2_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7393,6 +8070,31 @@ server <- function(input, output, session) {
             reactableOutput("table_KS4_la")
           )
         ),
+        details(
+          inputId = "ks4_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li(
+                "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
+                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
+                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
+                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
+              ),
+              tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
+              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7412,9 +8114,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_ks4_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7473,6 +8184,22 @@ server <- function(input, output, session) {
             reactableOutput("table_sgo_la")
           )
         ),
+        details(
+          inputId = "sgo_la_info",
+          label = "Additional information:",
+          help_text = (
+            p(
+              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+              tags$li("Percentages rounded to the nearest whole number."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$li("Figures exclude children looked after under a series of short-term placements."),
+              tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+              tags$br(),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+              tags$br(),
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+          ))
+        )
       )
     } else {
       validate(
@@ -7491,9 +8218,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_sgo_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7547,6 +8283,22 @@ server <- function(input, output, session) {
             reactableOutput("table_cao_la")
           )
         ),
+        details(
+          inputId = "cao_la_info",
+          label = "Additional information:",
+          help_text = (
+            p(
+              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+              tags$li("Percentages rounded to the nearest whole number."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$li("Figures exclude children looked after under a series of short-term placements."),
+              tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
+              tags$br(),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+              tags$br(),
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+          ))
+        )
       )
     } else {
       validate(
@@ -7564,9 +8316,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cao_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7621,6 +8382,21 @@ server <- function(input, output, session) {
             reactableOutput("table_cpp_repeat_la")
           )
         ),
+        details(
+          inputId = "cpp_in_year_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The metric shown in the graph refers to the percentage of children who have been entered into a CPP during the year, where this plan was at least their second."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information about child protection plans, please refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.")
+              )
+            )
+          )
+        ),
       )
     } else {
       validate(
@@ -7639,9 +8415,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cpp_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7668,10 +8453,13 @@ server <- function(input, output, session) {
 
   output$SN_cpp_repeat_tbl <- renderReactable({
     data <- repeat_cpp %>%
-      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent", "CPP starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent")
+
     reactable(
-      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Repeat CPP (%)"),
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("CPP starts", "Repeat CPP"), yvalue = "Repeat CPP (%)"),
       columns = list(
+        `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
+        `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
         `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
@@ -7679,7 +8467,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ## NO CPP for 2+ years by LA
+  ### NO CPP for 2+ years by LA ----
 
   ### Hospital admissions -----
   output$SN_hosp_admissions <- renderUI({
@@ -7735,9 +8523,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_hosp_ad_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7796,7 +8593,25 @@ server <- function(input, output, session) {
           label = "View chart as a table",
           help_text = (
             reactableOutput("table_child_ab_neg_la")
-            # p("table here")
+          )
+        ),
+        details(
+          inputId = "child_abuse_add_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Figures exclude the category ‘no factors identified’."),
+              tags$li("An episode of need may have more than one factor recorded."),
+              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
           )
         ),
       )
@@ -7819,9 +8634,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_abuse_neg_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7881,6 +8705,25 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "efh_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Figures exclude the category ‘no factors identified’."),
+              tags$li("An episode of need may have more than one factor recorded."),
+              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance."),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.")
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -7901,9 +8744,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_efh_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -7966,6 +8818,19 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "placement_type_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -7986,9 +8851,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_placement_type_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8046,6 +8920,19 @@ server <- function(input, output, session) {
             # p("table here")
           )
         ),
+        details(
+          inputId = "placement_changes_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+              )
+            )
+          )
+        )
       )
     } else {
       validate(
@@ -8066,9 +8953,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_placement_changes_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8158,9 +9054,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_placement_changes_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8249,9 +9154,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_sdq_score_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8353,9 +9267,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cl_activity_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8457,9 +9380,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_cl_accommodation_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8505,7 +9437,7 @@ server <- function(input, output, session) {
   })
 
 
-  ## Enabler 2 ------
+  ## Enabler 3 ------
   ### Turnover rate -----
   ## Button logic for turnover by LA
   output$SN_turnover <- renderUI({
@@ -8519,13 +9451,13 @@ server <- function(input, output, session) {
           inputId = "tbl_turnover_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_turnover_la")
+            reactableOutput("table_turnover_la")
           )
         ),
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
         plotlyOutput("turnover_SN_plot"),
@@ -8540,9 +9472,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_turnover_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8551,10 +9492,10 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$turnover_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Turnover Rate Fte", "Turnover Rate %", 100) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", 100) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
 
@@ -8567,9 +9508,9 @@ server <- function(input, output, session) {
 
   output$SN_turnover_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Turnover Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Turnover Rate Fte"),
       columns = list(
-        `Turnover Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8588,13 +9529,13 @@ server <- function(input, output, session) {
           inputId = "tbl_agency_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_agency_rate_la")
+            reactableOutput("table_agency_rate_la")
           )
         ),
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
         plotlyOutput("agency_SN_plot"),
@@ -8608,9 +9549,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_agency_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8619,9 +9569,9 @@ server <- function(input, output, session) {
   # Agency rate SN plot and table alternative
   output$agency_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", 100) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
     ggplotly(
@@ -8633,9 +9583,9 @@ server <- function(input, output, session) {
 
   output$SN_agency_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Agency Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Agency Rate Fte"),
       columns = list(
-        `Agency Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8655,13 +9605,13 @@ server <- function(input, output, session) {
           inputId = "tbl_vacancy_rate_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_vacancy_rate_la")
+            reactableOutput("table_vacancy_rate_la")
           )
         ),
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
         plotlyOutput("vacancy_SN_plot"),
@@ -8675,9 +9625,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_vacancy_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8686,9 +9645,9 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$vacancy_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", 100) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
     ggplotly(,
@@ -8699,9 +9658,9 @@ server <- function(input, output, session) {
 
   output$SN_vacancy_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Vacancy Rate Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Vacancy Rate Fte"),
       columns = list(
-        `Vacancy Rate Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8720,13 +9679,13 @@ server <- function(input, output, session) {
           inputId = "tbl_caseload_la",
           label = "View chart as a table",
           help_text = (
-            dataTableOutput("table_caseload_la")
+            reactableOutput("table_caseload_la")
           )
         ),
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
       )
       tagList(
         plotlyOutput("caseload_SN_plot"),
@@ -8740,9 +9699,18 @@ server <- function(input, output, session) {
         ),
         details(
           inputId = "sn_caseload_info",
-          label = "Additional information",
+          label = "Additional information:",
           help_text = (
-            p("Additional information about stats neighbours file.")
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
           )
         )
       )
@@ -8751,9 +9719,9 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$caseload_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", 100) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
     ggplotly(
@@ -8765,9 +9733,9 @@ server <- function(input, output, session) {
 
   output$SN_caseload_tbl <- renderReactable({
     reactable(
-      stats_neighbours_table(workforce_data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Caseload Fte"),
+      stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Caseload Fte"),
       columns = list(
-        `Caseload Fte` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8776,15 +9744,18 @@ server <- function(input, output, session) {
 
 
 
-  # Enabler 3 ----
-  ## Ofsted leadership rating ----
+  # Enabler 2 ----
+  ### Ofsted leadership rating --------
   output$ofsted_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
+
+    p <- statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e2) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours")
     ggplotly(
-      statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e3) %>%
-        config(displayModeBar = F),
+      p,
       height = 420,
       tooltip = "text"
     )
@@ -8792,7 +9763,7 @@ server <- function(input, output, session) {
 
   output$ofsted_SN_tbl <- renderReactable({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
     )
     data <- ofsted_leadership_data_long %>%
       mutate(Rating = recode(Rating,
@@ -8805,14 +9776,252 @@ server <- function(input, output, session) {
       mutate(latest_rating = max(time_period)) %>%
       ungroup()
     reactable(
-      stats_neighbours_table_ofsted(data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Rating"),
+      stats_neighbours_table_ofsted(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Rating"),
       defaultPageSize = 11,
       searchable = TRUE,
     )
   })
 
-  # Downloader -----------------------------------------------------------------
+  ### Spending total ----
+  output$SN_total_spending <- renderUI({
+    if (input$spending1_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_spending_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_tot_spend_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("table_tot_spending_la")
+          )
+        ),
+        details(
+          inputId = "tot_spend_la_information",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total children’s services expenditure"),
+              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "for children aged 0 to 17 years and total children’s services expenditure."),
+              tags$li("Average per child spend has been rounded to the nearest whole number."),
+              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+              )
+            )
+          )
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("total_spending_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_total_spending",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("SN_tot_spend_tbl")
+            # p("table")
+          )
+        ),
+        details(
+          inputId = "sn_tot_spend_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
+          )
+        )
+      )
+    }
+  })
 
+  output$total_spending_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data
+
+      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
+    } else {
+      data <- spending_per_capita %>%
+        rename("Spend per child (£)" = "cost_per_capita")
+
+      max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
+
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
+        config(displayModeBar = F)
+      p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
+    }
+
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$SN_tot_spend_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+    # Need an if statement to look at the spending level choice this will determine the data in the chart
+    if (input$spending_choice == "Share of total spend on children's services") {
+      data <- spending_data %>%
+        rename("Children's services share (%)" = "cs_share")
+
+      table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Children's services share (%)")
+
+      reactable(
+        table,
+        columns = list(
+          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+        searchable = TRUE,
+      )
+    } else {
+      data <- spending_per_capita %>%
+        rename("Average spend per child (£)" = "cost_per_capita")
+
+      table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Average spend per child (£)")
+
+      reactable(
+        table,
+        columns = list(
+          `Average Spend Per Child (£)` = colDef(name = "Average spend per child (£)", cell = cellfunc, defaultSortOrder = "desc")
+        ),
+        defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+        searchable = TRUE,
+      )
+    }
+  })
+
+
+  ### Spending Excluding CLA -----
+  output$SN_spending_minus_cla <- renderUI({
+    if (input$spending2_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_spend_excl_cla_la"),
+        br(),
+        p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        br(),
+        details(
+          inputId = "tbl_tot_no_cla_spend_la",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("spend_excl_cla_la_tbl")
+          )
+        ),
+        details(
+          inputId = "no_cla_spend_information",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Share of spend is calculated by taking total children’s services expenditure minus total CLA expenditure, divided by total children’s services expenditure"),
+              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+              )
+            )
+          )
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      )
+      tagList(
+        plotlyOutput("spend_excl_cla_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_spending",
+          label = "View chart as a table",
+          help_text = (
+            reactableOutput("SN_spend_no_cla_tbl")
+            # p("table")
+          )
+        ),
+        details(
+          inputId = "sn_spend_excl_cla_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication."),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.")
+              ),
+            )
+          )
+        )
+      )
+    }
+  })
+
+
+  output$spend_excl_cla_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    data <- spending_data_no_cla
+    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim) %>%
+      config(displayModeBar = F)
+    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    )
+  })
+
+  output$SN_spend_no_cla_tbl <- renderReactable({
+    validate(
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+    )
+
+    data <- spending_data_no_cla %>%
+      rename("Share of spend minus CLA (%)" = "minus_cla_share")
+
+    table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Share of spend minus CLA (%)")
+
+    reactable(
+      table,
+      columns = list(
+        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
 
 
   # Don't touch the code below -----------------------

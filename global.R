@@ -35,6 +35,9 @@ shhh(library(dfeshiny))
 shhh(library(shinyvalidate))
 shhh(library(reactable))
 shhh(library(readODS))
+shhh(library(readxl))
+shhh(library(janitor))
+
 
 shhh(library(htmltools))
 
@@ -111,6 +114,8 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 # Read in ofsted leadership data (Enabler 3)
 
 spending_data <- suppressWarnings(read_spending_data())
+spending_data_no_cla <- suppressWarnings(read_spending_data2())
+spending_per_capita <- suppressWarnings(read_per_capita_spending())
 
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
 ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
@@ -162,6 +167,8 @@ care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data()
 care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())
 
 wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
+
+placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)

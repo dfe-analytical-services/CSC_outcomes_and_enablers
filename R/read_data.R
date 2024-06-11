@@ -430,7 +430,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
   # calculate the share of the
-  data3$cs_share <- round(((data3$exp) / (data3$total_exp)) * 100, digits = 2)
+  data3$cs_share <- janitor::round_half_up(((data3$exp) / (data3$total_exp)) * 100)
   data3 <- data3 %>%
     mutate(cs_share = case_when(
       `CS Expenditure` == "x" ~ 0,
@@ -458,11 +458,28 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
     group_by(region_name) %>%
     summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$cs_share <- round(regional_spending$cs_share, digits = 2)
+  regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2022/23"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
+
+  london_com <- regional_spending %>%
+    filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
+    summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
+    mutate(
+      "time_period" = "2022/23",
+      "geographic_level" = "Regional",
+      "geo_breakdown" = "London",
+      "new_la_code" = "",
+      "old_la_code" = as.numeric(""),
+      # "CS Expenditure" = as.character(exp),
+      # "Total Expenditure" = as.character(total_exp),
+      # "CS Share" = as.character(cs_share)
+    )
+  london_com$cs_share <- janitor::round_half_up(london_com$cs_share)
+
+  regional_spending <- rbind(regional_spending, london_com)
 
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CS Expenditure", "Total Expenditure", "exp", "total_exp", "cs_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "exp", "total_exp", "cs_share"))
@@ -485,9 +502,80 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       TRUE ~ as.character(cs_share)
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share, "CS Share")
-  final_dataset$cs_share <- round(final_dataset$cs_share, digits = 2)
+  final_dataset$cs_share <- janitor::round_half_up(final_dataset$cs_share)
 
   return(final_dataset)
+}
+
+read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
+  population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
+  test_df <- population_estimates
+  test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
+  test_df2 <- test_df[grepl("^E10|^E06|^E08|^E09", test_df$Code), ]
+  local_authority_pop <- test_df2 %>% select("Code", "Name", "Geography", "under18")
+
+  regional_pop <- test_df[grepl("^E12", test_df$Code), ]
+  regional_pop$Name <- str_to_title((regional_pop$Name))
+  regional_pop$Name[regional_pop$Name == "Yorkshire And The Humber"] <- "Yorkshire and The Humber"
+  regional_pop$Name[regional_pop$Name == "East"] <- "East of England"
+  regional_pop <- regional_pop %>% select("Code", "Name", "Geography", "under18")
+
+  # Join local authority and regional pop together
+  population <- rbind(local_authority_pop, regional_pop)
+  # Get national data
+  national_pop <- sum(population[population$Geography == "Region", "under18"], na.rm = FALSE)
+  new_row <- data.frame(Code = "E92000001", Name = "National", Geography = "National", under18 = national_pop)
+  population2 <- rbind(population, new_row)
+  # Correct formatting
+  population3 <- population2 %>%
+    mutate(geographic_level = case_when(
+      Geography == "Region" ~ "Regional",
+      Geography == "County" ~ "Local authority",
+      Geography == "London Borough" ~ "Local authority",
+      Geography == "Metropolitan District" ~ "Local authority",
+      Geography == "Unitary Authority" ~ "Local authority",
+      TRUE ~ as.character(Geography)
+    )) %>%
+    select("Code", "Name", "geographic_level", "under18") %>%
+    rename("new_la_code" = "Code", "geo_breakdown" = "Name")
+
+  # Need to make sure the LA's in population estimates are the same as the spending data LA's
+  # Joining west moreland + cumberland to get cumbria
+  cumbria_pop <- sum(population3[(population3$geo_breakdown == "Westmorland and Furness" | population3$geo_breakdown == "Cumberland"), "under18"], na.rm = FALSE)
+  new_row1 <- data.frame(new_la_code = "E10000006", geographic_level = "Local authority", geo_breakdown = "Cumbria", under18 = cumbria_pop)
+  population4 <- rbind(population3, new_row1)
+
+  # Joining up LA's to get population Estimates for inner and outer london
+  outer_london_list <- c("E09000002", "E09000003", "E09000004", "E09000005", "E09000006", "E09000008", "E09000009", "E09000010", "E09000011", "E09000015", "E09000016", "E09000017", "E09000018", "E09000021", "E09000024", "E09000026", "E09000027", "E09000029", "E09000031")
+  inner_london_list <- c("E09000007", "E09000001", "E09000012", "E09000013", "E09000014", "E09000019", "E09000020", "E09000022", "E09000023", "E09000025", "E09000028", "E09000030", "E09000032", "E09000033")
+  inner_london <- sum(population4[(population4$new_la_code %in% inner_london_list), "under18"], na.rm = FALSE)
+  outer_london <- sum(population4[(population4$new_la_code %in% outer_london_list), "under18"], na.rm = FALSE)
+  inner_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Inner London", under18 = inner_london)
+  outer_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Outer London", under18 = outer_london)
+
+  population5 <- rbind(population4, inner_row) %>%
+    rbind(outer_row) %>%
+    select(-c(new_la_code))
+
+  spending_data <- suppressWarnings(read_spending_data())
+  joined_data <- left_join(spending_data, population5, by = c("geographic_level", "geo_breakdown"))
+  joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
+  joined_data$cost_per_capita <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
+
+  joined_data2 <- joined_data %>%
+    mutate(`Cost per child` = case_when(
+      exp == -300 ~ "x",
+      TRUE ~ as.character(`Cost per child`)
+    )) %>%
+    mutate(cost_per_capita = case_when(
+      exp == -300 ~ -300,
+      TRUE ~ as.numeric(cost_per_capita)
+    ))
+
+  joined_data2$`Cost per child` <- formatC(joined_data2$`Cost per child`, format = "f", big.mark = ",", digits = 0)
+  joined_data2$cost_per_capita <- janitor::round_half_up(joined_data2$cost_per_capita)
+
+  return(joined_data2)
 }
 
 read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
@@ -510,8 +598,8 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       `Total Expenditure` == "x" ~ 0,
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
-  # calculate the share of the
-  data3$minus_cla_share <- round(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100, digits = 2)
+  # calculate the share of the expenditure not for CLA
+  data3$minus_cla_share <- janitor::round_half_up(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100)
   data3 <- data3 %>%
     mutate(minus_cla_share = case_when(
       `CLA Expenditure` == "x" ~ 0,
@@ -532,17 +620,31 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
 
   regional_spending <- merged_data %>%
     group_by(region_name) %>%
     summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$minus_cla_share <- round(regional_spending$minus_cla_share, digits = 2)
+  regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2022/23"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
+
+  london_com <- regional_spending %>%
+    filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
+    summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
+    mutate(
+      "time_period" = "2022/23",
+      "geographic_level" = "Regional",
+      "geo_breakdown" = "London",
+      "new_la_code" = as.character(""),
+      "old_la_code" = as.numeric(""),
+    )
+  london_com$minus_cla_share <- janitor::round_half_up(london_com$minus_cla_share)
+
+  regional_spending <- rbind(regional_spending, london_com)
 
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CLA Expenditure", "Total Expenditure", "cla_exp", "total_exp", "minus_cla_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
@@ -550,7 +652,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   final_dataset <- df2 %>%
     mutate(exp = case_when(
       `CLA Expenditure` == "x" ~ -300,
-      TRUE ~ as.numeric(exp)
+      TRUE ~ as.numeric(cla_exp)
     )) %>%
     mutate(total_exp = case_when(
       `Total Expenditure` == "x" ~ -300,
@@ -564,8 +666,8 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       minus_cla_share == -300 ~ "x",
       TRUE ~ as.character(minus_cla_share)
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
-  final_dataset$cs_share <- round(final_dataset$cs_share, digits = 2)
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
+  final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
 
   return(final_dataset)
 }
@@ -1458,6 +1560,37 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
   return(data3)
 }
 
+## Placement order and match data ----
+read_placement_order_match_data <- function(file = "data/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
+  data <- read.csv(file)
+
+  data <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National"
+    )) %>%
+    filter(stage_of_adoption_process == "2. Average time between decision that child should be placed for adoption and matching of child and adopters")
+
+  data <- data %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    ))
+
+  data$months <- sapply(strsplit(data$number, ":"), function(x) {
+    years <- as.numeric(x[1])
+    months <- as.numeric(x[2])
+    months <- years * 12 + months
+    return(months)
+  })
+
+
+  return(data)
+}
 
 # Statistical Neighbours ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {

@@ -1,7 +1,7 @@
 outcome4_tab <- function() {
   tabPanel(
     value = "outcome4_page",
-    "Outcome 4",
+    "4 - Loving Homes",
     gov_main_layout(
       gov_row(
         column(
@@ -102,8 +102,8 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average time between an LA receiving court authority to place a child and the LA deciding on a match to an adoptive family? Q1-Q4 2022/23",
-                    value = p("stats")
+                    title = "Average number of months between decision that a child should be placed for adoption and matching of child and adopters",
+                    value = htmlOutput("placement_order_match_txt")
                   )
                 ),
               ),
@@ -170,10 +170,23 @@ outcome4_tab <- function() {
                     br(),
                     br(),
                     details(
-                      inputId = "tbl_placement_type_reg",
+                      inputId = "tbl_placement_changes_reg",
                       label = "View chart as a table",
                       help_text = (
                         reactableOutput("placement_changes_region_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_changes_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
                       )
                     )
                   ),
@@ -318,6 +331,19 @@ outcome4_tab <- function() {
                       help_text = (
                         reactableOutput("placement_type_region_tbl")
                       )
+                    ),
+                    details(
+                      inputId = "placement_type_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
                     )
                   ),
                   gov_row(
@@ -334,16 +360,54 @@ outcome4_tab <- function() {
                 ),
                 accordion_panel(
                   "Average time between placement order and match for those children who are adopted",
-                  p("contents for panel 4"),
                   gov_row(
-                    h2("Time Series")
+                    div(
+                      h2("Average time between placement order and match for those children who are adopted"),
+                      class = "input_box",
+                      style = "min-height:100%; height = 100%; overflow-y: visible",
+                      insert_text(
+                        inputId = "placement_order_match_nationl_message",
+                        text = "Due to data availability, only national level stats are available for this chart. However, you can choose different ages to view on the chart using the dropdown below. (Note that this will not affect the headline box at the top)."
+                      ),
+                      # p("Please use the dropdown below to select which age you would like to see in the below chart."),
+                      # p("(Note that this will not affect the headline box at the top)"),
+                      selectizeInput(
+                        inputId = "select_age_group_o4",
+                        label = "Select an age group:",
+                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total"),
+                        selected = NULL,
+                        multiple = FALSE,
+                        options = NULL
+                      ),
+                    ),
+                    br(),
                   ),
                   gov_row(
-                    h2("By Region")
+                    plotlyOutput("placement_order_match_ts_plot"),
+                    br(),
+                    details(
+                      inputId = "tbl_placement_order_match",
+                      label = "View chart as a table",
+                      help_text = (
+                        reactableOutput("placement_order_match_tbl")
+                      )
+                    ),
+                    details(
+                      inputId = "placement_order_match_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Due to data availability, only national level stats are available for this chart."),
+                          tags$li("Average time rounded to the nearest month."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance."),
+                          )
+                        )
+                      )
+                    )
                   ),
-                  gov_row(
-                    h2("By local authority")
-                  )
                 ),
                 open = FALSE
               )

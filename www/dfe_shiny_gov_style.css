@@ -414,7 +414,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .small-box.bg-blue{
      background-color: #1d70b8 !important; 
      color: #ffffff;
-     padding: 120px
+     padding: 120px;
      margin:10px;
 }
 
