@@ -9483,7 +9483,11 @@ server <- function(input, output, session) {
           inputId = "tbl_turnover_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_turnover_la")
+            HTML(paste0(
+              csvDownloadButton("table_turnover_la", filename = "social_worker_turnover_all_LAs.csv"),
+              reactableOutput("table_turnover_la")
+            ))
+            # reactableOutput("table_turnover_la")
           )
         ),
       )
@@ -9498,8 +9502,12 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_turnover",
           label = "View chart as a table",
           help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_turnover_tbl", filename = paste0("social_worker_turnover_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_turnover_tbl")
+            ))
             # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("SN_turnover_tbl")
+            # reactableOutput("SN_turnover_tbl")
           )
         ),
         details(
@@ -9561,7 +9569,11 @@ server <- function(input, output, session) {
           inputId = "tbl_agency_rate_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_agency_rate_la")
+            HTML(paste0(
+              csvDownloadButton("table_agency_rate_la", filename = "agency_worker_rate_all_LAs.csv"),
+              reactableOutput("table_agency_rate_la")
+            ))
+            # reactableOutput("table_agency_rate_la")
           )
         ),
       )
@@ -9576,7 +9588,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_agency",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_agency_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_agency_tbl", filename = paste0("agency_worker_rate_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_agency_tbl")
+            ))
+            # reactableOutput("SN_agency_tbl")
           )
         ),
         details(
@@ -9637,7 +9653,12 @@ server <- function(input, output, session) {
           inputId = "tbl_vacancy_rate_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_vacancy_rate_la")
+            HTML(paste0(
+              csvDownloadButton("table_vacancy_rate_la", filename = "vacancy_rates_all_LAs.csv"),
+              reactableOutput("table_vacancy_rate_la")
+            ))
+
+            # reactableOutput("table_vacancy_rate_la")
           )
         ),
       )
@@ -9652,7 +9673,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_vacancy",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_vacancy_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_vacancy_tbl", filename = paste0("vacancy_rates_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_vacancy_tbl")
+            ))
+            # reactableOutput("SN_vacancy_tbl")
           )
         ),
         details(
@@ -9711,7 +9736,11 @@ server <- function(input, output, session) {
           inputId = "tbl_caseload_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_caseload_la")
+            HTML(paste0(
+              csvDownloadButton("table_caseload_la", filename = "avg_caseload_all_LAs.csv"),
+              reactableOutput("table_caseload_la")
+            ))
+            # reactableOutput("table_caseload_la")
           )
         ),
       )
@@ -9726,7 +9755,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_caseload",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_caseload_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_caseload_tbl", filename = paste0("avg_caseload_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_caseload_tbl")
+            ))
+            # reactableOutput("SN_caseload_tbl")
           )
         ),
         details(

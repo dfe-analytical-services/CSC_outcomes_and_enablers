@@ -143,7 +143,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_s_w_turnover",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_s_w_turnover")
+                        HTML(paste0(
+                          csvDownloadButton("table_s_w_turnover", filename = "social_worker_turnover.csv"),
+                          reactableOutput("table_s_w_turnover")
+                        ))
+                        # reactableOutput("table_s_w_turnover")
                       )
                     ),
                     details(
@@ -169,7 +173,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_turnover_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_turnover_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_turnover_reg", filename = "social_worker_turnover_region.csv"),
+                          reactableOutput("table_turnover_reg")
+                        ))
+                        # reactableOutput("table_turnover_reg")
                       )
                     )
                   ),
@@ -205,7 +213,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_agency_worker",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_agency_worker")
+                        HTML(paste0(
+                          csvDownloadButton("table_agency_worker", filename = "agency_worker_rate.csv"),
+                          reactableOutput("table_agency_worker")
+                        ))
+                        # reactableOutput("table_agency_worker")
                       )
                     ),
                     details(
@@ -233,7 +245,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_agency_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_agency_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_agency_reg", filename = "agency_worker_rate_regions.csv"),
+                          reactableOutput("table_agency_reg")
+                        ))
+                        # reactableOutput("table_agency_reg")
                       )
                     )
                   ),
@@ -268,7 +284,12 @@ enabler3_tab <- function() {
                       inputId = "tbl_vacancy_rate",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_vacancy_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_vacancy_rate", filename = "vacancy_rates.csv"),
+                          reactableOutput("table_vacancy_rate")
+                        ))
+
+                        # reactableOutput("table_vacancy_rate")
                       )
                     ),
                     details(
@@ -296,7 +317,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_vacancy_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_vacancy_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_vacancy_reg", filename = "vacancy_rates_regions.csv"),
+                          reactableOutput("table_vacancy_reg")
+                        ))
+                        # reactableOutput("table_vacancy_reg")
                       )
                     )
                   ),
@@ -351,7 +376,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_caseload",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_caseload")
+                        HTML(paste0(
+                          csvDownloadButton("table_caseload", filename = "avg_caseload.csv"),
+                          reactableOutput("table_caseload")
+                        ))
+                        # reactableOutput("table_caseload")
                       )
                     ),
                     details(
@@ -379,7 +408,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_caseload_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_caseload_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_caseload_reg", filename = "avg_caseload_regions.csv"),
+                          reactableOutput("table_caseload_reg")
+                        ))
+                        # reactableOutput("table_caseload_reg")
                       )
                     ),
                   ),
@@ -432,7 +465,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_ethnicity",
                       label = "View Chart as a table",
                       help_text = (
-                        reactableOutput("table_ethnicity_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_ethnicity_rate", filename = "social_worker_ethnicity.csv"),
+                          reactableOutput("table_ethnicity_rate")
+                        ))
+                        # reactableOutput("table_ethnicity_rate")
                       )
                     ),
                     details(
@@ -471,7 +508,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_population_ethnicity",
                       label = "View Chart as a table",
                       help_text = (
-                        reactableOutput("table_population_ethnicity_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_population_ethnicity_rate", filename = "social_worker_ethnicity_vs_population.csv"),
+                          reactableOutput("table_population_ethnicity_rate")
+                        ))
+                        # reactableOutput("table_population_ethnicity_rate")
                       )
                     ),
                     details(
@@ -509,7 +550,11 @@ enabler3_tab <- function() {
                       inputId = "tbl_seniority_eth",
                       label = "View Chart as a table",
                       help_text = (
-                        reactableOutput("table_seniority_eth")
+                        HTML(paste0(
+                          csvDownloadButton("table_seniority_eth", filename = "social_worker_seniority.csv"),
+                          reactableOutput("table_seniority_eth")
+                        ))
+                        # reactableOutput("table_seniority_eth")
                       )
                     ),
                     details(
