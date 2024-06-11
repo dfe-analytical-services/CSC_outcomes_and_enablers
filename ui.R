@@ -94,8 +94,9 @@ ui <- function(input, output, session) {
           "dist/js.cookie.min.js"
         )
       ),
-      tags$script(src = "cookie-consent.js")
+      tags$script(src = "cookie-consent.js"),
     ),
+    tags$head(includeScript("www/downloader.js")),
     tags$head(includeHTML(("google-analytics.html"))),
     tags$head(
       tags$link(
@@ -104,64 +105,6 @@ ui <- function(input, output, session) {
         href = "dfe_shiny_gov_style.css"
       )
     ),
-    # Javascript for the download handler
-    # tags$head(
-    #   tags$script(HTML(
-    #     "Shiny.addCustomMessageHandler('reactableDownload', function(message) {
-    #      Reactable.downloadDataCSV(message.id, message.filename);
-    #    });"
-    #   ))
-    # ),
-    # tags$head(
-    tags$script(HTML("
-    function cellFunction(value) {
-      if (value == -100) {
-        return 'c';
-      } else if (value == -200) {
-        return 'k';
-      } else if (value == -250) {
-        return 'u';
-      } else if (value == -300) {
-        return 'x';
-      } else if (value == -400) {
-        return 'z';
-      } else {
-        return value;
-      }
-    }
-
-    function customDownloadDataCSV(id, filename) {
-      var table = Reactable.getInstance(id);
-      var csv = [];
-      var headers = table.getState().columnOrder.map(function(col) {
-        return table.getColumn(col).name || col;
-      });
-      csv.push(headers.join(','));
-
-      table.getState().data.forEach(function(row) {
-        var cells = headers.map(function(header) {
-          var cell = row[header];
-          var cellValue = (typeof cell === 'object' && cell !== null) ? cell.value : cell;
-          return cellFunction(cellValue);
-        });
-        csv.push(cells.join(','));
-      });
-
-      var csvString = csv.join('\\n');
-      var blob = new Blob([csvString], { type: 'text/csv;charset=utf-8;' });
-      var link = document.createElement('a');
-      if (link.download !== undefined) {
-        var url = URL.createObjectURL(blob);
-        link.setAttribute('href', url);
-        link.setAttribute('download', filename);
-        link.style.visibility = 'hidden';
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-      }
-    }
-  ")),
-    #  ),
     shinyGovstyle::header(
       main_text = "",
       main_link = "https://www.gov.uk/government/organisations/department-for-education",
@@ -196,17 +139,6 @@ ui <- function(input, output, session) {
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
-    ),
-    # sidebarMenu(
-    #   menuItem(
-    #     tabName = "Outcomes",
-    #     menuItem(
-    #       outcome1_tab()
-    #     )
-    #   )
-    # ),
-    tags$script(
-      src = "script.js"
     ),
     footer(full = TRUE)
   )

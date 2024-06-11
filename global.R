@@ -188,10 +188,30 @@ csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CS
   tags$button(
     tagList(icon("download"), label),
     onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
-    # onclick = sprintf("Reactable.downloadDataCSV('%s', '%s')", id, filename),
     class = "btn btn-default"
   )
 }
+
+# onclick = sprintf("Reactable.downloadDataCSV('%s', '%s')", id, filename),
+
+# This is a downloader module for the CSC outcomes and enablers app
+
+# downloaderObjUI <- function(id) {
+#   ns <- NS(id)
+#   downloadButton(ns("data_download"), label = "Download data", class = "btn btn-default")
+# }
+#
+# downloadObj <- function(input, output, session, data, input_filename) {
+#   output$data_download <- downloadHandler(
+#     filename = function() {
+#       paste(input_filename, ".csv", sep = "")
+#     },
+#     content = function(file) {
+#       data_to_save <- data()
+#       write.csv(data_to_save, file, row_names = FALSE)
+#     }
+#   )
+# }
 
 # Expandable section ------------------
 expandable <- function(inputId, label, contents) {

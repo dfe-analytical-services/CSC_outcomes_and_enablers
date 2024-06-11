@@ -6362,7 +6362,7 @@ server <- function(input, output, session) {
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
-      searchable = TRUE,
+      searchable = TRUE
     )
   })
 
