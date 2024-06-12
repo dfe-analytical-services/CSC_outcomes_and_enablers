@@ -1962,11 +1962,16 @@ server <- function(input, output, session) {
       filter(population_count == "Children starting to be looked after each year") %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
-    # Set the max y-axis scale
-    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+    if (input$geographic_breakdown_o1 == "City of London") {
+      # Set the max y-axis scale with City of London
+      max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+      max_rate <- ceiling(max_rate / 50) * 50
+    } else {
+      # Set the max y-axis scale without City of London
+      max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" & cla_rates$geo_breakdown != "City of London"], na.rm = TRUE)
+      max_rate <- ceiling(max_rate / 20) * 20
+    }
 
-    # Round the max_rate to the nearest 50
-    max_rate <- ceiling(max_rate / 50) * 50
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
@@ -2541,11 +2546,15 @@ server <- function(input, output, session) {
     }
 
 
-    # Set the max y-axis scale
-    max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
-
-    # Round the max_rate to the nearest 50
-    max_rate <- ceiling(max_rate / 50) * 50
+    if (input$geographic_breakdown_o1 == "City of London") {
+      # Set the max y-axis scale with City of London
+      max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
+      max_rate <- ceiling(max_rate / 50) * 50
+    } else {
+      # Set the max y-axis scale without City of London
+      max_rate <- max(cin_rates$CIN_rate[cin_rates$geo_breakdown != "City of London"], na.rm = TRUE)
+      max_rate <- ceiling(max_rate / 20) * 20
+    }
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "CIN rate per 10,000", "CIN rate per 10,000 Children", max_rate) %>%
       config(displayModeBar = F)
@@ -4561,7 +4570,10 @@ server <- function(input, output, session) {
         rename("Repeat CPP (%)" = "Repeat_CPP_percent")
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
+    max_rate <- max(repeat_cpp$`Repeat_CPP_percent`, na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%)")
 
@@ -4634,7 +4646,11 @@ server <- function(input, output, session) {
     data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
-    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
+    max_rate <- max(repeat_cpp$`Repeat_CPP_percent`[repeat_cpp$time_period == max(repeat_cpp$time_period) &
+      repeat_cpp$geographic_level == "Regional"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by region")
 
@@ -4677,7 +4693,12 @@ server <- function(input, output, session) {
     )
     data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)") %>%
+
+    max_rate <- max(repeat_cpp$`Repeat_CPP_percent`[repeat_cpp$time_period == max(repeat_cpp$time_period) &
+      repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by local authority")
     ggplotly(
@@ -7254,6 +7275,11 @@ server <- function(input, output, session) {
       filter(population_count == "Children starting to be looked after each year") %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
+    # Set the max y-axis scale
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" &
+      cla_rates$time_period == max(cla_rates$time_period) &
+      cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
+
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("CLA rate per 10,000 by statistical neighbours")
@@ -8434,7 +8460,12 @@ server <- function(input, output, session) {
     )
     filtered_data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", 100) %>%
+
+    max_rate <- max(repeat_cpp$`Repeat_CPP_percent`[repeat_cpp$time_period == max(repeat_cpp$time_period) &
+      repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
     ggplotly(
