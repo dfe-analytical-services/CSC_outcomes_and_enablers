@@ -8464,7 +8464,11 @@ server <- function(input, output, session) {
           inputId = "tbl_repeat_cpp_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cpp_repeat_la")
+            HTML(paste0(
+              csvDownloadButton("table_cpp_repeat_la", filename = "repeat_CPP_rates_all_LAs.csv"),
+              reactableOutput("table_cpp_repeat_la")
+            ))
+            #reactableOutput("table_cpp_repeat_la")
           )
         ),
         details(
@@ -8494,8 +8498,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cpp",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_sgo_tbl")
-            reactableOutput("SN_cpp_repeat_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cpp_repeat_tbl", filename = paste0("reapeat_CPP_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("SN_cpp_repeat_tbl")
+            ))
+            #reactableOutput("SN_cpp_repeat_tbl")
           )
         ),
         details(
@@ -8566,8 +8573,11 @@ server <- function(input, output, session) {
           inputId = "tbl_hosp_admission_la",
           label = "View chart as table",
           help_text = (
-            reactableOutput("admissions_la_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("admissions_la_tbl", filename = "hospital_admissions_all_LAs.csv"),
+              reactableOutput("admissions_la_tbl")
+            ))
+            #reactableOutput("admissions_la_tbl")
           )
         ),
         details(
@@ -8596,14 +8606,16 @@ server <- function(input, output, session) {
 
       tagList(
         plotlyOutput("hosp_admissions_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_hosp_ad",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("hosp_admissions_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("hosp_admissions_SN_tbl", filename = paste0("hospital_admissions_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("hosp_admissions_SN_tbl")
+            ))
+            #reactableOutput("hosp_admissions_SN_tbl")
           )
         ),
         details(
@@ -8677,7 +8689,11 @@ server <- function(input, output, session) {
           inputId = "tbl_child_ab_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_child_ab_neg_la")
+            HTML(paste0(
+              csvDownloadButton("table_child_ab_neg_la", filename = "child_abuse_rates_all_LAs.csv"),
+              reactableOutput("table_child_ab_neg_la")
+            ))
+            #reactableOutput("table_child_ab_neg_la")
           )
         ),
         details(
@@ -8706,15 +8722,16 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("abuse_neg_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_ch_ab_neg",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("abuse_neg_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("abuse_neg_SN_tbl", filename = paste0("child_abuse_rates_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("abuse_neg_SN_tbl")
+            ))
+            #reactableOutput("abuse_neg_SN_tbl")
           )
         ),
         details(
@@ -8786,8 +8803,11 @@ server <- function(input, output, session) {
           inputId = "tbl_extra_fam_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_efh_la")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("table_efh_la", filename = "EFH_rates_all_LAs.csv"),
+              reactableOutput("table_efh_la")
+            ))
+           #reactableOutput("table_efh_la")
           )
         ),
         details(
@@ -8822,9 +8842,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_efh",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("efh_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("efh_SN_tbl", filename = paste0("EFH_rates_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("efh_SN_tbl")
+            ))
+            #reactableOutput("efh_SN_tbl")
           )
         ),
         details(
