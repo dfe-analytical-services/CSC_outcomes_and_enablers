@@ -4191,7 +4191,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
         filter(characteristic == "Special guardianship orders")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO")
 
@@ -4266,7 +4271,12 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", 100) %>%
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Regional" &
+      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO by region")
 
@@ -4310,7 +4320,13 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)") %>%
+
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Local authority" &
+      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO by local authority")
     ggplotly(
@@ -4409,7 +4425,11 @@ server <- function(input, output, session) {
         filter(characteristic == "Residence order or child arrangement order granted")
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", 100) %>%
+    # Set the max y-axis scale
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO")
 
@@ -4484,7 +4504,12 @@ server <- function(input, output, session) {
     )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", 100) %>%
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Regional" &
+      ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO by region")
     ggplotly(
@@ -4526,7 +4551,13 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)") %>%
+
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Local authority" &
+      ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO by local authority")
     ggplotly(
@@ -8405,7 +8436,13 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", 100) %>%
+
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Local authority" &
+      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
     ggplotly(
@@ -8503,7 +8540,13 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", 100) %>%
+
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
+      ceased_cla_data$geographic_level == "Local authority" &
+      ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
     ggplotly(,
