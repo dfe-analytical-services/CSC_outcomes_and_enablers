@@ -64,6 +64,8 @@ plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
 # This is a repeat use function for all of the time series plots in this dashboard.
 
 plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+  ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
+
   # add_rect is only true for graphs with boundaries - Wellbeing SDQ score charts
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
@@ -91,8 +93,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.line = element_line(size = 1.0)
       ) +
       scale_y_continuous(
-        limits = c(0, ylim_upper),
-        breaks = extended_breaks(n = 5)
+        limits = c(0, ylim_upper)
       ) +
       labs(color = "Location") +
       scale_color_manual(
@@ -129,8 +130,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.line = element_line(size = 1.0)
       ) +
       scale_y_continuous(
-        limits = c(0, ylim_upper),
-        breaks = extended_breaks(n = 5)
+        limits = c(0, ylim_upper)
       ) +
       labs(color = "Location") +
       scale_color_manual(
@@ -708,7 +708,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
   )
 
   # Round the max_rate to the nearest 20
-  max_rate <- ceiling(max_rate / 20) * 20
+  max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
 
   ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
@@ -733,7 +733,6 @@ plot_uasc <- function(geo_break, geo_lvl) {
     scale_x_continuous(breaks = seq(min(uasc_data$time_period), max(uasc_data$time_period), by = 1)) +
     scale_y_continuous(
       limits = c(0, max_rate),
-      breaks = seq(0, max_rate, by = max_rate / 4)
     ) +
     scale_fill_manual(
       "UASC status",

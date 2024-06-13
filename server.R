@@ -6325,8 +6325,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate) +
-      scale_y_continuous(limits = c(0, 100))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
 
     ggplotly(
