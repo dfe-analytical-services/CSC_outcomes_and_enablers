@@ -37,6 +37,7 @@ shhh(library(reactable))
 shhh(library(readODS))
 shhh(library(readxl))
 shhh(library(janitor))
+shhh(library(scales))
 
 
 # shhh(library(shinya11y))

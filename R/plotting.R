@@ -59,6 +59,7 @@ plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
 # This is test code to try and create a function for the plots instead of lots of the same bits of code
 # at least a framework for the time series plots
 
+
 # Time series repeat function ----
 # This is a repeat use function for all of the time series plots in this dashboard.
 
@@ -91,7 +92,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
       ) +
       scale_y_continuous(
         limits = c(0, ylim_upper),
-        breaks = seq(0, ylim_upper, by = ylim_upper / 4)
+        breaks = extended_breaks(n = 5)
       ) +
       labs(color = "Location") +
       scale_color_manual(
@@ -129,7 +130,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
       ) +
       scale_y_continuous(
         limits = c(0, ylim_upper),
-        breaks = seq(0, ylim_upper, by = ylim_upper / 4)
+        breaks = extended_breaks(n = 5)
       ) +
       labs(color = "Location") +
       scale_color_manual(
@@ -731,7 +732,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
     ) +
     scale_x_continuous(breaks = seq(min(uasc_data$time_period), max(uasc_data$time_period), by = 1)) +
     scale_y_continuous(
-      limits = c(0, max(max_rate)),
+      limits = c(0, max_rate),
       breaks = seq(0, max_rate, by = max_rate / 4)
     ) +
     scale_fill_manual(

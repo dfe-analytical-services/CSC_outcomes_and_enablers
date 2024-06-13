@@ -5958,7 +5958,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
         rename("Placements (%)" = "Percent")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(placement_data$`Percent`[placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     title_placements <- paste("Children living in", input$placement_type_breakdown, "(%)")
     p <- p + ggtitle(title_placements)
@@ -6032,7 +6037,12 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("Placements (%)" = "Percent")
 
-    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", 100) %>%
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Regional" &
+      placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by region")
     p <- p + ggtitle(title_placements)
@@ -6079,8 +6089,12 @@ server <- function(input, output, session) {
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements (%)" = "Percent")
 
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Local authority" &
+      placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)") +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate) +
       scale_y_continuous(limits = c(0, 100))
     title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by local authority")
     p <- p + ggtitle(title_placements)
@@ -6178,7 +6192,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
         rename("CLA with 3 or more placements (%)" = "Percent")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year")
 
@@ -6250,7 +6269,12 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("CLA with 3 or more placements (%)" = "Percent")
 
-    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", 100) %>%
+    max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$time_period == max(placement_changes_data$time_period) &
+      placement_changes_data$geographic_level == "Regional" &
+      placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
 
@@ -6295,7 +6319,13 @@ server <- function(input, output, session) {
       rename("CLA with 3 or more placements (%)" = "Percent")
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)") +
+    max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$time_period == max(placement_changes_data$time_period) &
+      placement_changes_data$geographic_level == "Local authority" &
+      placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate) +
       scale_y_continuous(limits = c(0, 100))
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
 
@@ -6393,7 +6423,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
         rename("Placements more then 20 miles from home (%)" = "Percent")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(placement_data$`Percent`[placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more than 20 miles from home")
 
@@ -6466,7 +6501,12 @@ server <- function(input, output, session) {
       filter(time_period == max(time_period), geographic_level == "Regional") %>%
       rename("Placements more then 20 miles from home (%)" = "Percent")
 
-    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Regional" &
+      placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
 
@@ -6510,9 +6550,12 @@ server <- function(input, output, session) {
       filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements more then 20 miles from home (%)" = "Percent")
 
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Local authority" &
+      placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)") +
-      scale_y_continuous(limits = c(0, 100))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate)
     p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
 
     ggplotly(
@@ -6928,7 +6971,12 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
         rename("Care leavers in education, employment or training (%)" = "percent")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -7002,7 +7050,12 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & activity == "Total in education, employment or training" & time_period == max(time_period) & geographic_level == "Regional") %>%
       rename("Care leavers in education, employment or training (%)" = "percent")
 
-    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+    max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$time_period == max(care_leavers_activity_data$time_period) &
+      care_leavers_activity_data$geographic_level == "Regional" &
+      care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region")
     p <- p + ggtitle(age_title)
@@ -7051,10 +7104,12 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
       rename("Care leavers in education, employment or training (%)" = "percent")
 
-    # max_y_lim <- max(data$Number) + 500
+    max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$time_period == max(care_leavers_activity_data$time_period) &
+      care_leavers_activity_data$geographic_level == "Local authority" &
+      care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)") +
-      scale_y_continuous(limits = c(0, 100))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", max_rate)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by local authority")
     p <- p + ggtitle(age_title)
 
@@ -7164,7 +7219,11 @@ server <- function(input, output, session) {
         rename("Care leavers in suitable accommodation (%)" = "percent")
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+    # Set the max y-axis scale
+    max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -7240,7 +7299,13 @@ server <- function(input, output, session) {
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & accommodation_suitability == "Accommodation considered suitable" & time_period == max(time_period) & geographic_level == "Regional") %>%
       rename("Care leavers in suitable accommodation (%)" = "percent")
-    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+
+    max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$time_period == max(care_leavers_accommodation_data$time_period) &
+      care_leavers_accommodation_data$geographic_level == "Regional" &
+      care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region")
     p <- p + ggtitle(age_title)
@@ -7289,10 +7354,12 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
       rename("Care leavers in suitable accommodation (%)" = "percent")
 
-    # max_y_lim <- max(data$Number) + 500
+    max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$time_period == max(care_leavers_accommodation_data$time_period) &
+      care_leavers_accommodation_data$geographic_level == "Local authority" &
+      care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)") +
-      scale_y_continuous(limits = c(0, 100))
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", max_rate)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority")
     p <- p + ggtitle(age_title)
 
@@ -9098,7 +9165,12 @@ server <- function(input, output, session) {
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements (%)" = "Percent")
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", 100) %>%
+
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     placements_title <- paste("Children living in", input$placement_type_breakdown, "(%) by statistical neighbours")
     p <- p + ggtitle(placements_title)
@@ -9200,7 +9272,12 @@ server <- function(input, output, session) {
     data <- placement_changes_data %>%
       filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period))
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", 100) %>%
+    max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$time_period == max(placement_changes_data$time_period) &
+      placement_changes_data$geographic_level == "Local authority" &
+      placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
 
@@ -9301,7 +9378,12 @@ server <- function(input, output, session) {
       filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period)) %>%
       rename("Placements more then 20 miles from home (%)" = "Percent")
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", 100) %>%
+    max_rate <- max(placement_data$`Percent`[placement_data$time_period == max(placement_data$time_period) &
+      placement_data$geographic_level == "Local authority" &
+      placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
 
@@ -9513,8 +9595,12 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
       rename("Care leavers in education, employment or training (%)" = "percent")
 
-    # max_y_lim <- max(data$Number) + 500
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", 100) %>%
+    max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$time_period == max(care_leavers_activity_data$time_period) &
+      care_leavers_activity_data$geographic_level == "Local authority" &
+      care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education, employment or training (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours")
     p <- p + ggtitle(age_title)
@@ -9626,8 +9712,12 @@ server <- function(input, output, session) {
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
       rename("Care leavers in suitable accommodation (%)" = "percent")
 
-    # max_y_lim <- max(data$Number) + 500
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", 100) %>%
+    max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$time_period == max(care_leavers_accommodation_data$time_period) &
+      care_leavers_accommodation_data$geographic_level == "Local authority" &
+      care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable accommodation (%)", max_rate) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours")
     p <- p + ggtitle(age_title)
