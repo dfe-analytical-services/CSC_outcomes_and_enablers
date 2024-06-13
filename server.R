@@ -4956,7 +4956,12 @@ server <- function(input, output, session) {
       filtered_data <- duration_cpp %>%
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", 100) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -5026,7 +5031,11 @@ server <- function(input, output, session) {
     )
     data <- duration_cpp
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", 100) %>%
+    max_rate <- max(duration_cpp$`X2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+      duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years by region")
 
@@ -5084,7 +5093,7 @@ server <- function(input, output, session) {
       filter(time_period == max(hospital_admissions$time_period), geographic_level == "Regional") %>%
       rename("Rate per 10,000" = `Value`)
 
-    max_lim <- max(data$`Rate per 10,000`) + 50
+    max_lim <- max(data$`Rate per 10,000`) + 10
 
     p <- by_region_bar_plot(data, "Rate per 10,000", "Rate per 10,000", max_lim) %>%
       config(displayModeBar = F)
@@ -5132,7 +5141,7 @@ server <- function(input, output, session) {
       filter(geographic_level == "National") %>%
       select(time_period, geo_breakdown, Value)
 
-    max_y_lim <- max(data$`Rate per 10,000`) + 50
+    max_y_lim <- max(data$`Rate per 10,000`) + 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
@@ -5256,7 +5265,7 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
     }
 
-    max_y_lim <- max(filtered_data$rate_per_10000) + 100
+    max_y_lim <- max(filtered_data$rate_per_10000) + 20
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
       config(displayModeBar = F)
@@ -5334,7 +5343,7 @@ server <- function(input, output, session) {
       # rename("rate_per_10000" = "Rate per 10,000") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
-    max_lim <- max(data$rate_per_10000) + 100
+    max_lim <- max(data$rate_per_10000) + 20
 
     p <- by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
       config(displayModeBar = F)
@@ -5381,7 +5390,7 @@ server <- function(input, output, session) {
     )
     data <- assessment_factors %>% filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
 
-    max_y_lim <- max(data$rate_per_10000) + 100
+    max_y_lim <- max(data$rate_per_10000) + 20
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
@@ -5527,7 +5536,7 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
     }
 
-    max_y_lim <- max(filtered_data$rate_per_10000) + 10
+    max_y_lim <- max(filtered_data$rate_per_10000) + 20
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
       config(displayModeBar = F)
     title_factor <- paste(input$assessment_factors_2, "cases (rate per 10,000)")

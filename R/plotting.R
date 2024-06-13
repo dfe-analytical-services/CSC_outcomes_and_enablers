@@ -89,7 +89,10 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
       ) +
-      scale_y_continuous(limits = c(0, ylim_upper)) +
+      scale_y_continuous(
+        limits = c(0, ylim_upper),
+        breaks = seq(0, ylim_upper, by = ylim_upper / 4)
+      ) +
       labs(color = "Location") +
       scale_color_manual(
         "Location",
@@ -124,7 +127,10 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
       ) +
-      scale_y_continuous(limits = c(0, ylim_upper)) +
+      scale_y_continuous(
+        limits = c(0, ylim_upper),
+        breaks = seq(0, ylim_upper, by = ylim_upper / 4)
+      ) +
       labs(color = "Location") +
       scale_color_manual(
         "Location",
@@ -700,8 +706,8 @@ plot_uasc <- function(geo_break, geo_lvl) {
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 20
+  max_rate <- ceiling(max_rate / 20) * 20
 
   ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
@@ -724,7 +730,10 @@ plot_uasc <- function(geo_break, geo_lvl) {
       axis.line = element_line(size = 1.0)
     ) +
     scale_x_continuous(breaks = seq(min(uasc_data$time_period), max(uasc_data$time_period), by = 1)) +
-    scale_y_continuous(limits = c(0, max(max_rate))) +
+    scale_y_continuous(
+      limits = c(0, max(max_rate)),
+      breaks = seq(0, max_rate, by = max_rate / 4)
+    ) +
     scale_fill_manual(
       "UASC status",
       # breaks = unique(c("England", inputArea)),
