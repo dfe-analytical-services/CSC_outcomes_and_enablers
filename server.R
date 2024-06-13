@@ -8177,7 +8177,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sgo_ceased_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_sgo_la")
+            HTML(paste0(
+              csvDownloadButton("table_sgo_la", filename = "ceased_CLA_SGO_all_LAs.csv"),
+              reactableOutput("table_sgo_la")
+            ))
+            # reactableOutput("table_sgo_la")
           )
         ),
         details(
@@ -8208,8 +8212,12 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_sgo",
           label = "View chart as a table",
           help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_sgo_tbl", filename = paste0("ceased_CLA_SGO_SN_", input$geographic_breakdown_o2, ".csv")),
+              reactableOutput("SN_sgo_tbl")
+            ))
             # dataTableOutput("SN_sgo_tbl")
-            reactableOutput("SN_sgo_tbl")
+            # reactableOutput("SN_sgo_tbl")
           )
         ),
         details(
@@ -8276,7 +8284,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cao_ceased_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cao_la")
+            HTML(paste0(
+              csvDownloadButton("table_cao_la", filename = "ceased_CLA_CAO_all_LAs.csv"),
+              reactableOutput("table_cao_la")
+            ))
+            # reactableOutput("table_cao_la")
           )
         ),
         details(
@@ -8307,7 +8319,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cao",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cao_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cao_tbl", filename = paste0("ceased_CLA_CAO_SN_", input$geographic_breakdown_o2, ".csv")),
+              reactableOutput("SN_cao_tbl")
+            ))
+            # reactableOutput("SN_cao_tbl")
           )
         ),
         details(
