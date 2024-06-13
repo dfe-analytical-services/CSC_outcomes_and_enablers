@@ -135,7 +135,7 @@ outcome3_tab <- function() {
                         csvDownloadButton("table_repeat_cpp", filename = "Repeat_CPP_rates.csv"),
                         reactableOutput("table_repeat_cpp")
                       ))
-                     # reactableOutput("table_repeat_cpp")
+                      # reactableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
@@ -168,7 +168,7 @@ outcome3_tab <- function() {
                           csvDownloadButton("table_cpp_repeat_reg", filename = "Repeat_CPP_rates_regions.csv"),
                           reactableOutput("table_cpp_repeat_reg")
                         ))
-                        #reactableOutput("table_cpp_repeat_reg")
+                        # reactableOutput("table_cpp_repeat_reg")
                       )
                     ),
                     details(
@@ -219,7 +219,7 @@ outcome3_tab <- function() {
                         csvDownloadButton("table_duration_cpp", filename = "CPP_more_than_2years_rates.csv"),
                         reactableOutput("table_duration_cpp")
                       ))
-                     # reactableOutput("table_duration_cpp")
+                      # reactableOutput("table_duration_cpp")
                     )
                   ),
                   details(
@@ -254,7 +254,7 @@ outcome3_tab <- function() {
                           csvDownloadButton("table_cpp_duration_reg", filename = "CPP_more_than_2years_rates_region.csv"),
                           reactableOutput("table_cpp_duration_reg")
                         ))
-                        #reactableOutput("table_cpp_duration_reg")
+                        # reactableOutput("table_cpp_duration_reg")
                       )
                     ),
                     details(
@@ -299,8 +299,8 @@ outcome3_tab <- function() {
                           csvDownloadButton("admissions_region_tbl", filename = "hospital_admissions_rates_region.csv"),
                           reactableOutput("admissions_region_tbl")
                         ))
-                        #reactableOutput("admissions_region_tbl")
-                        )
+                        # reactableOutput("admissions_region_tbl")
+                      )
                     ),
                     details(
                       inputId = "admissions_region_info",
@@ -363,7 +363,7 @@ outcome3_tab <- function() {
                       csvDownloadButton("child_abuse_all_af_tbl", filename = "child_abuse_all_factors.csv"),
                       reactableOutput("child_abuse_all_af_tbl")
                     ))
-                    #reactableOutput("child_abuse_all_af_tbl")
+                    # reactableOutput("child_abuse_all_af_tbl")
                   )
                 ),
                 details(
@@ -420,7 +420,7 @@ outcome3_tab <- function() {
                           csvDownloadButton("ca_ts_tbl", filename = "child_abuse_rates.csv"),
                           reactableOutput("ca_ts_tbl")
                         ))
-                        #reactableOutput("ca_ts_tbl")
+                        # reactableOutput("ca_ts_tbl")
                       )
                     ),
                     details(
@@ -454,8 +454,8 @@ outcome3_tab <- function() {
                           csvDownloadButton("child_abuse_region_tbl", filename = "child_abuse_rates_regions.csv"),
                           reactableOutput("child_abuse_region_tbl")
                         ))
-                       #reactableOutput("child_abuse_region_tbl")
-                        )
+                        # reactableOutput("child_abuse_region_tbl")
+                      )
                     ),
                     details(
                       inputId = "ca_region_info",
@@ -520,7 +520,7 @@ outcome3_tab <- function() {
                       csvDownloadButton("extra_familial_all_af_tbl", filename = "EFH_all_factors.csv"),
                       reactableOutput("extra_familial_all_af_tbl")
                     ))
-                    #reactableOutput("extra_familial_all_af_tbl")
+                    # reactableOutput("extra_familial_all_af_tbl")
                   )
                 ),
                 details(
@@ -575,7 +575,7 @@ outcome3_tab <- function() {
                           csvDownloadButton("efh_ts_tbl", filename = "EFH_rates.csv"),
                           reactableOutput("efh_ts_tbl")
                         ))
-                        #reactableOutput("efh_ts_tbl")
+                        # reactableOutput("efh_ts_tbl")
                       )
                     ),
                     details(
@@ -611,17 +611,7 @@ outcome3_tab <- function() {
                         #   csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
                         #   reactableOutput("efh_region_tbl")
                         # ))
-                       reactableOutput("efh_region_tbl")
-                      )
-                    ),
-                    details(
-                      inputId = "test_table",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                            csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv")#,
-                            #reactableOutput("efh_region_tbl")
-                          ))
+                        reactableOutput("efh_region_tbl")
                       )
                     ),
                     br(),
