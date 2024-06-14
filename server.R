@@ -294,7 +294,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # Social worker turnover rate benchmarking table alternative
@@ -523,7 +524,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # Agency worker rate table alternative
@@ -751,7 +753,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -994,7 +997,7 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(range = c(0, max_rate)))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
 
@@ -2046,7 +2049,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate)))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
   # CLA rate TABLE
@@ -2219,7 +2222,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # UASC table
@@ -2405,7 +2409,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate)))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
   # CLA rate march TABLE
@@ -2628,7 +2632,7 @@ server <- function(input, output, session) {
     p <- p + ggtitle("CIN rate per 10,000 children")
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate)))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
   # CIN rate table
@@ -2840,7 +2844,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # CIN referral table
@@ -3098,7 +3103,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -3362,7 +3368,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -3669,7 +3676,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, 100)))
+      layout(yaxis = list(range = c(0, 100), tickmode = "auto"))
   })
 
 
@@ -3901,7 +3908,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate)))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
 
@@ -4204,7 +4211,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -4437,7 +4445,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -4734,7 +4743,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   output$table_repeat_cpp <- renderReactable({
@@ -4969,7 +4979,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   output$table_duration_cpp <- renderReactable({
@@ -5103,7 +5114,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   output$admissions_region_tbl <- renderReactable({
@@ -5205,7 +5217,8 @@ server <- function(input, output, session) {
       p,
       tooltip = "text",
       height = 420
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # table alternative for all factors plot
@@ -5546,7 +5559,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # child abuse ts table alternative
@@ -5972,7 +5986,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   output$placement_type_tbl <- renderReactable({
@@ -6205,7 +6220,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   output$placement_changes_tbl <- renderReactable({
@@ -6435,7 +6451,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
 
@@ -6632,7 +6649,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # timeseries table alternative
@@ -6984,7 +7002,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # timeseries table alternative
@@ -7230,7 +7249,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      layout(yaxis = list(tickmode = "auto"))
   })
 
   # timeseries table alternative
