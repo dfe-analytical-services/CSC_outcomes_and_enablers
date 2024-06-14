@@ -1,68 +1,71 @@
 # Template sample data charts ----
-createAvgRevTimeSeries <- function(df, inputArea) {
-  ggplot(df, aes(
-    x = year,
-    y = average_revenue_balance,
-    color = area_name
-  )) +
-    geom_line(size = 1.2) +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.title.x = element_text(margin = margin(t = 12)),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
-      legend.position = "top"
-    ) +
-    scale_y_continuous(
-      labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
-    ) +
-    xlab("Academic year end") +
-    ylab("Average revenue balance") +
-    scale_color_manual(
-      "Area",
-      breaks = unique(c("England", inputArea)),
-      values = gss_colour_pallette
-    )
-}
-
-plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
-  ggplot(dfRevenueBalance, aes(
-    x = area_name,
-    y = average_revenue_balance,
-    fill = area_name
-  )) +
-    geom_col() +
-    theme_classic() +
-    theme(
-      text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
-      axis.title.x = element_blank(),
-      axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
-      legend.position = "none"
-    ) +
-    scale_y_continuous(
-      labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
-    ) +
-    xlab("Area") +
-    ylab("Average revenue balance") +
-    scale_fill_manual(
-      "Area",
-      breaks = unique(dfRevenueBalance$area_name),
-      values = gss_colour_pallette
-    )
-}
+# createAvgRevTimeSeries <- function(df, inputArea) {
+#   ggplot(df, aes(
+#     x = year,
+#     y = average_revenue_balance,
+#     color = area_name
+#   )) +
+#     geom_line(size = 1.2) +
+#     theme_classic() +
+#     theme(
+#       text = element_text(size = 12),
+#       axis.title.x = element_text(margin = margin(t = 12)),
+#       axis.title.y = element_text(margin = margin(r = 12)),
+#       axis.line = element_line(size = 1.0),
+#       legend.position = "top"
+#     ) +
+#     scale_y_continuous(
+#       labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
+#     ) +
+#     xlab("Academic year end") +
+#     ylab("Average revenue balance") +
+#     scale_color_manual(
+#       "Area",
+#       breaks = unique(c("England", inputArea)),
+#       values = gss_colour_pallette
+#     )
+# }
+#
+# plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
+#   ggplot(dfRevenueBalance, aes(
+#     x = area_name,
+#     y = average_revenue_balance,
+#     fill = area_name
+#   )) +
+#     geom_col() +
+#     theme_classic() +
+#     theme(
+#       text = element_text(size = 12),
+#       axis.text.x = element_text(angle = 300),
+#       axis.title.x = element_blank(),
+#       axis.title.y = element_text(margin = margin(r = 12)),
+#       axis.line = element_line(size = 1.0),
+#       legend.position = "none"
+#     ) +
+#     scale_y_continuous(
+#       labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
+#     ) +
+#     xlab("Area") +
+#     ylab("Average revenue balance") +
+#     scale_fill_manual(
+#       "Area",
+#       breaks = unique(dfRevenueBalance$area_name),
+#       values = gss_colour_pallette
+#     )
+# }
 
 # CSC charts
 
 # This is test code to try and create a function for the plots instead of lots of the same bits of code
 # at least a framework for the time series plots
 
+
 # Time series repeat function ----
 # This is a repeat use function for all of the time series plots in this dashboard.
 
 plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+  ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
+
   # add_rect is only true for graphs with boundaries - Wellbeing SDQ score charts
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
@@ -89,7 +92,9 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
       ) +
-      scale_y_continuous(limits = c(0, ylim_upper)) +
+      scale_y_continuous(
+        limits = c(0, ylim_upper)
+      ) +
       labs(color = "Location") +
       scale_color_manual(
         "Location",
@@ -114,7 +119,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         "Time period: ", `Time period`
       )
     )) +
-      # geom_path(group = 1) +
       ylab(yaxis_title) +
       xlab("Time period") +
       theme_classic() +
@@ -124,14 +128,15 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
       ) +
-      scale_y_continuous(limits = c(0, ylim_upper)) +
+      scale_y_continuous(
+        limits = c(0, ylim_upper)
+      ) +
       labs(color = "Location") +
       scale_color_manual(
         "Location",
         values = gss_colour_pallette
       )
     max_xaxis <- length(unique(dataset$time_period)) + 1
-    # max_yaxis =
     suppressWarnings(
       p <- p +
         geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
@@ -333,11 +338,17 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
       ) +
-      scale_y_continuous(limits = c(0, 100)) +
       scale_fill_manual(
         "LA Selection",
         values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
       )
+
+    if (is.null(yupperlim)) {
+      p <- p + scale_y_continuous(limits = c(0, 100))
+    } else {
+      p <- p + scale_y_continuous(limits = c(0, yupperlim))
+    }
+
     p1 <- p +
       geom_col(position = position_dodge())
   } else {
@@ -694,8 +705,8 @@ plot_uasc <- function(geo_break, geo_lvl) {
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 20
+  max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
 
   ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
@@ -718,7 +729,9 @@ plot_uasc <- function(geo_break, geo_lvl) {
       axis.line = element_line(size = 1.0)
     ) +
     scale_x_continuous(breaks = seq(min(uasc_data$time_period), max(uasc_data$time_period), by = 1)) +
-    scale_y_continuous(limits = c(0, max(max_rate))) +
+    scale_y_continuous(
+      limits = c(0, max_rate),
+    ) +
     scale_fill_manual(
       "UASC status",
       # breaks = unique(c("England", inputArea)),
@@ -738,12 +751,14 @@ plot_uasc_reg <- function() {
   # Set the max y-axis scale
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      combined_cla_data$time_period == max(combined_cla_data$time_period) &
+      combined_cla_data$geographic_level == "Regional"],
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
@@ -838,12 +853,14 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   # Set the max y-axis scale
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      combined_cla_data$time_period == max(combined_cla_data$time_period) &
+      combined_cla_data$geographic_level == "Local authority"],
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   # Use the new variable in the plot
   p <- ggplot(cla_data, aes(
@@ -904,10 +921,12 @@ plot_cla_rate_reg <- function() {
     mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" &
+    cla_rates$time_period == max(cla_rates$time_period) &
+    cla_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
     fill = factor(time_period),
@@ -987,10 +1006,12 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   }
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" &
+    cla_rates$time_period == max(cla_rates$time_period) &
+    cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
     fill = `is_selected`,
@@ -1034,10 +1055,12 @@ plot_cla_march_reg <- function() {
     mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+    cla_rates$time_period == max(cla_rates$time_period) &
+    cla_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
     fill = factor(time_period),
@@ -1117,10 +1140,12 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   }
 
   # Set the max y-axis scale
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+    cla_rates$time_period == max(cla_rates$time_period) &
+    cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
     fill = `is_selected`,
@@ -1166,10 +1191,11 @@ plot_cin_rate_reg <- function() {
     mutate(geo_breakdown = reorder(geo_breakdown, -CIN_rate)) # Order by turnover rate
 
   # Set the max y-axis scale
-  max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
+  max_rate <- max(cin_rates$CIN_rate[cin_rates$time_period == max(cin_rates$time_period) &
+    cin_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`,
     fill = factor(time_period),
@@ -1256,10 +1282,11 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   }
 
   # Set the max y-axis scale
-  max_rate <- max(cin_rates$CIN_rate, na.rm = TRUE)
+  max_rate <- max(cin_rates$CIN_rate[cin_rates$time_period == max(cin_rates$time_period) &
+    cin_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 50
-  max_rate <- ceiling(max_rate / 50) * 50
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN rate per 10,000`,
     fill = `is_selected`,
@@ -1303,6 +1330,12 @@ plot_cin_referral_reg <- function() {
     select(time_period, geo_breakdown, Re_referrals_percentage) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage)) # Order by turnover rate
 
+  max_rate <- max(cin_referrals$Re_referrals_percentage[cin_referrals$time_period == max(cin_referrals$time_period) &
+    cin_referrals$geographic_level == "Regional"], na.rm = TRUE)
+
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
+
   ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
     fill = factor(time_period),
     text = paste0(
@@ -1322,7 +1355,7 @@ plot_cin_referral_reg <- function() {
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
     ) +
-    scale_y_continuous(limits = c(0, 100)) +
+    scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
       # breaks = unique(c("England", inputArea)),
@@ -1382,6 +1415,12 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
       )
   }
 
+  max_rate <- max(cin_referrals$Re_referrals_percentage[cin_referrals$time_period == max(cin_referrals$time_period) &
+    cin_referrals$geographic_level == "Local authority"], na.rm = TRUE)
+
+  # Round the max_rate to the nearest 10
+  max_rate <- ceiling(max_rate / 10) * 10
+
 
   p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
     fill = `is_selected`,
@@ -1401,7 +1440,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
     ) +
-    scale_y_continuous(limits = c(0, 100)) +
+    scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "LA Selection",
       values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
