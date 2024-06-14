@@ -599,7 +599,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    # by region ****** problem here
+                    # by region
                     uiOutput("efh_header2"),
                     plotlyOutput("efh_region_plot"),
                     br(),
@@ -607,14 +607,15 @@ outcome3_tab <- function() {
                       inputId = "efh_region_table",
                       label = "View chart as a table",
                       help_text = (
-                        # HTML(paste0(
-                        #   csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
-                        #   reactableOutput("efh_region_tbl")
-                        # ))
-                        reactableOutput("efh_region_tbl")
+                        # For some reason this table needs to be wrapped in a taglist, unlike the others
+                        # I have no idea why but if we use the same code as the others, it causes all of the tables to not render.
+                        tagList(
+                          csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
+                          reactableOutput("efh_region_tbl")
+                        )
+                        # reactableOutput("efh_region_tbl")
                       )
                     ),
-                    br(),
                     details(
                       inputId = "efh_region_info",
                       label = "Additional information:",
