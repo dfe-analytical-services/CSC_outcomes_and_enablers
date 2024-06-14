@@ -59,7 +59,7 @@ introductionPanel <- function() {
       ),
       gov_row(
         h2("Data sources"),
-        p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "explore education statistics.", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
+        p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics.", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
         tags$ul(
           tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions (last updated:	25 April 2024).", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
           tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need", "Children in need (last updated: 26 October 2023).", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),

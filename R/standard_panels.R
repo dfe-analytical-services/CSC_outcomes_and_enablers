@@ -10,7 +10,7 @@ a11y_panel <- function() {
             This application is run by the Department for Education. We want as many people as possible to be able to use this application,
             and have actively developed this application with accessibilty in mind."),
           h2("WCAG 2.1 compliance"),
-          br("We follow the reccomendations of the ", a(href = "https://www.w3.org/TR/WCAG21/", "WCAG 2.1 requirements. ", onclick = "ga('send', 'event', 'click', 'link', 'IKnow', 1)"), "This application has been checked using the ", a(href = "https://github.com/ewenme/shinya11y", "Shinya11y tool "), ", which did not detect accessibility issues.
+          br("We follow the recommendations of the ", a(href = "https://www.w3.org/TR/WCAG21/", "WCAG 2.1 requirements. ", onclick = "ga('send', 'event', 'click', 'link', 'IKnow', 1)"), "This application has been checked using the ", a(href = "https://github.com/ewenme/shinya11y", "Shinya11y tool "), ", which did not detect accessibility issues.
              This application also fully passes the accessibility audits checked by the ", a(href = "https://developers.google.com/web/tools/lighthouse", "Google Developer Lighthouse tool"), ". This means that this application:"),
           tags$div(tags$ul(
             tags$li("uses colours that have sufficient contrast"),
@@ -30,7 +30,7 @@ a11y_panel <- function() {
           h2("Feedback"),
           br(
             "If you have any feedback on how we could further improve the accessibility of this application, please contact us at",
-            a(href = "mailto:email@education.gov.uk", "email@education.gov.uk")
+            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk")
           )
         )
       )
@@ -48,31 +48,38 @@ support_links <- function() {
           h1("Support and feedback"),
           h2("Give us feedback"),
           p(
-            "This dashboard is a new service that we are developing. If you have any feedback or suggestions for improvements, please submit them using our ",
+            "If you have any feedback or suggestions for improvements, please submit them using our ",
             a(
               href = "https://forms.office.com",
               "feedback form", .noWS = c("after")
             ), "."
           ),
           p(
-            "If you spot any errors or bugs while using this dashboard, please screenshot and email them to ",
-            a(href = "mailto:statistics.development@education.gov.uk", "statistics.development@education.gov.uk", .noWS = c("after")), "."
+            "If you spot any errors or bugs while using this dashboard, please screenshot and email them to",
+            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk", .noWS = c("after")), "."
           ),
           h2("Find more information on the data"),
-          p(
-            "The data used to produce the dashboard, along with methodological information can be found on ",
-            a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics", .noWS = c("after")),
-            "."
+          p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics.", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
+          tags$ul(
+            tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions (last updated:	25 April 2024).", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need", "Children in need (last updated: 26 October 2023).", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer (last updated: 08 May 2024).", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce", "Children's social work workforce (last updated:	29 February 2024)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS - Census, Ethnic groups (last updated: 28 March 2023)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland", "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: 26 March 2024)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023 (last updated: 8 September 2023)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 (last updated: 14 February 2024)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+            tags$li(a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "Children's services statistical neighbour benchmarking tool (last updated: April 2021)", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"))
           ),
           h2("Contact us"),
           p(
             "If you have questions about the dashboard or data within it, please contact us at ",
-            a(href = "mailto:statistics.development@education.gov.uk", "statistics.development@education.gov.uk", .noWS = c("after"))
+            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk", .noWS = c("after"))
           ),
           h2("See the source code"),
           p(
             "The source code for this dashboard is available in our ",
-            a(href = "https://github.com/dfe-analytical-services/shiny-template", "GitHub repository", .noWS = c("after")),
+            a(href = "https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers", "GitHub repository", .noWS = c("after")),
             "."
           )
         ),
