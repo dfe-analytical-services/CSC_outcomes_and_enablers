@@ -94,8 +94,9 @@ ui <- function(input, output, session) {
           "dist/js.cookie.min.js"
         )
       ),
-      tags$script(src = "cookie-consent.js")
+      tags$script(src = "cookie-consent.js"),
     ),
+    tags$head(includeScript("www/downloader.js")),
     tags$head(includeHTML(("google-analytics.html"))),
     tags$head(
       tags$link(
@@ -138,17 +139,6 @@ ui <- function(input, output, session) {
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
-    ),
-    # sidebarMenu(
-    #   menuItem(
-    #     tabName = "Outcomes",
-    #     menuItem(
-    #       outcome1_tab()
-    #     )
-    #   )
-    # ),
-    tags$script(
-      src = "script.js"
     ),
     footer(full = TRUE)
   )

@@ -37,7 +37,10 @@ shhh(library(reactable))
 shhh(library(readODS))
 shhh(library(readxl))
 shhh(library(janitor))
+shhh(library(scales))
 
+
+shhh(library(htmltools))
 
 # shhh(library(shinya11y))
 
@@ -186,33 +189,19 @@ dropdown_choices <- cla_rates # %>%
 #          "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
 #          "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte") %>% distinct()
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
-# Read in the data
-# dfRevBal <- read_revenue_data()
-# # Get geographical levels from data
-# dfAreas <- dfRevBal %>%
-#   select(
-#     geographic_level, country_name, country_code,
-#     region_name, region_code,
-#     la_name, old_la_code, new_la_code
-#   ) %>%
-#   distinct()
-#
-# choicesLAs <- dfAreas %>%
-#   filter(geographic_level == "Local authority") %>%
-#   select(geographic_level, area_name = la_name) %>%
-#   arrange(area_name)
-#
-# choicesAreas <- dfAreas %>%
-#   filter(geographic_level == "National") %>%
-#   select(geographic_level, area_name = country_name) %>%
-#   rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
-#   rbind(choicesLAs)
-#
-# choicesYears <- unique(dfRevBal$time_period)
-#
-# choicesPhase <- unique(dfRevBal$school_phase)
 
+# Download button --------------------
+# Function to create a download button for reactable
+csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CSV") {
+  tags$button(
+    tagList(icon("download"), label),
+    onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
+    class = "btn btn-default"
+  )
+}
+
+
+# Expandable section ------------------
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(
     class = "govuk-details", id = inputId,
