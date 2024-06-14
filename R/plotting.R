@@ -119,7 +119,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         "Time period: ", `Time period`
       )
     )) +
-      # geom_path(group = 1) +
       ylab(yaxis_title) +
       xlab("Time period") +
       theme_classic() +
@@ -138,7 +137,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         values = gss_colour_pallette
       )
     max_xaxis <- length(unique(dataset$time_period)) + 1
-    # max_yaxis =
     suppressWarnings(
       p <- p +
         geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
