@@ -131,7 +131,11 @@ outcome3_tab <- function() {
                     inputId = "tbl_repeat_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      reactableOutput("table_repeat_cpp")
+                      HTML(paste0(
+                        csvDownloadButton("table_repeat_cpp", filename = "Repeat_CPP_rates.csv"),
+                        reactableOutput("table_repeat_cpp")
+                      ))
+                      # reactableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
@@ -160,7 +164,11 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_repeat_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cpp_repeat_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cpp_repeat_reg", filename = "Repeat_CPP_rates_regions.csv"),
+                          reactableOutput("table_cpp_repeat_reg")
+                        ))
+                        # reactableOutput("table_cpp_repeat_reg")
                       )
                     ),
                     details(
@@ -207,7 +215,11 @@ outcome3_tab <- function() {
                     inputId = "tbl_duration_cpp",
                     label = "View chart as a table",
                     help_text = (
-                      reactableOutput("table_duration_cpp")
+                      HTML(paste0(
+                        csvDownloadButton("table_duration_cpp", filename = "CPP_more_than_2years_rates.csv"),
+                        reactableOutput("table_duration_cpp")
+                      ))
+                      # reactableOutput("table_duration_cpp")
                     )
                   ),
                   details(
@@ -238,7 +250,11 @@ outcome3_tab <- function() {
                       inputId = "tbl_CPP_duration_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cpp_duration_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cpp_duration_reg", filename = "CPP_more_than_2years_rates_region.csv"),
+                          reactableOutput("table_cpp_duration_reg")
+                        ))
+                        # reactableOutput("table_cpp_duration_reg")
                       )
                     ),
                     details(
@@ -278,7 +294,13 @@ outcome3_tab <- function() {
                     details(
                       inputId = "admissions_region_table",
                       label = "View chart as a table",
-                      help_text = (reactableOutput("admissions_region_tbl"))
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("admissions_region_tbl", filename = "hospital_admissions_rates_region.csv"),
+                          reactableOutput("admissions_region_tbl")
+                        ))
+                        # reactableOutput("admissions_region_tbl")
+                      )
                     ),
                     details(
                       inputId = "admissions_region_info",
@@ -337,7 +359,11 @@ outcome3_tab <- function() {
                   inputId = "tbl_all_child_abuse_factors",
                   label = "View chart as a table",
                   help_text = (
-                    reactableOutput("child_abuse_all_af_tbl")
+                    HTML(paste0(
+                      csvDownloadButton("child_abuse_all_af_tbl", filename = "child_abuse_all_factors.csv"),
+                      reactableOutput("child_abuse_all_af_tbl")
+                    ))
+                    # reactableOutput("child_abuse_all_af_tbl")
                   )
                 ),
                 details(
@@ -390,8 +416,11 @@ outcome3_tab <- function() {
                       inputId = "table_child_abuse",
                       label = "View the chart as a table",
                       help_text = (
-                        # p("table goes here")
-                        reactableOutput("ca_ts_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("ca_ts_tbl", filename = "child_abuse_rates.csv"),
+                          reactableOutput("ca_ts_tbl")
+                        ))
+                        # reactableOutput("ca_ts_tbl")
                       )
                     ),
                     details(
@@ -416,13 +445,17 @@ outcome3_tab <- function() {
                   ),
                   gov_row(
                     uiOutput("ca_header2"),
-                    # h2("Assessment factor includes child abuse or neglect by region"),
-                    # p("by region chart"),
                     plotlyOutput("child_abuse_region_plot"),
                     details(
                       inputId = "ca_region_tbl",
                       label = "View chart as a table",
-                      help_text = (reactableOutput("child_abuse_region_tbl"))
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("child_abuse_region_tbl", filename = "child_abuse_rates_regions.csv"),
+                          reactableOutput("child_abuse_region_tbl")
+                        ))
+                        # reactableOutput("child_abuse_region_tbl")
+                      )
                     ),
                     details(
                       inputId = "ca_region_info",
@@ -454,7 +487,6 @@ outcome3_tab <- function() {
                       selected = "All local authorities"
                     ),
                     uiOutput("SN_child_ab_neg")
-                    # p("by la chart"),
                   )
                 ),
                 open = FALSE
@@ -484,7 +516,11 @@ outcome3_tab <- function() {
                   inputId = "tbl_all_extra_fam_factors",
                   label = "View chart as a table",
                   help_text = (
-                    reactableOutput("extra_familial_all_af_tbl")
+                    HTML(paste0(
+                      csvDownloadButton("extra_familial_all_af_tbl", filename = "EFH_all_factors.csv"),
+                      reactableOutput("extra_familial_all_af_tbl")
+                    ))
+                    # reactableOutput("extra_familial_all_af_tbl")
                   )
                 ),
                 details(
@@ -528,17 +564,18 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Assessment factor includes extra familial harm",
                   gov_row(
-                    # ts
                     uiOutput("efh_header1"),
-                    # h2("Assessment factor includes extra familial harm"),
                     plotlyOutput("efh_ts_plot"),
                     br(),
                     details(
                       inputId = "table_child_abuse",
                       label = "View the chart as a table",
                       help_text = (
-                        # p("table goes here"),
-                        reactableOutput("efh_ts_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("efh_ts_tbl", filename = "EFH_rates.csv"),
+                          reactableOutput("efh_ts_tbl")
+                        ))
+                        # reactableOutput("efh_ts_tbl")
                       )
                     ),
                     details(
@@ -564,15 +601,19 @@ outcome3_tab <- function() {
                   gov_row(
                     # by region
                     uiOutput("efh_header2"),
-                    # h2("Assessment factor includes extra familial harm by region"),
-                    # p("by region chart"),
                     plotlyOutput("efh_region_plot"),
+                    br(),
                     details(
                       inputId = "efh_region_table",
                       label = "View chart as a table",
                       help_text = (
-                        # p("table")
-                        reactableOutput("efh_region_tbl")
+                        # For some reason this table needs to be wrapped in a taglist, unlike the others
+                        # I have no idea why but if we use the same code as the others, it causes all of the tables to not render.
+                        tagList(
+                          csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
+                          reactableOutput("efh_region_tbl")
+                        )
+                        # reactableOutput("efh_region_tbl")
                       )
                     ),
                     details(

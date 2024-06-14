@@ -124,7 +124,12 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("table_sgo_ceased")
+                        HTML(paste0(
+                          csvDownloadButton("table_sgo_ceased", filename = "ceased_CLA_SGO.csv"),
+                          reactableOutput("table_sgo_ceased")
+                        ))
+
+                        # reactableOutput("table_sgo_ceased")
                       )
                     ),
                     details(
@@ -156,7 +161,11 @@ outcome2_tab <- function() {
                       inputId = "tbl_sgo_ceased_cla_reg",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("table_sgo_ceased_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_sgo_ceased_reg", filename = "ceased_CLA_SGO_regions.csv"),
+                          reactableOutput("table_sgo_ceased_reg")
+                        ))
+                        # reactableOutput("table_sgo_ceased_reg")
                       )
                     ),
                     details(
@@ -206,7 +215,11 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_cla",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("table_cao_ceased")
+                        HTML(paste0(
+                          csvDownloadButton("table_cao_ceased", filename = "ceased_CLA_CAO.csv"),
+                          reactableOutput("table_cao_ceased")
+                        ))
+                        # reactableOutput("table_cao_ceased")
                       )
                     ),
                     details(
@@ -238,7 +251,11 @@ outcome2_tab <- function() {
                       inputId = "tbl_cao_ceased_reg",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("table_cao_ceased_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cao_ceased_reg", filename = "ceased_CLA_CAO_regions.csv"),
+                          reactableOutput("table_cao_ceased_reg")
+                        ))
+                        # reactableOutput("table_cao_ceased_reg")
                       )
                     ),
                     details(

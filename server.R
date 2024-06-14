@@ -136,6 +136,11 @@ server <- function(input, output, session) {
   #   )
   # })
 
+  # Download handler
+  csvDownloadHandler <- function(id, filename) {
+    session$sendCustomMessage("downloadDataWithTransformation", list(id = id, filename = filename))
+  }
+
   # Dropdown Validation -----
   iv <- InputValidator$new()
   # outcome1
@@ -7052,7 +7057,7 @@ server <- function(input, output, session) {
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
-      searchable = TRUE,
+      searchable = TRUE
     )
   })
 
@@ -7451,7 +7456,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_rate_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cla_rate_la")
+            HTML(paste0(
+              csvDownloadButton("table_cla_rate_la", filename = "cla_rates_all_LAs.csv"),
+              reactableOutput("table_cla_rate_la")
+            ))
+            # reactableOutput("table_cla_rate_la")
           )
         ),
         details(
@@ -7484,7 +7493,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cla",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cla_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cla_tbl", filename = paste0("cla_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_cla_tbl")
+            ))
+            # reactableOutput("SN_cla_tbl")
           )
         ),
         details(
@@ -7566,7 +7579,11 @@ server <- function(input, output, session) {
           inputId = "tbl_uasc_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_uasc_la")
+            HTML(paste0(
+              csvDownloadButton("table_uasc_la", filename = "cla_UASC_rates_all_LAs.csv"),
+              reactableOutput("table_uasc_la")
+            ))
+            # reactableOutput("table_uasc_la")
           )
         ),
         details(
@@ -7601,7 +7618,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_uasc",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_uasc_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_uasc_tbl", filename = paste0("cla_UASC_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_uasc_tbl")
+            ))
+            # reactableOutput("SN_uasc_tbl")
           )
         ),
         details(
@@ -7679,7 +7700,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cla_march_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cla_march_la")
+            HTML(paste0(
+              csvDownloadButton("table_cla_march_la", filename = "cla_march_rates_all_LAs.csv"),
+              reactableOutput("table_cla_march_la")
+            ))
+            # reactableOutput("table_cla_march_la")
           )
         ),
         details(
@@ -7710,7 +7735,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cla_march",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cla_march_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cla_march_tbl", filename = paste0("cla_march_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_cla_march_tbl")
+            ))
+            # reactableOutput("SN_cla_march_tbl")
           )
         ),
         details(
@@ -7786,7 +7815,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_rates_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cin_rates_la")
+            HTML(paste0(
+              csvDownloadButton("table_cin_rates_la", filename = "cin_rates_all_LAs.csv"),
+              reactableOutput("table_cin_rates_la")
+            ))
+            # reactableOutput("table_cin_rates_la")
           )
         ),
         details(
@@ -7820,7 +7853,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cin",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cin_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cin_tbl", filename = paste0("cin_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_cin_tbl")
+            ))
+            # reactableOutput("SN_cin_tbl")
             # p("This is under development.")
           )
         ),
@@ -7899,7 +7936,12 @@ server <- function(input, output, session) {
           inputId = "tbl_cin_referral_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cin_referral_la")
+            HTML(paste0(
+              csvDownloadButton("table_cin_referral_la", filename = "cin_re_referrals_all_LAs.csv"),
+              reactableOutput("table_cin_referral_la")
+            ))
+
+            # reactableOutput("table_cin_referral_la")
           )
         ),
         details(
@@ -7931,7 +7973,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cin_referral",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cin_referral_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cin_referral_tbl", filename = paste0("cin_re_referrals_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_cin_referral_tbl")
+            ))
+            # reactableOutput("SN_cin_referral_tbl")
           )
         ),
         details(
@@ -7997,7 +8043,12 @@ server <- function(input, output, session) {
           inputId = "tbl_absence_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_absence_la")
+            HTML(paste0(
+              csvDownloadButton("table_absence_la", filename = "absence_rates_all_LAs.csv"),
+              reactableOutput("table_absence_la")
+            ))
+
+            # reactableOutput("table_absence_la")
           )
         ),
         details(
@@ -8040,8 +8091,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_absence",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_absence_tbl")
-            # p("This is under development.")
+            HTML(paste0(
+              csvDownloadButton("SN_absence_tbl", filename = paste0("absence_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_absence_tbl")
+            ))
+            # reactableOutput("SN_absence_tbl")
           )
         ),
         details(
@@ -8118,7 +8172,12 @@ server <- function(input, output, session) {
           inputId = "tbl_persistent_absence_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_persistent_absence_la")
+            HTML(paste0(
+              csvDownloadButton("table_persistent_absence_la", filename = "persistent_absence_all_LAs.csv"),
+              reactableOutput("table_persistent_absence_la")
+            ))
+
+            # reactableOutput("table_persistent_absence_la")
           )
         ),
         details(
@@ -8160,8 +8219,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_persistent_abs",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_persistent_absence_tbl")
-            # p("This is under development.")
+            HTML(paste0(
+              csvDownloadButton("SN_persistent_absence_tbl", filename = paste0("persistent_absence_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_persistent_absence_tbl")
+            ))
+            # reactableOutput("SN_persistent_absence_tbl")
           )
         ),
         details(
@@ -8236,7 +8298,11 @@ server <- function(input, output, session) {
           inputId = "tbl_KS2_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_KS2_la")
+            HTML(paste0(
+              csvDownloadButton("table_KS2_la", filename = "ks2_attainment_all_LAs.csv"),
+              reactableOutput("table_KS2_la")
+            ))
+            # reactableOutput("table_KS2_la")
           )
         ),
         details(
@@ -8274,7 +8340,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_ks2",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_ks2_attain_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_ks2_attain_tbl", filename = paste0("ks2_attainment_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_ks2_attain_tbl")
+            ))
+            # reactableOutput("SN_ks2_attain_tbl")
             # p("This is under development.")
           )
         ),
@@ -8352,7 +8422,11 @@ server <- function(input, output, session) {
           inputId = "tbl_KS4_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_KS4_la")
+            HTML(paste0(
+              csvDownloadButton("table_KS4_la", filename = "ks4_attainment_all_LAs.csv"),
+              reactableOutput("table_KS4_la")
+            ))
+            # reactableOutput("table_KS4_la")
           )
         ),
         details(
@@ -8393,7 +8467,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_ks4",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_ks4_attain_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_ks4_attain_tbl", filename = paste0("ks4_attainment_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_ks4_attain_tbl")
+            ))
+            # reactableOutput("SN_ks4_attain_tbl")
             # p("This is under development.")
           )
         ),
@@ -8471,7 +8549,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sgo_ceased_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_sgo_la")
+            HTML(paste0(
+              csvDownloadButton("table_sgo_la", filename = "ceased_CLA_SGO_all_LAs.csv"),
+              reactableOutput("table_sgo_la")
+            ))
+            # reactableOutput("table_sgo_la")
           )
         ),
         details(
@@ -8502,8 +8584,12 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_sgo",
           label = "View chart as a table",
           help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_sgo_tbl", filename = paste0("ceased_CLA_SGO_SN_", input$geographic_breakdown_o2, ".csv")),
+              reactableOutput("SN_sgo_tbl")
+            ))
             # dataTableOutput("SN_sgo_tbl")
-            reactableOutput("SN_sgo_tbl")
+            # reactableOutput("SN_sgo_tbl")
           )
         ),
         details(
@@ -8576,7 +8662,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cao_ceased_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cao_la")
+            HTML(paste0(
+              csvDownloadButton("table_cao_la", filename = "ceased_CLA_CAO_all_LAs.csv"),
+              reactableOutput("table_cao_la")
+            ))
+            # reactableOutput("table_cao_la")
           )
         ),
         details(
@@ -8607,7 +8697,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cao",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_cao_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cao_tbl", filename = paste0("ceased_CLA_CAO_SN_", input$geographic_breakdown_o2, ".csv")),
+              reactableOutput("SN_cao_tbl")
+            ))
+            # reactableOutput("SN_cao_tbl")
           )
         ),
         details(
@@ -8681,7 +8775,11 @@ server <- function(input, output, session) {
           inputId = "tbl_repeat_cpp_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cpp_repeat_la")
+            HTML(paste0(
+              csvDownloadButton("table_cpp_repeat_la", filename = "repeat_CPP_rates_all_LAs.csv"),
+              reactableOutput("table_cpp_repeat_la")
+            ))
+            # reactableOutput("table_cpp_repeat_la")
           )
         ),
         details(
@@ -8711,8 +8809,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cpp",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_sgo_tbl")
-            reactableOutput("SN_cpp_repeat_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_cpp_repeat_tbl", filename = paste0("reapeat_CPP_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("SN_cpp_repeat_tbl")
+            ))
+            # reactableOutput("SN_cpp_repeat_tbl")
           )
         ),
         details(
@@ -8788,8 +8889,11 @@ server <- function(input, output, session) {
           inputId = "tbl_hosp_admission_la",
           label = "View chart as table",
           help_text = (
-            reactableOutput("admissions_la_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("admissions_la_tbl", filename = "hospital_admissions_all_LAs.csv"),
+              reactableOutput("admissions_la_tbl")
+            ))
+            # reactableOutput("admissions_la_tbl")
           )
         ),
         details(
@@ -8818,14 +8922,16 @@ server <- function(input, output, session) {
 
       tagList(
         plotlyOutput("hosp_admissions_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_hosp_ad",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("hosp_admissions_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("hosp_admissions_SN_tbl", filename = paste0("hospital_admissions_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("hosp_admissions_SN_tbl")
+            ))
+            # reactableOutput("hosp_admissions_SN_tbl")
           )
         ),
         details(
@@ -8899,7 +9005,11 @@ server <- function(input, output, session) {
           inputId = "tbl_child_ab_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_child_ab_neg_la")
+            HTML(paste0(
+              csvDownloadButton("table_child_ab_neg_la", filename = "child_abuse_rates_all_LAs.csv"),
+              reactableOutput("table_child_ab_neg_la")
+            ))
+            # reactableOutput("table_child_ab_neg_la")
           )
         ),
         details(
@@ -8928,15 +9038,16 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("abuse_neg_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_ch_ab_neg",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("abuse_neg_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("abuse_neg_SN_tbl", filename = paste0("child_abuse_rates_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("abuse_neg_SN_tbl")
+            ))
+            # reactableOutput("abuse_neg_SN_tbl")
           )
         ),
         details(
@@ -9008,8 +9119,11 @@ server <- function(input, output, session) {
           inputId = "tbl_extra_fam_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_efh_la")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("table_efh_la", filename = "EFH_rates_all_LAs.csv"),
+              reactableOutput("table_efh_la")
+            ))
+            # reactableOutput("table_efh_la")
           )
         ),
         details(
@@ -9044,9 +9158,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_efh",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("efh_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("efh_SN_tbl", filename = paste0("EFH_rates_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("efh_SN_tbl")
+            ))
+            # reactableOutput("efh_SN_tbl")
           )
         ),
         details(
@@ -9121,7 +9237,11 @@ server <- function(input, output, session) {
           inputId = "tbl_placement_type_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("placement_type_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("placement_type_la_tbl", filename = "placement_type_all_LAs.csv"),
+              reactableOutput("placement_type_la_tbl")
+            ))
+            # reactableOutput("placement_type_la_tbl")
             # p("table here")
           )
         ),
@@ -9145,15 +9265,15 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("placement_type_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_placement_type",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("placement_type_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("placement_type_SN_tbl", filename = paste0("placement_type_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("placement_type_SN_tbl")
+            ))
           )
         ),
         details(
@@ -9228,7 +9348,11 @@ server <- function(input, output, session) {
           inputId = "tbl_placement_changes_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("placement_changes_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("placement_changes_la_tbl", filename = "cla_more_than_3_placements_all_LAs.csv"),
+              reactableOutput("placement_changes_la_tbl")
+            ))
+            # reactableOutput("placement_changes_la_tbl")
             # p("table here")
           )
         ),
@@ -9258,9 +9382,10 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_placement_changes",
           label = "View chart as a table",
           help_text = (
-            # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("placement_changes_SN_tbl")
-            # p("table here")
+            HTML(paste0(
+              csvDownloadButton("placement_changes_SN_tbl", filename = paste0("cla_more_than_3_placements_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("placement_changes_SN_tbl")
+            ))
           )
         ),
         details(
@@ -9334,7 +9459,11 @@ server <- function(input, output, session) {
           inputId = "tbl_placement_changes_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("placement_dist_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("placement_dist_la_tbl", filename = "placements_more_than_20_miles_from_home_all_LAs.csv"),
+              reactableOutput("placement_dist_la_tbl")
+            ))
+            # reactableOutput("placement_dist_la_tbl")
           )
         ),
         details(
@@ -9365,7 +9494,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_placement_changes",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("placement_dist_SN_tbl")
+            HTML(paste0(
+              csvDownloadButton("placement_dist_SN_tbl", filename = paste0("placements_more_than_20_miles_from_home_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("placement_dist_SN_tbl")
+            ))
+            # reactableOutput("placement_dist_SN_tbl")
             # p("table here")
           )
         ),
@@ -9441,7 +9574,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sdq_score_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("sdq_by_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("sdq_by_la_tbl", filename = "wellbeing_sdq_score_all_LAs.csv"),
+              reactableOutput("sdq_by_la_tbl")
+            ))
+            # reactableOutput("sdq_by_la_tbl")
           )
         ),
         details(
@@ -9470,8 +9607,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_sdq_score",
           label = "View chart as a table",
           help_text = (
-            # p("table")
-            reactableOutput("SN_sdq_table")
+            HTML(paste0(
+              csvDownloadButton("SN_sdq_table", filename = paste0("wellbeing_sdq_score_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("SN_sdq_table")
+            ))
+            # reactableOutput("SN_sdq_table")
           )
         ),
         details(
@@ -9544,7 +9684,10 @@ server <- function(input, output, session) {
           inputId = "tbl_cl_activity_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cl_activity_la")
+            HTML(paste0(
+              csvDownloadButton("table_cl_activity_la", filename = "care_leavers_activity_all_LAs.csv"),
+              reactableOutput("table_cl_activity_la")
+            ))
             # p("table here")
           )
         ),
@@ -9581,7 +9724,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cl_act",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("cl_activity_SN_tbl")
+            HTML(paste0(
+              csvDownloadButton("cl_activity_SN_tbl", filename = paste0("care_leavers_activity_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("cl_activity_SN_tbl")
+            ))
+            # reactableOutput("cl_activity_SN_tbl")
           )
         ),
         details(
@@ -9658,7 +9805,11 @@ server <- function(input, output, session) {
           inputId = "tbl_cl_accommodation_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_cl_accommodation_la")
+            HTML(paste0(
+              csvDownloadButton("table_cl_accommodation_la", filename = "care_leavers_accomm_all_LAs.csv"),
+              reactableOutput("table_cl_accommodation_la")
+            ))
+            # reactableOutput("table_cl_accommodation_la")
             # p("table here")
           )
         ),
@@ -9697,7 +9848,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_cl_accomm",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("cl_acccomm_SN_tbl")
+            HTML(paste0(
+              csvDownloadButton("cl_acccomm_SN_tbl", filename = paste0("care_leavers_accomm_SN_", input$geographic_breakdown_o4, ".csv")),
+              reactableOutput("cl_acccomm_SN_tbl")
+            ))
+            # reactableOutput("cl_acccomm_SN_tbl")
             # p("table here")
           )
         ),
@@ -9778,7 +9933,11 @@ server <- function(input, output, session) {
           inputId = "tbl_turnover_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_turnover_la")
+            HTML(paste0(
+              csvDownloadButton("table_turnover_la", filename = "social_worker_turnover_all_LAs.csv"),
+              reactableOutput("table_turnover_la")
+            ))
+            # reactableOutput("table_turnover_la")
           )
         ),
         details(
@@ -9810,8 +9969,12 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_turnover",
           label = "View chart as a table",
           help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_turnover_tbl", filename = paste0("social_worker_turnover_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_turnover_tbl")
+            ))
             # dataTableOutput("SN_turnover_tbl")
-            reactableOutput("SN_turnover_tbl")
+            # reactableOutput("SN_turnover_tbl")
           )
         ),
         details(
@@ -9877,7 +10040,11 @@ server <- function(input, output, session) {
           inputId = "tbl_agency_rate_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_agency_rate_la")
+            HTML(paste0(
+              csvDownloadButton("table_agency_rate_la", filename = "agency_worker_rate_all_LAs.csv"),
+              reactableOutput("table_agency_rate_la")
+            ))
+            # reactableOutput("table_agency_rate_la")
           )
         ),
         details(
@@ -9907,7 +10074,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_agency",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_agency_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_agency_tbl", filename = paste0("agency_worker_rate_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_agency_tbl")
+            ))
+            # reactableOutput("SN_agency_tbl")
           )
         ),
         details(
@@ -9973,7 +10144,12 @@ server <- function(input, output, session) {
           inputId = "tbl_vacancy_rate_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_vacancy_rate_la")
+            HTML(paste0(
+              csvDownloadButton("table_vacancy_rate_la", filename = "vacancy_rates_all_LAs.csv"),
+              reactableOutput("table_vacancy_rate_la")
+            ))
+
+            # reactableOutput("table_vacancy_rate_la")
           )
         ),
         details(
@@ -10003,7 +10179,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_vacancy",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_vacancy_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_vacancy_tbl", filename = paste0("vacancy_rates_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_vacancy_tbl")
+            ))
+            # reactableOutput("SN_vacancy_tbl")
           )
         ),
         details(
@@ -10067,7 +10247,11 @@ server <- function(input, output, session) {
           inputId = "tbl_caseload_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_caseload_la")
+            HTML(paste0(
+              csvDownloadButton("table_caseload_la", filename = "avg_caseload_all_LAs.csv"),
+              reactableOutput("table_caseload_la")
+            ))
+            # reactableOutput("table_caseload_la")
           )
         ),
         details(
@@ -10097,7 +10281,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_caseload",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_caseload_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_caseload_tbl", filename = paste0("avg_caseload_SN_", input$geographic_breakdown_e3, ".csv")),
+              reactableOutput("SN_caseload_tbl")
+            ))
+            # reactableOutput("SN_caseload_tbl")
           )
         ),
         details(
@@ -10154,6 +10342,35 @@ server <- function(input, output, session) {
 
   # Enabler 2 ----
   ### Ofsted leadership rating --------
+  output$ofsted_rating_SN_ui <- renderUI({
+    tagList(
+      h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
+      p("Hover over each data point to see the year of their last Ofsted inspection."),
+      plotlyOutput("ofsted_SN_plot"),
+      br(),
+      details(
+        inputId = "tbl_ofsted_SN",
+        label = "View chart as a table",
+        help_text = (
+          HTML(paste0(
+            csvDownloadButton("ofsted_SN_tbl", filename = paste0("Ofsted_leadership_ratings_SN_", input$geographic_breakdown_e2, ".csv")),
+            reactableOutput("ofsted_SN_tbl")
+          ))
+          # reactableOutput("ofsted_SN_tbl")
+        )
+      ),
+      details(
+        inputId = "ofsted_stat_neighbours_info",
+        label = "Additional information:",
+        help_text = (
+          p("Statistical neighbours info")
+        )
+      )
+    )
+  })
+
+
+
   output$ofsted_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
@@ -10202,7 +10419,11 @@ server <- function(input, output, session) {
           inputId = "tbl_tot_spend_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("table_tot_spending_la")
+            HTML(paste0(
+              csvDownloadButton("table_tot_spending_la", filename = "spend_on_CSC_all_LAs.csv"),
+              reactableOutput("table_tot_spending_la")
+            ))
+            # reactableOutput("table_tot_spending_la")
           )
         ),
         details(
@@ -10233,7 +10454,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_total_spending",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_tot_spend_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_tot_spend_tbl", filename = paste0("spend_on_CSC_SN_", input$geographic_breakdown_e2, ".csv")),
+              reactableOutput("SN_tot_spend_tbl")
+            ))
+            # reactableOutput("SN_tot_spend_tbl")
             # p("table")
           )
         ),
@@ -10338,7 +10563,11 @@ server <- function(input, output, session) {
           inputId = "tbl_tot_no_cla_spend_la",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("spend_excl_cla_la_tbl")
+            HTML(paste0(
+              csvDownloadButton("spend_excl_cla_la_tbl", filename = "spend_on_CSC_excl_CLA_all_LAs.csv"),
+              reactableOutput("spend_excl_cla_la_tbl")
+            ))
+            # reactableOutput("spend_excl_cla_la_tbl")
           )
         ),
         details(
@@ -10367,7 +10596,11 @@ server <- function(input, output, session) {
           inputId = "tbl_sn_spending",
           label = "View chart as a table",
           help_text = (
-            reactableOutput("SN_spend_no_cla_tbl")
+            HTML(paste0(
+              csvDownloadButton("SN_spend_no_cla_tbl", filename = paste0("spend_on_CSC_excl_CLA_SN_", input$geographic_breakdown_e2, ".csv")),
+              reactableOutput("SN_spend_no_cla_tbl")
+            ))
+            # reactableOutput("SN_spend_no_cla_tbl")
             # p("table")
           )
         ),
@@ -10430,6 +10663,7 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
 
   # Don't touch the code below -----------------------
 

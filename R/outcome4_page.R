@@ -145,7 +145,10 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_type",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_changes_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_changes_tbl", filename = "cla_more_than_3_placements.csv"),
+                          reactableOutput("placement_changes_tbl")
+                        ))
                       )
                     ),
                     details(
@@ -173,7 +176,10 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_changes_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_changes_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_changes_region_tbl", filename = "cla_more_than_3_placements_regions.csv"),
+                          reactableOutput("placement_changes_region_tbl")
+                        ))
                       )
                     ),
                     details(
@@ -214,7 +220,10 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_dist",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_dist_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_dist_tbl", filename = "placements_more_than_20_miles_from_home.csv"),
+                          reactableOutput("placement_dist_tbl")
+                        ))
                       )
                     ),
                     details(
@@ -241,7 +250,11 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_dist_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_dist_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_dist_region_tbl", filename = "placements_more_than_20_miles_from_home_regions.csv"),
+                          reactableOutput("placement_dist_region_tbl")
+                        ))
+                        # reactableOutput("placement_dist_region_tbl")
                       )
                     ),
                     details(
@@ -301,7 +314,11 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_type",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_type_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
+                          reactableOutput("placement_type_tbl")
+                        ))
+                        # reactableOutput("placement_type_tbl")
                       )
                     ),
                     details(
@@ -329,7 +346,11 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_type_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_type_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
+                          reactableOutput("placement_type_region_tbl")
+                        ))
+                        # reactableOutput("placement_type_region_tbl")
                       )
                     ),
                     details(
@@ -358,6 +379,7 @@ outcome4_tab <- function() {
                     uiOutput("SN_placement_type"),
                   )
                 ),
+                ## Time between placements ---------------
                 accordion_panel(
                   "Average time between placement order and match for those children who are adopted",
                   gov_row(
@@ -389,7 +411,11 @@ outcome4_tab <- function() {
                       inputId = "tbl_placement_order_match",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("placement_order_match_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
+                          reactableOutput("placement_order_match_tbl")
+                        ))
+                        # reactableOutput("placement_order_match_tbl")
                       )
                     ),
                     details(
@@ -427,13 +453,6 @@ outcome4_tab <- function() {
                     value = htmlOutput("wellbeing_score_stat")
                   )
                 ),
-                # column(
-                #   width = 6,
-                #   value_box(
-                #     title = "Headline stat 2",
-                #     value = p("Headline stats 2")
-                #   )
-                # ),
                 br(),
               ),
               fluidRow(
@@ -457,7 +476,13 @@ outcome4_tab <- function() {
                     details(
                       inputId = "sdq_ts_tbl",
                       label = "View chart as table",
-                      help_text = reactableOutput("sqd_ts_table")
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("sqd_ts_table", filename = paste0("wellbeing_sdq_score.csv")),
+                          reactableOutput("sqd_ts_table")
+                        ))
+                        # reactableOutput("sqd_ts_table")
+                      )
                     ),
                     details(
                       inputId = "ts_additional_info",
@@ -483,7 +508,12 @@ outcome4_tab <- function() {
                     details(
                       inputId = "sdq_region_tbl",
                       label = "View chart as table",
-                      help_text = reactableOutput("SDQ_region_tbl")
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("SDQ_region_tbl", filename = paste0("wellbeing_sdq_score_regions.csv")),
+                          reactableOutput("SDQ_region_tbl")
+                      )))
+                      # reactableOutput("SDQ_region_tbl")
                     ),
                     details(
                       inputId = "sdq_reg_info",
@@ -596,7 +626,11 @@ outcome4_tab <- function() {
                       inputId = "cl_activity_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("cl_activity_ts_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("cl_activity_ts_tbl", filename = paste0("care_leavers_activity.csv")),
+                          reactableOutput("cl_activity_ts_tbl")
+                        ))
+                        # reactableOutput("cl_activity_ts_tbl")
                       )
                     ),
                     details(
@@ -623,7 +657,10 @@ outcome4_tab <- function() {
                       inputId = "cl_act_region_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("cl_activity_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("cl_activity_region_tbl", filename = "care_leavers_activity_region.csv"),
+                          reactableOutput("cl_activity_region_tbl")
+                        ))
                       )
                     ),
                     details(
@@ -666,7 +703,11 @@ outcome4_tab <- function() {
                       inputId = "cl_accommodation_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("cl_accommodation_ts_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("cl_accommodation_ts_tbl", filename = paste0("care_leavers_accomm.csv")),
+                          reactableOutput("cl_accommodation_ts_tbl")
+                        ))
+                        # reactableOutput("cl_accommodation_ts_tbl")
                       )
                     ),
                     details(
@@ -701,7 +742,11 @@ outcome4_tab <- function() {
                       inputId = "cl_accommodation_reg_tbl",
                       label = "View chart as table",
                       help_text = (
-                        reactableOutput("cl_accommodation_region_tbl")
+                        HTML(paste0(
+                          csvDownloadButton("cl_accommodation_region_tbl", filename = paste0("care_leavers_accomm_regions.csv")),
+                          reactableOutput("cl_accommodation_region_tbl")
+                        ))
+                        # reactableOutput("cl_accommodation_region_tbl")
                       )
                     ),
                     details(

@@ -128,7 +128,12 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cla_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_rate", filename = "cla_rates.csv"),
+                          reactableOutput("table_cla_rate")
+                        ))
+
+                        # reactableOutput("table_cla_rate")
                       )
                     ),
                     details(
@@ -160,7 +165,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cla_rate_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_rate_reg", filename = "cla_rates_regions.csv"),
+                          reactableOutput("table_cla_rate_reg")
+                        ))
+                        # reactableOutput("table_cla_rate_reg")
                       )
                     ),
                     details(
@@ -213,7 +222,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_uasc")
+                        HTML(paste0(
+                          csvDownloadButton("table_uasc", filename = "cla_UASC_rates.csv"),
+                          reactableOutput("table_uasc")
+                        ))
+                        # reactableOutput("table_uasc")
                       )
                     ),
                     details(
@@ -249,7 +262,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_uasc_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_uasc_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_uasc_reg", filename = "cla_UASC_rates_regions.csv"),
+                          reactableOutput("table_uasc_reg")
+                        ))
+                        # reactableOutput("table_uasc_reg")
                       )
                     ),
                     details(
@@ -304,7 +321,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_rate_march",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cla_rate_march")
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
+                          reactableOutput("table_cla_rate_march")
+                        ))
+                        # reactableOutput("table_cla_rate_march")
                       )
                     ),
                     details(
@@ -335,7 +356,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cla_march_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cla_march_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
+                          reactableOutput("table_cla_march_reg")
+                        ))
+                        # reactableOutput("table_cla_march_reg")
                       )
                     ),
                     details(
@@ -417,7 +442,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rate",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cin_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_cin_rate", filename = "CIN_rates.csv"),
+                          reactableOutput("table_cin_rate")
+                        ))
+                        # reactableOutput("table_cin_rate")
                       )
                     ),
                     # expandable for the additional info links
@@ -451,7 +480,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_rates_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cin_rates_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cin_rates_reg", filename = "CIN_rates_regions.csv"),
+                          reactableOutput("table_cin_rates_reg")
+                        ))
+                        # reactableOutput("table_cin_rates_reg")
                       )
                     ),
                     details(
@@ -509,7 +542,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cin_referral")
+                        HTML(paste0(
+                          csvDownloadButton("table_cin_referral", filename = "CIN_re_referral_rates.csv"),
+                          reactableOutput("table_cin_referral")
+                        ))
+                        # reactableOutput("table_cin_referral")
                       )
                     ),
                     details(
@@ -540,7 +577,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_cin_referral_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_cin_referral_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_cin_referral_reg", filename = "CIN_re_referral_rates_regions.csv"),
+                          reactableOutput("table_cin_referral_reg")
+                        ))
+                        # reactableOutput("table_cin_referral_reg")
                       )
                     ),
                     details(
@@ -708,7 +749,11 @@ outcome1_tab <- function() {
                       inputId = "table_absence",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_absence_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_absence_rate", filename = "absence_rates.csv"),
+                          reactableOutput("table_absence_rate")
+                        ))
+                        # reactableOutput("table_absence_rate")
                       )
                     ),
                     details(
@@ -749,7 +794,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_absence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_absence_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_absence_reg", filename = "absence_rates_regions.csv"),
+                          reactableOutput("table_absence_reg")
+                        ))
+                        # reactableOutput("table_absence_reg")
                       )
                     ),
                     details(
@@ -814,7 +863,11 @@ outcome1_tab <- function() {
                       inputId = "table_persistence",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_persistent_rate")
+                        HTML(paste0(
+                          csvDownloadButton("table_persistent_rate", filename = "persistence_absence_rates.csv"),
+                          reactableOutput("table_persistent_rate")
+                        ))
+                        # reactableOutput("table_persistent_rate")
                       )
                     ),
                     details(
@@ -854,7 +907,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_persistence_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_persistent_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_persistent_reg", filename = "persistence_absence_rates_regions.csv"),
+                          reactableOutput("table_persistent_reg")
+                        ))
+                        # reactableOutput("table_persistent_reg")
                       )
                     ),
                     details(
@@ -1010,7 +1067,11 @@ outcome1_tab <- function() {
                       inputId = "table_ks2",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_ks2_expected")
+                        HTML(paste0(
+                          csvDownloadButton("table_ks2_expected", filename = "ks2_attainment_rates.csv"),
+                          reactableOutput("table_ks2_expected")
+                        ))
+                        # reactableOutput("table_ks2_expected")
                       )
                     ),
                     details(
@@ -1046,7 +1107,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks2_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_ks2_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_ks2_reg", filename = "ks2_attainment_rates_region.csv"),
+                          reactableOutput("table_ks2_reg")
+                        ))
+                        # reactableOutput("table_ks2_reg")
                       )
                     ),
                     details(
@@ -1107,7 +1172,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks4",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_ks4")
+                        HTML(paste0(
+                          csvDownloadButton("table_ks4", filename = "ks4_attainment_rates.csv"),
+                          reactableOutput("table_ks4")
+                        ))
+                        # reactableOutput("table_ks4")
                       )
                     ),
                     details(
@@ -1146,7 +1215,11 @@ outcome1_tab <- function() {
                       inputId = "tbl_ks4_reg",
                       label = "View chart as a table",
                       help_text = (
-                        reactableOutput("table_ks4_reg")
+                        HTML(paste0(
+                          csvDownloadButton("table_ks4_reg", filename = "ks4_attainment_rates_regions.csv"),
+                          reactableOutput("table_ks4_reg")
+                        ))
+                        # reactableOutput("table_ks4_reg")
                       )
                     ),
                     details(
