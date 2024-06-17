@@ -6,31 +6,32 @@ a11y_panel <- function() {
         column(
           width = 12,
           h1("Accessibility statement"),
-          br("This accessibility statement applies to the Children's Social Care - Outcomes and Enablers dashboard.
+          p("This accessibility statement applies to the Children's Social Care - Outcomes and Enablers dashboard.
             This application is run by the Department for Education. We want as many people as possible to be able to use this application,
-            and have actively developed this application with accessibilty in mind."),
+            and have actively developed this application with accessibilty in mind.", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
           h2("WCAG 2.1 compliance"),
-          br("We follow the recommendations of the ", a(href = "https://www.w3.org/TR/WCAG21/", "WCAG 2.1 requirements. ", onclick = "ga('send', 'event', 'click', 'link', 'IKnow', 1)"), "This application has been checked using the ", a(href = "https://github.com/ewenme/shinya11y", "Shinya11y tool "), ", which did not detect accessibility issues.
-             This application also fully passes the accessibility audits checked by the ", a(href = "https://developers.google.com/web/tools/lighthouse", "Google Developer Lighthouse tool"), ". This means that this application:"),
+          p("We follow the recommendations of the ", a(href = "https://www.w3.org/TR/WCAG21/", "WCAG 2.1 requirements. ", onclick = "ga('send', 'event', 'click', 'link', 'IKnow', 1)"), "This application has been checked using the ", a(href = "https://github.com/ewenme/shinya11y", "Shinya11y tool "), ", which did not detect accessibility issues.
+             This application also fully passes the accessibility audits checked by the ", a(href = "https://developers.google.com/web/tools/lighthouse", "Google Developer Lighthouse tool"), ". This means that this application:", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
           tags$div(tags$ul(
             tags$li("uses colours that have sufficient contrast"),
             tags$li("allows you to zoom in up to 300% without the text spilling off the screen"),
-            tags$li("has its performance regularly monitored, with a team working on any feedback to improve accessibility for all users")
+            tags$li("has its performance regularly monitored, with a team working on any feedback to improve accessibility for all users"),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
           h2("Limitations"),
-          br("We recognise that there are still potential issues with accessibility in this application, but we will continue
+          p("We recognise that there are still potential issues with accessibility in this application, but we will continue
              to review updates to technology available to us to keep improving accessibility for all of our users. For example, these
-            are known issues that we will continue to monitor and improve:"),
+            are known issues that we will continue to monitor and improve:", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
           tags$div(tags$ul(
-            tags$li("List"),
-            tags$li("known"),
-            tags$li("limitations, e.g."),
-            tags$li("Alternative text in interactive charts is limited to titles and could be more descriptive (although this data is available in csv format)")
+            tags$li("Screen reader and keyboard users cannot navigate through the interactive graphs effectively. An accessible alternative table is provided to view and a CSV format is available for users to download."),
+            tags$li("Some users may have difficultly reading the graph due to the use of colour. An accessible alternative table is provided to view and a CSV format is available for users to download."),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
           h2("Feedback"),
-          br(
+          p(
             "If you have any feedback on how we could further improve the accessibility of this application, please contact us at",
-            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk")
+            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk"),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )
         )
       )
