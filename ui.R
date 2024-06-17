@@ -84,7 +84,7 @@ ui <- function(input, output, session) {
     dfe_cookie_script(),
     cookie_banner_ui("cookies", name = "My DfE R Shiny data dashboard"),
     customDisconnectMessage(),
-    useShinydashboard(),
+    # useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(
