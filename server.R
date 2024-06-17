@@ -5222,8 +5222,8 @@ server <- function(input, output, session) {
       p,
       tooltip = "text",
       height = 420
-    ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+    ) # %>%
+    # layout(yaxis = list(tickmode = "auto"))
   })
 
   # table alternative for all factors plot
