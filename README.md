@@ -24,17 +24,13 @@ aim to make stronger, measurable decisions that achieve better outcomes for chil
 
 As well as a learning tool for local government, the Dashboard will help central government to understand system-wide success and issues and how children, young people and families are being supported.
 
-- Production - https://rsconnect/rsc/dfe-published-data-qa
-- Pre-production - https://rsconnect-pp/rsc/dfe-published-data-qa
-- Development - https://rsconnect-pp/rsc/dev-dfe-published-data-qa
+- Production - https://department-for-education.shinyapps.io/csc-outcomes-enablers/
+- Development - https://department-for-education.shinyapps.io/dev-csc-outcomes-enablers/
 
 
 ---
 
 ## Requirements
-
-You should list out the software and programming skills needed, as well as any access requirements e.g.
-
 
 ### i. Software requirements (for running locally)
 
@@ -57,10 +53,6 @@ You should list out the software and programming skills needed, as well as any a
 ---
 
 ## How to use
-
-You should clearly lay out the steps needed to run your code here - generally, they will be similar to the below for Shiny apps:
-
-
 ### Running the app locally
 
 1. Clone or download the repo. 
@@ -101,18 +93,23 @@ The function tidy_code() is created in the Rprofile script and therefore is alwa
 
 ## How to contribute
 
-Details on how to contribute to the app should go here, e.g.
-
 ### Flagging issues
 
-If you spot any issues with the application, please flag it in the "Issues" tab of this repository, and label as a bug.
+If you spot any issues with the application, please check first that it has not been reported as an [issue](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues) already.
+
+If no issue is open for your bug, please flag it in the "Issues" tab of this repository, and label as a bug.
+Alternatively, you can open a new [bug report here](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues/new/choose).
+
+### Adding new features
+
+If there are new features you would like to suggest you can submit a [feature request here](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues/new/choose).
 
 ### Merging pull requests
 
-Only members of the Statistics Development team can merge pull requests. Add lauraselby, cjrace and sarahmwong as requested reviewers, and the team will review before merging.
+Only members of the team can merge pull requests. Add yauemily, nataliepaterson and jzaun444 as requested reviewers, and the team will review before merging.
 
 ---
 
 ## Contact
 
-Add contact details of how to get in touch with your team.
+If you have any questions about the dashboard, please contact CSCDashboard.FEEDBACK@education.gov.uk . 
