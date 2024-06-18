@@ -1597,7 +1597,7 @@ plot_ofsted_reg <- function() {
 
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
-  ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
+  ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
