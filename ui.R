@@ -40,22 +40,6 @@
 #    https://github.com/moj-analytical-services/shinyGovstyle
 #
 
-
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-# The documentation for this GOVUK components can be found at:
-#
-#    https://github.com/moj-analytical-services/shinyGovstyle
-#
-
-
-
 ui <- function(input, output, session) {
   bslib::page(
     # use_tota11y(),
@@ -84,7 +68,6 @@ ui <- function(input, output, session) {
     dfe_cookie_script(),
     cookie_banner_ui("cookies", name = "My DfE R Shiny data dashboard"),
     customDisconnectMessage(),
-    # useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(

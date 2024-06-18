@@ -1,64 +1,4 @@
-# Template sample data charts ----
-# createAvgRevTimeSeries <- function(df, inputArea) {
-#   ggplot(df, aes(
-#     x = year,
-#     y = average_revenue_balance,
-#     color = area_name
-#   )) +
-#     geom_line(size = 1.2) +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.title.x = element_text(margin = margin(t = 12)),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0),
-#       legend.position = "top"
-#     ) +
-#     scale_y_continuous(
-#       labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
-#     ) +
-#     xlab("Academic year end") +
-#     ylab("Average revenue balance") +
-#     scale_color_manual(
-#       "Area",
-#       breaks = unique(c("England", inputArea)),
-#       values = gss_colour_pallette
-#     )
-# }
-#
-# plotAvgRevBenchmark <- function(dfRevenueBalance, inputArea) {
-#   ggplot(dfRevenueBalance, aes(
-#     x = area_name,
-#     y = average_revenue_balance,
-#     fill = area_name
-#   )) +
-#     geom_col() +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.text.x = element_text(angle = 300),
-#       axis.title.x = element_blank(),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0),
-#       legend.position = "none"
-#     ) +
-#     scale_y_continuous(
-#       labels = scales::number_format(accuracy = 1, big = ",", prefix = "£")
-#     ) +
-#     xlab("Area") +
-#     ylab("Average revenue balance") +
-#     scale_fill_manual(
-#       "Area",
-#       breaks = unique(dfRevenueBalance$area_name),
-#       values = gss_colour_pallette
-#     )
-# }
-
 # CSC charts
-
-# This is test code to try and create a function for the plots instead of lots of the same bits of code
-# at least a framework for the time series plots
-
 
 # Time series repeat function ----
 # This is a repeat use function for all of the time series plots in this dashboard.
@@ -155,89 +95,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 
 
 # By LA bar chart repeat function ----
-
-# by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title) {
-#   if (selected_geo_lvl == "Local authority") {
-#     la_data <- dataset %>%
-#       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-#       select(time_period, geo_breakdown, `yvalue`) %>%
-#       mutate(
-#         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-#         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
-#       ) %>%
-#       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-#       rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
-#   } else if (selected_geo_lvl == "National") {
-#     la_data <- dataset %>%
-#       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-#       select(time_period, geo_breakdown, `yvalue`) %>%
-#       mutate(
-#         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-#         is_selected = "Not Selected"
-#       ) %>%
-#       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-#       rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
-#   } else if (selected_geo_lvl == "Regional") {
-#     # Check if the selected region is London
-#     if (selected_geo_breakdown == "London") {
-#       # Include both Inner London and Outer London
-#       location <- location_data %>%
-#         filter(region_name %in% c("Inner London", "Outer London")) %>%
-#         pull(la_name)
-#     } else {
-#       # Get the la_name values within the selected region_name
-#       location <- location_data %>%
-#         filter(region_name == selected_geo_breakdown) %>%
-#         pull(la_name)
-#     }
-#
-#     la_data <- dataset %>%
-#       filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-#       select(time_period, geo_breakdown, `yvalue`) %>%
-#       mutate(
-#         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-#         is_selected = "Selected"
-#       ) %>%
-#       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
-#       rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
-#   }
-#
-#
-#   p <- ggplot(la_data, aes(
-#     x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-#     text = paste0(
-#       str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
-#       "Local authority: ", Breakdown, "<br>",
-#       "Time period: ", time_period, "<br>",
-#       "Selection: ", Selection
-#     )
-#   )) +
-#     geom_col(position = position_dodge()) +
-#     ylab(yaxis_title) +
-#     xlab("") +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0)
-#     ) +
-#     scale_y_continuous(limits = c(0, 100)) +
-#     scale_fill_manual(
-#       "LA Selection",
-#       values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
-#     )
-#
-#   # Conditionally set the x-axis labels and ticks
-#   if (selected_geo_lvl == "Regional") {
-#     p <- p + theme(axis.text.x = element_text(angle = 300, hjust = 1))
-#   } else {
-#     p <- p + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
-#   }
-#
-#   return(p)
-# }
-
-
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
@@ -400,49 +257,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
   return(p2)
 }
 
-
-
-
-
-
 # By Region bar chart repeat function -----
-
-# by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim) {
-#   reg_data <- dataset %>%
-#     filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-#     select(time_period, geo_breakdown, `yvalue`) %>%
-#     mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by turnover rate
-#     rename(`Breakdown` = `geo_breakdown`) %>%
-#     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
-#
-#   ggplot(reg_data, aes(
-#     x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-#     text = paste0(
-#       str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-#       "Region: ", `Breakdown`, "<br>",
-#       "Time period: ", `time_period`
-#     )
-#   )) +
-#     geom_col(position = position_dodge()) +
-#     ylab(yaxis_title) +
-#     # ylab("Turnover rate (FTE) %") +
-#     xlab("Region") +
-#     theme_classic() +
-#     theme(
-#       text = element_text(size = 12),
-#       axis.text.x = element_text(angle = 45),
-#       axis.title.x = element_blank(),
-#       axis.title.y = element_text(margin = margin(r = 12)),
-#       axis.line = element_line(size = 1.0)
-#     ) +
-#     scale_y_continuous(limits = c(0, yupperlim)) +
-#     scale_fill_manual(
-#       "Time Period",
-#       # breaks = unique(c("England", inputArea)),
-#       values = "#12436D" # gss_colour_pallette
-#     )
-# }
-
 by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE) {
   if (add_rect == FALSE) {
     reg_data <- dataset %>%
@@ -956,14 +771,6 @@ plot_cla_rate_reg <- function() {
 }
 
 plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  # GET_location <- function(file = "data/csww_headline_measures_2017_to_2022.csv"){
-  #   FACT_location <- read.csv(file)
-  #   FACT_location <- FACT_location%>%
-  #     select(region_name, la_name) %>%
-  #     filter((la_name != '')) %>%
-  #     unique()
-  # }
-  #
   location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
 
   if (selected_geo_lvl == "Local authority") {
@@ -1090,14 +897,6 @@ plot_cla_march_reg <- function() {
 }
 
 plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  # GET_location <- function(file = "data/csww_headline_measures_2017_to_2022.csv"){
-  #   FACT_location <- read.csv(file)
-  #   FACT_location <- FACT_location%>%
-  #     select(region_name, la_name) %>%
-  #     filter((la_name != '')) %>%
-  #     unique()
-  # }
-  #
   location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
 
   if (selected_geo_lvl == "Local authority") {
@@ -1229,14 +1028,6 @@ plot_cin_rate_reg <- function() {
 
 # cin rate chart by la
 plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  # GET_location <- function(file = "data/b1_children_in_need_2013_to_2023.csv"){
-  #   FACT_location <- read.csv(file)
-  #   FACT_location <- FACT_location%>%
-  #     select(region_name, la_name) %>%
-  #     filter((la_name != '')) %>%
-  #     unique()
-  # }
-
   location_data <- GET_location("data/b1_children_in_need_2013_to_2023.csv")
 
   if (selected_geo_lvl == "Local authority") {
@@ -1366,14 +1157,6 @@ plot_cin_referral_reg <- function() {
 
 # bar chart by LA
 plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  # GET_location <- function(file = "data/csww_headline_measures_2017_to_2022.csv"){
-  #   FACT_location <- read.csv(file)
-  #   FACT_location <- FACT_location%>%
-  #     select(region_name, la_name) %>%
-  #     filter((la_name != '')) %>%
-  #     unique()
-  # }
-
   location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
 
   if (selected_geo_lvl == "Local authority") {

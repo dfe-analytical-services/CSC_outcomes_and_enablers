@@ -83,59 +83,6 @@ server <- function(input, output, session) {
     google_analytics_key = google_analytics_key
   )
 
-  # output$choice_text_test <- renderText({
-  #   c(paste0("you have selected",input$select_geography))
-  # })
-
-  # Time period dropdown also does not need to appear here - does not need to be reactive
-
-  # Simple server stuff goes here ------------------------------------------------------------
-  # reactiveRevBal <- reactive({
-  #   dfRevBal %>% filter(
-  #     area_name == input$selectArea | area_name == "England",
-  #     school_phase == input$selectPhase
-  #   )
-  # })
-
-  # Define server logic required to draw a histogram
-  # output$lineRevBal <- renderPlotly({
-  #   ggplotly(createAvgRevTimeSeries(reactiveRevBal(), input$selectArea)) %>%
-  #     config(displayModeBar = F) %>%
-  #     layout(legend = list(orientation = "h", x = 0, y = -0.2))
-  # })
-  #
-  # reactiveBenchmark <- reactive({
-  #   dfRevBal %>%
-  #     filter(
-  #       area_name %in% c(input$selectArea, input$selectBenchLAs),
-  #       school_phase == input$selectPhase,
-  #       year == max(year)
-  #     )
-  # })
-  #
-  # output$colBenchmark <- renderPlotly({
-  #   ggplotly(
-  #     plotAvgRevBenchmark(reactiveBenchmark()) %>%
-  #       config(displayModeBar = F),
-  #     height = 420
-  #   )
-  # })
-  #
-  # output$tabBenchmark <- renderDataTable({
-  #   datatable(
-  #     reactiveBenchmark() %>%
-  #       select(
-  #         Area = area_name,
-  #         `Average Revenue Balance (£)` = average_revenue_balance,
-  #         `Total Revenue Balance (£m)` = total_revenue_balance_million
-  #       ),
-  #     options = list(
-  #       scrollX = TRUE,
-  #       paging = FALSE
-  #     )
-  #   )
-  # })
-
   # Download handler
   csvDownloadHandler <- function(id, filename) {
     session$sendCustomMessage("downloadDataWithTransformation", list(id = id, filename = filename))
