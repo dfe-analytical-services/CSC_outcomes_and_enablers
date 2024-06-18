@@ -30,7 +30,7 @@ a11y_panel <- function() {
           h2("Feedback"),
           p(
             "If you have any feedback on how we could further improve the accessibility of this application, please contact us at",
-            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk"),
+            a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", "CSCDashboard.FEEDBACK@education.gov.uk"),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )
         )
@@ -57,7 +57,7 @@ support_links <- function() {
           ),
           p(
             "If you spot any errors or bugs while using this dashboard, please screenshot and email them to",
-            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk", .noWS = c("after")), "."
+            a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after")), "."
           ),
           h2("Find more information on the data"),
           p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics.", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
@@ -75,7 +75,7 @@ support_links <- function() {
           h2("Contact us"),
           p(
             "If you have questions about the dashboard or data within it, please contact us at ",
-            a(href = "mailto:CSC.DATASTRATEGY@education.gov.uk", "CSC.DATASTRATEGY@education.gov.uk", .noWS = c("after"))
+            a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after"))
           ),
           h2("See the source code"),
           p(
