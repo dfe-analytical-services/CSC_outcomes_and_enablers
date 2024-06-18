@@ -14,7 +14,7 @@ shhh(library(shiny))
 shhh(library(shinyjs))
 shhh(library(tools))
 shhh(library(testthat))
-shhh(library(shinydashboard))
+# shhh(library(shinydashboard))
 shhh(library(shinyWidgets))
 shhh(library(shinyGovstyle))
 shhh(library(shinytitle))
@@ -39,10 +39,12 @@ shhh(library(readxl))
 shhh(library(janitor))
 shhh(library(scales))
 
+# shhh(library(shinya11y)) # used to test the accessibility of the dashboard
+
 
 shhh(library(htmltools))
 
-# shhh(library(shinya11y))
+
 
 # Functions ---------------------------------------------------------------------------------
 
@@ -65,8 +67,7 @@ cs_num <- function(value) {
 # Source any scripts here. Scripts may be needed to process data before it gets to the server file.
 # It's best to do this here instead of the server file, to improve performance.
 
-# source("R/filename.r")
-
+source("R/read_data.R")
 
 # appLoadingCSS ----------------------------------------------------------------------------
 # Set up loading screen
@@ -93,8 +94,6 @@ ees_pub_name <- "Statistical publication" # Update this with your parent publica
 ees_publication <- "https://explore-education-statistics.service.gov.uk/find-statistics/" # Update with parent publication link
 google_analytics_key <- "Q13T4ENF6C"
 
-
-source("R/read_data.R")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data

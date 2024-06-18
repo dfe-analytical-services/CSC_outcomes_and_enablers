@@ -84,7 +84,7 @@ ui <- function(input, output, session) {
     dfe_cookie_script(),
     cookie_banner_ui("cookies", name = "My DfE R Shiny data dashboard"),
     customDisconnectMessage(),
-    useShinydashboard(),
+    # useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(
@@ -126,7 +126,6 @@ ui <- function(input, output, session) {
       widths = c(2, 8),
       well = FALSE,
       introductionPanel(),
-      # dashboard_panel(),
       outcome1_tab(),
       outcome2_tab(),
       outcome3_tab(),
@@ -134,7 +133,6 @@ ui <- function(input, output, session) {
       enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
-      # homepage_panel(),
       a11y_panel(),
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
