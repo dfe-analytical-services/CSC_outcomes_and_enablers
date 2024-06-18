@@ -3676,7 +3676,7 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, 100), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
   })
 
 
