@@ -7633,12 +7633,14 @@ server <- function(input, output, session) {
     # Set the max y-axis scale
     max_rate <- max(
       combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+        combined_cla_data$time_period == max(combined_cla_data$time_period) &
+        combined_cla_data$geographic_level == "Local authority"],
       na.rm = TRUE
     )
 
     # Round the max_rate to the nearest 50
-    max_rate <- ceiling(max_rate / 50) * 50
+    max_rate <- ceiling(max_rate / 10) * 10
 
     p <- statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
@@ -7740,10 +7742,12 @@ server <- function(input, output, session) {
     )
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+      cla_rates$time_period == max(cla_rates$time_period) &
+      cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
-    max_rate <- ceiling(max_rate / 50) * 50
+    max_rate <- ceiling(max_rate / 10) * 10
 
     filtered_data <- cla_rates %>%
       filter(population_count == "Children looked after at 31 March each year") %>%

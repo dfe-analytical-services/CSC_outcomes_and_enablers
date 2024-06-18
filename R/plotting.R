@@ -346,6 +346,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
     if (is.null(yupperlim)) {
       p <- p + scale_y_continuous(limits = c(0, 100))
     } else {
+      yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
       p <- p + scale_y_continuous(limits = c(0, yupperlim))
     }
 
@@ -460,6 +461,8 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         "Time period: ", `time_period`
       )
     ))
+
+    yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
 
     p2 <- p +
       geom_col(position = position_dodge()) +
@@ -1594,6 +1597,8 @@ plot_ofsted_reg <- function() {
 
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+  ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
+
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
@@ -1688,6 +1693,8 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
 }
 
 statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
+
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
