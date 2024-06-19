@@ -27,7 +27,7 @@ convert_perc_cols_to_numeric <- function(x) {
 }
 
 remove_old_la_data <- function(data) {
-  ons_la_data <- read.csv("data/Lower_Tier_Local_Authority_to_Upper_Tier_Local_Authority_(April_2023)_Lookup_in_England_and_Wales.csv")
+  ons_la_data <- read.csv("data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv")
   ons_la_data <- ons_la_data %>%
     select(UTLA23CD, UTLA23NM) %>%
     filter(!str_starts(UTLA23CD, "W")) %>%
