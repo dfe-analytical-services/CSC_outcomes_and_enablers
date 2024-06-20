@@ -6,8 +6,11 @@
 In this function, there is a line of code that reads: `ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)`.\
 \
 There are many instances in server.R where this function is called to output a time series line chart. Each instance **must** pass through a `ylim_upper` variable for use in the line of code above. The line of code performs the following:
+
 1. `ceiling(ylim_upper / 20) * 20` divides the `ylim_upper` value by 20, then `ceiling` ensures the divided value is always rounded up to the nearest interger (e.g. 3.4 would become 4). Then, the resulting integer is multiplied by 20.
+
 2. `ylim_upper * 0.05` gets 5% of the ylim_upper value.
+
 3. Both values are then added together to get the final `ylim_upper` value.
 
 The ylim_upper value is then used to set the max y-axis value: 
@@ -68,17 +71,29 @@ Using **plot_uasc** as an example, it is a stacked bar chart, so would need to t
 ```
 \
 The list of unique functions that use the dynamic y-axis method in plotting.R are as follows:
+
 - plot_uasc
+
 - plot_uasc_reg
+
 - plot_uasc_la
+
 - plot_cla_rate_reg
+
 - plot_cla_rate_la
+
 - plot_cla_march_reg
+
 - plot_cla_march_la
+
 - plot_cin_rate_reg
+
 - plot_cin_rate_la
+
 - plot_cin_referral_reg
+
 - plot_cin_referral_la
+
 - statistical_neighbours_plot_uasc
 
 ## server.R
