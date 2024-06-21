@@ -93,8 +93,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 }
 
 
-
-
 # By LA bar chart repeat function ----
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE) {
   if (selected_geo_lvl == "Local authority") {
@@ -187,7 +185,6 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         "Selection: ", Selection
       )
     )) +
-      # geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
@@ -222,7 +219,6 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         "Selection: ", Selection
       )
     )) +
-      # geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
@@ -394,8 +390,6 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
       limits = custom_x_order,
       labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
     )
-  # print(all((is.na(ethnicity_data$percentage))))
-  # print((is.na(ethnicity_data$percentage)))
   if (all(is.na(ethnicity_data$percentage))) {
     p <- p + annotate(x = 3, y = 50, geom = "text", label = "There is no available data due to zero social workers with known ethnicity", color = "red")
   }
@@ -458,18 +452,6 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
     workforce_eth_seniority$geo_breakdown %in% geo_breakdown & workforce_eth_seniority$seniority != "Total",
     c("time_period", "geo_breakdown", "breakdown", "Percentage", "seniority")
   ]
-
-  # Reshape data using pivot_longer()
-  # ethnicity_data_long <- ethnicity_data_sen %>%
-  #   pivot_longer(
-  #     cols = c("white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc"),
-  #     names_to = "ethnicity",
-  #     values_to = "percentage"
-  #   )
-
-
-  # Ensure 'percentage' is numeric
-  # ethnicity_data_long$percentage <- as.numeric(ethnicity_data_long$percentage)
 
   custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
   custom_fill_order <- c("Manager", "Senior practitioner", "Case holder", "Qualified without cases")
@@ -771,7 +753,6 @@ plot_cla_rate_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -897,7 +878,6 @@ plot_cla_march_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -1024,12 +1004,9 @@ plot_cin_rate_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
-
-
 
 
 # cin rate chart by la
@@ -1156,7 +1133,6 @@ plot_cin_referral_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -1626,7 +1602,6 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
   if (is.null(selectedcolumn)) {
-    # print("2")
     data2 <- dataset %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%
