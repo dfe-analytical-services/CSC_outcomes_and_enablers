@@ -128,8 +128,7 @@ server <- function(input, output, session) {
       choices = choices,
     )
   })
-  # outcome 1 confirmation text
-
+  ## outcome 1 confirmation text ----
   region_for_la_o1 <- reactive({
     selected_la <- input$geographic_breakdown_o1
     location_data %>%
@@ -212,8 +211,8 @@ server <- function(input, output, session) {
   })
 
 
-
-  ## CLA rate headline ----
+  ## Headline stats ---------
+  ## CLA rate headline
   output$cla_rate_headline_txt <- renderText({
     if (input$geographic_breakdown_o1 == "") {
       stat <- "NA"
@@ -250,7 +249,102 @@ server <- function(input, output, session) {
     }
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
+  ## CIN rate headline
+  output$cin_rate_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+        %>% select(At31_episodes_rate), nsmall = 1)
+    }
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
+  })
 
+  ## CIN referral headline
+  output$cin_referral_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+        %>% select(Re_referrals_percent), nsmall = 1)
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
+  })
+
+  # formatted time period for the persistent absence headline stat boxes
+  formatted_time_period_wellbeing <- outcomes_absence %>%
+    filter(time_period == max(time_period), geo_breakdown == "National", social_care_group == "CINO at 31 March", school_type == "Total") %>%
+    mutate(time_period_new = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
+
+  # absence rates for CIN
+  output$absence_CIN_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(pt_overall), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # absence rates for CPPO
+  output$absence_CPP_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(pt_overall), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # absence rates for CLA
+  output$absence_CLA_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(pt_overall), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # persistent absentees headline stats
+  # Persistent absence for CIN
+  output$persistent_CIN_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # Persistent absence for CPPO
+  output$persistent_CPP_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # Persistent absence for CLA
+  output$persistent_CLA_headline_txt <- renderText({
+    if (input$geographic_breakdown_o1 == "") {
+      stat <- "NA"
+    } else {
+      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+    }
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  ## CLA rates ----------------
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
     shiny::validate(
@@ -309,7 +403,7 @@ server <- function(input, output, session) {
   })
 
   # CLA rate TABLE
-  output$table_cla_rate <- renderReactable({ # renderDataTable({
+  output$table_cla_rate <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
@@ -823,18 +917,6 @@ server <- function(input, output, session) {
     )
   })
 
-  ## CIN rate headline ----
-  output$cin_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(At31_episodes_rate), nsmall = 1)
-    }
-
-    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
-  })
-
   # CIN rate plot
   output$plot_cin_rate <- plotly::renderPlotly({
     shiny::validate(
@@ -1045,18 +1127,8 @@ server <- function(input, output, session) {
     )
   })
 
-  ## CIN referral headline -----
-  output$cin_referral_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
-    }
 
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
-  })
-
+  ## CIN referrals --------------------------
   ## CIN referral plot
   output$plot_cin_referral <- plotly::renderPlotly({
     shiny::validate(
@@ -1261,49 +1333,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # Child wellbeing & development
-  # overall absence headline ----
-
-  # formatted time period
-  formatted_time_period_wellbeing <- outcomes_absence %>%
-    filter(time_period == max(time_period), geo_breakdown == "National", social_care_group == "CINO at 31 March", school_type == "Total") %>%
-    mutate(time_period_new = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-
-
-  # CIN
-  output$absence_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CPPO
-  output$absence_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CLA
-  output$absence_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-
+  # Child wellbeing & development - School absence and attainment
   # overall absence timeseries chart
   output$absence_time_series <- plotly::renderPlotly({
     shiny::validate(
@@ -1533,41 +1563,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # persistent absentees headline ----
-  # CIN
-  output$persistent_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CPPO
-  output$persistent_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-  # CLA
-  output$persistent_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
-      stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
-    }
-    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
-  })
-
-
+  ## Persistent absence ------------
   # persistent absence timeseries chart
   output$persistence_time_series <- plotly::renderPlotly({
     shiny::validate(
@@ -7361,6 +7357,8 @@ server <- function(input, output, session) {
 
 
   # ALL statistical neighbours -----
+  # The following code has a layout of UI, stats neighbours plot and table alternative
+  # and is repeated for each indicator
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   ## Outcome 1 ------
   ### CLA ------
@@ -7415,7 +7413,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cla_tbl", filename = paste0("cla_rates_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_cla_tbl")
             ))
-            # reactableOutput("SN_cla_tbl")
           )
         ),
         details(
@@ -7443,7 +7440,6 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-
     # Set the max y-axis scale
     max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
 
@@ -7501,7 +7497,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_uasc_la", filename = "cla_UASC_rates_all_LAs.csv"),
               reactableOutput("table_uasc_la")
             ))
-            # reactableOutput("table_uasc_la")
           )
         ),
         details(
@@ -7540,7 +7535,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_uasc_tbl", filename = paste0("cla_UASC_rates_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_uasc_tbl")
             ))
-            # reactableOutput("SN_uasc_tbl")
           )
         ),
         details(
@@ -7595,8 +7589,7 @@ server <- function(input, output, session) {
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
-      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")) # %>%
-    #   rename("Placement rate per 10000" = "placement_per_10000")
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"))
 
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
@@ -7624,7 +7617,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cla_march_la", filename = "cla_march_rates_all_LAs.csv"),
               reactableOutput("table_cla_march_la")
             ))
-            # reactableOutput("table_cla_march_la")
           )
         ),
         details(
@@ -7659,7 +7651,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cla_march_tbl", filename = paste0("cla_march_rates_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_cla_march_tbl")
             ))
-            # reactableOutput("SN_cla_march_tbl")
           )
         ),
         details(
@@ -7684,9 +7675,7 @@ server <- function(input, output, session) {
 
   # cla march stats neighbours chart and table here
   output$cla_march_SN_plot <- plotly::renderPlotly({
-    validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
-    )
+    validate(need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."))
 
     # Set the max y-axis scale
     max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
@@ -7741,7 +7730,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cin_rates_la", filename = "cin_rates_all_LAs.csv"),
               reactableOutput("table_cin_rates_la")
             ))
-            # reactableOutput("table_cin_rates_la")
           )
         ),
         details(
@@ -7769,7 +7757,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("cin_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin",
@@ -7779,8 +7766,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cin_tbl", filename = paste0("cin_rates_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_cin_tbl")
             ))
-            # reactableOutput("SN_cin_tbl")
-            # p("This is under development.")
           )
         ),
         details(
@@ -7831,8 +7816,6 @@ server <- function(input, output, session) {
 
   # # cin stats neighbours tables
   output$SN_cin_tbl <- renderReactable({
-    # filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
-
     # renaming column
     data <- cin_rates %>% rename("CIN_rate_per_10000" = "At31_episodes_rate")
 
@@ -7862,8 +7845,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cin_referral_la", filename = "cin_re_referrals_all_LAs.csv"),
               reactableOutput("table_cin_referral_la")
             ))
-
-            # reactableOutput("table_cin_referral_la")
           )
         ),
         details(
@@ -7889,7 +7870,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("cin_referral_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_cin_referral",
@@ -7899,7 +7879,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cin_referral_tbl", filename = paste0("cin_re_referrals_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_cin_referral_tbl")
             ))
-            # reactableOutput("SN_cin_referral_tbl")
           )
         ),
         details(
@@ -7927,9 +7906,6 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-
-    # data <- cin_referrals %>%
-    #  rename("Re_referrals_percentage" = "Re-referrals (%)")
     p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
@@ -7969,8 +7945,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_absence_la", filename = "absence_rates_all_LAs.csv"),
               reactableOutput("table_absence_la")
             ))
-
-            # reactableOutput("table_absence_la")
           )
         ),
         details(
@@ -8007,7 +7981,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("absence_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_absence",
@@ -8017,7 +7990,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_absence_tbl", filename = paste0("absence_rates_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_absence_tbl")
             ))
-            # reactableOutput("SN_absence_tbl")
           )
         ),
         details(
@@ -8098,8 +8070,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_persistent_absence_la", filename = "persistent_absence_all_LAs.csv"),
               reactableOutput("table_persistent_absence_la")
             ))
-
-            # reactableOutput("table_persistent_absence_la")
           )
         ),
         details(
@@ -8135,7 +8105,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("persistent_absence_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_persistent_abs",
@@ -8145,7 +8114,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_persistent_absence_tbl", filename = paste0("persistent_absence_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_persistent_absence_tbl")
             ))
-            # reactableOutput("SN_persistent_absence_tbl")
           )
         ),
         details(
@@ -8224,7 +8192,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_KS2_la", filename = "ks2_attainment_all_LAs.csv"),
               reactableOutput("table_KS2_la")
             ))
-            # reactableOutput("table_KS2_la")
           )
         ),
         details(
@@ -8256,7 +8223,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("ks2_attain_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks2",
@@ -8266,8 +8232,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_ks2_attain_tbl", filename = paste0("ks2_attainment_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_ks2_attain_tbl")
             ))
-            # reactableOutput("SN_ks2_attain_tbl")
-            # p("This is under development.")
           )
         ),
         details(
@@ -8348,7 +8312,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_KS4_la", filename = "ks4_attainment_all_LAs.csv"),
               reactableOutput("table_KS4_la")
             ))
-            # reactableOutput("table_KS4_la")
           )
         ),
         details(
@@ -8383,7 +8346,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("ks4_attain_SN_plot"),
-        # p("This is under development."),
         br(),
         details(
           inputId = "tbl_sn_ks4",
@@ -8393,8 +8355,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_ks4_attain_tbl", filename = paste0("ks4_attainment_SN_", input$geographic_breakdown_o1, ".csv")),
               reactableOutput("SN_ks4_attain_tbl")
             ))
-            # reactableOutput("SN_ks4_attain_tbl")
-            # p("This is under development.")
           )
         ),
         details(
@@ -8475,7 +8435,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_sgo_la", filename = "ceased_CLA_SGO_all_LAs.csv"),
               reactableOutput("table_sgo_la")
             ))
-            # reactableOutput("table_sgo_la")
           )
         ),
         details(
@@ -8510,8 +8469,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_sgo_tbl", filename = paste0("ceased_CLA_SGO_SN_", input$geographic_breakdown_o2, ".csv")),
               reactableOutput("SN_sgo_tbl")
             ))
-            # dataTableOutput("SN_sgo_tbl")
-            # reactableOutput("SN_sgo_tbl")
           )
         ),
         details(
@@ -8588,7 +8545,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cao_la", filename = "ceased_CLA_CAO_all_LAs.csv"),
               reactableOutput("table_cao_la")
             ))
-            # reactableOutput("table_cao_la")
           )
         ),
         details(
@@ -8623,7 +8579,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cao_tbl", filename = paste0("ceased_CLA_CAO_SN_", input$geographic_breakdown_o2, ".csv")),
               reactableOutput("SN_cao_tbl")
             ))
-            # reactableOutput("SN_cao_tbl")
           )
         ),
         details(
@@ -8701,7 +8656,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cpp_repeat_la", filename = "repeat_CPP_rates_all_LAs.csv"),
               reactableOutput("table_cpp_repeat_la")
             ))
-            # reactableOutput("table_cpp_repeat_la")
           )
         ),
         details(
@@ -8735,7 +8689,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_cpp_repeat_tbl", filename = paste0("reapeat_CPP_SN_", input$geographic_breakdown_o3, ".csv")),
               reactableOutput("SN_cpp_repeat_tbl")
             ))
-            # reactableOutput("SN_cpp_repeat_tbl")
           )
         ),
         details(
@@ -8815,7 +8768,6 @@ server <- function(input, output, session) {
               csvDownloadButton("admissions_la_tbl", filename = "hospital_admissions_all_LAs.csv"),
               reactableOutput("admissions_la_tbl")
             ))
-            # reactableOutput("admissions_la_tbl")
           )
         ),
         details(
@@ -8853,7 +8805,6 @@ server <- function(input, output, session) {
               csvDownloadButton("hosp_admissions_SN_tbl", filename = paste0("hospital_admissions_SN_", input$geographic_breakdown_o3, ".csv")),
               reactableOutput("hosp_admissions_SN_tbl")
             ))
-            # reactableOutput("hosp_admissions_SN_tbl")
           )
         ),
         details(
@@ -8931,7 +8882,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_child_ab_neg_la", filename = "child_abuse_rates_all_LAs.csv"),
               reactableOutput("table_child_ab_neg_la")
             ))
-            # reactableOutput("table_child_ab_neg_la")
           )
         ),
         details(
@@ -8969,7 +8919,6 @@ server <- function(input, output, session) {
               csvDownloadButton("abuse_neg_SN_tbl", filename = paste0("child_abuse_rates_SN_", input$geographic_breakdown_o3, ".csv")),
               reactableOutput("abuse_neg_SN_tbl")
             ))
-            # reactableOutput("abuse_neg_SN_tbl")
           )
         ),
         details(
@@ -9045,7 +8994,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_efh_la", filename = "EFH_rates_all_LAs.csv"),
               reactableOutput("table_efh_la")
             ))
-            # reactableOutput("table_efh_la")
           )
         ),
         details(
@@ -9074,7 +9022,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("efh_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_efh",
@@ -9084,7 +9031,6 @@ server <- function(input, output, session) {
               csvDownloadButton("efh_SN_tbl", filename = paste0("EFH_rates_SN_", input$geographic_breakdown_o3, ".csv")),
               reactableOutput("efh_SN_tbl")
             ))
-            # reactableOutput("efh_SN_tbl")
           )
         ),
         details(
@@ -9163,8 +9109,6 @@ server <- function(input, output, session) {
               csvDownloadButton("placement_type_la_tbl", filename = "placement_type_all_LAs.csv"),
               reactableOutput("placement_type_la_tbl")
             ))
-            # reactableOutput("placement_type_la_tbl")
-            # p("table here")
           )
         ),
         details(
@@ -9274,8 +9218,6 @@ server <- function(input, output, session) {
               csvDownloadButton("placement_changes_la_tbl", filename = "cla_more_than_3_placements_all_LAs.csv"),
               reactableOutput("placement_changes_la_tbl")
             ))
-            # reactableOutput("placement_changes_la_tbl")
-            # p("table here")
           )
         ),
         details(
@@ -9298,7 +9240,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("placement_changes_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_placement_changes",
@@ -9385,7 +9326,6 @@ server <- function(input, output, session) {
               csvDownloadButton("placement_dist_la_tbl", filename = "placements_more_than_20_miles_from_home_all_LAs.csv"),
               reactableOutput("placement_dist_la_tbl")
             ))
-            # reactableOutput("placement_dist_la_tbl")
           )
         ),
         details(
@@ -9410,7 +9350,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("placement_dist_SN_plot"),
-        # p("stats neighbours plot here"),
         br(),
         details(
           inputId = "tbl_sn_placement_changes",
@@ -9420,8 +9359,6 @@ server <- function(input, output, session) {
               csvDownloadButton("placement_dist_SN_tbl", filename = paste0("placements_more_than_20_miles_from_home_SN_", input$geographic_breakdown_o4, ".csv")),
               reactableOutput("placement_dist_SN_tbl")
             ))
-            # reactableOutput("placement_dist_SN_tbl")
-            # p("table here")
           )
         ),
         details(
@@ -9500,7 +9437,6 @@ server <- function(input, output, session) {
               csvDownloadButton("sdq_by_la_tbl", filename = "wellbeing_sdq_score_all_LAs.csv"),
               reactableOutput("sdq_by_la_tbl")
             ))
-            # reactableOutput("sdq_by_la_tbl")
           )
         ),
         details(
@@ -9523,7 +9459,6 @@ server <- function(input, output, session) {
       )
       tagList(
         plotlyOutput("SN_sdq_plot"),
-        # p("stats neighours chart here"),
         br(),
         details(
           inputId = "tbl_sn_sdq_score",
@@ -9533,7 +9468,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_sdq_table", filename = paste0("wellbeing_sdq_score_SN_", input$geographic_breakdown_o4, ".csv")),
               reactableOutput("SN_sdq_table")
             ))
-            # reactableOutput("SN_sdq_table")
           )
         ),
         details(
@@ -9610,7 +9544,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cl_activity_la", filename = "care_leavers_activity_all_LAs.csv"),
               reactableOutput("table_cl_activity_la")
             ))
-            # p("table here")
           )
         ),
         details(
@@ -9650,7 +9583,6 @@ server <- function(input, output, session) {
               csvDownloadButton("cl_activity_SN_tbl", filename = paste0("care_leavers_activity_SN_", input$geographic_breakdown_o4, ".csv")),
               reactableOutput("cl_activity_SN_tbl")
             ))
-            # reactableOutput("cl_activity_SN_tbl")
           )
         ),
         details(
@@ -9731,8 +9663,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_cl_accommodation_la", filename = "care_leavers_accomm_all_LAs.csv"),
               reactableOutput("table_cl_accommodation_la")
             ))
-            # reactableOutput("table_cl_accommodation_la")
-            # p("table here")
           )
         ),
         details(
@@ -9774,8 +9704,6 @@ server <- function(input, output, session) {
               csvDownloadButton("cl_acccomm_SN_tbl", filename = paste0("care_leavers_accomm_SN_", input$geographic_breakdown_o4, ".csv")),
               reactableOutput("cl_acccomm_SN_tbl")
             ))
-            # reactableOutput("cl_acccomm_SN_tbl")
-            # p("table here")
           )
         ),
         details(
@@ -9859,7 +9787,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_turnover_la", filename = "social_worker_turnover_all_LAs.csv"),
               reactableOutput("table_turnover_la")
             ))
-            # reactableOutput("table_turnover_la")
           )
         ),
         details(
@@ -9895,8 +9822,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_turnover_tbl", filename = paste0("social_worker_turnover_SN_", input$geographic_breakdown_e3, ".csv")),
               reactableOutput("SN_turnover_tbl")
             ))
-            # dataTableOutput("SN_turnover_tbl")
-            # reactableOutput("SN_turnover_tbl")
           )
         ),
         details(
@@ -9966,7 +9891,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_agency_rate_la", filename = "agency_worker_rate_all_LAs.csv"),
               reactableOutput("table_agency_rate_la")
             ))
-            # reactableOutput("table_agency_rate_la")
           )
         ),
         details(
@@ -10000,7 +9924,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_agency_tbl", filename = paste0("agency_worker_rate_SN_", input$geographic_breakdown_e3, ".csv")),
               reactableOutput("SN_agency_tbl")
             ))
-            # reactableOutput("SN_agency_tbl")
           )
         ),
         details(
@@ -10070,8 +9993,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_vacancy_rate_la", filename = "vacancy_rates_all_LAs.csv"),
               reactableOutput("table_vacancy_rate_la")
             ))
-
-            # reactableOutput("table_vacancy_rate_la")
           )
         ),
         details(
@@ -10105,7 +10026,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_vacancy_tbl", filename = paste0("vacancy_rates_SN_", input$geographic_breakdown_e3, ".csv")),
               reactableOutput("SN_vacancy_tbl")
             ))
-            # reactableOutput("SN_vacancy_tbl")
           )
         ),
         details(
@@ -10173,7 +10093,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_caseload_la", filename = "avg_caseload_all_LAs.csv"),
               reactableOutput("table_caseload_la")
             ))
-            # reactableOutput("table_caseload_la")
           )
         ),
         details(
@@ -10207,7 +10126,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_caseload_tbl", filename = paste0("avg_caseload_SN_", input$geographic_breakdown_e3, ".csv")),
               reactableOutput("SN_caseload_tbl")
             ))
-            # reactableOutput("SN_caseload_tbl")
           )
         ),
         details(
@@ -10278,7 +10196,6 @@ server <- function(input, output, session) {
             csvDownloadButton("ofsted_SN_tbl", filename = paste0("Ofsted_leadership_ratings_SN_", input$geographic_breakdown_e2, ".csv")),
             reactableOutput("ofsted_SN_tbl")
           ))
-          # reactableOutput("ofsted_SN_tbl")
         )
       ),
       details(
@@ -10345,7 +10262,6 @@ server <- function(input, output, session) {
               csvDownloadButton("table_tot_spending_la", filename = "spend_on_CSC_all_LAs.csv"),
               reactableOutput("table_tot_spending_la")
             ))
-            # reactableOutput("table_tot_spending_la")
           )
         ),
         details(
@@ -10380,8 +10296,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_tot_spend_tbl", filename = paste0("spend_on_CSC_SN_", input$geographic_breakdown_e2, ".csv")),
               reactableOutput("SN_tot_spend_tbl")
             ))
-            # reactableOutput("SN_tot_spend_tbl")
-            # p("table")
           )
         ),
         details(
@@ -10489,7 +10403,6 @@ server <- function(input, output, session) {
               csvDownloadButton("spend_excl_cla_la_tbl", filename = "spend_on_CSC_excl_CLA_all_LAs.csv"),
               reactableOutput("spend_excl_cla_la_tbl")
             ))
-            # reactableOutput("spend_excl_cla_la_tbl")
           )
         ),
         details(
@@ -10522,8 +10435,6 @@ server <- function(input, output, session) {
               csvDownloadButton("SN_spend_no_cla_tbl", filename = paste0("spend_on_CSC_excl_CLA_SN_", input$geographic_breakdown_e2, ".csv")),
               reactableOutput("SN_spend_no_cla_tbl")
             ))
-            # reactableOutput("SN_spend_no_cla_tbl")
-            # p("table")
           )
         ),
         details(
