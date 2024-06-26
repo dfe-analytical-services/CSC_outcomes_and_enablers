@@ -2620,7 +2620,7 @@ server <- function(input, output, session) {
         filter(characteristic == "Special guardianship orders") %>%
         select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
         arrange(desc(`Ceased (%)`))
-    } else if (input$select_geography_e2 %in% c("Local authority", "National")) {
+    } else if (input$select_geography_o2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
         filter(characteristic == "Special guardianship orders") %>%
