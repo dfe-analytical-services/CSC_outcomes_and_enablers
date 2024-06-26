@@ -9,6 +9,7 @@ outcome2_tab <- function() {
           h1("Outcome 2: Children and young people are supported by their family network")
         )
       ),
+      # dropdown boxes
       gov_row(
         div(
           class = "input_box",
@@ -35,6 +36,7 @@ outcome2_tab <- function() {
             ),
             col_widths = c(4, 8)
           ),
+          # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o2 != 'National'",
@@ -69,6 +71,7 @@ outcome2_tab <- function() {
         )
       ),
       br(),
+      # confirmation choice
       gov_row(
         br(),
         p(htmlOutput("outcome2_choice_text1"), htmlOutput("outcome2_choice_text2")),
@@ -104,17 +107,17 @@ outcome2_tab <- function() {
                   )
                 ),
                 br(),
-                p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents.")
+                p("Unlocking the potential of family networks and kinship care is key to building a system where children who cannot live with their parents are supported to live with people who are known to them and love them."),
+                p("Moving children from care arrangements to a SGO or CAO shows that permanence outside of the care system is being prioritised."),
               ),
               accordion(
+                ## SGO ------
                 accordion_panel(
                   "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
                   gov_row(
                     h2("Special Guardianship Order (SGO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
                     insert_text(inputId = "SGO_def", text = paste(
-                      # tags$b("Special guardianship order"), " - A private law order made under the Children Act 1989 appointing one or more individuals to be a child's 'special guardian'. It is intended for those children who cannot live with their birth parents and who would benefit from a legally secure placement."
                       tags$b("Speical guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
                     )),
                     br(),
@@ -128,8 +131,6 @@ outcome2_tab <- function() {
                           csvDownloadButton("table_sgo_ceased", filename = "ceased_CLA_SGO.csv"),
                           reactableOutput("table_sgo_ceased")
                         ))
-
-                        # reactableOutput("table_sgo_ceased")
                       )
                     ),
                     details(
@@ -165,7 +166,6 @@ outcome2_tab <- function() {
                           csvDownloadButton("table_sgo_ceased_reg", filename = "ceased_CLA_SGO_regions.csv"),
                           reactableOutput("table_sgo_ceased_reg")
                         ))
-                        # reactableOutput("table_sgo_ceased_reg")
                       )
                     ),
                     details(
@@ -197,6 +197,7 @@ outcome2_tab <- function() {
                     uiOutput("SN_sgo"),
                   )
                 ),
+                ## CAO ----------------
                 accordion_panel(
                   "Percentage of children who cease being looked after due to Child Arrangement Order (CAO)",
                   gov_row(
@@ -205,10 +206,6 @@ outcome2_tab <- function() {
                     insert_text(inputId = "CAO_def", text = paste(
                       tags$b("Child Arrangements Order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A Child Arrangements Order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
                     )),
-
-                    #  p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                    #  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents."),
-                    # br(),
                     plotlyOutput("CAO_time_series"),
                     br(),
                     details(
@@ -219,7 +216,6 @@ outcome2_tab <- function() {
                           csvDownloadButton("table_cao_ceased", filename = "ceased_CLA_CAO.csv"),
                           reactableOutput("table_cao_ceased")
                         ))
-                        # reactableOutput("table_cao_ceased")
                       )
                     ),
                     details(
@@ -255,7 +251,6 @@ outcome2_tab <- function() {
                           csvDownloadButton("table_cao_ceased_reg", filename = "ceased_CLA_CAO_regions.csv"),
                           reactableOutput("table_cao_ceased_reg")
                         ))
-                        # reactableOutput("table_cao_ceased_reg")
                       )
                     ),
                     details(

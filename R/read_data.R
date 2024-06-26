@@ -97,13 +97,6 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
     )))
 
-  # workforce_data3 <- convert_perc_cols_to_numeric(workforce_data2)
-
-  # colnames(workforce_data) <- c("Geographic Level","Geographic Breakdown", "Turnover Rate (FTE) %", "Time Period", "Absence Rate (FTE) %",
-  #                             "Agency Worker Rate (FTE) %", "Agency Cover Rate (FTE) %", "Vacancy Rate (FTE) %", "Vacancy Agency Cover Rate (FTE) %",
-  #                             "Turnover Rate Headcount %", "Agency Worker Rate Headcount %", "Caseload (FTE)")
-  #
-  #
   return(workforce_data2)
 }
 
@@ -112,7 +105,6 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
 read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2023.csv") {
   workforce_ethnicity_data <- read.csv(file)
   # Select only columns we want
-  # workforce_eth_data <- colCleanPerc(workforce_ethnicity_data)
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
@@ -140,8 +132,6 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
 # Workforce ethnicity by seniority data
 read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2023.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
-  # Select only columns we want
-  # workforce_eth_data <- colCleanPerc(workforce_ethnicity_data)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
@@ -202,7 +192,6 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
   # Filter to include only the latest year of data
   latest_year <- max(workforce_ethnicity_seniority_data$time_period)
   workforce_ethnicity_seniority_data <- subset(workforce_ethnicity_seniority_data, time_period == latest_year)
-  # workforce_ethnicity_seniority_data <- convert_perc_cols_to_numeric(workforce_ethnicity_seniority_data)
 
   return(workforce_ethnicity_seniority_data)
 }
@@ -451,10 +440,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = "",
-      "old_la_code" = as.numeric(""),
-      # "CS Expenditure" = as.character(exp),
-      # "Total Expenditure" = as.character(total_exp),
-      # "CS Share" = as.character(cs_share)
+      "old_la_code" = as.numeric("")
     )
   london_com$cs_share <- janitor::round_half_up(london_com$cs_share)
 
@@ -778,8 +764,6 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       number == "z" ~ -400,
       TRUE ~ as.numeric(number)
     )) %>%
-    # )) %>%
-    # filter(!is.na(rate_per_10000)) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
@@ -794,7 +778,7 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
   cla_placement_data <- read.csv(file)
   cla_placement_data <- colClean(cla_placement_data) %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
@@ -819,10 +803,6 @@ merge_cla_dataframes <- function() {
   # Read the data
   cla_rates <- read_cla_rate_data()
   cla_placements <- read_cla_placement_data()
-
-
-  # Merge the two data frames
-  # merged_data <- left_join(workforce_eth, population_eth, by = c("code" = "Code"))
 
   # Rename the columns to make it clear which dataset they come from
   cla_rates <- rename(cla_rates,
@@ -874,9 +854,6 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(CIN_number = case_when(
-      # At31_episodes == "Z" ~ NA,
-      # At31_episodes == "x" ~ NA,
-      # At31_episodes == "c" ~ NA,
       At31_episodes == "c" ~ -100,
       At31_episodes == "low" ~ -200,
       At31_episodes == "k" ~ -200,
@@ -886,9 +863,6 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       TRUE ~ as.numeric(At31_episodes)
     )) %>%
     mutate(CIN_rate = case_when(
-      # At31_episodes_rate == "Z" ~ NA,
-      # At31_episodes_rate == "x" ~ NA,
-      # At31_episodes_rate == "c" ~ NA,
       At31_episodes_rate == "c" ~ -100,
       At31_episodes_rate == "low" ~ -200,
       At31_episodes_rate == "k" ~ -200,
@@ -907,14 +881,11 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
   cin_referral_data <- read.csv(file)
   cin_referral_data <- colClean(cin_referral_data) %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(Referrals_num = case_when(
-      # Referrals == "Z" ~ NA,
-      # Referrals == "x" ~ NA,
-      # Referrals == "c" ~ NA,
       Referrals == "c" ~ -100,
       Referrals == "low" ~ -200,
       Referrals == "k" ~ -200,
@@ -924,9 +895,6 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       TRUE ~ as.numeric(Referrals)
     )) %>%
     mutate(Re_referrals_num = case_when(
-      # Re_referrals == "Z" ~ NA,
-      # Re_referrals == "x" ~ NA,
-      # Re_referrals == "c" ~ NA,
       Re_referrals == "c" ~ -100,
       Re_referrals == "low" ~ -200,
       Re_referrals == "k" ~ -200,
@@ -965,7 +933,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
   # Select only columns we want
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
@@ -1035,7 +1003,7 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
   # Select only columns we want
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
@@ -1075,7 +1043,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   # Select only columns we want
   outcomes_ks4_data <- outcomes_ks4_data %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
@@ -1181,12 +1149,6 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    # mutate(number_num = case_when(
-    #   number == "z" ~ NA,
-    #   number == "x" ~ NA,
-    #   number == "c" ~ NA,
-    #   TRUE ~ as.numeric(number)
-    # )) %>%
     mutate(`Ceased (%)` = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -1416,7 +1378,6 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    # mutate(percentage = as.numeric(percentage)) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
     mutate(Percent = case_when(
       percentage == "c" ~ -100,
@@ -1427,14 +1388,10 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
-    # replace_na(list(percentage = 0)) %>%
-    # filter out old dorset code
     filter(new_la_code != "E10000009")
 }
 
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
-
-
 
 ## Care leavers activity -----
 read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activity.csv") {
