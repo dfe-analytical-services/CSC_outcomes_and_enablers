@@ -118,7 +118,7 @@ outcome2_tab <- function() {
                     h2("Special Guardianship Order (SGO)"),
                     p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
                     insert_text(inputId = "SGO_def", text = paste(
-                      tags$b("Speical guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
+                      tags$b("Special guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
                     )),
                     br(),
                     plotlyOutput("SGO_time_series"),
