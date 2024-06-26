@@ -107,8 +107,8 @@ outcome2_tab <- function() {
                   )
                 ),
                 br(),
-                p("Unlocking family networks and kinship carers can be a key source of support where families are experiencing challenges.
-                  Moving children from care arrangements to a SGO or CAO shows that kinship care is being prioritised where children cannot safely live with their parents.")
+                p("Unlocking the potential of family networks and kinship care is key to building a system where children who cannot live with their parents are supported to live with people who are known to them and love them."),
+                p("Moving children from care arrangements to a SGO or CAO shows that permanence outside of the care system is being prioritised."),
               ),
               accordion(
                 ## SGO ------
