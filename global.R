@@ -14,7 +14,6 @@ shhh(library(shiny))
 shhh(library(shinyjs))
 shhh(library(tools))
 shhh(library(testthat))
-shhh(library(shinydashboard))
 shhh(library(shinyWidgets))
 shhh(library(shinyGovstyle))
 shhh(library(shinytitle))
@@ -37,9 +36,14 @@ shhh(library(reactable))
 shhh(library(readODS))
 shhh(library(readxl))
 shhh(library(janitor))
+shhh(library(scales))
+
+# shhh(library(shinya11y)) # used to test the accessibility of the dashboard
 
 
-# shhh(library(shinya11y))
+shhh(library(htmltools))
+
+
 
 # Functions ---------------------------------------------------------------------------------
 
@@ -51,8 +55,6 @@ enableBookmarking("url")
 # cs_num ----------------------------------------------------------------------------
 # Comma separating function
 
-
-
 cs_num <- function(value) {
   format(value, big.mark = ",", trim = TRUE)
 }
@@ -62,8 +64,7 @@ cs_num <- function(value) {
 # Source any scripts here. Scripts may be needed to process data before it gets to the server file.
 # It's best to do this here instead of the server file, to improve performance.
 
-# source("R/filename.r")
-
+source("R/read_data.R")
 
 # appLoadingCSS ----------------------------------------------------------------------------
 # Set up loading screen
@@ -82,7 +83,7 @@ appLoadingCSS <- "
 }
 "
 
-site_title <- "DfE Shiny Template"
+site_title <- "Children's Social Care - Outcomes and Enablers"
 site_primary <- "https://department-for-education.shinyapps.io/dfe-shiny-template/"
 site_overflow <- "https://department-for-education.shinyapps.io/dfe-shiny-template-overflow/"
 sites_list <- c(site_primary, site_overflow) # We can add further mirrors where necessary. Each one can generally handle about 2,500 users simultaneously
@@ -90,8 +91,6 @@ ees_pub_name <- "Statistical publication" # Update this with your parent publica
 ees_publication <- "https://explore-education-statistics.service.gov.uk/find-statistics/" # Update with parent publication link
 google_analytics_key <- "Q13T4ENF6C"
 
-
-source("R/read_data.R")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
@@ -166,51 +165,24 @@ care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodat
 
 wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 
+placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
+
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
 
 
-# Dropdowns
-# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
+# Download button --------------------
+# Function to create a download button for reactable
+csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CSV") {
+  tags$button(
+    tagList(icon("download"), label),
+    onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
+    class = "btn btn-default"
+  )
+}
 
-dropdown_choices <- cla_rates # %>%
-#   mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#   select(geographic_level, geo_breakdown,turnover_rate_fte_perc,time_period,"time_period","turnover_rate_fte_perc", "absence_rate_fte_perc",
-#          "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
-#          "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte") %>% distinct()
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ TEMPLATE code
-# Read in the data
-# dfRevBal <- read_revenue_data()
-# # Get geographical levels from data
-# dfAreas <- dfRevBal %>%
-#   select(
-#     geographic_level, country_name, country_code,
-#     region_name, region_code,
-#     la_name, old_la_code, new_la_code
-#   ) %>%
-#   distinct()
-#
-# choicesLAs <- dfAreas %>%
-#   filter(geographic_level == "Local authority") %>%
-#   select(geographic_level, area_name = la_name) %>%
-#   arrange(area_name)
-#
-# choicesAreas <- dfAreas %>%
-#   filter(geographic_level == "National") %>%
-#   select(geographic_level, area_name = country_name) %>%
-#   rbind(dfAreas %>% filter(geographic_level == "Regional") %>% select(geographic_level, area_name = region_name)) %>%
-#   rbind(choicesLAs)
-#
-# choicesYears <- unique(dfRevBal$time_period)
-#
-# choicesPhase <- unique(dfRevBal$school_phase)
-
+# Expandable section ------------------
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(
     class = "govuk-details", id = inputId,

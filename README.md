@@ -1,21 +1,10 @@
 <h1 align="center">
   <br>
-DfE Shiny template app
+Children's Social Care - Outcomes and Enablers Dashboard
   <br>
 </h1>
 
-**Before using this template, please contact the Statistics Development Team (statistics.development@education.gov.uk) to discuss your plans for setting up a DfE dashboard.**
-
 ---
-
-This template repository is for making accessible apps for published statistics in DfE. It includes a basic accessible shiny app with DfE styling, as well as templates for additional best practice documents like this README script, pull request templates and codes of conduct for contributing.
-
-To use this template, click the green "use this template" button at the top of the repo. This will create a copy for you to work off of. 
-
-
-Please delete this header section when you are writing up the README file for your own app.
-
-Please contact statistics.DEVELOPMENT@education.gov.uk if you have any questions, or raise an issue on here if you have spotted something specific that we should change.
 
 <p align="center">
   <a href="#introduction">Introduction</a> |
@@ -28,28 +17,26 @@ Please contact statistics.DEVELOPMENT@education.gov.uk if you have any questions
 ---
 
 ## Introduction 
+The purpose of the Dashboard is to serve as a learning tool for both local and central Government and will provide a clear and consistent set of data indicators to help to understand progress towards the outcomes and enablers set out in the National Framework.
 
-Give a brief overview of what your app is for here. 
+Insights and analysis gathered from this tool will support the Department’s wider strategic 
+aim to make stronger, measurable decisions that achieve better outcomes for children, young people and families. Having a national set of indicators, used by all local authorities, with a mechanism to bring them together in one place is integral to supporting the system to collaborate. In this way, local authorities can reflect and learn from others on progress towards the outcomes and enablers in children’s social care.
 
-Add links to where each version of your app is deployed - e.g.
+As well as a learning tool for local government, the Dashboard will help central government to understand system-wide success and issues and how children, young people and families are being supported.
 
-- Production - https://rsconnect/rsc/dfe-published-data-qa
-- Pre-production - https://rsconnect-pp/rsc/dfe-published-data-qa
-- Development - https://rsconnect-pp/rsc/dev-dfe-published-data-qa
+- Production - https://department-for-education.shinyapps.io/csc-outcomes-enablers/
+- Development - https://department-for-education.shinyapps.io/dev-csc-outcomes-enablers/
 
 
 ---
 
 ## Requirements
 
-You should list out the software and programming skills needed, as well as any access requirements e.g.
-
-
 ### i. Software requirements (for running locally)
 
 - Installation of R Studio 1.2.5033 or higher
 
-- Installation of R 3.6.2 or higher
+- Installation of R 4.4.0 or higher
 
 - Installation of RTools40 or higher
 
@@ -61,15 +48,11 @@ You should list out the software and programming skills needed, as well as any a
 
 ### iii. Access requirements
 
-- Access to the Stats Development Team SQL modelling area (MA_SDT_NS_DATA) in T1PRANMSQL\SQLPROD,60125. Request access from Cam Race and forward on your request to the PDR mailbox (PupilData.REPOSITORY@education.gov.uk)
+- There are no other access requirements. All datasets are publicly available.
   
 ---
 
 ## How to use
-
-You should clearly lay out the steps needed to run your code here - generally, they will be similar to the below for Shiny apps:
-
-
 ### Running the app locally
 
 1. Clone or download the repo. 
@@ -106,22 +89,33 @@ In general all .r files will have a usable outline, so make use of that for navi
 The function tidy_code() is created in the Rprofile script and therefore is always available in the RStudio console to tidy code according to tidyverse styling using the styler package. This function also helps to test the running of the code and for basic syntax errors such as missing commas and brackets.
 
 
+### Technical details
+
+For technical methodology and rationale on y-axis implementation, see [https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/development/Y_AXIS_DOCUMENTATION.md](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/development/Y_AXIS_DOCUMENTATION.md). 
+
+
+
 ---
 
 ## How to contribute
 
-Details on how to contribute to the app should go here, e.g.
-
 ### Flagging issues
 
-If you spot any issues with the application, please flag it in the "Issues" tab of this repository, and label as a bug.
+If you spot any issues with the application, please check first that it has not been reported as an [issue](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues) already.
+
+If no issue is open for your bug, please flag it in the "Issues" tab of this repository, and label as a bug.
+Alternatively, you can open a new [bug report here](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues/new/choose).
+
+### Adding new features
+
+If there are new features you would like to suggest you can submit a [feature request here](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/issues/new/choose).
 
 ### Merging pull requests
 
-Only members of the Statistics Development team can merge pull requests. Add lauraselby, cjrace and sarahmwong as requested reviewers, and the team will review before merging.
+Only members of the team can merge pull requests. Add yauemily, nataliepaterson and jzaun444 as requested reviewers, and the team will review before merging.
 
 ---
 
 ## Contact
 
-Add contact details of how to get in touch with your team.
+If you have any questions about the dashboard, please contact CSCDashboard.FEEDBACK@education.gov.uk . 

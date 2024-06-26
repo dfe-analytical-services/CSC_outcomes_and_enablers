@@ -40,22 +40,6 @@
 #    https://github.com/moj-analytical-services/shinyGovstyle
 #
 
-
-#
-# This is the user-interface definition of a Shiny web application. You can
-# run the application by clicking 'Run App' above.
-#
-# Find out more about building applications with Shiny here:
-#
-#    http://shiny.rstudio.com/
-#
-# The documentation for this GOVUK components can be found at:
-#
-#    https://github.com/moj-analytical-services/shinyGovstyle
-#
-
-
-
 ui <- function(input, output, session) {
   bslib::page(
     # use_tota11y(),
@@ -82,9 +66,8 @@ ui <- function(input, output, session) {
       ),
     shinyjs::useShinyjs(),
     dfe_cookie_script(),
-    cookie_banner_ui("cookies", name = "My DfE R Shiny data dashboard"),
+    cookie_banner_ui("cookies", name = "Children's Social Care - Outcomes and Enablers"),
     customDisconnectMessage(),
-    useShinydashboard(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(
@@ -94,8 +77,9 @@ ui <- function(input, output, session) {
           "dist/js.cookie.min.js"
         )
       ),
-      tags$script(src = "cookie-consent.js")
+      tags$script(src = "cookie-consent.js"),
     ),
+    tags$head(includeScript("www/downloader.js")),
     tags$head(includeHTML(("google-analytics.html"))),
     tags$head(
       tags$link(
@@ -125,7 +109,6 @@ ui <- function(input, output, session) {
       widths = c(2, 8),
       well = FALSE,
       introductionPanel(),
-      # dashboard_panel(),
       outcome1_tab(),
       outcome2_tab(),
       outcome3_tab(),
@@ -133,22 +116,10 @@ ui <- function(input, output, session) {
       enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
-      # homepage_panel(),
       a11y_panel(),
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
-    ),
-    # sidebarMenu(
-    #   menuItem(
-    #     tabName = "Outcomes",
-    #     menuItem(
-    #       outcome1_tab()
-    #     )
-    #   )
-    # ),
-    tags$script(
-      src = "script.js"
     ),
     footer(full = TRUE)
   )
