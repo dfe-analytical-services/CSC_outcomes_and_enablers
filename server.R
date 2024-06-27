@@ -394,7 +394,10 @@ server <- function(input, output, session) {
 
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
-      config(displayModeBar = F)
+      config(
+        displayModeBar = F,
+        modeBarButtonsToRemove = c("zoomIn2d", "zoomOut2d", "lasso2d")
+      )
     p <- p + ggtitle("CLA rate per 10,000")
 
 
