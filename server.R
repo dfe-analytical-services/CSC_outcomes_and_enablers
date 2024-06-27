@@ -3407,7 +3407,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$admissions_region_tbl <- renderReactable({
@@ -4287,7 +4288,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_type_tbl <- renderReactable({
@@ -4366,7 +4368,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_type_region_tbl <- renderReactable({
@@ -4419,7 +4422,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_type_la_tbl <- renderReactable({
@@ -4521,7 +4525,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_changes_tbl <- renderReactable({
@@ -4598,7 +4603,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_changes_region_tbl <- renderReactable({
@@ -4649,7 +4655,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_changes_la_tbl <- renderReactable({
@@ -4752,7 +4759,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -4830,7 +4838,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_dist_region_tbl <- renderReactable({
@@ -4879,7 +4888,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$placement_dist_la_tbl <- renderReactable({
@@ -4950,7 +4960,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # timeseries table alternative
@@ -5053,7 +5064,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(hovermode = "x")
+      layout(hovermode = "x") %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$sqd_ts_table <- renderReactable({
@@ -5134,7 +5146,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(hovermode = "x")
+      layout(hovermode = "x") %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$SDQ_region_tbl <- renderReactable({
@@ -5186,7 +5199,8 @@ server <- function(input, output, session) {
       tooltip = "text",
       height = 420
     ) %>%
-      layout(hovermode = "x")
+      layout(hovermode = "x") %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
   # table
   output$sdq_by_la_tbl <- renderReactable({
@@ -5303,7 +5317,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # timeseries table alternative
@@ -5382,7 +5397,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$cl_activity_region_tbl <- renderReactable({
@@ -5436,7 +5452,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # by la table alt
@@ -5547,7 +5564,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # timeseries table alternative
@@ -5630,7 +5648,8 @@ server <- function(input, output, session) {
       p,
       height = 430,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$cl_accommodation_region_tbl <- renderReactable({
@@ -5684,7 +5703,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # by la table alt
