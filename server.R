@@ -2493,7 +2493,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -2573,7 +2574,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # SGO by region table
@@ -2622,7 +2624,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Special Guardianship orders by LA table
@@ -2727,7 +2730,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -2806,7 +2810,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # ceased by region table
@@ -2854,7 +2859,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CAO by LA table
@@ -3025,7 +3031,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$table_repeat_cpp <- renderReactable({
@@ -3102,7 +3109,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # cpp by region table
@@ -3149,7 +3157,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CPP by LA table
@@ -3261,7 +3270,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$table_duration_cpp <- renderReactable({
@@ -3335,7 +3345,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # by region table
@@ -3447,7 +3458,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$admissions_la_tbl <- renderReactable({
@@ -3498,8 +3510,8 @@ server <- function(input, output, session) {
       p,
       tooltip = "text",
       height = 420
-    ) # %>%
-    # layout(yaxis = list(tickmode = "auto"))
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # table alternative for all factors plot
@@ -3570,7 +3582,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # child abuse ts table alternative
@@ -3648,7 +3661,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$child_abuse_region_tbl <- renderReactable({
@@ -3696,7 +3710,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # by la table alt
@@ -3771,7 +3786,8 @@ server <- function(input, output, session) {
       p,
       tooltip = "text",
       height = 420
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # table alternative for all factors plot
@@ -3841,7 +3857,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # child abuse ts table alternative
@@ -3917,7 +3934,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   output$efh_region_tbl <- renderReactable({
@@ -3965,7 +3983,8 @@ server <- function(input, output, session) {
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # by la table alt
