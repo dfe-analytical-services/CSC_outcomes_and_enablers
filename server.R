@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   output$cookie_status <- dfeshiny::cookie_banner_server(
     "cookies",
     input_cookies = reactive(input$cookies),
-    # input_clear = reactive(input$cookie_consent_clear),
+    input_clear = reactive(input$cookie_consent_clear),
     parent_session = session,
     google_analytics_key = google_analytics_key
   )
@@ -395,14 +395,14 @@ server <- function(input, output, session) {
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(
-        displayModeBar = F,
-        modeBarButtonsToRemove = c("zoomIn2d", "zoomOut2d", "lasso2d")
+        displayModeBar = F
       )
     p <- p + ggtitle("CLA rate per 10,000")
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate TABLE
@@ -472,7 +472,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate regional table
@@ -512,7 +513,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate La table
@@ -576,7 +578,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # UASC table
@@ -619,7 +622,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # UASC table by region
@@ -661,7 +665,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # UASC table by LA
@@ -762,7 +767,8 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate march TABLE
@@ -833,7 +839,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate March regional table
@@ -871,7 +878,8 @@ server <- function(input, output, session) {
     ggplotly(,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CLA rate March La table
@@ -973,7 +981,8 @@ server <- function(input, output, session) {
     p <- p + ggtitle("CIN rate per 10,000 children")
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CIN rate table
@@ -1041,7 +1050,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -1127,7 +1137,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -1176,7 +1187,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # CIN referral table
@@ -1316,7 +1328,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # cin referral chart by LA
@@ -1333,7 +1346,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Child wellbeing & development - School absence and attainment
@@ -1393,7 +1407,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -1466,7 +1481,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Absence rate regional table
@@ -1511,7 +1527,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Absence by LA table
@@ -1624,7 +1641,8 @@ server <- function(input, output, session) {
       height = 420,
       tooltip = "text"
     ) %>%
-      layout(yaxis = list(tickmode = "auto"))
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -1698,7 +1716,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Persistence Absence regional table
@@ -1747,7 +1766,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # Persistent Absence by LA table
@@ -1931,7 +1951,8 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -2004,7 +2025,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # KS2 regional table
@@ -2053,7 +2075,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # KS2 by LA table
@@ -2163,7 +2186,8 @@ server <- function(input, output, session) {
 
 
     ggplotly(p, height = 420, tooltip = "text") %>%
-      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto"))
+      layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
 
@@ -2233,7 +2257,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # KS4 regional table
@@ -2276,7 +2301,8 @@ server <- function(input, output, session) {
       p,
       height = 420,
       tooltip = "text"
-    )
+    ) %>%
+      config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
   # KS4 by LA table
