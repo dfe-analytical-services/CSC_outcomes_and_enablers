@@ -20,7 +20,7 @@ resources:
 extends:
   template: deploy.yml@posit-deploy
   parameters:
-    appName: Shiny-App
+    appName: csc-outcomes-enablers
     environments:
     - name: Pre-Production
       appId: none
