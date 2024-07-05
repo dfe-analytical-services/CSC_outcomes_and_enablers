@@ -23,9 +23,9 @@ extends:
     appName: csc-outcomes-enablers
     environments:
     - name: Pre-Production
-      appId: none
+      appId: 939
     - name: Production
-      appId: none
+      appId: 374
     approvers: |
       emily.yau@education.gov.uk
       richard.bielby@education.gov.uk
