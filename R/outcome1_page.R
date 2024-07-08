@@ -674,7 +674,7 @@ outcome1_tab <- function() {
                   style = "min-height:100%; height = 100%; overflow-y: visible",
                   p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
                   p("It also breakdowns the data by school type: total, primary, secondary (the headline boxes above show data for 'total' school type)."),
-                  p("Please use the dropdowns to select which social care group and school type you would like to see in the below accordians:"),
+                  p("Please use the dropdowns to select which social care group and school type you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "wellbeing_extra_breakdown",
                     label = "Select a social care group:",
@@ -714,7 +714,7 @@ outcome1_tab <- function() {
                     help_text = (
                       tags$ul(
                         tags$li("Total school type includes state-funded primary and secondary schools as well as special schools and state-funded alternative provision schools."),
-                        tags$li("Breakdowns for special schools and state-funded alternative provision schools are not available on the dashboard due to high levels of supression in the published local authority level data.
+                        tags$li("Breakdowns for special schools and state-funded alternative provision schools are not available on the dashboard due to high levels of suppression in the published local authority level data.
                                 You can view data for all breakdowns via the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes publication."), ),
                         tags$br(),
                         p(
@@ -1016,7 +1016,7 @@ outcome1_tab <- function() {
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
                   p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
-                  p("Please use this dropdown to select which social care group you would like to see in the below accordians:"),
+                  p("Please use this dropdown to select which social care group you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "attainment_extra_breakdown",
                     label = "Select a social care group:",
@@ -1190,7 +1190,7 @@ outcome1_tab <- function() {
                                  directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
                           ),
-                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
                                   In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
@@ -1233,7 +1233,7 @@ outcome1_tab <- function() {
                                  directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
                             a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
                           ),
-                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
                                   In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
                           tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                           tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),

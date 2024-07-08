@@ -614,7 +614,7 @@ enabler3_tab <- function() {
                     h2("Social worker ethnicity by seniority level"),
                     insert_text(inputId = "Ethnicity_by_role_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
-                      "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicty."
+                      "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicity."
                     )),
                     br(),
                     plotlyOutput("plot_seniority_eth"),

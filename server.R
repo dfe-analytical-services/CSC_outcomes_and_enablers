@@ -78,7 +78,7 @@ server <- function(input, output, session) {
   output$cookie_status <- dfeshiny::cookie_banner_server(
     "cookies",
     input_cookies = reactive(input$cookies),
-    input_clear = reactive(input$cookie_consent_clear),
+    # input_clear = reactive(input$cookie_consent_clear),
     parent_session = session,
     google_analytics_key = google_analytics_key
   )
@@ -8384,7 +8384,7 @@ server <- function(input, output, session) {
                                  directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance."),
               ),
-              tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therfore The more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+              tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
                                   In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
               tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
