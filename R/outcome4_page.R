@@ -211,7 +211,6 @@ outcome4_tab <- function() {
                 ## Distance of placements -----
                 accordion_panel(
                   "Distance of placements from home",
-                  # p("contents for panel 2"),
                   gov_row(
                     h2("Placements more than 20 miles from home"),
                     plotlyOutput("placement_distance_ts_plot"),
@@ -254,7 +253,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("placement_dist_region_tbl", filename = "placements_more_than_20_miles_from_home_regions.csv"),
                           reactableOutput("placement_dist_region_tbl")
                         ))
-                        # reactableOutput("placement_dist_region_tbl")
                       )
                     ),
                     details(
@@ -318,7 +316,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
                           reactableOutput("placement_type_tbl")
                         ))
-                        # reactableOutput("placement_type_tbl")
                       )
                     ),
                     details(
@@ -350,7 +347,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
                           reactableOutput("placement_type_region_tbl")
                         ))
-                        # reactableOutput("placement_type_region_tbl")
                       )
                     ),
                     details(
@@ -391,8 +387,6 @@ outcome4_tab <- function() {
                         inputId = "placement_order_match_nationl_message",
                         text = "Due to data availability, only national level stats are available for this chart. However, you can choose different ages to view on the chart using the dropdown below. (Note that this will not affect the headline box at the top)."
                       ),
-                      # p("Please use the dropdown below to select which age you would like to see in the below chart."),
-                      # p("(Note that this will not affect the headline box at the top)"),
                       selectizeInput(
                         inputId = "select_age_group_o4",
                         label = "Select an age group:",
@@ -415,7 +409,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
                           reactableOutput("placement_order_match_tbl")
                         ))
-                        # reactableOutput("placement_order_match_tbl")
                       )
                     ),
                     details(
@@ -442,7 +435,6 @@ outcome4_tab <- function() {
             tabPanel(
               "Wellbeing of child",
               fluidRow(
-                # p("testing"),
                 br()
               ),
               fluidRow(
@@ -462,7 +454,6 @@ outcome4_tab <- function() {
               accordion(
                 accordion_panel(
                   "Strengths and difficulties questionnaire (SDQ score)",
-                  # p("contents for panel 1"),
                   gov_row(
                     h2("Strengths and difficulties questionnaire (SDQ score)"),
                     insert_text(
@@ -481,7 +472,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("sqd_ts_table", filename = paste0("wellbeing_sdq_score.csv")),
                           reactableOutput("sqd_ts_table")
                         ))
-                        # reactableOutput("sqd_ts_table")
                       )
                     ),
                     details(
@@ -513,7 +503,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("SDQ_region_tbl", filename = paste0("wellbeing_sdq_score_regions.csv")),
                           reactableOutput("SDQ_region_tbl")
                       )))
-                      # reactableOutput("SDQ_region_tbl")
                     ),
                     details(
                       inputId = "sdq_reg_info",
@@ -538,7 +527,6 @@ outcome4_tab <- function() {
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    # plotlyOutput("sdq_by_la_plot"),
                     uiOutput("SN_wellbeing_SDQ")
                   )
                 ),
@@ -549,7 +537,6 @@ outcome4_tab <- function() {
             tabPanel(
               "Quality of life for care experienced people",
               fluidRow(
-                #  p("testing"),
                 br()
               ),
               fluidRow(
@@ -616,6 +603,7 @@ outcome4_tab <- function() {
                 br()
               ),
               accordion(
+                ### care leavers activity ------------
                 accordion_panel(
                   "Care leavers employment, education and training rate",
                   gov_row(
@@ -630,7 +618,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("cl_activity_ts_tbl", filename = paste0("care_leavers_activity.csv")),
                           reactableOutput("cl_activity_ts_tbl")
                         ))
-                        # reactableOutput("cl_activity_ts_tbl")
                       )
                     ),
                     details(
@@ -690,12 +677,10 @@ outcome4_tab <- function() {
                     uiOutput("SN_care_leavers_activity")
                   )
                 ),
-                # Accommodation panel
+                ### care leavers Accommodation ------------
                 accordion_panel(
                   "Percentage of care leavers in suitable accommodation",
-                  # p("contents for panel 2"),
                   gov_row(
-                    # h2("Time Series"),
                     uiOutput("care_leavers_header4"),
                     plotlyOutput("care_accommodation_ts_plot"),
                     br(),
@@ -707,7 +692,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("cl_accommodation_ts_tbl", filename = paste0("care_leavers_accomm.csv")),
                           reactableOutput("cl_accommodation_ts_tbl")
                         ))
-                        # reactableOutput("cl_accommodation_ts_tbl")
                       )
                     ),
                     details(
@@ -734,7 +718,6 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    # h2("By Region"),
                     uiOutput("care_leavers_header5"),
                     plotlyOutput("cl_accommodation_region_plot"),
                     br(),
@@ -746,7 +729,6 @@ outcome4_tab <- function() {
                           csvDownloadButton("cl_accommodation_region_tbl", filename = paste0("care_leavers_accomm_regions.csv")),
                           reactableOutput("cl_accommodation_region_tbl")
                         ))
-                        # reactableOutput("cl_accommodation_region_tbl")
                       )
                     ),
                     details(

@@ -10,7 +10,7 @@ outcome1_tab <- function() {
         )
       ),
       gov_row(
-        # Input boxes
+        # Input boxes for geographic level and geographic breakdown
         div(
           class = "input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
@@ -18,7 +18,7 @@ outcome1_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o1",
               label = "Select a geographical level:",
-              choices = unique(dropdown_choices %>% pull("geographic_level")),
+              choices = unique(cla_rates %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -33,6 +33,7 @@ outcome1_tab <- function() {
             )),
             col_widths = c(4, 8)
           ),
+          # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o1 != 'National'",
@@ -69,6 +70,7 @@ outcome1_tab <- function() {
       br(),
       gov_row(
         br(),
+        # Confirmation of user selection
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Cumbria')",
@@ -86,6 +88,7 @@ outcome1_tab <- function() {
               fluidRow(
                 br(),
               ),
+              # Headline stats boxes
               fluidRow(
                 column(
                   width = 4,
@@ -110,7 +113,9 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              # Accordion for indicators
               accordion(
+                ## CLA rate ------------
                 accordion_panel(
                   "Children starting to be looked after each year",
                   gov_row(
@@ -120,10 +125,8 @@ outcome1_tab <- function() {
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
                       "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
                     )),
-                    # p("plots go here"),
                     plotlyOutput("plot_cla_rate"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "tbl_cla_rate",
                       label = "View chart as a table",
@@ -132,8 +135,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cla_rate", filename = "cla_rates.csv"),
                           reactableOutput("table_cla_rate")
                         ))
-
-                        # reactableOutput("table_cla_rate")
                       )
                     ),
                     details(
@@ -155,6 +156,7 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  # CLA rate region
                   gov_row(
                     h2("Rate of children starting to be looked after by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -169,7 +171,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cla_rate_reg", filename = "cla_rates_regions.csv"),
                           reactableOutput("table_cla_rate_reg")
                         ))
-                        # reactableOutput("table_cla_rate_reg")
                       )
                     ),
                     details(
@@ -191,9 +192,9 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  ## cla rate by local authority
                   gov_row(
                     h2("Rate of children starting to be looked after by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     radioGroupButtons(
                       "cla_stats_toggle",
@@ -226,7 +227,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_uasc", filename = "cla_UASC_rates.csv"),
                           reactableOutput("table_uasc")
                         ))
-                        # reactableOutput("table_uasc")
                       )
                     ),
                     details(
@@ -250,6 +250,7 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  ## CLA UASC region
                   gov_row(
                     h2("Rate of children starting to be looked after by region who were UASC"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -266,7 +267,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_uasc_reg", filename = "cla_UASC_rates_regions.csv"),
                           reactableOutput("table_uasc_reg")
                         ))
-                        # reactableOutput("table_uasc_reg")
                       )
                     ),
                     details(
@@ -290,9 +290,9 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  ## CLA UASC by local authority
                   gov_row(
                     h2("Rate of children starting to be looked after by LA who were UASC"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
                       "uasc_stats_toggle",
@@ -325,7 +325,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
                           reactableOutput("table_cla_rate_march")
                         ))
-                        # reactableOutput("table_cla_rate_march")
                       )
                     ),
                     details(
@@ -345,6 +344,7 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  # cla on 31 march by region
                   gov_row(
                     h2("Rate of children looked after on 31 March by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -360,7 +360,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
                           reactableOutput("table_cla_march_reg")
                         ))
-                        # reactableOutput("table_cla_march_reg")
                       )
                     ),
                     details(
@@ -380,9 +379,9 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  # cla on 31 march by local authority
                   gov_row(
                     h2("Rate of children looked after on 31 March by local authority"),
-                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
                     radioGroupButtons(
@@ -421,23 +420,19 @@ outcome1_tab <- function() {
                 ),
               ),
               accordion(
-                ## CIN ------------------
+                ### CIN ------------------
                 accordion_panel(
                   "Rate of Child In Need (CIN)",
                   gov_row(
                     h2("Rate of Child In Need (CIN)"),
                     p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
                     Looking at the flow of children who become a CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."),
-                    # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-
                     insert_text(inputId = "CIN_definition", text = paste(
                       "<b>", "Children In Need (CIN) rate", "</b><br>",
                       "The Children In Need rate is calculated as the number of Children In Need at 31 March, per 10,000 children in the population."
                     )),
-                    # p("plots go here"),
                     plotlyOutput("plot_cin_rate"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "tbl_cin_rate",
                       label = "View chart as a table",
@@ -446,10 +441,8 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cin_rate", filename = "CIN_rates.csv"),
                           reactableOutput("table_cin_rate")
                         ))
-                        # reactableOutput("table_cin_rate")
                       )
                     ),
-                    # expandable for the additional info links
                     details(
                       inputId = "CIN_info",
                       label = "Additional information:",
@@ -469,6 +462,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # cin by region
                   gov_row(
                     h2("Children In Need rates by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -484,7 +478,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cin_rates_reg", filename = "CIN_rates_regions.csv"),
                           reactableOutput("table_cin_rates_reg")
                         ))
-                        # reactableOutput("table_cin_rates_reg")
                       )
                     ),
                     details(
@@ -506,9 +499,9 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # cin by local authority
                   gov_row(
                     h2("CIN rates by local authority"),
-                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
                     radioGroupButtons(
                       "cin_stats_toggle",
@@ -519,7 +512,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_cin"),
                   )
                 ),
-                ## Repeat referrals --------------
+                ### Repeat referrals --------------
                 accordion_panel(
                   "Repeat referrals (within 12 months)",
                   gov_row(
@@ -527,17 +520,13 @@ outcome1_tab <- function() {
                     p("If children are being referred to services repeatedly, this suggests that they and their families may not be receiving
                    the support necessary to allow them to thrive  independently as a family unit. Multiple referrals can be inefficient and
                    cause additional upset and trauma for the child and family, therefore reducing the rate of repeat referrals will result in better outcomes."),
-                    # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-
                     insert_text(inputId = "CIN_referrals_definition", text = paste(
                       "<b>", "Re-referrals within 12 months", "</b><br>",
                       "Percentage of re-referrals within 12 months of a previous referral in the year to 31 March."
                     )),
-                    # p("plots go here"),
                     plotlyOutput("plot_cin_referral"),
                     br(),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "tbl_cin_referral",
                       label = "View chart as a table",
@@ -546,7 +535,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cin_referral", filename = "CIN_re_referral_rates.csv"),
                           reactableOutput("table_cin_referral")
                         ))
-                        # reactableOutput("table_cin_referral")
                       )
                     ),
                     details(
@@ -566,6 +554,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # re-referrals by region
                   gov_row(
                     h2("Re-referrals by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -581,7 +570,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_cin_referral_reg", filename = "CIN_re_referral_rates_regions.csv"),
                           reactableOutput("table_cin_referral_reg")
                         ))
-                        # reactableOutput("table_cin_referral_reg")
                       )
                     ),
                     details(
@@ -601,9 +589,9 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # re-referrals by local authority
                   gov_row(
                     h2("Re-referrals by local authority"),
-                    #  p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
@@ -617,6 +605,7 @@ outcome1_tab <- function() {
                 open = FALSE
               ),
             ),
+            # Domain 3 --------------
             tabPanel(
               "Child wellbeing and development",
               br(),
@@ -728,7 +717,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
-              # absence -----
+              ### absence -----
               accordion(
                 accordion_panel(
                   "School attendance",
@@ -744,7 +733,6 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("absence_time_series"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "table_absence",
                       label = "View chart as a table",
@@ -753,7 +741,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_absence_rate", filename = "absence_rates.csv"),
                           reactableOutput("table_absence_rate")
                         ))
-                        # reactableOutput("table_absence_rate")
                       )
                     ),
                     details(
@@ -784,6 +771,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # absence by region
                   gov_row(
                     h2("Absence rate by region"),
                     p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
@@ -798,7 +786,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_absence_reg", filename = "absence_rates_regions.csv"),
                           reactableOutput("table_absence_reg")
                         ))
-                        # reactableOutput("table_absence_reg")
                       )
                     ),
                     details(
@@ -829,6 +816,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  # absence by local authority
                   gov_row(
                     h2("Absence rate by local authority"),
                     # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
@@ -844,7 +832,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_absence"),
                   ),
                 ),
-                ## Persistent absence ----
+                ### Persistent absence ----
                 accordion_panel(
                   "Persistent absence",
                   gov_row(
@@ -858,7 +846,6 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("persistence_time_series"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "table_persistence",
                       label = "View chart as a table",
@@ -867,7 +854,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_persistent_rate", filename = "persistence_absence_rates.csv"),
                           reactableOutput("table_persistent_rate")
                         ))
-                        # reactableOutput("table_persistent_rate")
                       )
                     ),
                     details(
@@ -897,6 +883,7 @@ outcome1_tab <- function() {
                       )
                     ),
                   ),
+                  ## persistent absence by region
                   gov_row(
                     h2("Persistent absence by region"),
                     p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
@@ -911,7 +898,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_persistent_reg", filename = "persistence_absence_rates_regions.csv"),
                           reactableOutput("table_persistent_reg")
                         ))
-                        # reactableOutput("table_persistent_reg")
                       )
                     ),
                     details(
@@ -959,7 +945,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
-            # attainment domain ----
+            # Domain 4 ----
             tabPanel(
               "Educational attainment",
               br(),
@@ -1045,7 +1031,7 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
-              ## ks2 -----
+              ### ks2 attainment -----
               accordion(
                 accordion_panel(
                   "Key Stage 2 (KS2)",
@@ -1062,7 +1048,6 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("plot_ks2_expected"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "table_ks2",
                       label = "View chart as a table",
@@ -1071,7 +1056,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_ks2_expected", filename = "ks2_attainment_rates.csv"),
                           reactableOutput("table_ks2_expected")
                         ))
-                        # reactableOutput("table_ks2_expected")
                       )
                     ),
                     details(
@@ -1111,7 +1095,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_ks2_reg", filename = "ks2_attainment_rates_region.csv"),
                           reactableOutput("table_ks2_reg")
                         ))
-                        # reactableOutput("table_ks2_reg")
                       )
                     ),
                     details(
@@ -1152,6 +1135,7 @@ outcome1_tab <- function() {
                     uiOutput("SN_ks2_attainment"),
                   ),
                 ),
+                ### KS4 attainment ---------
                 accordion_panel(
                   "Key Stage 4 (KS4)",
                   gov_row(
@@ -1167,7 +1151,6 @@ outcome1_tab <- function() {
                     )),
                     plotlyOutput("plot_ks4"),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "tbl_ks4",
                       label = "View chart as a table",
@@ -1176,7 +1159,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_ks4", filename = "ks4_attainment_rates.csv"),
                           reactableOutput("table_ks4")
                         ))
-                        # reactableOutput("table_ks4")
                       )
                     ),
                     details(
@@ -1219,7 +1201,6 @@ outcome1_tab <- function() {
                           csvDownloadButton("table_ks4_reg", filename = "ks4_attainment_rates_regions.csv"),
                           reactableOutput("table_ks4_reg")
                         ))
-                        # reactableOutput("table_ks4_reg")
                       )
                     ),
                     details(

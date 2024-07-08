@@ -89,6 +89,12 @@ In general all .r files will have a usable outline, so make use of that for navi
 The function tidy_code() is created in the Rprofile script and therefore is always available in the RStudio console to tidy code according to tidyverse styling using the styler package. This function also helps to test the running of the code and for basic syntax errors such as missing commas and brackets.
 
 
+### Technical details
+
+For technical methodology and rationale on y-axis implementation, see [https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/development/Y_AXIS_DOCUMENTATION.md](https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/development/Y_AXIS_DOCUMENTATION.md). 
+
+
+
 ---
 
 ## How to contribute

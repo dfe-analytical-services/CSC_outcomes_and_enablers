@@ -125,7 +125,6 @@ enabler2_tab <- function() {
                           csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
                           reactableOutput("table_tot_spending_reg")
                         ))
-                        # reactableOutput("table_tot_spending_reg")
                       )
                     ),
                     details(
@@ -147,14 +146,12 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     htmlOutput("spending_header2"),
-                    # p(),
                     radioGroupButtons(
                       "spending1_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
                       selected = "All local authorities"
                     ),
-                    # plotlyOutput("plot_spending_la")
                     uiOutput("SN_total_spending"),
                   )
                 ),
@@ -172,7 +169,6 @@ enabler2_tab <- function() {
                           csvDownloadButton("table_spend_excl_cla_reg", filename = "spend_on_CSC_excl_CLA_regions.csv"),
                           reactableOutput("table_spend_excl_cla_reg")
                         ))
-                        # reactableOutput("table_spend_excl_cla_reg")
                       )
                     ),
                     details(
@@ -221,18 +217,6 @@ enabler2_tab <- function() {
                   )
                 )
               ),
-              # fluidRow(
-              #   conditionalPanel(
-              #     condition = "(input.select_geography_e3 != 'Local authority')&&(input.geographic_breakdown_e3 %in% C('Inner London', 'Outer London', 'London'))",
-              #     p("London, Inner London and Outer London have been grouped together.")
-              #   ),
-              # ),
-              # fluidRow(
-              #   conditionalPanel(
-              #     condition = "(input.select_geography_e3 != 'Local authority')&&(input.geographic_breakdown_e3 %in% C('North East', 'Yorkshire and The Humber'))",
-              #     p("North East and Yorkshire and The Humber have been grouped together.")
-              #   ),
-              # ),
               fluidRow(
                 # Quick fix for now, for some reason the multi conditions wouldn't work
                 conditionalPanel(
@@ -296,8 +280,6 @@ enabler2_tab <- function() {
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table below to see the latest year for each LA."),
-                    # reactableOutput("ofsted_latest_ratings_tbl"),
-                    # br(),
                     details(
                       inputId = "tbl_ofsted_latest_ratings",
                       label = "View latest ratings",
@@ -306,8 +288,6 @@ enabler2_tab <- function() {
                           csvDownloadButton("ofsted_latest_ratings_tbl", filename = "Ofsted_leadership_ratings_all_LA_rating_date.csv"),
                           reactableOutput("ofsted_latest_ratings_tbl")
                         ))
-
-                        # reactableOutput("ofsted_latest_ratings_tbl")
                       )
                     )
                   ),
@@ -325,7 +305,6 @@ enabler2_tab <- function() {
                           csvDownloadButton("ofsted_tbl", filename = "Ofsted_leadership_ratings_national.csv"),
                           reactableOutput("ofsted_tbl")
                         ))
-                        # reactableOutput("ofsted_tbl")
                       )
                     ),
                     details(
@@ -355,7 +334,6 @@ enabler2_tab <- function() {
                           csvDownloadButton("ofsted_reg_tbl", filename = "Ofsted_leadership_ratings_regions.csv"),
                           reactableOutput("ofsted_reg_tbl")
                         ))
-                        # reactableOutput("ofsted_reg_tbl")
                       )
                     ),
                     details(
@@ -373,28 +351,6 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     uiOutput("ofsted_rating_SN_ui"),
-                    # h2("Ofsted – The impact of leaders on social work practice with children and families with statistical neighbours"),
-                    # p("Hover over each data point to see the year of their last Ofsted inspection."),
-                    # plotlyOutput("ofsted_SN_plot"),
-                    # br(),
-                    # details(
-                    #   inputId = "tbl_ofsted_SN",
-                    #   label = "View chart as a table",
-                    #   help_text = (
-                    #     HTML(paste0(
-                    #       csvDownloadButton("ofsted_SN_tbl", filename =  paste0("Ofsted_leadership_ratings_SN_", input$geographic_breakdown_o4, ".csv"))
-                    #       reactableOutput("ofsted_SN_tbl")
-                    #     ))
-                    #     #reactableOutput("ofsted_SN_tbl")
-                    #   )
-                    # ),
-                    # details(
-                    #   inputId = "ofsted_stat_neighbours_info",
-                    #   label = "Additional information:",
-                    #   help_text = (
-                    #     p("Statistical neighbours info")
-                    #   )
-                    # )
                   )
                 ),
                 open = FALSE,

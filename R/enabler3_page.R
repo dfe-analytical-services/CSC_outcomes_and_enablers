@@ -119,18 +119,13 @@ enabler3_tab <- function() {
                 ),
                 br(),
               ),
-              # fluidRow(
-              #   column(
-              #    width = 12,
               accordion(
+                # Social Worker Turnover --------------
                 accordion_panel(
                   "Social Worker Turnover",
-                  # Social Worker Turnover ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   gov_row(
                     h2("Social worker turnover"),
                     p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."),
-                    # style ="font-family: GDS Transport, arial, sans-serif; font-size :19px; padding-left: 4px;"),
-
                     insert_text(inputId = "social_work_turnover_definition", text = paste(
                       "The ", "<b>", "turnover rate", "</b>", " is calculated as (the number of) FTE children and family social worker leavers in the year to 30 September divided by FTE children and family social workers in
                       post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."
@@ -138,7 +133,6 @@ enabler3_tab <- function() {
                     plotlyOutput("plot_s_w_turnover"),
                     br(),
                     br(),
-                    # Expandable for the table alternative
                     details(
                       inputId = "tbl_s_w_turnover",
                       label = "View chart as a table",
@@ -147,7 +141,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_s_w_turnover", filename = "social_worker_turnover.csv"),
                           reactableOutput("table_s_w_turnover")
                         ))
-                        # reactableOutput("table_s_w_turnover")
                       )
                     ),
                     details(
@@ -183,7 +176,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_turnover_reg", filename = "social_worker_turnover_region.csv"),
                           reactableOutput("table_turnover_reg")
                         ))
-                        # reactableOutput("table_turnover_reg")
                       )
                     ),
                     details(
@@ -207,7 +199,6 @@ enabler3_tab <- function() {
                   gov_row(
                     h2("Turnover rates by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
-                    # Radio button for Stats neighbours
                     radioGroupButtons(
                       "turnover_stats_toggle",
                       label = NULL,
@@ -217,9 +208,9 @@ enabler3_tab <- function() {
                     uiOutput("SN_turnover"),
                   ),
                 ),
+                # Agency worker rates ---------------------------
                 accordion_panel(
                   "Agency Rates",
-                  # Agency Rates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   gov_row(
                     h2("Agency rates"),
                     p("Prioritising a stable and permanent workforce allows children, young people and families to maintain consistent relationships with practitioners.
@@ -240,7 +231,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_agency_worker", filename = "agency_worker_rate.csv"),
                           reactableOutput("table_agency_worker")
                         ))
-                        # reactableOutput("table_agency_worker")
                       )
                     ),
                     details(
@@ -274,7 +264,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_agency_reg", filename = "agency_worker_rate_regions.csv"),
                           reactableOutput("table_agency_reg")
                         ))
-                        # reactableOutput("table_agency_reg")
                       )
                     ),
                     details(
@@ -305,9 +294,9 @@ enabler3_tab <- function() {
                     uiOutput("SN_agency"),
                   ),
                 ),
+                # Vacancy rates ------------------
                 accordion_panel(
                   "Vacancy Rates",
-                  # Vacancy Rates ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                   gov_row(
                     h2("Vacancy rates"),
                     p("A workforce strategy should develop and maintain an effective workforce. With a well-supported workforce vacancy rates should remain low."),
@@ -317,7 +306,6 @@ enabler3_tab <- function() {
                     )),
                     br(),
                     plotlyOutput("plot_vacancy_rate"),
-                    # p("plots go here"),
                     br(),
                     br(),
                     details(
@@ -329,7 +317,6 @@ enabler3_tab <- function() {
                           reactableOutput("table_vacancy_rate")
                         ))
 
-                        # reactableOutput("table_vacancy_rate")
                       )
                     ),
                     details(
@@ -363,7 +350,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_vacancy_reg", filename = "vacancy_rates_regions.csv"),
                           reactableOutput("table_vacancy_reg")
                         ))
-                        # reactableOutput("table_vacancy_reg")
                       )
                     ),
                     details(
@@ -384,7 +370,6 @@ enabler3_tab <- function() {
                   ),
                   gov_row(
                     h2("Vacancy rates by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "vacancy_stats_toggle",
@@ -399,6 +384,7 @@ enabler3_tab <- function() {
               )
             ),
             # Second Domain - "quality of support for children and families" -------------
+            ## caseload -------------
             tabPanel(
               "Quality of support for children and families",
               fluidRow(
@@ -437,7 +423,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_caseload", filename = "avg_caseload.csv"),
                           reactableOutput("table_caseload")
                         ))
-                        # reactableOutput("table_caseload")
                       )
                     ),
                     details(
@@ -471,7 +456,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_caseload_reg", filename = "avg_caseload_regions.csv"),
                           reactableOutput("table_caseload_reg")
                         ))
-                        # reactableOutput("table_caseload_reg")
                       )
                     ),
                     details(
@@ -492,7 +476,6 @@ enabler3_tab <- function() {
                   ),
                   gov_row(
                     h2("Social worker caseloads by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "caseload_stats_toggle",
@@ -507,7 +490,7 @@ enabler3_tab <- function() {
               ),
             ),
 
-            # Third tab panel -----
+            # Social worker ethnicity -----
             tabPanel(
               "Social worker ethnicity",
               fluidRow(
@@ -543,7 +526,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_ethnicity_rate", filename = "social_worker_ethnicity.csv"),
                           reactableOutput("table_ethnicity_rate")
                         ))
-                        # reactableOutput("table_ethnicity_rate")
                       )
                     ),
                     details(
@@ -586,7 +568,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_population_ethnicity_rate", filename = "social_worker_ethnicity_vs_population.csv"),
                           reactableOutput("table_population_ethnicity_rate")
                         ))
-                        # reactableOutput("table_population_ethnicity_rate")
                       )
                     ),
                     details(
@@ -628,7 +609,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_seniority_eth", filename = "social_worker_seniority.csv"),
                           reactableOutput("table_seniority_eth")
                         ))
-                        # reactableOutput("table_seniority_eth")
                       )
                     ),
                     details(

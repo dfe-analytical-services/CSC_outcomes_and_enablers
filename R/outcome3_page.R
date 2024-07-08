@@ -18,7 +18,7 @@ outcome3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o3",
               label = "Select a geographical level:",
-              choices = unique(dropdown_choices %>% pull("geographic_level")),
+              choices = unique(cla_rates %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -33,6 +33,7 @@ outcome3_tab <- function() {
             )),
             col_widths = c(4, 8)
           ),
+          # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o3 != 'National'",
@@ -67,6 +68,7 @@ outcome3_tab <- function() {
         )
       ),
       br(),
+      # confirmation sentence
       gov_row(
         br(),
         p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
@@ -115,6 +117,7 @@ outcome3_tab <- function() {
                   repeat plans, suggests that children and families are not
                   receiving the help that they need to address their issues.")
               ),
+              ### Repeat CPP ------------------------
               accordion(
                 accordion_panel(
                   "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
@@ -123,7 +126,6 @@ outcome3_tab <- function() {
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
-                  # p("plots go here"),
                   plotlyOutput("repeat_cpp_time_series"),
                   br(),
                   # Expandable for the table alternative
@@ -135,7 +137,6 @@ outcome3_tab <- function() {
                         csvDownloadButton("table_repeat_cpp", filename = "Repeat_CPP_rates.csv"),
                         reactableOutput("table_repeat_cpp")
                       ))
-                      # reactableOutput("table_repeat_cpp")
                     )
                   ),
                   details(
@@ -168,7 +169,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("table_cpp_repeat_reg", filename = "Repeat_CPP_rates_regions.csv"),
                           reactableOutput("table_cpp_repeat_reg")
                         ))
-                        # reactableOutput("table_cpp_repeat_reg")
                       )
                     ),
                     details(
@@ -207,10 +207,8 @@ outcome3_tab <- function() {
                     "<b>", "Child Protection Plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
-                  # p("plots go here"),
                   plotlyOutput("duration_cpp_time_series"),
                   br(),
-                  # Expandable for the table alternative
                   details(
                     inputId = "tbl_duration_cpp",
                     label = "View chart as a table",
@@ -219,7 +217,6 @@ outcome3_tab <- function() {
                         csvDownloadButton("table_duration_cpp", filename = "CPP_more_than_2years_rates.csv"),
                         reactableOutput("table_duration_cpp")
                       ))
-                      # reactableOutput("table_duration_cpp")
                     )
                   ),
                   details(
@@ -238,7 +235,6 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
-                  # No local authority level data
                   gov_row(
                     h2("Child Protection Plans (CPP) longer than 2 years, by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -254,7 +250,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("table_cpp_duration_reg", filename = "CPP_more_than_2years_rates_region.csv"),
                           reactableOutput("table_cpp_duration_reg")
                         ))
-                        # reactableOutput("table_cpp_duration_reg")
                       )
                     ),
                     details(
@@ -275,6 +270,8 @@ outcome3_tab <- function() {
                     ),
                   ),
                 ),
+                # No local authority level data for cpp longer than 2 years
+
                 ### Hospital admissions ------
                 accordion_panel(
                   "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
@@ -287,7 +284,6 @@ outcome3_tab <- function() {
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    # p("chart here"),
                     br(),
                     plotlyOutput("admissions_region_plot"),
                     br(),
@@ -299,7 +295,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("admissions_region_tbl", filename = "hospital_admissions_rates_region.csv"),
                           reactableOutput("admissions_region_tbl")
                         ))
-                        # reactableOutput("admissions_region_tbl")
                       )
                     ),
                     details(
@@ -323,7 +318,6 @@ outcome3_tab <- function() {
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority"),
                     br(),
-                    # plotlyOutput("admissions_la_plot")
                     radioGroupButtons(
                       "hosp_admission_toggle",
                       label = NULL,
@@ -344,14 +338,6 @@ outcome3_tab <- function() {
               ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2023 that include child abuse or neglect."),
-                # p("All assessment factors that include child abuse or neglect (2023)."),
-
-                # insert_text(inputId = "assessment_factors_def1", text = paste(
-                #   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
-                #   The majority of children have more than one factor recorded for each episode of need.
-                #   It should be noted that not all episodes have factors recorded, but this has improved over time.
-                #   ", tags$b("Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with a degree of caution.")
-                # )),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
                     The majority of children have more than one factor recorded for each episode of need.
@@ -369,7 +355,6 @@ outcome3_tab <- function() {
                       csvDownloadButton("child_abuse_all_af_tbl", filename = "child_abuse_all_factors.csv"),
                       reactableOutput("child_abuse_all_af_tbl")
                     ))
-                    # reactableOutput("child_abuse_all_af_tbl")
                   )
                 ),
                 details(
@@ -392,6 +377,7 @@ outcome3_tab <- function() {
                   )
                 ),
               ),
+              # extra dropdown for the assessment factors
               gov_row(
                 div(
                   class = "input_box",
@@ -414,8 +400,6 @@ outcome3_tab <- function() {
                   "Assessment factor includes child abuse or neglect",
                   gov_row(
                     uiOutput("ca_header1"),
-                    # h2("Assessment factor includes child abuse or neglect"),
-                    # p("time_series chart"),
                     plotlyOutput("child_abuse_ts_plot"),
                     br(),
                     details(
@@ -426,7 +410,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("ca_ts_tbl", filename = "child_abuse_rates.csv"),
                           reactableOutput("ca_ts_tbl")
                         ))
-                        # reactableOutput("ca_ts_tbl")
                       )
                     ),
                     details(
@@ -460,7 +443,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("child_abuse_region_tbl", filename = "child_abuse_rates_regions.csv"),
                           reactableOutput("child_abuse_region_tbl")
                         ))
-                        # reactableOutput("child_abuse_region_tbl")
                       )
                     ),
                     details(
@@ -485,7 +467,6 @@ outcome3_tab <- function() {
                   ),
                   gov_row(
                     uiOutput("ca_header3"),
-                    # h2("Assessment factor includes child abuse or neglect by local authority"),
                     radioGroupButtons(
                       "child_abuse_toggle",
                       label = NULL,
@@ -507,14 +488,6 @@ outcome3_tab <- function() {
               ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2023 that include extra familial harm."),
-                # p("All assessment factors that include extra familial harm (2023)."),
-
-                # insert_text(inputId = "assessment_factors_def2", text = paste(
-                #   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
-                #   The majority of children have more than one factor recorded for each episode of need.
-                #   It should be noted that not all episodes have factors recorded, but this has improved over time.
-                #   Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with a degree of caution."
-                # )),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(
                     "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
@@ -525,7 +498,6 @@ outcome3_tab <- function() {
                 ),
                 plotlyOutput("extra_familial_all_af_plot"),
                 br(),
-                # Expandable for the table alternative
                 details(
                   inputId = "tbl_all_extra_fam_factors",
                   label = "View chart as a table",
@@ -534,7 +506,6 @@ outcome3_tab <- function() {
                       csvDownloadButton("extra_familial_all_af_tbl", filename = "EFH_all_factors.csv"),
                       reactableOutput("extra_familial_all_af_tbl")
                     ))
-                    # reactableOutput("extra_familial_all_af_tbl")
                   )
                 ),
                 details(
@@ -589,7 +560,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("efh_ts_tbl", filename = "EFH_rates.csv"),
                           reactableOutput("efh_ts_tbl")
                         ))
-                        # reactableOutput("efh_ts_tbl")
                       )
                     ),
                     details(
@@ -613,7 +583,6 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    # by region
                     uiOutput("efh_header2"),
                     plotlyOutput("efh_region_plot"),
                     br(),
@@ -627,7 +596,6 @@ outcome3_tab <- function() {
                           csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
                           reactableOutput("efh_region_tbl")
                         )
-                        # reactableOutput("efh_region_tbl")
                       )
                     ),
                     details(
@@ -653,7 +621,6 @@ outcome3_tab <- function() {
                   gov_row(
                     # by la and stats neighbours
                     uiOutput("efh_header3"),
-                    # h2("Assessment factor includes extra familial harm by local authority"),
                     radioGroupButtons(
                       "extra_familial_harm_toggle",
                       label = NULL,
@@ -661,7 +628,6 @@ outcome3_tab <- function() {
                       selected = "All local authorities"
                     ),
                     uiOutput("SN_extra_familial_harm")
-                    # p("by la chart")
                   )
                 ),
                 open = FALSE

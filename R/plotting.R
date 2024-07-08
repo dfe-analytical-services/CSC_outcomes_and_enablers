@@ -4,6 +4,7 @@
 # This is a repeat use function for all of the time series plots in this dashboard.
 
 plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+  # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
 
   # add_rect is only true for graphs with boundaries - Wellbeing SDQ score charts
@@ -90,8 +91,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
   }
   return(p)
 }
-
-
 
 
 # By LA bar chart repeat function ----
@@ -186,7 +185,6 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         "Selection: ", Selection
       )
     )) +
-      # geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
@@ -203,6 +201,8 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
     if (is.null(yupperlim)) {
       p <- p + scale_y_continuous(limits = c(0, 100))
     } else {
+      # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
+      yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
       p <- p + scale_y_continuous(limits = c(0, yupperlim))
     }
 
@@ -219,7 +219,6 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         "Selection: ", Selection
       )
     )) +
-      # geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
@@ -275,6 +274,9 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         "Time period: ", `time_period`
       )
     ))
+
+    # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
+    yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
 
     p2 <- p +
       geom_col(position = position_dodge()) +
@@ -388,8 +390,6 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
       limits = custom_x_order,
       labels = c("White" = "White", "Mixed / Multiple ethnic groups" = "Mixed", "Asian / Asian British" = "Asian", "Black / African / Caribbean / Black British" = "Black", "Other ethnic group" = "Other")
     )
-  # print(all((is.na(ethnicity_data$percentage))))
-  # print((is.na(ethnicity_data$percentage)))
   if (all(is.na(ethnicity_data$percentage))) {
     p <- p + annotate(x = 3, y = 50, geom = "text", label = "There is no available data due to zero social workers with known ethnicity", color = "red")
   }
@@ -453,18 +453,6 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
     c("time_period", "geo_breakdown", "breakdown", "Percentage", "seniority")
   ]
 
-  # Reshape data using pivot_longer()
-  # ethnicity_data_long <- ethnicity_data_sen %>%
-  #   pivot_longer(
-  #     cols = c("white_perc", "mixed_perc", "asian_perc", "black_perc", "other_perc"),
-  #     names_to = "ethnicity",
-  #     values_to = "percentage"
-  #   )
-
-
-  # Ensure 'percentage' is numeric
-  # ethnicity_data_long$percentage <- as.numeric(ethnicity_data_long$percentage)
-
   custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")
   custom_fill_order <- c("Manager", "Senior practitioner", "Case holder", "Qualified without cases")
 
@@ -513,14 +501,14 @@ plot_uasc <- function(geo_break, geo_lvl) {
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic)
 
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 20
+  # Round the max_rate to the nearest 20 then multiply by 1.05 (this will be used for the upper y-axis limit)
   max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
 
   ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
@@ -563,7 +551,7 @@ plot_uasc_reg <- function() {
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`))
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
@@ -572,7 +560,7 @@ plot_uasc_reg <- function() {
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
@@ -665,7 +653,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       )
   }
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on rhe data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
@@ -674,7 +662,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   # Use the new variable in the plot
@@ -735,12 +723,12 @@ plot_cla_rate_reg <- function() {
     select(time_period, geo_breakdown, `Rate Per 10000`) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
@@ -765,7 +753,6 @@ plot_cla_rate_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -812,12 +799,12 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
       )
   }
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
@@ -861,12 +848,12 @@ plot_cla_march_reg <- function() {
     select(time_period, geo_breakdown, `Rate Per 10000`) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cla_reg_data, aes(`geo_breakdown`, `Rate Per 10000`,
@@ -891,7 +878,6 @@ plot_cla_march_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -938,12 +924,12 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       )
   }
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cla_data, aes(`geo_breakdown`, `Rate Per 10000`,
@@ -989,11 +975,11 @@ plot_cin_rate_reg <- function() {
     select(time_period, geo_breakdown, CIN_rate) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -CIN_rate)) # Order by turnover rate
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cin_rates$CIN_rate[cin_rates$time_period == max(cin_rates$time_period) &
     cin_rates$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(cin_reg_data, aes(`geo_breakdown`, `CIN_rate`,
@@ -1018,12 +1004,9 @@ plot_cin_rate_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
-
-
 
 
 # cin rate chart by la
@@ -1072,11 +1055,11 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       rename("CIN rate per 10,000" = CIN_rate)
   }
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(cin_rates$CIN_rate[cin_rates$time_period == max(cin_rates$time_period) &
     cin_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(cin_data, aes(`geo_breakdown`, `CIN rate per 10,000`,
@@ -1121,10 +1104,11 @@ plot_cin_referral_reg <- function() {
     select(time_period, geo_breakdown, Re_referrals_percentage) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -Re_referrals_percentage)) # Order by turnover rate
 
+  # Set the max_rate based on the data
   max_rate <- max(cin_referrals$Re_referrals_percentage[cin_referrals$time_period == max(cin_referrals$time_period) &
     cin_referrals$geographic_level == "Regional"], na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
@@ -1149,7 +1133,6 @@ plot_cin_referral_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "Time period",
-      # breaks = unique(c("England", inputArea)),
       values = "#12436D" # gss_colour_pallette
     )
 }
@@ -1292,10 +1275,10 @@ plot_ofsted <- function() {
       "outstanding_count" = "Outstanding"
     ))
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(ofsted_data$Count, na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(ofsted_data, aes(
@@ -1345,10 +1328,10 @@ plot_ofsted_reg <- function() {
       "outstanding_count" = "Outstanding"
     ))
 
-  # Set the max y-axis scale
+  # Set the max y-axis scale based on the data
   max_rate <- max(ofsted_data$Count, na.rm = TRUE)
 
-  # Round the max_rate to the nearest 10
+  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
   max_rate <- ceiling(max_rate / 10) * 10
 
   p <- ggplot(ofsted_data, aes(
@@ -1377,6 +1360,9 @@ plot_ofsted_reg <- function() {
 
 # Statistical Neighbours function ----
 statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+  # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
+  ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
+
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
@@ -1471,6 +1457,9 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
 }
 
 statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper) {
+  # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
+  ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
+
   selected_la <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
     select(geo_breakdown, old_la_code)
@@ -1613,7 +1602,6 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
   if (is.null(selectedcolumn)) {
-    # print("2")
     data2 <- dataset %>%
       filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%

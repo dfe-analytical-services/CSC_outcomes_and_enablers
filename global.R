@@ -14,7 +14,6 @@ shhh(library(shiny))
 shhh(library(shinyjs))
 shhh(library(tools))
 shhh(library(testthat))
-# shhh(library(shinydashboard))
 shhh(library(shinyWidgets))
 shhh(library(shinyGovstyle))
 shhh(library(shinytitle))
@@ -55,8 +54,6 @@ enableBookmarking("url")
 
 # cs_num ----------------------------------------------------------------------------
 # Comma separating function
-
-
 
 cs_num <- function(value) {
   format(value, big.mark = ",", trim = TRUE)
@@ -172,21 +169,6 @@ placement_order_match_data <- suppressWarnings(read_placement_order_match_data()
 
 # Read in stats neighbours
 stats_neighbours <- head(statistical_neighbours(), 152)
-
-
-# Dropdowns
-# choice_breakdown_level <- workforce_data %>% select(geographic_level) %>% filter(geographic_level != "National")%>% distinct()
-# choices_LA <- workforce_data %>% filter(geographic_level == "Local authority") %>% select()
-
-dropdown_choices <- cla_rates # %>%
-#   mutate(geo_breakdown = case_when(
-#     geographic_level == "National" ~ "National",#NA_character_,
-#     geographic_level == "Regional" ~ region_name,
-#     geographic_level == "Local authority" ~ la_name
-#   )) %>%
-#   select(geographic_level, geo_breakdown,turnover_rate_fte_perc,time_period,"time_period","turnover_rate_fte_perc", "absence_rate_fte_perc",
-#          "agency_worker_rate_fte_perc", "agency_cover_rate_fte_perc", "vacancy_rate_fte_perc", "vacancy_agency_cover_rate_fte_perc",
-#          "turnover_rate_headcount_perc", "agency_worker_rate_headcount_perc", "caseload_fte") %>% distinct()
 
 
 # Download button --------------------
