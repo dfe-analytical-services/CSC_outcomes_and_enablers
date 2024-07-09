@@ -383,7 +383,7 @@ outcome3_tab <- function() {
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
                   p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
-                  p("Please use the dropdown below to select which assessment factor you would like to see in the below accordians:"),
+                  p("Please use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_1",
                     label = "Select an assessment factor:",
@@ -533,7 +533,7 @@ outcome3_tab <- function() {
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
                   p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(extra_familial_harm_af %>% str_sort()), collapse = ", "), "."),
-                  p("Please use the dropdown below to select which assessment factor you would like to see in the below accordians:"),
+                  p("Please use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_2",
                     label = "Select an assessment factor:",
