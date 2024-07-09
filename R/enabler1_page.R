@@ -12,7 +12,7 @@ enabler1_tab <- function() {
       br(),
       gov_row(
         br(),
-        h2("We will work with the sector and other experts to develop indicators this National Framework enabler."),
+        h2("We will work with the sector and other experts to develop indicators for this National Framework enabler."),
         br(),
       )
     )
