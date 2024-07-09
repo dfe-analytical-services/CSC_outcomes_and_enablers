@@ -2126,44 +2126,6 @@
         "RemoteSha": "3.5.1"
       }
     },
-    "git2r": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
-      "description": {
-        "Package": "git2r",
-        "Title": "Provides Access to Git Repositories",
-        "Description": "Interface to the 'libgit2' library, which is a pure C\n    implementation of the 'Git' core methods. Provides access to 'Git'\n    repositories to extract data and running some basic 'Git'\n    commands.",
-        "Version": "0.33.0",
-        "License": "GPL-2",
-        "Copyright": "See COPYRIGHTS file.",
-        "URL": "https://docs.ropensci.org/git2r/ (website),\nhttps://github.com/ropensci/git2r",
-        "BugReports": "https://github.com/ropensci/git2r/issues",
-        "Maintainer": "Stefan Widgren <stefan.widgren@gmail.com>",
-        "Author": "See AUTHORS file.",
-        "Imports": "graphics, utils",
-        "Depends": "R (>= 4.0)",
-        "Suggests": "getPass",
-        "Type": "Package",
-        "Biarch": "true",
-        "NeedsCompilation": "yes",
-        "SystemRequirements": "By default, git2r uses a system installation of the\nlibgit2 headers and library. However, if a system installation\nis not available, builds and uses a bundled version of the\nlibgit2 source. zlib headers and library. OpenSSL headers and\nlibrary (non-macOS). LibSSH2 (optional on non-Windows) to\nenable the SSH transport.",
-        "Collate": "'blame.R' 'blob.R' 'branch.R' 'bundle_r_package.R'\n'checkout.R' 'commit.R' 'config.R' 'contributions.R'\n'credential.R' 'diff.R' 'fetch.R' 'git2r.R' 'index.R'\n'libgit2.R' 'merge.R' 'note.R' 'odb.R' 'plot.R' 'pull.R'\n'punch_card.R' 'push.R' 'reference.R' 'reflog.R' 'refspec.R'\n'remote.R' 'repository.R' 'reset.R' 'revparse.R' 'sha.R'\n'signature.R' 'stash.R' 'status.R' 'tag.R' 'time.R' 'tree.R'\n'when.R'",
-        "Encoding": "UTF-8",
-        "RoxygenNote": "7.2.3",
-        "Packaged": "2023-11-26 16:10:10 UTC; stefan",
-        "Repository": "RSPM",
-        "Date/Publication": "2023-11-26 16:50:05 UTC",
-        "Built": "R 4.4.0; x86_64-w64-mingw32; 2024-04-25 20:34:38 UTC; windows",
-        "Archs": "x64",
-        "RemoteType": "standard",
-        "RemotePkgRef": "git2r",
-        "RemoteRef": "git2r",
-        "RemoteRepos": "https://packagemanager.posit.co/cran/latest",
-        "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "x86_64-w64-mingw32",
-        "RemoteSha": "0.33.0"
-      }
-    },
     "globals": {
       "Source": "CRAN",
       "Repository": "http://cran.rstudio.com",
@@ -5980,13 +5942,13 @@
       "checksum": "cb62ed0aca0b26f861eb94f883fc8753"
     },
     ".hooks/pre-commit.R": {
-      "checksum": "dff6cd24e7f7343ecfd46a046c0dd3cd"
+      "checksum": "f8c67d898a86be147fff21ea912b3615"
     },
     ".Rprofile": {
-      "checksum": "f420fa6c8e00f5fc9927ba559f89bb1f"
+      "checksum": "65476031a4134282767fc6fb1553480b"
     },
     "azure-pipelines.yml": {
-      "checksum": "d0b17a20a1da25dd3496a57258b41bb4"
+      "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -6088,7 +6050,7 @@
       "checksum": "c092736a714f6d9bc277addf272b0c4f"
     },
     "datafiles_log.csv": {
-      "checksum": "5a9e034a4206821ec437a1238d267f32"
+      "checksum": "2dce5ab0f3ae91ac2bfa34f473fa41f8"
     },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
@@ -6097,7 +6059,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "d9b7f78d78d2043c3dafa853e57b0e5e"
+      "checksum": "332200a98b45f0b6e579121dc4eb368c"
     },
     "google-analytics.html": {
       "checksum": "e9e6530abb3abe983b6bda0e0f1ef589"
@@ -6115,28 +6077,28 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/enabler1_page.R": {
-      "checksum": "2699e1421dfc2544ee63f7b9e6c1efef"
+      "checksum": "c4fd2849d5e8f7237569324ec2538783"
     },
     "R/enabler2_page.R": {
       "checksum": "87dceadc475577076b74b95a3e5bb2fd"
     },
     "R/enabler3_page.R": {
-      "checksum": "037cca21208280be9203b7fc75df3f41"
+      "checksum": "a1979250f50d90d4afe0a2d5d619d1e9"
     },
     "R/intro_panel.R": {
       "checksum": "8f80d7bc2064ed4a87ba1066042c6ef0"
     },
     "R/outcome1_page.R": {
-      "checksum": "2740cefbf7de9d29b74a28945f4f074d"
+      "checksum": "097d52ab384d037cb3be10fae94f2f4c"
     },
     "R/outcome2_page.R": {
       "checksum": "d65451deb598dd5635d369c01e2e79ed"
     },
     "R/outcome3_page.R": {
-      "checksum": "146ebd9b348e8463caa31918c8b90f8d"
+      "checksum": "fc02ddd894869c7046d43f80dcb0da0e"
     },
     "R/outcome4_page.R": {
-      "checksum": "6394b4ca184c2d30028f797706157f50"
+      "checksum": "f58b928ba79306615cb95d4eda17f400"
     },
     "R/plotting.R": {
       "checksum": "025da2ceccf9e0637045747b0eb1932f"
@@ -6157,10 +6119,10 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "ab96e849ca2cb4aae5bbcf12348c1947"
+      "checksum": "1f96b93c158ddaa675ae83b8dc9c154a"
     },
     "server.R": {
-      "checksum": "707d9c20c3a39a7f9e10653ec0292f3e"
+      "checksum": "6676340dc7166a2fa894f72bca92e39b"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -6190,7 +6152,7 @@
       "checksum": "d30c51601cfb8eb5d13dff6c393aad52"
     },
     "ui.R": {
-      "checksum": "8ea24195640f3cff0d1ca631df3f33ba"
+      "checksum": "b756a7e026b2b60753d140c64be37a3f"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"

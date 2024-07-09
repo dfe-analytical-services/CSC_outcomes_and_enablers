@@ -10,7 +10,6 @@
 
 # Library calls ---------------------------------------------------------------------------------
 shhh <- suppressPackageStartupMessages # It's a library, so shhh!
-shhh(library(git2r))
 shhh(library(rsconnect))
 shhh(library(shiny))
 shhh(library(shinyjs))
