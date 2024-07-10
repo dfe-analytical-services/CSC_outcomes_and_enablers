@@ -820,7 +820,7 @@ merge_cla_dataframes <- function() {
   )
 
   merged_data <- merged_data %>%
-    mutate(placement_per_10000 = round((as.numeric(placements_number) / as.numeric(population_estimate)) * 10000, 0)) %>%
+    mutate(placement_per_10000 = round((as.numeric(rate_per_10000) * (as.numeric(percentage) / 100)))) %>%
     mutate(`Placement Rate Per 10000` = case_when(
       placements_number == "c" ~ -100,
       placements_number == "low" ~ -200,
