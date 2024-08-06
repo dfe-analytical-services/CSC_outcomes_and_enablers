@@ -109,6 +109,7 @@ ui <- function(input, output, session) {
       widths = c(2, 8),
       well = FALSE,
       introductionPanel(),
+      kpiCodes_tab(),
       outcome1_tab(),
       outcome2_tab(),
       outcome3_tab(),
