@@ -413,8 +413,8 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
   merged_data$time_period <- "2022/23"
   merged_data <- merged_data %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share) %>%
-  # removing old Dorset
-  filter(!(new_la_code %in% dropList)) 
+    # removing old Dorset
+    filter(!(new_la_code %in% dropList))
 
   # get national level data
   national_data <- data3 %>% filter(data3$Class == "Eng")
@@ -750,7 +750,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(rate_per_10000 = round(as.numeric(rate_per_10000),0)) %>%
+    mutate(rate_per_10000 = round(as.numeric(rate_per_10000), 0)) %>%
     mutate(`Rate Per 10000` = case_when(
       rate_per_10000 == "c" ~ -100,
       rate_per_10000 == "low" ~ -200,
@@ -878,7 +878,6 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
     )) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
     distinct() %>%
-    
     return(cin_rate_data)
 }
 
@@ -1147,7 +1146,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
   # drop old LA's
   outcome2_raw <- read.csv("data/la_children_who_ceased_during_the_year.csv")
   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
- 
+
   final_filtered_data <- outcome2_raw %>% filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove)
   ceased_cla_data <- final_filtered_data %>%
     mutate(geo_breakdown = case_when(
@@ -1238,7 +1237,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
   admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
   admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
-  
+
 
   # COMBINE CUMBERLAND/WESTMORLAND AND FURNESS UNTIL ALL PUBLICATION/STATS NEIGHBOURS FILES INCLUDE THEM INDIVIDUALLY
   df_to_combine <- admissions_data3 %>%
@@ -1257,7 +1256,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
       rate_per_10000 = sum(rate_per_10000), # still numeric at this point
       old_la_code = 909
     )
-  
+
   # Convert rate_per_10000 to a character for all rows
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = case_when(
@@ -1271,14 +1270,14 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
   # Add the combined row to the data frame
   admissions_data3 <- rbind(admissions_data3, combined_row)
-  
+
   # round rate_per_10000 for all rows
   admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = round(as.numeric(rate_per_10000),0))
-  
+    mutate(rate_per_10000 = round(as.numeric(rate_per_10000), 0))
+
   # round Value for all rows
   admissions_data3 <- admissions_data3 %>%
-    mutate(Value = round(as.numeric(Value),0))
+    mutate(Value = round(as.numeric(Value), 0))
 
   return(admissions_data3)
 }
@@ -1432,7 +1431,7 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
     )) %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList))
-  
+
 
   # Age column needs to be uniform with the accommodation data as they share the same age range filter
   # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
@@ -1568,6 +1567,3 @@ statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupi
 
   return(df)
 }
-
-
-
