@@ -5909,8 +5909,11 @@
     ".hooks/pre-commit.R": {
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
+    ".RData": {
+      "checksum": "6c589303f85c661b79fa9fc25e3f8727"
+    },
     ".Rprofile": {
-      "checksum": "4fd79a435491c7af73d8f802f65dc9fb"
+      "checksum": "9add07b9c95e13a799c10b011f1293af"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6045,7 +6048,7 @@
       "checksum": "c4fd2849d5e8f7237569324ec2538783"
     },
     "R/enabler2_page.R": {
-      "checksum": "59389c927831a4f5c89b28ef98a3468c"
+      "checksum": "87dceadc475577076b74b95a3e5bb2fd"
     },
     "R/enabler3_page.R": {
       "checksum": "a1979250f50d90d4afe0a2d5d619d1e9"
@@ -6057,7 +6060,7 @@
       "checksum": "c50ed69b6b41d1d50aeb4207f034294f"
     },
     "R/outcome1_page.R": {
-      "checksum": "e603c75fbd0bf61d01a70c18d8384ecc"
+      "checksum": "097d52ab384d037cb3be10fae94f2f4c"
     },
     "R/outcome2_page.R": {
       "checksum": "d65451deb598dd5635d369c01e2e79ed"
@@ -6072,10 +6075,10 @@
       "checksum": "025da2ceccf9e0637045747b0eb1932f"
     },
     "R/read_data.R": {
-      "checksum": "84a3dcb1df5fe5b5b559774f0e0e6001"
+      "checksum": "9bf7ac46f8b6a12534ce4d19775d86f9"
     },
     "R/standard_panels.R": {
-      "checksum": "6cac4748ef006b48a4b4ebe72de40ace"
+      "checksum": "5cc360a22f032e49061f9da258f59a14"
     },
     "R/user_guide.R": {
       "checksum": "632d09bc9f362bfbedf57de77fd20276"
@@ -6090,7 +6093,7 @@
       "checksum": "dc1d9ea6117f2da0868a1b7939f6e419"
     },
     "server.R": {
-      "checksum": "99ea00ac956e3b37d5751ef1c245c415"
+      "checksum": "0501fecda1d557a8186072cd00955196"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
