@@ -5307,7 +5307,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5388,7 +5388,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region")
     p <- p + ggtitle(age_title)
@@ -5443,7 +5443,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by local authority")
     p <- p + ggtitle(age_title)
 
@@ -5555,7 +5555,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5639,7 +5639,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region")
     p <- p + ggtitle(age_title)
@@ -5694,7 +5694,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority")
     p <- p + ggtitle(age_title)
 
