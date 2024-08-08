@@ -3022,7 +3022,7 @@ server <- function(input, output, session) {
     max_rate <- max(repeat_cpp$`Repeat_CPP_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%)")
 
@@ -3101,7 +3101,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by region")
 
@@ -3150,7 +3150,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by local authority")
     ggplotly(
@@ -3261,7 +3261,7 @@ server <- function(input, output, session) {
     max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -3337,7 +3337,7 @@ server <- function(input, output, session) {
       duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years by region")
 

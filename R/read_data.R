@@ -1120,6 +1120,10 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(CPP_subsequent_percent = ifelse(!is.na(as.numeric(CPP_subsequent_percent)),
+      format(as.numeric(as.character(CPP_subsequent_percent)), nsmall = 1),
+      CPP_subsequent_percent
+    )) %>%
     select(
       time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
     )
@@ -1144,6 +1148,10 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name
+    )) %>%
+    mutate(`X2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
+      format(as.numeric(as.character(`X2_years_or_more_percent`)), nsmall = 1),
+      `X2_years_or_more_percent`
     )) %>%
     select(
       time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
