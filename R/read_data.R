@@ -1161,9 +1161,6 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
     ))
 }
 
-
-
-
 # Outcome 2 ----
 # read outcome 2 function but without manual calculation of the percentages.
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
@@ -1177,6 +1174,10 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
     )) %>%
     mutate(`Ceased (%)` = case_when(
       percentage == "c" ~ -100,
