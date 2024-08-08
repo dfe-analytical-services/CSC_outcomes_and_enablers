@@ -470,6 +470,10 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
       cs_share == -300 ~ "x",
       TRUE ~ as.character(cs_share)
     )) %>%
+    mutate(`CS Share` = ifelse(!is.na(as.numeric(`CS Share`)),
+      format(as.numeric(as.character(`CS Share`)), nsmall = 1),
+      `CS Share`
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share, "CS Share")
   final_dataset$cs_share <- janitor::round_half_up(final_dataset$cs_share)
 
@@ -635,11 +639,16 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
       minus_cla_share == -300 ~ "x",
       TRUE ~ as.character(minus_cla_share)
     )) %>%
+    mutate(`Excluding CLA Share` = ifelse(!is.na(as.numeric(`Excluding CLA Share`)),
+      format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
+      `Excluding CLA Share`
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
   final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
 
   return(final_dataset)
 }
+
 
 
 # Ofsted leadership data

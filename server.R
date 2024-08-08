@@ -5868,7 +5868,7 @@ server <- function(input, output, session) {
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
+      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
       p <- p + ggtitle("Share of total spend on children's services (%) by region")
     } else {
@@ -5946,7 +5946,7 @@ server <- function(input, output, session) {
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)") %>%
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", percentage = TRUE) %>%
         config(displayModeBar = F)
       p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
         scale_y_continuous(limits = c(0, max_y_lim))
@@ -6023,7 +6023,7 @@ server <- function(input, output, session) {
       select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
 
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
-    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim) %>%
+    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
 
@@ -6070,7 +6070,7 @@ server <- function(input, output, session) {
 
     max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
 
-    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)") %>%
+    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)", percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
       scale_y_continuous(limits = c(0, max_y_lim))
