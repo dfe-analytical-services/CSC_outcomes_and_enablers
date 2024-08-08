@@ -940,7 +940,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
   return(cin_referral_data)
 }
 
-a <- read_outcomes_absence_data()
+
 
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
@@ -1030,6 +1030,10 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
+      format(as.numeric(as.character(pt_rwm_met_expected_standard)), nsmall = 1),
+      pt_rwm_met_expected_standard
+    )) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
@@ -1059,6 +1063,8 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
 
   return(outcomes_ks2_data)
 }
+
+
 
 # Outcome 1 Outcomes KS4 data for education attainment
 read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
@@ -1302,8 +1308,6 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
   return(admissions_data3)
 }
-
-a <- read_a_and_e_data()
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
