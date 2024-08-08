@@ -1398,6 +1398,10 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
     mutate(Percent = case_when(
       percentage == "c" ~ -100,
@@ -1425,6 +1429,10 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       geographic_level == "Local authority" ~ la_name
     )) %>%
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
     mutate(Percent = case_when(
       percentage == "c" ~ -100,
@@ -1449,6 +1457,10 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
 
@@ -1487,6 +1499,10 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
 
   data3 <- data2 %>%
@@ -1520,6 +1536,10 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
     )) %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
     filter(!(new_la_code %in% dropList)) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
+    )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
 
   data3 <- data2 %>%
