@@ -940,6 +940,8 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
   return(cin_referral_data)
 }
 
+a <- read_outcomes_absence_data()
+
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
   outcomes_absence_data <- read.csv(file)
@@ -953,6 +955,10 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
     mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
       format(as.numeric(as.character(pt_overall)), nsmall = 1),
       pt_overall
+    )) %>%
+    mutate(pt_pupils_pa_10_exact = ifelse(!is.na(as.numeric(pt_pupils_pa_10_exact)),
+      format(as.numeric(as.character(pt_pupils_pa_10_exact)), nsmall = 1),
+      pt_pupils_pa_10_exact
     )) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
