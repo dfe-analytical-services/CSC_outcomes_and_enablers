@@ -852,6 +852,10 @@ merge_cla_dataframes <- function() {
 read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv") {
   cin_rate_data <- read.csv(file)
   cin_rate_data <- colClean(cin_rate_data) %>%
+    mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
+      as.character(round(as.numeric(At31_episodes_rate))),
+      At31_episodes_rate
+    )) %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
@@ -866,7 +870,6 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       At31_episodes == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes)
     )) %>%
-    mutate(At31_episodes_rate = round(as.numeric(At31_episodes_rate))) %>%
     mutate(CIN_rate = case_when(
       At31_episodes_rate == "c" ~ -100,
       At31_episodes_rate == "low" ~ -200,
@@ -876,6 +879,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
       At31_episodes_rate == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes_rate)
     )) %>%
+    mutate(CIN_rate = round(CIN_rate, 0)) %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
     distinct() %>%
     return(cin_rate_data)
@@ -1271,16 +1275,21 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   # Add the combined row to the data frame
   admissions_data3 <- rbind(admissions_data3, combined_row)
 
-  # round rate_per_10000 for all rows
+  # Round headline values
   admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = round(as.numeric(rate_per_10000), 0))
+    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
+      as.character(round(as.numeric(rate_per_10000))),
+      rate_per_10000
+    ))
 
-  # round Value for all rows
+  # Round plot values
   admissions_data3 <- admissions_data3 %>%
-    mutate(Value = round(as.numeric(Value), 0))
+    mutate(Value = round(Value), 0)
 
   return(admissions_data3)
 }
+
+a <- read_a_and_e_data()
 
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
