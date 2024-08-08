@@ -101,7 +101,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 }
 
 # By LA bar chart repeat function ----
-by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE) {
+by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, percentage = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
       la_data <- dataset %>%
@@ -185,12 +185,21 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
   if (add_rect == FALSE) {
     p <- ggplot(la_data, aes(
       x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
-        "Local authority: ", Breakdown, "<br>",
-        "Time period: ", time_period, "<br>",
-        "Selection: ", Selection
-      )
+      text = if (percentage) {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+          "Local authority: ", Breakdown, "<br>",
+          "Time period: ", time_period, "<br>",
+          "Selection: ", Selection
+        )
+      } else {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+          "Local authority: ", Breakdown, "<br>",
+          "Time period: ", time_period, "<br>",
+          "Selection: ", Selection
+        )
+      }
     )) +
       ylab(yaxis_title) +
       xlab("") +
@@ -264,7 +273,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 }
 
 # By Region bar chart repeat function -----
-by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE) {
+by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE, percentage = FALSE) {
   if (add_rect == FALSE) {
     reg_data <- dataset %>%
       filter(geographic_level == "Regional", time_period == max(time_period)) %>%
@@ -275,11 +284,19 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
 
     p <- ggplot(reg_data, aes(
       x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-      text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-        "Region: ", `Breakdown`, "<br>",
-        "Time period: ", `time_period`
-      )
+      text = if (percentage) {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+          "Region: ", `Breakdown`, "<br>",
+          "Time period: ", `time_period`
+        )
+      } else {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+          "Region: ", `Breakdown`, "<br>",
+          "Time period: ", `time_period`
+        )
+      }
     ))
 
     # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis

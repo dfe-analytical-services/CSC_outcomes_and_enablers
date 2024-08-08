@@ -1473,7 +1473,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate (%) by region")
 
@@ -1520,7 +1520,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate (%) by local authority")
     ggplotly(
@@ -1708,7 +1708,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate) %>%
+    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Persistent absentees (%) by region")
 
@@ -1759,7 +1759,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Persistent absentees (%) by local authority")
     ggplotly(
