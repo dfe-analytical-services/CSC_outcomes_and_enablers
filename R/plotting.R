@@ -3,7 +3,7 @@
 # Time series repeat function ----
 # This is a repeat use function for all of the time series plots in this dashboard.
 
-plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
 
@@ -17,11 +17,19 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 
     p <- ggplot(filtered_data, aes(
       x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
-      text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
-        "Location: ", `Location`, "<br>",
-        "Time period: ", `Time period`
-      )
+      text = if (percentage) {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+          "Location: ", `Location`, "<br>",
+          "Time period: ", `Time period`
+        )
+      } else {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+          "Location: ", `Location`, "<br>",
+          "Time period: ", `Time period`
+        )
+      }
     )) +
       # geom_path(group = 1) +
       ylab(yaxis_title) +
@@ -91,7 +99,6 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
   }
   return(p)
 }
-
 
 # By LA bar chart repeat function ----
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE) {
@@ -1097,6 +1104,7 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
 }
 
 # CIN referrals ----
+
 # bar chart by region
 plot_cin_referral_reg <- function() {
   referral_reg_data <- cin_referrals %>%
@@ -1114,7 +1122,7 @@ plot_cin_referral_reg <- function() {
   ggplot(referral_reg_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
     fill = factor(time_period),
     text = paste0(
-      "Re-referrals (%): ", `Re_referrals_percentage`, "<br>",
+      "Re-referrals (%): ", format(`Re_referrals_percentage`, nsmall = 1), "<br>",
       "Region: ", geo_breakdown, "<br>",
       "Time period: ", time_period
     )
@@ -1191,7 +1199,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   p <- ggplot(LA_referral_data, aes(`geo_breakdown`, `Re_referrals_percentage`,
     fill = `is_selected`,
     text = paste0(
-      "Re-referrals (%): ", Re_referrals_percentage, "<br>",
+      "Re-referrals (%): ", format(Re_referrals_percentage, nsmall = 1), "<br>",
       "Local authority: ", geo_breakdown, "<br>",
       "Time period: ", time_period, "<br>",
       "Selection: ", is_selected

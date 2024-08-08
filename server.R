@@ -1179,7 +1179,7 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) # %>%
       # rename("Re_referrals_percentage" = "Re-referrals (%)")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", 100) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals within 12 months %")
     ggplotly(
@@ -1398,7 +1398,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate %")
 

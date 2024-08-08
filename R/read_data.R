@@ -889,6 +889,10 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
 read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv") {
   cin_referral_data <- read.csv(file)
   cin_referral_data <- colClean(cin_referral_data) %>%
+    mutate(Re_referrals_percent = ifelse(!is.na(as.numeric(Re_referrals_percent)),
+      format(as.numeric(as.character(Re_referrals_percent)), nsmall = 1),
+      Re_referrals_percent
+    )) %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
@@ -945,6 +949,10 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
+      format(as.numeric(as.character(pt_overall)), nsmall = 1),
+      pt_overall
     )) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
