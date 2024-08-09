@@ -390,7 +390,7 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
     x = breakdown, y = percentage, fill = factor(time_period),
     text = paste0(
       "Ethnic group: ", breakdown, "<br>",
-      "Percentage of workforce: ", percentage, "<br>",
+      "Percentage of workforce: ", format(percentage, nsmall = 1), "<br>",
       "Time period: ", time_period
     )
   )) +
@@ -485,7 +485,7 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
     x = breakdown, y = Percentage, fill = factor(seniority, levels = custom_fill_order),
     text = paste0(
       "Ethnic group: ", breakdown, "<br>",
-      "Percentage: ", Percentage, "<br>",
+      "Percentage: ", format(Percentage, nsmall = 1), "<br>",
       "Seniority level: ", factor(seniority, levels = custom_fill_order)
     )
   )) +
@@ -1384,7 +1384,7 @@ plot_ofsted_reg <- function() {
 
 
 # Statistical Neighbours function ----
-statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE) {
+statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -1412,12 +1412,21 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
 
     ggplot(filtered_data, aes(
       x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = paste0(
-        str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-        "Local authority: ", `Breakdown`, "<br>",
-        "Time period: ", max(dataset$time_period), "<br>",
-        "Selection: ", `Selection`
-      )
+      text = if (percentage) {
+        paste0(
+          str_to_title(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+          "Local authority: ", `Breakdown`, "<br>",
+          "Time period: ", max(dataset$time_period), "<br>",
+          "Selection: ", `Selection`
+        )
+      } else {
+        paste0(
+          str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+          "Local authority: ", `Breakdown`, "<br>",
+          "Time period: ", max(dataset$time_period), "<br>",
+          "Selection: ", `Selection`
+        )
+      }
     )) +
       geom_col(position = position_dodge()) +
       ylab(yaxis_title) +
@@ -1756,5 +1765,41 @@ cellfunc <- function(value) {
     return("z")
   } else {
     return(value)
+  }
+}
+
+# Ordering tables with suppression
+cellfunc_percent <- function(value) {
+  if (value == -100) {
+    return("c")
+  } else if (value == -200) {
+    return("k")
+  } else if (value == -250) {
+    return("u")
+  } else if (value == -300) {
+    return("x")
+  } else if (value == -400) {
+    return("z")
+  } else {
+    return(format(value, nsmall = 1))
+  }
+}
+
+# Ordering tables with suppression
+cellfunc_social_ethnicity <- function(value) {
+  if (is.na(value)) {
+    return("NA")
+  } else if (value == -100) {
+    return("c")
+  } else if (value == -200) {
+    return("k")
+  } else if (value == -250) {
+    return("u")
+  } else if (value == -300) {
+    return("x")
+  } else if (value == -400) {
+    return("z")
+  } else {
+    return(format(value, nsmall = 1))
   }
 }

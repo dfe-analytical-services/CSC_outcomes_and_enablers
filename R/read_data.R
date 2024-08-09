@@ -80,6 +80,22 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
       "turnover_rate_headcount", "agency_rate_headcount", "caseload_fte"
     ) %>%
+    mutate(turnover_rate_fte = ifelse(!is.na(as.numeric(turnover_rate_fte)),
+      format(as.numeric(as.character(turnover_rate_fte)), nsmall = 1),
+      turnover_rate_fte
+    )) %>%
+    mutate(agency_rate_fte = ifelse(!is.na(as.numeric(agency_rate_fte)),
+      format(as.numeric(as.character(agency_rate_fte)), nsmall = 1),
+      agency_rate_fte
+    )) %>%
+    mutate(vacancy_rate_fte = ifelse(!is.na(as.numeric(vacancy_rate_fte)),
+      format(as.numeric(as.character(vacancy_rate_fte)), nsmall = 1),
+      vacancy_rate_fte
+    )) %>%
+    mutate(caseload_fte = ifelse(!is.na(as.numeric(caseload_fte)),
+      format(as.numeric(as.character(caseload_fte)), nsmall = 1),
+      caseload_fte
+    )) %>%
     # removing old Dorset
     filter(!(new_la_code %in% dropList)) %>%
     distinct()
@@ -102,6 +118,8 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
   return(workforce_data2)
 }
 
+
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
 read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2023.csv") {
@@ -113,6 +131,7 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(inpost_headcount_percentage = as.numeric(inpost_headcount_percentage)) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -129,6 +148,8 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
 
   return(workforce_ethnicity_data)
 }
+
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
@@ -197,6 +218,8 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
 
   return(workforce_ethnicity_seniority_data)
 }
+
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # General population ethnicity data
@@ -759,7 +782,10 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
-    mutate(rate_per_10000 = round(as.numeric(rate_per_10000), 0)) %>%
+    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
+      format(as.numeric(as.character(rate_per_10000)), nsmall = 0),
+      rate_per_10000
+    )) %>%
     mutate(`Rate Per 10000` = case_when(
       rate_per_10000 == "c" ~ -100,
       rate_per_10000 == "low" ~ -200,
@@ -785,6 +811,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
 
   return(cla_rate_data)
 }
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
@@ -841,6 +868,18 @@ merge_cla_dataframes <- function() {
       placements_number == "u" ~ -250,
       placements_number == "x" ~ -300,
       placements_number == "z" ~ -400,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
       TRUE ~ as.numeric(placement_per_10000)
     )) %>%
     mutate("placement_per_10000" = case_when(
@@ -850,6 +889,18 @@ merge_cla_dataframes <- function() {
       placements_number == "u" ~ "u",
       placements_number == "x" ~ "x",
       placements_number == "z" ~ "z",
+      percentage == "c" ~ "c",
+      percentage == "low" ~ "low",
+      percentage == "k" ~ "k",
+      percentage == "u" ~ "u",
+      percentage == "x" ~ "x",
+      percentage == "z" ~ "z",
+      rate_per_10000 == "c" ~ "c",
+      rate_per_10000 == "low" ~ "low",
+      rate_per_10000 == "k" ~ "k",
+      rate_per_10000 == "u" ~ "u",
+      rate_per_10000 == "x" ~ "x",
+      rate_per_10000 == "z" ~ "z",
       TRUE ~ as.character(placement_per_10000)
     ))
 

@@ -1237,7 +1237,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1263,7 +1263,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1307,7 +1307,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1455,7 +1455,7 @@ server <- function(input, output, session) {
       filtered_data2,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc)
+        `Overall absence (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1498,7 +1498,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc)
+        `Overall absence (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1576,7 +1576,7 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc)
+        `Overall absence (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1689,7 +1689,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1736,7 +1736,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1815,7 +1815,7 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1999,7 +1999,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2046,7 +2046,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2125,7 +2125,7 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2545,7 +2545,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc)
+        `Ceased (%)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2597,7 +2597,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2670,7 +2670,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2783,7 +2783,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2832,7 +2832,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2902,7 +2902,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3080,7 +3080,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3130,7 +3130,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3198,7 +3198,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3318,7 +3318,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3365,7 +3365,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4334,7 +4334,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4389,7 +4389,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4465,7 +4465,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4571,7 +4571,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4623,7 +4623,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4698,7 +4698,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4806,7 +4806,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4858,7 +4858,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4930,7 +4930,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5364,7 +5364,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE
@@ -5419,7 +5419,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5495,7 +5495,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5615,7 +5615,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5671,7 +5671,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5746,7 +5746,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5909,7 +5909,7 @@ server <- function(input, output, session) {
       table <- reactable(
         data,
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -5987,7 +5987,7 @@ server <- function(input, output, session) {
       table <- reactable(
         data,
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6049,7 +6049,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6096,7 +6096,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Share minus CLA (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Share minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6495,7 +6495,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
 
     p <- p + ggtitle("Social worker turnover rate (FTE) %")
@@ -6553,7 +6553,7 @@ server <- function(input, output, session) {
     reactable(
       filtered_data,
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6571,7 +6571,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate) %>%
+    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
 
@@ -6598,7 +6598,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6616,7 +6616,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
     ggplotly(
@@ -6664,7 +6664,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6715,7 +6715,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) %")
 
@@ -6772,7 +6772,7 @@ server <- function(input, output, session) {
     reactable(
       filtered_data,
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc)
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6790,7 +6790,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate) %>%
+    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) % by region")
     ggplotly(
@@ -6817,7 +6817,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6835,7 +6835,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
     ggplotly(
@@ -6881,7 +6881,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6932,7 +6932,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) %")
 
@@ -6989,7 +6989,7 @@ server <- function(input, output, session) {
     reactable(
       filtered_data,
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7007,7 +7007,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate) %>%
+    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) % by region")
 
@@ -7030,7 +7030,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7048,7 +7048,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
 
@@ -7095,7 +7095,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7142,7 +7142,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE)")
 
@@ -7199,7 +7199,7 @@ server <- function(input, output, session) {
     reactable(
       filtered_data,
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc)
+        `Average caseload (FTE)` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7217,7 +7217,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", max_rate) %>%
+    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE) by region")
 
@@ -7244,7 +7244,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7262,7 +7262,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE) by local authority")
     ggplotly(
@@ -7307,7 +7307,7 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7361,7 +7361,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Headcount` = colDef(cell = cellfunc),
-        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Headcount (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7397,8 +7397,8 @@ server <- function(input, output, session) {
     reactable(
       data,
       columns = list(
-        `Workforce (%)` = colDef(cell = cellfunc),
-        `Population (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Workforce (%)` = colDef(cell = cellfunc_social_ethnicity),
+        `Population (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7437,7 +7437,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Headcount` = colDef(cell = cellfunc),
-        `Headcount (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Headcount (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7999,7 +7999,7 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100) %>%
+    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
 
@@ -8016,7 +8016,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
       columns = list(
-        `Re-Referrals (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Re-Referrals (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8118,7 +8118,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate (%) by statistical neighbours")
 
@@ -8142,7 +8142,7 @@ server <- function(input, output, session) {
         `social_care_group` = colDef(name = "Social care group"),
         `school_type` = colDef(name = "School type"),
         `Total pupils` = colDef(name = "Total number of pupils"),
-        `Overall Absence (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Overall Absence (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8243,7 +8243,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Persistent absentees (%) by statistical neighbours")
 
@@ -8265,7 +8265,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8361,7 +8361,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by statistical neighbours")
 
@@ -8385,7 +8385,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_rwm_eligible_pupils"), yvalue = "Expected standard reading writing maths (%)"),
       columns = list(
-        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8600,7 +8600,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
     ggplotly(
@@ -8621,7 +8621,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8711,7 +8711,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
     ggplotly(,
@@ -8731,7 +8731,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8823,7 +8823,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
     ggplotly(
@@ -8844,7 +8844,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
         `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
-        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9279,7 +9279,7 @@ server <- function(input, output, session) {
       placement_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     placements_title <- paste("Children living in", input$placement_type_breakdown, "(%) by statistical neighbours")
     p <- p + ggtitle(placements_title)
@@ -9300,7 +9300,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Type", yvalue = "Placements (%)"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9389,7 +9389,7 @@ server <- function(input, output, session) {
       placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
 
@@ -9409,7 +9409,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percentage"),
       columns = list(
-        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Percentage` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9500,7 +9500,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
 
@@ -9520,7 +9520,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Distance", yvalue = "Placements (%)"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9728,7 +9728,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours")
     p <- p + ggtitle(age_title)
@@ -9749,7 +9749,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
       columns = list(
-        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9850,7 +9850,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours")
     p <- p + ggtitle(age_title)
@@ -9871,7 +9871,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Care leavers in suitable accommodation (%)"),
       columns = list(
-        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9963,7 +9963,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
 
@@ -9979,7 +9979,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Turnover Rate Fte"),
       columns = list(
-        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
+        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10066,7 +10066,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
     ggplotly(
@@ -10081,7 +10081,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Agency Rate Fte"),
       columns = list(
-        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
+        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10169,7 +10169,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
     ggplotly(,
@@ -10183,7 +10183,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Vacancy Rate Fte"),
       columns = list(
-        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc, defaultSortOrder = "desc")
+        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10270,7 +10270,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
     ggplotly(
@@ -10285,7 +10285,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Caseload Fte"),
       columns = list(
-        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc, defaultSortOrder = "desc")
+        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10452,7 +10452,7 @@ server <- function(input, output, session) {
       data <- spending_data
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
       p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
     } else {
@@ -10461,7 +10461,7 @@ server <- function(input, output, session) {
 
       max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
 
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
       p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
     }
@@ -10489,7 +10489,7 @@ server <- function(input, output, session) {
       reactable(
         table,
         columns = list(
-          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc, defaultSortOrder = "desc")
+          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
         searchable = TRUE,
@@ -10591,7 +10591,7 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
 
@@ -10616,7 +10616,7 @@ server <- function(input, output, session) {
     reactable(
       table,
       columns = list(
-        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc, defaultSortOrder = "desc")
+        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
