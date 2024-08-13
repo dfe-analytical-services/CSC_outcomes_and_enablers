@@ -1136,6 +1136,10 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
+    mutate(avg_att8 = ifelse(!is.na(as.numeric(avg_att8)),
+      format(as.numeric(as.character(avg_att8)), nsmall = 1),
+      avg_att8
+    )) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
