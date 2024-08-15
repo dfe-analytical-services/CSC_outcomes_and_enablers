@@ -5106,7 +5106,7 @@ server <- function(input, output, session) {
     reactable(
       final_data,
       columns = list(
-        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5167,7 +5167,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5241,7 +5241,7 @@ server <- function(input, output, session) {
     reactable(
       data2,
       columns = list(
-        `Average score` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9627,7 +9627,7 @@ server <- function(input, output, session) {
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = c("SDQ characteristic", "SDQ score"), yvalue = "Average score"),
       columns = list(
-        `Average Score` = colDef(name = "Average score", cell = cellfunc, defaultSortOrder = "desc"),
+        `Average Score` = colDef(name = "Average score", cell = cellfunc_percent, defaultSortOrder = "desc"),
         `SDQ score` = colDef(name = "SDQ score")
       ),
       defaultPageSize = 15,

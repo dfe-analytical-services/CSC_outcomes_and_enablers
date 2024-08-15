@@ -62,7 +62,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
     p <- ggplot(filtered_data, aes(
       x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
       text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
         "SDQ score: ", `score_label`, "<br>",
         "Location: ", `Location`, "<br>",
         "Time period: ", `Time period`
@@ -228,7 +228,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
     p <- ggplot(la_data, aes(
       x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
       text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), "<br>",
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
         "SDQ score: ",
         "Local authority: ", Breakdown, "<br>",
         "Time period: ", time_period, "<br>",
@@ -330,7 +330,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
     p <- ggplot(reg_data, aes(
       x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
       text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
         "SDQ score: ", `score_label`, "<br>",
         "Region: ", `Breakdown`, "<br>",
         "Time period: ", `time_period`
@@ -1642,7 +1642,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       p <- ggplot(filtered_data, aes(
         x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
         text = paste0(
-          str_to_title(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+          str_to_title(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "SDQ score: ", `score_label`, "<br>",
           "Local authority: ", `Breakdown`, "<br>",
           "Time period: ", max(dataset$time_period), "<br>",
