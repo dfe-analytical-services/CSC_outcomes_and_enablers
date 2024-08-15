@@ -2180,7 +2180,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 20) * 20
 
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4)")
 
@@ -2233,7 +2233,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc)
+        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2250,7 +2250,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate) %>%
+    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4) by region")
     ggplotly(
@@ -2274,7 +2274,7 @@ server <- function(input, output, session) {
       data,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc)
+        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2294,7 +2294,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4) by local authority")
     ggplotly(
@@ -2346,7 +2346,7 @@ server <- function(input, output, session) {
       data2,
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc)
+        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8485,7 +8485,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4) by statistical neighbours")
 
@@ -8509,7 +8509,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("Social care group", "Total number of pupils"), yvalue = "Average attainment 8 score"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average Attainment 8 Score` = colDef(cell = cellfunc)
+        `Average Attainment 8 Score` = colDef(cell = cellfunc_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
