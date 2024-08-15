@@ -1448,8 +1448,6 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
   return(data5)
 }
 
-
-
 # Outcome 4 -----
 ## Number of placements -----
 
