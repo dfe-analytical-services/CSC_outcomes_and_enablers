@@ -1458,6 +1458,8 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   # Add the combined row to the data frame
   admissions_data3 <- rbind(admissions_data3, combined_row)
 
+  # Add Inner and Outer London to the data frame
+
   admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
 
   # Round headline values
@@ -1538,6 +1540,10 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
       value == "z" ~ -400,
       TRUE ~ as.numeric(rate_per_10000)
     ))
+
+  # Remove rows for 2018 where no population estimate is available
+  data5 <- data5 %>%
+    filter(time_period != 2018)
 
   return(data5)
 }
