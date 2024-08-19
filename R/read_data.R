@@ -1336,6 +1336,90 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
 
 
+  # Inner London Data
+
+  inner_london <- c(
+    "Westminster",
+    "Tower Hamlets",
+    "Camden",
+    "Hackney",
+    "Kensington and Chelsea",
+    "Southwark",
+    "Lewisham",
+    "Islington",
+    "Wandsworth",
+    "Hammersmith and Fulham",
+    "Haringey",
+    "Lambeth",
+    "Newham",
+    "City of London"
+  )
+  inner_london_data <- admissions_data3 %>%
+    filter(geo_breakdown %in% inner_london)
+
+  inner_london_stat <- inner_london_data %>%
+    summarise(
+      time_period = first(time_period),
+      geographic_level = "Regional",
+      geo_breakdown = "Inner London",
+      new_la_code = "E13000001",
+      Value = sum(Value),
+      Count = sum(Count, na.rm = TRUE),
+      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
+      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
+      old_la_code = NA
+    )
+
+  # Outer London Data
+
+  Outer_london <- c(
+    "Bexley",
+    "Greenwich",
+    "Harrow",
+    "Brent",
+    "Waltham Forest",
+    "Ealing",
+    "Richmond upon Thames",
+    "Hillingdon",
+    "Kingston upon Thames",
+    "Hounslow",
+    "Bromley",
+    "Barnet",
+    "Croydon",
+    "Enfield",
+    "Merton",
+    "Sutton",
+    "Barking and Dagenham",
+    "Redbridge",
+    "Havering"
+  )
+
+  Outer_london_data <- admissions_data3 %>%
+    filter(geo_breakdown %in% Outer_london)
+
+  Outer_london_stat <- Outer_london_data %>%
+    summarise(
+      time_period = first(time_period),
+      geographic_level = "Regional",
+      geo_breakdown = "Outer London",
+      new_la_code = "E13000002",
+      Value = sum(Value),
+      Count = sum(Count, na.rm = TRUE),
+      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
+      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
+      old_la_code = NA
+    )
+
+  # Inner and Outer London
+
+  inner_and_outer_london <- rbind(inner_london_stat, Outer_london_stat)
+
+  # rate per 10000
+
+  inner_and_outer_london <- inner_and_outer_london %>%
+    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
+    mutate(Value = Count / (Denominator / 10000))
+
   # COMBINE CUMBERLAND/WESTMORLAND AND FURNESS UNTIL ALL PUBLICATION/STATS NEIGHBOURS FILES INCLUDE THEM INDIVIDUALLY
   df_to_combine <- admissions_data3 %>%
     filter(geo_breakdown %in% c("Cumberland", "Westmorland and Furness"))
@@ -1354,6 +1438,12 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
       old_la_code = 909
     )
 
+  # rate per 10000
+
+  combined_row <- combined_row %>%
+    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
+    mutate(Value = Count / (Denominator / 10000))
+
   # Convert rate_per_10000 to a character for all rows
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = case_when(
@@ -1367,6 +1457,8 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
   # Add the combined row to the data frame
   admissions_data3 <- rbind(admissions_data3, combined_row)
+
+  admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
 
   # Round headline values
   admissions_data3 <- admissions_data3 %>%
@@ -1424,11 +1516,13 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
   # Data needs to be rates per 10,000
   # Using the population data from CLA rates data
   populations <- suppressWarnings(read_cla_rate_data()) %>%
-    filter(time_period == max(time_period)) %>%
-    select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
+    # filter(time_period == max(time_period)) %>%
+    # select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
+    select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
 
-  data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
+  # data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
+  data3 <- left_join(data2, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
   data4 <- data3 %>%
     mutate(`rate_per_10000` = (data3$Number / as.numeric(data3$population_estimate)) * 10000)
 
@@ -1447,6 +1541,8 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 
   return(data5)
 }
+
+
 
 # Outcome 4 -----
 ## Number of placements -----
