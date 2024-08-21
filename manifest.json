@@ -5913,7 +5913,7 @@
       "checksum": "5983b4a738dbe03917c8ffd42daadf9b"
     },
     ".Rprofile": {
-      "checksum": "26392f9644321373cea665b4b9113f38"
+      "checksum": "a4835443df8cd11ecfe9048f0fd9c929"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6057,10 +6057,10 @@
       "checksum": "0f3bab3489adfd7ef61c800f34ef7877"
     },
     "R/kpi_codes.R": {
-      "checksum": "c50ed69b6b41d1d50aeb4207f034294f"
+      "checksum": "51cab2d20b957983f63e566e65efb9cc"
     },
     "R/outcome1_page.R": {
-      "checksum": "1d7f506fde8f2b73246dfac22bb73bae"
+      "checksum": "bb644428065fc9e5cd9c51f392d03ac0"
     },
     "R/outcome2_page.R": {
       "checksum": "b6bba4a660854d864054d2d1ec636f7b"
@@ -6093,7 +6093,7 @@
       "checksum": "dc1d9ea6117f2da0868a1b7939f6e419"
     },
     "server.R": {
-      "checksum": "741abae6321bfc91a7a56d6ccb3b8042"
+      "checksum": "61ad77195ab744222e6d03c0dc9f26e7"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
