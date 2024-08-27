@@ -5910,10 +5910,10 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".RData": {
-      "checksum": "5983b4a738dbe03917c8ffd42daadf9b"
+      "checksum": "c35c8a17f91e27eaa925c9502cb8ed97"
     },
     ".Rprofile": {
-      "checksum": "2bafb8f3fe41afac75aec0f824c5acff"
+      "checksum": "29eb07998f623cefa37fb157ed05e556"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6038,6 +6038,9 @@
     "PULL_REQUEST_TEMPLATE.md": {
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
+    "R/data_sources.R": {
+      "checksum": "60319a368f091acaac61ef9634557b14"
+    },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
     },
@@ -6054,7 +6057,7 @@
       "checksum": "56dc1d562458078773b9d6a3ee443452"
     },
     "R/intro_panel.R": {
-      "checksum": "0f3bab3489adfd7ef61c800f34ef7877"
+      "checksum": "b96ae20b5c6c3d4f7d62f11fb3381916"
     },
     "R/kpi_codes.R": {
       "checksum": "51cab2d20b957983f63e566e65efb9cc"
@@ -6123,7 +6126,7 @@
       "checksum": "d30c51601cfb8eb5d13dff6c393aad52"
     },
     "ui.R": {
-      "checksum": "514236f2117e118d261af5683326c738"
+      "checksum": "55893dbd464ef548906c276a46acf279"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
