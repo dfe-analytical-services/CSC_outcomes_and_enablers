@@ -1285,7 +1285,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
         select(time_period, geo_breakdown, `yvalue`) %>%
         mutate(
           geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
+          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Not Selected")
         ) %>%
         rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
         rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
@@ -1295,7 +1295,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
         select(time_period, geo_breakdown, `yvalue`, score_label) %>%
         mutate(
           geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected")
+          is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Not Selected")
         ) %>%
         rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
         rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
@@ -1341,7 +1341,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
         select(time_period, geo_breakdown, `yvalue`) %>%
         mutate(
           geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-          is_selected = "Selected"
+          is_selected = selected_geo_breakdown
         ) %>%
         rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
         rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
@@ -1351,7 +1351,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
         select(time_period, geo_breakdown, `yvalue`, score_label) %>%
         mutate(
           geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-          is_selected = "Selected"
+          is_selected = selected_geo_breakdown
         ) %>%
         rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
         rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
@@ -1387,7 +1387,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       ) +
       scale_fill_manual(
         "LA Selection",
-        values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
+        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Not Selected"))
       )
 
     if (is.null(yupperlim)) {
@@ -1422,7 +1422,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       scale_y_continuous(limits = c(0, 100)) +
       scale_fill_manual(
         "LA Selection",
-        values = c("Selected" = "#12436D", "Not Selected" = "#88A1B5")
+        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Not Selected"))
       )
 
     max_xaxis <- length(unique(la_data$`Breakdown`)) + 1
@@ -1448,7 +1448,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
   # label if no cases for selected factor
 
   if (selected_geo_lvl == "Local authority") {
-    selected_row <- la_data %>% filter(Selection == "Selected")
+    selected_row <- la_data %>% filter(Selection == selected_geo_breakdown)
     selected_rate <- selected_row$`Rate per 10000`
     if (length(selected_rate) > 0 && selected_rate < 1) {
       y_max <- max(la_data$`Rate per 10000`)
@@ -1694,7 +1694,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1730,7 +1730,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
         "LA Selection",
-        values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
+        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
       )
   } else {
     filtered_data <- dataset %>%
@@ -1773,7 +1773,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
           "LA Selection",
-          values = c("Selected" = "#12436D", "Statistical Neighbours" = "#88A1B5")
+          values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
         )
     )
   }
