@@ -619,12 +619,19 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
 
 
-  colors <- c(
-    "Unaccompanied asylum-seeking children (Selected)" = "#28A197",
-    "Non-unaccompanied asylum-seeking children (Selected)" = "#12436D",
-    "Unaccompanied asylum-seeking children (Not Selected)" = "#28A1977F",
-    "Non-unaccompanied asylum-seeking children (Not Selected)" = "#12436D7F"
+  colors <- setNames(
+    c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
+    c(
+      paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+      paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+      "Unaccompanied asylum-seeking children (Not Selected)",
+      "Non-unaccompanied asylum-seeking children (Not Selected)"
+    )
   )
+
+
+
+
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- combined_cla_data %>%
@@ -635,8 +642,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`), # Order by placement_per_10000
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Not Selected"),
-        characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Not Selected"),
+        characteristic_selected = ifelse(is_selected == selected_geo_breakdown, paste0(characteristic, " (", selected_geo_breakdown, ")"), paste0(characteristic, " (Not Selected)"))
       )
   } else if (selected_geo_lvl == "National") {
     cla_data <- combined_cla_data %>%
@@ -672,8 +679,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`), # Order by placement_per_10000
-        is_selected = "Selected",
-        characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
+        is_selected = selected_geo_breakdown,
+        characteristic_selected = ifelse(is_selected == selected_geo_breakdown, paste0(characteristic, " (", selected_geo_breakdown, ")"), paste0(characteristic, " (Not Selected)"))
       )
   }
 
@@ -693,8 +700,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   p <- ggplot(cla_data, aes(
     x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
       levels = c(
-        "Unaccompanied asylum-seeking children (Selected)",
-        "Non-unaccompanied asylum-seeking children (Selected)",
+        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
         "Unaccompanied asylum-seeking children (Not Selected)",
         "Non-unaccompanied asylum-seeking children (Not Selected)"
       )
@@ -721,8 +728,8 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       "UASC Status",
       values = colors,
       labels = c(
-        "Unaccompanied asylum-seeking children (Selected)",
-        "Non-unaccompanied asylum-seeking children (Selected)",
+        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
         "Unaccompanied asylum-seeking children (Not Selected)",
         "Non-unaccompanied asylum-seeking children (Not Selected)"
       )
@@ -1810,11 +1817,14 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.list()
 
-  colors <- c(
-    "Unaccompanied asylum-seeking children (Selected)" = "#28A197",
-    "Non-unaccompanied asylum-seeking children (Selected)" = "#12436D",
-    "Unaccompanied asylum-seeking children (Not Selected)" = "#28A1977F",
-    "Non-unaccompanied asylum-seeking children (Not Selected)" = "#12436D7F"
+  colors <- setNames(
+    c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
+    c(
+      paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+      paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+      "Unaccompanied asylum-seeking children (Not Selected)",
+      "Non-unaccompanied asylum-seeking children (Not Selected)"
+    )
   )
 
   filtered_data <- dataset %>%
@@ -1826,8 +1836,8 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     select(geo_breakdown, `yvalue`, characteristic) %>%
     mutate(
       geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, "Selected", "Statistical Neighbours"),
-      characteristic_selected = ifelse(is_selected == "Selected", paste0(characteristic, " (Selected)"), paste0(characteristic, " (Not Selected)"))
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours"),
+      characteristic_selected = ifelse(is_selected == selected_geo_breakdown, paste0(characteristic, " (", selected_geo_breakdown, ")"), paste0(characteristic, " (Not Selected)"))
     ) %>%
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1835,8 +1845,8 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   ggplot(filtered_data, aes(
     x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
       levels = c(
-        "Unaccompanied asylum-seeking children (Selected)",
-        "Non-unaccompanied asylum-seeking children (Selected)",
+        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
         "Unaccompanied asylum-seeking children (Not Selected)",
         "Non-unaccompanied asylum-seeking children (Not Selected)"
       )
@@ -1865,8 +1875,8 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
       "UASC Status",
       values = colors,
       labels = c(
-        "Unaccompanied asylum-seeking children (Selected)",
-        "Non-unaccompanied asylum-seeking children (Selected)",
+        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
+        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
         "Unaccompanied asylum-seeking children (Not Selected)",
         "Non-unaccompanied asylum-seeking children (Not Selected)"
       )
