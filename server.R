@@ -7667,7 +7667,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CAL rate per 10,000 with UASC breakdown by statistical neighbours")
+    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by statistical neighbours")
 
     ggplotly(
       p,
