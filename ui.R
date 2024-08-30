@@ -116,6 +116,8 @@ ui <- function(input, output, session) {
       enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
+      kpiCodes_tab(),
+      data_sources(),
       a11y_panel(),
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
