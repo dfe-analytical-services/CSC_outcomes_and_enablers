@@ -5913,7 +5913,7 @@
       "checksum": "c35c8a17f91e27eaa925c9502cb8ed97"
     },
     ".Rprofile": {
-      "checksum": "b73d47b153d7aca114b86fcde885bb89"
+      "checksum": "1bc608b078bf9b4f4cda1ae39854fc7b"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6057,7 +6057,7 @@
       "checksum": "56dc1d562458078773b9d6a3ee443452"
     },
     "R/intro_panel.R": {
-      "checksum": "2ba40848a02536266f83316fe95bf95d"
+      "checksum": "af7bcd75ef0d99b534f139d7901c9a3e"
     },
     "R/kpi_codes.R": {
       "checksum": "51cab2d20b957983f63e566e65efb9cc"
@@ -6096,7 +6096,7 @@
       "checksum": "dc1d9ea6117f2da0868a1b7939f6e419"
     },
     "server.R": {
-      "checksum": "75f4ed962a4e3da50829a929d7157ed4"
+      "checksum": "6676340dc7166a2fa894f72bca92e39b"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
