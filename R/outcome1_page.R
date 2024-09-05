@@ -109,9 +109,9 @@ outcome1_tab <- function() {
               accordion(
                 ### CIN ------------------
                 accordion_panel(
-                  "Rate of Child In Need (CIN)",
+                  "Rate of Children in Need (CIN)",
                   gov_row(
-                    h2("Rate of Child In Need (CIN)"),
+                    h2("Rate of Children in Need (CIN)"),
                     p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
                     Looking at the flow of children who become a CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."),
                     insert_text(inputId = "CIN_definition", text = paste(
@@ -294,7 +294,7 @@ outcome1_tab <- function() {
             ),
             # Domain 2 --------------
             tabPanel(
-              "Family Stability",
+              "Family stability",
               fluidRow(
                 br(),
               ),
@@ -420,7 +420,7 @@ outcome1_tab <- function() {
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
                     h2("Rate of children starting to be looked after who were UASC"),
-                    p("This measures the flow of those children moving into care. Where UASC are placed within an authority, this will represent an unavoidable increase in numbers of children entering the system. This breakdown is provided for context."),
+                    p("This measures the flow of those children moving into care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
                     insert_text(inputId = "cla_rate__starting_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
                       "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
