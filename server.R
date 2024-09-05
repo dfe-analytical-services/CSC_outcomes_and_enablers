@@ -10665,6 +10665,10 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "navlistPanel", selected = "user_guide")
   })
 
+  observeEvent(input$go_to_user_guide, {
+    updateTabsetPanel(session, "navlistPanel", selected = "user_guide")
+  })
+
   # Stop app ---------------------------------------------------------------------------------
 
   session$onSessionEnded(function() {
