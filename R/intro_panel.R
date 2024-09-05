@@ -46,7 +46,7 @@ introductionPanel <- function() {
       ),
       gov_row(
         h2("Use and limitations"),
-        p("This dashboard is intended to be used by local authorities, local authority regions, safeguarding partners, central government and the general public."),
+        p("This dashboard is intended to be used by local authorities, regions, safeguarding partners, central government and the general public."),
         # br(),
         p("This dashboard is not intended to be a tool to measure local authority performance on children’s social care.
           The dashboard and the data included is intended to be the start of a conversation around understanding the outcomes and enablers and generating learning to improve practice with children, young people and families.
