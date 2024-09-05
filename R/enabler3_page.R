@@ -514,7 +514,7 @@ enabler3_tab <- function() {
                   "Social worker ethnicity",
                   gov_row(
                     h2("Social worker ethnicity"),
-                    p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities’ practitioners serve."),
+                    p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities practitioners serve."),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
                       "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity."
@@ -590,6 +590,7 @@ enabler3_tab <- function() {
                           tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
                           tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
                           tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
+                          tags$li("General population ethnicity covers all ages of population living in the geographical area in question."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),

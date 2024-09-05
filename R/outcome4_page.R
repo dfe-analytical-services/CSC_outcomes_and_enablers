@@ -111,7 +111,7 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March living in foster placements",
+                    title = "% CLA on 31 March living in foster care",
                     value = htmlOutput("foster_placement_txt")
                   )
                 ),
@@ -433,7 +433,7 @@ outcome4_tab <- function() {
             ),
             # Domain 2 -----
             tabPanel(
-              "Wellbeing of child",
+              "Child wellbeing",
               fluidRow(
                 br()
               ),
