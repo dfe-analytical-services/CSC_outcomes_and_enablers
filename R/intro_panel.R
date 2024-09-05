@@ -10,27 +10,14 @@ introductionPanel <- function() {
           heading_text("Introduction", size = "l"),
           p(
             "This dashboard displays data indicators to help both local and central government understand progress towards the outcomes and enablers set out in the",
-            a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
+            a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework.", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
             "Users can view the progress for England nationally or choose a specific region or local authority in England to view their progress.",
             actionLink("go_to_user_guide", "Please read the user guide"), "for further information on how to do this after reading this introduction page."
           ),
-          br(),
           p("The data indicators included in the dashboard are contained within domains (themes). The domains sit within the below enablers and outcomes."),
         ),
       ),
       layout_columns(
-        column(
-          width = 12,
-          h3("Enablers"),
-          p("The enablers included in the dashboard refer to aspects of the children’s social care system, that facilitate effective support for children, young people and families.
-              The enablers are foundational to good practice. The enablers included are:"),
-          tags$ul(
-            tags$li("Multi-agency working is prioritised and effective"),
-            tags$li("Leaders drive conditions for effective practice"),
-            tags$li("The workforce is equipped and effective"),
-            style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
-          ),
-        ),
         column(
           width = 12,
           h3("Outcomes"),
@@ -41,6 +28,18 @@ introductionPanel <- function() {
             tags$li("Children and young people are supported by their family network"),
             tags$li("Children and young people are safe in and outside of their home"),
             tags$li("Children in care and care leavers have stable, loving homes"),
+            style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+          ),
+        ),
+        column(
+          width = 12,
+          h3("Enablers"),
+          p("The enablers included in the dashboard refer to aspects of the children’s social care system that facilitate effective support for children, young people and families.
+              The enablers are foundational to good practice. The enablers included are:"),
+          tags$ul(
+            tags$li("Multi-agency working is prioritised and effective"),
+            tags$li("Leaders drive conditions for effective practice"),
+            tags$li("The workforce is equipped and effective"),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
           ),
         )
