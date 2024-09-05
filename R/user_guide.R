@@ -19,13 +19,6 @@ tutorialPanel <- function() {
             tags$li("The domain (theme) options for each outcome/enabler page will be displayed below the drop downs. Select a different domain by clicking on the text. Please note some outcome/enabler pages will only have one domain."),
             tags$li("All charts can be viewed as a table to view more detailed data at selected geographic levels, select ‘View chart as at table’ to view the table data for your geographic selection."),
             tags$li("Symbols used in data tables indicate the following:"),
-            tags$ul(
-              tags$li("c - confidential data which has been suppressed."),
-              tags$li("k - rounds to 0 but is not 0."),
-              tags$li("u – observation is of low reliability."),
-              tags$li("x - data is unavailable for other reason(s)."),
-              tags$li("z - observation is not applicable.")
-            ),
             tags$li("Select ‘Additional information’ underneath charts and tables where available, to view footnotes regarding the data source and limitations for context."),
             tags$li("If you have selected ‘Local Authority’ as the geographic level you can also select to view a chart called ‘10 statistical neighbours’."),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
