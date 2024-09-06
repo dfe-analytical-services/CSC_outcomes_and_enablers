@@ -202,7 +202,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       }
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -236,7 +236,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       )
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -716,7 +716,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -848,7 +848,7 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -974,7 +974,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1104,7 +1104,7 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1231,7 +1231,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals  (%)") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1385,7 +1385,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       }
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -1419,7 +1419,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       )
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
