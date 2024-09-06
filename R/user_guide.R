@@ -8,7 +8,7 @@ tutorialPanel <- function() {
         column(
           width = 12,
           h1("Dashboard User Guide"),
-          h5("How to use this dashboard:", style = "font-family: GDS Transport, arial, sans-serif; font-size :20px; font-weight: bold"),
+          h2("How to use this dashboard:", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold"),
           tags$ul(
             tags$li("Use the navigation bar on the left to select which outcome/enabler/indicator page you want to view."),
             tags$li("Within each outcome/enabler page, select a geographical level (National, Regional, Local Authority) using the dropdown list at the top."),
@@ -28,7 +28,7 @@ tutorialPanel <- function() {
       gov_row(
         column(
           width = 12,
-          tags$h5("Interactive Plots User Guide", style = "font-family: GDS Transport, arial, sans-serif; font-size :20px; font-weight: bold"),
+          tags$h3("Interactive Plots User Guide", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold"),
           p("The menu bar along the top of the charts contains extra interactive features to:"),
           tags$ul(
             tags$li("Download chart as png file"),

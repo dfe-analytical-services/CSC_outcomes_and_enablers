@@ -20,7 +20,7 @@ introductionPanel <- function() {
       layout_columns(
         column(
           width = 12,
-          h3("Outcomes"),
+          h2("Outcomes"),
           p("The outcomes included in the dashboard are what children’s social care should achieve for the children, young people and families they support.
               They reflect the core purpose of children’s social care. The outcomes included are:"),
           tags$ol(
@@ -33,7 +33,7 @@ introductionPanel <- function() {
         ),
         column(
           width = 12,
-          h3("Enablers"),
+          h2("Enablers"),
           p("The enablers included in the dashboard refer to aspects of the children’s social care system that facilitate effective support for children, young people and families.
               The enablers are foundational to good practice. The enablers included are:"),
           tags$ul(
