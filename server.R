@@ -232,7 +232,7 @@ server <- function(input, output, session) {
       stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) &
         geo_breakdown %in% input$geographic_breakdown_o1 &
         population_count == "Children starting to be looked after each year" &
-        characteristic == "Unaccompanied asylum-seeking children") %>% select(placement_per_10000), nsmall = 0)
+        characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
     }
 
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
@@ -572,7 +572,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown")
     ggplotly(
       p,
       height = 420,
@@ -591,9 +591,14 @@ server <- function(input, output, session) {
     data <- combined_cla_data %>%
       filter(
         geo_breakdown %in% input$geographic_breakdown_o1,
-        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        characteristic %in% c("UASC", "Non-UASC"),
         population_count == "Children starting to be looked after each year"
       ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
       arrange(desc(time_period)) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
@@ -617,7 +622,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by region")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by region")
     ggplotly(
       p,
       height = 420,
@@ -634,10 +639,15 @@ server <- function(input, output, session) {
     )
     data <- combined_cla_data %>%
       filter(
-        geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        geographic_level == "Regional", characteristic %in% c("UASC", "Non-UASC"),
         population_count == "Children starting to be looked after each year",
         time_period == max(time_period)
       ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
 
@@ -660,7 +670,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by local authority")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority")
     ggplotly(
       p,
       height = 420,
@@ -690,18 +700,28 @@ server <- function(input, output, session) {
 
       data <- combined_cla_data %>%
         filter(
-          geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
           population_count == "Children starting to be looked after each year",
         ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(`Placement Rate Per 10000`)) %>%
         rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- combined_cla_data %>%
         filter(
-          geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
           population_count == "Children starting to be looked after each year",
         ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(`Placement Rate Per 10000`)) %>%
         rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
@@ -7656,7 +7676,7 @@ server <- function(input, output, session) {
     # Set the max y-axis scale
     max_rate <- max(
       combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+        combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
         combined_cla_data$time_period == max(combined_cla_data$time_period) &
         combined_cla_data$geographic_level == "Local authority"],
       na.rm = TRUE
@@ -7667,7 +7687,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by statistical neighbours")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
 
     ggplotly(
       p,
@@ -7680,8 +7700,12 @@ server <- function(input, output, session) {
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
-      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"))
-
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("UASC", "Non-UASC")) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      ))
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
       columns = list(

@@ -419,7 +419,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children starting to be looked after who were UASC"),
+                    h2("Rate of children starting to be looked after who were Unaccompanied Asylum Seeking Children"),
                     p("This measures the flow of those children moving into care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
                     insert_text(inputId = "cla_rate__starting_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
@@ -462,7 +462,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC region
                   gov_row(
-                    h2("Rate of children starting to be looked after by region who were UASC"),
+                    h2("Rate of children starting to be looked after by region who were Unaccompanied Asylum Seeking Children"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -502,7 +502,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC by local authority
                   gov_row(
-                    h2("Rate of children starting to be looked after by LA who were UASC"),
+                    h2("Rate of children starting to be looked after by LA who were Unaccompanied Asylum Seeking Children"),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
                       "uasc_stats_toggle",

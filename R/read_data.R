@@ -902,6 +902,11 @@ merge_cla_dataframes <- function() {
       rate_per_10000 == "x" ~ "x",
       rate_per_10000 == "z" ~ "z",
       TRUE ~ as.character(placement_per_10000)
+    )) %>%
+    mutate(characteristic = case_when(
+      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
+      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      TRUE ~ as.character(characteristic)
     ))
 
 
