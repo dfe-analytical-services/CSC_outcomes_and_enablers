@@ -5912,7 +5912,7 @@
       "checksum": "c35c8a17f91e27eaa925c9502cb8ed97"
     },
     ".Rprofile": {
-      "checksum": "933b7bd54186f3be3beb5cca2c9dec68"
+      "checksum": "382053af00a390c089765d423080a28a"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6062,7 +6062,7 @@
       "checksum": "51cab2d20b957983f63e566e65efb9cc"
     },
     "R/outcome1_page.R": {
-      "checksum": "7deafbe9cc2ec46160df95d7602331cc"
+      "checksum": "8419d027ece1607e381abbb76c23214f"
     },
     "R/outcome2_page.R": {
       "checksum": "d827813d1bb2fc0b496dc4c86acff899"
