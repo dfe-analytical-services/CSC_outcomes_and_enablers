@@ -610,7 +610,6 @@ plot_uasc_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "UASC Status",
-      # breaks = unique(c("England", inputArea)),
       values = c("UASC" = "#28A197", "Non-UASC" = "#12436D")
     )
 }

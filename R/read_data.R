@@ -1523,8 +1523,6 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
   # Data needs to be rates per 10,000
   # Using the population data from CLA rates data
   populations <- suppressWarnings(read_cla_rate_data()) %>%
-    # filter(time_period == max(time_period)) %>%
-    # select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
 
