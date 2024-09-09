@@ -1273,7 +1273,8 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     scale_y_continuous(limits = c(0, NA)) +
     coord_flip() +
     xlab("Assessment factor") +
-    ylab("Rate per 10,000")
+    ylab("Rate per 10,000") +
+    theme_classic()
 
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
@@ -1283,6 +1284,7 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   }
   return(p)
 }
+
 factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, percentage = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
