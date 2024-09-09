@@ -26,7 +26,8 @@
     "cla_march_stats_toggle": "All local authorities",
     "cla_stats_toggle": "All local authorities",
     "cookies": {
-
+      "_ga": "GA1.1.1430501773.1707484817",
+      "_ga_XXXXXXXXXX": "GS1.1.1707730501.2.1.1707730624.0.0.0"
     },
     "cookies-cookie_accept": 0,
     "cookies-cookie_link": 0,
@@ -40,6 +41,7 @@
     "geographic_breakdown_o2": "National",
     "geographic_breakdown_o3": "National",
     "geographic_breakdown_o4": "National",
+    "go_to_user_guide": 0,
     "hosp_admission_toggle": "All local authorities",
     "ks2_attainment_stats_toggle": "All local authorities",
     "ks4_attainment_stats_toggle": "All local authorities",
@@ -50,7 +52,7 @@
     "national_comparison_checkbox_o3": null,
     "national_comparison_checkbox_o4": null,
     "navlistPanel": "intro_panel",
-    "outcome1_panels": "Family Stability",
+    "outcome1_panels": "Access to support and getting help",
     "outcome2_panels": "Families engaging and receiving support from their family network",
     "outcome3_panels": "Child safety – general",
     "outcome4_panels": "Stability and quality of where a child lives",
