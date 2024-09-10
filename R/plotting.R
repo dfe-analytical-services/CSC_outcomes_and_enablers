@@ -202,7 +202,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       }
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -236,7 +236,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       )
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -520,7 +520,7 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
 plot_uasc <- function(geo_break, geo_lvl) {
   uasc_data <- combined_cla_data %>%
     filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break &
-      characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      characteristic %in% c("UASC", "Non-UASC") &
       population_count == "Children starting to be looked after each year") %>%
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic)
 
@@ -528,7 +528,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
   # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")],
+      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
 
@@ -536,10 +536,10 @@ plot_uasc <- function(geo_break, geo_lvl) {
   max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
 
   ggplot(uasc_data, aes(`time_period`, `Placement Rate Per 10000`,
-    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    fill = factor(characteristic, levels = c("UASC", "Non-UASC")),
     text = paste0(
       "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
-      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("UASC", "Non-UASC")), "<br>",
       "Location: ", geo_breakdown, "<br>",
       "Time period: ", `time_period`
     )
@@ -562,7 +562,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
     scale_fill_manual(
       "UASC status",
       # breaks = unique(c("England", inputArea)),
-      values = c("Unaccompanied asylum-seeking children" = "#28A197", "Non-unaccompanied asylum-seeking children" = "#12436D")
+      values = c("UASC" = "#28A197", "Non-UASC" = "#12436D")
     )
 }
 
@@ -570,7 +570,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
 plot_uasc_reg <- function() {
   uasc_data <- combined_cla_data %>%
     filter(geographic_level == "Regional" &
-      characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      characteristic %in% c("UASC", "Non-UASC") &
       population_count == "Children starting to be looked after each year" & time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`))
@@ -578,7 +578,7 @@ plot_uasc_reg <- function() {
   # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
       combined_cla_data$time_period == max(combined_cla_data$time_period) &
       combined_cla_data$geographic_level == "Regional"],
     na.rm = TRUE
@@ -588,10 +588,10 @@ plot_uasc_reg <- function() {
   max_rate <- ceiling(max_rate / 10) * 10
 
   ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
-    fill = factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")),
+    fill = factor(characteristic, levels = c("UASC", "Non-UASC")),
     text = paste0(
       "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
-      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("UASC", "Non-UASC")), "<br>",
       "Region: ", geo_breakdown, "<br>",
       "Time period: ", `time_period`
     )
@@ -610,8 +610,7 @@ plot_uasc_reg <- function() {
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
       "UASC Status",
-      # breaks = unique(c("England", inputArea)),
-      values = c("Unaccompanied asylum-seeking children" = "#28A197", "Non-unaccompanied asylum-seeking children" = "#12436D")
+      values = c("UASC" = "#28A197", "Non-UASC" = "#12436D")
     )
 }
 
@@ -622,10 +621,10 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   colors <- setNames(
     c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
     c(
-      paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-      paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+      paste0("UASC", " (", selected_geo_breakdown, ")"),
+      paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+      "UASC (Not Selected)",
+      "Non-UASC (Not Selected)"
     )
   )
 
@@ -637,7 +636,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     cla_data <- combined_cla_data %>%
       filter(
         geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year",
-        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
+        characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
@@ -649,7 +648,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     cla_data <- combined_cla_data %>%
       filter(
         geographic_level == "Local authority", time_period == max(time_period), population_count == "Children starting to be looked after each year",
-        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
+        characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
@@ -674,7 +673,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     cla_data <- combined_cla_data %>%
       filter(
         geo_breakdown %in% location, time_period == max(time_period), population_count == "Children starting to be looked after each year", rate_per_10000 != "NA",
-        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
+        characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
       mutate(
@@ -687,7 +686,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   # Set the max y-axis scale based on rhe data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+      combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
       combined_cla_data$time_period == max(combined_cla_data$time_period) &
       combined_cla_data$geographic_level == "Local authority"],
     na.rm = TRUE
@@ -700,15 +699,15 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   p <- ggplot(cla_data, aes(
     x = geo_breakdown, y = `Placement Rate Per 10000`, fill = factor(characteristic_selected,
       levels = c(
-        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        "Unaccompanied asylum-seeking children (Not Selected)",
-        "Non-unaccompanied asylum-seeking children (Not Selected)"
+        paste0("UASC", " (", selected_geo_breakdown, ")"),
+        paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+        "UASC (Not Selected)",
+        "Non-UASC (Not Selected)"
       )
     ),
     text = paste0(
       "Placement rate per 10,000: ", `Placement Rate Per 10000`, "<br>",
-      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("UASC", "Non-UASC")), "<br>",
       "Local authority: ", geo_breakdown, "<br>",
       "Selection: ", is_selected, "<br>",
       "Time period: ", `time_period`
@@ -716,7 +715,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   )) +
     geom_bar(stat = "identity") +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -728,10 +727,10 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       "UASC Status",
       values = colors,
       labels = c(
-        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        "Unaccompanied asylum-seeking children (Not Selected)",
-        "Non-unaccompanied asylum-seeking children (Not Selected)"
+        paste0("UASC", " (", selected_geo_breakdown, ")"),
+        paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+        "UASC (Not Selected)",
+        "Non-UASC (Not Selected)"
       )
     )
 
@@ -848,7 +847,7 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
   )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -974,7 +973,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   )) +
     geom_col(position = position_dodge()) +
     ylab("Rate per 10,000 children") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1104,7 +1103,7 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   )) +
     geom_col(position = position_dodge()) +
     ylab("CIN rates per 10,000") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1231,7 +1230,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
   )) +
     geom_col(position = position_dodge()) +
     ylab("Re-referrals  (%)") +
-    xlab("") +
+    xlab("Local Authority") +
     theme_classic() +
     theme(
       text = element_text(size = 12),
@@ -1274,7 +1273,8 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     scale_y_continuous(limits = c(0, NA)) +
     coord_flip() +
     xlab("Assessment factor") +
-    ylab("Rate per 10,000")
+    ylab("Rate per 10,000") +
+    theme_classic()
 
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
@@ -1284,6 +1284,7 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   }
   return(p)
 }
+
 factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, percentage = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
@@ -1385,7 +1386,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       }
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -1419,7 +1420,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       )
     )) +
       ylab(yaxis_title) +
-      xlab("") +
+      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
@@ -1560,13 +1561,19 @@ plot_ofsted_reg <- function() {
   )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     theme_classic() +
+    theme(
+      text = element_text(size = 12),
+      axis.title.y = element_text(margin = margin(r = 12)),
+      axis.line = element_line(size = 1.0),
+      axis.text.x = element_text(angle = 45, hjust = 1)
+    ) +
     scale_fill_manual(
       "Ofsted leadership rating", # Change legend title
       values = gss_colour_pallette,
       breaks = c("Outstanding", "Good", "Requires Improvement", "Inadequate")
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
-    xlab("Region") +
+    xlab("") +
     ylab("Count")
 
   return(p)
@@ -1820,10 +1827,10 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   colors <- setNames(
     c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
     c(
-      paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-      paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-      "Unaccompanied asylum-seeking children (Not Selected)",
-      "Non-unaccompanied asylum-seeking children (Not Selected)"
+      paste0("UASC", " (", selected_geo_breakdown, ")"),
+      paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+      "UASC (Not Selected)",
+      "Non-UASC (Not Selected)"
     )
   )
 
@@ -1831,7 +1838,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     filter(
       population_count == "Children starting to be looked after each year",
-      characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")
+      characteristic %in% c("UASC", "Non-UASC")
     ) %>%
     select(geo_breakdown, `yvalue`, characteristic) %>%
     mutate(
@@ -1845,15 +1852,15 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   ggplot(filtered_data, aes(
     x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(characteristic_selected,
       levels = c(
-        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        "Unaccompanied asylum-seeking children (Not Selected)",
-        "Non-unaccompanied asylum-seeking children (Not Selected)"
+        paste0("UASC", " (", selected_geo_breakdown, ")"),
+        paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+        "UASC (Not Selected)",
+        "Non-UASC (Not Selected)"
       )
     ),
     text = paste0(
       "Placement rate per 10,000: ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-      "UASC status: ", factor(characteristic, levels = c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children")), "<br>",
+      "UASC status: ", factor(characteristic, levels = c("UASC", "Non-UASC")), "<br>",
       "Local authority: ", Breakdown, "<br>",
       "Selection: ", Selection, "<br>",
       "Time period: ", max(dataset$time_period)
@@ -1875,10 +1882,10 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
       "UASC Status",
       values = colors,
       labels = c(
-        paste0("Unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        paste0("Non-unaccompanied asylum-seeking children", " (", selected_geo_breakdown, ")"),
-        "Unaccompanied asylum-seeking children (Not Selected)",
-        "Non-unaccompanied asylum-seeking children (Not Selected)"
+        paste0("UASC", " (", selected_geo_breakdown, ")"),
+        paste0("Non-UASC", " (", selected_geo_breakdown, ")"),
+        "UASC (Not Selected)",
+        "Non-UASC (Not Selected)"
       )
     )
 }
@@ -2115,5 +2122,3 @@ cellfunc_social_ethnicity <- function(value) {
     return(format(value, nsmall = 1))
   }
 }
-
-

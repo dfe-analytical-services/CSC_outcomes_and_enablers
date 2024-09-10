@@ -232,7 +232,7 @@ server <- function(input, output, session) {
       stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) &
         geo_breakdown %in% input$geographic_breakdown_o1 &
         population_count == "Children starting to be looked after each year" &
-        characteristic == "Unaccompanied asylum-seeking children") %>% select(placement_per_10000), nsmall = 0)
+        characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
     }
 
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
@@ -572,7 +572,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown")
     ggplotly(
       p,
       height = 420,
@@ -591,9 +591,14 @@ server <- function(input, output, session) {
     data <- combined_cla_data %>%
       filter(
         geo_breakdown %in% input$geographic_breakdown_o1,
-        characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        characteristic %in% c("UASC", "Non-UASC"),
         population_count == "Children starting to be looked after each year"
       ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
       arrange(desc(time_period)) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
@@ -617,7 +622,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by region")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by region")
     ggplotly(
       p,
       height = 420,
@@ -634,10 +639,15 @@ server <- function(input, output, session) {
     )
     data <- combined_cla_data %>%
       filter(
-        geographic_level == "Regional", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+        geographic_level == "Regional", characteristic %in% c("UASC", "Non-UASC"),
         population_count == "Children starting to be looked after each year",
         time_period == max(time_period)
       ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
 
@@ -660,7 +670,7 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by local authority")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority")
     ggplotly(
       p,
       height = 420,
@@ -690,18 +700,28 @@ server <- function(input, output, session) {
 
       data <- combined_cla_data %>%
         filter(
-          geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          geo_breakdown %in% location, time_period == max(combined_cla_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
           population_count == "Children starting to be looked after each year",
         ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(`Placement Rate Per 10000`)) %>%
         rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- combined_cla_data %>%
         filter(
-          geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"),
+          geographic_level == "Local authority", time_period == max(combined_cla_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
           population_count == "Children starting to be looked after each year",
         ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
         arrange(desc(`Placement Rate Per 10000`)) %>%
         rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children starting to be looked after` = `placements_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
@@ -3506,7 +3526,7 @@ server <- function(input, output, session) {
     )
     p <- all_assessment_factors_plot(assessment_factors, af_child_abuse_extra_filter, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 that include child abuse or neglect")
+    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect")
     ggplotly(
       p,
       tooltip = "text",
@@ -3782,7 +3802,7 @@ server <- function(input, output, session) {
     )
     p <- all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 that include extra familial harm.")
+    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home.")
     ggplotly(
       p,
       tooltip = "text",
@@ -7217,7 +7237,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE) by region")
 
@@ -7656,7 +7676,7 @@ server <- function(input, output, session) {
     # Set the max y-axis scale
     max_rate <- max(
       combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-        combined_cla_data$characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children") &
+        combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
         combined_cla_data$time_period == max(combined_cla_data$time_period) &
         combined_cla_data$geographic_level == "Local authority"],
       na.rm = TRUE
@@ -7667,7 +7687,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with UASC breakdown by statistical neighbours")
+    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
 
     ggplotly(
       p,
@@ -7680,8 +7700,12 @@ server <- function(input, output, session) {
   # cla UASC stats neighbour tables
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
-      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("Unaccompanied asylum-seeking children", "Non-unaccompanied asylum-seeking children"))
-
+      filter(population_count == "Children starting to be looked after each year", characteristic %in% c("UASC", "Non-UASC")) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      ))
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
       columns = list(
@@ -7829,10 +7853,11 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-              tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their devlopment or health."),
+              tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their development or health."),
               tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021", "mid-year population estimates.", target = "_blank"), "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
               tags$li("The rates for 2023 have been calculated based on 2021 population estimates as 2022 estimates were not available at the time of publication. Therefore, some caution is needed when interpreting the 2023 rates, either in isolation or in comparison with other years. The 2023 rates will be revised as part of the next 2024 publication."),
               tags$li("Revised population estimates for 2012 to 2020 based on 2021 Census data, to calculate revised 2013 to 2021 rates, were not available at the time of publication. Therefore, some caution is needed when interpreting these rates, either in isolation or in comparison with other years. The 2013 to 2021 rates will be revised as part of the next 2024 publication."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -7946,7 +7971,7 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
-              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -8059,6 +8084,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -8184,6 +8210,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -8303,6 +8330,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -8427,6 +8455,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -8991,7 +9020,6 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-              tags$li("Figures exclude the category ‘no factors identified’."),
               tags$li("An episode of need may have more than one factor recorded."),
               tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
               tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
@@ -9104,11 +9132,9 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-              tags$li("Figures exclude the category ‘no factors identified’."),
               tags$li("An episode of need may have more than one factor recorded."),
-              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
-              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
               tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+              tags$li("Data for the Child Criminal Explotation factor is only available from 2022."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -10113,6 +10139,7 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$li("The vacancy rate, as at 30 September per year, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
@@ -10214,6 +10241,7 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+              tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
@@ -10665,10 +10693,13 @@ server <- function(input, output, session) {
     updateTabsetPanel(session, "navlistPanel", selected = "user_guide")
   })
 
+  observeEvent(input$go_to_user_guide, {
+    updateTabsetPanel(session, "navlistPanel", selected = "user_guide")
+  })
+
   # Stop app ---------------------------------------------------------------------------------
 
   session$onSessionEnded(function() {
     stopApp()
   })
 }
-

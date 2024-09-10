@@ -6,7 +6,7 @@ enabler1_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler 1: Multi-agency working is prioritised and effective")
+          h1("Enabler: Multi-agency working is prioritised and effective")
         )
       ),
       br(),

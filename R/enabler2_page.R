@@ -6,7 +6,7 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler 2: Leaders drive conditions for effective practice")
+          h1("Enabler: Leaders drive conditions for effective practice")
         )
       ),
       gov_row(
@@ -315,7 +315,8 @@ enabler2_tab <- function() {
                           tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
                             "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
-                          )
+                          ),
+                          tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )
                       )
                     )
@@ -344,7 +345,8 @@ enabler2_tab <- function() {
                           tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
                             "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
-                          )
+                          ),
+                          tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )
                       )
                     )

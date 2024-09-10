@@ -902,6 +902,11 @@ merge_cla_dataframes <- function() {
       rate_per_10000 == "x" ~ "x",
       rate_per_10000 == "z" ~ "z",
       TRUE ~ as.character(placement_per_10000)
+    )) %>%
+    mutate(characteristic = case_when(
+      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
+      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      TRUE ~ as.character(characteristic)
     ))
 
 
@@ -1518,8 +1523,6 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
   # Data needs to be rates per 10,000
   # Using the population data from CLA rates data
   populations <- suppressWarnings(read_cla_rate_data()) %>%
-    # filter(time_period == max(time_period)) %>%
-    # select(geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
 
