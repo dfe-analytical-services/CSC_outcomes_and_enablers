@@ -391,90 +391,90 @@ outcome3_tab <- function() {
                     multiple = FALSE,
                     options = NULL
                   ),
+                  accordion(
+                    accordion_panel(
+                      "Assessment factor relates to child abuse or neglect",
+                      gov_row(
+                        uiOutput("ca_header1"),
+                        plotlyOutput("child_abuse_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "table_child_abuse",
+                          label = "View the chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("ca_ts_tbl", filename = "child_abuse_rates.csv"),
+                              reactableOutput("ca_ts_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ca_ts_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("An episode of need may have more than one factor recorded."),
+                              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+                              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+                              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("ca_header2"),
+                        plotlyOutput("child_abuse_region_plot"),
+                        details(
+                          inputId = "ca_region_tbl",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("child_abuse_region_tbl", filename = "child_abuse_rates_regions.csv"),
+                              reactableOutput("child_abuse_region_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ca_region_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("An episode of need may have more than one factor recorded."),
+                              tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+                              tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
+                              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("ca_header3"),
+                        radioGroupButtons(
+                          "child_abuse_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 statistical neighbours"),
+                          selected = "All local authorities"
+                        ),
+                        uiOutput("SN_child_ab_neg")
+                      )
+                    ),
+                    open = FALSE
+                  )
                 ),
                 br(),
               ),
-              accordion(
-                accordion_panel(
-                  "Assessment factor relates to child abuse or neglect",
-                  gov_row(
-                    uiOutput("ca_header1"),
-                    plotlyOutput("child_abuse_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "table_child_abuse",
-                      label = "View the chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("ca_ts_tbl", filename = "child_abuse_rates.csv"),
-                          reactableOutput("ca_ts_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ca_ts_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("An episode of need may have more than one factor recorded."),
-                          tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
-                          tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("ca_header2"),
-                    plotlyOutput("child_abuse_region_plot"),
-                    details(
-                      inputId = "ca_region_tbl",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("child_abuse_region_tbl", filename = "child_abuse_rates_regions.csv"),
-                          reactableOutput("child_abuse_region_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ca_region_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("An episode of need may have more than one factor recorded."),
-                          tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the third time in 2023. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
-                          tags$li("The ‘Domestic violence’ factor was renamed as ‘Domestic abuse’ in the 2022 release. This is a change to the description of the factor and is not a change to the information collected for this factor."),
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("ca_header3"),
-                    radioGroupButtons(
-                      "child_abuse_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_child_ab_neg")
-                  )
-                ),
-                open = FALSE
-              )
             ),
 
             # Harms outside the home ----
@@ -537,92 +537,92 @@ outcome3_tab <- function() {
                     multiple = FALSE,
                     options = NULL
                   ),
+                  accordion(
+                    accordion_panel(
+                      "Assessment factor relates to harms outside the home",
+                      gov_row(
+                        uiOutput("efh_header1"),
+                        plotlyOutput("efh_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "table_child_abuse",
+                          label = "View the chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("efh_ts_tbl", filename = "EFH_rates.csv"),
+                              reactableOutput("efh_ts_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "efh_ts_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("An episode of need may have more than one factor recorded."),
+                              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+                              tags$li("Data for the Child Criminal Explotation factor is only available from 2022."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("efh_header2"),
+                        plotlyOutput("efh_region_plot"),
+                        br(),
+                        details(
+                          inputId = "efh_region_table",
+                          label = "View chart as a table",
+                          help_text = (
+                            # For some reason this table needs to be wrapped in a taglist, unlike the others
+                            # I have no idea why but if we use the same code as the others, it causes all of the tables to not render.
+                            tagList(
+                              csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
+                              reactableOutput("efh_region_tbl")
+                            )
+                          )
+                        ),
+                        details(
+                          inputId = "efh_region_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("An episode of need may have more than one factor recorded."),
+                              tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
+                              tags$li("Data for the Child Criminal Explotation factor is only available from 2022."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        )
+                      ),
+                      gov_row(
+                        # by la and stats neighbours
+                        uiOutput("efh_header3"),
+                        radioGroupButtons(
+                          "extra_familial_harm_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 statistical neighbours"),
+                          selected = "All local authorities"
+                        ),
+                        uiOutput("SN_extra_familial_harm")
+                      )
+                    ),
+                    open = FALSE
+                  )
                 ),
                 br(),
               ),
-              accordion(
-                accordion_panel(
-                  "Assessment factor relates to harms outside the home",
-                  gov_row(
-                    uiOutput("efh_header1"),
-                    plotlyOutput("efh_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "table_child_abuse",
-                      label = "View the chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("efh_ts_tbl", filename = "EFH_rates.csv"),
-                          reactableOutput("efh_ts_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "efh_ts_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("An episode of need may have more than one factor recorded."),
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
-                          tags$li("Data for the Child Criminal Explotation factor is only available from 2022."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("efh_header2"),
-                    plotlyOutput("efh_region_plot"),
-                    br(),
-                    details(
-                      inputId = "efh_region_table",
-                      label = "View chart as a table",
-                      help_text = (
-                        # For some reason this table needs to be wrapped in a taglist, unlike the others
-                        # I have no idea why but if we use the same code as the others, it causes all of the tables to not render.
-                        tagList(
-                          csvDownloadButton("efh_region_tbl", filename = "EFH_rates_regions.csv"),
-                          reactableOutput("efh_region_tbl")
-                        )
-                      )
-                    ),
-                    details(
-                      inputId = "efh_region_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("An episode of need may have more than one factor recorded."),
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology for more information."),
-                          tags$li("Data for the Child Criminal Explotation factor is only available from 2022."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    # by la and stats neighbours
-                    uiOutput("efh_header3"),
-                    radioGroupButtons(
-                      "extra_familial_harm_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_extra_familial_harm")
-                  )
-                ),
-                open = FALSE
-              )
             )
           )
         )
