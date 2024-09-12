@@ -466,7 +466,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cla_rate_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 by region")
+    # p <- p + ggtitle("CLA rate per 10,000 by region")
+    title <- paste0("CLA rate per 10,000 by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -507,7 +509,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cla_rate_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 by local authority")
+    # p <- p + ggtitle("CLA rate per 10,000 by local authority")
+    title <- paste0("CLA rate per 10,000 by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -622,7 +626,9 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by region")
+    # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by region")
+    title <- paste0("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -670,7 +676,9 @@ server <- function(input, output, session) {
     )
     p <- plot_uasc_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority")
+    # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority")
+    title <- paste0("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -853,7 +861,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cla_march_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 on 31 March by region")
+    # p <- p + ggtitle("CLA rate per 10,000 on 31 March by region")
+    title <- paste0("CLA rate per 10,000 on 31 March by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -894,7 +904,10 @@ server <- function(input, output, session) {
     )
     p <- plot_cla_march_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 on 31 March by local authority")
+    # p <- p + ggtitle("CLA rate per 10,000 on 31 March by local authority")
+    title <- paste0("CLA rate per 10,000 on 31 March by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(,
       height = 420,
       tooltip = "text"
@@ -1065,7 +1078,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cin_rate_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CIN rate per 10,000 children by region")
+    # p <- p + ggtitle("CIN rate per 10,000 children by region")
+    title <- paste0("CIN rate per 10,000 children by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -1152,7 +1167,10 @@ server <- function(input, output, session) {
     )
     p <- plot_cin_rates_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CIN rate per 10,000 children by local authority")
+    # p <- p + ggtitle("CIN rate per 10,000 children by local authority")
+    title <- paste0("CIN rate per 10,000 children by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -1343,7 +1361,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cin_referral_reg() %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Re-referrals within 12 months % by region")
+    # p <- p + ggtitle("Re-referrals within 12 months % by region")
+    title <- paste0("Re-referrals within 12 months % by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -1360,7 +1380,9 @@ server <- function(input, output, session) {
     )
     p <- plot_cin_referral_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Re-referrals within 12 months % by local authority")
+    # p <- p + ggtitle("Re-referrals within 12 months % by local authority")
+    title <- paste0("Re-referrals within 12 months % by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -1495,7 +1517,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Overall absence rate (%) by region")
+    # p <- p + ggtitle("Overall absence rate (%) by region")
+    title <- paste0("Overall absence rate (%) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -1533,7 +1557,8 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_absence %>%
-      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_absence$`Overall absence (%)`[outcomes_absence$time_period == max(outcomes_absence$time_period) &
       outcomes_absence$geographic_level == "Local authority" &
@@ -1542,7 +1567,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Overall absence rate (%) by local authority")
+    # p <- p + ggtitle("Overall absence rate (%) by local authority")
+    title <- paste0("Overall absence rate (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -1730,7 +1758,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Persistent absentees (%) by region")
+    # p <- p + ggtitle("Persistent absentees (%) by region")
+    title <- paste0("Persistent absentees (%) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -1772,7 +1802,8 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_absence %>%
-      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_absence$`Persistent absentees (%)`[outcomes_absence$time_period == max(outcomes_absence$time_period) &
       outcomes_absence$geographic_level == "Local authority" &
@@ -1781,7 +1812,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Persistent absentees (%) by local authority")
+    # p <- p + ggtitle("Persistent absentees (%) by local authority")
+    title <- paste0("Persistent absentees (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -2039,7 +2073,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by region")
+    # p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by region")
+    title <- paste0("Percentage meeting combined expected standard (KS2) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -2081,7 +2117,8 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_ks2 %>%
-      filter(social_care_group %in% input$attainment_extra_breakdown)
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_ks2$`Expected standard reading writing maths (%)`[outcomes_ks2$time_period == max(outcomes_ks2$time_period) &
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
@@ -2089,7 +2126,9 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by local authority")
+    # p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by local authority")
+    title <- paste0("Percentage meeting combined expected standard (KS2) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -2272,7 +2311,10 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average attainment 8 score (KS4) by region")
+    # p <- p + ggtitle("Average attainment 8 score (KS4) by region")
+    title <- paste0("Average attainment 8 score (KS4) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -2308,7 +2350,8 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- outcomes_ks4 %>%
-      filter(social_care_group %in% input$attainment_extra_breakdown)
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_ks4$`Average Attainment 8`[outcomes_ks4$time_period == max(outcomes_ks4$time_period) &
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
@@ -2316,7 +2359,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average attainment 8 score (KS4) by local authority")
+    # p <- p + ggtitle("Average attainment 8 score (KS4) by local authority")
+    title <- paste0("Average attainment 8 score (KS4) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -2588,7 +2634,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to SGO by region")
+    # p <- p + ggtitle("Percentage ceased CLA due to SGO by region")
+    title <- paste0("Percentage ceased CLA due to SGO by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -2639,7 +2687,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to SGO by local authority")
+    # p <- p + ggtitle("Percentage ceased CLA due to SGO by local authority")
+    title <- paste0("Percentage ceased CLA due to SGO by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -2825,7 +2876,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to CAO by region")
+    # p <- p + ggtitle("Percentage ceased CLA due to CAO by region")
+    title <- paste0("Percentage ceased CLA due to CAO by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -2874,7 +2927,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to CAO by local authority")
+    # p <- p + ggtitle("Percentage ceased CLA due to CAO by local authority")
+    title <- paste0("Percentage ceased CLA due to CAO by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -3123,7 +3179,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Repeat CPP (%) by region")
+    # p <- p + ggtitle("Repeat CPP (%) by region")
+    title <- paste0("Repeat CPP (%) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -3172,7 +3230,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Repeat CPP (%) by local authority")
+    # p <- p + ggtitle("Repeat CPP (%) by local authority")
+    title <- paste0("Repeat CPP (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -3359,7 +3420,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percent of CPP longer than 2 years by region")
+    # p <- p + ggtitle("Percent of CPP longer than 2 years by region")
+    title <- paste0("Percent of CPP longer than 2 years by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -3420,7 +3483,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Rate per 10,000", "Rate per 10,000", max_lim) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by region")
+    # p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by region")
+    title <- paste0("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -3472,7 +3537,9 @@ server <- function(input, output, session) {
       scale_y_continuous(limits = c(0, max_y_lim))
     #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
     # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
-    p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by region")
+    # p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by region")
+    title <- paste0("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p %>%
@@ -3675,7 +3742,7 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
       config(displayModeBar = F)
-    title_factor <- paste(input$assessment_factors_1, "cases (rate per 10,000), by region")
+    title_factor <- paste0(input$assessment_factors_1, "cases (rate per 10,000), by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_factor)
 
     ggplotly(
@@ -3723,7 +3790,7 @@ server <- function(input, output, session) {
 
     p <- factors_by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
-    title_factor <- paste(input$assessment_factors_1, "cases (rate per 10,000), by local authority")
+    title_factor <- paste0(input$assessment_factors_1, "cases (rate per 10,000), by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_factor)
 
     ggplotly(
@@ -3948,7 +4015,7 @@ server <- function(input, output, session) {
     max_lim <- max(data$rate_per_10000) + 10
     p <- by_region_bar_plot(data, "rate_per_10000", "Rate per 10,000", max_lim) %>%
       config(displayModeBar = F)
-    title_factor <- paste(input$assessment_factors_2, "cases (rate per 10,000), by region")
+    title_factor <- paste0(input$assessment_factors_2, "cases (rate per 10,000), by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_factor)
 
     ggplotly(
@@ -3996,7 +4063,7 @@ server <- function(input, output, session) {
 
     p <- factors_by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
-    title_factor <- paste(input$assessment_factors_2, "cases (rate per 10,000), by local authority")
+    title_factor <- paste0(input$assessment_factors_2, "cases (rate per 10,000), by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_factor)
 
     ggplotly(
@@ -4381,7 +4448,7 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by region")
+    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
 
     ggplotly(
@@ -4434,7 +4501,7 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) +
       scale_y_continuous(limits = c(0, 100))
-    title_placements <- paste("Children living in", input$placement_type_breakdown, "(%) by local authority")
+    title_placements <- paste0("Children living in", input$placement_type_breakdown, "(%) by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
 
     ggplotly(
@@ -4617,7 +4684,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
+    # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
+    title <- paste0("Percentage of CLA with 3 or more placements during the year by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -4668,7 +4737,9 @@ server <- function(input, output, session) {
 
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE)
-    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
+    # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
+    title <- paste0("Percentage of CLA with 3 or more placements during the year by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p %>%
@@ -4852,7 +4923,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
+    # p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
+    title <- paste0("Percentage of placements more than 20 miles from home by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -4901,7 +4974,9 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE)
-    p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
+    # p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
+    title <- paste0("Percentage of placements more than 20 miles from home by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p %>%
@@ -5155,7 +5230,9 @@ server <- function(input, output, session) {
         config(displayModeBar = F)
     )
 
-    p <- p + ggtitle("Average SDQ score by region")
+    # p <- p + ggtitle("Average SDQ score by region")
+    title <- paste0("Average SDQ score by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       by_region_bar_plot(data, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
@@ -5211,7 +5288,10 @@ server <- function(input, output, session) {
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Average score", "Average SDQ score", yupperlim = max_y_lim, add_rect = TRUE) +
       scale_y_continuous(limits = c(0, max_y_lim))
 
-    p <- p + ggtitle("Average SDQ score by local authority")
+    # p <- p + ggtitle("Average SDQ score by local authority")
+    title <- paste0("Average SDQ score by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
 
     ggplotly(
       p %>%
@@ -5410,7 +5490,7 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region")
+    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -5464,7 +5544,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE)
-    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by local authority")
+    age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -5661,7 +5741,7 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region")
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -5715,7 +5795,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE)
-    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority")
+    age_title <- paste0("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -5890,7 +5970,9 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Share of total spend on children's services (%) by region")
+      # p <- p + ggtitle("Share of total spend on children's services (%) by region")
+      title <- paste0("Share of total spend on children's services (%) by region (", max(p$data$time_period), ")")
+      p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
@@ -5901,7 +5983,9 @@ server <- function(input, output, session) {
 
       p <- by_region_bar_plot(data, "Average spend per child (£)", "Average spend per child (£)", max_y_lim) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Average spend per child (£) by region")
+      # p <- p + ggtitle("Average spend per child (£) by region")
+      title <- paste0("Average spend per child (£) by region (", max(p$data$time_period), ")")
+      p <- p + ggtitle(title)
     }
 
     ggplotly(
@@ -5968,7 +6052,10 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", percentage = TRUE) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
+      # p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
+      title <- paste0("Share of total spend on children's services (%) by local authority (", max(p$data$time_period), ")")
+      p <- p + ggtitle(title) +
+
         scale_y_continuous(limits = c(0, max_y_lim))
     } else {
       data <- spending_per_capita %>%
@@ -5980,7 +6067,9 @@ server <- function(input, output, session) {
 
       p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Spend per child (£)", yaxis_title = "Average spend per child (£)") %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Average spend per child (£) by local authority") +
+      # p <- p + ggtitle("Average spend per child (£) by local authority") +
+      title <- paste0("Average spend per child (£) by local authority (", max(p$data$time_period), ")")
+      p <- p + ggtitle(title) +
         scale_y_continuous(limits = c(0, max_y_lim))
     }
     ggplotly(
@@ -6045,7 +6134,9 @@ server <- function(input, output, session) {
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
     p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
+    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
+    title <- paste0("Share of total spend on children's services minus CLA (%) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -6092,7 +6183,9 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)", percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
+    # p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
+    title <- paste0("Share of total children's services spend minus CLA (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title) +
       scale_y_continuous(limits = c(0, max_y_lim))
     ggplotly(
       p,
@@ -6593,8 +6686,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
-
+    # p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
+    title <- paste0("Social worker turnover rate (FTE) % by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -6638,7 +6732,9 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
+    # p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
+    title <- paste0("Social worker turnover rate (FTE) % by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -6812,7 +6908,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) % by region")
+    # p <- p + ggtitle("Agency worker rate (FTE) % by region")
+    title <- paste0("Agency worker rate (FTE) % by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -6857,7 +6955,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
+    # p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
+    title <- paste0("Agency worker rate (FTE) % by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -7029,7 +7130,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) % by region")
+    # p <- p + ggtitle("Vacancy rate (FTE) % by region")
+    title <- paste0("Vacancy rate (FTE) % by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7070,7 +7173,9 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
+    # p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
+    title <- paste0("Vacancy rate (FTE) % by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7239,7 +7344,9 @@ server <- function(input, output, session) {
 
     p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE) by region")
+    # p <- p + ggtitle("Average caseload (FTE) by region")
+    title <- paste0("Average caseload (FTE) by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7284,7 +7391,10 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE) by local authority")
+    # p <- p + ggtitle("Average caseload (FTE) by local authority")
+    title <- paste0("Average caseload (FTE) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -7395,7 +7505,9 @@ server <- function(input, output, session) {
     )
     p <- plot_population_ethnicity_rate(input$geographic_breakdown_e3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Social worker ethnicity % vs. general population ethnicity %")
+    # p <- p + ggtitle("Social worker ethnicity % vs. general population ethnicity %")
+    title <- paste0("Social worker ethnicity % vs. general population ethnicity % (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420
@@ -7432,7 +7544,9 @@ server <- function(input, output, session) {
     )
     p <- plot_seniority_eth(input$geographic_breakdown_e3, input$select_geography_e3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Social worker ethnicity by seniority level %")
+    # p <- p + ggtitle("Social worker ethnicity by seniority level %")
+    title <- paste0("Social worker ethnicity by seniority level % (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -7566,7 +7680,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 by statistical neighbours")
+    # p <- p + ggtitle("CLA rate per 10,000 by statistical neighbours")
+    title <- paste0("CLA rate per 10,000 by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7575,6 +7691,10 @@ server <- function(input, output, session) {
     ) %>%
       config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
+
+
+
+
 
   # cla stats neighbour tables
   output$SN_cla_tbl <- renderReactable({
@@ -7687,7 +7807,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot_uasc(combined_cla_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
+    # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
+    title <- paste0("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (", max(combined_cla_data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7806,7 +7928,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 on 31 March by statistical neighbours")
+    # p <- p + ggtitle("CLA rate per 10,000 on 31 March by statistical neighbours")
+    title <- paste0("CLA rate per 10,000 on 31 March by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -7922,7 +8046,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "CIN rate per 10,000", "CIN rate per 10,000", max_rate) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CIN rate per 10,000 by statistical neighbours")
+    # p <- p + ggtitle("CIN rate per 10,000 by statistical neighbours")
+    title <- paste0("CIN rate per 10,000 by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -8026,7 +8152,10 @@ server <- function(input, output, session) {
     )
     p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
+    # p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
+    title <- paste0("Re-referrals (%) by statistical neighbours (", max(cin_referrals$time_period), ")")
+    p <- p + ggtitle(title)
+
 
     ggplotly(
       p,
@@ -8137,7 +8266,9 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_absence$`Overall absence (%)`[outcomes_absence$time_period == max(outcomes_absence$time_period) &
       outcomes_absence$geographic_level == "Local authority" &
@@ -8146,7 +8277,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Overall absence rate (%) by statistical neighbours")
+    # p <- p + ggtitle("Overall absence rate (%) by statistical neighbours")
+    title <- paste0("Overall absence rate (%) by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -8263,7 +8396,9 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
+    data <- outcomes_absence %>%
+      filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_absence$`Persistent absentees (%)`[outcomes_absence$time_period == max(outcomes_absence$time_period) &
       outcomes_absence$geographic_level == "Local authority" &
@@ -8272,7 +8407,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Persistent absentees (%) by statistical neighbours")
+    # p <- p + ggtitle("Persistent absentees (%) by statistical neighbours")
+    title <- paste0("Persistent absentees (%) by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(,
       height = 420,
@@ -8383,7 +8520,9 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_ks2 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
+    data <- outcomes_ks2 %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_ks2$`Expected standard reading writing maths (%)`[outcomes_ks2$time_period == max(outcomes_ks2$time_period) &
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
@@ -8391,7 +8530,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by statistical neighbours")
+    # p <- p + ggtitle("Percentage meeting combined expected standard (KS2) by statistical neighbours")
+    title <- paste0("Percentage meeting combined expected standard (KS2) by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -8508,7 +8649,9 @@ server <- function(input, output, session) {
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
     )
-    data <- outcomes_ks4 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
+    data <- outcomes_ks4 %>%
+      filter(social_care_group %in% input$attainment_extra_breakdown) %>%
+      mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
 
     max_rate <- max(outcomes_ks4$`Average Attainment 8`[outcomes_ks4$time_period == max(outcomes_ks4$time_period) &
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
@@ -8516,7 +8659,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average attainment 8 score (KS4) by statistical neighbours")
+    # p <- p + ggtitle("Average attainment 8 score (KS4) by statistical neighbours")
+    title <- paste0("Average attainment 8 score (KS4) by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -8631,7 +8776,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
+    # p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
+    title <- paste0("Percentage ceased CLA due to SGO by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -8742,7 +8889,10 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
+    # p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
+    title <- paste0("Percentage ceased CLA due to CAO by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(,
       height = 420,
       tooltip = "text"
@@ -8854,7 +9004,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
+    # p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
+    title <- paste0("Repeat CPP (%) by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
     ggplotly(
       p,
       height = 420,
@@ -8969,7 +9121,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000", max_y_lim) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by statistical neighbours")
+    # p <- p + ggtitle("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by statistical neighbours")
+    title <- paste0("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -9083,7 +9237,7 @@ server <- function(input, output, session) {
     max_y_lim <- max(data$rate_per_10000) + 100
     p <- statistical_neighbours_plot_factors(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
       config(displayModeBar = F)
-    title_factor <- paste(input$assessment_factors_1, "by statistical neighbours")
+    title_factor <- paste0(input$assessment_factors_1, "cases (rate per 10,000), by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title_factor, "cases (rate per 10,000), by statistical neighbours")
 
     ggplotly(
@@ -9195,7 +9349,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot_factors(data, input$geographic_breakdown_o3, input$select_geography_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
       config(displayModeBar = F)
-    title_factor <- paste(input$assessment_factors_2, "cases (rate per 10,000), by statistical neighbours")
+    title_factor <- paste(input$assessment_factors_2, "cases (rate per 10,000), by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title_factor)
 
     ggplotly(
@@ -9307,7 +9461,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    placements_title <- paste("Children living in", input$placement_type_breakdown, "(%) by statistical neighbours")
+    placements_title <- paste("Children living in", input$placement_type_breakdown, "(%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(placements_title)
 
     ggplotly(
@@ -9417,7 +9571,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
+    # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
+    title <- paste0("Percentage of CLA with 3 or more placements during the year by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -9528,7 +9684,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
+    # p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
+    title <- paste0("Percentage of placements more then 20 miles from home by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -9634,7 +9792,9 @@ server <- function(input, output, session) {
     max_y_lim <- (max(data$`Average score`) + 5)
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average SDQ score by statistical neighbours")
+    # p <- p + ggtitle("Average SDQ score by statistical neighbours")
+    title <- paste0("Average SDQ score by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -9756,7 +9916,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours")
+    age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -9878,7 +10038,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours")
+    age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
 
     ggplotly(
@@ -9991,7 +10151,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
+    # p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
+    title <- paste0("Social worker turnover (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,
@@ -10094,7 +10256,10 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
+    # p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
+    title <- paste0("Agency worker rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -10198,7 +10363,10 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
+    # p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
+    title <- paste0("Vacancy rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(,
       height = 420,
       tooltip = "text"
@@ -10300,7 +10468,10 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
+    # p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
+    title <- paste0("Average caseload (FTE) by statistical neighbours (", max(workforce_data$time_period), ")")
+    p <- p + ggtitle(title)
+
     ggplotly(
       p,
       height = 420,
@@ -10482,7 +10653,9 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
+      # p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
+      title <- paste0("Share of total spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
+      p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
         rename("Spend per child (£)" = "cost_per_capita")
@@ -10491,7 +10664,9 @@ server <- function(input, output, session) {
 
       p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
-      p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
+      # p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
+      title <- paste0("Average spend per child (£) by statistical neighbours (", max(data$time_period), ")")
+      p <- p + ggtitle(title)
     }
 
 
@@ -10621,7 +10796,9 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
+    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
+    title <- paste0("Share of total spend on children's services minus CLA (%) by statistical neighbours (", max(data$time_period), ")")
+    p <- p + ggtitle(title)
 
     ggplotly(
       p,

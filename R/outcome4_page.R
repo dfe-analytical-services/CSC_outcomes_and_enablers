@@ -302,78 +302,78 @@ outcome4_tab <- function() {
                         multiple = FALSE,
                         options = NULL
                       ),
-                    ),
-                    br(),
-                  ),
-                  gov_row(
-                    plotlyOutput("placement_type_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_type",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
-                          reactableOutput("placement_type_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_type_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      gov_row(
+                        plotlyOutput("placement_type_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_type",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
+                              reactableOutput("placement_type_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_type_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
-                    p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("placement_type_region_plot"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_type_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
-                          reactableOutput("placement_type_region_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_type_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      ),
+                      gov_row(
+                        h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
+                        p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
+                        br(),
+                        plotlyOutput("placement_type_region_plot"),
+                        br(),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_type_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
+                              reactableOutput("placement_type_region_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_type_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
+                      ),
+                      gov_row(
+                        h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
+                        p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                        radioGroupButtons(
+                          "placement_type_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities"
+                        ),
+                        uiOutput("SN_placement_type"),
                       )
-                    )
-                  ),
-                  gov_row(
-                    h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
-                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
-                    radioGroupButtons(
-                      "placement_type_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
                     ),
-                    uiOutput("SN_placement_type"),
-                  )
+                    br(),
+                  ),
                 ),
                 ## Time between placements ---------------
                 accordion_panel(
@@ -395,37 +395,37 @@ outcome4_tab <- function() {
                         multiple = FALSE,
                         options = NULL
                       ),
-                    ),
-                    br(),
-                  ),
-                  gov_row(
-                    plotlyOutput("placement_order_match_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_order_match",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
-                          reactableOutput("placement_order_match_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_order_match_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Due to data availability, only national level stats are available for this chart."),
-                          tags$li("Average time rounded to the nearest month."),
-                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      gov_row(
+                        plotlyOutput("placement_order_match_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_order_match",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
+                              reactableOutput("placement_order_match_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_order_match_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Due to data availability, only national level stats are available for this chart."),
+                              tags$li("Average time rounded to the nearest month."),
+                              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
+                      ),
+                    ),
+                    br(),
                   ),
                 ),
                 open = FALSE
