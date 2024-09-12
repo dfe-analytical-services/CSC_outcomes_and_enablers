@@ -5230,15 +5230,15 @@ server <- function(input, output, session) {
         config(displayModeBar = F)
     )
 
+    p <- by_region_bar_plot(data, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
     # p <- p + ggtitle("Average SDQ score by region")
     title <- paste0("Average SDQ score by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
-      by_region_bar_plot(data, "Average score", "Average SDQ score", max_y_lim, add_rect = TRUE) #+
       # geom_hline(linetype = "dashed", colour = "red", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
       # geom_hline(linetype = "dot", colour = "blue", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17")))
-      %>%
+      p %>%
         config(displayModeBar = F),
       height = 420,
       tooltip = "text"
@@ -5246,6 +5246,7 @@ server <- function(input, output, session) {
       layout(hovermode = "x") %>%
       config(modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
+
 
   output$SDQ_region_tbl <- renderReactable({
     shiny::validate(
