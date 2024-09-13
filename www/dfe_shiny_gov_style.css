@@ -689,3 +689,9 @@ btn is the user guide button
   border-color: transparent;
   background-color: transparent;
 } */
+
+/*Domain tab outlines*/
+.nav-tabs {
+  --bs-nav-tabs-link-active-border-color: #0b3b6a #0b3b6a #0b3b6a !important;
+  border-bottom: solid #0b3b6a;
+}
