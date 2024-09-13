@@ -203,7 +203,8 @@ outcome4_tab <- function() {
                       "placement_changes_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_placement_changes"),
                   )
@@ -278,7 +279,8 @@ outcome4_tab <- function() {
                       "placement_dist_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_placement_distance"),
                   )
@@ -367,7 +369,8 @@ outcome4_tab <- function() {
                           "placement_type_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_placement_type"),
                       )
@@ -525,7 +528,8 @@ outcome4_tab <- function() {
                       "sdq_score_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_wellbeing_SDQ")
                   )
@@ -666,7 +670,8 @@ outcome4_tab <- function() {
                           "cl_activity_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_care_leavers_activity")
                       )
@@ -754,7 +759,8 @@ outcome4_tab <- function() {
                           "cl_accommodation_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_care_leavers_accommodation")
                       )

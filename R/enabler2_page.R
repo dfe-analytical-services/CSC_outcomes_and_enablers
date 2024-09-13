@@ -146,7 +146,8 @@ enabler2_tab <- function() {
                           "spending1_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_total_spending"),
                       ),
@@ -190,7 +191,8 @@ enabler2_tab <- function() {
                       "spending2_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_spending_minus_cla"),
                   )

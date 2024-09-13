@@ -196,7 +196,8 @@ outcome1_tab <- function() {
                       "cin_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cin"),
                   )
@@ -286,7 +287,8 @@ outcome1_tab <- function() {
                       "cin_referral_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cin_referral"),
                   )
@@ -412,7 +414,8 @@ outcome1_tab <- function() {
                       "cla_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cla"),
                   )
@@ -510,7 +513,8 @@ outcome1_tab <- function() {
                       "uasc_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_uasc"),
                   )
@@ -600,7 +604,8 @@ outcome1_tab <- function() {
                       "cla_march_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cla_march"),
                   )
@@ -829,7 +834,8 @@ outcome1_tab <- function() {
                           "absence_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_absence"),
                       ),
@@ -941,7 +947,8 @@ outcome1_tab <- function() {
                           "persis_abs_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_persistent_abs"),
                       ),
@@ -1136,7 +1143,8 @@ outcome1_tab <- function() {
                           "ks2_attainment_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_ks2_attainment"),
                       ),
@@ -1247,7 +1255,8 @@ outcome1_tab <- function() {
                           "ks4_attainment_stats_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 Statistical Neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_ks4_attainment"),
                       ),

@@ -194,7 +194,8 @@ outcome3_tab <- function() {
                       "CPP_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_CPP"),
                   )
@@ -322,7 +323,8 @@ outcome3_tab <- function() {
                       "hosp_admission_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_hosp_admissions")
                   )
@@ -465,7 +467,8 @@ outcome3_tab <- function() {
                           "child_abuse_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 statistical neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_child_ab_neg")
                       )
@@ -613,7 +616,8 @@ outcome3_tab <- function() {
                           "extra_familial_harm_toggle",
                           label = NULL,
                           choices = c("All local authorities", "10 statistical neighbours"),
-                          selected = "All local authorities"
+                          selected = "All local authorities",
+                          justified = TRUE
                         ),
                         uiOutput("SN_extra_familial_harm")
                       )
