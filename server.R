@@ -5014,7 +5014,7 @@ server <- function(input, output, session) {
   ## Wellbeing SDQ score ----------------
   output$wellbeing_score_stat <- renderText({
     if (input$geographic_breakdown_o4 == "") {
-      stat <- "NA"
+      paste0("NA")
     } else {
       stat_prev <- format(wellbeing_sdq_data %>%
         filter(time_period == (max(wellbeing_sdq_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
@@ -5030,10 +5030,11 @@ server <- function(input, output, session) {
       } else {
         context <- " up from "
       }
+
+      paste0(
+        stat_current, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(wellbeing_sdq_data$time_period), context, stat_prev, " in ", (max(wellbeing_sdq_data$time_period) - 1), "</p>"
+      )
     }
-    paste0(
-      stat_current, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(wellbeing_sdq_data$time_period), context, stat_prev, " in ", (max(wellbeing_sdq_data$time_period) - 1), "</p>"
-    )
   })
 
   # time series plot and chart for SDQ score
