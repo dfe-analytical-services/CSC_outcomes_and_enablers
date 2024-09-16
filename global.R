@@ -96,7 +96,7 @@ google_analytics_key <- "Q13T4ENF6C"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
 
-workforce_data <- read_workforce_data()
+workforce_data <- suppressWarnings(read_workforce_data())
 location_data <- GET_location() # fact table linking LA to its region
 
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
