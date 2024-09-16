@@ -462,7 +462,7 @@ server <- function(input, output, session) {
   output$plot_cla_rate_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- plot_cla_rate_reg() %>%
       config(displayModeBar = F)
@@ -480,7 +480,7 @@ server <- function(input, output, session) {
   output$table_cla_rate_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- cla_rates %>%
       filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children starting to be looked after each year") %>%
@@ -618,7 +618,7 @@ server <- function(input, output, session) {
   output$plot_uasc_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- plot_uasc_reg() %>%
       config(displayModeBar = F)
@@ -635,7 +635,7 @@ server <- function(input, output, session) {
   output$table_uasc_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- combined_cla_data %>%
       filter(
@@ -849,7 +849,7 @@ server <- function(input, output, session) {
   output$plot_cla_march_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- plot_cla_march_reg() %>%
       config(displayModeBar = F)
@@ -867,7 +867,7 @@ server <- function(input, output, session) {
   output$table_cla_march_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
 
     data <- cla_rates %>%
@@ -1061,7 +1061,7 @@ server <- function(input, output, session) {
   output$plot_cin_rate_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- plot_cin_rate_reg() %>%
       config(displayModeBar = F)
@@ -1079,7 +1079,7 @@ server <- function(input, output, session) {
   output$table_cin_rates_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- cin_rates %>%
       filter(geographic_level == "Regional", time_period == max(cin_rates$time_period)) %>%
@@ -1268,7 +1268,7 @@ server <- function(input, output, session) {
   output$table_cin_referral_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     data <- cin_referrals %>%
       filter(geographic_level == "Regional", time_period == max(cin_referrals$time_period)) %>%
@@ -1339,7 +1339,7 @@ server <- function(input, output, session) {
   output$plot_cin_referral_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o1 != "", "Select a location.")
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- plot_cin_referral_reg() %>%
       config(displayModeBar = F)
@@ -1434,6 +1434,10 @@ server <- function(input, output, session) {
 
   # absence rate TABLE
   output$table_absence_rate <- renderReactable({
+    validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
@@ -1668,6 +1672,10 @@ server <- function(input, output, session) {
 
   # persistent rate TABLE
   output$table_persistent_rate <- renderReactable({
+    validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_absence %>%
@@ -1978,6 +1986,10 @@ server <- function(input, output, session) {
 
   # ks2 TABLE
   output$table_ks2_expected <- renderReactable({
+    validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks2 %>%
@@ -2213,6 +2225,10 @@ server <- function(input, output, session) {
 
   # KS4 rate TABLE
   output$table_ks4 <- renderReactable({
+    validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
     # neither checkboxes
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- outcomes_ks4 %>%
@@ -2577,7 +2593,7 @@ server <- function(input, output, session) {
   output$plot_sgo_ceased_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o2 != "", "Select a location.")
+      # need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
     data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
@@ -2602,7 +2618,7 @@ server <- function(input, output, session) {
   output$table_sgo_ceased_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o2 != "", "Select a location.")
+      # need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
 
     data <- ceased_cla_data %>%
@@ -2814,7 +2830,7 @@ server <- function(input, output, session) {
   output$plot_cao_ceased_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o2 != "", "Select a location.")
+      # need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
     data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
@@ -2838,7 +2854,7 @@ server <- function(input, output, session) {
   output$table_cao_ceased_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o2 != "", "Select a location.")
+      # need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
     data <- ceased_cla_data %>%
       filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
@@ -3112,7 +3128,7 @@ server <- function(input, output, session) {
   output$plot_cpp_repeat_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      # need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
@@ -3137,7 +3153,7 @@ server <- function(input, output, session) {
   output$table_cpp_repeat_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      # need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     data <- repeat_cpp %>%
       filter(geographic_level == "Regional", time_period == max(repeat_cpp$time_period)) %>%
@@ -3349,7 +3365,7 @@ server <- function(input, output, session) {
   output$plot_cpp_duration_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      # need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     data <- duration_cpp
 
@@ -3373,7 +3389,7 @@ server <- function(input, output, session) {
   output$table_cpp_duration_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      # need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     data <- duration_cpp %>%
       filter(geographic_level == "Regional", time_period == max(duration_cpp$time_period)) %>%
@@ -3409,7 +3425,7 @@ server <- function(input, output, session) {
   output$admissions_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      # need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
 
     data <- hospital_admissions %>%
@@ -3434,7 +3450,7 @@ server <- function(input, output, session) {
   output$admissions_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location.")
+      # need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
 
     data <- hospital_admissions %>%
@@ -3662,7 +3678,7 @@ server <- function(input, output, session) {
   output$child_abuse_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
 
@@ -3689,7 +3705,7 @@ server <- function(input, output, session) {
   output$child_abuse_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
 
@@ -3937,7 +3953,7 @@ server <- function(input, output, session) {
   output$efh_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -3962,7 +3978,7 @@ server <- function(input, output, session) {
   output$efh_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -4365,7 +4381,7 @@ server <- function(input, output, session) {
   output$placement_type_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      # need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
 
@@ -4395,7 +4411,7 @@ server <- function(input, output, session) {
   output$placement_type_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      # need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
 
@@ -4602,7 +4618,7 @@ server <- function(input, output, session) {
   output$placement_changes_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      # need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
 
     data <- placement_changes_data %>%
@@ -4630,7 +4646,7 @@ server <- function(input, output, session) {
   output$placement_changes_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      # need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
 
     data <- placement_changes_data %>%
@@ -4837,7 +4853,7 @@ server <- function(input, output, session) {
   output$placement_dist_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location.")
+      #  need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
 
     data <- placement_data %>%
@@ -4865,7 +4881,7 @@ server <- function(input, output, session) {
   output$placement_dist_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location.")
+      # need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
 
     data <- placement_data %>%
@@ -5139,7 +5155,7 @@ server <- function(input, output, session) {
   output$SDQ_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location.")
+      # need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
 
     data <- wellbeing_sdq_data %>%
@@ -5174,7 +5190,7 @@ server <- function(input, output, session) {
   output$SDQ_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location.")
+      # need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
 
     data <- wellbeing_sdq_data %>%
@@ -5396,7 +5412,7 @@ server <- function(input, output, session) {
   output$cl_activity_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      #  need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
 
@@ -5425,7 +5441,7 @@ server <- function(input, output, session) {
   output$cl_activity_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      #   need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
 
@@ -5647,7 +5663,7 @@ server <- function(input, output, session) {
   output$cl_accommodation_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      #  need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
 
@@ -5676,7 +5692,7 @@ server <- function(input, output, session) {
   output$cl_accommodation_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      need(input$geographic_breakdown_o4 != "", "Select a location."),
+      #   need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
 
@@ -5879,7 +5895,7 @@ server <- function(input, output, session) {
   output$plot_spending_region <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      #  need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
@@ -5917,7 +5933,7 @@ server <- function(input, output, session) {
   output$table_tot_spending_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location."),
+      #  need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
     if (input$spending_choice == "Share of total spend on children's services") {
@@ -6036,7 +6052,7 @@ server <- function(input, output, session) {
   output$plot_spend_excl_cla_region <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
+      # need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
 
     data <- spending_data_no_cla %>%
@@ -6060,7 +6076,7 @@ server <- function(input, output, session) {
   output$table_spend_excl_cla_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e2 != "", "Select a location.")
+      # need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
     data <- spending_data_no_cla %>%
       filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
@@ -6585,7 +6601,7 @@ server <- function(input, output, session) {
   output$plot_turnover_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      # need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
 
     max_rate <- max(workforce_data$`Turnover Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -6608,7 +6624,7 @@ server <- function(input, output, session) {
   output$table_turnover_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      #   need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
     data <- workforce_data %>%
       filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
@@ -6804,7 +6820,7 @@ server <- function(input, output, session) {
   output$plot_agency_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      # need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
 
     max_rate <- max(workforce_data$`Agency Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -6826,7 +6842,7 @@ server <- function(input, output, session) {
   output$table_agency_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      # need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
 
     data <- workforce_data %>%
@@ -7021,7 +7037,7 @@ server <- function(input, output, session) {
   output$plot_vacancy_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      #  need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
 
     max_rate <- max(workforce_data$`Vacancy Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -7042,6 +7058,10 @@ server <- function(input, output, session) {
 
   ### vacancy rate table by region
   output$table_vacancy_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_e3 != "", "Select a geography level."),
+      #  need(input$geographic_breakdown_e3 != "", "Select a location.")
+    )
     data <- workforce_data %>%
       filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
       select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
@@ -7231,7 +7251,7 @@ server <- function(input, output, session) {
   output$plot_caseload_reg <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      # need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
 
     max_rate <- max(workforce_data$`Caseload Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -7254,7 +7274,7 @@ server <- function(input, output, session) {
   output$table_caseload_reg <- renderReactable({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
-      need(input$geographic_breakdown_e3 != "", "Select a location.")
+      # need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
     data <- workforce_data %>%
       filter(geographic_level == "Regional", time_period == max(workforce_data$time_period)) %>%
@@ -7510,7 +7530,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cla_SN_plot"),
@@ -7548,7 +7569,8 @@ server <- function(input, output, session) {
   # cla stats neighbours chart and table here
   output$cla_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     # Set the max y-axis scale
     max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children starting to be looked after each year"], na.rm = TRUE)
@@ -7633,7 +7655,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("UASC_SN_plot"),
@@ -7671,7 +7694,8 @@ server <- function(input, output, session) {
   # UASC stats neighbours chart and table here
   output$UASC_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
 
     # Set the max y-axis scale
@@ -7754,7 +7778,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cla_march_SN_plot"),
@@ -7871,7 +7896,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cin_SN_plot"),
@@ -7909,7 +7935,8 @@ server <- function(input, output, session) {
   # cin stats neighbours chart and table here
   output$cin_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
 
     # Set the max y-axis scale
@@ -7985,7 +8012,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cin_referral_SN_plot"),
@@ -8023,7 +8051,8 @@ server <- function(input, output, session) {
   # cin referral stats neighbours chart and table here
   output$cin_referral_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
       config(displayModeBar = F)
@@ -8098,7 +8127,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("absence_SN_plot"),
@@ -8136,7 +8166,8 @@ server <- function(input, output, session) {
   # Absence SN plot
   output$absence_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
 
@@ -8224,7 +8255,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("persistent_absence_SN_plot"),
@@ -8262,7 +8294,8 @@ server <- function(input, output, session) {
   # persistent absence stats neighbours chart
   output$persistent_absence_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     data <- outcomes_absence %>% filter(school_type %in% input$wellbeing_school_breakdown, social_care_group %in% input$wellbeing_extra_breakdown)
 
@@ -8344,7 +8377,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("ks2_attain_SN_plot"),
@@ -8382,7 +8416,8 @@ server <- function(input, output, session) {
   # ks2 attainment stats neighbours chart
   output$ks2_attain_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     data <- outcomes_ks2 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
 
@@ -8469,7 +8504,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("ks4_attain_SN_plot"),
@@ -8507,7 +8543,8 @@ server <- function(input, output, session) {
   # ks4 attainment stats neighbours chart
   output$ks4_attain_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
     data <- outcomes_ks4 %>% filter(social_care_group %in% input$attainment_extra_breakdown)
 
@@ -8584,7 +8621,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o2 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("sgo_SN_plot"),
@@ -8621,7 +8659,8 @@ server <- function(input, output, session) {
   # SGO SN plot and table alternative
   output$sgo_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o2 != "", "Select a location."),
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
 
@@ -8695,7 +8734,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o2 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cao_SN_plot"),
@@ -8732,7 +8772,8 @@ server <- function(input, output, session) {
   # CAO SN plot and table alternative
   output$cao_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o2 != "", "Select a location."),
     )
     filtered_data <- ceased_cla_data %>% filter(characteristic == "Residence order or child arrangement order granted")
 
@@ -8806,7 +8847,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cpp_repeat_SN_plot"),
@@ -8844,7 +8886,8 @@ server <- function(input, output, session) {
   # Repeat CPP SN plot and table alternative
   output$cpp_repeat_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
     filtered_data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
@@ -8922,7 +8965,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
       )
 
       tagList(
@@ -8960,7 +9004,8 @@ server <- function(input, output, session) {
 
   output$hosp_admissions_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
     data <- hospital_admissions %>%
       filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -9037,7 +9082,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("abuse_neg_SN_plot"),
@@ -9076,7 +9122,8 @@ server <- function(input, output, session) {
   output$abuse_neg_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$assessment_factors_1 != "", "Select an assessment factor.")
+      need(input$assessment_factors_1 != "", "Select an assessment factor."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1, geographic_level == "Local authority", time_period == max(time_period))
@@ -9148,7 +9195,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("efh_SN_plot"),
@@ -9187,7 +9235,8 @@ server <- function(input, output, session) {
   output$efh_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$assessment_factors_2 != "", "Select an assessment factor.")
+      need(input$assessment_factors_2 != "", "Select an assessment factor."),
+      need(input$geographic_breakdown_o3 != "", "Select a location."),
     )
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_2, geographic_level == "Local authority", time_period == max(time_period))
@@ -9258,7 +9307,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o4 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("placement_type_SN_plot"),
@@ -9296,7 +9346,8 @@ server <- function(input, output, session) {
   output$placement_type_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$placement_type_breakdown != "", "Select a placement type.")
+      need(input$placement_type_breakdown != "", "Select a placement type."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- placement_data %>%
       filter(characteristic == input$placement_type_breakdown, geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -9368,7 +9419,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o4 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("placement_changes_SN_plot"),
@@ -9406,7 +9458,8 @@ server <- function(input, output, session) {
   output$placement_changes_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$placement_type_breakdown != "", "Select a placement type.")
+      need(input$placement_type_breakdown != "", "Select a placement type."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- placement_changes_data %>%
       filter(placement_stability == "With 3 or more placements during the year", geographic_level == "Local authority", time_period == max(time_period))
@@ -9479,7 +9532,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o4 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("placement_dist_SN_plot"),
@@ -9517,6 +9571,7 @@ server <- function(input, output, session) {
   output$placement_dist_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- placement_data %>%
       filter(characteristic == "Placed more than 20 miles from home", geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -9589,7 +9644,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$select_breakdown_o4 == "", "Select a location.")
       )
       tagList(
         plotlyOutput("SN_sdq_plot"),
@@ -9626,7 +9682,8 @@ server <- function(input, output, session) {
 
   output$SN_sdq_plot <- renderPlotly({
     validate(
-      need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- wellbeing_sdq_data %>%
       filter(characteristic == "SDQ average score", geographic_level == "Local authority", time_period == max(time_period)) %>%
@@ -9705,7 +9762,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o4 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cl_activity_SN_plot"),
@@ -9744,7 +9802,8 @@ server <- function(input, output, session) {
   output$cl_activity_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$leavers_age != "", "Select an age range.")
+      need(input$leavers_age != "", "Select an age range."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- care_leavers_activity_data %>%
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & activity == "Total in education, employment or training") %>%
@@ -9827,7 +9886,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o4 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("cl_accommodation_SN_plot"),
@@ -9866,7 +9926,8 @@ server <- function(input, output, session) {
   output$cl_accommodation_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$leavers_age != "", "Select an age range.")
+      need(input$leavers_age != "", "Select an age range."),
+      need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
     data <- care_leavers_accommodation_data %>%
       filter(age == input$leavers_age & geographic_level == "Local authority" & time_period == max(time_period) & accommodation_suitability == "Accommodation considered suitable") %>%
@@ -9946,7 +10007,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("turnover_SN_plot"),
@@ -9983,7 +10045,8 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$turnover_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
     )
 
     max_rate <- max(workforce_data$`Turnover Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -10049,7 +10112,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("agency_SN_plot"),
@@ -10086,7 +10150,8 @@ server <- function(input, output, session) {
   # Agency rate SN plot and table alternative
   output$agency_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
     )
 
     max_rate <- max(workforce_data$`Agency Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -10153,7 +10218,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("vacancy_SN_plot"),
@@ -10190,7 +10256,8 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$vacancy_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
     )
 
     max_rate <- max(workforce_data$`Vacancy Rate Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -10255,7 +10322,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e3 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("caseload_SN_plot"),
@@ -10292,7 +10360,8 @@ server <- function(input, output, session) {
   # turnover SN plot and table alternative
   output$caseload_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e3 != "", "Select a location."),
     )
 
     max_rate <- max(workforce_data$`Caseload Fte`[workforce_data$time_period == max(workforce_data$time_period) &
@@ -10364,7 +10433,8 @@ server <- function(input, output, session) {
 
   output$ofsted_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
 
     p <- statistical_neighbours_plot_ofsted(ofsted_leadership_data_long, input$geographic_breakdown_e2) %>%
@@ -10380,7 +10450,8 @@ server <- function(input, output, session) {
 
   output$ofsted_SN_tbl <- renderReactable({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this table, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
     data <- ofsted_leadership_data_long %>%
       mutate(Rating = recode(Rating,
@@ -10436,7 +10507,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e2 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("total_spending_SN_plot"),
@@ -10473,7 +10545,8 @@ server <- function(input, output, session) {
 
   output$total_spending_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
 
     # Need an if statement to look at the spending level choice this will determine the data in the chart
@@ -10506,7 +10579,8 @@ server <- function(input, output, session) {
 
   output$SN_tot_spend_tbl <- renderReactable({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
     if (input$spending_choice == "Share of total spend on children's services") {
@@ -10576,7 +10650,8 @@ server <- function(input, output, session) {
       )
     } else {
       validate(
-        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+        need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_e2 != "", "Select a location."),
       )
       tagList(
         plotlyOutput("spend_excl_cla_SN_plot"),
@@ -10614,7 +10689,8 @@ server <- function(input, output, session) {
 
   output$spend_excl_cla_SN_plot <- plotly::renderPlotly({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
 
     data <- spending_data_no_cla
@@ -10634,7 +10710,8 @@ server <- function(input, output, session) {
 
   output$SN_spend_no_cla_tbl <- renderReactable({
     validate(
-      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority.")
+      need(input$select_geography_e2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
 
     data <- spending_data_no_cla %>%
