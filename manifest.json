@@ -5117,7 +5117,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "069edf18166f0df79ecacf902e7cf421"
+      "checksum": "ae3733d00d07f4f893d41aeca1c0c7c2"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5279,7 +5279,7 @@
       "checksum": "a355110f6a735c3a3abe97c52bf901c9"
     },
     "R/plotting.R": {
-      "checksum": "64346a7989d422b9aaba250ea5e6b05c"
+      "checksum": "8ac46401e7479928cbb388cf9f57cfe4"
     },
     "R/read_data.R": {
       "checksum": "78f786d390184df02758a2bc10472a50"
