@@ -1,4 +1,4 @@
-data_sources <- function() {
+data_sources_tab <- function() {
   tabPanel(
     value = "data_sources",
     "Data Sources",
@@ -17,7 +17,8 @@ data_sources <- function() {
           tags$li(a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023 (last updated: 8 September 2023) (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
           tags$li(a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 (last updated: 14 February 2024) (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
           tags$li(a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "Children's services statistical neighbour benchmarking tool (last updated: April 2021) (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
-          tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes for Children in Need including Children Looked After (last updated 18 April 2024) (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"))
+          tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes for Children in Need including Children Looked After (last updated 18 April 2024) (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
+          tags$li(a(href = "https://assets.publishing.service.gov.uk/media/650c373752e73c000d942609/Childrens_social_care_in_England_2023_underlying_data.ods", "Ofsted Leadership ratings (Opens in a new window).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"))
         )
       )
     )

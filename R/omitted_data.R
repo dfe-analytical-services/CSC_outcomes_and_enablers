@@ -1,7 +1,7 @@
-kpiCodes_tab <- function() {
+omitted_data_tab <- function() {
   tabPanel(
-    value = "kpi_codes",
-    "KPI Codes Help",
+    value = "omitted_data",
+    "Omitted data reasons",
     gov_main_layout(
       gov_row(
         column(

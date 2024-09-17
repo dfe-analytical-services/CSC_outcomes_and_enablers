@@ -5912,7 +5912,7 @@
       "checksum": "51727b9c87cdf2692305f6dac8ef16e1"
     },
     ".Rprofile": {
-      "checksum": "ea1ac2b4b1e5660fd66fe11832839fda"
+      "checksum": "cc13fee40831d800c771f9af84195ee8"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6038,13 +6038,16 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "57079c3d50cef2574e31eecbfbee67fd"
+      "checksum": "244acc11bdd66d72c3aa2b79d41b5a5e"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
     },
     "R/dfe_template.R": {
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
+    },
+    "R/disclaimer.R": {
+      "checksum": "5f8776253382933c29e52b81491e11a8"
     },
     "R/enabler1_page.R": {
       "checksum": "57aa119b6da530ad5d636f4308c3bd45"
@@ -6058,8 +6061,8 @@
     "R/intro_panel.R": {
       "checksum": "42972d8c1380e2625767b38d582e038c"
     },
-    "R/kpi_codes.R": {
-      "checksum": "51cab2d20b957983f63e566e65efb9cc"
+    "R/omitted_data.R": {
+      "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
     },
     "R/outcome1_page.R": {
       "checksum": "448073f698b1431a30309945154f0910"
@@ -6122,7 +6125,7 @@
       "checksum": "523ea02edf92cc6014267d410f42f0fd"
     },
     "ui.R": {
-      "checksum": "55893dbd464ef548906c276a46acf279"
+      "checksum": "d1f334e9833becd9df6e44022a7b2d12"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
@@ -6131,7 +6134,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "4323429751efbd6e16c0000fd9e9872b"
+      "checksum": "70d2c96d1e9e212fb0b806b1f39a1150"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

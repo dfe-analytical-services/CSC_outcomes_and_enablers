@@ -587,9 +587,9 @@ btn is the user guide button
 }
 
 /* Hide the last page on the navlist bar (user guide page)*/
-#navlistPanel > li:nth-child(12) {
+/*#navlistPanel > li:nth-child(12) {
   display: none;
-}
+}*/
 
 /*#navlistPanel > li:last-child(){
   display: none;
@@ -689,3 +689,12 @@ btn is the user guide button
   border-color: transparent;
   background-color: transparent;
 } */
+
+/* Nav bar headings */
+.navbar-brand{
+  --bs-navbar-brand-color: black;
+  font-family: "GDS Transport", arial, sans-serif !important;
+  font-weight: 700;
+  border-bottom: 2px solid black;
+  
+}
