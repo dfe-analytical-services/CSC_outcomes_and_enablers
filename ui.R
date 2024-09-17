@@ -118,6 +118,7 @@ ui <- function(input, output, session) {
       enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
+      "Support",
       disclaimer_tab(),
       omitted_data_tab(),
       data_sources_tab(),
