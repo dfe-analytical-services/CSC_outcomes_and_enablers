@@ -42,6 +42,7 @@
 
 ui <- function(input, output, session) {
   bslib::page(
+    tags$a(name = "top"),
     # use_tota11y(),
     title = tags$head(
       tags$link(
@@ -126,6 +127,10 @@ ui <- function(input, output, session) {
       support_links(),
       header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
+    ),
+    tags$div(
+      style = "postion: relative; text-align: center; margin-bottom: 50px;",
+      tags$a(href = "#top", "Return to top")
     ),
     footer(full = TRUE)
   )
