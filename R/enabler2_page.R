@@ -33,7 +33,7 @@ enabler2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           insert_text(
             inputId = "no_checkboxes",

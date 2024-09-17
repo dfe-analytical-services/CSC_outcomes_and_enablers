@@ -31,14 +31,14 @@ outcome3_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o3 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o3",
                   cb_labels = "Compare with National",
@@ -52,7 +52,7 @@ outcome3_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o3 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o3",
                   cb_labels = "Compare with Region",
@@ -63,7 +63,7 @@ outcome3_tab <- function() {
                 )
               ),
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),

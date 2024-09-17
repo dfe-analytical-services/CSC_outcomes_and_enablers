@@ -690,6 +690,7 @@ btn is the user guide button
   background-color: transparent;
 } */
 
+<<<<<<< HEAD
 /* Nav bar headings */
 .navbar-brand{
   --bs-navbar-brand-color: black;
@@ -697,4 +698,10 @@ btn is the user guide button
   font-weight: 700;
   border-bottom: 2px solid black;
   
+=======
+/*Domain tab outlines*/
+.nav-tabs {
+  --bs-nav-tabs-link-active-border-color: #0b3b6a #0b3b6a #0b3b6a !important;
+  border-bottom: solid #0b3b6a;
+>>>>>>> 7406a4cc00e2e59cc6f1b8e1ea1203e8b446ce85
 }
