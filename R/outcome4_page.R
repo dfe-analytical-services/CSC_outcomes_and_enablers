@@ -34,13 +34,13 @@ outcome4_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o4 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o4",
                   cb_labels = "Compare with National",
@@ -54,7 +54,7 @@ outcome4_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o4 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
                   cb_labels = "Compare with Region",
@@ -65,7 +65,7 @@ outcome4_tab <- function() {
                 )
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),
@@ -297,7 +297,7 @@ outcome4_tab <- function() {
                       selectizeInput(
                         inputId = "placement_type_breakdown",
                         label = "Select a placement type:",
-                        choices = unique(placement_type_filter %>% str_sort()),
+                        choices = unique(placement_type_filter),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL

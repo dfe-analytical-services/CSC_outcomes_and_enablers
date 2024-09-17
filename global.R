@@ -96,7 +96,7 @@ google_analytics_key <- "Q13T4ENF6C"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read in the workforce data
 
-workforce_data <- read_workforce_data()
+workforce_data <- suppressWarnings(read_workforce_data())
 location_data <- GET_location() # fact table linking LA to its region
 
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
@@ -154,10 +154,18 @@ hospital_admissions <- suppressWarnings(read_a_and_e_data())
 
 # Read in outcome 4 data
 placement_data <- suppressWarnings(read_placement_info_data())
+
+# Define the custom order
+custom_order <- c("Foster placements", "Secure units, children's homes and semi-independent living accommodation", "Other residential settings")
+
+# Sort the values based on the custom order
 placement_type_filter <- placement_data %>%
   filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings")) %>%
   select(characteristic) %>%
-  pull("characteristic")
+  pull("characteristic") %>%
+  unique() %>%
+  factor(levels = custom_order) %>%
+  sort()
 
 placement_changes_data <- suppressWarnings(read_number_placements_data())
 
