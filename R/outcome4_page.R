@@ -297,7 +297,7 @@ outcome4_tab <- function() {
                       selectizeInput(
                         inputId = "placement_type_breakdown",
                         label = "Select a placement type:",
-                        choices = unique(placement_type_filter %>% str_sort()),
+                        choices = unique(placement_type_filter),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL
