@@ -5912,7 +5912,7 @@
       "checksum": "51727b9c87cdf2692305f6dac8ef16e1"
     },
     ".Rprofile": {
-      "checksum": "1a532de40c567bf1aae1ac6d8cb3e9eb"
+      "checksum": "6cf4ee8f33d8d434800d0c9b173fd6bb"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6010,11 +6010,11 @@
     "data/region_hospital_admissions_2223.csv": {
       "checksum": "b5ebfdc652376dc59f7003437bbdcfe1"
     },
-    "data/RO3_2022-23_data_by_LA.ods": {
-      "checksum": "140332bd5f81244d924e451db8a460ec"
+    "data/RO3_2023-24_data_by_LA.ods": {
+      "checksum": "0c2c67cd45568a7e9d442c5204eac0aa"
     },
-    "data/RSX_2022-23_data_by_LA.ods": {
-      "checksum": "c092736a714f6d9bc277addf272b0c4f"
+    "data/RSX_2023-24_data_by_LA.ods": {
+      "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "datafiles_log.csv": {
       "checksum": "2dce5ab0f3ae91ac2bfa34f473fa41f8"
@@ -6080,7 +6080,7 @@
       "checksum": "8ac46401e7479928cbb388cf9f57cfe4"
     },
     "R/read_data.R": {
-      "checksum": "78f786d390184df02758a2bc10472a50"
+      "checksum": "a4a69bc8c7d1ac19aaa088efa123d113"
     },
     "R/standard_panels.R": {
       "checksum": "d915e76891d51e8cde108a1b528707ed"
@@ -6098,7 +6098,7 @@
       "checksum": "dc1d9ea6117f2da0868a1b7939f6e419"
     },
     "server.R": {
-      "checksum": "5fa7f5caf091f08ce280a4eeea53ee9d"
+      "checksum": "7ace92cd7a9e601145d32c7f0bfcc466"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

@@ -5940,7 +5940,7 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
     } else {
-      stat <- format(spending_data %>% filter(time_period == "2022/23" &
+      stat <- format(spending_data %>% filter(time_period == "2023/24" &
         geo_breakdown %in% input$geographic_breakdown_e2) %>%
         select(`CS Share`), nsmall = 2)
     }
@@ -5965,7 +5965,7 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       stat <- "NA"
     } else {
-      stat <- format(spending_data_no_cla %>% filter(time_period == "2022/23" &
+      stat <- format(spending_data_no_cla %>% filter(time_period == "2023/24" &
         geo_breakdown %in% input$geographic_breakdown_e2) %>%
         select(`Excluding CLA Share`), nsmall = 2)
     }
@@ -6251,7 +6251,7 @@ server <- function(input, output, session) {
       paste0(data$Rating[which.max(data$Count)], "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
     }
   })
-
+  max(data$inspection_date)
 
   output$ofsted_outstanding_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
@@ -6269,17 +6269,17 @@ server <- function(input, output, session) {
         stat <- data %>%
           filter(geo_breakdown == "London")
         stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$inspection_date), ")", "</p>")
       } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
         stat <- data %>%
           filter(geo_breakdown == "North East, Yorkshire and the Humber")
         stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else {
         stat <- data %>%
           filter(geo_breakdown == input$geographic_breakdown_e2)
         stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       }
     }
   })
@@ -6300,17 +6300,17 @@ server <- function(input, output, session) {
         stat <- data %>%
           filter(geo_breakdown == "London")
         stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
         stat <- data %>%
           filter(geo_breakdown == "North East, Yorkshire and the Humber")
         stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else {
         stat <- data %>%
           filter(geo_breakdown == input$geographic_breakdown_e2)
         stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       }
     }
   })
@@ -6331,17 +6331,17 @@ server <- function(input, output, session) {
         stat <- data %>%
           filter(geo_breakdown == "London")
         stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
         stat <- data %>%
           filter(geo_breakdown == "North East, Yorkshire and the Humber")
         stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else {
         stat <- data %>%
           filter(geo_breakdown == input$geographic_breakdown_e2)
         stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       }
     }
   })
@@ -6362,17 +6362,17 @@ server <- function(input, output, session) {
         stat <- data %>%
           filter(geo_breakdown == "London")
         stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
         stat <- data %>%
           filter(geo_breakdown == "North East, Yorkshire and the Humber")
         stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       } else {
         stat <- data %>%
           filter(geo_breakdown == input$geographic_breakdown_e2)
         stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final)
+        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
       }
     }
   })
