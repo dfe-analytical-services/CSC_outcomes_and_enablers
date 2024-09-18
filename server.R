@@ -6251,7 +6251,7 @@ server <- function(input, output, session) {
       paste0(data$Rating[which.max(data$Count)], "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
     }
   })
-  max(data$inspection_date)
+
 
   output$ofsted_outstanding_headline <- renderText({
     data <- ofsted_leadership_data_long %>%
