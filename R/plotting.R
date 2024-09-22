@@ -1281,11 +1281,12 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     )
   )) +
     geom_bar(stat = "identity", fill = "#12436D") +
-    scale_y_continuous(limits = c(0, NA)) +
+    scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0))) +
     coord_flip() +
     xlab("Assessment factor") +
     ylab("Rate per 10,000") +
     theme_classic()
+
 
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
