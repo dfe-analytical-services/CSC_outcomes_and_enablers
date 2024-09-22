@@ -1338,6 +1338,16 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
   admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
 
+  # Name changes
+
+  admissions_data3 <- admissions_data3 %>%
+    mutate(geo_breakdown = case_when(
+      geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
+      geo_breakdown == "Bristol" ~ "Bristol, City of",
+      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
+      geo_breakdown == "Kingston upon Hull" ~ "Kingston upon Hull, City of",
+      TRUE ~ as.character(geo_breakdown)
+    ))
 
   # Inner London Data
 
@@ -1479,6 +1489,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   return(admissions_data3)
 }
 
+a <- read_a_and_e_data()
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
   data <- read.csv(file)
