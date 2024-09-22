@@ -5912,7 +5912,7 @@
       "checksum": "51727b9c87cdf2692305f6dac8ef16e1"
     },
     ".Rprofile": {
-      "checksum": "28982d76c703f99b318422a1e366aeaf"
+      "checksum": "444ea544fbefa06eb2ec878630ece84b"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6074,13 +6074,13 @@
       "checksum": "6b07908fde29825b5c718b68deaaf45d"
     },
     "R/outcome4_page.R": {
-      "checksum": "f9b16a58ae2503372cbb10a924b428aa"
+      "checksum": "5503dff92475d7d8cac85bacc92f814c"
     },
     "R/plotting.R": {
       "checksum": "8ac46401e7479928cbb388cf9f57cfe4"
     },
     "R/read_data.R": {
-      "checksum": "81f7cec760cd1e9736efe6b3da368ef3"
+      "checksum": "19d400fde40b55c4bec69931f62f73cc"
     },
     "R/standard_panels.R": {
       "checksum": "d915e76891d51e8cde108a1b528707ed"
@@ -6098,7 +6098,7 @@
       "checksum": "dc1d9ea6117f2da0868a1b7939f6e419"
     },
     "server.R": {
-      "checksum": "80688d605d17a254f2b09136d835d644"
+      "checksum": "346d152ed12001842b8d53faa8e55d71"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -6125,7 +6125,7 @@
       "checksum": "523ea02edf92cc6014267d410f42f0fd"
     },
     "ui.R": {
-      "checksum": "0e88ea709361ff8c0ba3a45d6130486a"
+      "checksum": "6ffb89892e619c50aa8203b169f87f16"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"

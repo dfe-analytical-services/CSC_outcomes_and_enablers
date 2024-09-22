@@ -125,7 +125,6 @@ ui <- function(input, output, session) {
       data_sources_tab(),
       a11y_panel(),
       support_links(),
-      header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
     ),
     tags$div(

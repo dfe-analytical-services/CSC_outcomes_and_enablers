@@ -4317,7 +4317,7 @@ server <- function(input, output, session) {
     } else {
       stat <- format(placement_order_match_data %>%
         filter(time_period == max(placement_order_match_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(age_start_poc == "Total") %>%
+        filter(age_start_poc == "Total (all)") %>%
         select(months), nsmall = 0)
     }
     paste0(

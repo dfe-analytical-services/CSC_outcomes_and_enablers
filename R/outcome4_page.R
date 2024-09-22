@@ -393,7 +393,7 @@ outcome4_tab <- function() {
                       selectizeInput(
                         inputId = "select_age_group_o4",
                         label = "Select an age group:",
-                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total"),
+                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total (all ages)"),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL

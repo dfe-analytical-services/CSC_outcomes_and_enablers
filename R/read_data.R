@@ -1771,6 +1771,14 @@ read_placement_order_match_data <- function(file = "data/national_cla_adopted_av
       TRUE ~ as.numeric(number)
     ))
 
+  # total(all ages)
+
+  data <- data %>%
+    mutate(age_start_poc = case_when(
+      age_start_poc == "Total" ~ "Total (all ages)",
+      TRUE ~ as.character(age_start_poc)
+    ))
+
   data$months <- sapply(strsplit(data$number, ":"), function(x) {
     years <- as.numeric(x[1])
     months <- as.numeric(x[2])
