@@ -341,7 +341,7 @@ outcome3_tab <- function() {
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
-                  "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
+                  "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
                     The majority of children have more than one factor recorded for each episode of need.
                     It should be noted that not all episodes have factors recorded, but this has improved over time.
                     Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with a degree of caution."
@@ -490,7 +490,7 @@ outcome3_tab <- function() {
                 h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(
-                    "Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case.
+                    "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
                   The majority of children have more than one factor recorded for each episode of need.
                   It should be noted that not all episodes have factors recorded, but this has improved over time.
                   Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with a degree of caution."

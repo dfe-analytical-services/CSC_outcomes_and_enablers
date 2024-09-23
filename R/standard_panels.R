@@ -51,7 +51,7 @@ support_links <- function() {
           p(
             "If you have any feedback or suggestions for improvements, please submit them using our ",
             a(
-              href = "https://forms.office.com", target = "_blank",
+              href = "https://forms.office.com/pages/designpagev2.aspx?subpage=design&id=yXfS-grGoU2187O4s0qC-YORTwKV5EREqJL0ZyqrsdVUOUdLWDZSM1BZUjNHOUI4Rlo1R0ExSDlXSCQlQCN0PWcu&analysis=false", target = "_blank",
               "feedback form", .noWS = c("after")
             ), "."
           ),

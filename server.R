@@ -1222,6 +1222,7 @@ server <- function(input, output, session) {
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
+
     # not both
     if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
       filtered_data <- cin_referrals %>%
@@ -1252,7 +1253,14 @@ server <- function(input, output, session) {
         filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) # %>%
       # rename("Re_referrals_percentage" = "Re-referrals (%)")
     }
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
+
+    # Set the max y-axis scale
+    max_rate <- max(filtered_data$`Re-referrals (%)`, na.rm = TRUE)
+
+    # Round the max_rate to the nearest 20
+    max_rate <- ceiling(max_rate / 20) * 20
+
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals within 12 months %")
     ggplotly(
@@ -3351,7 +3359,7 @@ server <- function(input, output, session) {
   output$duration_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # not both
@@ -3401,7 +3409,7 @@ server <- function(input, output, session) {
   output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression."),
+      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # neither checkboxes
