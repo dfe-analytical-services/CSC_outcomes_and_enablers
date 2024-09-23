@@ -26,13 +26,8 @@
     "cla_march_stats_toggle": "All local authorities",
     "cla_stats_toggle": "All local authorities",
     "cookies": {
-      "_ga": "GA1.1.1456843866.1722866816",
-      "_ga_DG7P4WLB0Y": "GS1.1.1724777083.12.0.1724777083.0.0.0",
-      "_ga_Z967JJVQQX": "GS1.1.1724944100.8.0.1724944100.0.0.0",
-      "_ga_4TJQVNWTCK": "GS1.1.1724947023.3.0.1724947023.0.0.0",
-      "_ga_S8X2XN5L4B": "GS1.1.1725454879.13.0.1725454879.0.0.0",
-      "_ga_Q13T4ENF6C": "GS1.1.1725957197.4.1.1725957225.0.0.0",
-      "_ga_851195T40Y": "GS1.1.1726230913.3.1.1726231041.0.0.0"
+      "_ga": "GA1.1.1430501773.1707484817",
+      "_ga_XXXXXXXXXX": "GS1.1.1707730501.2.1.1707730624.0.0.0"
     },
     "cookies-cookie_accept": 0,
     "cookies-cookie_link": 0,
@@ -85,7 +80,6 @@
     "spending2_stats_toggle": "All local authorities",
     "spending_choice": "Share of total spend on children's services",
     "turnover_stats_toggle": "All local authorities",
-    "tutorial": 0,
     "uasc_stats_toggle": "All local authorities",
     "vacancy_stats_toggle": "All local authorities",
     "wellbeing_extra_breakdown": "CINO at 31 March",
