@@ -782,6 +782,10 @@ outcome1_tab <- function() {
                         h2("Absence rate by region"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
+                        insert_text(inputId = "Absence_definition", text = paste(
+                          "<b>", "Absence rate", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text")
+                        )),
                         plotlyOutput("plot_absence_reg"),
                         br(),
                         details(
@@ -830,6 +834,10 @@ outcome1_tab <- function() {
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                         htmlOutput("outcome1_time_period_text"),
                         br(),
+                        insert_text(inputId = "Absence_definition", text = paste(
+                          "<b>", "Absence rate", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text")
+                        )),
                         radioGroupButtons(
                           "absence_stats_toggle",
                           label = NULL,
@@ -897,6 +905,10 @@ outcome1_tab <- function() {
                         h2("Persistent absence by region"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
+                        insert_text(inputId = "Persistent_absence_definition", text = paste(
+                          "<b>", "Persistent absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_1")
+                        )),
                         plotlyOutput("plot_persistent_reg"),
                         br(),
                         details(
@@ -943,6 +955,10 @@ outcome1_tab <- function() {
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                         htmlOutput("outcome1_time_period_text_2"),
                         br(),
+                        insert_text(inputId = "Persistent_absence_definition", text = paste(
+                          "<b>", "Persistent absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_1")
+                        )),
                         radioGroupButtons(
                           "persis_abs_stats_toggle",
                           label = NULL,
@@ -1097,6 +1113,10 @@ outcome1_tab <- function() {
                         h2("KS2 attainment by region"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
+                        insert_text(inputId = "ks2_definition", text = paste(
+                          "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_2")
+                        )),
                         plotlyOutput("plot_ks2_reg"),
                         br(),
                         details(
@@ -1139,6 +1159,10 @@ outcome1_tab <- function() {
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
                         htmlOutput("outcome1_time_period_text_3"),
                         br(),
+                        insert_text(inputId = "ks2_definition", text = paste(
+                          "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_2")
+                        )),
                         radioGroupButtons(
                           "ks2_attainment_stats_toggle",
                           label = NULL,
@@ -1206,6 +1230,10 @@ outcome1_tab <- function() {
                         h2("KS4 attainment by region"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
+                        insert_text(inputId = "ks4_definition", text = paste(
+                          "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_3")
+                        )),
                         plotlyOutput("plot_ks4_reg"),
                         br(),
                         details(
@@ -1251,6 +1279,10 @@ outcome1_tab <- function() {
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                         htmlOutput("outcome1_time_period_text_4"),
                         br(),
+                        insert_text(inputId = "ks4_definition", text = paste(
+                          "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_3")
+                        )),
                         radioGroupButtons(
                           "ks4_attainment_stats_toggle",
                           label = NULL,

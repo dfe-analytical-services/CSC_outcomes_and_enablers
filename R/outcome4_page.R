@@ -305,6 +305,10 @@ outcome4_tab <- function() {
                         options = NULL
                       ),
                       gov_row(
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_text")
+                        )),
                         plotlyOutput("placement_type_ts_plot"),
                         br(),
                         details(
@@ -335,6 +339,10 @@ outcome4_tab <- function() {
                         h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
                         p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
                         br(),
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_by_region_text")
+                        )),
                         plotlyOutput("placement_type_region_plot"),
                         br(),
                         br(),
@@ -365,6 +373,10 @@ outcome4_tab <- function() {
                       gov_row(
                         h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
                         p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_by_la_text")
+                        )),
                         radioGroupButtons(
                           "placement_type_stats_toggle",
                           label = NULL,
