@@ -5,7 +5,7 @@ on:
   
   pull_request:
       
-name: Automated tests
+name: tidy-code
 
 jobs:
   automatedTests:
