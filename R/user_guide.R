@@ -38,9 +38,9 @@ tutorialPanel <- function() {
             tags$li("Reset Axes back to the starting view"),
             tags$li("Compare data for each data point being hovered"),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
-            ),
-            tags$h6("Using the Key", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px; font-weight: bold"),
-            tags$ul(
+          ),
+          tags$h6("Using the Key", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px; font-weight: bold"),
+          tags$ul(
             tags$li("Double clicking a line/value in the key will isolate the value in the plot"),
             tags$li("Double clicking the same value again will restore the original plot"),
             tags$li("Single clicking a line/value in the key will remove that line/value from the plot"),
