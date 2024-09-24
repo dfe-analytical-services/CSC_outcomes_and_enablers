@@ -19,7 +19,7 @@ customDisconnectMessage <- function(refresh = "Refresh page",
       style = "display: none !important;",
       htmltools::tags$div(
         id = "ss-connect-refresh",
-        tags$p("You've lost connection to the dashboard server - please try refreshing the page:"),
+        tags$p("You've lost connection to the dashboard server - try refreshing the page:"),
         tags$p(tags$a(
           id = "ss-reload-link",
           href = "#", "Refresh page",
@@ -52,7 +52,7 @@ customDisconnectMessage <- function(refresh = "Refresh page",
           )
         },
         tags$p(
-          "Please contact",
+          "Contact",
           tags$a(href = "mailto:statistics.development@education.gov.uk", "statistics.development@education.gov.uk"),
           "with details of any problems with this resource."
         )

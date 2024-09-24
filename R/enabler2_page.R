@@ -98,7 +98,7 @@ enabler2_tab <- function() {
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
                       p("This domain contains two levels of data: Share of total spend on children's services and spend per child on children's services"),
-                      p("Please use the dropdown below to select which level of spending data you would like to see in the charts below:"),
+                      p("Use the dropdown below to select which level of spending data you would like to see in the charts below:"),
                       selectizeInput(
                         inputId = "spending_choice",
                         label = "Select a spending level:",
@@ -134,7 +134,7 @@ enabler2_tab <- function() {
                               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
                               tags$br(),
                               p(
-                                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
+                                "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
                               )
                             )
                           )
@@ -180,7 +180,7 @@ enabler2_tab <- function() {
                           tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
+                            "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
                           )
                       ))
                     )
@@ -313,9 +313,9 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
-                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
+                            "For more information on the data and definitions, see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
                           ),
                           tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )
@@ -343,9 +343,9 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
-                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
+                            "For more information on the data and definitions, see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
                           ),
                           tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )

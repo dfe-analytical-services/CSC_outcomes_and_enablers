@@ -1642,12 +1642,12 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0) # ,
-        # axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0),
+        axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
@@ -1749,12 +1749,12 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0) # ,
-        # axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0),
+        axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
@@ -1792,13 +1792,13 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
         ylab(yaxis_title) +
         xlab("") +
-        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+        #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
         theme_classic() +
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0) # ,
-          # axis.text.x = element_text(angle = 45, hjust = 1)
+          axis.line = element_line(size = 1.0),
+          axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
@@ -1887,12 +1887,12 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     ylab(yaxis_title) +
     xlab("") +
     theme_classic() +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+    #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0) # ,
-      # axis.text.x = element_text(angle = 45, hjust = 1)
+      axis.line = element_line(size = 1.0),
+      axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_y_continuous(limits = c(0, ylim_upper)) +
     scale_fill_manual(
@@ -1957,8 +1957,8 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
     scale_fill_manual(values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))) +
     scale_y_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     theme_classic() +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #+  # Wrap the labels
-  # theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    #scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #+  # Wrap the labels
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {

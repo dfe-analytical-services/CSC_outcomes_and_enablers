@@ -35,7 +35,8 @@ disclaimer_tab <- function() {
           tags$li("Children’s social care data in England 2023 (last updated: 8 September 2023)"),
           tags$li("Local authority revenue expenditure and financing England: 2022 to 2023 (last updated: 14 February 2024)"),
           tags$li("Children's services statistical neighbour benchmarking tool (last updated: April 2021)"),
-          tags$li("Outcomes for children in need including children looked after by local authorities in england (last updated: 18th Apr 2024)")
+          tags$li("Outcomes for children in need including children looked after by local authorities in england (last updated: 18th Apr 2024)"),
+          style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
         ),
         p("The  specific indicators (policy annex) for each outcome and enabler have been
           chosen based on available official published statistics and review with policy.

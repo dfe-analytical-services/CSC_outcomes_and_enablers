@@ -11,8 +11,8 @@ introductionPanel <- function() {
           p(
             "This dashboard displays data indicators to help both local and central government understand progress towards the outcomes and enablers set out in the",
             a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework.", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
-            "Users can view the progress for England nationally or choose a specific region or local authority in England to view their progress.",
-            actionLink("go_to_user_guide", "Please read the user guide"), "for further information on how to do this after reading this introduction page."
+            "You can view the progress for England nationally or choose a specific region or local authority in England to view its progress.",
+            actionLink("go_to_user_guide", "Read the user guide"), "for further information on how to do this after reading this introduction page."
           ),
           p("The data indicators included in the dashboard are contained within domains (themes). The domains sit within the below enablers and outcomes."),
         ),

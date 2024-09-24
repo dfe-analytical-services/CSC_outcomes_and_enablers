@@ -29,7 +29,7 @@ a11y_panel <- function() {
           )),
           h2("Feedback"),
           p(
-            "If you have any feedback on how we could further improve the accessibility of this application, please contact us at",
+            "If you have any feedback on how we could further improve the accessibility of this application, contact us at",
             a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", "CSCDashboard.FEEDBACK@education.gov.uk", target = "_blank"),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )
@@ -49,14 +49,14 @@ support_links <- function() {
           h1("Support and feedback"),
           h2("Give us feedback"),
           p(
-            "If you have any feedback or suggestions for improvements, please submit them using our ",
+            "If you have any feedback or suggestions for improvements, submit them using our ",
             a(
               href = "https://forms.office.com/pages/designpagev2.aspx?subpage=design&id=yXfS-grGoU2187O4s0qC-YORTwKV5EREqJL0ZyqrsdVUOUdLWDZSM1BZUjNHOUI4Rlo1R0ExSDlXSCQlQCN0PWcu&analysis=false", target = "_blank",
               "feedback form (Opens in a new window)", .noWS = c("after")
             ), "."
           ),
           p(
-            "If you spot any errors or bugs while using this dashboard, please screenshot and email them to",
+            "If you spot any errors or bugs while using this dashboard, screenshot and email them to",
             a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", target = "_blank", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after")), "."
           ),
           h2("Find more information on the data"),
@@ -74,7 +74,7 @@ support_links <- function() {
           ),
           h2("Contact us"),
           p(
-            "If you have questions about the dashboard or data within it, please contact us at ",
+            "If you have questions about the dashboard or data within it, contact us at ",
             a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", target = "_blank", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after"))
           ),
           h2("See the source code"),
