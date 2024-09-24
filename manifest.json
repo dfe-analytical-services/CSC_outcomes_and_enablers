@@ -3339,9 +3339,9 @@
         "Package": "reactR",
         "Type": "Package",
         "Title": "React Helpers",
-        "Version": "0.6.0",
-        "Date": "2024-06-26",
-        "Authors@R": "c(\n      person(\n        \"Facebook\", \"Inc\"\n        , role = c(\"aut\", \"cph\")\n        , comment = \"React library in lib, https://reactjs.org/; see AUTHORS for full list of contributors\"\n      ),\n      person(\n        \"Michel\",\"Weststrate\",\n        , role = c(\"aut\", \"cph\")\n        , comment = \"mobx library in lib, https://github.com/mobxjs\"\n      ),\n      person(\n        \"Kent\", \"Russell\"\n        , role = c(\"aut\", \"cre\")\n        , comment = \"R interface\"\n        , email = \"kent.russell@timelyportfolio.com\"\n      ),\n      person(\n        \"Alan\", \"Dipert\"\n        , role = c(\"aut\")\n        , comment = \"R interface\"\n        , email = \"alan@rstudio.com\"\n      )\n    )",
+        "Version": "0.6.1",
+        "Date": "2024-09-14",
+        "Authors@R": "c(\n      person(\n        \"Facebook\", \"Inc\"\n        , role = c(\"aut\", \"cph\")\n        , comment = \"React library in lib, https://reactjs.org/; see AUTHORS for full list of contributors\"\n      ),\n      person(\n        \"Michel\",\"Weststrate\",\n        , role = c(\"aut\", \"cph\")\n        , comment = \"mobx library in lib, https://github.com/mobxjs\"\n      ),\n      person(\n        \"Kent\", \"Russell\"\n        , role = c(\"aut\", \"cre\")\n        , comment = \"R interface\"\n        , email = \"kent.russell@timelyportfolio.com\"\n      ),\n      person(\n        \"Alan\", \"Dipert\"\n        , role = c(\"aut\")\n        , comment = \"R interface\"\n        , email = \"alan@rstudio.com\"\n      ),\n      person(\n        \"Greg\", \"Lin\"\n        , role = c(\"aut\")\n        , comment = \"R interface\"\n        , email = \"glin@glin.io\"\n      )\n    )",
         "Maintainer": "Kent Russell <kent.russell@timelyportfolio.com>",
         "Description": "Make it easy to use 'React' in R with 'htmlwidget' scaffolds,\n              helper dependency functions, an embedded 'Babel' 'transpiler',\n              and examples.",
         "URL": "https://github.com/react-R/reactR",
@@ -3350,14 +3350,14 @@
         "Encoding": "UTF-8",
         "Imports": "htmltools",
         "Suggests": "htmlwidgets (>= 1.5.3), rmarkdown, shiny, V8, knitr, usethis,\njsonlite",
-        "RoxygenNote": "7.3.1",
+        "RoxygenNote": "7.3.2",
         "VignetteBuilder": "knitr",
         "NeedsCompilation": "no",
-        "Packaged": "2024-06-26 15:21:44 UTC; kentr",
-        "Author": "Facebook Inc [aut, cph] (React library in lib, https://reactjs.org/;\n    see AUTHORS for full list of contributors),\n  Michel Weststrate [aut, cph] (mobx library in lib,\n    https://github.com/mobxjs),\n  Kent Russell [aut, cre] (R interface),\n  Alan Dipert [aut] (R interface)",
+        "Packaged": "2024-09-14 13:24:57 UTC; kentr",
+        "Author": "Facebook Inc [aut, cph] (React library in lib, https://reactjs.org/;\n    see AUTHORS for full list of contributors),\n  Michel Weststrate [aut, cph] (mobx library in lib,\n    https://github.com/mobxjs),\n  Kent Russell [aut, cre] (R interface),\n  Alan Dipert [aut] (R interface),\n  Greg Lin [aut] (R interface)",
         "Repository": "CRAN",
-        "Date/Publication": "2024-06-26 15:50:02 UTC",
-        "Built": "R 4.4.1; ; 2024-09-07 01:24:46 UTC; windows"
+        "Date/Publication": "2024-09-14 13:50:02 UTC",
+        "Built": "R 4.4.1; ; 2024-09-23 01:24:18 UTC; windows"
       }
     },
     "reactable": {
@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "5fb837b7bfd35945b5da351004570cbb"
+      "checksum": "962f41adb84e4cdfb8043b04d3276bf5"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5239,7 +5239,7 @@
       "checksum": "8627c417a781e9ad8342861dd5512c52"
     },
     "R/standard_panels.R": {
-      "checksum": "ec16dcda41c8984efbd88565f465b362"
+      "checksum": "68a8dddf40b188c530434bc5008ba76c"
     },
     "R/user_guide.R": {
       "checksum": "5d4274d89c8062f83072852b49f81fe8"
@@ -5254,7 +5254,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "e9bbbbbbdd8850d2c1cadb5f4af03bb2"
+      "checksum": "0c813d3fcfd0eb357ae7aadfce17b696"
     },
     "server.R": {
       "checksum": "a9f42d568a14217db399a1f9fd70e4e6"
