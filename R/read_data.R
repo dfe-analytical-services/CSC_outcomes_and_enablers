@@ -402,8 +402,8 @@ merge_eth_dataframes <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
 # Spending
-read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
-  data <- read_ods(file, sheet = "RSX_LA_Data_2022-23", range = "A11:CW438")
+read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RSX_LA_Data_2023-24", range = "A11:CW423")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
 
   data3 <- data2 %>%
@@ -433,7 +433,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
   merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2022/23"
+  merged_data$time_period <- "2023/24"
   merged_data <- merged_data %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share) %>%
     # removing old Dorset
@@ -443,7 +443,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2022/23"
+  national_data$time_period <- "2023/24"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -455,7 +455,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
     rename("geo_breakdown" = "region_name")
   regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2022/23"
+  regional_spending$time_period <- "2023/24"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -463,7 +463,7 @@ read_spending_data <- function(file = "data/RSX_2022-23_data_by_LA.ods") {
     filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
     summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
     mutate(
-      "time_period" = "2022/23",
+      "time_period" = "2023/24",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = "",
@@ -574,8 +574,8 @@ read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
   return(joined_data2)
 }
 
-read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
-  data <- read_ods(file, sheet = "RO3_LA_Data_2022-23", range = "A12:CP439")
+read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RO3_LA_Data_2023-24", range = "A12:CP424")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")
 
   data3 <- data2 %>%
@@ -604,7 +604,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2022/23"
+  merged_data$time_period <- "2023/24"
   merged_data <- merged_data %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
 
@@ -612,7 +612,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2022/23"
+  national_data$time_period <- "2023/24"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -624,7 +624,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
     rename("geo_breakdown" = "region_name")
   regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2022/23"
+  regional_spending$time_period <- "2023/24"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -632,7 +632,7 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
     filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
     summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
     mutate(
-      "time_period" = "2022/23",
+      "time_period" = "2023/24",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = as.character(""),
@@ -671,8 +671,6 @@ read_spending_data2 <- function(file = "data/RO3_2022-23_data_by_LA.ods") {
 
   return(final_dataset)
 }
-
-
 
 # Ofsted leadership data
 read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
@@ -1340,6 +1338,16 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
   admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
 
+  # Name changes
+
+  admissions_data3 <- admissions_data3 %>%
+    mutate(geo_breakdown = case_when(
+      geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
+      geo_breakdown == "Bristol" ~ "Bristol, City of",
+      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
+      geo_breakdown == "Kingston upon Hull" ~ "Kingston upon Hull, City of",
+      TRUE ~ as.character(geo_breakdown)
+    ))
 
   # Inner London Data
 
@@ -1481,6 +1489,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   return(admissions_data3)
 }
 
+a <- suppressWarnings(read_a_and_e_data())
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
   data <- read.csv(file)
@@ -1760,6 +1769,14 @@ read_placement_order_match_data <- function(file = "data/national_cla_adopted_av
       number == "x" ~ -300,
       number == "z" ~ -400,
       TRUE ~ as.numeric(number)
+    ))
+
+  # total(all ages)
+
+  data <- data %>%
+    mutate(age_start_poc = case_when(
+      age_start_poc == "Total" ~ "Total (all ages)",
+      TRUE ~ as.character(age_start_poc)
     ))
 
   data$months <- sapply(strsplit(data$number, ":"), function(x) {

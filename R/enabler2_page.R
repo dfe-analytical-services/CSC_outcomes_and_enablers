@@ -33,7 +33,7 @@ enabler2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           insert_text(
             inputId = "no_checkboxes",
@@ -108,52 +108,52 @@ enabler2_tab <- function() {
                         options = NULL,
                         width = "50%"
                       ),
-                    ),
-                    br(),
-                    br(),
-                  ),
-                  gov_row(
-                    htmlOutput("spending_header1"),
-                    br(),
-                    plotlyOutput("plot_spending_region"),
-                    br(),
-                    details(
-                      inputId = "spend1_region_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
-                          reactableOutput("table_tot_spending_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "spend1_region_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
-                          tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
-                          tags$li("Average per child spend has been rounded to the nearest whole number."),
-                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
+                      gov_row(
+                        htmlOutput("spending_header1"),
+                        br(),
+                        plotlyOutput("plot_spending_region"),
+                        br(),
+                        details(
+                          inputId = "spend1_region_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
+                              reactableOutput("table_tot_spending_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "spend1_region_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
+                              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
+                              tags$li("Average per child spend has been rounded to the nearest whole number."),
+                              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    htmlOutput("spending_header2"),
-                    radioGroupButtons(
-                      "spending1_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      ),
+                      gov_row(
+                        htmlOutput("spending_header2"),
+                        radioGroupButtons(
+                          "spending1_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_total_spending"),
+                      ),
                     ),
-                    uiOutput("SN_total_spending"),
-                  )
+                    br(),
+                  ),
                 ),
                 accordion_panel(
                   "Share of Children and Young People Services spend minus spend on CLA",
@@ -191,7 +191,8 @@ enabler2_tab <- function() {
                       "spending2_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_spending_minus_cla"),
                   )

@@ -26,7 +26,8 @@
     "cla_march_stats_toggle": "All local authorities",
     "cla_stats_toggle": "All local authorities",
     "cookies": {
-
+      "_ga": "GA1.1.1430501773.1707484817",
+      "_ga_XXXXXXXXXX": "GS1.1.1707730501.2.1.1707730624.0.0.0"
     },
     "cookies-cookie_accept": 0,
     "cookies-cookie_link": 0,
@@ -79,7 +80,6 @@
     "spending2_stats_toggle": "All local authorities",
     "spending_choice": "Share of total spend on children's services",
     "turnover_stats_toggle": "All local authorities",
-    "tutorial": 0,
     "uasc_stats_toggle": "All local authorities",
     "vacancy_stats_toggle": "All local authorities",
     "wellbeing_extra_breakdown": "CINO at 31 March",

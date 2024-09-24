@@ -42,6 +42,7 @@
 
 ui <- function(input, output, session) {
   bslib::page(
+    tags$a(name = "top"),
     # use_tota11y(),
     title = tags$head(
       tags$link(
@@ -104,24 +105,31 @@ ui <- function(input, output, session) {
       )
     ),
     shiny::navlistPanel(
-      "",
+      # "",
       id = "navlistPanel",
       widths = c(2, 8),
       well = FALSE,
       introductionPanel(),
+      "Outcomes",
       outcome1_tab(),
       outcome2_tab(),
       outcome3_tab(),
       outcome4_tab(),
+      "Enablers",
       enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
-      kpiCodes_tab(),
-      data_sources(),
+      "Support",
+      disclaimer_tab(),
+      omitted_data_tab(),
+      data_sources_tab(),
       a11y_panel(),
       support_links(),
-      header = actionButton("tutorial", " User Guide", icon = icon("info", class = NULL, lib = "font-awesome"), style = "margin-top: 10px;float:  right;"),
       tutorialPanel(),
+    ),
+    tags$div(
+      style = "postion: relative; text-align: center; margin-bottom: 50px;",
+      tags$a(href = "#top", "Return to top")
     ),
     footer(full = TRUE)
   )

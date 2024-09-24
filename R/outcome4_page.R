@@ -34,13 +34,13 @@ outcome4_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o4 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o4",
                   cb_labels = "Compare with National",
@@ -54,7 +54,7 @@ outcome4_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o4 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
                   cb_labels = "Compare with Region",
@@ -65,7 +65,7 @@ outcome4_tab <- function() {
                 )
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),
@@ -203,7 +203,8 @@ outcome4_tab <- function() {
                       "placement_changes_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_placement_changes"),
                   )
@@ -278,7 +279,8 @@ outcome4_tab <- function() {
                       "placement_dist_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_placement_distance"),
                   )
@@ -297,83 +299,96 @@ outcome4_tab <- function() {
                       selectizeInput(
                         inputId = "placement_type_breakdown",
                         label = "Select a placement type:",
-                        choices = unique(placement_type_filter %>% str_sort()),
+                        choices = unique(placement_type_filter),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL
                       ),
-                    ),
-                    br(),
-                  ),
-                  gov_row(
-                    plotlyOutput("placement_type_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_type",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
-                          reactableOutput("placement_type_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_type_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      gov_row(
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_text")
+                        )),
+                        plotlyOutput("placement_type_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_type",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_type_tbl", filename = "placement_type.csv"),
+                              reactableOutput("placement_type_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_type_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
-                    p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("placement_type_region_plot"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_type_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
-                          reactableOutput("placement_type_region_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_type_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      ),
+                      gov_row(
+                        h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
+                        p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
+                        br(),
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_by_region_text")
+                        )),
+                        plotlyOutput("placement_type_region_plot"),
+                        br(),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_type_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_type_region_tbl", filename = paste0("placement_type_regions.csv")),
+                              reactableOutput("placement_type_region_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_type_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
+                      ),
+                      gov_row(
+                        h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
+                        p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
+                        insert_text(inputId = "Placement_types", text = paste(
+                          "<b>", "Placement types", "</b><br>",
+                          htmlOutput("outcome4_choice_placement_type_by_la_text")
+                        )),
+                        radioGroupButtons(
+                          "placement_type_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_placement_type"),
                       )
-                    )
-                  ),
-                  gov_row(
-                    h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
-                    p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
-                    radioGroupButtons(
-                      "placement_type_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
                     ),
-                    uiOutput("SN_placement_type"),
-                  )
+                    br(),
+                  ),
                 ),
                 ## Time between placements ---------------
                 accordion_panel(
@@ -390,42 +405,42 @@ outcome4_tab <- function() {
                       selectizeInput(
                         inputId = "select_age_group_o4",
                         label = "Select an age group:",
-                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total"),
+                        choices = c("Aged under 1", "Aged 1", "Aged 2", "Aged 3", "Aged 4", "Aged 5", "Aged 6", "Aged 7 and over", "Total (all ages)"),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL
                       ),
-                    ),
-                    br(),
-                  ),
-                  gov_row(
-                    plotlyOutput("placement_order_match_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "tbl_placement_order_match",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
-                          reactableOutput("placement_order_match_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "placement_order_match_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Due to data availability, only national level stats are available for this chart."),
-                          tags$li("Average time rounded to the nearest month."),
-                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                      gov_row(
+                        plotlyOutput("placement_order_match_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "tbl_placement_order_match",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("placement_order_match_tbl", filename = paste0("avg_time_between_placement_order_and_match.csv")),
+                              reactableOutput("placement_order_match_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "placement_order_match_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Due to data availability, only national level stats are available for this chart."),
+                              tags$li("Average time rounded to the nearest month."),
+                              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
+                      ),
+                    ),
+                    br(),
                   ),
                 ),
                 open = FALSE
@@ -525,7 +540,8 @@ outcome4_tab <- function() {
                       "sdq_score_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_wellbeing_SDQ")
                   )
@@ -596,177 +612,179 @@ outcome4_tab <- function() {
                     multiple = FALSE,
                     options = NULL
                   ),
+                  accordion(
+                    ### care leavers activity ------------
+                    accordion_panel(
+                      "Care leavers employment, education and training rate",
+                      gov_row(
+                        uiOutput("care_leavers_header1"),
+                        plotlyOutput("care_activity_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "cl_activity_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("cl_activity_ts_tbl", filename = paste0("care_leavers_activity.csv")),
+                              reactableOutput("cl_activity_ts_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "cl_activity_info",
+                          label = "Additional information:",
+                          help_text = (
+                            p(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                              tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
+                              tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                              tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                              tags$br(),
+                              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+                              tags$br(),
+                              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+                          ))
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("care_leavers_header2"),
+                        plotlyOutput("cl_activity_region_plot"),
+                        br(),
+                        details(
+                          inputId = "cl_act_region_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("cl_activity_region_tbl", filename = "care_leavers_activity_region.csv"),
+                              reactableOutput("cl_activity_region_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "cl_act_region_info",
+                          label = "Additional information:",
+                          help_text = (
+                            p(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                              tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
+                              tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                              tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                              tags$br(),
+                              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+                              tags$br(),
+                              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+                          ))
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("care_leavers_header3"),
+                        radioGroupButtons(
+                          "cl_activity_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_care_leavers_activity")
+                      )
+                    ),
+                    ### care leavers Accommodation ------------
+                    accordion_panel(
+                      "Percentage of care leavers in suitable accommodation",
+                      gov_row(
+                        uiOutput("care_leavers_header4"),
+                        plotlyOutput("care_accommodation_ts_plot"),
+                        br(),
+                        details(
+                          inputId = "cl_accommodation_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("cl_accommodation_ts_tbl", filename = paste0("care_leavers_accomm.csv")),
+                              reactableOutput("cl_accommodation_ts_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "cl_accommodation_info",
+                          label = "Additional information:",
+                          help_text = (
+                            p(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
+                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
+                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
+                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
+                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
+                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                              tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
+                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
+                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
+                              tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                              tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                              tags$br(),
+                              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+                              tags$br(),
+                              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+                          ))
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("care_leavers_header5"),
+                        plotlyOutput("cl_accommodation_region_plot"),
+                        br(),
+                        details(
+                          inputId = "cl_accommodation_reg_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("cl_accommodation_region_tbl", filename = paste0("care_leavers_accomm_regions.csv")),
+                              reactableOutput("cl_accommodation_region_tbl")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "cla_accomm_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            p(
+                              tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
+                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
+                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
+                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
+                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
+                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
+                              tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
+                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
+                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
+                              tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
+                              tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
+                              tags$br(),
+                              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+                              tags$br(),
+                              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+                          ))
+                        )
+                      ),
+                      gov_row(
+                        uiOutput("care_leavers_header6"),
+                        radioGroupButtons(
+                          "cl_accommodation_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_care_leavers_accommodation")
+                      )
+                    ),
+                    open = FALSE
+                  )
                 ),
                 br()
               ),
               fluidRow(
                 br()
               ),
-              accordion(
-                ### care leavers activity ------------
-                accordion_panel(
-                  "Care leavers employment, education and training rate",
-                  gov_row(
-                    uiOutput("care_leavers_header1"),
-                    plotlyOutput("care_activity_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "cl_activity_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("cl_activity_ts_tbl", filename = paste0("care_leavers_activity.csv")),
-                          reactableOutput("cl_activity_ts_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cl_activity_info",
-                      label = "Additional information:",
-                      help_text = (
-                        p(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
-                          tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
-                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
-                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
-                          tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
-                          tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
-                      ))
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("care_leavers_header2"),
-                    plotlyOutput("cl_activity_region_plot"),
-                    br(),
-                    details(
-                      inputId = "cl_act_region_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("cl_activity_region_tbl", filename = "care_leavers_activity_region.csv"),
-                          reactableOutput("cl_activity_region_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cl_act_region_info",
-                      label = "Additional information:",
-                      help_text = (
-                        p(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care, those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority. Figures for the number of care leavers who have died each year can be found in the methodology document."),
-                          tags$li("'Local authority not in touch' excludes young people where activity information is known, as a third party provided it even though the local authority is not directly in touch with the young person."),
-                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
-                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
-                          tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
-                          tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
-                      ))
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("care_leavers_header3"),
-                    radioGroupButtons(
-                      "cl_activity_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_care_leavers_activity")
-                  )
-                ),
-                ### care leavers Accommodation ------------
-                accordion_panel(
-                  "Percentage of care leavers in suitable accommodation",
-                  gov_row(
-                    uiOutput("care_leavers_header4"),
-                    plotlyOutput("care_accommodation_ts_plot"),
-                    br(),
-                    details(
-                      inputId = "cl_accommodation_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("cl_accommodation_ts_tbl", filename = paste0("care_leavers_accomm.csv")),
-                          reactableOutput("cl_accommodation_ts_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cl_accommodation_info",
-                      label = "Additional information:",
-                      help_text = (
-                        p(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
-                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
-                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
-                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
-                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
-                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
-                          tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
-                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
-                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
-                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
-                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
-                          tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
-                          tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
-                      ))
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("care_leavers_header5"),
-                    plotlyOutput("cl_accommodation_region_plot"),
-                    br(),
-                    details(
-                      inputId = "cl_accommodation_reg_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("cl_accommodation_region_tbl", filename = paste0("care_leavers_accomm_regions.csv")),
-                          reactableOutput("cl_accommodation_region_tbl")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cla_accomm_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        p(
-                          tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number.
-                                    Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication.
-                                    However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication.
-                                    Figures exclude young people who were looked after under an agreed series of short term placements, those who have died since leaving care,
-                                    those who have returned home to parents or someone with parental responsibility for a continuous period of at least 6 months and those whose care was transferred to another local authority.
-                                    Figures for the number of care leavers who have died each year can be found in the methodology document."),
-                          tags$li("Accommodation suitable/not suitable figures also exclude young people who have gone abroad, been deported or their residence is not know as in these cases the suitability of the accommodation will be unknown.
-                                  This means the total of care leavers in this table will be slightly lower than the total in the care leaver accommodation table. Regulation 9(2) of the Care Leavers Regulations defines what is meant by 'Suitable accommodation'.
-                                  'No information' includes young people whose accommodation is not known because either the local authority is not in touch, or the young person has refused contact or no longer requires services."),
-                          tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
-                          tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
-                          tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
-                          tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
-                      ))
-                    )
-                  ),
-                  gov_row(
-                    uiOutput("care_leavers_header6"),
-                    radioGroupButtons(
-                      "cl_accommodation_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_care_leavers_accommodation")
-                  )
-                ),
-                open = FALSE
-              )
             ),
           )
         )

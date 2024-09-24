@@ -31,14 +31,14 @@ outcome1_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o1 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o1",
                   cb_labels = "Compare with National",
@@ -52,7 +52,7 @@ outcome1_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o1 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o1",
                   cb_labels = "Compare with Region",
@@ -63,7 +63,7 @@ outcome1_tab <- function() {
                 )
               ),
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),
@@ -196,7 +196,8 @@ outcome1_tab <- function() {
                       "cin_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cin"),
                   )
@@ -286,7 +287,8 @@ outcome1_tab <- function() {
                       "cin_referral_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cin_referral"),
                   )
@@ -412,7 +414,8 @@ outcome1_tab <- function() {
                       "cla_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cla"),
                   )
@@ -510,7 +513,8 @@ outcome1_tab <- function() {
                       "uasc_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_uasc"),
                   )
@@ -600,7 +604,8 @@ outcome1_tab <- function() {
                       "cla_march_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cla_march"),
                   )
@@ -717,240 +722,258 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
-                ),
-                br(),
-              ),
-              ### absence -----
-              accordion(
-                accordion_panel(
-                  "School attendance",
-                  gov_row(
-                    h2("School attendance of Children In Need and Children Looked After"),
-                    p("Attending an education setting is a key component of long term development and wellbeing for
+                  ### absence -----
+                  accordion(
+                    accordion_panel(
+                      "School attendance",
+                      gov_row(
+                        h2("School attendance of Children In Need and Children Looked After"),
+                        p("Attending an education setting is a key component of long term development and wellbeing for
                       children and young people, which affects their outcomes. Barriers to attendance can be prevalent
                       amongst children in need, and children’s social care has an important role in helping to overcome
                       those barriers."),
-                    insert_text(inputId = "Absence_definition", text = paste(
-                      "<b>", "Absence rate", "</b><br>",
-                      htmlOutput("outcome1_choice_social_care_group_text")
-                    )),
-                    plotlyOutput("absence_time_series"),
-                    br(),
-                    details(
-                      inputId = "table_absence",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_absence_rate", filename = "absence_rates.csv"),
-                          reactableOutput("table_absence_rate")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "Attendance_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
-                                Unauthorised absence is absence without permission from the school. This includes all unexplained or unjustified absences and arrivals after registration has closed. For further information see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology.", target = "_blank"),
-                          ),
-                          tags$li(
-                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
-                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                        insert_text(inputId = "Absence_definition", text = paste(
+                          "<b>", "Absence rate", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_text")
+                        )),
+                        plotlyOutput("absence_time_series"),
+                        br(),
+                        details(
+                          inputId = "table_absence",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_absence_rate", filename = "absence_rates.csv"),
+                              reactableOutput("table_absence_rate")
+                            ))
                           )
-                        )
-                      )
-                    ),
-                  ),
-                  # absence by region
-                  gov_row(
-                    h2("Absence rate by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_absence_reg"),
-                    br(),
-                    details(
-                      inputId = "tbl_absence_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_absence_reg", filename = "absence_rates_regions.csv"),
-                          reactableOutput("table_absence_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "Attendance_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
+                        ),
+                        details(
+                          inputId = "Attendance_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
                                 Unauthorised absence is absence without permission from the school. This includes all unexplained or unjustified absences and arrivals after registration has closed. For further information see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology.", target = "_blank"),
-                          ),
-                          tags$li(
-                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology.", target = "_blank"),
+                              ),
+                              tags$li(
+                                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
                           )
-                        )
-                      )
+                        ),
+                      ),
+                      # absence by region
+                      gov_row(
+                        h2("Absence rate by region"),
+                        p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                        br(),
+                        insert_text(inputId = "Absence_definition", text = paste(
+                          "<b>", "Absence rate", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text")
+                        )),
+                        plotlyOutput("plot_absence_reg"),
+                        br(),
+                        details(
+                          inputId = "tbl_absence_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_absence_reg", filename = "absence_rates_regions.csv"),
+                              reactableOutput("table_absence_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "Attendance_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Overall absence is the aggregated total of all authorised and unauthorised absences. Authorised absence is absence with permission from a teacher or other authorised school representative - including absences where a satisfactory explanation has been provided. For example, through illness.
+                                Unauthorised absence is absence without permission from the school. This includes all unexplained or unjustified absences and arrivals after registration has closed. For further information see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-1", "3.1 Overall absence methodology.", target = "_blank"),
+                              ),
+                              tags$li(
+                                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      # absence by local authority
+                      gov_row(
+                        h2("Absence rate by local authority"),
+                        # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                        # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
+                        htmlOutput("outcome1_time_period_text"),
+                        br(),
+                        insert_text(inputId = "Absence_definition", text = paste(
+                          "<b>", "Absence rate", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text")
+                        )),
+                        radioGroupButtons(
+                          "absence_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_absence"),
+                      ),
                     ),
-                  ),
-                  # absence by local authority
-                  gov_row(
-                    h2("Absence rate by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
-                    htmlOutput("outcome1_time_period_text"),
-                    br(),
-                    radioGroupButtons(
-                      "absence_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_absence"),
-                  ),
-                ),
-                ### Persistent absence ----
-                accordion_panel(
-                  "Persistent absence",
-                  gov_row(
-                    h2("Educational engagement: persistent absence"),
-                    p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
+                    ### Persistent absence ----
+                    accordion_panel(
+                      "Persistent absence",
+                      gov_row(
+                        h2("Educational engagement: persistent absence"),
+                        p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
                       which affects their outcomes. Barriers to engagement can be prevalent amongst children in need,
                       and children’s social care has an important role in helping to overcome those barriers."),
-                    insert_text(inputId = "Persistent_absence_definition", text = paste(
-                      "<b>", "Persistent absentees", "</b><br>",
-                      htmlOutput("outcome1_choice_social_care_group_text_1")
-                    )),
-                    plotlyOutput("persistence_time_series"),
-                    br(),
-                    details(
-                      inputId = "table_persistence",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_persistent_rate", filename = "persistence_absence_rates.csv"),
-                          reactableOutput("table_persistent_rate")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "Persistent_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
-                          ),
-                          tags$li(
-                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
-                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                        insert_text(inputId = "Persistent_absence_definition", text = paste(
+                          "<b>", "Persistent absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_text_1")
+                        )),
+                        plotlyOutput("persistence_time_series"),
+                        br(),
+                        details(
+                          inputId = "table_persistence",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_persistent_rate", filename = "persistence_absence_rates.csv"),
+                              reactableOutput("table_persistent_rate")
+                            ))
                           )
-                        )
-                      )
-                    ),
-                  ),
-                  ## persistent absence by region
-                  gov_row(
-                    h2("Persistent absence by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_persistent_reg"),
-                    br(),
-                    details(
-                      inputId = "tbl_persistence_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_persistent_reg", filename = "persistence_absence_rates_regions.csv"),
-                          reactableOutput("table_persistent_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "Persistent_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
-                          ),
-                          tags$li(
-                            "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                        ),
+                        details(
+                          inputId = "Persistent_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
+                              ),
+                              tags$li(
+                                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
                           )
-                        )
-                      )
+                        ),
+                      ),
+                      ## persistent absence by region
+                      gov_row(
+                        h2("Persistent absence by region"),
+                        p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                        br(),
+                        insert_text(inputId = "Persistent_absence_definition", text = paste(
+                          "<b>", "Persistent absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_1")
+                        )),
+                        plotlyOutput("plot_persistent_reg"),
+                        br(),
+                        details(
+                          inputId = "tbl_persistence_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_persistent_reg", filename = "persistence_absence_rates_regions.csv"),
+                              reactableOutput("table_persistent_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "Persistent_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
+                              ),
+                              tags$li(
+                                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      gov_row(
+                        h2("Persistent absence rate by local authority"),
+                        # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                        # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
+                        htmlOutput("outcome1_time_period_text_2"),
+                        br(),
+                        insert_text(inputId = "Persistent_absence_definition", text = paste(
+                          "<b>", "Persistent absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_1")
+                        )),
+                        radioGroupButtons(
+                          "persis_abs_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_persistent_abs"),
+                      ),
                     ),
-                  ),
-                  gov_row(
-                    h2("Persistent absence rate by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
-                    htmlOutput("outcome1_time_period_text_2"),
-                    br(),
-                    radioGroupButtons(
-                      "persis_abs_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_persistent_abs"),
-                  ),
+                    open = FALSE
+                  )
                 ),
-                open = FALSE
-              )
+                br(),
+              ),
             ),
             # Domain 4 ----
             tabPanel(
@@ -1035,228 +1058,246 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
+                  ### ks2 attainment -----
+                  accordion(
+                    accordion_panel(
+                      "Key Stage 2 (KS2)",
+                      gov_row(
+                        h2("Key Stage 2 attainment"),
+                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
+                      Children should be supported to access and make progress in education to support their development and life chances.
+                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
+                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
+                        objectives in the child’s Personal Education Plan."),
+                        insert_text(inputId = "ks2_definition", text = paste(
+                          "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_text_2")
+                        )),
+                        plotlyOutput("plot_ks2_expected"),
+                        br(),
+                        details(
+                          inputId = "table_ks2",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_ks2_expected", filename = "ks2_attainment_rates.csv"),
+                              reactableOutput("table_ks2_expected")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ks2_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
+                              tags$li(
+                                "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      gov_row(
+                        h2("KS2 attainment by region"),
+                        p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                        br(),
+                        insert_text(inputId = "ks2_definition", text = paste(
+                          "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_2")
+                        )),
+                        plotlyOutput("plot_ks2_reg"),
+                        br(),
+                        details(
+                          inputId = "tbl_ks2_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_ks2_reg", filename = "ks2_attainment_rates_region.csv"),
+                              reactableOutput("table_ks2_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ks2_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
+                              tags$li(
+                                "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      gov_row(
+                        h2("KS2 attainment by local authority"),
+                        # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                        # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
+                        htmlOutput("outcome1_time_period_text_3"),
+                        br(),
+                        insert_text(inputId = "ks2_definition", text = paste(
+                          "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_2")
+                        )),
+                        radioGroupButtons(
+                          "ks2_attainment_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_ks2_attainment"),
+                      ),
+                    ),
+                    ### KS4 attainment ---------
+                    accordion_panel(
+                      "Key Stage 4 (KS4)",
+                      gov_row(
+                        h2("Key Stage 4 attainment"),
+                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
+                      Children should be supported to access and make progress in education to support their development and life chances.
+                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
+                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
+                        objectives in the child’s Personal Education Plan."),
+                        insert_text(inputId = "ks4_definition", text = paste(
+                          "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_text_3")
+                        )),
+                        plotlyOutput("plot_ks4"),
+                        br(),
+                        details(
+                          inputId = "tbl_ks4",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_ks4", filename = "ks4_attainment_rates.csv"),
+                              reactableOutput("table_ks4")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ks4_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
+                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
+                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance.", target = "_blank"),
+                              ),
+                              tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      gov_row(
+                        h2("KS4 attainment by region"),
+                        p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                        br(),
+                        insert_text(inputId = "ks4_definition", text = paste(
+                          "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_region_text_3")
+                        )),
+                        plotlyOutput("plot_ks4_reg"),
+                        br(),
+                        details(
+                          inputId = "tbl_ks4_reg",
+                          label = "View chart as a table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_ks4_reg", filename = "ks4_attainment_rates_regions.csv"),
+                              reactableOutput("table_ks4_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "ks4_reg_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
+                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
+                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance.", target = "_blank"),
+                              ),
+                              tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
+                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
+                              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      gov_row(
+                        h2("KS4 attainment by local authority"),
+                        # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                        # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
+                        htmlOutput("outcome1_time_period_text_4"),
+                        br(),
+                        insert_text(inputId = "ks4_definition", text = paste(
+                          "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_by_la_text_3")
+                        )),
+                        radioGroupButtons(
+                          "ks4_attainment_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_ks4_attainment"),
+                      ),
+                    ),
+                    open = FALSE
+                  )
                 ),
                 br(),
               ),
-              ### ks2 attainment -----
-              accordion(
-                accordion_panel(
-                  "Key Stage 2 (KS2)",
-                  gov_row(
-                    h2("Key Stage 2 attainment"),
-                    p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
-                      Children should be supported to access and make progress in education to support their development and life chances.
-                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
-                        objectives in the child’s Personal Education Plan."),
-                    insert_text(inputId = "ks2_definition", text = paste(
-                      "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
-                      htmlOutput("outcome1_choice_social_care_group_text_2")
-                    )),
-                    plotlyOutput("plot_ks2_expected"),
-                    br(),
-                    details(
-                      inputId = "table_ks2",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_ks2_expected", filename = "ks2_attainment_rates.csv"),
-                          reactableOutput("table_ks2_expected")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ks2_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
-                          tags$li(
-                            "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    ),
-                  ),
-                  gov_row(
-                    h2("KS2 attainment by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_ks2_reg"),
-                    br(),
-                    details(
-                      inputId = "tbl_ks2_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_ks2_reg", filename = "ks2_attainment_rates_region.csv"),
-                          reactableOutput("table_ks2_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ks2_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("No attainment data related to 2019/20 and 2020/21 academic year is available due to COVID-19."),
-                          tags$li(
-                            "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment.", target = "_blank"),
-                          ),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    ),
-                  ),
-                  gov_row(
-                    h2("KS2 attainment by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
-                    htmlOutput("outcome1_time_period_text_3"),
-                    br(),
-                    radioGroupButtons(
-                      "ks2_attainment_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_ks2_attainment"),
-                  ),
-                ),
-                ### KS4 attainment ---------
-                accordion_panel(
-                  "Key Stage 4 (KS4)",
-                  gov_row(
-                    h2("Key Stage 4 attainment"),
-                    p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
-                      Children should be supported to access and make progress in education to support their development and life chances.
-                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
-                        objectives in the child’s Personal Education Plan."),
-                    insert_text(inputId = "ks4_definition", text = paste(
-                      "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
-                      htmlOutput("outcome1_choice_social_care_group_text_3")
-                    )),
-                    plotlyOutput("plot_ks4"),
-                    br(),
-                    details(
-                      inputId = "tbl_ks4",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_ks4", filename = "ks4_attainment_rates.csv"),
-                          reactableOutput("table_ks4")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ks4_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
-                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
-                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance.", target = "_blank"),
-                          ),
-                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
-                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    ),
-                  ),
-                  gov_row(
-                    h2("KS4 attainment by region"),
-                    p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_ks4_reg"),
-                    br(),
-                    details(
-                      inputId = "tbl_ks4_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_ks4_reg", filename = "ks4_attainment_rates_regions.csv"),
-                          reactableOutput("table_ks4_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "ks4_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li(
-                            "Due to the impact of the COVID-19 pandemic, the summer examination series was cancelled in both 2020 and 2021, and alternative processes set up to award grades.
-                                 The method to award grades was different in 2021 to that in 2020. The changes to the way GCSE grades were awarded in these two years means 2019/20 and 2020/21 pupil attainment data should not be
-                                 directly compared to pupil attainment data from previous or later years for the purposes of measuring year on year changes in pupil performance. For more detailed information on this see ",
-                            a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-4-performance", "Key stage 4 performance.", target = "_blank"),
-                          ),
-                          tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
-                                  In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
-                          tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-                          tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-                          tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    ),
-                  ),
-                  gov_row(
-                    h2("KS4 attainment by local authority"),
-                    # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
-                    # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
-                    htmlOutput("outcome1_time_period_text_4"),
-                    br(),
-                    radioGroupButtons(
-                      "ks4_attainment_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
-                    ),
-                    uiOutput("SN_ks4_attainment"),
-                  ),
-                ),
-                open = FALSE
-              )
             )
           )
         )

@@ -278,7 +278,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
     reg_data <- dataset %>%
       filter(geographic_level == "Regional", time_period == max(time_period)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%
-      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by turnover rate
+      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by yvalue rate
       rename(`Breakdown` = `geo_breakdown`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
 
@@ -307,9 +307,10 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
       ylab(yaxis_title) +
       xlab("Region") +
       theme_classic() +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
-        axis.text.x = element_text(angle = 45),
+        # axis.text.x = element_text(angle = 90),
         axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(size = 1.0)
@@ -349,9 +350,10 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         ylab(yaxis_title) +
         xlab("Region") +
         theme_classic() +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
         theme(
           text = element_text(size = 12),
-          axis.text.x = element_text(angle = 45),
+          # axis.text.x = element_text(angle = 90),
           axis.title.x = element_blank(),
           axis.title.y = element_text(margin = margin(r = 12)),
           axis.line = element_line(size = 1.0)
@@ -398,9 +400,10 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
     ylab("Percentage") +
     xlab("Ethnicity") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -451,9 +454,10 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
     ylab("Percentage") +
     xlab("Ethnicity") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -493,9 +497,10 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
     ylab("Percentage") +
     xlab("Ethnicity") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -548,9 +553,10 @@ plot_uasc <- function(geo_break, geo_lvl) {
     ylab("Rate per 10,000 children") +
     xlab("Time period") +
     theme_classic() +
+    # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) +  # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      axis.text.x = element_text(angle = 0),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -600,9 +606,10 @@ plot_uasc_reg <- function() {
     ylab("Rate per 10,000 children") +
     xlab("Region") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -773,9 +780,10 @@ plot_cla_rate_reg <- function() {
     ylab("Rate per 10,000 children") +
     xlab("Region") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -898,9 +906,10 @@ plot_cla_march_reg <- function() {
     ylab("Rate per 10,000 children") +
     xlab("Region") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -1024,9 +1033,10 @@ plot_cin_rate_reg <- function() {
     ylab("CIN rates per 10,000") +
     xlab("Region") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -1154,9 +1164,10 @@ plot_cin_referral_reg <- function() {
     ylab("Re-referrals (%)") +
     xlab("Region") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
-      axis.text.x = element_text(angle = 300),
+      # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
       axis.line = element_line(size = 1.0)
@@ -1270,11 +1281,12 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
     )
   )) +
     geom_bar(stat = "identity", fill = "#12436D") +
-    scale_y_continuous(limits = c(0, NA)) +
+    scale_y_continuous(limits = c(0, NA), expand = expansion(mult = c(0, 0))) +
     coord_flip() +
     xlab("Assessment factor") +
     ylab("Rate per 10,000") +
     theme_classic()
+
 
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
@@ -1561,11 +1573,12 @@ plot_ofsted_reg <- function() {
   )) +
     geom_bar(stat = "identity", position = position_dodge()) +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
-      axis.text.x = element_text(angle = 45, hjust = 1)
+      axis.line = element_line(size = 1.0) # ,
+      # axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_fill_manual(
       "Ofsted leadership rating", # Change legend title
@@ -1629,11 +1642,12 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0),
-        axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0) # ,
+        # axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
@@ -1735,11 +1749,12 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0),
-        axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0) # ,
+        # axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
@@ -1777,12 +1792,13 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
         ylab(yaxis_title) +
         xlab("") +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
         theme_classic() +
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0),
-          axis.text.x = element_text(angle = 45, hjust = 1)
+          axis.line = element_line(size = 1.0) # ,
+          # axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
@@ -1871,11 +1887,12 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     ylab(yaxis_title) +
     xlab("") +
     theme_classic() +
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
-      axis.text.x = element_text(angle = 45, hjust = 1)
+      axis.line = element_line(size = 1.0) # ,
+      # axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_y_continuous(limits = c(0, ylim_upper)) +
     scale_fill_manual(
@@ -1940,7 +1957,8 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
     scale_fill_manual(values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))) +
     scale_y_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     theme_classic() +
-    theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #+  # Wrap the labels
+  # theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {

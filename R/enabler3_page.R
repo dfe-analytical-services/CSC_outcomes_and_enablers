@@ -30,7 +30,7 @@ enabler3_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           layout_columns(
             conditionalPanel(
@@ -50,7 +50,7 @@ enabler3_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_e3 == 'Local authority')",
               column(
-                width = 5,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e3",
                   cb_labels = "Compare with Region",
@@ -61,7 +61,7 @@ enabler3_tab <- function() {
                 )
               ),
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
         )
       ),
@@ -203,7 +203,8 @@ enabler3_tab <- function() {
                       "turnover_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_turnover"),
                   ),
@@ -289,7 +290,8 @@ enabler3_tab <- function() {
                       "agency_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_agency"),
                   ),
@@ -377,7 +379,8 @@ enabler3_tab <- function() {
                       "vacancy_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_vacancy"),
                   ),
@@ -485,7 +488,8 @@ enabler3_tab <- function() {
                       "caseload_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_caseload"),
                   )

@@ -34,14 +34,14 @@ outcome2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o2 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o2",
                   cb_labels = "Compare with National",
@@ -55,7 +55,7 @@ outcome2_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o2 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o2",
                   cb_labels = "Compare with Region",
@@ -66,7 +66,7 @@ outcome2_tab <- function() {
                 )
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),
@@ -192,7 +192,8 @@ outcome2_tab <- function() {
                       "sgo_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_sgo"),
                   )
@@ -277,7 +278,8 @@ outcome2_tab <- function() {
                       "cao_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cao"),
                   )
