@@ -1489,7 +1489,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   return(admissions_data3)
 }
 
-a <- read_a_and_e_data()
+a <- suppressWarnings(read_a_and_e_data())
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
   data <- read.csv(file)
