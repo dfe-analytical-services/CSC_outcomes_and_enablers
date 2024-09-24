@@ -195,7 +195,7 @@ outcome1_tab <- function() {
                     radioGroupButtons(
                       "cin_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -286,7 +286,7 @@ outcome1_tab <- function() {
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -357,7 +357,7 @@ outcome1_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
@@ -393,7 +393,7 @@ outcome1_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
@@ -413,7 +413,7 @@ outcome1_tab <- function() {
                     radioGroupButtons(
                       "cla_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -451,7 +451,7 @@ outcome1_tab <- function() {
                         tags$ul(
                           tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
                           tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
                                   authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
@@ -491,7 +491,7 @@ outcome1_tab <- function() {
                         tags$ul(
                           tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
                           tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
                                   authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
@@ -507,12 +507,12 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC by local authority
                   gov_row(
-                    h2("Rate of children starting to be looked after by LA who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children starting to be looked after by local authority who were Unaccompanied Asylum Seeking Children"),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
                       "uasc_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -603,7 +603,7 @@ outcome1_tab <- function() {
                     radioGroupButtons(
                       "cla_march_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -841,7 +841,7 @@ outcome1_tab <- function() {
                         radioGroupButtons(
                           "absence_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -962,7 +962,7 @@ outcome1_tab <- function() {
                         radioGroupButtons(
                           "persis_abs_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -1067,8 +1067,8 @@ outcome1_tab <- function() {
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
-                        objectives in the child’s Personal Education Plan."),
+                       includes ensuring suitable and timely educational provision and managing pupil premium Plus funding aligned to
+                        objectives in the child’s personal education Plan."),
                         insert_text(inputId = "ks2_definition", text = paste(
                           "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
                           htmlOutput("outcome1_choice_social_care_group_text_2")
@@ -1166,7 +1166,7 @@ outcome1_tab <- function() {
                         radioGroupButtons(
                           "ks2_attainment_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -1181,8 +1181,8 @@ outcome1_tab <- function() {
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
                       Children should be supported to access and make progress in education to support their development and life chances.
                       Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing Pupil Premium Plus funding aligned to
-                        objectives in the child’s Personal Education Plan."),
+                       includes ensuring suitable and timely educational provision and managing pupil premium Plus funding aligned to
+                        objectives in the child’s personal education Plan."),
                         insert_text(inputId = "ks4_definition", text = paste(
                           "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
                           htmlOutput("outcome1_choice_social_care_group_text_3")
@@ -1286,7 +1286,7 @@ outcome1_tab <- function() {
                         radioGroupButtons(
                           "ks4_attainment_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),

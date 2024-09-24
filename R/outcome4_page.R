@@ -202,7 +202,7 @@ outcome4_tab <- function() {
                     radioGroupButtons(
                       "placement_changes_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -278,7 +278,7 @@ outcome4_tab <- function() {
                     radioGroupButtons(
                       "placement_dist_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -380,7 +380,7 @@ outcome4_tab <- function() {
                         radioGroupButtons(
                           "placement_type_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -539,7 +539,7 @@ outcome4_tab <- function() {
                     radioGroupButtons(
                       "sdq_score_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -681,7 +681,7 @@ outcome4_tab <- function() {
                         radioGroupButtons(
                           "cl_activity_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -770,7 +770,7 @@ outcome4_tab <- function() {
                         radioGroupButtons(
                           "cl_accommodation_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),

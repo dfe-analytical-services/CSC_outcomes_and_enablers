@@ -202,7 +202,7 @@ enabler3_tab <- function() {
                     radioGroupButtons(
                       "turnover_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -289,7 +289,7 @@ enabler3_tab <- function() {
                     radioGroupButtons(
                       "agency_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -378,7 +378,7 @@ enabler3_tab <- function() {
                     radioGroupButtons(
                       "vacancy_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -487,7 +487,7 @@ enabler3_tab <- function() {
                     radioGroupButtons(
                       "caseload_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),

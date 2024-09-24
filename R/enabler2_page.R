@@ -145,7 +145,7 @@ enabler2_tab <- function() {
                         radioGroupButtons(
                           "spending1_stats_toggle",
                           label = NULL,
-                          choices = c("All local authorities", "10 Statistical Neighbours"),
+                          choices = c("All local authorities", "10 statistical neighbours"),
                           selected = "All local authorities",
                           justified = TRUE
                         ),
@@ -190,7 +190,7 @@ enabler2_tab <- function() {
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
@@ -280,7 +280,7 @@ enabler2_tab <- function() {
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table below to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table below to see the latest year for each LA."),
                     details(
                       inputId = "tbl_ofsted_latest_ratings",
                       label = "View latest ratings",
@@ -294,7 +294,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted"),
                     br(),
@@ -324,7 +324,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted_reg"),
                     br(),

@@ -193,7 +193,7 @@ outcome3_tab <- function() {
                     radioGroupButtons(
                       "CPP_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
+                      choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
