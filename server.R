@@ -9833,7 +9833,7 @@ server <- function(input, output, session) {
     } else {
       validate(
         need(input$select_geography_o4 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-        need(input$select_breakdown_o4 == "", "Select a location.")
+        need(input$geographic_breakdown_o4 != "", "Select a location.")
       )
       tagList(
         plotlyOutput("SN_sdq_plot"),
