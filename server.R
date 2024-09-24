@@ -492,6 +492,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc)
@@ -534,6 +535,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -599,6 +601,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate of children starting to be looked after, per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -650,6 +653,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -699,6 +703,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -776,6 +781,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -883,6 +889,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children looked after on 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -925,6 +932,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children looked after on 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -989,6 +997,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children looked after on 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -1098,6 +1107,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CIN number at 31 March` = colDef(cell = cellfunc),
         `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -1142,6 +1152,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CIN number at 31 March` = colDef(cell = cellfunc),
         `CIN rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -1186,6 +1197,7 @@ server <- function(input, output, session) {
     }
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CIN number at 31 March` = colDef(cell = cellfunc),
         `CIN rates per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -1315,6 +1327,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
@@ -1341,6 +1354,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
@@ -1385,6 +1399,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
@@ -1540,6 +1555,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Overall absence (%)` = colDef(cell = cellfunc_percent)
@@ -1586,6 +1602,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Overall absence (%)` = colDef(cell = cellfunc_percent)
@@ -1667,6 +1684,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Overall absence (%)` = colDef(cell = cellfunc_percent)
@@ -1784,6 +1802,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
@@ -1832,6 +1851,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
@@ -1914,6 +1934,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
@@ -2102,6 +2123,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
         `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
@@ -2150,6 +2172,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
         `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
@@ -2231,6 +2254,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
         `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
@@ -2343,6 +2367,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Average attainment 8 score` = colDef(cell = cellfunc_percent)
@@ -2386,6 +2411,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Average attainment 8 score` = colDef(cell = cellfunc_percent)
@@ -2461,6 +2487,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Average attainment 8 score` = colDef(cell = cellfunc_percent)
@@ -2659,6 +2686,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -2713,6 +2741,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -2789,6 +2818,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -2902,6 +2932,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -2953,6 +2984,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -3026,6 +3058,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -3204,6 +3237,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
@@ -3256,6 +3290,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
@@ -3327,6 +3362,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
@@ -3448,6 +3484,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
         `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
@@ -3497,6 +3534,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
         `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
@@ -3559,6 +3597,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3614,6 +3653,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3666,6 +3706,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3766,6 +3807,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3818,6 +3860,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3891,6 +3934,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -3941,6 +3985,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4041,6 +4086,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4091,6 +4137,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4164,6 +4211,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -4468,6 +4516,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4523,6 +4572,7 @@ server <- function(input, output, session) {
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Placements (%)` = `Percent`)
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4599,6 +4649,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4705,6 +4756,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4759,6 +4811,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4836,6 +4889,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4944,6 +4998,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -4998,6 +5053,7 @@ server <- function(input, output, session) {
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Placements (%)` = `Percent`)
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5072,6 +5128,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5126,6 +5183,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Months` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -5250,6 +5308,7 @@ server <- function(input, output, session) {
 
     reactable(
       final_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5314,6 +5373,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5391,6 +5451,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5514,6 +5575,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5569,6 +5631,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5645,6 +5708,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5765,6 +5829,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5821,6 +5886,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -5896,6 +5962,7 @@ server <- function(input, output, session) {
 
     reactable(
       data2,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6063,6 +6130,7 @@ server <- function(input, output, session) {
 
       table <- reactable(
         data,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
@@ -6078,6 +6146,7 @@ server <- function(input, output, session) {
 
       table <- reactable(
         data,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Average spend per child (£)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
         ),
@@ -6146,6 +6215,7 @@ server <- function(input, output, session) {
 
       table <- reactable(
         data,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
@@ -6161,6 +6231,7 @@ server <- function(input, output, session) {
 
       table <- reactable(
         data,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Average spend per child (£)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
         ),
@@ -6210,6 +6281,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6259,6 +6331,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Share minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6419,6 +6492,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       defaultPageSize = 15,
       searchable = TRUE,
     )
@@ -6465,6 +6539,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       defaultPageSize = 15,
       searchable = TRUE,
     )
@@ -6485,6 +6560,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       defaultPageSize = 15,
       searchable = TRUE,
     )
@@ -6716,6 +6792,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Turnover Rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6762,6 +6839,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6830,6 +6908,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -6938,6 +7017,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent)
       ),
@@ -6985,6 +7065,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7052,6 +7133,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7160,6 +7242,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7207,6 +7290,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7274,6 +7358,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7378,6 +7463,7 @@ server <- function(input, output, session) {
 
     reactable(
       filtered_data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average caseload (FTE)` = colDef(cell = cellfunc_percent)
       ),
@@ -7425,6 +7511,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7491,6 +7578,7 @@ server <- function(input, output, session) {
     }
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -7544,6 +7632,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Headcount` = colDef(cell = cellfunc),
         `Headcount (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
@@ -7583,6 +7672,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Workforce (%)` = colDef(cell = cellfunc_social_ethnicity),
         `Population (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
@@ -7624,6 +7714,7 @@ server <- function(input, output, session) {
 
     reactable(
       data,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Headcount` = colDef(cell = cellfunc),
         `Headcount (%)` = colDef(cell = cellfunc_social_ethnicity, defaultSortOrder = "desc")
@@ -7759,6 +7850,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children starting to be looked after")
       ),
@@ -7889,6 +7981,7 @@ server <- function(input, output, session) {
       ))
     reactable(
       stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placement Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -8006,6 +8099,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `number` = colDef(name = "Number of children looked after on 31 March")
       ),
@@ -8127,6 +8221,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "At31_episodes", yvalue = "CIN_rate_per_10000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Cin Rate Per 10000` = colDef(name = "CIN rate per 10,000", cell = cellfunc, defaultSortOrder = "desc"), `At31_episodes` = colDef(name = "CIN number at 31 March")
       ),
@@ -8233,6 +8328,7 @@ server <- function(input, output, session) {
   output$SN_cin_referral_tbl <- renderReactable({
     reactable(
       stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Re-Referrals (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -8362,6 +8458,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Overall absence (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `social_care_group` = colDef(name = "Social care group"),
         `school_type` = colDef(name = "School type"),
@@ -8494,6 +8591,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -8620,6 +8718,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_rwm_eligible_pupils"), yvalue = "Expected standard reading writing maths (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
@@ -8749,6 +8848,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("Social care group", "Total number of pupils"), yvalue = "Average attainment 8 score"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
         `Average Attainment 8 Score` = colDef(cell = cellfunc_percent)
@@ -8864,6 +8964,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, selectedcolumn = c("Reason ceased", "Number ceased", "Total ceased"), yvalue = "Ceased (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -8979,6 +9080,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, selectedcolumn = c("Reason ceased", "Number ceased", "Total ceased"), yvalue = "Ceased (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
@@ -9096,6 +9198,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("CPP starts", "Repeat CPP"), yvalue = "Repeat CPP (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
         `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
@@ -9216,6 +9319,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, yvalue = "Rate per 10,000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -9333,6 +9437,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("Assessment factor"), yvalue = "Rate per 10,000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -9447,6 +9552,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = "Assessment factor", yvalue = "Rate per 10,000"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate Per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
@@ -9561,6 +9667,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Type", yvalue = "Placements (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -9674,6 +9781,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percentage"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Percentage` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -9789,6 +9897,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Distance", yvalue = "Placements (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -9900,6 +10009,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = c("SDQ characteristic", "SDQ score"), yvalue = "Average score"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Average Score` = colDef(name = "Average score", cell = cellfunc_percent, defaultSortOrder = "desc"),
         `SDQ score` = colDef(name = "SDQ score")
@@ -10024,6 +10134,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10148,6 +10259,7 @@ server <- function(input, output, session) {
 
     reactable(
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Care leavers in suitable accommodation (%)"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10260,6 +10372,7 @@ server <- function(input, output, session) {
   output$SN_turnover_tbl <- renderReactable({
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Turnover Rate Fte"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10367,6 +10480,7 @@ server <- function(input, output, session) {
   output$SN_agency_tbl <- renderReactable({
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Agency Rate Fte"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10475,6 +10589,7 @@ server <- function(input, output, session) {
   output$SN_vacancy_tbl <- renderReactable({
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Vacancy Rate Fte"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10583,6 +10698,7 @@ server <- function(input, output, session) {
   output$SN_caseload_tbl <- renderReactable({
     reactable(
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Caseload Fte"),
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
@@ -10666,6 +10782,7 @@ server <- function(input, output, session) {
       ungroup()
     reactable(
       stats_neighbours_table_ofsted(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Rating"),
+      defaultColDef = colDef(align = "center"),
       defaultPageSize = 11,
       searchable = TRUE,
     )
@@ -10796,6 +10913,7 @@ server <- function(input, output, session) {
 
       reactable(
         table,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
         ),
@@ -10810,6 +10928,7 @@ server <- function(input, output, session) {
 
       reactable(
         table,
+        defaultColDef = colDef(align = "center"),
         columns = list(
           `Average Spend Per Child (£)` = colDef(name = "Average spend per child (£)", cell = cellfunc, defaultSortOrder = "desc")
         ),
@@ -10928,6 +11047,7 @@ server <- function(input, output, session) {
 
     reactable(
       table,
+      defaultColDef = colDef(align = "center"),
       columns = list(
         `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
