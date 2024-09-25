@@ -1615,7 +1615,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1642,17 +1642,17 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0) # ,
-        # axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0),
+        axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
         "LA Selection",
-        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
+        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "statistical neighbours"))
       )
   } else {
     filtered_data <- dataset %>%
@@ -1660,7 +1660,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       select(geo_breakdown, `yvalue`, score_label) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1695,7 +1695,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
           "LA Selection",
-          values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
+          values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "statistical neighbours"))
         )
     )
   }
@@ -1722,7 +1722,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1749,17 +1749,17 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0) # ,
-        # axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.line = element_line(size = 1.0),
+        axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
         "LA Selection",
-        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
+        values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "statistical neighbours"))
       )
   } else {
     filtered_data <- dataset %>%
@@ -1767,7 +1767,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       select(geo_breakdown, `yvalue`, score_label) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
@@ -1792,18 +1792,18 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
         ylab(yaxis_title) +
         xlab("") +
-        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+        # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
         theme_classic() +
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0) # ,
-          # axis.text.x = element_text(angle = 45, hjust = 1)
+          axis.line = element_line(size = 1.0),
+          axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
           "LA Selection",
-          values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))
+          values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "statistical neighbours"))
         )
     )
   }
@@ -1859,7 +1859,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     select(geo_breakdown, `yvalue`, characteristic) %>%
     mutate(
       geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
-      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours"),
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours"),
       characteristic_selected = ifelse(is_selected == selected_geo_breakdown, paste0(characteristic, " (", selected_geo_breakdown, ")"), paste0(characteristic, " (Not Selected)"))
     ) %>%
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
@@ -1887,12 +1887,12 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     ylab(yaxis_title) +
     xlab("") +
     theme_classic() +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+    # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0) # ,
-      # axis.text.x = element_text(angle = 45, hjust = 1)
+      axis.line = element_line(size = 1.0),
+      axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_y_continuous(limits = c(0, ylim_upper)) +
     scale_fill_manual(
@@ -1945,7 +1945,7 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
   filtered_data$Rating <- factor(filtered_data$Rating, levels = c("Inadequate", "Requires Improvement", "Good", "Outstanding"))
 
   ggplot(filtered_data, aes(
-    x = geo_breakdown, y = Rating, fill = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours"),
+    x = geo_breakdown, y = Rating, fill = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours"),
     text = paste0(
       "Rating: ", Rating, "<br>",
       "Local authority: ", geo_breakdown, "<br>",
@@ -1954,11 +1954,11 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
   )) +
     geom_point(shape = 23, size = 4) +
     labs(x = "Geographic Breakdown", y = "Latest leadership rating", fill = "LA Selection") +
-    scale_fill_manual(values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "Statistical Neighbours"))) +
+    scale_fill_manual(values = setNames(c("#12436D", "#88A1B5"), c(selected_geo_breakdown, "statistical neighbours"))) +
     scale_y_discrete(limits = c("Inadequate", "Requires Improvement", "Good", "Outstanding")) +
     theme_classic() +
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #+  # Wrap the labels
-  # theme(axis.text.x = element_text(angle = 45, hjust = 1))
+    # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) #+  # Wrap the labels
+    theme(axis.text.x = element_text(angle = 45, hjust = 1))
 }
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
@@ -1977,7 +1977,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
       filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%
       mutate(
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
@@ -1994,7 +1994,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
       filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(all_of(c("time_period", "geo_breakdown", selectedcolumn, yvalue))) %>%
       mutate(
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
@@ -2024,7 +2024,7 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
     select(geo_breakdown, characteristic, `yvalue`) %>%
     mutate(
-      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+      is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
     ) %>%
     rename(`Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Selection` = `is_selected`) %>%
     rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
@@ -2055,7 +2055,7 @@ stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL
       filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list), Count == 1) %>%
       select(latest_rating, geo_breakdown, `yvalue`) %>%
       mutate(
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Last rated` = `latest_rating`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
@@ -2072,7 +2072,7 @@ stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL
       filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
       select(all_of(c("latest_rating", "geo_breakdown", selectedcolumn, yvalue))) %>%
       mutate(
-        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "Statistical Neighbours")
+        is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
       ) %>%
       rename(`Last rated` = `latest_rating`, `Local authority` = `geo_breakdown`, `Selection` = `is_selected`) %>%
       rename_at(`yvalue`, ~ str_to_title(str_replace_all(., "_", " "))) %>%
