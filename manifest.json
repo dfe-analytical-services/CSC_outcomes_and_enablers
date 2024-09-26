@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "c45924ebf78b0a9bc11743cebe7d7cfc"
+      "checksum": "d69a570752fe84d67348f62355002f18"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5269,19 +5269,19 @@
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001.json": {
-      "checksum": "957956c6b9b02ef1f2da74411e01b0d3"
+      "checksum": "8239dfe830f4a452c75c7b2bd8d2ff82"
     },
-    "tests/testthat/_snaps/initial_load/basic_load-001_.new.png": {
-      "checksum": "64c0e0f583a0af66a017704179cb9b7a"
+    "tests/testthat/_snaps/initial_load/basic_load-001.new.json": {
+      "checksum": "f2f857b751d2aa7bfe388c1095229084"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001_.png": {
-      "checksum": "f10c22d47cdb78a24065244b4519764e"
+      "checksum": "64c0e0f583a0af66a017704179cb9b7a"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "2a976fcf2d8ab7682cb0f3e2c0f8a411"
+      "checksum": "ef6e2aafa96a62128b3302774be4a2b4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "2d2acdaf54021acd335634f811b56c63"
+      "checksum": "b11e5235f81ba1b73de532eadb97aaa2"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
