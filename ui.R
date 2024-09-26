@@ -98,10 +98,10 @@ ui <- function(input, output, session) {
       logo_height = 32
     ),
     shinyGovstyle::banner(
-      "pre-alpha banner",
-      "pre-alpha",
+      "beta banner",
+      "beta",
       paste0(
-        "This dashboard is in design and development (pre-alpha) phase."
+        "This is a new service - your <a class = 'govuk-link' href = 'https://forms.office.com/e/dMDRycTXcU'>feedback</a> will help us to improve it."
       )
     ),
     shiny::navlistPanel(
