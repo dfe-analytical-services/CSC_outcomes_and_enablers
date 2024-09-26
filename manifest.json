@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "d69a570752fe84d67348f62355002f18"
+      "checksum": "40e3e1d14ec78290e0bb5a3d882349bd"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5269,28 +5269,37 @@
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001.json": {
-      "checksum": "8239dfe830f4a452c75c7b2bd8d2ff82"
-    },
-    "tests/testthat/_snaps/initial_load/basic_load-001.new.json": {
-      "checksum": "f2f857b751d2aa7bfe388c1095229084"
+      "checksum": "8189dd220774f0b75864744a986f9d36"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001_.png": {
       "checksum": "64c0e0f583a0af66a017704179cb9b7a"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "ef6e2aafa96a62128b3302774be4a2b4"
+      "checksum": "88ecdc72cd844cb0288456b9e196244f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
       "checksum": "b11e5235f81ba1b73de532eadb97aaa2"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
+      "checksum": "e9fdcb2f3decff0565aabfe4628a04cb"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
+      "checksum": "0a418f5a4343735eb57482f95da137d8"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
+      "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
+      "checksum": "9a45921a207b3fa94783677f693b2a14"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "ef21d20393c4a6fcac9d53660bdcf6a7"
+      "checksum": "74cef1e61ac3992cf43938a652b4be77"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "59b3dae4c74e27f9d7a275830fd55f3f"
+      "checksum": "d826a6cb39b4e86704fd2ef48d196a44"
     },
     "ui.R": {
       "checksum": "6ffb89892e619c50aa8203b169f87f16"
