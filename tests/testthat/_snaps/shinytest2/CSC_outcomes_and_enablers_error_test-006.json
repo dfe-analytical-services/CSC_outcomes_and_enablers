@@ -1,12 +1,13 @@
 {
   "input": {
-    "enabler3_panels": "Workforce Stability",
-    "geographic_breakdown_e3": "National",
-    "national_comparison_checkbox_e3": null,
-    "navlistPanel": "outcome4_page",
-    "select_geography_e3": "National"
+    "navlistPanel": "outcome2_page",
+    "outcome2_panels": "Families engaging and receiving support from their family network",
+    "select_geography_o2": "National"
   },
   "output": {
-
+    "CAO_headline_txt": "  3.0%<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "SGO_headline_txt": " 12.0%<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "outcome2_choice_text1": "You have selected <b>National<\/b> level statistics on <b>England<\/b>.",
+    "outcome2_choice_text2": ""
   }
 }
