@@ -8439,7 +8439,7 @@ server <- function(input, output, session) {
 
     p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
       config(displayModeBar = F)
-    title <- paste0("Overall absence rate (%) by statistical neighbours", "(", max(data$time_period), ")")
+    title <- paste0("Overall absence rate (%) by statistical neighbours", " (", max(data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
