@@ -1,7 +1,7 @@
 outcome2_tab <- function() {
   tabPanel(
     value = "outcome2_page",
-    "2 - Family Network",
+    "Family Network",
     gov_main_layout(
       gov_row(
         column(
@@ -34,14 +34,14 @@ outcome2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o2 != 'National'",
               column(
-                width = 3,
+                width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o2",
                   cb_labels = "Compare with National",
@@ -55,7 +55,7 @@ outcome2_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o2 == 'Local authority')",
               column(
-                width = 3,
+                width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o2",
                   cb_labels = "Compare with Region",
@@ -66,7 +66,7 @@ outcome2_tab <- function() {
                 )
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           )
         )
       ),
@@ -138,15 +138,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
                           tags$li("Percentages rounded to the nearest whole number."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
                       ))
                     )
                   ),
@@ -173,15 +173,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
                           tags$li("Percentages rounded to the nearest whole number."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
                       ))
                     )
                   ),
@@ -191,8 +191,9 @@ outcome2_tab <- function() {
                     radioGroupButtons(
                       "sgo_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_sgo"),
                   )
@@ -223,15 +224,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
                           tags$li("Percentages rounded to the nearest whole number."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
                       ))
                     )
                   ),
@@ -258,15 +259,15 @@ outcome2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         p(
-                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication "), "for full list of reasons."),
+                          tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
                           tags$li("Percentages rounded to the nearest whole number."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$li("Figures exclude children looked after under a series of short-term placements."),
                           tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
                           tags$br(),
-                          "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance."),
+                          "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
                           tags$br(),
-                          "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.")
+                          "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
                       ))
                     )
                   ),
@@ -276,8 +277,9 @@ outcome2_tab <- function() {
                     radioGroupButtons(
                       "cao_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_cao"),
                   )

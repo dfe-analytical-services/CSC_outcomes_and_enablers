@@ -14,5 +14,5 @@ app$wait_for_idle(500)
 
 test_that("App loads", {
   # Capture initial values
-  app$expect_values()
+  app$expect_values(input = c("navlistPanel"), output = c("outcome1_choice_text1", "outcome1_choice_text2"))
 })

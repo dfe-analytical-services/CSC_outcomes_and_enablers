@@ -1,0 +1,12 @@
+{
+  "input": {
+    "national_comparison_checkbox_o1": null,
+    "navlistPanel": "outcome1_page",
+    "outcome1_panels": "Access to support and getting help",
+    "select_geography_o1": "Local authority"
+  },
+  "output": {
+    "outcome1_choice_text1": "You have selected <b>Local authority<\/b> level statistics for <b>Barking and Dagenham<\/b>, in Outer London.",
+    "outcome1_choice_text2": ""
+  }
+}

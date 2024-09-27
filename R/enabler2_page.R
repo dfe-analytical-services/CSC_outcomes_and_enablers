@@ -6,7 +6,7 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler 2: Leaders drive conditions for effective practice")
+          h1("Enabler: Leaders drive conditions for effective practice")
         )
       ),
       gov_row(
@@ -33,7 +33,7 @@ enabler2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(4, 8)
+            col_widths = c(5, 7)
           ),
           insert_text(
             inputId = "no_checkboxes",
@@ -98,7 +98,7 @@ enabler2_tab <- function() {
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
                       p("This domain contains two levels of data: Share of total spend on children's services and spend per child on children's services"),
-                      p("Please use the dropdown below to select which level of spending data you would like to see in the charts below:"),
+                      p("Use the dropdown below to select which level of spending data you would like to see in the charts below:"),
                       selectizeInput(
                         inputId = "spending_choice",
                         label = "Select a spending level:",
@@ -108,52 +108,52 @@ enabler2_tab <- function() {
                         options = NULL,
                         width = "50%"
                       ),
-                    ),
-                    br(),
-                    br(),
-                  ),
-                  gov_row(
-                    htmlOutput("spending_header1"),
-                    br(),
-                    plotlyOutput("plot_spending_region"),
-                    br(),
-                    details(
-                      inputId = "spend1_region_tbl",
-                      label = "View chart as table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
-                          reactableOutput("table_tot_spending_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "spend1_region_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
-                          tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates"), "for children aged 0 to 17 years and total children’s services expenditure."),
-                          tags$li("Average per child spend has been rounded to the nearest whole number."),
-                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+                      gov_row(
+                        htmlOutput("spending_header1"),
+                        br(),
+                        plotlyOutput("plot_spending_region"),
+                        br(),
+                        details(
+                          inputId = "spend1_region_tbl",
+                          label = "View chart as table",
+                          help_text = (
+                            HTML(paste0(
+                              csvDownloadButton("table_tot_spending_reg", filename = "spend_on_CSC_regions.csv"),
+                              reactableOutput("table_tot_spending_reg")
+                            ))
+                          )
+                        ),
+                        details(
+                          inputId = "spend1_region_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
+                              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
+                              tags$li("Average per child spend has been rounded to the nearest whole number."),
+                              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
+                              )
+                            )
                           )
                         )
-                      )
-                    )
-                  ),
-                  gov_row(
-                    htmlOutput("spending_header2"),
-                    radioGroupButtons(
-                      "spending1_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      ),
+                      gov_row(
+                        htmlOutput("spending_header2"),
+                        radioGroupButtons(
+                          "spending1_stats_toggle",
+                          label = NULL,
+                          choices = c("All local authorities", "10 statistical neighbours"),
+                          selected = "All local authorities",
+                          justified = TRUE
+                        ),
+                        uiOutput("SN_total_spending"),
+                      ),
                     ),
-                    uiOutput("SN_total_spending"),
-                  )
+                    br(),
+                  ),
                 ),
                 accordion_panel(
                   "Share of Children and Young People Services spend minus spend on CLA",
@@ -177,10 +177,10 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Share of spend is calculated by taking total children’s services expenditure minus total CLA expenditure, divided by total children’s services expenditure."),
-                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn")),
+                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, please refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes."),
+                            "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
                           )
                       ))
                     )
@@ -190,8 +190,9 @@ enabler2_tab <- function() {
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,
-                      choices = c("All local authorities", "10 Statistical Neighbours"),
-                      selected = "All local authorities"
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
                     ),
                     uiOutput("SN_spending_minus_cla"),
                   )
@@ -279,7 +280,7 @@ enabler2_tab <- function() {
                 accordion_panel(
                   "Culture focused on outcomes from children and families and continually improving services",
                   gov_row(
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table below to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table below to see the latest year for each LA."),
                     details(
                       inputId = "tbl_ofsted_latest_ratings",
                       label = "View latest ratings",
@@ -293,7 +294,7 @@ enabler2_tab <- function() {
                   ),
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted"),
                     br(),
@@ -312,17 +313,18 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'"), " guidance."),
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
-                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
-                          )
+                            "For more information on the data and definitions, see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
+                          ),
+                          tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )
                       )
                     )
                   ),
                   gov_row(
                     h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
-                    warning_text(inputId = "warn", text = "Latest leadership rating years for each LA may differ. View the table at the top to see the latest year for each LA."),
+                    warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted_reg"),
                     br(),
@@ -341,10 +343,11 @@ enabler2_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("For more information on how Ofsted rate local authorities on their leadership, please see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'"), " guidance."),
+                          tags$li("For more information on how Ofsted rate local authorities on their leadership, see the ", a(href = "https://www.gov.uk/government/publications/inspecting-local-authority-childrens-services-from-2018/inspecting-local-authority-childrens-services", "'Inspecting local authority children’s services'", target = "_blank"), " guidance."),
                           tags$li(
-                            "For more information on the data and definitions, please see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023."),
-                          )
+                            "For more information on the data and definitions, see here: ", a(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023.", target = "_blank"),
+                          ),
+                          tags$li("The Ofsted leadership rating is sub-judgement rating and not the overall Ofsted rating.")
                         )
                       )
                     )
