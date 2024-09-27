@@ -6080,7 +6080,7 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
@@ -6088,8 +6088,7 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by region")
-      title <- paste0("Share of total spend on children's services (%) by region (", max(p$data$time_period), ")")
+      title <- paste0("Share of total LA spend on children's services (%) by region (", max(p$data$time_period), ")")
       p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
@@ -6121,7 +6120,7 @@ server <- function(input, output, session) {
       #  need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
@@ -6164,7 +6163,7 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
@@ -6172,8 +6171,7 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
-      title <- paste0("Share of total spend on children's services (%) by local authority (", max(p$data$time_period), ")")
+      title <- paste0("Share of total LA spend on children's services (%) by local authority (", max(p$data$time_period), ")")
       p <- p + ggtitle(title) +
 
         scale_y_continuous(limits = c(0, max_y_lim))
@@ -6206,7 +6204,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
@@ -6256,8 +6254,7 @@ server <- function(input, output, session) {
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
     p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
-    title <- paste0("Share of total spend on children's services minus CLA (%) by region (", max(p$data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
@@ -6277,13 +6274,13 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla %>%
       filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
       select(time_period, geo_breakdown, minus_cla_share) %>%
-      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spend on children's services minus CLA (%)" = "minus_cla_share")
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
     reactable(
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6304,10 +6301,12 @@ server <- function(input, output, session) {
 
     max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
 
-    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)", percentage = TRUE) %>%
+    p <- by_la_bar_plot(
+      dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)",
+      yaxis_title = "Share of Children’s Services spend not on CLA (%)", percentage = TRUE
+    ) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
-    title <- paste0("Share of total children's services spend minus CLA (%) by local authority (", max(p$data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title) +
       scale_y_continuous(limits = c(0, max_y_lim))
     ggplotly(
@@ -6327,13 +6326,13 @@ server <- function(input, output, session) {
       filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
       select(time_period, geo_breakdown, minus_cla_share) %>%
       arrange(desc(minus_cla_share)) %>%
-      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share minus CLA (%)" = "minus_cla_share")
+      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
     reactable(
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10812,8 +10811,8 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
-              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
-              tags$li("Average per child spend has been rounded to the nearest whole number."),
+              tags$li("Average per capita (of all children in a local authority) spend on children’s services is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
+              tags$li("Average per capita (of all children in a local authority) spend on children’s services has been rounded to the nearest whole number."),
               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
               tags$br(),
               p(
@@ -10868,14 +10867,13 @@ server <- function(input, output, session) {
     )
 
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
-      title <- paste0("Share of total spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
+      title <- paste0("Share of total LA spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
       p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
@@ -10905,7 +10903,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total LA spend on children's services") {
       data <- spending_data %>%
         rename("Children's services share (%)" = "cs_share")
 
@@ -11020,10 +11018,9 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share of Children’s Services spend\n not on CLA (%)", max_y_lim, percentage = TRUE) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
-    title <- paste0("Share of total spend on children's services minus CLA (%) by statistical neighbours (", max(data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
@@ -11041,15 +11038,15 @@ server <- function(input, output, session) {
     )
 
     data <- spending_data_no_cla %>%
-      rename("Share of spend minus CLA (%)" = "minus_cla_share")
+      rename("Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
-    table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Share of spend minus CLA (%)")
+    table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Share of Children’s Services spend not on CLA (%)")
 
     reactable(
       table,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(name = "Share of Children’s Services spend not on CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
