@@ -62,22 +62,21 @@ enabler2_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Share of total spend on Children's services",
+                    title = "Share of total LA spend on Children's services",
                     value = htmlOutput("total_spending_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Average per child spend",
+                    title = "Average per capita (of all children in a local authority) spend on children’s services",
                     value = htmlOutput("avg_spend_per_child")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Share of total spend on Children's services
-                    minus CLA",
+                    title = "Share of Children’s Services spend not on CLA",
                     value = htmlOutput("spend_minus_cla_txt")
                   )
                 ),
@@ -97,12 +96,12 @@ enabler2_tab <- function() {
                     div(
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
-                      p("This domain contains two levels of data: Share of total spend on children's services and spend per child on children's services"),
+                      p("This domain contains two levels of data: Share of total LA spend on children's services and average per capita (of all children in a local authority) spend on children's services"),
                       p("Use the dropdown below to select which level of spending data you would like to see in the charts below:"),
                       selectizeInput(
                         inputId = "spending_choice",
                         label = "Select a spending level:",
-                        choices = c("Share of total spend on children's services", "Spend per child on children's services"),
+                        choices = c("Share of total LA spend on children's services", "Spend per child on children's services"),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL,
@@ -129,8 +128,8 @@ enabler2_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
-                              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
-                              tags$li("Average per child spend has been rounded to the nearest whole number."),
+                              tags$li("Average per capita (of all children in a local authority) spend on children’s services is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
+                              tags$li("Average per capita (of all children in a local authority) spend on children’s services has been rounded to the nearest whole number."),
                               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
                               tags$br(),
                               p(
@@ -156,9 +155,9 @@ enabler2_tab <- function() {
                   ),
                 ),
                 accordion_panel(
-                  "Share of Children and Young People Services spend minus spend on CLA",
+                  "Share of Children’s Services spend not on CLA",
                   gov_row(
-                    h2("Share of Children and Young People Services spend minus spend on CLA by region"),
+                    h2("Share of Children’s Services spend not on CLA by region"),
                     plotlyOutput("plot_spend_excl_cla_region"),
                     br(),
                     details(
@@ -186,7 +185,7 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Share of Children and Young People Services spend minus spend on CLA by local authority"),
+                    h2("Share of Children’s Services spend not on CLA by local authority"),
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,

@@ -1,0 +1,13 @@
+{
+  "input": {
+    "geographic_breakdown_o3": "North West",
+    "national_comparison_checkbox_o3": null,
+    "navlistPanel": "outcome4_page",
+    "outcome4_panels": "Stability and quality of where a child lives",
+    "select_geography_o3": "Regional"
+  },
+  "output": {
+    "outcome4_choice_text1": "You have selected <b>Local authority<\/b> level statistics for <b>Halton<\/b>, in North West.",
+    "outcome4_choice_text2": ""
+  }
+}
