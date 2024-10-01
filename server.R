@@ -6057,7 +6057,7 @@ server <- function(input, output, session) {
         select(`Cost per child`))
     }
 
-    paste0("~ £", stat, " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
+    paste0("~ £", prettyNum(stat, big.mark = ","), " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
   })
 
   # Share of total spend on children's services minus CLA
