@@ -3,7 +3,7 @@
 # Time series repeat function ----
 # This is a repeat use function for all of the time series plots in this dashboard.
 
-plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, percentage = FALSE) {
+plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
 
@@ -17,7 +17,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 
     p <- ggplot(filtered_data, aes(
       x = `Time period`, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), color = `Location`,
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Location: ", `Location`, "<br>",
@@ -101,7 +101,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 }
 
 # By LA bar chart repeat function ----
-by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, percentage = FALSE) {
+by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
       la_data <- dataset %>%
@@ -185,7 +185,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
   if (add_rect == FALSE) {
     p <- ggplot(la_data, aes(
       x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Local authority: ", Breakdown, "<br>",
@@ -273,7 +273,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 }
 
 # By Region bar chart repeat function -----
-by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE, percentage = FALSE) {
+by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE, decimal_percentage = FALSE) {
   if (add_rect == FALSE) {
     reg_data <- dataset %>%
       filter(geographic_level == "Regional", time_period == max(time_period)) %>%
@@ -284,7 +284,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
 
     p <- ggplot(reg_data, aes(
       x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Region: ", `Breakdown`, "<br>",
@@ -1297,7 +1297,7 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   return(p)
 }
 
-factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, percentage = FALSE) {
+factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
       la_data <- dataset %>%
@@ -1381,7 +1381,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
   if (add_rect == FALSE) {
     p <- ggplot(la_data, aes(
       x = Breakdown, y = !!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_sentence(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Local authority: ", Breakdown, "<br>",
@@ -1594,7 +1594,7 @@ plot_ofsted_reg <- function() {
 
 
 # Statistical Neighbours function ----
-statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, percentage = FALSE) {
+statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -1622,7 +1622,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
 
     ggplot(filtered_data, aes(
       x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_title(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Local authority: ", `Breakdown`, "<br>",
@@ -1701,7 +1701,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
   }
 }
 
-statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, percentage = FALSE) {
+statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -1729,7 +1729,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
 
     p <- ggplot(filtered_data, aes(
       x = Breakdown, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = `Selection`,
-      text = if (percentage) {
+      text = if (decimal_percentage) {
         paste0(
           str_to_title(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
           "Local authority: ", `Breakdown`, "<br>",
@@ -2106,7 +2106,7 @@ cellfunc <- function(value) {
 }
 
 # Ordering tables with suppression
-cellfunc_percent <- function(value) {
+cellfunc_decimal_percent <- function(value) {
   if (value == -100) {
     return("c")
   } else if (value == -200) {

@@ -422,8 +422,11 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
       `Total Expenditure` == "x" ~ 0,
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
+
+
   # calculate the share of the
-  data3$cs_share <- janitor::round_half_up(((data3$exp) / (data3$total_exp)) * 100)
+  # data3$cs_share <- janitor::round_half_up(((data3$exp) / (data3$total_exp)) * 100)
+  data3$cs_share <- ((data3$exp) / (data3$total_exp)) * 100
   data3 <- data3 %>%
     mutate(cs_share = case_when(
       `CS Expenditure` == "x" ~ 0,
@@ -453,7 +456,7 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
     group_by(region_name) %>%
     summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
+  # regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2023/24"
   regional_spending$new_la_code <- as.character("")
@@ -469,12 +472,15 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
       "new_la_code" = "",
       "old_la_code" = as.numeric("")
     )
-  london_com$cs_share <- janitor::round_half_up(london_com$cs_share)
+  # london_com$cs_share <- janitor::round_half_up(london_com$cs_share)
 
   regional_spending <- rbind(regional_spending, london_com)
 
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CS Expenditure", "Total Expenditure", "exp", "total_exp", "cs_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "exp", "total_exp", "cs_share"))
+
+
+  df2$cs_share <- round(df2$cs_share, 1)
 
   final_dataset <- df2 %>%
     mutate(exp = case_when(
@@ -498,7 +504,7 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
       `CS Share`
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share, "CS Share")
-  final_dataset$cs_share <- janitor::round_half_up(final_dataset$cs_share)
+  # final_dataset$cs_share <- janitor::round_half_up(final_dataset$cs_share)
 
   return(final_dataset)
 }
@@ -595,7 +601,8 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
       TRUE ~ as.numeric(`Total Expenditure`)
     ))
   # calculate the share of the expenditure not for CLA
-  data3$minus_cla_share <- janitor::round_half_up(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100)
+  # data3$minus_cla_share <- janitor::round_half_up(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100)
+  data3$minus_cla_share <- ((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100
   data3 <- data3 %>%
     mutate(minus_cla_share = case_when(
       `CLA Expenditure` == "x" ~ 0,
@@ -622,7 +629,7 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
     group_by(region_name) %>%
     summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
     rename("geo_breakdown" = "region_name")
-  regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
+  # regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
   regional_spending$geographic_level <- "Regional"
   regional_spending$time_period <- "2023/24"
   regional_spending$new_la_code <- as.character("")
@@ -638,12 +645,14 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
       "new_la_code" = as.character(""),
       "old_la_code" = as.numeric(""),
     )
-  london_com$minus_cla_share <- janitor::round_half_up(london_com$minus_cla_share)
+  # london_com$minus_cla_share <- janitor::round_half_up(london_com$minus_cla_share)
 
   regional_spending <- rbind(regional_spending, london_com)
 
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CLA Expenditure", "Total Expenditure", "cla_exp", "total_exp", "minus_cla_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
+
+  df2$minus_cla_share <- round(df2$minus_cla_share, 1)
 
   final_dataset <- df2 %>%
     mutate(exp = case_when(
@@ -667,7 +676,7 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
       `Excluding CLA Share`
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
-  final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
+  # final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
 
   return(final_dataset)
 }
@@ -1094,7 +1103,7 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
-      format(as.numeric(as.character(pt_rwm_met_expected_standard)), nsmall = 1),
+      format(as.numeric(as.character(pt_rwm_met_expected_standard)), nsmall = 0),
       pt_rwm_met_expected_standard
     )) %>%
     select(
@@ -1251,7 +1260,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
+      format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
     mutate(`Ceased (%)` = case_when(
@@ -1575,7 +1584,7 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
+      format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
@@ -1606,7 +1615,7 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
     )) %>%
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
+      format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
@@ -1635,7 +1644,7 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
+      format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
@@ -1676,7 +1685,7 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
       geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
+      format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)

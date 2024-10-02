@@ -24,11 +24,11 @@ introductionPanel <- function() {
             h2("Outcomes"),
             p("The outcomes included in the dashboard are what children’s social care should achieve for the children, young people and families they support.
               They reflect the core purpose of children’s social care. The outcomes included are:"),
-            tags$ol(
-              tags$li("Children, young people and families stay together and get the help they need"),
-              tags$li("Children and young people are supported by their family network"),
-              tags$li("Children and young people are safe in and outside of their home"),
-              tags$li("Children in care and care leavers have stable, loving homes"),
+            tags$ul(
+              tags$li("1. children, young people and families stay together and get the help they need"),
+              tags$li("2. children and young people are supported by their family network"),
+              tags$li("3. children and young people are safe in and outside of their home"),
+              tags$li("4. children in care and care leavers have stable, loving homes"),
               style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
             ),
           ),
@@ -38,9 +38,9 @@ introductionPanel <- function() {
             p("The enablers included in the dashboard refer to aspects of the children’s social care system that facilitate effective support for children, young people and families.
               The enablers are foundational to good practice. The enablers included are:"),
             tags$ul(
-              tags$li("Multi-agency working is prioritised and effective"),
-              tags$li("Leaders drive conditions for effective practice"),
-              tags$li("The workforce is equipped and effective"),
+              tags$li("multi-agency working is prioritised and effective"),
+              tags$li("leaders drive conditions for effective practice"),
+              tags$li("the workforce is equipped and effective"),
               style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
             ),
           )

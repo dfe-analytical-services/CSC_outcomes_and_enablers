@@ -9,7 +9,7 @@ tutorialPanel <- function() {
           width = 12,
           h1("Dashboard User Guide"),
           tags$br(),
-          h2("How to use this dashboard:", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold"),
+          h2("How to use this dashboard:", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold; font-size: 30px"),
           tags$ul(
             tags$li("Use the navigation bar on the left to select which outcome/enabler/indicator page you want to view"),
             tags$li("Within each outcome/enabler page, select a geographical level (National, regional, local authority) using the dropdown list at the top of each outcome and enabler page"),
@@ -21,14 +21,14 @@ tutorialPanel <- function() {
             tags$li("All charts can be viewed as a table to view more detailed data at selected geographic levels, select ‘View chart as at table’ to view the table data for your geographic selection"),
             tags$li("Select ‘Additional information’ underneath charts and tables where available, to view footnotes regarding the data source and limitations for context"),
             tags$li("If you have selected ‘Local Authority’ as the geographic level you can also select to view a chart called ‘10 statistical neighbours’"),
-            style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
+            style = "font-family: GDS Transport, arial, sans-serif; font-size: 19px;"
           )
         )
       ),
       gov_row(
         column(
           width = 12,
-          tags$h3("Interactive Plots User Guide", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold"),
+          tags$h3("Interactive Plots User Guide", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold; font-size: 30px"),
           p("The menu bar along the top of the charts contains extra interactive features to:"),
           tags$ul(
             tags$li("Download chart as png file"),
