@@ -5894,8 +5894,11 @@
     ".hooks/pre-commit.R": {
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
+    ".RData": {
+      "checksum": "51727b9c87cdf2692305f6dac8ef16e1"
+    },
     ".Rprofile": {
-      "checksum": "3bf33b7f29e7a4ce32e12a6f13a8ccdc"
+      "checksum": "65502bb5995dafc2e71cddcbb1c390a6"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -6060,10 +6063,10 @@
       "checksum": "77b95101d7456413e553c63dbb0e69ea"
     },
     "R/plotting.R": {
-      "checksum": "d7f1560abf8d11e24965cddbafab6b02"
+      "checksum": "3f02569be55aa0d8c9086b83797e28d1"
     },
     "R/read_data.R": {
-      "checksum": "b16488f82ead2aae010ec4b0977fe4a2"
+      "checksum": "c3b722613b9bb01978b04e8ec0a665b6"
     },
     "R/standard_panels.R": {
       "checksum": "6d67e460760ac16df2c4547f7452f9c1"
@@ -6081,7 +6084,7 @@
       "checksum": "0c813d3fcfd0eb357ae7aadfce17b696"
     },
     "server.R": {
-      "checksum": "6ea982cc8068df8ff7af6b503207033d"
+      "checksum": "1099a30a093c4046e58b0c991742a1ee"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

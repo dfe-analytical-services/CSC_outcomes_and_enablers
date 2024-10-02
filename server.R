@@ -1272,7 +1272,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals within 12 months %")
     ggplotly(
@@ -1331,7 +1331,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1358,7 +1358,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1403,7 +1403,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1496,7 +1496,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate (%)")
 
@@ -1558,7 +1558,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1576,7 +1576,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Overall absence rate (%) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1605,7 +1605,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1628,7 +1628,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Overall absence rate (%) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1687,7 +1687,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1743,7 +1743,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Persistent absentees (%)")
 
@@ -1805,7 +1805,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1824,7 +1824,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1854,7 +1854,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1878,7 +1878,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1937,7 +1937,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2067,7 +2067,7 @@ server <- function(input, output, session) {
     max_rate <- max(outcomes_ks2$`Expected standard reading writing maths (%)`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage meeting combined expected standard (KS2)")
 
@@ -2126,7 +2126,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2144,7 +2144,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2175,7 +2175,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2197,7 +2197,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2257,7 +2257,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2312,7 +2312,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 20) * 20
 
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4)")
 
@@ -2370,7 +2370,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2387,7 +2387,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2414,7 +2414,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2435,7 +2435,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2490,7 +2490,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2628,7 +2628,7 @@ server <- function(input, output, session) {
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO")
 
@@ -2690,7 +2690,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent)
+        `Ceased (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2711,7 +2711,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by region")
     title <- paste0("Percentage ceased CLA due to SGO by region (", max(p$data$time_period), ")")
@@ -2745,7 +2745,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2765,7 +2765,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by local authority")
     title <- paste0("Percentage ceased CLA due to SGO by local authority (", max(p$data$time_period), ")")
@@ -2822,7 +2822,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2873,7 +2873,7 @@ server <- function(input, output, session) {
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO")
 
@@ -2936,7 +2936,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2956,7 +2956,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by region")
     title <- paste0("Percentage ceased CLA due to CAO by region (", max(p$data$time_period), ")")
@@ -2988,7 +2988,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3008,7 +3008,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by local authority")
     title <- paste0("Percentage ceased CLA due to CAO by local authority (", max(p$data$time_period), ")")
@@ -3062,7 +3062,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3182,7 +3182,7 @@ server <- function(input, output, session) {
     max_rate <- max(repeat_cpp$`Repeat_CPP_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%)")
 
@@ -3241,7 +3241,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3262,7 +3262,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by region")
     title <- paste0("Repeat CPP (%) by region (", max(p$data$time_period), ")")
@@ -3294,7 +3294,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3314,7 +3314,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by local authority")
     title <- paste0("Repeat CPP (%) by local authority (", max(p$data$time_period), ")")
@@ -3366,7 +3366,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3429,7 +3429,7 @@ server <- function(input, output, session) {
     max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -3487,7 +3487,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3506,7 +3506,7 @@ server <- function(input, output, session) {
       duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percent of CPP longer than 2 years by region")
     title <- paste0("Percent of CPP longer than 2 years by region (", max(p$data$time_period), ")")
@@ -3537,7 +3537,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4462,7 +4462,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Children living in selected placement type (%)")
 
@@ -4518,7 +4518,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4543,7 +4543,7 @@ server <- function(input, output, session) {
       placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title_placements <- paste("Children living in selected placement type (%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
@@ -4574,7 +4574,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4597,7 +4597,7 @@ server <- function(input, output, session) {
       placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) +
       scale_y_continuous(limits = c(0, 100))
     title_placements <- paste0("Children living in selected placement type (%) by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
@@ -4651,7 +4651,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4702,7 +4702,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year")
 
@@ -4758,7 +4758,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4782,7 +4782,7 @@ server <- function(input, output, session) {
       placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by region (", max(p$data$time_period), ")")
@@ -4813,7 +4813,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4837,7 +4837,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -4891,7 +4891,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4943,7 +4943,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more than 20 miles from home")
 
@@ -5000,7 +5000,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5024,7 +5024,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
     title <- paste0("Percentage of placements more than 20 miles from home by region (", max(p$data$time_period), ")")
@@ -5055,7 +5055,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5077,7 +5077,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE)
     # p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
     title <- paste0("Percentage of placements more than 20 miles from home by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -5130,7 +5130,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5310,7 +5310,7 @@ server <- function(input, output, session) {
       final_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5375,7 +5375,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5453,7 +5453,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5519,7 +5519,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5577,7 +5577,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE
@@ -5601,7 +5601,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -5633,7 +5633,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5657,7 +5657,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE)
     age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
@@ -5710,7 +5710,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5770,7 +5770,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5831,7 +5831,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5855,7 +5855,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -5888,7 +5888,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5911,7 +5911,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE)
     age_title <- paste0("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
@@ -5964,7 +5964,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6086,7 +6086,7 @@ server <- function(input, output, session) {
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
+      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
       title <- paste0("Share of total LA spend on children's services (%) by region (", max(p$data$time_period), ")")
       p <- p + ggtitle(title)
@@ -6131,7 +6131,7 @@ server <- function(input, output, session) {
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6169,7 +6169,7 @@ server <- function(input, output, session) {
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", percentage = TRUE) %>%
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
       title <- paste0("Share of total LA spend on children's services (%) by local authority (", max(p$data$time_period), ")")
       p <- p + ggtitle(title) +
@@ -6215,7 +6215,7 @@ server <- function(input, output, session) {
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6252,7 +6252,7 @@ server <- function(input, output, session) {
       select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
 
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
-    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Share of Children’s Services spend not on CLA (%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -6280,7 +6280,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6303,7 +6303,7 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(
       dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)",
-      yaxis_title = "Share of Children’s Services spend not on CLA (%)", percentage = TRUE
+      yaxis_title = "Share of Children’s Services spend not on CLA (%)", decimal_percentage = TRUE
     ) %>%
       config(displayModeBar = F)
     title <- paste0("Share of Children’s Services spend not on CLA (%) by local authority (", max(p$data$time_period), ")")
@@ -6332,7 +6332,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6734,7 +6734,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
 
     p <- p + ggtitle("Social worker turnover rate (FTE) %")
@@ -6793,7 +6793,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6811,7 +6811,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
     title <- paste0("Social worker turnover rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -6840,7 +6840,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6858,7 +6858,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
     title <- paste0("Social worker turnover rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -6909,7 +6909,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6960,7 +6960,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) %")
 
@@ -7018,7 +7018,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent)
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7036,7 +7036,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by region")
     title <- paste0("Agency worker rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -7066,7 +7066,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7084,7 +7084,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
     title <- paste0("Agency worker rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -7134,7 +7134,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7185,7 +7185,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) %")
 
@@ -7243,7 +7243,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7261,7 +7261,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by region")
     title <- paste0("Vacancy rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -7291,7 +7291,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7309,7 +7309,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
     title <- paste0("Vacancy rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -7359,7 +7359,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7406,7 +7406,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE)")
 
@@ -7464,7 +7464,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent)
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7482,7 +7482,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by region")
     title <- paste0("Average caseload (FTE) by region (", max(p$data$time_period), ")")
@@ -7512,7 +7512,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7530,7 +7530,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by local authority")
     title <- paste0("Average caseload (FTE) by local authority (", max(p$data$time_period), ")")
@@ -7579,7 +7579,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -8308,7 +8308,7 @@ server <- function(input, output, session) {
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
       need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
-    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
     title <- paste0("Re-referrals (%) by statistical neighbours (", max(cin_referrals$time_period), ")")
@@ -8329,7 +8329,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Re-Referrals (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-Referrals (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8436,7 +8436,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Overall absence rate (%) by statistical neighbours", " (", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8462,7 +8462,7 @@ server <- function(input, output, session) {
         `social_care_group` = colDef(name = "Social care group"),
         `school_type` = colDef(name = "School type"),
         `Total pupils` = colDef(name = "Total number of pupils"),
-        `Overall Absence (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Overall Absence (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8568,7 +8568,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8592,7 +8592,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8693,7 +8693,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8719,7 +8719,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_rwm_eligible_pupils"), yvalue = "Expected standard reading writing maths (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8824,7 +8824,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8850,7 +8850,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average Attainment 8 Score` = colDef(cell = cellfunc_percent)
+        `Average Attainment 8 Score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8943,7 +8943,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
     title <- paste0("Percentage ceased CLA due to SGO by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -8967,7 +8967,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9059,7 +9059,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
     title <- paste0("Percentage ceased CLA due to CAO by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -9083,7 +9083,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9177,7 +9177,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
     title <- paste0("Repeat CPP (%) by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -9201,7 +9201,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
         `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
-        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9646,7 +9646,7 @@ server <- function(input, output, session) {
       placement_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     placements_title <- paste("Children living in selected placement type (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(placements_title)
@@ -9668,7 +9668,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Type", yvalue = "Placements (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9759,7 +9759,7 @@ server <- function(input, output, session) {
       placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by statistical neighbours (", max(data$time_period), ")")
@@ -9782,7 +9782,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percentage"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Percentage` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9875,7 +9875,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
     title <- paste0("Percentage of placements more then 20 miles from home by statistical neighbours (", max(data$time_period), ")")
@@ -9898,7 +9898,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Distance", yvalue = "Placements (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10010,7 +10010,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = c("SDQ characteristic", "SDQ score"), yvalue = "Average score"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average Score` = colDef(name = "Average score", cell = cellfunc_percent, defaultSortOrder = "desc"),
+        `Average Score` = colDef(name = "Average score", cell = cellfunc_decimal_percent, defaultSortOrder = "desc"),
         `SDQ score` = colDef(name = "SDQ score")
       ),
       defaultPageSize = 15,
@@ -10113,7 +10113,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -10135,7 +10135,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10238,7 +10238,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -10260,7 +10260,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Care leavers in suitable accommodation (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10354,7 +10354,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
     title <- paste0("Social worker turnover (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10373,7 +10373,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Turnover Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10462,7 +10462,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
     title <- paste0("Agency worker rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10481,7 +10481,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Agency Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10572,7 +10572,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
     title <- paste0("Vacancy rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10590,7 +10590,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Vacancy Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10680,7 +10680,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
     title <- paste0("Average caseload (FTE) by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10699,7 +10699,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Caseload Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10871,7 +10871,7 @@ server <- function(input, output, session) {
       data <- spending_data
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
       title <- paste0("Share of total LA spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
       p <- p + ggtitle(title)
@@ -10881,7 +10881,7 @@ server <- function(input, output, session) {
 
       max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
 
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, percentage = TRUE) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
       # p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
       title <- paste0("Average spend per child (£) by statistical neighbours (", max(data$time_period), ")")
@@ -10913,7 +10913,7 @@ server <- function(input, output, session) {
         table,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
         searchable = TRUE,
@@ -11018,7 +11018,7 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share of Children’s Services spend\n not on CLA (%)", max_y_lim, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share of Children’s Services spend\n not on CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Share of Children’s Services spend not on CLA (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -11046,7 +11046,7 @@ server <- function(input, output, session) {
       table,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share of Children’s Services spend not on CLA (%)` = colDef(name = "Share of Children’s Services spend not on CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share Of Children’s Services Spend Not On Cla (%)` = colDef(name = "Share of Children’s Services spend not on CLA (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
