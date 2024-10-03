@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "2aa6359265d8a8341f185c885ef96ee4"
+      "checksum": "2f166dd74a67c3ae386f680314c723d8"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5227,7 +5227,7 @@
       "checksum": "13901d30b94a7813cde551200517006b"
     },
     "R/outcome3_page.R": {
-      "checksum": "f825376aa447b96ab06bd755081cbcf5"
+      "checksum": "75ec58aaa8c63003a587545c79002234"
     },
     "R/outcome4_page.R": {
       "checksum": "77b95101d7456413e553c63dbb0e69ea"
@@ -5341,7 +5341,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "411bdbadb73ade6af4dac2834d65b1ed"
+      "checksum": "17a07ec6293e6dab12938b6710cdd545"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
