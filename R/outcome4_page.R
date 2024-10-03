@@ -214,6 +214,12 @@ outcome4_tab <- function() {
                   gov_row(
                     h2("Placements more than 20 miles from home"),
                     p("Children should be supported to remain in school placements and to retain contact with friends and family networks where this is in their best interests. As such, where possible, children should be supported to remain close to their home address."),
+                    insert_text(
+                      inputId = "distance_definition",
+                      text = paste(
+                        "Distance is the distance in miles between the child's home and placement. In some cases this is not known, for example UASC, or not recorded for confidentiality reasons, such as some children placed for adoption."
+                      )
+                    ),
                     plotlyOutput("placement_distance_ts_plot"),
                     br(),
                     details(
