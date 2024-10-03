@@ -339,7 +339,7 @@ outcome3_tab <- function() {
                 br()
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect."),
+                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect"),
                 p("This metric looks at those children who are assessed as needing support for intra familial harm."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
@@ -384,7 +384,7 @@ outcome3_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
+                  p("This domain contains breakdowns of data for the following assessment factors: ", paste0(paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), ".")),
                   p("Use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_1",
@@ -488,7 +488,7 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home."),
+                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home"),
                 p("This metric looks at those children who are assessed as needing support for extra familial harm."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(
@@ -532,7 +532,7 @@ outcome3_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(extra_familial_harm_af %>% str_sort()), collapse = ", "), "."),
+                  p("This domain contains breakdowns of data for the following assessment factors: ", paste0(paste(unique(extra_familial_harm_af %>% str_sort()), collapse = ", "), ".")),
                   p("Use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_2",
