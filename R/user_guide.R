@@ -2,7 +2,7 @@
 tutorialPanel <- function() {
   tabPanel(
     value = "user_guide",
-    "User Guide",
+    "User guide",
     gov_main_layout(
       gov_row(
         column(

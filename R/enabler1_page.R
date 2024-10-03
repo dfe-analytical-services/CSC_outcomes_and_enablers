@@ -1,7 +1,7 @@
 enabler1_tab <- function() {
   tabPanel(
     value = "enabler1_page",
-    "Multi-Agency",
+    "Multi-agency",
     gov_main_layout(
       gov_row(
         column(

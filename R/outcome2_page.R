@@ -1,7 +1,7 @@
 outcome2_tab <- function() {
   tabPanel(
     value = "outcome2_page",
-    "Family Network",
+    "Family network",
     gov_main_layout(
       gov_row(
         column(
