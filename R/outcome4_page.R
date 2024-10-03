@@ -43,7 +43,7 @@ outcome4_tab <- function() {
                 width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o4",
-                  cb_labels = "Compare with National",
+                  cb_labels = "Compare with national",
                   checkboxIds = "Yes_national_o4",
                   label = "",
                   hint_label = NULL,
@@ -57,7 +57,7 @@ outcome4_tab <- function() {
                 width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
-                  cb_labels = "Compare with Region",
+                  cb_labels = "Compare with region",
                   checkboxIds = "Yes_region_o4",
                   label = "",
                   hint_label = NULL,

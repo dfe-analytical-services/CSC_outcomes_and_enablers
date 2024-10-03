@@ -7735,7 +7735,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cla_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cla_rate_la",
@@ -7865,7 +7865,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_uasc_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_uasc_la",
@@ -7995,7 +7995,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cla_march_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cla_march_la",
@@ -8113,7 +8113,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cin_rates_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cin_rates_la",
@@ -8235,7 +8235,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cin_referral_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cin_referral_la",
@@ -8342,7 +8342,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_absence_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_absence_la",
@@ -8475,7 +8475,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_persistent_absence_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_persistent_absence_la",
@@ -8605,7 +8605,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_KS2_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_KS2_la",
@@ -8733,7 +8733,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_KS4_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_KS4_la",
@@ -8864,7 +8864,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_SGO_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_sgo_ceased_la",
@@ -8980,7 +8980,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cao_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cao_ceased_la",
@@ -9098,7 +9098,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cpp_repeat_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_repeat_cpp_la",
@@ -9216,7 +9216,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("admissions_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_hosp_admission_la",
@@ -9336,7 +9336,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_child_abuse_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_child_ab_la",
@@ -9451,7 +9451,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_efh_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_extra_fam_la",
@@ -9568,7 +9568,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_type_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_type_la",
@@ -9681,7 +9681,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_changes_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_changes_la",
@@ -9795,7 +9795,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_dist_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_changes_la",
@@ -9912,7 +9912,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("sdq_by_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_sdq_score_la",
@@ -10025,7 +10025,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cl_activity_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cl_activity_la",
@@ -10148,7 +10148,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cl_accommodation_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cl_accommodation_la",
@@ -10276,7 +10276,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_turnover_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_turnover_la",
@@ -10386,7 +10386,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_agency_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_agency_rate_la",
@@ -10495,7 +10495,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_vacancy_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_vacancy_rate_la",
@@ -10603,7 +10603,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_caseload_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_caseload_la",
@@ -10793,7 +10793,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_spending_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_tot_spend_la",
@@ -10943,7 +10943,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_spend_excl_cla_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_tot_no_cla_spend_la",
