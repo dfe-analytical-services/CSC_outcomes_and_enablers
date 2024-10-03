@@ -158,6 +158,7 @@ enabler2_tab <- function() {
                   "Share of Children’s Services spend not on CLA",
                   gov_row(
                     h2("Share of Children’s Services spend not on CLA by region"),
+                    p("Prioritising funding and resources that help families early helps children and young people thrive. This metric looks at the resource prioritisation between early and later statutory intervention."),
                     plotlyOutput("plot_spend_excl_cla_region"),
                     br(),
                     details(
@@ -274,6 +275,9 @@ enabler2_tab <- function() {
                     )
                   )
                 ),
+                fluidRow(
+                  p("The culture of leadership drives effective and efficient practice. Ofsted rating for leadership provides a summary judgement of the assessed culture and practice of leadership within each authority."),
+                )
               ),
               accordion(
                 accordion_panel(
