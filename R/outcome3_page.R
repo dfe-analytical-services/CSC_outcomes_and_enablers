@@ -92,14 +92,14 @@ outcome3_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
+                    title = "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
                     value = htmlOutput("cpp_in_year_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "Percentage of Child Protection Plans (CPP) longer than 2 years",
+                    title = "Percentage of child protection plans (CPP) longer than 2 years",
                     value = htmlOutput("cpp_duration_txt")
                   )
                 ),
@@ -120,10 +120,10 @@ outcome3_tab <- function() {
               ### Repeat CPP ------------------------
               accordion(
                 accordion_panel(
-                  "Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan",
-                  h2("Percentage of Child Protection Plans (CPP) starting during year, which were a second or subsequent plan"),
+                  "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
+                  h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
-                    "<b>", "Child Protection Plan (CPP)", "</b><br>",
+                    "<b>", "Child protection plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
                   plotlyOutput("repeat_cpp_time_series"),
@@ -155,7 +155,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Repeat Child Protection Plan (CPP) by region"),
+                    h2("Repeat child protection plan (CPP) by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cpp_repeat_reg"),
@@ -188,7 +188,7 @@ outcome3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Repeat Child Protection Plan (CPP)  by local authority"),
+                    h2("Repeat child protection plan (CPP)  by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(repeat_cpp$time_period))),
                     radioGroupButtons(
                       "CPP_stats_toggle",
@@ -202,10 +202,10 @@ outcome3_tab <- function() {
                 ),
                 ### Repeat CPP 2+ ---------------------------------------------------
                 accordion_panel(
-                  "Percentage of Child Protection Plans (CPP) longer than 2 years",
-                  h2("Percentage of Child Protection Plans (CPP) longer than 2 years"),
+                  "Percentage of child protection plans (CPP) longer than 2 years",
+                  h2("Percentage of child protection plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
-                    "<b>", "Child Protection Plan (CPP)", "</b><br>",
+                    "<b>", "Child protection plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
                   )),
                   plotlyOutput("duration_cpp_time_series"),
@@ -225,7 +225,7 @@ outcome3_tab <- function() {
                     label = "Additional information:",
                     help_text = (
                       tags$ul(
-                        tags$li("The metric shown in the graph refers to the percentage of children who have been on a Child Protection Plan (CPP) for longer than 2 years."),
+                        tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
                         tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
                         tags$br(),
                         p(
@@ -237,7 +237,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Child Protection Plans (CPP) longer than 2 years, by region"),
+                    h2("Child protection plans (CPP) longer than 2 years, by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cpp_duration_reg"),
@@ -258,7 +258,7 @@ outcome3_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("The metric shown in the graph refers to the percentage of children who have been on a Child Protection Plan (CPP) for longer than 2 years."),
+                          tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
                           tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
                           tags$br(),
                           p(
@@ -339,7 +339,8 @@ outcome3_tab <- function() {
                 br()
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect."),
+                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect"),
+                p("This metric looks at those children who are assessed as needing support for intra familial harm."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
                     The majority of children have more than one factor recorded for each episode of need.
@@ -383,7 +384,7 @@ outcome3_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), "."),
+                  p("This domain contains breakdowns of data for the following assessment factors: ", paste0(paste(unique(af_child_abuse_extra_filter %>% str_sort()), collapse = ", "), ".")),
                   p("Use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_1",
@@ -487,7 +488,8 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home."),
+                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home"),
+                p("This metric looks at those children who are assessed as needing support for extra familial harm."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(
                     "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
@@ -530,7 +532,7 @@ outcome3_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following assessment factors: ", paste(unique(extra_familial_harm_af %>% str_sort()), collapse = ", "), "."),
+                  p("This domain contains breakdowns of data for the following assessment factors: ", paste0(paste(unique(extra_familial_harm_af %>% str_sort()), collapse = ", "), ".")),
                   p("Use the dropdown below to select which assessment factor you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "assessment_factors_2",
