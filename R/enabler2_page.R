@@ -62,7 +62,7 @@ enabler2_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Share of total LA spend on Children's services",
+                    title = "Share of total local authority spend on children's services",
                     value = htmlOutput("total_spending_txt")
                   )
                 ),
@@ -76,7 +76,7 @@ enabler2_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Share of Children’s Services spend not on CLA",
+                    title = "Share of children’s services spend not on CLA",
                     value = htmlOutput("spend_minus_cla_txt")
                   )
                 ),
@@ -88,10 +88,10 @@ enabler2_tab <- function() {
               ),
               accordion(
                 accordion_panel(
-                  "Share of local authority total spend on Children’s Services, and per child spend",
+                  "Share of local authority total spend on children’s services, and per child spend",
                   gov_row(
-                    h2("Share of local authority total spend on Children’s Services, and per child spend"),
-                    p("This metric provides contextual information on the resource prioritisation within each Local Authority."),
+                    h2("Share of local authority total spend on children’s services, and per child spend"),
+                    p("This metric provides contextual information on the resource prioritisation within each local authority."),
                     # extra dropdown for choice to view per child spend or share of spending
                     div(
                       class = "input_box",
@@ -101,7 +101,7 @@ enabler2_tab <- function() {
                       selectizeInput(
                         inputId = "spending_choice",
                         label = "Select a spending level:",
-                        choices = c("Share of total LA spend on children's services", "Spend per child on children's services"),
+                        choices = c("Share of total local authority spend on children's services", "Spend per child on children's services"),
                         selected = NULL,
                         multiple = FALSE,
                         options = NULL,
@@ -155,9 +155,9 @@ enabler2_tab <- function() {
                   ),
                 ),
                 accordion_panel(
-                  "Share of Children’s Services spend not on CLA",
+                  "Share of children’s services spend not on CLA",
                   gov_row(
-                    h2("Share of Children’s Services spend not on CLA by region"),
+                    h2("Share of children’s services spend not on CLA by region"),
                     p("Prioritising funding and resources that help families early helps children and young people thrive. This metric looks at the resource prioritisation between early and later statutory intervention."),
                     plotlyOutput("plot_spend_excl_cla_region"),
                     br(),
@@ -186,7 +186,7 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Share of Children’s Services spend not on CLA by local authority"),
+                    h2("Share of children’s services spend not on CLA by local authority"),
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,
