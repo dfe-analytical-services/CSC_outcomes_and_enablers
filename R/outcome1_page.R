@@ -1031,7 +1031,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
+                  p("This domain contains breakdowns of data for the following social care groups: children in need, excluding children on a child protection plan and children looked after (CINO), children on a child protection plan, excluding children looked after (CPPO), children looked after (CLA) for 12 months."),
                   p("Use this dropdown to select which social care group you would like to see in the below accordions:"),
                   selectizeInput(
                     inputId = "attainment_extra_breakdown",
@@ -1061,7 +1061,7 @@ outcome1_tab <- function() {
                   ### ks2 attainment -----
                   accordion(
                     accordion_panel(
-                      "Key Stage 2 (KS2)",
+                      "Key stage 2 (KS2)",
                       gov_row(
                         h2("Key stage 2 attainment"),
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances. Virtual school heads have a statutory duty to promote the educational attainment of all children in their care.

@@ -203,7 +203,7 @@ outcome2_tab <- function() {
                   "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
                   gov_row(
                     h2("Residence order or child arrangements order (CAO)"),
-                    p("Children ceasing to be looked after during the year due to the reason of child arrangement order."),
+                    p("Children ceasing to be looked after during the year due to the reason of child arrangements order."),
                     insert_text(inputId = "CAO_def", text = paste(
                       tags$b("Child arrangements order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A child arrangements order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
                     )),
@@ -237,7 +237,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or child arrangement order (CAO) by region"),
+                    h2("Residence order or child arrangements order (CAO) by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The chart represents data from 2023."),
@@ -272,7 +272,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or child arrangement order (CAO) by local authority"),
+                    h2("Residence order or child arrangements order (CAO) by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "cao_stats_toggle",
