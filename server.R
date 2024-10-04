@@ -6080,7 +6080,7 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
@@ -6088,7 +6088,7 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
-      title <- paste0("Share of total LA spend on children's services (%) by region (", max(p$data$time_period), ")")
+      title <- paste0("Share of total local authority spend on children's services (%) by region (", max(p$data$time_period), ")")
       p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
@@ -6120,18 +6120,18 @@ server <- function(input, output, session) {
       #  need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
         arrange(desc(cs_share)) %>%
-        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spending on children's services (%)" = "cs_share")
 
       table <- reactable(
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+          `Share of spending on children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6163,7 +6163,7 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
@@ -6171,7 +6171,7 @@ server <- function(input, output, session) {
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
       p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
-      title <- paste0("Share of total LA spend on children's services (%) by local authority (", max(p$data$time_period), ")")
+      title <- paste0("Share of total local authority spend on children's services (%) by local authority (", max(p$data$time_period), ")")
       p <- p + ggtitle(title) +
 
         scale_y_continuous(limits = c(0, max_y_lim))
@@ -6204,18 +6204,18 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
         arrange(desc(cs_share)) %>%
-        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of spending on children's services (%)" = "cs_share")
 
       table <- reactable(
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+          `Share of spending on children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -10867,7 +10867,7 @@ server <- function(input, output, session) {
     )
 
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
@@ -10903,7 +10903,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total LA spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         rename("Children's services share (%)" = "cs_share")
 

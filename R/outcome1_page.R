@@ -669,7 +669,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following social care groups: Children in need, excluding children on a child protection plan and children looked after (CINO), children on a child protection plan, excluding children looked after (CPPO), children looked after (CLA) for 12 months."),
+                  p("This domain contains breakdowns of data for the following social care groups: children in need, excluding children on a child protection plan and children looked after (CINO), children on a child protection plan, excluding children looked after (CPPO), children looked after (CLA) for 12 months."),
                   p("It also breakdowns the data by school type: total, primary, secondary (the headline boxes above show data for 'total' school type)."),
                   p("Use the dropdowns to select which social care group and school type you would like to see in the below accordions:"),
                   selectizeInput(
@@ -1063,12 +1063,9 @@ outcome1_tab <- function() {
                     accordion_panel(
                       "Key Stage 2 (KS2)",
                       gov_row(
-                        h2("Key Stage 2 attainment"),
-                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
-                      Children should be supported to access and make progress in education to support their development and life chances.
-                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing pupil premium Plus funding aligned to
-                        objectives in the child’s personal education Plan."),
+                        h2("Key stage 2 attainment"),
+                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances. Virtual school heads have a statutory duty to promote the educational attainment of all children in their care.
+                          This includes ensuring suitable and timely educational provision and managing pupil premium plus funding aligned to objectives in the child’s personal education plan"),
                         insert_text(inputId = "ks2_definition", text = paste(
                           "<b>", "Expected standard for year 6 pupils (mostly aged 11)", "</b><br>",
                           htmlOutput("outcome1_choice_social_care_group_text_2")
@@ -1175,14 +1172,11 @@ outcome1_tab <- function() {
                     ),
                     ### KS4 attainment ---------
                     accordion_panel(
-                      "Key Stage 4 (KS4)",
+                      "Key stage 4 (KS4)",
                       gov_row(
-                        h2("Key Stage 4 attainment"),
-                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes.
-                      Children should be supported to access and make progress in education to support their development and life chances.
-                      Virtual School Heads have a statutory duty to promote the educational attainment of all children in their care. This
-                       includes ensuring suitable and timely educational provision and managing pupil premium Plus funding aligned to
-                        objectives in the child’s personal education Plan."),
+                        h2("Key stage 4 attainment"),
+                        p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances.
+                          Virtual school heads have a statutory duty to promote the educational attainment of all children in their care. This includes ensuring suitable and timely educational provision and managing pupil premium plus funding aligned to objectives in the child’s personal education plan."),
                         insert_text(inputId = "ks4_definition", text = paste(
                           "<b>", "Attainment 8 for pupils finishing GCSEs (mostly aged 16)", "</b><br>",
                           htmlOutput("outcome1_choice_social_care_group_text_3")
