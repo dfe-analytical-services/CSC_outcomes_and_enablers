@@ -669,7 +669,7 @@ outcome1_tab <- function() {
                 div(
                   class = "input_box",
                   style = "min-height:100%; height = 100%; overflow-y: visible",
-                  p("This domain contains breakdowns of data for the following social care groups: Children In Need, excluding children on a child protection plan and children looked after (CINO), Children on a Child Protection Plan, excluding children looked after (CPPO), Children Looked After (CLA) for 12 months."),
+                  p("This domain contains breakdowns of data for the following social care groups: children in need, excluding children on a child protection plan and children looked after (CINO), children on a child protection plan, excluding children looked after (CPPO), children looked after (CLA) for 12 months."),
                   p("It also breakdowns the data by school type: total, primary, secondary (the headline boxes above show data for 'total' school type)."),
                   p("Use the dropdowns to select which social care group and school type you would like to see in the below accordions:"),
                   selectizeInput(
