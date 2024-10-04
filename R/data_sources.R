@@ -1,7 +1,7 @@
 data_sources_tab <- function() {
   tabPanel(
     value = "data_sources",
-    "Data Sources",
+    "Data sources",
     gov_main_layout(
       br(),
       gov_row(
