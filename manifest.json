@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "a82b640eae77e0040ef8bfac828258d4"
+      "checksum": "68ce7885ae08c977918a3842f74811ef"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5194,7 +5194,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "68a97eab85b4884af757c6d1c82f248a"
+      "checksum": "0deeca2fde594721be7a303d005095a1"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5206,13 +5206,13 @@
       "checksum": "9076d72343ef048e301179f7eda1ea34"
     },
     "R/enabler1_page.R": {
-      "checksum": "57aa119b6da530ad5d636f4308c3bd45"
+      "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
     },
     "R/enabler2_page.R": {
       "checksum": "16b550e2cd094a29b640d80ec692639a"
     },
     "R/enabler3_page.R": {
-      "checksum": "c2a633abf7f9a02b23b6d71970d6a623"
+      "checksum": "bc03edd397768e4d3dcd700fc4122114"
     },
     "R/intro_panel.R": {
       "checksum": "264169b44e22fcb1849557abbd2d5cc8"
@@ -5221,16 +5221,16 @@
       "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
     },
     "R/outcome1_page.R": {
-      "checksum": "036fa1e42a7bd2e28efa6950a4be67b4"
+      "checksum": "f9319dae2a75cd521a2140a2ea84ecec"
     },
     "R/outcome2_page.R": {
-      "checksum": "13cdf7e756e0e7b4fd38e725941abd6f"
+      "checksum": "7a219478c37142df740d2a2166cec740"
     },
     "R/outcome3_page.R": {
-      "checksum": "56a058c6552b6649285930c93774ddfe"
+      "checksum": "c802934c2c1f272cba6474f686199cde"
     },
     "R/outcome4_page.R": {
-      "checksum": "1108951a5b5477f924f8de46ced6696e"
+      "checksum": "b2625a2c3c822c038f30ec1ad2862e5e"
     },
     "R/plotting.R": {
       "checksum": "3f02569be55aa0d8c9086b83797e28d1"
@@ -5242,7 +5242,7 @@
       "checksum": "91299d347d9e982a416bbe4a1fece1a2"
     },
     "R/user_guide.R": {
-      "checksum": "394f399cdc7c52ef6d3c79ec553d73cc"
+      "checksum": "5b7070d65195b4e6860f1861aa011018"
     },
     "R/utils.R": {
       "checksum": "684dd7f66a82a2485d0ffb1836adedd5"
@@ -5257,7 +5257,7 @@
       "checksum": "0c813d3fcfd0eb357ae7aadfce17b696"
     },
     "server.R": {
-      "checksum": "70679359e6c3645a826ae96f3e8abb55"
+      "checksum": "f3f6bf3de31333df2d0b2eec8e9301c7"
     },
     "server_helpers/outcome1_server_helper.R": {
       "checksum": "77bcbc99d619e894e09b3515d75b21cd"
