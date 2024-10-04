@@ -95,14 +95,14 @@ outcome2_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
+                    title = "Percentage of children who cease being looked after due to special guardianship order (SGO)",
                     value = htmlOutput("SGO_headline_txt")
                   )
                 ),
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of children who cease being looked after due to Residence order or Child Arrangement Order (CAO)",
+                    title = "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
                     value = htmlOutput("CAO_headline_txt")
                   )
                 ),
@@ -113,12 +113,12 @@ outcome2_tab <- function() {
               accordion(
                 ## SGO ------
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to Special Guardianship Order (SGO)",
+                  "Percentage of children who cease being looked after due to special guardianship order (SGO)",
                   gov_row(
-                    h2("Special Guardianship Order (SGO)"),
-                    p("Children ceasing to be looked after during the year due to the reason of Special Guardianship Order."),
+                    h2("Special guardianship order (SGO)"),
+                    p("Children ceasing to be looked after during the year due to the reason of special guardianship order."),
                     insert_text(inputId = "SGO_def", text = paste(
-                      tags$b("Special guardianship order"), " - A Special Guardianship Order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
+                      tags$b("Special guardianship order"), " - A special guardianship order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
                     )),
                     br(),
                     plotlyOutput("SGO_time_series"),
@@ -151,7 +151,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Special Guardianship Order (SGO) by region"),
+                    h2("Special guardianship order (SGO) by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The chart represents data from 2023."),
@@ -186,7 +186,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Special Guardianship Order (SGO) by local authority"),
+                    h2("Special guardianship order (SGO) by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "sgo_stats_toggle",
@@ -200,12 +200,12 @@ outcome2_tab <- function() {
                 ),
                 ## CAO ----------------
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to Child Arrangement Order (CAO)",
+                  "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
                   gov_row(
-                    h2("Residence order or Child Arrangement Order (CAO)"),
-                    p("Children ceasing to be looked after during the year due to the reason of Child Arrangement Order."),
+                    h2("Residence order or child arrangements order (CAO)"),
+                    p("Children ceasing to be looked after during the year due to the reason of child arrangement order."),
                     insert_text(inputId = "CAO_def", text = paste(
-                      tags$b("Child Arrangements Order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A Child Arrangements Order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
+                      tags$b("Child arrangements order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A child arrangements order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
                     )),
                     plotlyOutput("CAO_time_series"),
                     br(),
@@ -237,7 +237,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or Child Arrangement Order (CAO) by region"),
+                    h2("Residence order or child arrangement order (CAO) by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The chart represents data from 2023."),
@@ -272,7 +272,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or Child Arrangement Order (CAO) by local authority"),
+                    h2("Residence order or child arrangement order (CAO) by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "cao_stats_toggle",
