@@ -7,7 +7,7 @@ tutorialPanel <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Dashboard User Guide"),
+          h1("Dashboard user guide"),
           tags$br(),
           h2("How to use this dashboard:", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold; font-size: 30px"),
           tags$ul(
@@ -28,18 +28,18 @@ tutorialPanel <- function() {
       gov_row(
         column(
           width = 12,
-          tags$h3("Interactive Plots User Guide", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold; font-size: 30px"),
+          tags$h3("Interactive plots user guide", style = "font-family: GDS Transport, arial, sans-serif; font-weight: bold; font-size: 30px"),
           p("The menu bar along the top of the charts contains extra interactive features to:"),
           tags$ul(
             tags$li("Download chart as png file"),
             tags$li("Hover over lines/bars in the plot to see specific values"),
             tags$li("Zoom in and out"),
             tags$li("Auto scale to provide a clearer view on trends"),
-            tags$li("Reset Axes back to the starting view"),
+            tags$li("Reset axes back to the starting view"),
             tags$li("Compare data for each data point being hovered"),
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           ),
-          tags$h6("Using the Key", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px; font-weight: bold"),
+          tags$h6("Using the key", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px; font-weight: bold"),
           tags$ul(
             tags$li("Double clicking a line/value in the key will isolate the value in the plot"),
             tags$li("Double clicking the same value again will restore the original plot"),

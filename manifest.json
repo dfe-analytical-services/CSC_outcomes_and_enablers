@@ -5068,7 +5068,7 @@
       "checksum": "f07d828ffe60f1037dff264fa360febc"
     },
     ".Rprofile": {
-      "checksum": "2aaf368ad2a1d73be6b856bce3bc1e15"
+      "checksum": "3fd7c9cd042e10e4aee3646440b5a30b"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5194,7 +5194,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "0deeca2fde594721be7a303d005095a1"
+      "checksum": "d67ffaa1b82b89d40c8f272c9eeefec8"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5212,7 +5212,7 @@
       "checksum": "16b550e2cd094a29b640d80ec692639a"
     },
     "R/enabler3_page.R": {
-      "checksum": "bc03edd397768e4d3dcd700fc4122114"
+      "checksum": "d9fbaa5b920bd109932bb27eb9639018"
     },
     "R/intro_panel.R": {
       "checksum": "264169b44e22fcb1849557abbd2d5cc8"
@@ -5221,13 +5221,13 @@
       "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
     },
     "R/outcome1_page.R": {
-      "checksum": "f2f98ec977aa5e198fd72b9b74d67dc8"
+      "checksum": "608f45d88645469bad9f555c7bb25c40"
     },
     "R/outcome2_page.R": {
-      "checksum": "7a219478c37142df740d2a2166cec740"
+      "checksum": "bd2ad59c5d0b652498d44e09e7405292"
     },
     "R/outcome3_page.R": {
-      "checksum": "c802934c2c1f272cba6474f686199cde"
+      "checksum": "f9f0fe23841d3f9b9eb990618ee8376f"
     },
     "R/outcome4_page.R": {
       "checksum": "b2625a2c3c822c038f30ec1ad2862e5e"
@@ -5242,7 +5242,7 @@
       "checksum": "91299d347d9e982a416bbe4a1fece1a2"
     },
     "R/user_guide.R": {
-      "checksum": "5b7070d65195b4e6860f1861aa011018"
+      "checksum": "ee3249efe0d3327eaec20392a466f36a"
     },
     "R/utils.R": {
       "checksum": "684dd7f66a82a2485d0ffb1836adedd5"
@@ -5257,7 +5257,7 @@
       "checksum": "0c813d3fcfd0eb357ae7aadfce17b696"
     },
     "server.R": {
-      "checksum": "f3f6bf3de31333df2d0b2eec8e9301c7"
+      "checksum": "a6c82fcb4df4bdf0a534d80e9ae16a93"
     },
     "server_helpers/outcome1_server_helper.R": {
       "checksum": "77bcbc99d619e894e09b3515d75b21cd"
