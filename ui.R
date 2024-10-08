@@ -42,7 +42,6 @@
 
 ui <- function(input, output, session) {
   bslib::page(
-    tags$a(name = "top"),
     # use_tota11y(),
     title = tags$head(
       tags$link(
@@ -66,8 +65,10 @@ ui <- function(input, output, session) {
         referrer = "no-referrer"
       ),
     shinyjs::useShinyjs(),
-    dfe_cookie_script(),
-    cookie_banner_ui("cookies", name = "Children's Social Care - Outcomes and Enablers"),
+    dfe_cookies_script(),
+    cookies_banner_ui(
+      name = "Children's Social Care - Outcomes and Enablers"
+    ),
     customDisconnectMessage(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
@@ -124,6 +125,11 @@ ui <- function(input, output, session) {
       omitted_data_tab(),
       data_sources_tab(),
       a11y_panel(),
+      shiny::tabPanel(
+        value = "cookies_panel_ui",
+        "Cookies",
+        cookies_panel_ui(google_analytics_key = google_analytics_key)
+      ),
       support_links(),
       tutorialPanel(),
     ),

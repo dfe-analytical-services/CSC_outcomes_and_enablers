@@ -44,7 +44,7 @@ shhh(library(scales))
 
 shhh(library(htmltools))
 
-
+source("R/ui_panels/accessibility_statement.R")
 
 # Functions ---------------------------------------------------------------------------------
 
