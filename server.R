@@ -75,11 +75,14 @@ server <- function(input, output, session) {
     }
   })
 
-  output$cookie_status <- dfeshiny::cookie_banner_server(
-    "cookies",
-    input_cookies = reactive(input$cookies),
-    # input_clear = reactive(input$cookie_consent_clear),
+  output$cookies_status <- dfeshiny::cookies_banner_server(
+    input_cookies = shiny::reactive(input$cookies),
     parent_session = session,
+    google_analytics_key = google_analytics_key
+  )
+
+  dfeshiny::cookies_panel_server(
+    input_cookies = shiny::reactive(input$cookies),
     google_analytics_key = google_analytics_key
   )
 
@@ -1272,7 +1275,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Re-referrals (%)", "Re-referrals (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Re-referrals within 12 months %")
     ggplotly(
@@ -1331,7 +1334,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1358,7 +1361,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1403,7 +1406,7 @@ server <- function(input, output, session) {
       columns = list(
         `Referrals in the year` = colDef(cell = cellfunc),
         `Re-referrals within 12 months of a previous referral` = colDef(cell = cellfunc),
-        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-referrals within 12 months (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1496,7 +1499,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Overall absence rate (%)")
 
@@ -1558,7 +1561,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1576,7 +1579,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Overall absence rate (%) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1605,7 +1608,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1628,7 +1631,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Overall absence rate (%) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1687,7 +1690,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Overall absence (%)` = colDef(cell = cellfunc_percent)
+        `Overall absence (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1743,7 +1746,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Persistent absentees (%)")
 
@@ -1805,7 +1808,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1824,7 +1827,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1854,7 +1857,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -1878,7 +1881,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -1937,7 +1940,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Persistent absentees (%)` = colDef(cell = cellfunc_percent)
+        `Persistent absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2067,7 +2070,7 @@ server <- function(input, output, session) {
     max_rate <- max(outcomes_ks2$`Expected standard reading writing maths (%)`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage meeting combined expected standard (KS2)")
 
@@ -2126,7 +2129,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2144,7 +2147,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2175,7 +2178,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2197,7 +2200,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2257,7 +2260,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of eligible pupils` = colDef(cell = cellfunc),
-        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc_percent)
+        `Expected standard reading writing maths (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2312,7 +2315,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 20) * 20
 
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o1, input$geographic_breakdown_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average attainment 8 score (KS4)")
 
@@ -2370,7 +2373,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2387,7 +2390,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Average Attainment 8", "Average Attainment 8", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2414,7 +2417,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2435,7 +2438,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by local authority ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -2490,7 +2493,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average attainment 8 score` = colDef(cell = cellfunc_percent)
+        `Average attainment 8 score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2628,7 +2631,7 @@ server <- function(input, output, session) {
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to SGO")
 
@@ -2690,7 +2693,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent)
+        `Ceased (%)` = colDef(cell = cellfunc)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2711,7 +2714,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by region")
     title <- paste0("Percentage ceased CLA due to SGO by region (", max(p$data$time_period), ")")
@@ -2745,7 +2748,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -2765,7 +2768,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by local authority")
     title <- paste0("Percentage ceased CLA due to SGO by local authority (", max(p$data$time_period), ")")
@@ -2822,7 +2825,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2873,7 +2876,7 @@ server <- function(input, output, session) {
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage ceased CLA due to CAO")
 
@@ -2936,7 +2939,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -2956,7 +2959,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by region")
     title <- paste0("Percentage ceased CLA due to CAO by region (", max(p$data$time_period), ")")
@@ -2988,7 +2991,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3008,7 +3011,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by local authority")
     title <- paste0("Percentage ceased CLA due to CAO by local authority (", max(p$data$time_period), ")")
@@ -3062,7 +3065,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15, # 11 for stats neighbours, 15 for others?
       searchable = TRUE,
@@ -3182,7 +3185,7 @@ server <- function(input, output, session) {
     max_rate <- max(repeat_cpp$`Repeat_CPP_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Repeat CPP (%)")
 
@@ -3241,7 +3244,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3262,7 +3265,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by region")
     title <- paste0("Repeat CPP (%) by region (", max(p$data$time_period), ")")
@@ -3294,7 +3297,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3314,7 +3317,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", yupperlim = max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by local authority")
     title <- paste0("Repeat CPP (%) by local authority (", max(p$data$time_period), ")")
@@ -3366,7 +3369,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP Starts` = colDef(cell = cellfunc),
         `Repeat CPP` = colDef(cell = cellfunc),
-        `Repeat CPP (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat CPP (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3429,7 +3432,7 @@ server <- function(input, output, session) {
     max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -3487,7 +3490,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3506,7 +3509,7 @@ server <- function(input, output, session) {
       duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percent of CPP longer than 2 years by region")
     title <- paste0("Percent of CPP longer than 2 years by region (", max(p$data$time_period), ")")
@@ -3537,7 +3540,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
-        `CPP 2+ Years (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CPP 2+ Years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -3962,7 +3965,7 @@ server <- function(input, output, session) {
     )
     p <- all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms\n outside the home.")
+    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms\n outside the home")
     ggplotly(
       p,
       tooltip = "text",
@@ -4462,7 +4465,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Children living in selected placement type (%)")
 
@@ -4518,7 +4521,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4543,7 +4546,7 @@ server <- function(input, output, session) {
       placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title_placements <- paste("Children living in selected placement type (%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
@@ -4574,7 +4577,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4597,7 +4600,7 @@ server <- function(input, output, session) {
       placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) +
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) +
       scale_y_continuous(limits = c(0, 100))
     title_placements <- paste0("Children living in selected placement type (%) by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title_placements)
@@ -4651,7 +4654,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4702,7 +4705,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year")
 
@@ -4758,7 +4761,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4782,7 +4785,7 @@ server <- function(input, output, session) {
       placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by region")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by region (", max(p$data$time_period), ")")
@@ -4813,7 +4816,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4837,7 +4840,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "CLA with 3 or more placements (%)", "CLA with 3 or more placements (%)", max_rate, decimal_percentage = FALSE)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by local authority")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -4891,7 +4894,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `CLA with 3 or more placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -4943,7 +4946,7 @@ server <- function(input, output, session) {
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percentage of placements more than 20 miles from home")
 
@@ -5000,7 +5003,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5024,7 +5027,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of placements more than 20 miles from home by region")
     title <- paste0("Percentage of placements more than 20 miles from home by region (", max(p$data$time_period), ")")
@@ -5055,7 +5058,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5077,7 +5080,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE)
     # p <- p + ggtitle("Percentage of placements more than 20 miles from home by local authority")
     title <- paste0("Percentage of placements more than 20 miles from home by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
@@ -5130,7 +5133,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5310,7 +5313,7 @@ server <- function(input, output, session) {
       final_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5375,7 +5378,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5453,7 +5456,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average score` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average score` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5519,7 +5522,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5577,7 +5580,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE
@@ -5601,7 +5604,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in employment, education and training (", input$leavers_age, ") by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -5633,7 +5636,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5657,7 +5660,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE)
     age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
@@ -5710,7 +5713,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5770,7 +5773,7 @@ server <- function(input, output, session) {
     max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o4, input$geographic_breakdown_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ")")
     p <- p + ggtitle(age_title)
@@ -5831,7 +5834,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5855,7 +5858,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by region ", "(", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -5888,7 +5891,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -5911,7 +5914,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE)
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE)
     age_title <- paste0("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(age_title)
 
@@ -5964,7 +5967,7 @@ server <- function(input, output, session) {
       data2,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6057,7 +6060,7 @@ server <- function(input, output, session) {
         select(`Cost per child`))
     }
 
-    paste0("~ £", stat, " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
+    paste0("~ £", prettyNum(stat, big.mark = ","), " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
   })
 
   # Share of total spend on children's services minus CLA
@@ -6080,16 +6083,15 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
+      p <- by_region_bar_plot(data, "cs_share", "Share spent on children's services (%)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by region")
-      title <- paste0("Share of total spend on children's services (%) by region (", max(p$data$time_period), ")")
+      title <- paste0("Share of total local authority spend on children's services (%) by region (", max(p$data$time_period), ")")
       p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
@@ -6121,18 +6123,18 @@ server <- function(input, output, session) {
       #  need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Regional", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
         arrange(desc(cs_share)) %>%
-        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+        rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spending on children's services (%)" = "cs_share")
 
       table <- reactable(
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Share of spending on children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6164,16 +6166,15 @@ server <- function(input, output, session) {
       need(input$spending_choice != "", "Select a spending level.")
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", percentage = TRUE) %>%
+      p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "cs_share", yaxis_title = "Share spent on children's services (%)", decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by local authority") +
-      title <- paste0("Share of total spend on children's services (%) by local authority (", max(p$data$time_period), ")")
+      title <- paste0("Share of total local authority spend on children's services (%) by local authority (", max(p$data$time_period), ")")
       p <- p + ggtitle(title) +
 
         scale_y_continuous(limits = c(0, max_y_lim))
@@ -6206,18 +6207,18 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         filter(geographic_level == "Local authority", time_period == max(spending_data$time_period)) %>%
         select(time_period, geo_breakdown, cs_share) %>%
         arrange(desc(cs_share)) %>%
-        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of spending on Children's services (%)" = "cs_share")
+        rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of spending on children's services (%)" = "cs_share")
 
       table <- reactable(
         data,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Share of spending on Children's services (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Share of spending on children's services (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 15,
         searchable = TRUE,
@@ -6254,10 +6255,9 @@ server <- function(input, output, session) {
       select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
 
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
-    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "minus_cla_share", "Share spent on children's services\n excluding CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by region")
-    title <- paste0("Share of total spend on children's services minus CLA (%) by region (", max(p$data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by region (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
@@ -6277,13 +6277,13 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla %>%
       filter(geographic_level == "Regional", time_period == max(spending_data_no_cla$time_period)) %>%
       select(time_period, geo_breakdown, minus_cla_share) %>%
-      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of spend on children's services minus CLA (%)" = "minus_cla_share")
+      rename("Time period" = "time_period", "Region" = "geo_breakdown", "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
     reactable(
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share of spend on children's services minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6304,10 +6304,12 @@ server <- function(input, output, session) {
 
     max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
 
-    p <- by_la_bar_plot(dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)", yaxis_title = "Share of total children's services\n spend minus CLA (%)", percentage = TRUE) %>%
+    p <- by_la_bar_plot(
+      dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)",
+      yaxis_title = "Share of Children’s Services spend not on CLA (%)", decimal_percentage = TRUE
+    ) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total children's services spend minus CLA (%) by local authority") +
-    title <- paste0("Share of total children's services spend minus CLA (%) by local authority (", max(p$data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by local authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title) +
       scale_y_continuous(limits = c(0, max_y_lim))
     ggplotly(
@@ -6327,13 +6329,13 @@ server <- function(input, output, session) {
       filter(geographic_level == "Local authority", time_period == max(spending_data_no_cla$time_period)) %>%
       select(time_period, geo_breakdown, minus_cla_share) %>%
       arrange(desc(minus_cla_share)) %>%
-      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share minus CLA (%)" = "minus_cla_share")
+      rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
     reactable(
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share minus CLA (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share of Children’s Services spend not on CLA (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -6735,7 +6737,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Turnover Rate Fte", "Turnover rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
 
     p <- p + ggtitle("Social worker turnover rate (FTE) %")
@@ -6794,7 +6796,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6812,7 +6814,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover rate (FTE) % by region")
     title <- paste0("Social worker turnover rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -6841,7 +6843,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6859,7 +6861,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover rate (FTE) % by local authority")
     title <- paste0("Social worker turnover rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -6910,7 +6912,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6961,7 +6963,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Agency worker rate (FTE) %")
 
@@ -7019,7 +7021,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent)
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7037,7 +7039,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by region")
     title <- paste0("Agency worker rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -7067,7 +7069,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7085,7 +7087,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by local authority")
     title <- paste0("Agency worker rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -7135,7 +7137,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency worker rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7186,7 +7188,7 @@ server <- function(input, output, session) {
       max_rate <- ceiling(max_rate / 20) * 20
     }
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Vacancy rate (FTE) %")
 
@@ -7244,7 +7246,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7262,7 +7264,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by region")
     title <- paste0("Vacancy rate (FTE) % by region (", max(p$data$time_period), ")")
@@ -7292,7 +7294,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7310,7 +7312,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by local authority")
     title <- paste0("Vacancy rate (FTE) % by local authority (", max(p$data$time_period), ")")
@@ -7360,7 +7362,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7407,7 +7409,7 @@ server <- function(input, output, session) {
     # Round the max_rate to the nearest 20
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_e3, input$geographic_breakdown_e3, "Caseload Fte", "Average caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Average caseload (FTE)")
 
@@ -7465,7 +7467,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent)
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7483,7 +7485,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- by_region_bar_plot(workforce_data, "Caseload Fte", "Average caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by region")
     title <- paste0("Average caseload (FTE) by region (", max(p$data$time_period), ")")
@@ -7513,7 +7515,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7531,7 +7533,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- by_la_bar_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by local authority")
     title <- paste0("Average caseload (FTE) by local authority (", max(p$data$time_period), ")")
@@ -7580,7 +7582,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average caseload (FTE)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Average caseload (FTE)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -7736,7 +7738,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cla_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cla_rate_la",
@@ -7752,11 +7754,13 @@ server <- function(input, output, session) {
           inputId = "cla_rate_la_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-              tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
-              tags$li("Figures exclude children looked after under a series of short-term placements."),
-              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+            tagList(
+              tags$ul(
+                tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                tags$li("Figures exclude children looked after under a series of short-term placements."),
+                tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication.")
+              ),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance.", target = "_blank"),
@@ -7866,7 +7870,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_uasc_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_uasc_la",
@@ -7996,7 +8000,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cla_march_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cla_march_la",
@@ -8114,7 +8118,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cin_rates_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cin_rates_la",
@@ -8236,7 +8240,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cin_referral_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cin_referral_la",
@@ -8309,7 +8313,7 @@ server <- function(input, output, session) {
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
       need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
-    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Re-referrals (%) by statistical neighbours")
     title <- paste0("Re-referrals (%) by statistical neighbours (", max(cin_referrals$time_period), ")")
@@ -8330,7 +8334,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Re-referrals (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Re-Referrals (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Re-Referrals (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8343,7 +8347,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_absence_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_absence_la",
@@ -8370,9 +8374,9 @@ server <- function(input, output, session) {
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
               ),
-              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+              tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
               tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
@@ -8437,9 +8441,9 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Overall absence (%)", "Overall absence (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
-    title <- paste0("Overall absence rate (%) by statistical neighbours", "(", max(data$time_period), ")")
+    title <- paste0("Overall absence rate (%) by statistical neighbours", " (", max(data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
@@ -8463,7 +8467,7 @@ server <- function(input, output, session) {
         `social_care_group` = colDef(name = "Social care group"),
         `school_type` = colDef(name = "School type"),
         `Total pupils` = colDef(name = "Total number of pupils"),
-        `Overall Absence (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Overall Absence (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8476,7 +8480,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_persistent_absence_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_persistent_absence_la",
@@ -8502,9 +8506,9 @@ server <- function(input, output, session) {
                                   Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
               ),
-              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+              tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
               tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
@@ -8569,7 +8573,7 @@ server <- function(input, output, session) {
       !outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Persistent absentees (%)", "Persistent absentees (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Persistent absentees (%) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8593,7 +8597,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8606,7 +8610,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_KS2_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_KS2_la",
@@ -8628,9 +8632,9 @@ server <- function(input, output, session) {
                 "Writing teacher assessment and reading, writing and maths (combined) measures from 2018 onwards are not directly comparable to previous years due to changes in the writing teacher assessment frameworks. For more detailed information on this see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/key-stage-2-attainment", "Key stage 2 attainment.", target = "_blank"),
               ),
-              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+              tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
               tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
@@ -8694,7 +8698,7 @@ server <- function(input, output, session) {
       outcomes_ks2$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Expected standard reading writing maths (%)", "Expected standard combined (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     title <- paste0("Percentage meeting combined expected standard (KS2) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8720,7 +8724,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "t_rwm_eligible_pupils"), yvalue = "Expected standard reading writing maths (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
+        `Expected Standard Reading Writing Maths (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc"), `t_rwm_eligible_pupils` = colDef(name = "Total number of eligibile pupils"), `social_care_group` = colDef(name = "Social care group")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8734,7 +8738,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_KS4_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_KS4_la",
@@ -8759,9 +8763,9 @@ server <- function(input, output, session) {
               ),
               tags$li("In 2022/23 there was a return to pre-pandemic standards for GCSEs, with protection built into the grading process to recognise the disruption that students have faced. Therefore, the more meaningful comparison is with 2019, the last year that summer exams were taken before the pandemic, as 2023 saw a return to pre-pandemic grading, with some protections.
                                   In 2022 outcomes broadly reflected a mid-point between 2019 and 2021, to take account of the impact of the pandemic and in line with Ofqual’s approach to grading in 2022. It is expected that performance in 2023 will generally be lower than in 2022. Users need to exercise extreme caution when considering comparisons over time, as they may not reflect changes in pupil performance alone."),
-              tags$li("CINO refers to Children In Need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-              tags$li("CPPO refers to children on a Child Protection Plan, excluding children looked after."),
-              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+              tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
               tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
               tags$br(),
               p(
@@ -8825,7 +8829,7 @@ server <- function(input, output, session) {
       outcomes_ks4$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o1, input$select_geography_o1, "Average Attainment 8", "Average Attainment 8 score", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Average attainment 8 score (KS4) by statistical neighbours ", "(", max(data$time_period), ")")
     p <- p + ggtitle(title)
@@ -8851,7 +8855,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Average Attainment 8 Score` = colDef(cell = cellfunc_percent)
+        `Average Attainment 8 Score` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -8865,7 +8869,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_SGO_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_sgo_ceased_la",
@@ -8882,15 +8886,15 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             p(
-              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
+              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "children looked after publication ", target = "_blank"), "for full list of reasons."),
               tags$li("Percentages rounded to the nearest whole number."),
               tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
               tags$li("Figures exclude children looked after under a series of short-term placements."),
               tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
               tags$br(),
-              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after guidance.", target = "_blank"),
               tags$br(),
-              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
           ))
         )
       )
@@ -8944,7 +8948,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to SGO by statistical neighbours")
     title <- paste0("Percentage ceased CLA due to SGO by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -8968,7 +8972,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8981,7 +8985,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cao_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cao_ceased_la",
@@ -8998,15 +9002,15 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             p(
-              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after publication ", target = "_blank"), "for full list of reasons."),
+              tags$li("Only one reason for children ceased to be looked after during the year shown. See ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "children looked after publication ", target = "_blank"), "for full list of reasons."),
               tags$li("Percentages rounded to the nearest whole number."),
               tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
               tags$li("Figures exclude children looked after under a series of short-term placements."),
               tags$li("Only the last occasion on which a child ceased to be looked after in the year has been counted."),
               tags$br(),
-              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after guidance.", target = "_blank"),
               tags$br(),
-              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
           ))
         )
       )
@@ -9060,7 +9064,7 @@ server <- function(input, output, session) {
       ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to CAO (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage ceased CLA due to CAO by statistical neighbours")
     title <- paste0("Percentage ceased CLA due to CAO by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -9084,7 +9088,7 @@ server <- function(input, output, session) {
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
         `Total ceased` = colDef(cell = cellfunc),
-        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Ceased (%)` = colDef(name = "Reason ceased (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9099,7 +9103,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cpp_repeat_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_repeat_cpp_la",
@@ -9178,7 +9182,7 @@ server <- function(input, output, session) {
       repeat_cpp$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "Repeat CPP (%)", "Repeat CPP (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
     title <- paste0("Repeat CPP (%) by statistical neighbours (", max(filtered_data$time_period), ")")
@@ -9202,7 +9206,7 @@ server <- function(input, output, session) {
       columns = list(
         `CPP starts` = colDef(name = "CPP Starts", cell = cellfunc),
         `Repeat CPP` = colDef(name = "Repeat CPP", cell = cellfunc),
-        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Repeat Cpp (%)` = colDef(name = "Repeat CPP (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -9217,7 +9221,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("admissions_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_hosp_admission_la",
@@ -9337,7 +9341,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_child_abuse_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_child_ab_la",
@@ -9452,7 +9456,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_efh_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_extra_fam_la",
@@ -9569,7 +9573,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_type_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_type_la",
@@ -9589,7 +9593,7 @@ server <- function(input, output, session) {
               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
               tags$br(),
               p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after in England data guidance.", target = "_blank"),
               )
             )
           )
@@ -9647,7 +9651,7 @@ server <- function(input, output, session) {
       placement_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     placements_title <- paste("Children living in selected placement type (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(placements_title)
@@ -9669,7 +9673,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Type", yvalue = "Placements (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9682,7 +9686,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_changes_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_changes_la",
@@ -9702,7 +9706,7 @@ server <- function(input, output, session) {
               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
               tags$br(),
               p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after in England data guidance.", target = "_blank"),
               )
             )
           )
@@ -9760,7 +9764,7 @@ server <- function(input, output, session) {
       placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Percent", "Percentage", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of CLA with 3 or more placements during the year by statistical neighbours")
     title <- paste0("Percentage of CLA with 3 or more placements during the year by statistical neighbours (", max(data$time_period), ")")
@@ -9783,7 +9787,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percentage"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Percentage` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Percentage` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9796,7 +9800,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("placement_dist_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_placement_changes_la",
@@ -9816,9 +9820,9 @@ server <- function(input, output, session) {
               tags$li("Percentages have been rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. Figures exclude children looked after under a series of short-term placements."),
               tags$br(),
               p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after in England data guidance.", target = "_blank"),
                 tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
               )
             )
           )
@@ -9876,7 +9880,7 @@ server <- function(input, output, session) {
       placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Placements more then 20 miles from home (%)", "Placements (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percentage of placements more then 20 miles from home by statistical neighbours")
     title <- paste0("Percentage of placements more then 20 miles from home by statistical neighbours (", max(data$time_period), ")")
@@ -9899,7 +9903,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = "Placement Distance", yvalue = "Placements (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Placements (%)` = colDef(cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9913,7 +9917,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("sdq_by_la_plot"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_sdq_score_la",
@@ -9933,9 +9937,9 @@ server <- function(input, output, session) {
             tags$li("An SDQ score is required of all children aged 4-16 on the date of last assessment. Date of assessment is not collected so data in this table is restricted to children aged 5 to 16 years."),
             tags$li("A higher score indicates more emotional difficulties. 0-13 is considered normal, 14-16 is borderline cause for concern and 17-40 is cause for concern."),
             tags$br(),
-            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after guidance.", target = "_blank"),
             tags$br(),
-            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
           ))
         )
       )
@@ -10011,7 +10015,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, selectedcolumn = c("SDQ characteristic", "SDQ score"), yvalue = "Average score"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Average Score` = colDef(name = "Average score", cell = cellfunc_percent, defaultSortOrder = "desc"),
+        `Average Score` = colDef(name = "Average score", cell = cellfunc_decimal_percent, defaultSortOrder = "desc"),
         `SDQ score` = colDef(name = "SDQ score")
       ),
       defaultPageSize = 15,
@@ -10026,7 +10030,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cl_activity_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cl_activity_la",
@@ -10054,9 +10058,9 @@ server <- function(input, output, session) {
               tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
               tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
               tags$br(),
-              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after guidance.", target = "_blank"),
               tags$br(),
-              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
           ))
         )
       )
@@ -10114,7 +10118,7 @@ server <- function(input, output, session) {
       care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in education, employment or training (%)", "Care leavers in education,\n employment or training (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste0("Care leavers in employment, education and training (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -10136,7 +10140,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Percent"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Percent` = colDef(name = "Care leavers in education, employment or training (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10149,7 +10153,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_cl_accommodation_by_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_cl_accommodation_la",
@@ -10178,9 +10182,9 @@ server <- function(input, output, session) {
               tags$li("In touch, activity and accommodation information for 17-21 year old care leavers relates to contact around their birthday."),
               tags$li("Figures for 2023 exclude Barnsley who were unable to provide data in time for publication."),
               tags$br(),
-              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after guidance.", target = "_blank"),
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after guidance.", target = "_blank"),
               tags$br(),
-              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
             )
           )
         )
@@ -10239,7 +10243,7 @@ server <- function(input, output, session) {
       care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_o4, input$select_geography_o4, "Care leavers in suitable accommodation (%)", "Care leavers in suitable\n accommodation (%)", max_rate, decimal_percentage = FALSE) %>%
       config(displayModeBar = F)
     age_title <- paste("Care leavers in suitable accommodation (", input$leavers_age, ") by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(age_title)
@@ -10261,7 +10265,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(data, input$geographic_breakdown_o4, input$select_geography_o4, yvalue = "Care leavers in suitable accommodation (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Care Leavers In Suitable Accommodation (%)` = colDef(name = "Care leavers in suitable accommodation (%)", cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10277,7 +10281,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_turnover_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_turnover_la",
@@ -10355,7 +10359,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Turnover Rate Fte", "Turnover Rate %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Social worker turnover (FTE) % by statistical neighbours")
     title <- paste0("Social worker turnover (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10374,7 +10378,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Turnover Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Turnover Rate Fte` = colDef(name = "Turnover rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10387,7 +10391,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_agency_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_agency_rate_la",
@@ -10463,7 +10467,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Agency Rate Fte", "Agency worker rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Agency worker rate (FTE) % by statistical neighbours")
     title <- paste0("Agency worker rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10482,7 +10486,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Agency Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Agency Rate Fte` = colDef(name = "Agency worker rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10496,7 +10500,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_vacancy_rate_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_vacancy_rate_la",
@@ -10573,7 +10577,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Vacancy Rate Fte", "Vacancy rate (FTE) %", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Vacancy rate (FTE) % by statistical neighbours")
     title <- paste0("Vacancy rate (FTE) % by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10591,7 +10595,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Vacancy Rate Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Vacancy Rate Fte` = colDef(name = "Vacancy rate (FTE) %", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10604,7 +10608,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_caseload_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_caseload_la",
@@ -10681,7 +10685,7 @@ server <- function(input, output, session) {
       workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, "Caseload Fte", "Average Caseload (FTE)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
     title <- paste0("Average caseload (FTE) by statistical neighbours (", max(workforce_data$time_period), ")")
@@ -10700,7 +10704,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(workforce_data, input$geographic_breakdown_e3, input$select_geography_e3, yvalue = "Caseload Fte"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Caseload Fte` = colDef(name = "Average caseload (FTE)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -10794,7 +10798,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_spending_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_tot_spend_la",
@@ -10812,8 +10816,8 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
-              tags$li("Average per child spend is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
-              tags$li("Average per child spend has been rounded to the nearest whole number."),
+              tags$li("Average per capita (of all children in a local authority) spend on children’s services is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
+              tags$li("Average per capita (of all children in a local authority) spend on children’s services has been rounded to the nearest whole number."),
               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
               tags$br(),
               p(
@@ -10868,14 +10872,13 @@ server <- function(input, output, session) {
     )
 
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data
 
       max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, percentage = TRUE) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "cs_share", "Share spent on children's services (%)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
-      # p <- p + ggtitle("Share of total spend on children's services (%) by statistical neighbours")
-      title <- paste0("Share of total spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
+      title <- paste0("Share of total LA spend on children's services (%) by statistical neighbours (", max(data$time_period), ")")
       p <- p + ggtitle(title)
     } else {
       data <- spending_per_capita %>%
@@ -10883,7 +10886,7 @@ server <- function(input, output, session) {
 
       max_y_lim <- ceiling(max(data$`Spend per child (£)`) / 50) * 50
 
-      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, percentage = TRUE) %>%
+      p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "Spend per child (£)", "Average spend per child (£)", max_y_lim, decimal_percentage = TRUE) %>%
         config(displayModeBar = F)
       # p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
       title <- paste0("Average spend per child (£) by statistical neighbours (", max(data$time_period), ")")
@@ -10905,7 +10908,7 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
     # Need an if statement to look at the spending level choice this will determine the data in the chart
-    if (input$spending_choice == "Share of total spend on children's services") {
+    if (input$spending_choice == "Share of total local authority spend on children's services") {
       data <- spending_data %>%
         rename("Children's services share (%)" = "cs_share")
 
@@ -10915,7 +10918,7 @@ server <- function(input, output, session) {
         table,
         defaultColDef = colDef(align = "center"),
         columns = list(
-          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+          `Children's Services Share (%)` = colDef(name = "Children's Services share (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
         ),
         defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
         searchable = TRUE,
@@ -10945,7 +10948,7 @@ server <- function(input, output, session) {
       tagList(
         plotlyOutput("plot_spend_excl_cla_la"),
         br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
         br(),
         details(
           inputId = "tbl_tot_no_cla_spend_la",
@@ -11020,10 +11023,9 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services\n minus CLA (%)", max_y_lim, percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share of Children’s Services spend\n not on CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
-    # p <- p + ggtitle("Share of total spend on children's services minus CLA (%) by statistical neighbours")
-    title <- paste0("Share of total spend on children's services minus CLA (%) by statistical neighbours (", max(data$time_period), ")")
+    title <- paste0("Share of Children’s Services spend not on CLA (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title)
 
     ggplotly(
@@ -11041,15 +11043,15 @@ server <- function(input, output, session) {
     )
 
     data <- spending_data_no_cla %>%
-      rename("Share of spend minus CLA (%)" = "minus_cla_share")
+      rename("Share of Children’s Services spend not on CLA (%)" = "minus_cla_share")
 
-    table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Share of spend minus CLA (%)")
+    table <- stats_neighbours_table(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Share of Children’s Services spend not on CLA (%)")
 
     reactable(
       table,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Share Of Spend Minus Cla (%)` = colDef(name = "Share of spend minus CLA (%)", cell = cellfunc_percent, defaultSortOrder = "desc")
+        `Share Of Children’s Services Spend Not On Cla (%)` = colDef(name = "Share of Children’s Services spend not on CLA (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,

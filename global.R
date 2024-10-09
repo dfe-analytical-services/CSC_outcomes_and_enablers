@@ -44,7 +44,7 @@ shhh(library(scales))
 
 shhh(library(htmltools))
 
-
+lapply(list.files("R/ui_panels/", full.names = TRUE, recursive = TRUE), source)
 
 # Functions ---------------------------------------------------------------------------------
 

@@ -39,7 +39,7 @@ enabler3_tab <- function() {
                 width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_e3",
-                  cb_labels = "Compare with National",
+                  cb_labels = "Compare with national",
                   checkboxIds = "Yes_national_e3",
                   label = "",
                   hint_label = NULL,
@@ -53,7 +53,7 @@ enabler3_tab <- function() {
                 width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e3",
-                  cb_labels = "Compare with Region",
+                  cb_labels = "Compare with region",
                   checkboxIds = "Yes_region_e3",
                   label = "",
                   hint_label = NULL,
@@ -91,7 +91,7 @@ enabler3_tab <- function() {
             id = "enabler3_panels",
             type = "tabs",
             tabPanel(
-              "Workforce Stability",
+              "Workforce stability",
               fluidRow(
                 br(),
               ),
@@ -122,12 +122,12 @@ enabler3_tab <- function() {
               accordion(
                 # Social Worker Turnover --------------
                 accordion_panel(
-                  "Social Worker Turnover",
+                  "Social worker turnover",
                   gov_row(
                     h2("Social worker turnover"),
                     p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."),
                     insert_text(inputId = "social_work_turnover_definition", text = paste(
-                      "The ", "<b>", "turnover rate", "</b>", " is calculated as (the number of) FTE children and family social worker leavers in the year to 30 September divided by FTE children and family social workers in
+                      "The ", "<b>", "turnover rate", "</b>", " is calculated as (the number of) FTE (full-time equivalent) children and family social worker leavers in the year to 30 September divided by FTE children and family social workers in
                       post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."
                     )),
                     plotlyOutput("plot_s_w_turnover"),
@@ -211,7 +211,7 @@ enabler3_tab <- function() {
                 ),
                 # Agency worker rates ---------------------------
                 accordion_panel(
-                  "Agency Rates",
+                  "Agency rates",
                   gov_row(
                     h2("Agency rates"),
                     p("Prioritising a stable and permanent workforce allows children, young people and families to maintain consistent relationships with practitioners.
@@ -298,7 +298,7 @@ enabler3_tab <- function() {
                 ),
                 # Vacancy rates ------------------
                 accordion_panel(
-                  "Vacancy Rates",
+                  "Vacancy rates",
                   gov_row(
                     h2("Vacancy rates"),
                     p("A workforce strategy should develop and maintain an effective workforce. With a well-supported workforce vacancy rates should remain low."),
@@ -413,7 +413,7 @@ enabler3_tab <- function() {
                          retention and allows practitioners to deliver impactful services."),
                     insert_text(inputId = "caseload_definition", text = paste(
                       "A", "<b>", " case ", "</b>", " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role.", "<br>", "<br>",
-                      "<b>", "Average caseload", "</b>", "at 30 September is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases.", "<br><br>",
+                      "<b>", "Average caseload", "</b>", "at 30 September is calculated as the total number of cases held by FTE (Full-time Equivalent) social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases.", "<br><br>",
                       "The number of cases held doesn’t account for the complexity of the cases held and this should also be taken into consideration when interpreting the caseload figures."
                     )),
                     br(),

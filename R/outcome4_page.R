@@ -1,7 +1,7 @@
 outcome4_tab <- function() {
   tabPanel(
     value = "outcome4_page",
-    "Stable Homes",
+    "Stable homes",
     gov_main_layout(
       gov_row(
         column(
@@ -43,7 +43,7 @@ outcome4_tab <- function() {
                 width = 5,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o4",
-                  cb_labels = "Compare with National",
+                  cb_labels = "Compare with national",
                   checkboxIds = "Yes_national_o4",
                   label = "",
                   hint_label = NULL,
@@ -57,7 +57,7 @@ outcome4_tab <- function() {
                 width = 7,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
-                  cb_labels = "Compare with Region",
+                  cb_labels = "Compare with region",
                   checkboxIds = "Yes_region_o4",
                   label = "",
                   hint_label = NULL,
@@ -130,14 +130,13 @@ outcome4_tab <- function() {
                   )
                 ),
                 br(),
-                p("Care leavers should be supported to access education, employment and
-                  training that supports them and allows them to achieve their aspirations and goals.")
               ),
               accordion(
                 ## Placement changes during year -----------
                 accordion_panel(
                   "Percentage of CLA with 3 or more placements during the year",
                   h2("Percentage of CLA with 3 or more placements during the year"),
+                  p("Those children who cannot remain living with families or family network should be provided with a stable home environment. Minimising changes to the number of times that children have to move home while in care is key to this ambition."),
                   gov_row(
                     plotlyOutput("placement_changes_ts_plot"),
                     br(),
@@ -214,6 +213,13 @@ outcome4_tab <- function() {
                   "Distance of placements from home",
                   gov_row(
                     h2("Placements more than 20 miles from home"),
+                    p("Children should be supported to remain in school placements and to retain contact with friends and family networks where this is in their best interests. As such, where possible, children should be supported to remain close to their home address."),
+                    insert_text(
+                      inputId = "distance_definition",
+                      text = paste(
+                        "Distance is the distance in miles between the child's home and placement. In some cases this is not known, for example UASC, or not recorded for confidentiality reasons, such as some children placed for adoption."
+                      )
+                    ),
                     plotlyOutput("placement_distance_ts_plot"),
                     br(),
                     details(
@@ -289,6 +295,7 @@ outcome4_tab <- function() {
                 accordion_panel(
                   "Percentage of children living in foster, residential care, or secure children’s homes",
                   h2("Percentage of children living in foster, residential care, or secure children’s homes"),
+                  p("This indicator looks at the proportion of children living in different placement types. Where possible, the aim is to support children in care to live in foster care arrangements."),
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
                     div(
@@ -396,6 +403,7 @@ outcome4_tab <- function() {
                   gov_row(
                     div(
                       h2("Average time between placement order and match for those children who are adopted"),
+                      p("For those children for whom adoption has been assessed as the right option, ensuring that the child moves to an appropriate home as soon as possible will increase stability for the child."),
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
                       insert_text(
