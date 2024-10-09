@@ -130,7 +130,7 @@ a11y_panel <- function() {
             tags$li("charts, maps, and tables")
           )),
           p(
-            "This specific website was was last tested on 08th October 2024 against",
+            "This specific website was was last tested on 8th October 2024 against",
             a(
               href = "https://www.w3.org/TR/WCAG22/",
               "Accessibility Guidelines WCAG2.2",
