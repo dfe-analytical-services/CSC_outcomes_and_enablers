@@ -40,6 +40,7 @@ jobs:
         if: endsWith(github.ref, '/main')
         run: |
           echo "SHINYAPP_NAME='csc-outcomes-enablers'">> $GITHUB_ENV
+          echo "SHINYAPP_OVERFLOW_NAME='csc-outcomes-enablers-overflow'" >> $GITHUB_ENV
 
       - name: Cache R packages
         if: runner.os != 'Windows'
