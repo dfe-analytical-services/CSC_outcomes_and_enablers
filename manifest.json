@@ -5232,7 +5232,7 @@
       "checksum": "0632a61c292184d1246e61f385b0274c"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "7aaddb4627ae404b4afd2f3ae4bb8e0b"
+      "checksum": "156260598ce08a074dce84e674d28647"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "3e63a7a1f22c68fcdb4a1c3685e8333e"
@@ -5241,7 +5241,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "c87e26fc7e062be769da3a6cd4707a1a"
+      "checksum": "8f4f004c3af6e03c3fabb2d807141cb6"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5355,7 +5355,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "d75e294274e0100ca2e36ddad27709ea"
+      "checksum": "1c74f8b470b11e7653d5ebafc56bbaf8"
     },
     "google-analytics.html": {
       "checksum": "e9e6530abb3abe983b6bda0e0f1ef589"
