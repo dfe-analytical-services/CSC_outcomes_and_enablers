@@ -38,7 +38,57 @@ The tracking number below MUST be replaced with a unique number, contact the sta
     });
   });
 
+/*
+Adding in custom google analytics tracking for the domain tabs
+*/
 
+  $(document).on('click', 'ul#outcome1_panels', function(e) {
+    gtag('event', 'Outcome1 Domains', {'event_category' : 'O1 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#outcome1_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
+  
+  $(document).on('click', 'ul#outcome2_panels', function(e) {
+    gtag('event', 'Outcome2 Domains', {'event_category' : 'O2 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#outcome2_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
+  
+  $(document).on('click', 'ul#outcome3_panels', function(e) {
+    gtag('event', 'Outcome3 Domains', {'event_category' : 'O3 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#outcome3_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
+  
+  $(document).on('click', 'ul#outcome4_panels', function(e) {
+    gtag('event', 'Outcome4 Domains', {'event_category' : 'O4 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#outcome4_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
+ 
+ $(document).on('click', 'ul#enabler2_panels', function(e) {
+    gtag('event', 'Enabler2 Domains', {'event_category' : 'E2 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#enabler2_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
+  
+  $(document).on('click', 'ul#enabler3_panels', function(e) {
+    gtag('event', 'Enabler3 Domains', {'event_category' : 'E3 Domain clicks',
+    'event_label' : document.querySelector(
+    'ul#enabler3_panels > li.active > a'
+    ).getAttribute('data-value')
+    });
+  });
   
 </script>
       
