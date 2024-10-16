@@ -6672,7 +6672,7 @@ server <- function(input, output, session) {
   output$caseload_txt <- renderText({
     if (input$geographic_breakdown_e3 == "") {
       stat <- "NA"
-      paste0(stat, "%", "<br>")
+      paste0(stat, "<br>")
     } else {
       previous_year_value <- workforce_data %>%
         filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
@@ -6688,7 +6688,7 @@ server <- function(input, output, session) {
         context <- " up from "
       }
       stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
-      paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
+      paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
     }
   })
 
