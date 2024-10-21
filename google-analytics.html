@@ -90,6 +90,94 @@ Adding in custom google analytics tracking for the domain tabs
     });
   });
   
+/*
+Adding google tracking to the filters for each page
+*/
+// Outcome 1 filters
+  $(document).on('change', 'select#select_geography_o1', function(e) {
+    gtag('event', 'O1 Geography lvl', {'event_category' : 'O1 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_o1').value
+    });
+  });
+  
+  $(document).on('change', 'select#geographic_breakdown_o1', function(e) {
+    gtag('event', 'O1 Geography breakdown', {'event_category' : 'O1 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_o1').value
+    });
+  });
+  
+// Outcome 2 filters
+  $(document).on('change', 'select#select_geography_o2', function(e) {
+    gtag('event', 'O2 Geography lvl', {'event_category' : 'O2 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_o2').value
+    });
+  });
+  
+  $(document).on('change', 'select#geographic_breakdown_o2', function(e) {
+    gtag('event', 'O2 Geography breakdown', {'event_category' : 'O2 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_o2').value
+    });
+  });
+  
+// Outcome 3 filters
+  $(document).on('change', 'select#select_geography_o3', function(e) {
+    gtag('event', 'O3 Geography lvl', {'event_category' : 'O3 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_o3').value
+    });
+  });
+
+  $(document).on('change', 'select#geographic_breakdown_o3', function(e) {
+    gtag('event', 'O3 Geography breakdown', {'event_category' : 'O3 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_o3').value
+    });
+  });
+  
+// Outcome 4 filters
+  $(document).on('change', 'select#select_geography_o4', function(e) {
+    gtag('event', 'O4 Geography lvl', {'event_category' : 'O4 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_o4').value
+    });
+  });
+  
+  $(document).on('change', 'select#geographic_breakdown_o4', function(e) {
+    gtag('event', 'O4 Geography breakdown', {'event_category' : 'O4 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_o4').value
+    });
+  });
+  
+// Enabler 2 filters
+  $(document).on('change', 'select#select_geography_e2', function(e) {
+    gtag('event', 'E2 Geography lvl', {'event_category' : 'E2 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_e2').value
+    });
+  });
+  
+  $(document).on('change', 'select#geographic_breakdown_e2', function(e) {
+    gtag('event', 'E2 Geography breakdown', {'event_category' : 'E2 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_e2').value
+    });
+  });
+
+// Enabler 3 filters
+  $(document).on('change', 'select#select_geography_e3', function(e) {
+    gtag('event', 'E3 Geography lvl', {'event_category' : 'E3 Geography lvl',
+    'event_label' : document.querySelector('select#select_geography_e3').value
+    });
+  });
+  
+  $(document).on('change', 'select#geographic_breakdown_e3', function(e) {
+    gtag('event', 'E3 Geography breakdown', {'event_category' : 'E3 Geography breakdown',
+    'event_label' : document.querySelector('select#geographic_breakdown_e3').value
+    });
+  });
+  
+  
+/*
+Accordion Google analytics tracking
+*/
+
+
+  
 </script>
       
 
