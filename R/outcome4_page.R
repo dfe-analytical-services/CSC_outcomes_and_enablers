@@ -132,9 +132,11 @@ outcome4_tab <- function() {
                 br(),
               ),
               accordion(
+                id = "o4_d1_accordion",
                 ## Placement changes during year -----------
                 accordion_panel(
-                  "Percentage of CLA with 3 or more placements during the year",
+                  title = "Percentage of CLA with 3 or more placements during the year",
+                  value = "placement_change_accordion",
                   h2("Percentage of CLA with 3 or more placements during the year"),
                   p("Those children who cannot remain living with families or family network should be provided with a stable home environment. Minimising changes to the number of times that children have to move home while in care is key to this ambition."),
                   gov_row(
@@ -210,7 +212,8 @@ outcome4_tab <- function() {
                 ),
                 ## Distance of placements -----
                 accordion_panel(
-                  "Distance of placements from home",
+                  title = "Distance of placements from home",
+                  value = "placement_distance_accordion",
                   gov_row(
                     h2("Placements more than 20 miles from home"),
                     p("Children should be supported to remain in school placements and to retain contact with friends and family networks where this is in their best interests. As such, where possible, children should be supported to remain close to their home address."),
@@ -293,7 +296,8 @@ outcome4_tab <- function() {
                 ),
                 ## Type of placement ----------------
                 accordion_panel(
-                  "Percentage of children living in foster, residential care, or secure children’s homes",
+                  title = "Percentage of children living in foster, residential care, or secure children’s homes",
+                  value = "placement_type_accordion",
                   h2("Percentage of children living in foster, residential care, or secure children’s homes"),
                   p("This indicator looks at the proportion of children living in different placement types. Where possible, the aim is to support children in care to live in foster care arrangements."),
                   gov_row(
@@ -399,7 +403,8 @@ outcome4_tab <- function() {
                 ),
                 ## Time between placements ---------------
                 accordion_panel(
-                  "Average time between placement order and match for those children who are adopted",
+                  title = "Average time between placement order and match for those children who are adopted",
+                  value = "placement_order_match_accordion",
                   gov_row(
                     div(
                       h2("Average time between placement order and match for those children who are adopted"),
@@ -475,8 +480,10 @@ outcome4_tab <- function() {
                 p("Understanding the emotional and behavioural need of CLA is important to ensure that they are receiving the care and support they need to thrive. The SDQ score uses a series of carer-reported measures to calculate an overall score to assess the emotional wellbeing of CLA."),
               ),
               accordion(
+                id = "o4_d2_accordion",
                 accordion_panel(
-                  "Strengths and difficulties questionnaire (SDQ score)",
+                  title = "Strengths and difficulties questionnaire (SDQ score)",
+                  value = "SDQ_accordion",
                   gov_row(
                     h2("Strengths and difficulties questionnaire (SDQ score)"),
                     insert_text(
@@ -621,9 +628,11 @@ outcome4_tab <- function() {
                     options = NULL
                   ),
                   accordion(
+                    id = "o4_d3_accordion",
                     ### care leavers activity ------------
                     accordion_panel(
-                      "Care leavers employment, education and training rate",
+                      title = "Care leavers employment, education and training rate",
+                      value = "care_leavers_activity_accordion",
                       gov_row(
                         uiOutput("care_leavers_header1"),
                         plotlyOutput("care_activity_ts_plot"),
@@ -698,7 +707,8 @@ outcome4_tab <- function() {
                     ),
                     ### care leavers Accommodation ------------
                     accordion_panel(
-                      "Percentage of care leavers in suitable accommodation",
+                      title = "Percentage of care leavers in suitable accommodation",
+                      value = "care_leavers_accommodation_accordion",
                       gov_row(
                         uiOutput("care_leavers_header4"),
                         plotlyOutput("care_accommodation_ts_plot"),

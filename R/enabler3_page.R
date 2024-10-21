@@ -120,9 +120,11 @@ enabler3_tab <- function() {
                 br(),
               ),
               accordion(
+                id = "e3_d1_accordions",
                 # Social Worker Turnover --------------
                 accordion_panel(
-                  "Social worker turnover",
+                  title = "Social worker turnover",
+                  value = "social_worker_turnover_accordion",
                   gov_row(
                     h2("Social worker turnover"),
                     p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."),
@@ -211,7 +213,8 @@ enabler3_tab <- function() {
                 ),
                 # Agency worker rates ---------------------------
                 accordion_panel(
-                  "Agency rates",
+                  title = "Agency rates",
+                  value = "agency_rates_accordion",
                   gov_row(
                     h2("Agency rates"),
                     p("Prioritising a stable and permanent workforce allows children, young people and families to maintain consistent relationships with practitioners.
@@ -298,7 +301,8 @@ enabler3_tab <- function() {
                 ),
                 # Vacancy rates ------------------
                 accordion_panel(
-                  "Vacancy rates",
+                  title = "Vacancy rates",
+                  value = "vacancy_rates_accordion",
                   gov_row(
                     h2("Vacancy rates"),
                     p("A workforce strategy should develop and maintain an effective workforce. With a well-supported workforce vacancy rates should remain low."),
@@ -405,8 +409,10 @@ enabler3_tab <- function() {
                 )
               ),
               accordion(
+                id = "e2_d2_accordion",
                 accordion_panel(
-                  "Social worker caseloads",
+                  title = "Social worker caseloads",
+                  value = "caseloads_accordion",
                   gov_row(
                     h2("Social worker caseloads"),
                     p("Ensuring that practitioners have an appropriate caseload supports recruitment and
@@ -514,8 +520,10 @@ enabler3_tab <- function() {
                 )
               ),
               accordion(
+                id = "e3_d3_accordion",
                 accordion_panel(
-                  "Social worker ethnicity",
+                  title = "Social worker ethnicity",
+                  value = "SW_ethnicity_rate_accordion",
                   gov_row(
                     h2("Social worker ethnicity"),
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities practitioners serve."),
@@ -561,7 +569,8 @@ enabler3_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Social worker ethnicity vs. general population",
+                  title = "Social worker ethnicity vs. general population",
+                  value = "sw_ethn_gen_pop_accordion",
                   gov_row(
                     h2("Social worker ethnicity vs. general population"),
                     insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
@@ -607,7 +616,8 @@ enabler3_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Social worker ethnicity by seniority level",
+                  title = "Social worker ethnicity by seniority level",
+                  value = "sw_ethn_seniority_lvl_accordion",
                   gov_row(
                     h2("Social worker ethnicity by seniority level"),
                     insert_text(inputId = "Ethnicity_by_role_definition", text = paste(

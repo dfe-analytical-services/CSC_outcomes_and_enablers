@@ -112,8 +112,10 @@ outcome2_tab <- function() {
               ),
               accordion(
                 ## SGO ------
+                id = "o2_d1_accordion",
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to special guardianship order (SGO)",
+                  title = "Percentage of children who cease being looked after due to special guardianship order (SGO)",
+                  value = "SGO_accordion",
                   gov_row(
                     h2("Special guardianship order (SGO)"),
                     p("Children ceasing to be looked after during the year due to the reason of special guardianship order."),
@@ -200,7 +202,8 @@ outcome2_tab <- function() {
                 ),
                 ## CAO ----------------
                 accordion_panel(
-                  "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
+                  title = "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
+                  value = "CAO_accordion",
                   gov_row(
                     h2("Residence order or child arrangements order (CAO)"),
                     p("Children ceasing to be looked after during the year due to the reason of child arrangements order."),

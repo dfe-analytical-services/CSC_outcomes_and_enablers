@@ -108,8 +108,10 @@ outcome1_tab <- function() {
               ),
               accordion(
                 ### CIN ------------------
+                id = "o1_d1_accordion",
                 accordion_panel(
-                  "Rate of children in need (CIN)",
+                  title = "Rate of children in need (CIN)",
+                  value = "cin_accordion_tab",
                   gov_row(
                     h2("Rate of children in need (CIN)"),
                     p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
@@ -204,7 +206,8 @@ outcome1_tab <- function() {
                 ),
                 ### Repeat referrals --------------
                 accordion_panel(
-                  "Repeat referrals (within 12 months)",
+                  title = "Repeat referrals (within 12 months)",
+                  value = "repeat_referral_accordion",
                   gov_row(
                     h2("Repeat referrals (within 12 months)"),
                     p("If children are being referred to services repeatedly, this suggests that they and their families may not be receiving
@@ -329,9 +332,11 @@ outcome1_tab <- function() {
               ),
               # Accordion for indicators
               accordion(
+                id = "o1_d2_accordion",
                 ## CLA rate ------------
                 accordion_panel(
-                  "Children starting to be looked after each year",
+                  title = "Children starting to be looked after each year",
+                  value = "cla_rate_accordion",
                   gov_row(
                     h2("Children starting to be looked after each year"),
                     p("This measures the flow of those children moving into care."),
@@ -422,7 +427,8 @@ outcome1_tab <- function() {
                 ),
                 ## CLA UASC -------------
                 accordion_panel(
-                  "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
+                  title = "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
+                  value = "cla_UASC_accordion",
                   gov_row(
                     h2("Rate of children starting to be looked after who were Unaccompanied Asylum Seeking Children"),
                     p("This measures the flow of those children moving into care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
@@ -521,7 +527,8 @@ outcome1_tab <- function() {
                 ),
                 ## CLA on 31 March ---------
                 accordion_panel(
-                  "Rate of children looked after on 31 March",
+                  title = "Rate of children looked after on 31 March",
+                  value = "cla_march_accordion",
                   gov_row(
                     h2("Rate of children looked after on 31 March"),
                     p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
@@ -724,8 +731,10 @@ outcome1_tab <- function() {
                   ),
                   ### absence -----
                   accordion(
+                    id = "o1_d3_accordion",
                     accordion_panel(
-                      "School attendance",
+                      title = "School attendance",
+                      value = "attendance_accordion",
                       gov_row(
                         h2("School attendance of children in need and children looked after"),
                         p("Attending an education setting is a key component of long term development and wellbeing for
@@ -850,7 +859,8 @@ outcome1_tab <- function() {
                     ),
                     ### Persistent absence ----
                     accordion_panel(
-                      "Persistent absence",
+                      title = "Persistent absence",
+                      value = "persistent_absence_accordion",
                       gov_row(
                         h2("Educational engagement: persistent absence"),
                         p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
@@ -1060,8 +1070,10 @@ outcome1_tab <- function() {
                   ),
                   ### ks2 attainment -----
                   accordion(
+                    id = "o1_d4_accordion",
                     accordion_panel(
-                      "Key stage 2 (KS2)",
+                      title = "Key stage 2 (KS2)",
+                      value = "ks2_attain_accordion",
                       gov_row(
                         h2("Key stage 2 attainment"),
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances. Virtual school heads have a statutory duty to promote the educational attainment of all children in their care.
@@ -1172,7 +1184,8 @@ outcome1_tab <- function() {
                     ),
                     ### KS4 attainment ---------
                     accordion_panel(
-                      "Key stage 4 (KS4)",
+                      title = "Key stage 4 (KS4)",
+                      value = "ks4_attain_accordion",
                       gov_row(
                         h2("Key stage 4 attainment"),
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances.

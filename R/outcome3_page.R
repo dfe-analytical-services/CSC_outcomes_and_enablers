@@ -119,8 +119,10 @@ outcome3_tab <- function() {
               ),
               ### Repeat CPP ------------------------
               accordion(
+                id = "o3_d1_accordion",
                 accordion_panel(
-                  "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
+                  title = "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
+                  value = "repeat_cpp_accordion",
                   h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
                     "<b>", "Child protection plan (CPP)", "</b><br>",
@@ -202,7 +204,8 @@ outcome3_tab <- function() {
                 ),
                 ### Repeat CPP 2+ ---------------------------------------------------
                 accordion_panel(
-                  "Percentage of child protection plans (CPP) longer than 2 years",
+                  title = "Percentage of child protection plans (CPP) longer than 2 years",
+                  value = "cpp_longer_accordion",
                   h2("Percentage of child protection plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
                     "<b>", "Child protection plan (CPP)", "</b><br>",
@@ -275,7 +278,8 @@ outcome3_tab <- function() {
 
                 ### Hospital admissions ------
                 accordion_panel(
-                  "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
+                  title = "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
+                  value = "hospital_admissions_accordion",
                   gov_row(
                     insert_text(
                       inputId = "admissions_warning",
@@ -395,8 +399,10 @@ outcome3_tab <- function() {
                     options = NULL
                   ),
                   accordion(
+                    id = "o3_d2_accordion",
                     accordion_panel(
-                      "Assessment factor relates to child abuse or neglect",
+                      title = "Assessment factor relates to child abuse or neglect",
+                      value = "intra_familial_harm_accordion",
                       gov_row(
                         uiOutput("ca_header1"),
                         plotlyOutput("child_abuse_ts_plot"),
@@ -543,8 +549,10 @@ outcome3_tab <- function() {
                     options = NULL
                   ),
                   accordion(
+                    id = "o3_d3_accordion",
                     accordion_panel(
-                      "Assessment factor relates to harms outside the home",
+                      title = "Assessment factor relates to harms outside the home",
+                      value = "extra_familial_harm_accordion",
                       gov_row(
                         uiOutput("efh_header1"),
                         plotlyOutput("efh_ts_plot"),

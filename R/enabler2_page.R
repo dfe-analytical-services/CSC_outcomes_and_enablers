@@ -87,8 +87,10 @@ enabler2_tab <- function() {
                 p("Inner London and Outer London have been grouped together as London.")
               ),
               accordion(
+                id = "e2_d1_accordion",
                 accordion_panel(
-                  "Share of local authority total spend on children’s services, and per child spend",
+                  title = "Share of local authority total spend on children’s services, and per child spend",
+                  value = "spending_share_accordion",
                   gov_row(
                     h2("Share of local authority total spend on children’s services, and per child spend"),
                     p("This metric provides contextual information on the resource prioritisation within each local authority."),
@@ -155,7 +157,8 @@ enabler2_tab <- function() {
                   ),
                 ),
                 accordion_panel(
-                  "Share of children’s services spend not on CLA",
+                  title = "Share of children’s services spend not on CLA",
+                  value = "spending_share_not_cla_accordion",
                   gov_row(
                     h2("Share of children’s services spend not on CLA by region"),
                     p("Prioritising funding and resources that help families early helps children and young people thrive. This metric looks at the resource prioritisation between early and later statutory intervention."),
@@ -280,8 +283,10 @@ enabler2_tab <- function() {
                 )
               ),
               accordion(
+                id = "e2_d2_accordion",
                 accordion_panel(
-                  "Culture focused on outcomes from children and families and continually improving services",
+                  title = "Culture focused on outcomes from children and families and continually improving services",
+                  value = "ofsted_leadership_accordion",
                   gov_row(
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table below to see the latest year for each LA."),
                     details(
