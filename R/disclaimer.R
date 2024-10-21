@@ -38,7 +38,7 @@ disclaimer_tab <- function() {
           tags$li("Outcomes for children in need including children looked after by local authorities in england (last updated: 18th Apr 2024)"),
           style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
         ),
-        p("The  specific indicators (policy annex) for each outcome and enabler have been
+        p("The  specific indicators ", a(href = "https://assets.publishing.service.gov.uk/media/670699d892bb81fcdbe7b5c3/Children_s_social_care_dashboard_supporting_information_October_2024.pdf", "(Children's social care dashboard supporting information (publishing.service.gov.uk)(opens in a new tab))", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " for each outcome and enabler have been
           chosen based on available official published statistics and review with policy.
           The CSC dashboard indictors will be updated when new official statistics become
           available.")
