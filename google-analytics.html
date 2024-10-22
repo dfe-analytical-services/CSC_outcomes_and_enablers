@@ -106,6 +106,28 @@ Adding google tracking to the filters for each page
     });
   });
   
+  // Additional filters in outcome 1 - child wellbeing and development Domain.
+  // Social care group and school type
+  $(document).on('change', 'select#wellbeing_extra_breakdown', function(e) {
+    gtag('event', '01 Wellbeing Social care group', {'event_category' : '01 Wellbeing Social care group',
+    'event_label' : document.querySelector('select#wellbeing_extra_breakdown').value
+    });
+  });
+  
+  $(document).on('change', 'select#wellbeing_school_breakdown', function(e) {
+    gtag('event', 'O1 Wellbeing School type', {'event_category' : 'O1 Wellbeing School type',
+    'event_label' : document.querySelector('select#wellbeing_school_breakdown').value
+    });
+  });
+  
+  // Additional filter for outcome 1 - educational statement Domain
+  // Social care group
+    $(document).on('change', 'select#attainment_extra_breakdown', function(e) {
+    gtag('event', 'O1 Attainment social care group', {'event_category' : 'O1 Attainment social care group',
+    'event_label' : document.querySelector('select#attainment_extra_breakdown').value
+    });
+  });
+  
 // Outcome 2 filters
   $(document).on('change', 'select#select_geography_o2', function(e) {
     gtag('event', 'O2 Geography lvl', {'event_category' : 'O2 Geography lvl',
@@ -132,6 +154,19 @@ Adding google tracking to the filters for each page
     });
   });
   
+  // Additional filter Outcome 3 - Child abuse/neglect domain
+  $(document).on('change', 'select#assessment_factors_1', function(e) {
+    gtag('event', 'O3 Intra assessment factors', {'event_category' : 'O3 Intra assessment factors',
+    'event_label' : document.querySelector('select#assessment_factors_1').value
+    });
+  });
+  // extra familial harm domian
+  $(document).on('change', 'select#assessment_factors_2', function(e) {
+    gtag('event', 'O3 Extra assessment factors', {'event_category' : 'O3 Extra assessment factors',
+    'event_label' : document.querySelector('select#assessment_factors_2').value
+    });
+  });
+  
 // Outcome 4 filters
   $(document).on('change', 'select#select_geography_o4', function(e) {
     gtag('event', 'O4 Geography lvl', {'event_category' : 'O4 Geography lvl',
@@ -145,6 +180,28 @@ Adding google tracking to the filters for each page
     });
   });
   
+  // Placement types
+  $(document).on('change', 'select#placement_type_breakdown', function(e) {
+    gtag('event', 'O4 Placement type', {'event_category' : 'O4 Placement type',
+    'event_label' : document.querySelector('select#placement_type_breakdown').value
+    });
+  });  
+  
+  // Time between placement age groups
+  $(document).on('change', 'select#select_age_group_o4', function(e) {
+    gtag('event', 'O4 Between placement age group', {'event_category' : 'O4 Between placement age group',
+    'event_label' : document.querySelector('select#select_age_group_o4').value
+    });
+  });   
+  
+  // Care leavers age ranges
+  $(document).on('change', 'select#leavers_age', function(e) {
+    gtag('event', 'O4 Care leavers age', {'event_category' : 'O4 Care leavers age',
+    'event_label' : document.querySelector('select#leavers_age').value
+    });
+  });
+  
+  
 // Enabler 2 filters
   $(document).on('change', 'select#select_geography_e2', function(e) {
     gtag('event', 'E2 Geography lvl', {'event_category' : 'E2 Geography lvl',
@@ -155,6 +212,13 @@ Adding google tracking to the filters for each page
   $(document).on('change', 'select#geographic_breakdown_e2', function(e) {
     gtag('event', 'E2 Geography breakdown', {'event_category' : 'E2 Geography breakdown',
     'event_label' : document.querySelector('select#geographic_breakdown_e2').value
+    });
+  });
+  
+  // Spending level filter
+  $(document).on('change', 'select#spending_choice', function(e) {
+    gtag('event', 'E2 Spending level', {'event_category' : 'E2 Spending level',
+    'event_label' : document.querySelector('select#spending_choice').value
     });
   });
 
