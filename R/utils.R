@@ -1,7 +1,7 @@
 customDisconnectMessage <- function(refresh = "Refresh page",
                                     links = sites_list,
-                                    publication_name = ees_pub_name,
-                                    publication_link = ees_publication) {
+                                    publication_name = NULL,
+                                    publication_link = NULL) {
   checkmate::assert_string(refresh)
   htmltools::tagList(
     htmltools::tags$script(
@@ -19,26 +19,21 @@ customDisconnectMessage <- function(refresh = "Refresh page",
       style = "display: none !important;",
       htmltools::tags$div(
         id = "ss-connect-refresh",
-        tags$p("You've lost connection to the dashboard server - try refreshing the page:"),
-        tags$p(tags$a(
-          id = "ss-reload-link",
-          href = "#", "Refresh page",
-          onclick = "window.location.reload(true);"
-        )),
+        tags$p(
+          "Sorry, you have lost connection to the", site_title, "dashboard at the moment, please ",
+          tags$a(
+            id = "ss-reload-link",
+            href = "#", "refresh the page",
+            onclick = "window.location.reload(true);",
+            .noWS = c("after")
+          ),
+          "."
+        ),
         if (length(links) > 1) {
           tags$p(
-            "If this persists, you can also view the dashboard at one of our mirror sites:",
-            tags$p(
-              tags$a(href = links[1], "Site 1"),
-              " - ",
-              tags$a(href = links[2], "Site 2"),
-              if (length(links) == 3) {
-                "-"
-              },
-              if (length(links) == 3) {
-                tags$a(href = links[3], "Site 3")
-              }
-            )
+            "If you are still experiencing issues, please try our",
+            tags$a(href = links[1], "alternative site", .noWS = c("after")),
+            ". Apologies for the inconvenience."
           )
         },
         if (!is.null(publication_name)) {
@@ -52,12 +47,10 @@ customDisconnectMessage <- function(refresh = "Refresh page",
           )
         },
         tags$p(
-          "Contact",
-          tags$a(href = "mailto:statistics.development@education.gov.uk", "statistics.development@education.gov.uk"),
-          "with details of any problems with this resource."
+          "Feel free to contact",
+          tags$a(href = "mailto:explore.statistics@education.gov.uk", "explore.statistics@education.gov.uk"),
+          "if you require further support."
         )
-        #  ),
-        # htmltools::tags$p("If this persists, you can view tables and data via the ",htmltools::tags$a(href ='https://explore-education-statistics.service.gov.uk/find-statistics/pupil-attendance-in-schools', "Pupil attendance in schools")," release on Explore Education Statistics and please contact statistics.development@education.gov.uk with details of what you were trying to do.")
       )
     ),
     htmltools::tags$div(id = "ss-overlay", style = "display: none;"),
@@ -67,8 +60,6 @@ customDisconnectMessage <- function(refresh = "Refresh page",
         "#custom-disconnect-dialog a {
              display: {{ if (refresh == '') 'none' else 'inline' }} !important;
              color: #1d70b8 !important;
-             font-size: 16px !important;
-             font-weight: normal !important;
           }"
       )
     ))
