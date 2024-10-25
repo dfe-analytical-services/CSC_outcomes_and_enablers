@@ -2014,35 +2014,27 @@
       "description": {
         "Package": "gtable",
         "Title": "Arrange 'Grobs' in Tables",
-        "Version": "0.3.6",
+        "Version": "0.3.5",
         "Authors@R": "c(\n    person(\"Hadley\", \"Wickham\", , \"hadley@posit.co\", role = \"aut\"),\n    person(\"Thomas Lin\", \"Pedersen\", , \"thomas.pedersen@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "Tools to make it easier to work with \"tables\" of 'grobs'. The\n    'gtable' package defines a 'gtable' grob class that specifies a grid\n    along with a list of grobs and their placement in the grid. Further\n    the package makes it easy to manipulate and combine 'gtable' objects\n    so that complex compositions can be built up sequentially.",
         "License": "MIT + file LICENSE",
         "URL": "https://gtable.r-lib.org, https://github.com/r-lib/gtable",
         "BugReports": "https://github.com/r-lib/gtable/issues",
-        "Depends": "R (>= 4.0)",
-        "Imports": "cli, glue, grid, lifecycle, rlang (>= 1.1.0), stats",
+        "Depends": "R (>= 3.5)",
+        "Imports": "cli, glue, grid, lifecycle, rlang (>= 1.1.0)",
         "Suggests": "covr, ggplot2, knitr, profvis, rmarkdown, testthat (>= 3.0.0)",
         "VignetteBuilder": "knitr",
         "Config/Needs/website": "tidyverse/tidytemplate",
         "Config/testthat/edition": "3",
-        "Config/usethis/last-upkeep": "2024-10-25",
         "Encoding": "UTF-8",
-        "RoxygenNote": "7.3.2",
+        "RoxygenNote": "7.3.1",
         "NeedsCompilation": "no",
-        "Packaged": "2024-10-25 12:42:05 UTC; thomas",
+        "Packaged": "2024-04-22 10:46:27 UTC; thomas",
         "Author": "Hadley Wickham [aut],\n  Thomas Lin Pedersen [aut, cre],\n  Posit Software, PBC [cph, fnd]",
         "Maintainer": "Thomas Lin Pedersen <thomas.pedersen@posit.co>",
-        "Repository": "CRAN",
-        "Date/Publication": "2024-10-25 13:20:02 UTC",
-        "Built": "R 4.4.1; ; 2024-10-25 15:12:05 UTC; windows",
-        "RemoteType": "standard",
-        "RemotePkgRef": "gtable",
-        "RemoteRef": "gtable",
-        "RemoteRepos": "http://cran.rstudio.com",
-        "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "source",
-        "RemoteSha": "0.3.6"
+        "Repository": "RSPM",
+        "Date/Publication": "2024-04-22 20:40:02 UTC",
+        "Built": "R 4.4.0; ; 2024-04-25 20:09:03 UTC; windows"
       }
     },
     "haven": {
@@ -5281,19 +5273,19 @@
       "checksum": "2c95cb00ebd7546ccec06638cd813767"
     },
     ".github/workflows/automated-tests.yaml": {
-      "checksum": "0632a61c292184d1246e61f385b0274c"
+      "checksum": "dc41a80063f5c2f255af50033ae12c24"
     },
     ".github/workflows/deploy-shiny.yaml": {
       "checksum": "156260598ce08a074dce84e674d28647"
     },
     ".github/workflows/tidyCode.yaml": {
-      "checksum": "3e63a7a1f22c68fcdb4a1c3685e8333e"
+      "checksum": "7b29ab9a8135ceeb80ecd62cd2ab2c55"
     },
     ".hooks/pre-commit.R": {
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "d518c2bd56fd63f3204cf1e3b73b5bac"
+      "checksum": "194a342ac89ce9d8be7e7f1474d89bca"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5476,7 +5468,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "d34ca1e31a42c6769be65376a2ba3783"
+      "checksum": "dacf2bb681e17e8a1dda3d53d82404f8"
     },
     "server.R": {
       "checksum": "a2734054906cb5ad914aa7b5b8011423"
