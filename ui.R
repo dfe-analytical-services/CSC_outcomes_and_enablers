@@ -105,6 +105,13 @@ ui <- function(input, output, session) {
         "This is a new service - your <a class = 'govuk-link' href = 'https://forms.office.com/e/dMDRycTXcU'>feedback</a> will help us to improve it."
       )
     ),
+    shinyGovstyle::banner(
+      "banner",
+      "",
+      paste0(
+        "The new Children in Need data collection has now been published.  We are working to update and validate the Dashboard with the new data being available shortly."
+      )
+    ),
     shiny::navlistPanel(
       # "",
       id = "navlistPanel",
