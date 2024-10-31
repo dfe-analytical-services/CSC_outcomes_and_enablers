@@ -69,9 +69,7 @@ ui <- function(input, output, session) {
     cookies_banner_ui(
       name = "Children's Social Care - Outcomes and Enablers"
     ),
-    dfeshiny::custom_disconnect_message(
-      links = c(site_primary, site_overflow)
-    ),
+    customDisconnectMessage(),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(
@@ -107,8 +105,15 @@ ui <- function(input, output, session) {
         "This is a new service - your <a class = 'govuk-link' href = 'https://forms.office.com/e/dMDRycTXcU'>feedback</a> will help us to improve it."
       )
     ),
-    shiny::navlistPanel(
+    shinyGovstyle::banner(
+      "banner",
       "",
+      paste0(
+        "The new Children in Need data collection has now been published.  We are working to update and validate the Dashboard with the new data being available shortly."
+      )
+    ),
+    shiny::navlistPanel(
+      # "",
       id = "navlistPanel",
       widths = c(2, 8),
       well = FALSE,
@@ -130,42 +135,9 @@ ui <- function(input, output, session) {
       shiny::tabPanel(
         value = "cookies_panel_ui",
         "Cookies",
-        gov_main_layout(
-          cookies_panel_ui(google_analytics_key = google_analytics_key)
-        )
+        cookies_panel_ui(google_analytics_key = google_analytics_key)
       ),
-      shiny::tabPanel(
-        value = "support_panel",
-        "Support and feedback",
-        gov_main_layout(
-          dfeshiny::support_panel(
-            team_email = "CSCDashboard.FEEDBACK@education.gov.uk",
-            repo_name = "https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers",
-            form_url = "https://forms.office.com/e/dMDRycTXcU",
-            custom_data_info = tagList(
-              p(
-                "Most data included in the dashboard is children’s social care statistics published by DfE and available on",
-                external_link(
-                  href = "https://explore-education-statistics.service.gov.uk/",
-                  "Explore Education Statistics"
-                ),
-                ". The publications include:"
-              ),
-              tags$ul(
-                tags$li(external_link(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions (last updated:	25 April 2024)")),
-                tags$li(external_link(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need", "Children in need (last updated: 26 October 2023)")),
-                tags$li(external_link(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer (last updated: 08 May 2024)")),
-                tags$li(external_link(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce", "Children's social work workforce (last updated:	29 February 2024)")),
-                tags$li(external_link(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS - Census, Ethnic groups (last updated: 28 March 2023)")),
-                tags$li(external_link(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland", "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: 26 March 2024)")),
-                tags$li(external_link(href = "https://www.gov.uk/government/statistics/childrens-social-care-data-in-england-2023", "Children’s social care data in England 2023 (last updated: 8 September 2023)")),
-                tags$li(external_link(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 (last updated: 14 February 2024)")),
-                tags$li(external_link(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "Children's services statistical neighbour benchmarking tool (last updated: April 2021)"))
-              )
-            )
-          )
-        )
-      ),
+      support_links(),
       tutorialPanel(),
     ),
     tags$div(
