@@ -69,7 +69,9 @@ ui <- function(input, output, session) {
     cookies_banner_ui(
       name = "Children's Social Care - Outcomes and Enablers"
     ),
-    customDisconnectMessage(),
+    dfeshiny::custom_disconnect_message(
+      links = c(site_primary, site_overflow)
+    ),
     # Setting up cookie consent based on a cookie recording the consent:
     # https://book.javascript-for-r.com/shiny-cookies.html
     tags$head(
