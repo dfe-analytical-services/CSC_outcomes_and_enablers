@@ -7,8 +7,8 @@
     "select_geography_o3": "Local authority"
   },
   "output": {
-    "cpp_duration_txt": "NA%<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
-    "cpp_in_year_txt": "  9.6%<br><p style='font-size:16px; font-weight:500;'>(2023)<\/p>",
+    "cpp_duration_txt": "NA%<br><p style='font-size:16px; font-weight:500;'>(2024)<\/p>",
+    "cpp_in_year_txt": " 18.7%<br><p style='font-size:16px; font-weight:500;'>(2024)<\/p>",
     "hosp_admissions_txt": "47<br><p style='font-size:16px; font-weight:500;'>per 10,000 (2022/23)<\/p>",
     "outcome3_choice_text1": "You have selected <b>Local authority<\/b> level statistics for <b>Barking and Dagenham<\/b>, in Outer London.",
     "outcome3_choice_text2": ""
