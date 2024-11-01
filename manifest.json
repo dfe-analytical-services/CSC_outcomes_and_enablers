@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "4386e092053bca40ec517a9052d302b9"
+      "checksum": "f38bbd3f7069e675832751aa5b142754"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5886,7 +5886,7 @@
       "checksum": "3f02569be55aa0d8c9086b83797e28d1"
     },
     "R/read_data.R": {
-      "checksum": "ee307588066db03ab7ad7c7e56e86bc4"
+      "checksum": "b0ea5c9ec9d55ddd6cd2a1e1c14a88f8"
     },
     "R/standard_panels.R": {
       "checksum": "a32286b7aa41dca95d14c2e24395354d"

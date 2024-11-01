@@ -1555,6 +1555,10 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
 
+  # removing 2024 data as no population data available
+  data2 <- data2 %>%
+    filter(time_period != 2024)
+
   # data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
   data3 <- left_join(data2, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
   data4 <- data3 %>%
