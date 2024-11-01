@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "98fbba27565b0f15a1b90cd259351926"
+      "checksum": "af127a3abea400429fee0f1702de469e"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5714,11 +5714,20 @@
     "data/b1_children_in_need_2013_to_2023.csv": {
       "checksum": "431a4a4183d7a0a5172702f3547f5290"
     },
+    "data/b1_children_in_need_2013_to_2024.csv": {
+      "checksum": "2389c14063a39fc2816e644f6e8c2a34"
+    },
     "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv": {
       "checksum": "86652589aca80d2a771fb89c439d2e4a"
     },
+    "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv": {
+      "checksum": "b959f9f69eb15462d30e2916e4e858a4"
+    },
     "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv": {
       "checksum": "75c37a1572f7acb74d570b857129132d"
+    },
+    "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv": {
+      "checksum": "0e1029c09c7316b6c3e598bca9748f8a"
     },
     "data/Childrens_social_care_in_England_2023_underlying_data.ods": {
       "checksum": "c0cdf640933cc06093d91a171f55e847"
@@ -5738,8 +5747,14 @@
     "data/d3_cpps_subsequent_plan_2013_to_2023.csv": {
       "checksum": "e41c1af45e4ab68ff636b737a6e83c6a"
     },
+    "data/d3_cpps_subsequent_plan_2013_to_2024.csv": {
+      "checksum": "de443741cc39585e449a31d572b06ca1"
+    },
     "data/d5_cpps_at31march_by_duration_2013_to_2023.csv": {
       "checksum": "d9ecbea24aa9626fe2546cbe865ffbed"
+    },
+    "data/d5_cpps_at31march_by_duration_2013_to_2024.csv": {
+      "checksum": "7dd016de4b8149c1fed1f87fe9ddfdc3"
     },
     "data/ks2_la.csv": {
       "checksum": "fef1f0974fbc36997a4ee85e8ecbbc87"
@@ -5808,7 +5823,7 @@
       "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "datafiles_log.csv": {
-      "checksum": "2dce5ab0f3ae91ac2bfa34f473fa41f8"
+      "checksum": "7f8100705fd401281f8da446e3459b76"
     },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
@@ -5871,7 +5886,7 @@
       "checksum": "3f02569be55aa0d8c9086b83797e28d1"
     },
     "R/read_data.R": {
-      "checksum": "20f1c9d37d81d3c19300238b720a0d67"
+      "checksum": "ee307588066db03ab7ad7c7e56e86bc4"
     },
     "R/standard_panels.R": {
       "checksum": "a32286b7aa41dca95d14c2e24395354d"

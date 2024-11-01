@@ -932,7 +932,7 @@ merge_cla_dataframes <- function() {
 }
 
 # CIN rate per 10k children data
-read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv") {
+read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {
   cin_rate_data <- read.csv(file)
   cin_rate_data <- colClean(cin_rate_data) %>%
     mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
@@ -969,7 +969,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
 }
 
 # CIN referrals data
-read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv") {
+read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
   cin_referral_data <- read.csv(file)
   cin_referral_data <- colClean(cin_referral_data) %>%
     mutate(Re_referrals_percent = ifelse(!is.na(as.numeric(Re_referrals_percent)),
@@ -1197,7 +1197,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 }
 
 # Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans
-read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2023.csv") {
+read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
   cpp_in_year_data <- read.csv(file)
 
   # Select only columns we want
@@ -1227,7 +1227,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     ))
 }
 
-read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2023.csv") {
+read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
   cpp_by_duration_data <- read.csv(file) %>%
     filter(geographic_level != "Local authority")
 
@@ -1511,7 +1511,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
 a <- suppressWarnings(read_a_and_e_data())
 ## Assessment Factors ------
-read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
+read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
   data <- read.csv(file)
   columns <- c(
     "Episodes_with_assessment_factor",

@@ -13,7 +13,9 @@ data/ons-ethnic-population-nat.csv,published
 data/la_cla_during_year_new_placements.csv,published
 data/cla_number_and_rate_per_10k_children.csv,published
 data/la_children_who_started_to_be_looked_after_during_the_year.csv,published
+data/b1_children_in_need_2013_to_2024.csv,published
 data/b1_children_in_need_2013_to_2023.csv,published
+data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv,published
 data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv,published
 data/csww_role_by_characteristics_inpost_2019_to_2023.csv,published
 data/csww_indicators_2017_to_2023.csv,published
@@ -23,9 +25,12 @@ data/ks2_la.csv,published
 data/ks4_la.csv,published
 data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv,reference
 data/New_Statistical_Neighbour_Groupings_April_2021.csv,published
+data/d3_cpps_subsequent_plan_2013_to_2024.csv,published
 data/d3_cpps_subsequent_plan_2013_to_2023.csv,published
 data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv,published
+data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv,published
 data/d5_cpps_at31march_by_duration_2013_to_2023.csv,published
+data/d5_cpps_at31march_by_duration_2013_to_2024.csv,published
 data/la_cla_placement_stability.csv,published
 data/la_cla_on_31_march_by_characteristics.csv,published
 data/la_care_leavers_accommodation_suitability.csv,published
