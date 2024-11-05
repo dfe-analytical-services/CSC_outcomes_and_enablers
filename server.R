@@ -297,22 +297,22 @@ server <- function(input, output, session) {
   })
   ## CIN rate headline
   output$cin_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(At31_episodes_rate), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(At31_episodes_rate), nsmall = 0)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
   })
 
   ## CIN referral headline
   output$cin_referral_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(Re_referrals_percent), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
@@ -3132,13 +3132,14 @@ server <- function(input, output, session) {
 
   # Child protection plan repeated during year headline box
   output$cpp_in_year_txt <- renderText({
-    if (input$geographic_breakdown_o3 == "") {
+    stat <- format(repeat_cpp %>%
+      filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+      select(CPP_subsequent_percent), nsmall = 1)
+
+    if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(repeat_cpp %>%
-        filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
-        select(CPP_subsequent_percent), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
     )
@@ -8154,6 +8155,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o1 != "", "Select a location."),
+        need(
+          nrow(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cin_SN_plot"),
@@ -8192,7 +8197,7 @@ server <- function(input, output, session) {
   output$cin_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o1 != "", "Select a location."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
 
     # Set the max y-axis scale
@@ -8273,6 +8278,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o1 != "", "Select a location."),
+        need(
+          nrow(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cin_referral_SN_plot"),
@@ -8311,7 +8320,7 @@ server <- function(input, output, session) {
   output$cin_referral_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o1 != "", "Select a location."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
@@ -9135,6 +9144,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o3 != "", "Select a location."),
+        need(
+          nrow(repeat_cpp %>% filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cpp_repeat_SN_plot"),
@@ -9173,7 +9186,7 @@ server <- function(input, output, session) {
   output$cpp_repeat_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     filtered_data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
