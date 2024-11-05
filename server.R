@@ -6683,13 +6683,17 @@ server <- function(input, output, session) {
         filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
         select(caseload_fte)
 
-      if ((current_year_value < previous_year_value)) {
-        context <- " down from "
+      if (nrow(previous_year_value) < 1) {
+        context <- " No previous years for comparison"
+      } else if ((current_year_value < previous_year_value)) {
+        context <- paste0(" down from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
+      } else if ((current_year_value > previous_year_value)) {
+        context <- paste0(" up from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
       } else {
-        context <- " up from "
+        context <- "No change"
       }
       stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
-      paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
+      paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, "</p>")
     }
   })
 
