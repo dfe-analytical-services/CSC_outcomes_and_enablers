@@ -682,15 +682,16 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
 }
 
 # Ofsted leadership data
-read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
-  # read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
+# read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
+read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
-  ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
-  # ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
+  file <- "data/LA_Inspection_Outcomes_as_at_March_2024.ods"
+  # ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
+  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
 
   # Remove authorities that aren't yet inspected
-  # ofsted_leadership_data <- ofsted_leadership_data %>%
-  #  filter(`Inspection date` != "Not yet inspected")
+  ofsted_leadership_data <- ofsted_leadership_data %>%
+    filter(`Inspection date` != "Not yet inspected")
 
   # Convert "Inspection date" column to date format and copy the year into new "time_period" column
   ofsted_leadership_data$`Inspection date` <- as.Date(ofsted_leadership_data$`Inspection date`, format = "%d/%m/%Y")
@@ -713,8 +714,17 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
       "inspection_date" = `Inspection date`,
       "impact_of_leaders" = `Impact of leaders`
     ) %>%
-    mutate(geo_breakdown = recode(geo_breakdown,
-      "Bristol" = "Bristol, City of"
+    mutate(geo_breakdown = case_when(
+      geo_breakdown == "Bristol" ~ "Bristol, City of",
+      geo_breakdown == "Durham" ~ "County Durham",
+      geo_breakdown == "Bournemouth, Christchurch & Poole" ~ "Bournemouth, Christchurch and Poole",
+      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
+      geo_breakdown == "Hammersmith & Fulham" ~ "Hammersmith and Fulham",
+      geo_breakdown == "Kingston Upon Hull" ~ "Kingston upon Hull, City of",
+      geo_breakdown == "Telford & Wrekin" ~ "Telford and Wrekin",
+      geo_breakdown == "Richmond Upon Thames" ~ "Richmond upon Thames",
+      geo_breakdown == "St Helens" ~ "St. Helens",
+      TRUE ~ as.character(geo_breakdown)
     ))
 
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
