@@ -6684,7 +6684,7 @@ server <- function(input, output, session) {
         select(caseload_fte)
 
       if (nrow(previous_year_value) < 1) {
-        context <- " No previous years for comparison"
+        context <- ""
       } else if ((current_year_value < previous_year_value)) {
         context <- paste0(" down from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
       } else if ((current_year_value > previous_year_value)) {
