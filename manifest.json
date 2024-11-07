@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "1d380a1a6d98082b7070a1b85834804e"
+      "checksum": "fa9ec90c052715bf9c78a1335e3b6a1d"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5844,7 +5844,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "5ba010d4d3657897a8377e290f393a8f"
+      "checksum": "51c829830ed79c1dd56c8207249200fb"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5853,7 +5853,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "1f5541a241ce2c23e9101a456bd933c5"
+      "checksum": "d718181ca2b6f277dc4f2fd37151ae17"
     },
     "R/enabler1_page.R": {
       "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
@@ -5889,7 +5889,7 @@
       "checksum": "153edee10ad3c9ba492d669477fbda3c"
     },
     "R/standard_panels.R": {
-      "checksum": "a32286b7aa41dca95d14c2e24395354d"
+      "checksum": "dc38c8594b4eb43e7f3b23ab93725be0"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
