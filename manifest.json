@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "a8abbc7732508bc3cdf5fa3e67a1e4fa"
+      "checksum": "9ae8c5ee354412505a94011b0d5623a4"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5853,7 +5853,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "0830699040c14a6953467db926e4efe2"
+      "checksum": "258471ab0cec1bf165891643f0fbb99e"
     },
     "R/enabler1_page.R": {
       "checksum": "69c0fa0fe9ce314c4b3895db164576c8"

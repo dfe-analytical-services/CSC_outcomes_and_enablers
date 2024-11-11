@@ -19,8 +19,7 @@ disclaimer_tab <- function() {
         p("This service has been built based on official statistics which uphold the standards
         of trustworthiness, quality and value as per the Code of Practice for Statistics. All of
         the data used in this service, as well as methodological information and caveats, are
-        available transparently at the sources linked from this page.  Information on how each
-        indicator has been calculated "),
+        available transparently at the sources linked from this page."),
         p("The data sources used to underpin each indicator by outcome and enabler are children’s
         social care statistics published by DfE and are available on Explore Education
         Statistics:"),
