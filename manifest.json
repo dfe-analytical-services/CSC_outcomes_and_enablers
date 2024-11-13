@@ -4008,7 +4008,7 @@
         "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
         "Repository": "CRAN",
         "Date/Publication": "2024-10-12 07:30:02 UTC",
-        "Built": "R 4.4.1; ; 2024-10-31 06:42:33 UTC; windows"
+        "Built": "R 4.4.2; ; 2024-11-12 11:13:23 UTC; windows"
       }
     },
     "reprex": {
@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "9ae8c5ee354412505a94011b0d5623a4"
+      "checksum": "d5c25b310f61a59a20116435ab379aec"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5844,7 +5844,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "70c71c1ec24c4c3b340bd1260be941b1"
+      "checksum": "d8eadb69e71850dde10771cd826e0392"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5853,7 +5853,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "258471ab0cec1bf165891643f0fbb99e"
+      "checksum": "e5ac19ad54d81926cd0a34459cc19cd4"
     },
     "R/enabler1_page.R": {
       "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
@@ -5889,7 +5889,7 @@
       "checksum": "153edee10ad3c9ba492d669477fbda3c"
     },
     "R/standard_panels.R": {
-      "checksum": "fe0af2919a5b96bdcb5f117065bc5b66"
+      "checksum": "103273f81bf713e8244829c7837162df"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
