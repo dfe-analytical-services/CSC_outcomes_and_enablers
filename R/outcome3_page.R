@@ -339,7 +339,7 @@ outcome3_tab <- function() {
                 br()
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"),
                 p("This metric looks at those children who are assessed as needing support for child abuse or neglect."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
@@ -488,7 +488,7 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home"),
                 p("This metric looks at those children who are assessed as needing support for harms outside the home."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(
