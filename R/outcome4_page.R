@@ -118,7 +118,7 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% living in secure units, children's homes or semi-independent living accommodation",
+                    title = "% living in secure homes and children's homes",
                     value = htmlOutput("secure_unit_placement_txt")
                   )
                 ),

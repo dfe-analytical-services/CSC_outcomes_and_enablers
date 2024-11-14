@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "0d8269aec738dd48de54761612215bb0"
+      "checksum": "98d485a5ffba8b0454cdf962d2e48cff"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5748,25 +5748,25 @@
       "checksum": "1058aa406422ec0c75d37e70ac476d20"
     },
     "data/la_care_leavers_accommodation_suitability.csv": {
-      "checksum": "7250e3afa8a72034f9f0342418cc1c1d"
+      "checksum": "60e6f1ba30e59c97d3ea80fbb2066f1b"
     },
     "data/la_care_leavers_activity.csv": {
-      "checksum": "7992c8c7288824fc2238fd6221cdc569"
+      "checksum": "aefaeaedffdaee7a569be0db0b192e4a"
     },
     "data/la_children_who_ceased_during_the_year.csv": {
-      "checksum": "93f936884659c33b9b73a41505bd501a"
+      "checksum": "53156edbeca2cbb32f27ef28e13a7fe7"
     },
     "data/la_children_who_started_to_be_looked_after_during_the_year.csv": {
-      "checksum": "1a9bc2e9cb1d83086f2b89862ec205ba"
+      "checksum": "8405b927024dae79e1cab008f0a635bb"
     },
     "data/la_cla_during_year_new_placements.csv": {
-      "checksum": "148749ee4552f1a3674481eb39277623"
+      "checksum": "29c17566af80ed60e604805a7ac8360c"
     },
     "data/la_cla_on_31_march_by_characteristics.csv": {
-      "checksum": "705b548c5de89e2688c80be819a086ad"
+      "checksum": "185a26d57da8505d938d0fcaf0e648cb"
     },
     "data/la_cla_placement_stability.csv": {
-      "checksum": "4d8186d4b2e9f9ebe2c8109afb8a2c58"
+      "checksum": "758ba33c2a57e026df3b488d813289ee"
     },
     "data/la_conviction_health_outcome_cla.csv": {
       "checksum": "361053aa946184e520b7f70d185efcfb"
@@ -5784,7 +5784,7 @@
       "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
     },
     "data/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
-      "checksum": "da0e44effbcb8cd64fd5543bc00f9a9b"
+      "checksum": "e0e5ed17c78cfb89234d88b00651c859"
     },
     "data/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
@@ -5817,7 +5817,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "1c74f8b470b11e7653d5ebafc56bbaf8"
+      "checksum": "9bbb8e17a357429e9fd236a6376d976b"
     },
     "google-analytics.html": {
       "checksum": "521b47ed7a165578f8e7b55641ef07c7"
@@ -5865,7 +5865,7 @@
       "checksum": "a7fb2cbe9ec556a969658952805511cc"
     },
     "R/outcome4_page.R": {
-      "checksum": "b2625a2c3c822c038f30ec1ad2862e5e"
+      "checksum": "324cf983230b2c34906e8316ac9bbdcc"
     },
     "R/plotting.R": {
       "checksum": "3f02569be55aa0d8c9086b83797e28d1"
@@ -5889,7 +5889,7 @@
       "checksum": "8b9d9ddcfe13ffaf9c320686ec653d49"
     },
     "server.R": {
-      "checksum": "438d02f60b48c52288b5eed7afa4a900"
+      "checksum": "adbfe5801697b68bd79de69beef1071d"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

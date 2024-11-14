@@ -4314,7 +4314,7 @@ server <- function(input, output, session) {
     } else {
       stat <- format(placement_data %>%
         filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "Secure units, children's homes and semi-independent living accommodation") %>%
+        filter(characteristic == "Secure homes and children's homes") %>%
         select(percentage), nsmall = 0)
     }
     paste0(
