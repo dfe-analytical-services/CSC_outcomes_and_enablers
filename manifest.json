@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "98d485a5ffba8b0454cdf962d2e48cff"
+      "checksum": "a90a8e76fcefb5b480f812ad18e494d1"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5748,19 +5748,19 @@
       "checksum": "1058aa406422ec0c75d37e70ac476d20"
     },
     "data/la_care_leavers_accommodation_suitability.csv": {
-      "checksum": "60e6f1ba30e59c97d3ea80fbb2066f1b"
+      "checksum": "fefa6aad9d456b9218840d70327c3275"
     },
     "data/la_care_leavers_activity.csv": {
-      "checksum": "aefaeaedffdaee7a569be0db0b192e4a"
+      "checksum": "a0652efd55bc8ecef47687330d804748"
     },
     "data/la_children_who_ceased_during_the_year.csv": {
-      "checksum": "53156edbeca2cbb32f27ef28e13a7fe7"
+      "checksum": "b7389482ada1ea7c34ee1600e6737de5"
     },
     "data/la_children_who_started_to_be_looked_after_during_the_year.csv": {
       "checksum": "8405b927024dae79e1cab008f0a635bb"
     },
     "data/la_cla_during_year_new_placements.csv": {
-      "checksum": "29c17566af80ed60e604805a7ac8360c"
+      "checksum": "2bbfbe06b995baaec34d6f500d9827b3"
     },
     "data/la_cla_on_31_march_by_characteristics.csv": {
       "checksum": "185a26d57da8505d938d0fcaf0e648cb"
@@ -5769,7 +5769,7 @@
       "checksum": "758ba33c2a57e026df3b488d813289ee"
     },
     "data/la_conviction_health_outcome_cla.csv": {
-      "checksum": "361053aa946184e520b7f70d185efcfb"
+      "checksum": "c09002c45c20d13c620a63187324f0c1"
     },
     "data/la_hospital_admissions_2223.csv": {
       "checksum": "5b75787a51921b41fa88ccf26a82d90a"
@@ -5784,7 +5784,7 @@
       "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
     },
     "data/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
-      "checksum": "e0e5ed17c78cfb89234d88b00651c859"
+      "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
     },
     "data/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
