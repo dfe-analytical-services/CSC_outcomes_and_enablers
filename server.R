@@ -4920,9 +4920,9 @@ server <- function(input, output, session) {
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
         rename("Placements more then 20 miles from home (%)" = "Percent")
 
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
+      # filtered_data <- placement_data %>%
+      #   filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
+      #   rename("Placements more then 20 miles from home (%)" = "Percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
