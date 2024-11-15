@@ -1051,7 +1051,7 @@ plot_cin_rate_reg <- function() {
 
 # cin rate chart by la
 plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/b1_children_in_need_2013_to_2023.csv")
+  location_data <- GET_location("data/b1_children_in_need_2013_to_2024.csv")
 
   if (selected_geo_lvl == "Local authority") {
     cin_data <- cin_rates %>%
