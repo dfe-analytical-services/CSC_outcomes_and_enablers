@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "513db95273d1bf6cd5a64532bf63961e"
+      "checksum": "7329042697cb57f55077b6fc93071143"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5769,7 +5769,7 @@
       "checksum": "758ba33c2a57e026df3b488d813289ee"
     },
     "data/la_conviction_health_outcome_cla.csv": {
-      "checksum": "c09002c45c20d13c620a63187324f0c1"
+      "checksum": "b6740af3363f43e6d99029a9086bddbc"
     },
     "data/la_hospital_admissions_2223.csv": {
       "checksum": "5b75787a51921b41fa88ccf26a82d90a"
@@ -5829,7 +5829,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "d8eadb69e71850dde10771cd826e0392"
+      "checksum": "9960a5ac6eadc9d275cc8cd59af0fb38"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5838,7 +5838,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "e5ac19ad54d81926cd0a34459cc19cd4"
+      "checksum": "81f1d97069a27454812cdf4ccc51f530"
     },
     "R/enabler1_page.R": {
       "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
@@ -5874,7 +5874,7 @@
       "checksum": "cddf153f0dc8f9d6cc001ca4687edc17"
     },
     "R/standard_panels.R": {
-      "checksum": "103273f81bf713e8244829c7837162df"
+      "checksum": "7413804aad0c636d16b5ae26191ed2e4"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -5919,10 +5919,10 @@
       "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "a04a55bb344ae10990771a41736f4926"
+      "checksum": "40d044e6a31dc70224d5706237e63f45"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
-      "checksum": "731c9efc41eede8eb5c5123f4f219b25"
+      "checksum": "7a0af85657f081e10baee0756c5afc3f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
       "checksum": "2310b6ed843cfa37046620f8936e87ec"
@@ -5961,7 +5961,7 @@
       "checksum": "abf24fcfce3f67d35ed77b64addc2f86"
     },
     "ui.R": {
-      "checksum": "e1669b6e6c19930aec98d9f7f049297b"
+      "checksum": "97682050c09f31ea7ef7a8edc8c04a95"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
