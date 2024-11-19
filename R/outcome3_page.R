@@ -270,6 +270,18 @@ outcome3_tab <- function() {
                       )
                     ),
                   ),
+                  gov_row(
+                    h2("Child protection plans (CPP) longer than 2 years, by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(duration_cpp$time_period))),
+                    radioGroupButtons(
+                      "CPP_duration_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_CPP_duration"),
+                  )
                 ),
                 # No local authority level data for cpp longer than 2 years
 

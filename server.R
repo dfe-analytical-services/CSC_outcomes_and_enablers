@@ -3383,8 +3383,8 @@ server <- function(input, output, session) {
   output$cpp_duration_txt <- renderText({
     if (input$geographic_breakdown_o3 == "") {
       stat <- "NA"
-    } else if (input$select_geography_o3 == "Local authority") {
-      stat <- "NA"
+      # } else if (input$select_geography_o3 == "Local authority") {
+      #   stat <- "NA"
     } else {
       stat <- format(duration_cpp %>%
         filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
@@ -3399,7 +3399,7 @@ server <- function(input, output, session) {
   output$duration_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
+      # need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # not both
@@ -3430,10 +3430,10 @@ server <- function(input, output, session) {
     }
 
     # Set the max y-axis scale
-    max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -3449,7 +3449,6 @@ server <- function(input, output, session) {
   output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # neither checkboxes
@@ -3506,11 +3505,11 @@ server <- function(input, output, session) {
     )
     data <- duration_cpp
 
-    max_rate <- max(duration_cpp$`X2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
       duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "CPP_2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percent of CPP longer than 2 years by region")
     title <- paste0("Percent of CPP longer than 2 years by region (", max(p$data$time_period), ")")
@@ -3542,6 +3541,77 @@ server <- function(input, output, session) {
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
         `CPP 2+ Years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # by la
+  output$plot_cpp_duration_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent")
+
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+      duration_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "CPP 2+ years (%)", "CPP 2+ years (%)", yupperlim = max_rate, decimal_percentage = TRUE) %>%
+      config(displayModeBar = F)
+    # p <- p + ggtitle("Repeat CPP (%) by local authority")
+    title <- paste0("CPP 2+ years (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+  # CPP by LA table
+  output$table_cpp_duration_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    if (input$select_geography_o3 == "Regional") {
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+
+      data <- duration_cpp %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, CPP_2_years_or_more_percent) %>%
+        arrange(desc(CPP_2_years_or_more_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP 2+ years` = X2_years_or_more, `CPP 2+ years (%)` = CPP_2_years_or_more_percent)
+    } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
+      data <- duration_cpp %>%
+        filter(geographic_level == "Local authority", time_period == max(duration_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, CPP_2_years_or_more_percent) %>%
+        arrange(desc(CPP_2_years_or_more_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP 2+ years` = X2_years_or_more, `CPP 2+ years (%)` = CPP_2_years_or_more_percent)
+    }
+
+    reactable(
+      data,
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `CPP 2+ years` = colDef(cell = cellfunc),
+        `CPP 2+ years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
       searchable = TRUE,
@@ -9231,6 +9301,128 @@ server <- function(input, output, session) {
   })
 
   ### NO CPP for 2+ years by LA ----
+
+  # output all LA chart or stats neighbour chart for CPP duration
+  output$SN_CPP_duration <- renderUI({
+    if (input$CPP_duration_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cpp_duration_la"),
+        br(),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        br(),
+        details(
+          inputId = "tbl_duration_cpp_la",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("table_cpp_duration_la", filename = "CPP_more_than_2years_rates_region.csv"),
+              reactableOutput("table_cpp_duration_la")
+            ))
+          )
+        ),
+        details(
+          inputId = "cpp_duration_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
+              tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
+                tags$br(),
+                "For more information about child protection plans, refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.", target = "_blank")
+              )
+            )
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
+        need(
+          nrow(duration_cpp %>% filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3)) > 0,
+          "This local authority has no data for the current year"
+        )
+      )
+      tagList(
+        plotlyOutput("cpp_duration_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_duration_cpp",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_cpp_duration_tbl", filename = paste0("duration_CPP_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("SN_cpp_duration_tbl")
+            ))
+          )
+        ),
+        details(
+          inputId = "sn_cpp_duration_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
+              ),
+            )
+          )
+        )
+      )
+    }
+  })
+
+  # CPP duration SN plot and table alternative
+  output$cpp_duration_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    filtered_data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent", "CPP 2+ years" = "X2_years_or_more")
+
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+      duration_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "CPP 2+ years (%)", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+      config(displayModeBar = F)
+
+    # p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
+    title <- paste0("Repeat CPP (%) by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+
+  output$SN_cpp_duration_tbl <- renderReactable({
+    data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent", "CPP 2+ years" = "X2_years_or_more")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("CPP 2+ years"), yvalue = "CPP 2+ years (%)"),
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `CPP 2+ years` = colDef(name = "CPP 2+ years", cell = cellfunc),
+        `Cpp 2+ Years (%)` = colDef(name = "Cpp 2+ years (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### Hospital admissions -----
   output$SN_hosp_admissions <- renderUI({

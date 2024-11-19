@@ -1238,24 +1238,25 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
 }
 
 read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
-  cpp_by_duration_data <- read.csv(file) %>%
-    filter(geographic_level != "Local authority")
+  cpp_by_duration_data <- read.csv(file) # %>%
+  # filter(geographic_level != "Local authority")
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(`X2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
       format(as.numeric(as.character(`X2_years_or_more_percent`)), nsmall = 1),
       `X2_years_or_more_percent`
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, old_la_code,
       CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
       more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
     ) %>%
-    mutate(`X2_years_or_more_percent` = case_when(
+    mutate(`CPP_2_years_or_more_percent` = case_when(
       `X2_years_or_more_percent` == "c" ~ -100,
       `X2_years_or_more_percent` == "low" ~ -200,
       `X2_years_or_more_percent` == "k" ~ -200,
