@@ -125,7 +125,7 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% living in other residential settings",
+                    title = "% living in independent and semi-independent living arrangements/supported accommodation",
                     value = htmlOutput("residential_placement_txt"),
                   )
                 ),
@@ -293,8 +293,8 @@ outcome4_tab <- function() {
                 ),
                 ## Type of placement ----------------
                 accordion_panel(
-                  "Percentage of children living in foster, residential care, or secure children’s homes",
-                  h2("Percentage of children living in foster, residential care, or secure children’s homes"),
+                  "Percentage of children living in foster, secure units, children's homes, or supported accommodation",
+                  h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation"),
                   p("This indicator looks at the proportion of children living in different placement types. Where possible, the aim is to support children in care to live in foster care arrangements."),
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
@@ -343,7 +343,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, residential care, or secure children’s homes by region"),
+                        h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation by region"),
                         p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "Placement_types", text = paste(
@@ -378,7 +378,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, residential care, or secure children’s homes by LA"),
+                        h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation by LA"),
                         p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
                         insert_text(inputId = "Placement_types", text = paste(
                           "<b>", "Placement types", "</b><br>",
