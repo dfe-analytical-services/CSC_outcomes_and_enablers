@@ -1464,43 +1464,12 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
     mutate(Value = Count / (Denominator / 10000))
 
-  # COMBINE CUMBERLAND/WESTMORLAND AND FURNESS UNTIL ALL PUBLICATION/STATS NEIGHBOURS FILES INCLUDE THEM INDIVIDUALLY
-  df_to_combine <- admissions_data3 %>%
-    filter(geo_breakdown %in% c("Cumberland", "Westmorland and Furness"))
-
-  # Combine the rows
-  combined_row <- df_to_combine %>%
-    summarise(
-      time_period = first(time_period),
-      geographic_level = first(geographic_level),
-      geo_breakdown = "Cumbria",
-      new_la_code = "E10000006",
-      Value = sum(Value),
-      Count = sum(Count),
-      Denominator = sum(Denominator),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
-      old_la_code = 909
-    )
-
-  # rate per 10000
-
-  combined_row <- combined_row %>%
-    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
-    mutate(Value = Count / (Denominator / 10000))
-
   # Convert rate_per_10000 to a character for all rows
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = case_when(
       is.na(rate_per_10000) ~ "x",
       TRUE ~ as.character(rate_per_10000)
     ))
-
-  # Remove Cumberland/Westmorland and Furness
-  admissions_data3 <- admissions_data3 %>%
-    filter(!(geo_breakdown %in% c("Cumberland", "Westmorland and Furness")))
-
-  # Add the combined row to the data frame
-  admissions_data3 <- rbind(admissions_data3, combined_row)
 
   # Add Inner and Outer London to the data frame
 
