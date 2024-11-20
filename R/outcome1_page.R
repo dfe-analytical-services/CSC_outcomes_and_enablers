@@ -325,6 +325,13 @@ outcome1_tab <- function() {
                     value = htmlOutput("cla_march_rate_headline_txt")
                   )
                 ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Rate of children looked after on the 31st March who were UASC, per 10,000 children",
+                    value = htmlOutput("uasc_31_march_rate_headline_txt")
+                  )
+                ),
                 br(),
               ),
               # Accordion for indicators
@@ -608,6 +615,105 @@ outcome1_tab <- function() {
                       justified = TRUE
                     ),
                     uiOutput("SN_cla_march"),
+                  )
+                ),
+                ## CLA UASC 31 March -------------
+                accordion_panel(
+                  "Children looked after each year on the 31st March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
+                  gov_row(
+                    h2("Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"),
+                    p("This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
+                    insert_text(inputId = "cla_rate_31_march_definition", text = paste(
+                      "<b>", "Rate of children looked after on the 31st March", "</b><br>",
+                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
+                    )),
+                    br(),
+                    plotlyOutput("plot_uasc_31_march"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_uasc_31_march",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_uasc_31_march", filename = "cla_UASC_rates_31_march.csv"),
+                          reactableOutput("table_uasc_31_march")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_UASC_31_march_rate_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated using published number of children looked after at the 31st March each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  ## CLA UASC region
+                  gov_row(
+                    h2("Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
+                    br(),
+                    plotlyOutput("plot_uasc_31_march_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_uasc_31_march_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_uasc_31_march_reg", filename = "cla_UASC_31_march_rates_regions.csv"),
+                          reactableOutput("table_uasc_31_march_reg")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_UASC_31_march_rate_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  ## CLA UASC 31st March by local authority
+                  gov_row(
+                    h2("Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children"),
+                    p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
+                    radioGroupButtons(
+                      "uasc_31_march_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_uasc_31_march"),
                   )
                 ),
                 open = FALSE

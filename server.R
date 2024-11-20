@@ -285,6 +285,20 @@ server <- function(input, output, session) {
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
   })
 
+  # UASC 31 March rate headline
+  output$uasc_31_march_rate_headline_txt <- renderText({
+    stat <- format(combined_cla_31_march_data %>% filter(time_period == max(combined_cla_31_march_data$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children looked after at 31 March each year" &
+      characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
+  })
+
   # CLA March rate headline
   output$cla_march_rate_headline_txt <- renderText({
     stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
@@ -795,6 +809,187 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Number of children starting to be looked after` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # UASC 31 March chart
+  output$plot_uasc_31_march <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    p <- plot_uasc_31_march(input$geographic_breakdown_o1, input$select_geography_o1) %>%
+      config(displayModeBar = F)
+
+    p <- p + ggtitle("CLA rate on 31 March per 10,000 with Unaccompanied asylum-seeking children breakdown")
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      layout(yaxis = list(tickmode = "auto")) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+    p
+  })
+
+  # UASC 31 March table
+  output$table_uasc_31_march <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    data <- combined_cla_31_march_data %>%
+      filter(
+        geo_breakdown %in% input$geographic_breakdown_o1,
+        characteristic %in% c("UASC", "Non-UASC"),
+        population_count == "Children looked after at 31 March each year"
+      ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
+      select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
+      arrange(desc(time_period)) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on the 31st March` = `cla_31_march_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `Number of children looked after on the 31st March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # UASC 31 March chart by region
+  output$plot_uasc_31_march_reg <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    p <- plot_uasc_31_march_reg() %>%
+      config(displayModeBar = F)
+    title <- paste0("CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by region (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d", "hoverCompareCartesian"))
+  })
+
+  # UASC 31 March table by region
+  output$table_uasc_31_march_reg <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      # need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    data <- combined_cla_31_march_data %>%
+      filter(
+        geographic_level == "Regional", characteristic %in% c("UASC", "Non-UASC"),
+        population_count == "Children looked after at 31 March each year",
+        time_period == max(time_period)
+      ) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      )) %>%
+      select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
+      rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children looked after on 31st March` = `cla_31_march_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+
+    reactable(
+      data,
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `Number of children looked after on the 31st March` = colDef(cell = cellfunc),
+        `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+  # UASC 31 March plot by LA
+  output$plot_uasc_31_march_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    p <- plot_uasc_31_march_la(input$geographic_breakdown_o1, input$select_geography_o1) %>%
+      config(displayModeBar = F)
+    title <- paste0("CLA on 31st March rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+  # UASC 31 March table by LA
+  output$table_uasc_31_march_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o1 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
+    )
+    if (input$select_geography_o1 == "Regional") {
+      if (input$geographic_breakdown_o1 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o1) %>%
+          pull(la_name)
+      }
+
+      data <- combined_cla_31_march_data %>%
+        filter(
+          geo_breakdown %in% location, time_period == max(combined_cla_31_march_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
+          population_count == "Children looked after at 31 March each year",
+        ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
+        select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
+        arrange(desc(`Placement Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children looked after on the 31st March` = `cla_31_march_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+    } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
+      data <- combined_cla_31_march_data %>%
+        filter(
+          geographic_level == "Local authority", time_period == max(combined_cla_31_march_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
+          population_count == "Children looked after at 31 March each year",
+        ) %>%
+        mutate(characteristic = case_when(
+          characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          TRUE ~ as.character(characteristic)
+        )) %>%
+        select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
+        arrange(desc(`Placement Rate Per 10000`)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `UASC status` = `characteristic`, `Number of children looked after on the 31st March` = `cla_31_march_number`, `Rate per 10,000 children` = `Placement Rate Per 10000`)
+    }
+
+    reactable(
+      data,
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `Number of children looked after on the 31st March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(cell = cellfunc, defaultSortOrder = "desc")
       ),
       defaultPageSize = 15,
@@ -8093,6 +8288,135 @@ server <- function(input, output, session) {
   output$SN_uasc_tbl <- renderReactable({
     filtered_data <- combined_cla_data %>%
       filter(population_count == "Children starting to be looked after each year", characteristic %in% c("UASC", "Non-UASC")) %>%
+      mutate(characteristic = case_when(
+        characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        TRUE ~ as.character(characteristic)
+      ))
+    reactable(
+      stats_neighbours_table_uasc(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, yvalue = "Placement Rate Per 10000"),
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `Placement Rate Per 10000` = colDef(name = "Rate per 10,000", cell = cellfunc, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
+  output$SN_uasc_31_march <- renderUI({
+    if (input$uasc_31_march_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_uasc_31_march_la"),
+        br(),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        br(),
+        details(
+          inputId = "tbl_uasc_31_march_la",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("table_uasc_31_march_la", filename = "cla_UASC_31_March_rates_all_LAs.csv"),
+              reactableOutput("table_uasc_31_march_la")
+            ))
+          )
+        ),
+        details(
+          inputId = "cla_UASC_31_march_rate_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
+              tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+              tags$li("Only the first occasion on which a child started to be looked after in the LA during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+              tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
+              tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after data guidance.", target = "_blank"),
+                tags$br(),
+                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "Children looked after methodology.", target = "_blank")
+              )
+            )
+          )
+        )
+      )
+    } else {
+      validate(
+        need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
+      )
+      tagList(
+        plotlyOutput("UASC_31_march_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_uasc_31_march",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_uasc_31_march_tbl", filename = paste0("cla_UASC_31_march_rates_SN_", input$geographic_breakdown_o1, ".csv")),
+              reactableOutput("SN_uasc_31_march_tbl")
+            ))
+          )
+        ),
+        details(
+          inputId = "sn_usac_31_march_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
+              ),
+            )
+          )
+        )
+      )
+    }
+  })
+
+  # UASC stats neighbours chart and table here
+  output$UASC_31_march_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o1 != "", "Select a location."),
+    )
+
+    # Set the max y-axis scale
+    max_rate <- max(
+      combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
+        combined_cla_31_march_data$characteristic %in% c("UASC", "Non-UASC") &
+        combined_cla_31_march_data$time_period == max(combined_cla_31_march_data$time_period) &
+        combined_cla_31_march_data$geographic_level == "Local authority"],
+      na.rm = TRUE
+    )
+
+    # Round the max_rate to the nearest 50
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot_uasc_31_march(combined_cla_31_march_data, input$geographic_breakdown_o1, input$select_geography_o1, "Placement Rate Per 10000", "Rate per 10,000 children", max_rate) %>%
+      config(displayModeBar = F)
+    # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
+    title <- paste0("CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (", max(combined_cla_31_march_data$time_period), ")")
+    p <- p + ggtitle(title)
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+  # cla UASC 31st March stats neighbour tables
+  output$SN_uasc_31_march_tbl <- renderReactable({
+    filtered_data <- combined_cla_31_march_data %>%
+      filter(population_count == "Children looked after at 31 March each year", characteristic %in% c("UASC", "Non-UASC")) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
         characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",

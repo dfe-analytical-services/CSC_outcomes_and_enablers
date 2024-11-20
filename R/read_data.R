@@ -865,6 +865,30 @@ read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_l
 
   return(cla_placement_data)
 }
+read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
+  cla_31_march_data <- read.csv(file)
+  cla_31_march_data <- colClean(cla_31_march_data) %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(Percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
+    distinct()
+
+  return(cla_31_march_data)
+}
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 merge_cla_dataframes <- function() {
@@ -940,6 +964,81 @@ merge_cla_dataframes <- function() {
 
   return(merged_data)
 }
+merge_cla_31_march_dataframes <- function() {
+  # Read the data
+  cla_rates <- read_cla_rate_data()
+  cla_31_march_data <- read_cla_31_march_data()
+
+  # Rename the columns to make it clear which dataset they come from
+  cla_rates <- rename(cla_rates,
+    rates_number = number
+  )
+
+  cla_31_march_data <- rename(cla_31_march_data,
+    cla_31_march_number = number
+  )
+
+  # merge two data frames
+  merged_31_march_data <- merge(cla_rates, cla_31_march_data,
+    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name")
+  )
+
+  merged_31_march_data <- merged_31_march_data %>%
+    mutate(placement_per_10000 = round((as.numeric(rate_per_10000) * (as.numeric(percentage) / 100)))) %>%
+    mutate(`Placement Rate Per 10000` = case_when(
+      cla_31_march_number == "c" ~ -100,
+      cla_31_march_number == "low" ~ -200,
+      cla_31_march_number == "k" ~ -200,
+      cla_31_march_number == "u" ~ -250,
+      cla_31_march_number == "x" ~ -300,
+      cla_31_march_number == "z" ~ -400,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
+      TRUE ~ as.numeric(placement_per_10000)
+    )) %>%
+    mutate("placement_per_10000" = case_when(
+      cla_31_march_number == "c" ~ "c",
+      cla_31_march_number == "low" ~ "low",
+      cla_31_march_number == "k" ~ "k",
+      cla_31_march_number == "u" ~ "u",
+      cla_31_march_number == "x" ~ "x",
+      cla_31_march_number == "z" ~ "z",
+      percentage == "c" ~ "c",
+      percentage == "low" ~ "low",
+      percentage == "k" ~ "k",
+      percentage == "u" ~ "u",
+      percentage == "x" ~ "x",
+      percentage == "z" ~ "z",
+      rate_per_10000 == "c" ~ "c",
+      rate_per_10000 == "low" ~ "low",
+      rate_per_10000 == "k" ~ "k",
+      rate_per_10000 == "u" ~ "u",
+      rate_per_10000 == "x" ~ "x",
+      rate_per_10000 == "z" ~ "z",
+      TRUE ~ as.character(placement_per_10000)
+    )) %>%
+    mutate(characteristic = case_when(
+      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
+      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      TRUE ~ as.character(characteristic)
+    ))
+
+
+  return(merged_31_march_data)
+}
+
+a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
 read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {

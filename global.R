@@ -123,6 +123,7 @@ cla_rates <- suppressWarnings(read_cla_rate_data())
 
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())
+combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes())
 # uasc_data <- test_uasc()
 
 # Read in the CIN  data (outcome 1)
