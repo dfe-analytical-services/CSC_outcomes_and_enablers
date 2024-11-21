@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "36bc439c133f23c26734b93de2f6a646"
+      "checksum": "50d839b2a31edda8393cca4f8c0e9ba3"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5865,7 +5865,7 @@
       "checksum": "4fe2a90cc98a5c94d2bdcb698d38e5a3"
     },
     "R/outcome4_page.R": {
-      "checksum": "f10a900fb8c71bf08d6c445c568ab7ba"
+      "checksum": "17b1dc7dae6e60cb8bfe401d53750010"
     },
     "R/plotting.R": {
       "checksum": "0a7ea404f29f12d3e8898fcaef712e7f"
@@ -5889,7 +5889,7 @@
       "checksum": "8b9d9ddcfe13ffaf9c320686ec653d49"
     },
     "server.R": {
-      "checksum": "259a7c85da6ace0b66dc55d7f0221c58"
+      "checksum": "f1b1010c183248a2c97a79b61fd688ca"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5925,7 +5925,7 @@
       "checksum": "7a0af85657f081e10baee0756c5afc3f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "1dc08537ddd31e4021d6defdac7d9660"
+      "checksum": "cef96745b591c2b4cda6f5752631632d"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
       "checksum": "be392e4e9b50a0a7b83585a05f9bae9e"
