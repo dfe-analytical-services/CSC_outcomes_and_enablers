@@ -226,7 +226,6 @@ outcome3_tab <- function() {
                     help_text = (
                       tags$ul(
                         tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
-                        tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -259,7 +258,6 @@ outcome3_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
-                          tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -270,6 +268,18 @@ outcome3_tab <- function() {
                       )
                     ),
                   ),
+                  gov_row(
+                    h2("Child protection plans (CPP) longer than 2 years, by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(duration_cpp$time_period))),
+                    radioGroupButtons(
+                      "CPP_duration_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_CPP_duration"),
+                  )
                 ),
                 # No local authority level data for cpp longer than 2 years
 
@@ -339,7 +349,7 @@ outcome3_tab <- function() {
                 br()
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"),
                 p("This metric looks at those children who are assessed as needing support for child abuse or neglect."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
@@ -488,7 +498,7 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms outside the home"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home"),
                 p("This metric looks at those children who are assessed as needing support for harms outside the home."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(

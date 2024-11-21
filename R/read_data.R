@@ -682,9 +682,16 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
 }
 
 # Ofsted leadership data
-read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
+# read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
+read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
-  ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
+  file <- "data/LA_Inspection_Outcomes_as_at_March_2024.ods"
+  # ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
+  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
+
+  # Remove authorities that aren't yet inspected
+  ofsted_leadership_data <- ofsted_leadership_data %>%
+    filter(`Inspection date` != "Not yet inspected")
 
   # Convert "Inspection date" column to date format and copy the year into new "time_period" column
   ofsted_leadership_data$`Inspection date` <- as.Date(ofsted_leadership_data$`Inspection date`, format = "%d/%m/%Y")
@@ -707,8 +714,17 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
       "inspection_date" = `Inspection date`,
       "impact_of_leaders" = `Impact of leaders`
     ) %>%
-    mutate(geo_breakdown = recode(geo_breakdown,
-      "Bristol" = "Bristol, City of"
+    mutate(geo_breakdown = case_when(
+      geo_breakdown == "Bristol" ~ "Bristol, City of",
+      geo_breakdown == "Durham" ~ "County Durham",
+      geo_breakdown == "Bournemouth, Christchurch & Poole" ~ "Bournemouth, Christchurch and Poole",
+      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
+      geo_breakdown == "Hammersmith & Fulham" ~ "Hammersmith and Fulham",
+      geo_breakdown == "Kingston Upon Hull" ~ "Kingston upon Hull, City of",
+      geo_breakdown == "Telford & Wrekin" ~ "Telford and Wrekin",
+      geo_breakdown == "Richmond Upon Thames" ~ "Richmond upon Thames",
+      geo_breakdown == "St Helens" ~ "St. Helens",
+      TRUE ~ as.character(geo_breakdown)
     ))
 
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
@@ -740,6 +756,8 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
       outstanding_count = sum(outstanding_count)
     )
 
+  max(ofsted_leadership_data$time_period)
+
   region_counts$time_period <- max(ofsted_leadership_data$time_period)
 
   region_counts$geographic_level <- "Regional"
@@ -756,6 +774,8 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
       outstanding_count = sum(outstanding_count)
     )
 
+
+
   # Combine the new data with the existing data
   ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, national_counts)
 
@@ -764,6 +784,7 @@ read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_En
 
   return(ofsted_leadership_data)
 }
+
 
 pivot_ofsted_data <- function() {
   # Pivoted version
@@ -921,7 +942,7 @@ merge_cla_dataframes <- function() {
 }
 
 # CIN rate per 10k children data
-read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv") {
+read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {
   cin_rate_data <- read.csv(file)
   cin_rate_data <- colClean(cin_rate_data) %>%
     mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
@@ -958,7 +979,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2023.csv
 }
 
 # CIN referrals data
-read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv") {
+read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
   cin_referral_data <- read.csv(file)
   cin_referral_data <- colClean(cin_referral_data) %>%
     mutate(Re_referrals_percent = ifelse(!is.na(as.numeric(Re_referrals_percent)),
@@ -1186,7 +1207,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 }
 
 # Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans
-read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2023.csv") {
+read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
   cpp_in_year_data <- read.csv(file)
 
   # Select only columns we want
@@ -1216,25 +1237,26 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     ))
 }
 
-read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2023.csv") {
-  cpp_by_duration_data <- read.csv(file) %>%
-    filter(geographic_level != "Local authority")
+read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
+  cpp_by_duration_data <- read.csv(file) # %>%
+  # filter(geographic_level != "Local authority")
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
     )) %>%
     mutate(`X2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
       format(as.numeric(as.character(`X2_years_or_more_percent`)), nsmall = 1),
       `X2_years_or_more_percent`
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name,
+      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, old_la_code,
       CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
       more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
     ) %>%
-    mutate(`X2_years_or_more_percent` = case_when(
+    mutate(`CPP_2_years_or_more_percent` = case_when(
       `X2_years_or_more_percent` == "c" ~ -100,
       `X2_years_or_more_percent` == "low" ~ -200,
       `X2_years_or_more_percent` == "k" ~ -200,
@@ -1442,43 +1464,12 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
     mutate(Value = Count / (Denominator / 10000))
 
-  # COMBINE CUMBERLAND/WESTMORLAND AND FURNESS UNTIL ALL PUBLICATION/STATS NEIGHBOURS FILES INCLUDE THEM INDIVIDUALLY
-  df_to_combine <- admissions_data3 %>%
-    filter(geo_breakdown %in% c("Cumberland", "Westmorland and Furness"))
-
-  # Combine the rows
-  combined_row <- df_to_combine %>%
-    summarise(
-      time_period = first(time_period),
-      geographic_level = first(geographic_level),
-      geo_breakdown = "Cumbria",
-      new_la_code = "E10000006",
-      Value = sum(Value),
-      Count = sum(Count),
-      Denominator = sum(Denominator),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
-      old_la_code = 909
-    )
-
-  # rate per 10000
-
-  combined_row <- combined_row %>%
-    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
-    mutate(Value = Count / (Denominator / 10000))
-
   # Convert rate_per_10000 to a character for all rows
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = case_when(
       is.na(rate_per_10000) ~ "x",
       TRUE ~ as.character(rate_per_10000)
     ))
-
-  # Remove Cumberland/Westmorland and Furness
-  admissions_data3 <- admissions_data3 %>%
-    filter(!(geo_breakdown %in% c("Cumberland", "Westmorland and Furness")))
-
-  # Add the combined row to the data frame
-  admissions_data3 <- rbind(admissions_data3, combined_row)
 
   # Add Inner and Outer London to the data frame
 
@@ -1500,7 +1491,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
 a <- suppressWarnings(read_a_and_e_data())
 ## Assessment Factors ------
-read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv") {
+read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
   data <- read.csv(file)
   columns <- c(
     "Episodes_with_assessment_factor",

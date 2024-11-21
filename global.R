@@ -156,11 +156,11 @@ hospital_admissions <- suppressWarnings(read_a_and_e_data())
 placement_data <- suppressWarnings(read_placement_info_data())
 
 # Define the custom order
-custom_order <- c("Foster placements", "Secure units, children's homes and semi-independent living accommodation", "Other residential settings")
+custom_order <- c("Foster placements", "Secure homes and children's homes", "Independent and semi-independent living arrangements/supported accommodation")
 
 # Sort the values based on the custom order
 placement_type_filter <- placement_data %>%
-  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings")) %>%
+  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings|Secure|secure")) %>%
   select(characteristic) %>%
   pull("characteristic") %>%
   unique() %>%

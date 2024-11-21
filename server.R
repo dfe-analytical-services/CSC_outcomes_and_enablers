@@ -260,25 +260,26 @@ server <- function(input, output, session) {
   ## Headline stats ---------
   ## CLA rate headline
   output$cla_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children starting to be looked after each year") %>% select(rate_per_10000), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
-        geo_breakdown %in% input$geographic_breakdown_o1 &
-        population_count == "Children starting to be looked after each year") %>% select(rate_per_10000), nsmall = 0)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
 
   # UASC rate headline
   output$uasc_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children starting to be looked after each year" &
+      characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(combined_cla_data %>% filter(time_period == max(combined_cla_data$time_period) &
-        geo_breakdown %in% input$geographic_breakdown_o1 &
-        population_count == "Children starting to be looked after each year" &
-        characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
     }
 
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(combined_cla_data$time_period), ")", "</p>")
@@ -286,33 +287,34 @@ server <- function(input, output, session) {
 
   # CLA March rate headline
   output$cla_march_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_o1 &
+      population_count == "Children looked after at 31 March each year") %>% select(rate_per_10000), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
-        geo_breakdown %in% input$geographic_breakdown_o1 &
-        population_count == "Children looked after at 31 March each year") %>% select(rate_per_10000), nsmall = 0)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cla_rates$time_period), ")", "</p>")
   })
   ## CIN rate headline
   output$cin_rate_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(At31_episodes_rate), nsmall = 0)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(At31_episodes_rate), nsmall = 0)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_rates$time_period), ")", "</p>")
   })
 
   ## CIN referral headline
   output$cin_referral_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
+      %>% select(Re_referrals_percent), nsmall = 1)
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)
-        %>% select(Re_referrals_percent), nsmall = 1)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(cin_referrals$time_period), ")", "</p>")
@@ -325,68 +327,74 @@ server <- function(input, output, session) {
 
   # absence rates for CIN
   output$absence_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(pt_overall), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # absence rates for CPPO
   output$absence_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(pt_overall), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # absence rates for CLA
   output$absence_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(pt_overall), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_overall), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # persistent absentees headline stats
   # Persistent absence for CIN
   output$persistent_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # Persistent absence for CPPO
   output$persistent_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
   # Persistent absence for CLA
   output$persistent_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-        %>% select(pt_pupils_pa_10_exact), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
@@ -1959,68 +1967,74 @@ server <- function(input, output, session) {
 
   # CIN
   output$KS2_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
+      %>% select(pt_rwm_met_expected_standard), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS2_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
+      %>% select(pt_rwm_met_expected_standard), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS2_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
+      %>% select(pt_rwm_met_expected_standard), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks2 %>% filter(time_period == max(outcomes_ks2$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-        %>% select(pt_rwm_met_expected_standard), nsmall = 1)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # KS4 headline ----
   # CIN
   output$KS4_CIN_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
+      %>% select(avg_att8), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March")
-        %>% select(avg_att8), nsmall = 1)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CPPO
   output$KS4_CPP_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
+      %>% select(avg_att8), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March")
-        %>% select(avg_att8), nsmall = 1)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
   # CLA
   output$KS4_CLA_headline_txt <- renderText({
-    if (input$geographic_breakdown_o1 == "") {
+    stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
+      %>% select(avg_att8), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(outcomes_ks4 %>% filter(time_period == max(outcomes_ks4$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March")
-        %>% select(avg_att8), nsmall = 1)
     }
+
     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period$time_period_new, ")", "</p>")
   })
 
@@ -2559,15 +2573,15 @@ server <- function(input, output, session) {
 
   ## Headline stats -----
   output$SGO_headline_txt <- renderText({
-    if (input$geographic_breakdown_o2 == "") {
+    stat <- ceased_cla_data %>%
+      filter(time_period == max(ceased_cla_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o2 &
+        cla_group == "Reason episode ceased" &
+        characteristic == "Special guardianship orders") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o2 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- ceased_cla_data %>%
-        filter(time_period == max(ceased_cla_data$time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o2 &
-          cla_group == "Reason episode ceased" &
-          characteristic == "Special guardianship orders") %>%
-        select(percentage)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
@@ -2576,16 +2590,17 @@ server <- function(input, output, session) {
 
   # Headline stat2
   output$CAO_headline_txt <- renderText({
-    if (input$geographic_breakdown_o2 == "") {
+    stat <- ceased_cla_data %>%
+      filter(time_period == max(ceased_cla_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o2 &
+        cla_group == "Reason episode ceased" &
+        characteristic == "Residence order or child arrangement order granted") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o2 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- ceased_cla_data %>%
-        filter(time_period == max(ceased_cla_data$time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o2 &
-          cla_group == "Reason episode ceased" &
-          characteristic == "Residence order or child arrangement order granted") %>%
-        select(percentage)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
 
@@ -3132,13 +3147,14 @@ server <- function(input, output, session) {
 
   # Child protection plan repeated during year headline box
   output$cpp_in_year_txt <- renderText({
-    if (input$geographic_breakdown_o3 == "") {
+    stat <- format(repeat_cpp %>%
+      filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+      select(CPP_subsequent_percent), nsmall = 1)
+
+    if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(repeat_cpp %>%
-        filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
-        select(CPP_subsequent_percent), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
     )
@@ -3377,18 +3393,17 @@ server <- function(input, output, session) {
   })
 
 
-  #### CPP 2+ years (No LA) ----
+  #### CPP 2+ years ----
   # Child protection plan longer than two years headline box
   output$cpp_duration_txt <- renderText({
-    if (input$geographic_breakdown_o3 == "") {
+    stat <- format(duration_cpp %>%
+      filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+      select(X2_years_or_more_percent), nsmall = 1)
+
+    if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else if (input$select_geography_o3 == "Local authority") {
-      stat <- "NA"
-    } else {
-      stat <- format(duration_cpp %>%
-        filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
-        select(X2_years_or_more_percent), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(duration_cpp$time_period), ")", "</p>"
     )
@@ -3398,7 +3413,7 @@ server <- function(input, output, session) {
   output$duration_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
+      # need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # not both
@@ -3429,10 +3444,10 @@ server <- function(input, output, session) {
     }
 
     # Set the max y-axis scale
-    max_rate <- max(duration_cpp$`X2_years_or_more_percent`, na.rm = TRUE)
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
-    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+    p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "CPP_2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     p <- p + ggtitle("Percent of CPP longer than 2 years")
 
@@ -3448,7 +3463,6 @@ server <- function(input, output, session) {
   output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     # neither checkboxes
@@ -3505,11 +3519,11 @@ server <- function(input, output, session) {
     )
     data <- duration_cpp
 
-    max_rate <- max(duration_cpp$`X2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
       duration_cpp$geographic_level == "Regional"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
-    p <- by_region_bar_plot(data, "X2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+    p <- by_region_bar_plot(data, "CPP_2_years_or_more_percent", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     # p <- p + ggtitle("Percent of CPP longer than 2 years by region")
     title <- paste0("Percent of CPP longer than 2 years by region (", max(p$data$time_period), ")")
@@ -3547,16 +3561,88 @@ server <- function(input, output, session) {
     )
   })
 
+  # by la
+  output$plot_cpp_duration_la <- plotly::renderPlotly({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent")
+
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+      duration_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "CPP 2+ years (%)", "CPP 2+ years (%)", yupperlim = max_rate, decimal_percentage = TRUE) %>%
+      config(displayModeBar = F)
+    # p <- p + ggtitle("Repeat CPP (%) by local authority")
+    title <- paste0("CPP 2+ years (%) by local authority (", max(p$data$time_period), ")")
+    p <- p + ggtitle(title)
+
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+  # CPP by LA table
+  output$table_cpp_duration_la <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_o3 != "", "Select a geography level."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    if (input$select_geography_o3 == "Regional") {
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+
+      data <- duration_cpp %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, CPP_2_years_or_more_percent) %>%
+        arrange(desc(CPP_2_years_or_more_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP 2+ years` = X2_years_or_more, `CPP 2+ years (%)` = CPP_2_years_or_more_percent)
+    } else if (input$select_geography_o3 %in% c("Local authority", "National")) {
+      data <- duration_cpp %>%
+        filter(geographic_level == "Local authority", time_period == max(duration_cpp$time_period)) %>%
+        select(time_period, geo_breakdown, X2_years_or_more, CPP_2_years_or_more_percent) %>%
+        arrange(desc(CPP_2_years_or_more_percent)) %>%
+        rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `CPP 2+ years` = X2_years_or_more, `CPP 2+ years (%)` = CPP_2_years_or_more_percent)
+    }
+
+    reactable(
+      data,
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `CPP 2+ years` = colDef(cell = cellfunc),
+        `CPP 2+ years (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
   ### Hospital admissions -----
   output$hosp_admissions_txt <- renderText({
-    if (input$geographic_breakdown_o3 == "") {
+    stat <- format(hospital_admissions %>%
+      filter(time_period == max(hospital_admissions$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o3) %>%
+      select(rate_per_10000), nsmall = 0)
+
+    if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(hospital_admissions %>%
-        filter(time_period == max(hospital_admissions$time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o3) %>%
-        select(rate_per_10000), nsmall = 0)
     }
+
     paste0(format(stat, nsmall = 0), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
   })
 
@@ -3685,7 +3771,7 @@ server <- function(input, output, session) {
     )
     p <- all_assessment_factors_plot(assessment_factors, af_child_abuse_extra_filter, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to child abuse or neglect")
+    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect")
     ggplotly(
       p,
       tooltip = "text",
@@ -3965,7 +4051,7 @@ server <- function(input, output, session) {
     )
     p <- all_assessment_factors_plot(assessment_factors, extra_familial_harm_af, selected_geo_breakdown = input$geographic_breakdown_o3) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2023 related to specific types of harms\n outside the home")
+    p <- p + ggtitle("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms\n outside the home")
     ggplotly(
       p,
       tooltip = "text",
@@ -4280,130 +4366,137 @@ server <- function(input, output, session) {
 
   ### Headline boxes ----
   output$placement_changes_txt <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- format(placement_changes_data %>%
+      filter(time_period == max(placement_changes_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(placement_stability == "With 3 or more placements during the year") %>%
+      select(Percentage), nsmall = 1)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(placement_changes_data %>%
-        filter(time_period == max(placement_changes_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(placement_stability == "With 3 or more placements during the year") %>%
-        select(Percentage), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_changes_data$time_period), ")", "</p>"
     )
   })
 
   output$foster_placement_txt <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- format(placement_data %>%
+      filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "Foster placements") %>%
+      select(percentage), nsmall = 0)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(placement_data %>%
-        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "Foster placements") %>%
-        select(percentage), nsmall = 0)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
     )
   })
 
-  output$secure_unit_placement_txt <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+  output$secure_home_placement_txt <- renderText({
+    stat <- format(placement_data %>%
+      filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "Secure homes and children's homes") %>%
+      select(percentage), nsmall = 0)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(placement_data %>%
-        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "Secure units, children's homes and semi-independent living accommodation") %>%
-        select(percentage), nsmall = 0)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
     )
   })
 
   output$residential_placement_txt <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- format(placement_data %>%
+      filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "Independent and semi-independent living arrangements/supported accommodation") %>%
+      select(percentage), nsmall = 0)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(placement_data %>%
-        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "Other residential settings") %>%
-        select(percentage), nsmall = 0)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
     )
   })
 
   output$placement_distance_txt <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- format(placement_data %>%
+      filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "Placed more than 20 miles from home") %>%
+      select(percentage), nsmall = 0)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(placement_data %>%
-        filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "Placed more than 20 miles from home") %>%
-        select(percentage), nsmall = 0)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(placement_data$time_period), ")", "</p>"
     )
   })
 
   output$care_leavers_employment_txt1 <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- care_leavers_activity_data %>%
+      filter(time_period == max(care_leavers_activity_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o4 &
+        age == "17 to 18 years" &
+        activity == "Total in education, employment or training") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- care_leavers_activity_data %>%
-        filter(time_period == max(care_leavers_activity_data$time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o4 &
-          age == "17 to 18 years" &
-          activity == "Total in education, employment or training") %>%
-        select(percentage)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_activity_data$time_period), ")", "</p>")
   })
 
   output$care_leavers_employment_txt2 <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- care_leavers_activity_data %>%
+      filter(time_period == max(care_leavers_activity_data$time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o4 &
+        age == "19 to 21 years" &
+        activity == "Total in education, employment or training") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- care_leavers_activity_data %>%
-        filter(time_period == max(care_leavers_activity_data$time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o4 &
-          age == "19 to 21 years" &
-          activity == "Total in education, employment or training") %>%
-        select(percentage)
     }
 
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_activity_data$time_period), ")", "</p>")
   })
 
   output$care_leavers_accommodation_txt1 <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- care_leavers_accommodation_data %>%
+      filter(time_period == max(time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o4 &
+        age == "17 to 18 years" &
+        accommodation_suitability == "Accommodation considered suitable") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- care_leavers_accommodation_data %>%
-        filter(time_period == max(time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o4 &
-          age == "17 to 18 years" &
-          accommodation_suitability == "Accommodation considered suitable") %>%
-        select(percentage)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
   })
 
   output$care_leavers_accommodation_txt2 <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
+    stat <- care_leavers_accommodation_data %>%
+      filter(time_period == max(time_period) &
+        geo_breakdown %in% input$geographic_breakdown_o4 &
+        age == "19 to 21 years" &
+        accommodation_suitability == "Accommodation considered suitable") %>%
+      select(percentage)
+
+    if (input$geographic_breakdown_o4 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- care_leavers_accommodation_data %>%
-        filter(time_period == max(time_period) &
-          geo_breakdown %in% input$geographic_breakdown_o4 &
-          age == "19 to 21 years" &
-          accommodation_suitability == "Accommodation considered suitable") %>%
-        select(percentage)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(care_leavers_accommodation_data$time_period), ")", "</p>")
   })
 
@@ -4919,9 +5012,9 @@ server <- function(input, output, session) {
         filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
         rename("Placements more then 20 miles from home (%)" = "Percent")
 
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
+      # filtered_data <- placement_data %>%
+      #   filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
+      #   rename("Placements more then 20 miles from home (%)" = "Percent")
 
       # regional only
     } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
@@ -5198,28 +5291,41 @@ server <- function(input, output, session) {
 
   ## Wellbeing SDQ score ----------------
   output$wellbeing_score_stat <- renderText({
-    if (input$geographic_breakdown_o4 == "") {
-      paste0("NA")
-    } else {
-      stat_prev <- format(wellbeing_sdq_data %>%
-        filter(time_period == (max(wellbeing_sdq_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "SDQ average score") %>%
-        select(number), nsmall = 1)
+    stat_prev <- format(wellbeing_sdq_data %>%
+      filter(time_period == (max(wellbeing_sdq_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "SDQ average score") %>%
+      select(number), nsmall = 1)
 
-      stat_current <- format(wellbeing_sdq_data %>%
-        filter(time_period == max(wellbeing_sdq_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
-        filter(characteristic == "SDQ average score") %>%
-        select(number), nsmall = 1)
-      if ((stat_current < stat_prev)) {
-        context <- " down from "
-      } else {
-        context <- " up from "
-      }
+    stat_current <- format(wellbeing_sdq_data %>%
+      filter(time_period == max(wellbeing_sdq_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
+      filter(characteristic == "SDQ average score") %>%
+      select(number), nsmall = 1)
 
-      paste0(
-        stat_current, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(wellbeing_sdq_data$time_period), context, stat_prev, " in ", (max(wellbeing_sdq_data$time_period) - 1), "</p>"
-      )
+    if (input$geographic_breakdown_o4 == "" || nrow(stat_current) == 0) {
+      stat_current <- "NA"
     }
+
+    if (nrow(stat_prev) == 0) {
+      stat_prev <- "NA"
+    }
+
+    if (is.na(as.numeric(stat_prev))) {
+      context <- " compared to "
+    } else if (is.na(as.numeric(stat_current))) {
+      context <- " compared to "
+    } else if ((as.numeric(stat_current) < as.numeric(stat_prev))) {
+      context <- " down from "
+    } else if ((as.numeric(stat_current) > as.numeric(stat_prev))) {
+      context <- " up from "
+    } else if ((as.numeric(stat_current) <- as.numeric(stat_prev))) {
+      context <- " no change from "
+    } else {
+      context <- " compared to "
+    }
+
+    paste0(
+      stat_current, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(wellbeing_sdq_data$time_period), context, stat_prev, " in ", (max(wellbeing_sdq_data$time_period) - 1), "</p>"
+    )
   })
 
   # time series plot and chart for SDQ score
@@ -6040,24 +6146,25 @@ server <- function(input, output, session) {
   ##### Headline stats
   # Share of total spend on CS
   output$total_spending_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
+    stat <- format(spending_data %>% filter(time_period == "2023/24" &
+      geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(`CS Share`), nsmall = 2)
+
+    if (input$geographic_breakdown_e2 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(spending_data %>% filter(time_period == "2023/24" &
-        geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(`CS Share`), nsmall = 2)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data$time_period), ")", "</p>")
   })
 
   # Average spend per child
   output$avg_spend_per_child <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
+    stat <- format(spending_per_capita %>% filter(time_period == max(spending_per_capita$time_period) &
+      geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(`Cost per child`))
+
+    if (input$geographic_breakdown_e2 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(spending_per_capita %>% filter(time_period == max(spending_per_capita$time_period) &
-        geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(`Cost per child`))
     }
 
     paste0("~ £", prettyNum(stat, big.mark = ","), " per child", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_per_capita$time_period), ")", "</p>")
@@ -6065,13 +6172,14 @@ server <- function(input, output, session) {
 
   # Share of total spend on children's services minus CLA
   output$spend_minus_cla_txt <- renderText({
-    if (input$geographic_breakdown_e2 == "") {
+    stat <- format(spending_data_no_cla %>% filter(time_period == "2023/24" &
+      geo_breakdown %in% input$geographic_breakdown_e2) %>%
+      select(`Excluding CLA Share`), nsmall = 2)
+
+    if (input$geographic_breakdown_e2 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(spending_data_no_cla %>% filter(time_period == "2023/24" &
-        geo_breakdown %in% input$geographic_breakdown_e2) %>%
-        select(`Excluding CLA Share`), nsmall = 2)
     }
+
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(spending_data_no_cla$time_period), ")", "</p>")
   })
 
@@ -6630,39 +6738,42 @@ server <- function(input, output, session) {
   ## Headline boxes -----------
   ## Social worker headline stat
   output$s_w_headline_txt <- renderText({
-    if (input$geographic_breakdown_e3 == "") {
+    stat <- format(workforce_data %>%
+      filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(turnover_rate_fte), nsmall = 1)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
-        select(turnover_rate_fte), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
     )
   })
   ## Agency worker rates headline stat
   output$agency_rate_txt <- renderText({
-    if (input$geographic_breakdown_e3 == "") {
+    stat <- format(workforce_data %>%
+      filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(agency_rate_fte), nsmall = 1)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
-        select(agency_rate_fte), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
     )
   })
   ## Vacancy rates headline stat
   output$vacancy_rate_txt <- renderText({
-    if (input$geographic_breakdown_e3 == "") {
+    stat <- format(workforce_data %>%
+      filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(vacancy_rate_fte), nsmall = 1)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
       stat <- "NA"
-    } else {
-      stat <- format(workforce_data %>%
-        filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
-        select(vacancy_rate_fte), nsmall = 1)
     }
+
     paste0(
       stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_data$time_period), ")", "</p>"
     )
@@ -6682,13 +6793,17 @@ server <- function(input, output, session) {
         filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
         select(caseload_fte)
 
-      if ((current_year_value < previous_year_value)) {
-        context <- " down from "
+      if (nrow(previous_year_value) < 1) {
+        context <- ""
+      } else if ((current_year_value < previous_year_value)) {
+        context <- paste0(" down from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
+      } else if ((current_year_value > previous_year_value)) {
+        context <- paste0(" up from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
       } else {
-        context <- " up from "
+        context <- "No change"
       }
       stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
-      paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, previous_year_value, " ", (max(workforce_data$time_period) - 1), "</p>")
+      paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, "</p>")
     }
   })
 
@@ -8154,6 +8269,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o1 != "", "Select a location."),
+        need(
+          nrow(cin_rates %>% filter(time_period == max(cin_rates$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cin_SN_plot"),
@@ -8192,7 +8311,7 @@ server <- function(input, output, session) {
   output$cin_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o1 != "", "Select a location."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
 
     # Set the max y-axis scale
@@ -8273,6 +8392,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o1 != "", "Select a location."),
+        need(
+          nrow(cin_referrals %>% filter(time_period == max(cin_referrals$time_period) & geo_breakdown %in% input$geographic_breakdown_o1)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cin_referral_SN_plot"),
@@ -8311,7 +8434,7 @@ server <- function(input, output, session) {
   output$cin_referral_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o1 != "", "Select a location."),
+      need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
     p <- statistical_neighbours_plot(cin_referrals, input$geographic_breakdown_o1, input$select_geography_o1, "Re-referrals (%)", "Re-referrals (%)", 100, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
@@ -8635,7 +8758,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -8766,7 +8889,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -9135,6 +9258,10 @@ server <- function(input, output, session) {
       validate(
         need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o3 != "", "Select a location."),
+        need(
+          nrow(repeat_cpp %>% filter(time_period == max(repeat_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3)) > 0,
+          "This local authority has no data for the current year"
+        )
       )
       tagList(
         plotlyOutput("cpp_repeat_SN_plot"),
@@ -9173,7 +9300,7 @@ server <- function(input, output, session) {
   output$cpp_repeat_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
-      need(input$geographic_breakdown_o3 != "", "Select a location."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
     filtered_data <- repeat_cpp %>%
       rename("Repeat CPP (%)" = "Repeat_CPP_percent")
@@ -9213,7 +9340,128 @@ server <- function(input, output, session) {
     )
   })
 
-  ### NO CPP for 2+ years by LA ----
+  ### CPP for 2+ years by LA ----
+
+  # output all LA chart or stats neighbour chart for CPP duration
+  output$SN_CPP_duration <- renderUI({
+    if (input$CPP_duration_stats_toggle == "All local authorities") {
+      tagList(
+        plotlyOutput("plot_cpp_duration_la"),
+        br(),
+        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+        br(),
+        details(
+          inputId = "tbl_duration_cpp_la",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("table_cpp_duration_la", filename = "CPP_more_than_2years_rates_region.csv"),
+              reactableOutput("table_cpp_duration_la")
+            ))
+          )
+        ),
+        details(
+          inputId = "cpp_duration_la_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
+              tags$br(),
+              p(
+                "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
+                tags$br(),
+                "For more information about child protection plans, refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.", target = "_blank")
+              )
+            )
+          )
+        ),
+      )
+    } else {
+      validate(
+        need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(input$geographic_breakdown_o3 != "", "Select a location."),
+        need(
+          nrow(duration_cpp %>% filter(time_period == max(duration_cpp$time_period) & geo_breakdown %in% input$geographic_breakdown_o3)) > 0,
+          "This local authority has no data for the current year"
+        )
+      )
+      tagList(
+        plotlyOutput("cpp_duration_SN_plot"),
+        br(),
+        details(
+          inputId = "tbl_sn_duration_cpp",
+          label = "View chart as a table",
+          help_text = (
+            HTML(paste0(
+              csvDownloadButton("SN_cpp_duration_tbl", filename = paste0("duration_CPP_SN_", input$geographic_breakdown_o3, ".csv")),
+              reactableOutput("SN_cpp_duration_tbl")
+            ))
+          )
+        ),
+        details(
+          inputId = "sn_cpp_duration_info",
+          label = "Additional information:",
+          help_text = (
+            tags$ul(
+              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+              br(),
+              p(
+                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
+                tags$br(),
+                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
+              ),
+            )
+          )
+        )
+      )
+    }
+  })
+
+  # CPP duration SN plot and table alternative
+  output$cpp_duration_SN_plot <- plotly::renderPlotly({
+    validate(
+      need(input$select_geography_o3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+      need(input$geographic_breakdown_o3 != "", "Select a location.")
+    )
+    filtered_data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent", "CPP 2+ years" = "X2_years_or_more")
+
+    max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`[duration_cpp$time_period == max(duration_cpp$time_period) &
+      duration_cpp$geographic_level == "Local authority"], na.rm = TRUE)
+    max_rate <- ceiling(max_rate / 10) * 10
+
+    p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o3, input$select_geography_o3, "CPP 2+ years (%)", "CPP 2+ years (%)", max_rate, decimal_percentage = TRUE) %>%
+      config(displayModeBar = F)
+
+    # p <- p + ggtitle("Repeat CPP (%) by statistical neighbours")
+    title <- paste0("Repeat CPP (%) by statistical neighbours (", max(filtered_data$time_period), ")")
+    p <- p + ggtitle(title)
+    ggplotly(
+      p,
+      height = 420,
+      tooltip = "text"
+    ) %>%
+      config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+  })
+
+
+  output$SN_cpp_duration_tbl <- renderReactable({
+    data <- duration_cpp %>%
+      rename("CPP 2+ years (%)" = "CPP_2_years_or_more_percent", "CPP 2+ years" = "X2_years_or_more")
+
+    reactable(
+      stats_neighbours_table(data, input$geographic_breakdown_o3, input$select_geography_o3, selectedcolumn = c("CPP 2+ years"), yvalue = "CPP 2+ years (%)"),
+      defaultColDef = colDef(align = "center"),
+      columns = list(
+        `CPP 2+ years` = colDef(name = "CPP 2+ years", cell = cellfunc),
+        `Cpp 2+ Years (%)` = colDef(name = "Cpp 2+ years (%)", cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+      ),
+      defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
+      searchable = TRUE,
+    )
+  })
+
 
   ### Hospital admissions -----
   output$SN_hosp_admissions <- renderUI({
@@ -9591,6 +9839,8 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$li("For the placement type of children who are looked after, the Dashboard provides information on foster care, secure homes and children’s homes, independent and semi-independent living arrangements / supported accommodation. It does not provide a separate breakdown for the smaller number of other placements, which include placed for adoption, placed with parents or other person with parental responsibility, other residential settings.  These figures can be found on ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank")),
+              tags$li("From 28 April 2023, supported accommodation providers in England were able to register with Ofsted and it became illegal for a supported accommodation provider to operate if they had not submitted a complete application which had been accepted by 28 October 2023. For 2024, figures in the category 'Independent and semi-independent living arrangements/supported accommodation' include young people, before 28 October 2023, who were placed in former semi independent living accommodation or who formerly lived independently, and also young people in placements from 28 April 2023 onwards at a provider that had submitted a complete application to Ofsted to operate as a supported accommodation provider by the deadline. Former semi-independent and former independent living providers who did not submit a completed application that was accepted by Ofsted by the end of 27 October 2023 who continued to provide placements are classified as ‘Other placements’ from 28 October 2023 onwards"),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after in England data guidance.", target = "_blank"),
