@@ -3393,7 +3393,7 @@ server <- function(input, output, session) {
   })
 
 
-  #### CPP 2+ years (No LA) ----
+  #### CPP 2+ years ----
   # Child protection plan longer than two years headline box
   output$cpp_duration_txt <- renderText({
     stat <- format(duration_cpp %>%
@@ -4395,7 +4395,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$secure_unit_placement_txt <- renderText({
+  output$secure_home_placement_txt <- renderText({
     stat <- format(placement_data %>%
       filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
       filter(characteristic == "Secure homes and children's homes") %>%
@@ -9340,7 +9340,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ### NO CPP for 2+ years by LA ----
+  ### CPP for 2+ years by LA ----
 
   # output all LA chart or stats neighbour chart for CPP duration
   output$SN_CPP_duration <- renderUI({
@@ -9366,7 +9366,6 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
-              tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
               tags$br(),
               p(
                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -9840,6 +9839,8 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+              tags$li("For the placement type of children who are looked after, the Dashboard provides information on foster care, secure homes and children’s homes, independent and semi-independent living arrangements / supported accommodation. It does not provide a separate breakdown for the smaller number of other placements, which include placed for adoption, placed with parents or other person with parental responsibility, other residential settings.  These figures can be found on ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank")),
+              tags$li("From 28 April 2023, supported accommodation providers in England were able to register with Ofsted and it became illegal for a supported accommodation provider to operate if they had not submitted a complete application which had been accepted by 28 October 2023. For 2024, figures in the category 'Independent and semi-independent living arrangements/supported accommodation' include young people, before 28 October 2023, who were placed in former semi independent living accommodation or who formerly lived independently, and also young people in placements from 28 April 2023 onwards at a provider that had submitted a complete application to Ofsted to operate as a supported accommodation provider by the deadline. Former semi-independent and former independent living providers who did not submit a completed application that was accepted by Ofsted by the end of 27 October 2023 who continued to provide placements are classified as ‘Other placements’ from 28 October 2023 onwards"),
               tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after in England data guidance.", target = "_blank"),
