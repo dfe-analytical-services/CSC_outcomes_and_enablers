@@ -3393,7 +3393,7 @@ server <- function(input, output, session) {
   })
 
 
-  #### CPP 2+ years (No LA) ----
+  #### CPP 2+ years ----
   # Child protection plan longer than two years headline box
   output$cpp_duration_txt <- renderText({
     stat <- format(duration_cpp %>%
@@ -4395,7 +4395,7 @@ server <- function(input, output, session) {
     )
   })
 
-  output$secure_unit_placement_txt <- renderText({
+  output$secure_home_placement_txt <- renderText({
     stat <- format(placement_data %>%
       filter(time_period == max(placement_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o4) %>%
       filter(characteristic == "Secure homes and children's homes") %>%
@@ -9340,7 +9340,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ### NO CPP for 2+ years by LA ----
+  ### CPP for 2+ years by LA ----
 
   # output all LA chart or stats neighbour chart for CPP duration
   output$SN_CPP_duration <- renderUI({
@@ -9366,7 +9366,6 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("The metric shown in the graph refers to the percentage of children who have been on a child protection plan (CPP) for longer than 2 years."),
-              tags$li("Local authority data is not available for this metric as there are a large number of local authorities with suppressed data."),
               tags$br(),
               p(
                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/2023/data-guidance", "Children in need data guidance.", target = "_blank"),
