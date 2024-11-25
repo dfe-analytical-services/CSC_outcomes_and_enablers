@@ -305,30 +305,33 @@ outcome1_tab <- function() {
               # Headline stats boxes
               fluidRow(
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
                     title = "Rate of children starting to be looked after, per 10,000 children",
                     value = htmlOutput("cla_rate_headline_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
+                  value_box(
+                    title = "Rate of children looked after on 31 March, per 10,000 children",
+                    value = htmlOutput("cla_march_rate_headline_txt")
+                  )
+                ),
+                br(),
+              ),
+              fluidRow(
+                column(
+                  width = 6,
                   value_box(
                     title = "Rate of children starting to be looked after who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_rate_headline_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
-                    title = "Rate of children looked after on 31 March, per 10,000 children",
-                    value = htmlOutput("cla_march_rate_headline_txt")
-                  )
-                ),
-                column(
-                  width = 4,
-                  value_box(
-                    title = "Rate of children looked after on the 31st March who were UASC, per 10,000 children",
+                    title = "Rate of children looked after on 31 March who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_31_march_rate_headline_txt")
                   )
                 ),
@@ -425,6 +428,97 @@ outcome1_tab <- function() {
                       justified = TRUE
                     ),
                     uiOutput("SN_cla"),
+                  )
+                ),
+                ## CLA on 31 March ---------
+                accordion_panel(
+                  "Rate of children looked after on 31 March",
+                  gov_row(
+                    h2("Rate of children looked after on 31 March"),
+                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
+                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
+                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                    )),
+                    br(),
+                    plotlyOutput("plot_cla_rate_march"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_cla_rate_march",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
+                          reactableOutput("table_cla_rate_march")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_rate_march_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  # cla on 31 march by region
+                  gov_row(
+                    h2("Rate of children looked after on 31 March by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_cla_march_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_cla_march_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
+                          reactableOutput("table_cla_march_reg")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_rate_march_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  # cla on 31 march by local authority
+                  gov_row(
+                    h2("Rate of children looked after on 31 March by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
+                    br(),
+                    radioGroupButtons(
+                      "cla_march_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_cla_march"),
                   )
                 ),
                 ## CLA UASC -------------
@@ -526,100 +620,9 @@ outcome1_tab <- function() {
                     uiOutput("SN_uasc"),
                   )
                 ),
-                ## CLA on 31 March ---------
-                accordion_panel(
-                  "Rate of children looked after on 31 March",
-                  gov_row(
-                    h2("Rate of children looked after on 31 March"),
-                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
-                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
-                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
-                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
-                    )),
-                    br(),
-                    plotlyOutput("plot_cla_rate_march"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cla_rate_march",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
-                          reactableOutput("table_cla_rate_march")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cla_rate_march_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  # cla on 31 march by region
-                  gov_row(
-                    h2("Rate of children looked after on 31 March by region"),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_cla_march_reg"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_cla_march_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
-                          reactableOutput("table_cla_march_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "cla_rate_march_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
-                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
-                  ),
-                  # cla on 31 march by local authority
-                  gov_row(
-                    h2("Rate of children looked after on 31 March by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
-                    br(),
-                    radioGroupButtons(
-                      "cla_march_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities",
-                      justified = TRUE
-                    ),
-                    uiOutput("SN_cla_march"),
-                  )
-                ),
                 ## CLA UASC 31 March -------------
                 accordion_panel(
-                  "Children looked after each year on the 31st March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
+                  "Children looked after each year on 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
                     h2("Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"),
                     p("This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),

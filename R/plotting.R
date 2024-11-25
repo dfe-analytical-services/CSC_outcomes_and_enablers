@@ -690,7 +690,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
       )
   }
 
-  # Set the max y-axis scale based on rhe data
+  # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
       combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
@@ -752,8 +752,6 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
 }
 
 plot_uasc_31_march <- function(geo_break, geo_lvl) {
-  geo_break <- "National"
-  geo_lvl <- "National"
   uasc_31_mar_data <- combined_cla_31_march_data %>%
     filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break &
       characteristic %in% c("UASC", "Non-UASC") &
@@ -815,14 +813,14 @@ plot_uasc_31_march_reg <- function() {
   # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
-      combined_cla_31_march_data$characteristic %in% c("UASC", "Non-UASC") &
-      combined_cla_31_march_data$time_period == max(combined_cla_31_march_data$time_period) &
-      combined_cla_31_march_data$geographic_level == "Regional"],
+      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
-  max_rate <- ceiling(max_rate / 10) * 10
+  # Round the max_rate to the nearest 20 then multiply by 1.05 (this will be used for the upper y-axis limit)
+  max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
+
+  max_rate
 
   ggplot(uasc_31_mar_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("UASC", "Non-UASC")),
@@ -921,17 +919,15 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
       )
   }
 
-  # Set the max y-axis scale based on rhe data
+  # Set the max y-axis scale based on the data
   max_rate <- max(
     combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
-      combined_cla_31_march_data$characteristic %in% c("UASC", "Non-UASC") &
-      combined_cla_31_march_data$time_period == max(combined_cla_31_march_data$time_period) &
-      combined_cla_31_march_data$geographic_level == "Local authority"],
+      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
 
-  # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
-  max_rate <- ceiling(max_rate / 10) * 10
+  # Round the max_rate to the nearest 20 then multiply by 1.05 (this will be used for the upper y-axis limit)
+  max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
 
   # Use the new variable in the plot
   p <- ggplot(cla_data, aes(

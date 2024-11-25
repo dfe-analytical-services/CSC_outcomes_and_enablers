@@ -5700,9 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-
-      "checksum": "d3a2a5bb814b42c7091cbbf578c54954"
-
+      "checksum": "6280d96928a20c9bd318b95564470023"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5713,20 +5711,11 @@
     "data/absence_six_half_terms_la.csv": {
       "checksum": "4e2b9dbd20b997733a0ad01b7c390ad3"
     },
-    "data/b1_children_in_need_2013_to_2023.csv": {
-      "checksum": "431a4a4183d7a0a5172702f3547f5290"
-    },
     "data/b1_children_in_need_2013_to_2024.csv": {
       "checksum": "2389c14063a39fc2816e644f6e8c2a34"
     },
-    "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2023.csv": {
-      "checksum": "86652589aca80d2a771fb89c439d2e4a"
-    },
     "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv": {
       "checksum": "b959f9f69eb15462d30e2916e4e858a4"
-    },
-    "data/c3_factors_identified_at_end_of_assessment_2018_to_2023.csv": {
-      "checksum": "75c37a1572f7acb74d570b857129132d"
     },
     "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv": {
       "checksum": "0e1029c09c7316b6c3e598bca9748f8a"
@@ -5746,14 +5735,8 @@
     "data/csww_role_by_characteristics_inpost_2019_to_2023.csv": {
       "checksum": "8a4a41e84c60641e832fb842050bfcc5"
     },
-    "data/d3_cpps_subsequent_plan_2013_to_2023.csv": {
-      "checksum": "e41c1af45e4ab68ff636b737a6e83c6a"
-    },
     "data/d3_cpps_subsequent_plan_2013_to_2024.csv": {
       "checksum": "de443741cc39585e449a31d572b06ca1"
-    },
-    "data/d5_cpps_at31march_by_duration_2013_to_2023.csv": {
-      "checksum": "d9ecbea24aa9626fe2546cbe865ffbed"
     },
     "data/d5_cpps_at31march_by_duration_2013_to_2024.csv": {
       "checksum": "7dd016de4b8149c1fed1f87fe9ddfdc3"
@@ -5873,7 +5856,7 @@
       "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
     },
     "R/outcome1_page.R": {
-      "checksum": "284322a56d20dc0fd6a4080f535d4123"
+      "checksum": "12e4d1fe96c0cbbb801f8fcf5757189e"
     },
     "R/outcome2_page.R": {
       "checksum": "6ee3b2fda63bdf6019e0e8dfa0ecb57f"
@@ -5885,7 +5868,7 @@
       "checksum": "1d2bd4484a3b798a1cd71d464470c6a9"
     },
     "R/plotting.R": {
-      "checksum": "6b0827198d37eaf5c182afbc57814019"
+      "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
     },
     "R/read_data.R": {
       "checksum": "b1b0133f895a879d20fc771af246943b"
@@ -5906,9 +5889,7 @@
       "checksum": "8b9d9ddcfe13ffaf9c320686ec653d49"
     },
     "server.R": {
-
-      "checksum": "44aaf7f4bd0842cf2a026bdc66df3bb4"
-
+      "checksum": "e1d02b96db81cb68e3f97e2195af1224"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

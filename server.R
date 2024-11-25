@@ -833,7 +833,6 @@ server <- function(input, output, session) {
     ) %>%
       layout(yaxis = list(tickmode = "auto")) %>%
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
-    p
   })
 
   # UASC 31 March table
