@@ -123,7 +123,7 @@ outcome4_tab <- function() {
                   width = 4,
                   value_box(
                     title = "% living in secure homes and children's homes",
-                    value = htmlOutput("secure_unit_placement_txt")
+                    value = htmlOutput("secure_home_placement_txt")
                   )
                 ),
                 column(
@@ -297,8 +297,8 @@ outcome4_tab <- function() {
                 ),
                 ## Type of placement ----------------
                 accordion_panel(
-                  "Percentage of children living in foster, secure units, children's homes, or supported accommodation",
-                  h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation"),
+                  "Percentage of children living in foster, secure homes, children's homes, or supported accommodation",
+                  h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation"),
                   p("This indicator looks at the proportion of children living in different placement types. Where possible, the aim is to support children in care to live in foster care arrangements."),
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
@@ -338,6 +338,8 @@ outcome4_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$li("For the placement type of children who are looked after, the Dashboard provides information on foster care, secure homes and children’s homes, independent and semi-independent living arrangements / supported accommodation. It does not provide a separate breakdown for the smaller number of other placements, which include placed for adoption, placed with parents or other person with parental responsibility, other residential settings.  These figures can be found on ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank")),
+                              tags$li("From 28 April 2023, supported accommodation providers in England were able to register with Ofsted and it became illegal for a supported accommodation provider to operate if they had not submitted a complete application which had been accepted by 28 October 2023. For 2024, figures in the category 'Independent and semi-independent living arrangements/supported accommodation' include young people, before 28 October 2023, who were placed in former semi independent living accommodation or who formerly lived independently, and also young people in placements from 28 April 2023 onwards at a provider that had submitted a complete application to Ofsted to operate as a supported accommodation provider by the deadline. Former semi-independent and former independent living providers who did not submit a completed application that was accepted by Ofsted by the end of 27 October 2023 who continued to provide placements are classified as ‘Other placements’ from 28 October 2023 onwards"),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
@@ -347,7 +349,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation by region"),
+                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by region"),
                         p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "Placement_types", text = paste(
@@ -373,6 +375,8 @@ outcome4_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table in earlier releases of this publication. Figures exclude children looked after under a series of short-term placements."),
+                              tags$li("For the placement type of children who are looked after, the Dashboard provides information on foster care, secure homes and children’s homes, independent and semi-independent living arrangements / supported accommodation. It does not provide a separate breakdown for the smaller number of other placements, which include placed for adoption, placed with parents or other person with parental responsibility, other residential settings.  These figures can be found on ", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank")),
+                              tags$li("From 28 April 2023, supported accommodation providers in England were able to register with Ofsted and it became illegal for a supported accommodation provider to operate if they had not submitted a complete application which had been accepted by 28 October 2023. For 2024, figures in the category 'Independent and semi-independent living arrangements/supported accommodation' include young people, before 28 October 2023, who were placed in former semi independent living accommodation or who formerly lived independently, and also young people in placements from 28 April 2023 onwards at a provider that had submitted a complete application to Ofsted to operate as a supported accommodation provider by the deadline. Former semi-independent and former independent living providers who did not submit a completed application that was accepted by Ofsted by the end of 27 October 2023 who continued to provide placements are classified as ‘Other placements’ from 28 October 2023 onwards"),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "Children looked after in England data guidance.", target = "_blank"),
@@ -382,7 +386,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, secure units, children's homes, or supported accommodation by LA"),
+                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by LA"),
                         p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
                         insert_text(inputId = "Placement_types", text = paste(
                           "<b>", "Placement types", "</b><br>",
