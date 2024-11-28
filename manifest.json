@@ -4008,7 +4008,7 @@
         "Maintainer": "Kevin Ushey <kevin@rstudio.com>",
         "Repository": "CRAN",
         "Date/Publication": "2024-10-12 07:30:02 UTC",
-        "Built": "R 4.4.2; ; 2024-11-12 11:13:23 UTC; windows"
+        "Built": "R 4.4.2; ; 2024-11-24 01:29:05 UTC; windows"
       }
     },
     "reprex": {
@@ -5700,7 +5700,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "6280d96928a20c9bd318b95564470023"
+      "checksum": "889e4595a95aa8cec5c03c0a226981c1"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5783,6 +5783,9 @@
     "data/mye22final.xlsx": {
       "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
     },
+    "data/mye23tablesew.xlsx": {
+      "checksum": "4d63ea6362f3db62374ff6d0d206fdd6"
+    },
     "data/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
       "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
     },
@@ -5808,7 +5811,7 @@
       "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "datafiles_log.csv": {
-      "checksum": "d97519489d52cdf6f15635e4df3551b9"
+      "checksum": "00cadf83ee04ff511899bf9d3d43c6ac"
     },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
@@ -5829,7 +5832,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "9960a5ac6eadc9d275cc8cd59af0fb38"
+      "checksum": "47353550f47571fcbd91b31edf598025"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5838,13 +5841,13 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "81f1d97069a27454812cdf4ccc51f530"
+      "checksum": "3ec6bf86ec5179c00764e377dcedf354"
     },
     "R/enabler1_page.R": {
       "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
     },
     "R/enabler2_page.R": {
-      "checksum": "de3ea7a753e3461b95738f73a64fdbad"
+      "checksum": "423b6257d9921146f4b3e8c94c7b70e8"
     },
     "R/enabler3_page.R": {
       "checksum": "22ebb55d35e22e63d8f4b51d11bf06ec"
@@ -5856,7 +5859,7 @@
       "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
     },
     "R/outcome1_page.R": {
-      "checksum": "12e4d1fe96c0cbbb801f8fcf5757189e"
+      "checksum": "bce5f5d4193fd2bdd6b4a116dd1a597a"
     },
     "R/outcome2_page.R": {
       "checksum": "6ee3b2fda63bdf6019e0e8dfa0ecb57f"
@@ -5871,10 +5874,10 @@
       "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
     },
     "R/read_data.R": {
-      "checksum": "b1b0133f895a879d20fc771af246943b"
+      "checksum": "3a8e485c052ea0dad4b15b15f6d7c593"
     },
     "R/standard_panels.R": {
-      "checksum": "7413804aad0c636d16b5ae26191ed2e4"
+      "checksum": "534d2347a0126cb44665a3fd2afa44d6"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -5889,7 +5892,7 @@
       "checksum": "8b9d9ddcfe13ffaf9c320686ec653d49"
     },
     "server.R": {
-      "checksum": "e1d02b96db81cb68e3f97e2195af1224"
+      "checksum": "1f1d5b8e433977213cab6ff25153a578"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

@@ -628,7 +628,7 @@ outcome1_tab <- function() {
                     p("This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
                     insert_text(inputId = "cla_rate_31_march_definition", text = paste(
                       "<b>", "Rate of children looked after on the 31st March", "</b><br>",
-                      "The children starting to be looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
+                      "The children looked after rate is calculated as the number of children starting to be looked after each year, per 10,000 children in the population."
                     )),
                     br(),
                     plotlyOutput("plot_uasc_31_march"),

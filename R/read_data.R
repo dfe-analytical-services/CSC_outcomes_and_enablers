@@ -509,7 +509,8 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
   return(final_dataset)
 }
 
-read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
+# read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
+read_per_capita_spending <- function(file = "data/mye23tablesew.xlsx") {
   population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
   test_df <- population_estimates
   test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
