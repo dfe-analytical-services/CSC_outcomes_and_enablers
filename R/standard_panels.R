@@ -1,5 +1,5 @@
 support_links <- function() {
-  tabPanel(
+  nav_panel(
     "Support and feedback",
     gov_main_layout(
       gov_row(

@@ -1,5 +1,5 @@
 outcome4_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "outcome4_page",
     "Stable homes",
     gov_main_layout(

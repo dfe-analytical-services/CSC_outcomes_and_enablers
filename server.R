@@ -43,16 +43,16 @@ server <- function(input, output, session) {
     ".clientValue-default-plotlyCrosstalkOpts",
     "bookmark1", "bookmark2"
   ))
-
-  observe({
-    # Trigger this observer every time an input changes
-    reactiveValuesToList(input)
-    session$doBookmark()
-  })
-
-  onBookmarked(function(url) {
-    updateQueryString(url)
-  })
+  #
+  #   observe({
+  #     # Trigger this observer every time an input changes
+  #     reactiveValuesToList(input)
+  #     session$doBookmark()
+  #   })
+  #
+  #   onBookmarked(function(url) {
+  #     updateQueryString(url)
+  #   })
 
   observe({
     if (input$navlistPanel == "dashboard") {
