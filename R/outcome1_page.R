@@ -1,5 +1,5 @@
 outcome1_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "outcome1_page",
     "Family support",
     gov_main_layout(

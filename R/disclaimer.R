@@ -1,5 +1,5 @@
 disclaimer_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "disclaimer",
     "Disclaimer",
     gov_main_layout(

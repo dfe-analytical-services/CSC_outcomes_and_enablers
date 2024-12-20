@@ -72,17 +72,6 @@ ui <- function(input, output, session) {
     dfeshiny::custom_disconnect_message(
       links = c(site_primary, site_overflow)
     ),
-    # Setting up cookie consent based on a cookie recording the consent:
-    # https://book.javascript-for-r.com/shiny-cookies.html
-    tags$head(
-      tags$script(
-        src = paste0(
-          "https://cdn.jsdelivr.net/npm/js-cookie@rc/",
-          "dist/js.cookie.min.js"
-        )
-      ),
-      tags$script(src = "cookie-consent.js"),
-    ),
     tags$head(includeScript("www/downloader.js")),
     tags$head(includeHTML(("google-analytics.html"))),
     tags$head(
@@ -114,11 +103,11 @@ ui <- function(input, output, session) {
         "We have updated the Dashboard with the latest published data for Children in Need (1st Nov 2024), Children Looked After (14th Nov 2024) and Ofsted Leadership Ratings (up to 30th August 2024)"
       )
     ),
-    shiny::navlistPanel(
-      # "",
+    bslib::navset_pill_list(
       id = "navlistPanel",
-      widths = c(2, 8),
       well = FALSE,
+      fluid = TRUE,
+      widths = c(2, 10),
       introductionPanel(),
       "Outcomes",
       outcome1_tab(),

@@ -1,5 +1,5 @@
 data_sources_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "data_sources",
     "Data sources",
     gov_main_layout(
