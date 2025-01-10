@@ -1,5 +1,5 @@
 enabler1_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "enabler1_page",
     "Multi-agency",
     gov_main_layout(

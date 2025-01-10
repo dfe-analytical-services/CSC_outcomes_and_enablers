@@ -1,5 +1,5 @@
 enabler3_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "enabler3_page",
     "Workforce",
     gov_main_layout(

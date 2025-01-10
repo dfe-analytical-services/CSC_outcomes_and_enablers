@@ -1,5 +1,5 @@
 enabler2_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "enabler2_page",
     "Leadership",
     gov_main_layout(

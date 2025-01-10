@@ -1,6 +1,6 @@
 # This page is a hidden page for the User Guide
 tutorialPanel <- function() {
-  tabPanel(
+  nav_panel(
     value = "user_guide",
     "User guide",
     gov_main_layout(
