@@ -913,7 +913,7 @@ merge_cla_dataframes <- function() {
   )
 
   merged_data <- merged_data %>%
-    mutate(placement_per_10000 = round((as.numeric(rate_per_10000) * (as.numeric(percentage) / 100)))) %>%
+    mutate(placement_per_10000 = round(as.numeric(placements_number) / as.numeric(population_estimate) * 10000)) %>%
     mutate(`Placement Rate Per 10000` = case_when(
       placements_number == "c" ~ -100,
       placements_number == "low" ~ -200,
@@ -986,7 +986,7 @@ merge_cla_31_march_dataframes <- function() {
   )
 
   merged_31_march_data <- merged_31_march_data %>%
-    mutate(placement_per_10000 = round((as.numeric(rate_per_10000) * (as.numeric(percentage) / 100)))) %>%
+    mutate(placement_per_10000 = round(as.numeric(cla_31_march_number) / as.numeric(population_estimate) * 10000)) %>%
     mutate(`Placement Rate Per 10000` = case_when(
       cla_31_march_number == "c" ~ -100,
       cla_31_march_number == "low" ~ -200,
