@@ -81,14 +81,7 @@ ui <- function(input, output, session) {
         href = "dfe_shiny_gov_style.css"
       )
     ),
-    shinyGovstyle::header(
-      main_text = "",
-      main_link = "https://www.gov.uk/government/organisations/department-for-education",
-      secondary_text = "Children's Social Care - Outcomes and Enablers",
-      logo = "images/DfE_logo_landscape.png",
-      logo_width = 150,
-      logo_height = 32
-    ),
+    dfeshiny::header(header = "Children's Social Care - Outcomes and Enablers"),
     shinyGovstyle::banner(
       "beta banner",
       "beta",
