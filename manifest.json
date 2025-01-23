@@ -352,10 +352,9 @@
       "description": {
         "Package": "Rcpp",
         "Title": "Seamless R and C++ Integration",
-        "Version": "1.0.13",
-        "Date": "2024-07-11",
-        "Author": "Dirk Eddelbuettel, Romain Francois, JJ Allaire, Kevin Ushey, Qiang Kou,\n Nathan Russell, Inaki Ucar, Douglas Bates and John Chambers",
-        "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
+        "Version": "1.0.14",
+        "Date": "2025-01-11",
+        "Authors@R": "c(person(\"Dirk\", \"Eddelbuettel\", role = c(\"aut\", \"cre\"), email = \"edd@debian.org\",\n                    comment = c(ORCID = \"0000-0001-6419-907X\")),\n             person(\"Romain\", \"Francois\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0002-2444-4226\")),\n             person(\"JJ\", \"Allaire\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-0174-9868\")),\n             person(\"Kevin\", \"Ushey\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0003-2880-7407\")),\n             person(\"Qiang\", \"Kou\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6786-5453\")),\n             person(\"Nathan\", \"Russell\", role = \"aut\"),\n             person(\"Iñaki\", \"Ucar\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-6403-5550\")),\n             person(\"Doug\", \"Bates\", role = \"aut\",\n                    comment = c(ORCID = \"0000-0001-8316-9503\")),\n             person(\"John\", \"Chambers\", role = \"aut\"))",
         "Description": "The 'Rcpp' package provides R functions as well as C++ classes which\n offer a seamless integration of R and C++. Many R data types and objects can be\n mapped back and forth to C++ equivalents which facilitates both writing of new\n code as well as easier integration of third-party libraries. Documentation\n about 'Rcpp' is provided by several vignettes included in this package, via the\n 'Rcpp Gallery' site at <https://gallery.rcpp.org>, the paper by Eddelbuettel and\n Francois (2011, <doi:10.18637/jss.v040.i08>), the book by Eddelbuettel (2013,\n <doi:10.1007/978-1-4614-6868-4>) and the paper by Eddelbuettel and Balamuta (2018,\n <doi:10.1080/00031305.2017.1375990>); see 'citation(\"Rcpp\")' for details.",
         "Imports": "methods, utils",
         "Suggests": "tinytest, inline, rbenchmark, pkgKitten (>= 0.1.2)",
@@ -366,18 +365,20 @@
         "RoxygenNote": "6.1.1",
         "Encoding": "UTF-8",
         "NeedsCompilation": "yes",
-        "Packaged": "2024-07-11 13:00:10 UTC; edd",
+        "Packaged": "2025-01-11 20:21:25 UTC; edd",
+        "Author": "Dirk Eddelbuettel [aut, cre] (<https://orcid.org/0000-0001-6419-907X>),\n  Romain Francois [aut] (<https://orcid.org/0000-0002-2444-4226>),\n  JJ Allaire [aut] (<https://orcid.org/0000-0003-0174-9868>),\n  Kevin Ushey [aut] (<https://orcid.org/0000-0003-2880-7407>),\n  Qiang Kou [aut] (<https://orcid.org/0000-0001-6786-5453>),\n  Nathan Russell [aut],\n  Iñaki Ucar [aut] (<https://orcid.org/0000-0001-6403-5550>),\n  Doug Bates [aut] (<https://orcid.org/0000-0001-8316-9503>),\n  John Chambers [aut]",
+        "Maintainer": "Dirk Eddelbuettel <edd@debian.org>",
         "Repository": "CRAN",
-        "Date/Publication": "2024-07-17 15:50:06 UTC",
-        "Built": "R 4.4.1; x86_64-w64-mingw32; 2024-07-26 08:00:20 UTC; windows",
+        "Date/Publication": "2025-01-12 16:10:02 UTC",
+        "Built": "R 4.4.2; x86_64-w64-mingw32; 2025-01-16 00:51:34 UTC; windows",
         "Archs": "x64",
         "RemoteType": "standard",
         "RemotePkgRef": "Rcpp",
         "RemoteRef": "Rcpp",
-        "RemoteRepos": "https://cloud.r-project.org",
+        "RemoteRepos": "http://cran.rstudio.com",
         "RemoteReposName": "CRAN",
-        "RemotePkgPlatform": "source",
-        "RemoteSha": "1.0.13"
+        "RemotePkgPlatform": "x86_64-w64-mingw32",
+        "RemoteSha": "1.0.14"
       }
     },
     "afcolours": {
@@ -1275,18 +1276,18 @@
         "RoxygenNote": "7.3.2",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.2; ; 2025-01-02 17:04:29 UTC; windows",
+        "Built": "R 4.4.2; ; 2025-01-23 15:24:07 UTC; windows",
         "RemoteType": "github",
         "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "2de5915421cf2cdccceb9440ee694254f2f6af1c",
+        "RemoteSha": "6cf934469231689d6d31daa3410beb41f49960b6",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "2de5915421cf2cdccceb9440ee694254f2f6af1c"
+        "GithubSHA1": "6cf934469231689d6d31daa3410beb41f49960b6"
       }
     },
     "diffobj": {
@@ -5078,7 +5079,7 @@
       "checksum": "ca3cdd3545767ce53e5cd8b4f32c8d10"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "156260598ce08a074dce84e674d28647"
+      "checksum": "703a6549e79ed4c801a2c0f1302bdc24"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "778992839c1aea6c23558a953e074432"
@@ -5087,7 +5088,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "19e4d7a0767b6a5586bcf3599ba8123f"
+      "checksum": "e69a32726d15cf4875bc62dcbeaed885"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5170,6 +5171,9 @@
     "data/mye22final.xlsx": {
       "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
     },
+    "data/mye23tablesew.xlsx": {
+      "checksum": "4d63ea6362f3db62374ff6d0d206fdd6"
+    },
     "data/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
       "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
     },
@@ -5195,7 +5199,10 @@
       "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "datafiles_log.csv": {
-      "checksum": "d97519489d52cdf6f15635e4df3551b9"
+      "checksum": "00cadf83ee04ff511899bf9d3d43c6ac"
+    },
+    "deploy-parameters.yaml": {
+      "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
     },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
@@ -5204,7 +5211,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "b10ac3c14d1b244d1adbb1a6225012f9"
+      "checksum": "0d0a8b87597ac0ba526ec608d7fb8c2d"
     },
     "google-analytics.html": {
       "checksum": "f2437bd3366b2deac82b1d3cf9a48c60"
@@ -5216,7 +5223,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "7fa012df1a27c26b10c1c58fad588a17"
+      "checksum": "044cce3cdea866f6b8f28f1286a104de"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5225,13 +5232,13 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "1734427437ae8458cef33982826a20a0"
+      "checksum": "165492a9235bad903fccba9db2f20eb8"
     },
     "R/enabler1_page.R": {
       "checksum": "563966a26cdecdeaa82073f2c5c8787c"
     },
     "R/enabler2_page.R": {
-      "checksum": "c1f82034f9173f28fe9f97286b67a462"
+      "checksum": "f4968496fb3e93b1247c47ae771575e5"
     },
     "R/enabler3_page.R": {
       "checksum": "0a815cd407219966715228ae5e2803ac"
@@ -5243,25 +5250,25 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "2760776d43f505c2c36d16a54f657e4e"
+      "checksum": "16838f71eeb54e256539cef8fbb563f0"
     },
     "R/outcome2_page.R": {
       "checksum": "70e219cb4e1ee8c1e3f517216502d077"
     },
     "R/outcome3_page.R": {
-      "checksum": "0b9d809ef8ced43adfe04e30716d8d43"
+      "checksum": "f2bb779d7448685c8b45d5daf4233ca5"
     },
     "R/outcome4_page.R": {
       "checksum": "b39a036cb73126bae3f0f1e5a252433a"
     },
     "R/plotting.R": {
-      "checksum": "0a7ea404f29f12d3e8898fcaef712e7f"
+      "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
     },
     "R/read_data.R": {
-      "checksum": "4333f9389f5075b39e11bd7b9ef9965a"
+      "checksum": "d711d1f1ca6e1ffb83001592272245ca"
     },
     "R/standard_panels.R": {
-      "checksum": "d78508c85515697bdda0194a15736b14"
+      "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -5273,10 +5280,10 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "151baee7894fca311ffee0b8689a251c"
+      "checksum": "23bc8e9b7c87085d90790f2446c8926f"
     },
     "server.R": {
-      "checksum": "3275635fca8bcd52450094ae6ecf38e1"
+      "checksum": "9342176b681ae39c7682d55d79809dfe"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5288,7 +5295,7 @@
       "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001_.new.png": {
-      "checksum": "63cd60c8629add8bdebfdc7fbcce51da"
+      "checksum": "d9354caa1f2e1854079483063cba5232"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001_.png": {
       "checksum": "64c0e0f583a0af66a017704179cb9b7a"
@@ -5342,13 +5349,13 @@
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "9afd113880b7ab6f21a5728453afcdd3"
+      "checksum": "6f68c0ad79404a26044f9551858e365f"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "abf24fcfce3f67d35ed77b64addc2f86"
+      "checksum": "7a68dc373e89d9277ae132c6325d5381"
     },
     "ui.R": {
-      "checksum": "18158efd1df78e14bb16f57cb52f195d"
+      "checksum": "04c8323a76a7e9d2e146b25e3252afac"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"

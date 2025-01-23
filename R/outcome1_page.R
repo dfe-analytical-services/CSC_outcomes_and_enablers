@@ -133,18 +133,40 @@ outcome1_tab <- function() {
                     details(
                       inputId = "CIN_info",
                       label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their development or health."),
-                          tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021", "mid-year population estimates.", target = "_blank"), "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
-                          tags$li("The rates for 2023 have been calculated based on 2021 population estimates as 2022 estimates were not available at the time of publication. Therefore, some caution is needed when interpreting the 2023 rates, either in isolation or in comparison with other years. The 2023 rates will be revised as part of the next 2024 publication."),
-                          tags$li("Revised population estimates for 2012 to 2020 based on 2021 Census data, to calculate revised 2013 to 2021 rates, were not available at the time of publication. Therefore, some caution is needed when interpreting these rates, either in isolation or in comparison with other years. The 2013 to 2021 rates will be revised as part of the next 2024 publication."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                      help_text = tags$ul(
+                        tags$li("Rate of children as at 31 March 2024 assessed as needing help and protection as a result of risks to their development or health."),
+                        tags$li(
+                          "Rates per 10,000 children are calculated based on ONS",
+                          a(
+                            href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland",
+                            "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
+                          ),
+                          "for children aged 0 to 17 years. Revised/new population estimates for 2012 to 2022, based on 2021 Census data, were used to calculate revised rates for 2013 to 2023 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2023 were used to calculate 2024 rates."
+                        ),
+                        tags$li(
+                          "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
+                          tags$ul(
+                            tags$li("For children in need, a decrease of 3.6 in 2023 (from 342.7 to 339.1) to an increase of 8.4 in 2021 (from 321.2 to 329.6)."),
+                            tags$li("For children on protection plans, a decrease of 0.5 in 2023 (from 43.2 to 42.7) to an increase of 1.0 in 2021 (from 41.4 to 42.4).")
+                          )
+                        ),
+                        tags$li("The rates in the 2023 release for the 2023 year were calculated based on 2021 population estimates as estimates for 2022 were not available at the time of publication; this should be considered alongside the impact of the revisions."),
+                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals."),
+                        tags$li("Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals."),
+                        tags$li("Hampshire local authority moved to a new case management and reporting system and their return in 2024 had significant data quality issues and was assessed to not be sufficiently reliable to use. Therefore, their data for 2024 is presented as ‘u’ to indicate low reliability and 2023 figures for Hampshire are included in the 2024 totals for the South East region and England"),
+                        tags$li("Hackney had a cyberattack in December 2020, which had a significant impact on their information management systems. As a result, 2020 figures for Hackney have been included in the 2021 and 2022 national and regional totals, but data for Hackney has been presented as ‘x’ to indicate not available"),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the",
+                          a(
+                            href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance",
+                            "Children in need data guidance.", target = "_blank"
+                          ),
                           tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                          "For more information on the methodology, please refer to the",
+                          a(
+                            href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology",
+                            "Children in need methodology.", target = "_blank"
                           )
                         )
                       )
@@ -171,18 +193,40 @@ outcome1_tab <- function() {
                     details(
                       inputId = "CIN_reg_info",
                       label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("Rate of children as at 31 March 2023 assessed as needing help and protection as a result of risks to their development or health."),
-                          tags$li("Rates per 10,000 children are calculated based on ONS", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/annualmidyearpopulationestimates/mid2021", "mid-year population estimates.", target = "_blank"), "for children aged 0 to 17 years. The rates for 2022 and 2023 are based on 2021 population estimates which in turn are based on 2021 Census data."),
-                          tags$li("The rates for 2023 have been calculated based on 2021 population estimates as 2022 estimates were not available at the time of publication. Therefore, some caution is needed when interpreting the 2023 rates, either in isolation or in comparison with other years. The 2023 rates will be revised as part of the next 2024 publication."),
-                          tags$li("Revised population estimates for 2012 to 2020 based on 2021 Census data, to calculate revised 2013 to 2021 rates, were not available at the time of publication. Therefore, some caution is needed when interpreting these rates, either in isolation or in comparison with other years. The 2013 to 2021 rates will be revised as part of the next 2024 publication."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                      help_text = tags$ul(
+                        tags$li("Rate of children as at 31 March 2024 assessed as needing help and protection as a result of risks to their development or health."),
+                        tags$li(
+                          "Rates per 10,000 children are calculated based on ONS",
+                          a(
+                            href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland",
+                            "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
+                          ),
+                          "for children aged 0 to 17 years. Revised/new population estimates for 2012 to 2022, based on 2021 Census data, were used to calculate revised rates for 2013 to 2023 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2023 were used to calculate 2024 rates."
+                        ),
+                        tags$li(
+                          "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
+                          tags$ul(
+                            tags$li("For children in need, a decrease of 3.6 in 2023 (from 342.7 to 339.1) to an increase of 8.4 in 2021 (from 321.2 to 329.6)."),
+                            tags$li("For children on protection plans, a decrease of 0.5 in 2023 (from 43.2 to 42.7) to an increase of 1.0 in 2021 (from 41.4 to 42.4).")
+                          )
+                        ),
+                        tags$li("The rates in the 2023 release for the 2023 year were calculated based on 2021 population estimates as estimates for 2022 were not available at the time of publication; this should be considered alongside the impact of the revisions."),
+                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals."),
+                        tags$li("Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals."),
+                        tags$li("Hampshire local authority moved to a new case management and reporting system and their return in 2024 had significant data quality issues and was assessed to not be sufficiently reliable to use. Therefore, their data for 2024 is presented as ‘u’ to indicate low reliability and 2023 figures for Hampshire are included in the 2024 totals for the South East region and England"),
+                        tags$li("Hackney had a cyberattack in December 2020, which had a significant impact on their information management systems. As a result, 2020 figures for Hackney have been included in the 2021 and 2022 national and regional totals, but data for Hackney has been presented as ‘x’ to indicate not available"),
+                        tags$br(),
+                        p(
+                          "For more information on the data and definitions, please refer to the",
+                          a(
+                            href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance",
+                            "Children in need data guidance.", target = "_blank"
+                          ),
                           tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                          "For more information on the methodology, please refer to the",
+                          a(
+                            href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology",
+                            "Children in need methodology.", target = "_blank"
                           )
                         )
                       )
@@ -212,7 +256,7 @@ outcome1_tab <- function() {
                    cause additional upset and trauma for the child and family, therefore reducing the rate of repeat referrals will result in better outcomes."),
                     insert_text(inputId = "CIN_referrals_definition", text = paste(
                       "<b>", "Re-referrals within 12 months", "</b><br>",
-                      "Percentage of re-referrals within 12 months of a previous referral in the year to 31 March."
+                      "Percentage of referrals within 12 months of a previous referral in the year to 31 March."
                     )),
                     plotlyOutput("plot_cin_referral"),
                     br(),
@@ -232,13 +276,15 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need data methodology", target = "_blank"), "for more information"),
+                          tags$li("Herefordshire local authority considerably underreported their data on referrals, and therefore re-referrals, in 2024. Impacted data is shown as ‘u’ to indicate low reliability but are included in the national totals and regional totals."),
+                          tags$li("For Herefordshire, it was determined at the end of the 2024 collection that the re-referrals data initially reported for 2023 was unreliable, so data on re-referrals for Herefordshire for 2023 was replaced with ‘u’ to indicate low reliability within the 2024 statistics release."),
+                          tags$li("Re-referrals for the year ending 31 March 2020 exclude Dorset and exclude Bournemouth, Christchurch and Poole local authorities due to the reorganisation of these areas on 1 April 2019."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
                             tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
                           )
                         )
                       )
@@ -267,13 +313,15 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("If a child has more than one referral in a reporting year, then each referral is counted."),
-                          tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need data methodology", target = "_blank"), "for more information"),
+                          tags$li("Herefordshire local authority considerably underreported their data on referrals, and therefore re-referrals, in 2024. Impacted data is shown as ‘u’ to indicate low reliability but are included in the national totals and regional totals."),
+                          tags$li("For Herefordshire, it was determined at the end of the 2024 collection that the re-referrals data initially reported for 2023 was unreliable, so data on re-referrals for Herefordshire for 2023 was replaced with ‘u’ to indicate low reliability within the 2024 statistics release."),
+                          tags$li("Re-referrals for the year ending 31 March 2020 exclude Dorset and exclude Bournemouth, Christchurch and Poole local authorities due to the reorganisation of these areas on 1 April 2019."),
                           tags$br(),
                           p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                            "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
                             tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                            "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
                           )
                         )
                       )
@@ -305,24 +353,34 @@ outcome1_tab <- function() {
               # Headline stats boxes
               fluidRow(
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
                     title = "Rate of children starting to be looked after, per 10,000 children",
                     value = htmlOutput("cla_rate_headline_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
+                  value_box(
+                    title = "Rate of children looked after on 31 March, per 10,000 children",
+                    value = htmlOutput("cla_march_rate_headline_txt")
+                  )
+                ),
+                br(),
+              ),
+              fluidRow(
+                column(
+                  width = 6,
                   value_box(
                     title = "Rate of children starting to be looked after who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_rate_headline_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
-                    title = "Rate of children looked after on 31 March, per 10,000 children",
-                    value = htmlOutput("cla_march_rate_headline_txt")
+                    title = "Rate of children looked after on 31 March who were UASC, per 10,000 children",
+                    value = htmlOutput("uasc_31_march_rate_headline_txt")
                   )
                 ),
                 br(),
@@ -418,6 +476,97 @@ outcome1_tab <- function() {
                       justified = TRUE
                     ),
                     uiOutput("SN_cla"),
+                  )
+                ),
+                ## CLA on 31 March ---------
+                accordion_panel(
+                  "Rate of children looked after on 31 March",
+                  gov_row(
+                    h2("Rate of children looked after on 31 March"),
+                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
+                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
+                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                      "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                    )),
+                    br(),
+                    plotlyOutput("plot_cla_rate_march"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_cla_rate_march",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
+                          reactableOutput("table_cla_rate_march")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_rate_march_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  # cla on 31 march by region
+                  gov_row(
+                    h2("Rate of children looked after on 31 March by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_cla_march_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_cla_march_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
+                          reactableOutput("table_cla_march_reg")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "cla_rate_march_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions/data-guidance", "children looked after data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-looked-after-in-england-including-adoptions", "children looked after methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  # cla on 31 march by local authority
+                  gov_row(
+                    h2("Rate of children looked after on 31 March by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
+                    br(),
+                    radioGroupButtons(
+                      "cla_march_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_cla_march"),
                   )
                 ),
                 ## CLA UASC -------------
@@ -519,36 +668,40 @@ outcome1_tab <- function() {
                     uiOutput("SN_uasc"),
                   )
                 ),
-                ## CLA on 31 March ---------
+                ## CLA UASC 31 March -------------
                 accordion_panel(
-                  "Rate of children looked after on 31 March",
+                  "Children looked after each year on 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children looked after on 31 March"),
-                    p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
-                    insert_text(inputId = "cla_31_March_rate_definition", text = paste(
-                      "<b>", "Rate of children looked after on 31 March", "</b><br>",
+                    h2("Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"),
+                    p("This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
+                    insert_text(inputId = "cla_rate_31_march_definition", text = paste(
+                      "<b>", "Rate of children looked after on the 31st March", "</b><br>",
                       "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
                     )),
                     br(),
-                    plotlyOutput("plot_cla_rate_march"),
+                    plotlyOutput("plot_uasc_31_march"),
                     br(),
                     br(),
                     details(
-                      inputId = "tbl_cla_rate_march",
+                      inputId = "tbl_uasc_31_march",
                       label = "View chart as a table",
                       help_text = (
                         HTML(paste0(
-                          csvDownloadButton("table_cla_rate_march", filename = "cla_march_rates.csv"),
-                          reactableOutput("table_cla_rate_march")
+                          csvDownloadButton("table_uasc_31_march", filename = "cla_UASC_rates_31_march.csv"),
+                          reactableOutput("table_uasc_31_march")
                         ))
                       )
                     ),
                     details(
-                      inputId = "cla_rate_march_info",
+                      inputId = "cla_UASC_31_march_rate_info",
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
+                          tags$li("Rates are calculated using published number of children looked after at the 31st March each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
@@ -560,30 +713,35 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
-                  # cla on 31 march by region
+                  ## CLA UASC region
                   gov_row(
-                    h2("Rate of children looked after on 31 March by region"),
+                    h2("Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
-                    plotlyOutput("plot_cla_march_reg"),
+                    plotlyOutput("plot_uasc_31_march_reg"),
                     br(),
                     br(),
                     details(
-                      inputId = "tbl_cla_march_reg",
+                      inputId = "tbl_uasc_31_march_reg",
                       label = "View chart as a table",
                       help_text = (
                         HTML(paste0(
-                          csvDownloadButton("table_cla_march_reg", filename = "cla_march_rates_regions.csv"),
-                          reactableOutput("table_cla_march_reg")
+                          csvDownloadButton("table_uasc_31_march_reg", filename = "cla_UASC_31_march_rates_regions.csv"),
+                          reactableOutput("table_uasc_31_march_reg")
                         ))
                       )
                     ),
                     details(
-                      inputId = "cla_rate_march_reg_info",
+                      inputId = "cla_UASC_31_march_rate_reg_info",
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
+                          tags$li("Rates are calculated using published number of children starting to be looked after each year, who are UASC and non-UASC, which have been rounded to the nearest 10 at national and regional level (unrounded for local authority figures)."),
                           tags$li("Rates are calculated based on ", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2022#:~:text=We%20estimate%20the%20population%20of,mid%2D1962%20(1.0%25)", "ONS published mid-2022 population estimates", target = "_blank"), "and rebased population estimates for mid-2012 to mid-2021 for children aged 0 to 17 years."),
+                          tags$li("Only the first occasion on which a child started to be looked after in the local authority during year has been counted. The care of a small number of children each year is transferred between LAs, in national figures these children will be counted as starting once within each LA. For more information see the methodology document (link below)."),
+                          tags$li("Following the introduction of the National Transfer Scheme (NTS) in 2016, there has been an agreement between local authorities to transfer UASC to ensure a more equitable distribution of UASC across all local authorities. This means that some UASC will be counted more than once in the national and regional CLA starting figures if they started to be looked after within more than 1 local
+                                  authority during the year. In 2019 we estimate that nationally, the number of UASC starts was overestimated by 9%, this increased to 15% in 2023 following the mandation of the NTS in February 2022."),
                           tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to view the equivalent data in earlier releases of the publication."),
                           tags$br(),
                           p(
@@ -595,19 +753,18 @@ outcome1_tab <- function() {
                       )
                     )
                   ),
-                  # cla on 31 march by local authority
+                  ## CLA UASC 31st March by local authority
                   gov_row(
-                    h2("Rate of children looked after on 31 March by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
-                    br(),
+                    h2("Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children"),
+                    p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
-                      "cla_march_stats_toggle",
+                      "uasc_31_march_stats_toggle",
                       label = NULL,
                       choices = c("All local authorities", "10 statistical neighbours"),
                       selected = "All local authorities",
                       justified = TRUE
                     ),
-                    uiOutput("SN_cla_march"),
+                    uiOutput("SN_uasc_31_march"),
                   )
                 ),
                 open = FALSE
