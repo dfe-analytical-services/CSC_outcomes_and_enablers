@@ -5079,7 +5079,7 @@
       "checksum": "ca3cdd3545767ce53e5cd8b4f32c8d10"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "156260598ce08a074dce84e674d28647"
+      "checksum": "703a6549e79ed4c801a2c0f1302bdc24"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "778992839c1aea6c23558a953e074432"
@@ -5088,7 +5088,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "2cc03e006244e0420919c472679d82cf"
+      "checksum": "e69a32726d15cf4875bc62dcbeaed885"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5200,6 +5200,9 @@
     },
     "datafiles_log.csv": {
       "checksum": "00cadf83ee04ff511899bf9d3d43c6ac"
+    },
+    "deploy-parameters.yaml": {
+      "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
     },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
@@ -5352,7 +5355,7 @@
       "checksum": "7a68dc373e89d9277ae132c6325d5381"
     },
     "ui.R": {
-      "checksum": "18158efd1df78e14bb16f57cb52f195d"
+      "checksum": "04c8323a76a7e9d2e146b25e3252afac"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
