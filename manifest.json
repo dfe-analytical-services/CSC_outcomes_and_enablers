@@ -346,32 +346,6 @@
         "Built": "R 4.4.0; ; 2024-04-25 19:44:24 UTC; windows"
       }
     },
-    "RCurl": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
-      "description": {
-        "Package": "RCurl",
-        "Version": "1.98-1.16",
-        "Title": "General Network (HTTP/FTP/...) Client Interface for R",
-        "Authors@R": "c(person(\"CRAN Team\", role = c('ctb', 'cre'),\n                    email = \"CRAN@r-project.org\",\n                    comment = \"de facto maintainer since 2013\"),\n             person(\"Duncan\", \"Temple Lang\", role = \"aut\",\n                    email = \"duncan@r-project.org\",\n                    comment = c(ORCID = \"0000-0003-0159-1546\")))",
-        "SystemRequirements": "GNU make, libcurl",
-        "Description": "A wrapper for 'libcurl' <https://curl.se/libcurl/>\n\tProvides functions to allow one to compose general HTTP requests\n        and provides convenient functions to fetch URIs, get & post\n        forms, etc. and process the results returned by the Web server.\n        This provides a great deal of control over the HTTP/FTP/...\n        connection and the form of the request while providing a\n        higher-level interface than is available just using R socket\n        connections.  Additionally, the underlying implementation is\n        robust and extensive, supporting FTP/FTPS/TFTP (uploads and\n        downloads), SSL/HTTPS, telnet, dict, ldap, and also supports\n        cookies, redirects, authentication, etc.",
-        "License": "BSD_3_clause + file LICENSE",
-        "Depends": "R (>= 3.4.0), methods",
-        "Imports": "bitops",
-        "Suggests": "XML",
-        "Collate": "aclassesEnums.R bitClasses.R xbits.R base64.R binary.S\nclasses.S curl.S curlAuthConstants.R curlEnums.R curlError.R\ncurlInfo.S dynamic.R form.S getFormParams.R getURLContent.R\nheader.R http.R httpError.R httpErrors.R iconv.R info.S mime.R\nmulti.S options.S scp.R support.S upload.R urlExists.R zclone.R\nzzz.R",
-        "NeedsCompilation": "yes",
-        "Packaged": "2024-07-11 10:39:12 UTC; tomas",
-        "Author": "CRAN Team [ctb, cre] (de facto maintainer since 2013),\n  Duncan Temple Lang [aut] (<https://orcid.org/0000-0003-0159-1546>)",
-        "Maintainer": "CRAN Team <CRAN@r-project.org>",
-        "Repository": "RSPM",
-        "Date/Publication": "2024-07-11 13:00:02 UTC",
-        "Encoding": "UTF-8",
-        "Built": "R 4.4.0; x86_64-w64-mingw32; 2024-07-12 04:21:02 UTC; windows",
-        "Archs": "x64"
-      }
-    },
     "Rcpp": {
       "Source": "CRAN",
       "Repository": "http://cran.rstudio.com",
@@ -588,30 +562,6 @@
         "RemoteReposName": "CRAN",
         "RemotePkgPlatform": "x86_64-w64-mingw32",
         "RemoteSha": "4.5.2"
-      }
-    },
-    "bitops": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
-      "description": {
-        "Package": "bitops",
-        "Version": "1.0-9",
-        "Date": "2024-10-03",
-        "Authors@R": "c(\n   person(\"Steve\", \"Dutky\", role = \"aut\", email = \"sdutky@terpalum.umd.edu\",\n    \t     comment = \"S original; then (after MM's port) revised and modified\"),\n   person(\"Martin\", \"Maechler\", role = c(\"cre\", \"aut\"), email = \"maechler@stat.math.ethz.ch\",\n\t     comment = c(\"Initial R port; tweaks\", ORCID = \"0000-0002-8685-9910\")))",
-        "Title": "Bitwise Operations",
-        "Description": "Functions for bitwise operations on integer vectors.",
-        "License": "GPL (>= 2)",
-        "URL": "https://github.com/mmaechler/R-bitops",
-        "BugReports": "https://github.com/mmaechler/R-bitops/issues",
-        "NeedsCompilation": "yes",
-        "Packaged": "2024-10-03 09:17:35 UTC; maechler",
-        "Author": "Steve Dutky [aut] (S original; then (after MM's port) revised and\n    modified),\n  Martin Maechler [cre, aut] (Initial R port; tweaks,\n    <https://orcid.org/0000-0002-8685-9910>)",
-        "Maintainer": "Martin Maechler <maechler@stat.math.ethz.ch>",
-        "Repository": "RSPM",
-        "Date/Publication": "2024-10-03 23:00:54 UTC",
-        "Encoding": "UTF-8",
-        "Built": "R 4.4.0; x86_64-w64-mingw32; 2024-10-04 04:23:51 UTC; windows",
-        "Archs": "x64"
       }
     },
     "blob": {
@@ -1308,13 +1258,13 @@
       "description": {
         "Package": "dfeshiny",
         "Title": "DfE R Shiny Standards",
-        "Version": "0.5.1",
+        "Version": "0.5.3.9000",
         "Authors@R": "c(\n    person(\"Rich\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0001-9070-9969\")),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"aut\"),\n    person(\"Cam\", \"Race\", , \"cameron.race@education.gov.uk\", role = \"aut\")\n  )",
         "Description": "R package containing preferred methods for creating official\n    DfE R-Shiny dashboards.",
         "License": "GPL (>= 3)",
         "URL": "https://dfe-analytical-services.github.io/dfeshiny/\nhttps://www.github.com/dfe-analytical-services/dfeshiny/",
         "Depends": "R (>= 2.10)",
-        "Imports": "checkmate,\nglue,\nhtmltools,\nmagrittr,\nRCurl,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler",
+        "Imports": "checkmate,\nglue,\nhtmltools,\nlubridate,\nmagrittr,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler",
         "Suggests": "devtools,\ndiffviewer,\nknitr,\nrmarkdown,\nshinytest2,\nspelling,\ntestthat (>= 3.0.0)",
         "VignetteBuilder": "knitr",
         "Config/testthat/edition": "3",
@@ -1325,18 +1275,18 @@
         "RoxygenNote": "7.3.2",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.2; ; 2024-11-19 15:58:36 UTC; windows",
+        "Built": "R 4.4.2; ; 2025-01-07 17:19:55 UTC; windows",
         "RemoteType": "github",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "bff6fef6be5049c7a4a41b350244dba6320ecd7c",
+        "RemoteSha": "2de5915421cf2cdccceb9440ee694254f2f6af1c",
         "RemoteHost": "api.github.com",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "bff6fef6be5049c7a4a41b350244dba6320ecd7c"
+        "GithubSHA1": "2de5915421cf2cdccceb9440ee694254f2f6af1c"
       }
     },
     "diffobj": {
@@ -3180,7 +3130,7 @@
         "Type": "Package",
         "Package": "promises",
         "Title": "Abstractions for Promise-Based Asynchronous Programming",
-        "Version": "1.3.0",
+        "Version": "1.3.2",
         "Authors@R": "c(\n    person(\"Joe\", \"Cheng\", , \"joe@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "Provides fundamental abstractions for doing asynchronous\n    programming in R using promises. Asynchronous programming is useful\n    for allowing a single R process to orchestrate multiple tasks in the\n    background while also attending to something else. Semantics are\n    similar to 'JavaScript' promises, but with a syntax that is idiomatic\n    R.",
         "License": "MIT + file LICENSE",
@@ -3193,14 +3143,14 @@
         "Config/Needs/website": "rsconnect",
         "Encoding": "UTF-8",
         "Language": "en-US",
-        "RoxygenNote": "7.3.1",
+        "RoxygenNote": "7.3.2",
         "NeedsCompilation": "yes",
-        "Packaged": "2024-04-04 20:02:05 UTC; jcheng",
+        "Packaged": "2024-11-27 23:38:47 UTC; jcheng",
         "Author": "Joe Cheng [aut, cre],\n  Posit Software, PBC [cph, fnd]",
         "Maintainer": "Joe Cheng <joe@posit.co>",
         "Repository": "RSPM",
-        "Date/Publication": "2024-04-05 15:00:06 UTC",
-        "Built": "R 4.4.0; x86_64-w64-mingw32; 2024-07-18 09:00:54 UTC; windows",
+        "Date/Publication": "2024-11-28 00:40:02 UTC",
+        "Built": "R 4.4.0; x86_64-w64-mingw32; 2024-11-28 04:41:56 UTC; windows",
         "Archs": "x64"
       }
     },
@@ -3936,13 +3886,13 @@
         "Package": "shiny",
         "Type": "Package",
         "Title": "Web Application Framework for R",
-        "Version": "1.9.1",
+        "Version": "1.10.0",
         "Authors@R": "c(\n    person(\"Winston\", \"Chang\", role = c(\"aut\", \"cre\"), email = \"winston@posit.co\", comment = c(ORCID = \"0000-0002-1576-2126\")),\n    person(\"Joe\", \"Cheng\", role = \"aut\", email = \"joe@posit.co\"),\n    person(\"JJ\", \"Allaire\", role = \"aut\", email = \"jj@posit.co\"),\n    person(\"Carson\", \"Sievert\", role = \"aut\", email = \"carson@posit.co\", comment = c(ORCID = \"0000-0002-4958-2844\")),\n    person(\"Barret\", \"Schloerke\", role = \"aut\", email = \"barret@posit.co\", comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Yihui\", \"Xie\", role = \"aut\", email = \"yihui@posit.co\"),\n    person(\"Jeff\", \"Allen\", role = \"aut\"),\n    person(\"Jonathan\", \"McPherson\", role = \"aut\", email = \"jonathan@posit.co\"),\n    person(\"Alan\", \"Dipert\", role = \"aut\"),\n    person(\"Barbara\", \"Borges\", role = \"aut\"),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\")),\n    person(family = \"jQuery Foundation\", role = \"cph\",\n    comment = \"jQuery library and jQuery UI library\"),\n    person(family = \"jQuery contributors\", role = c(\"ctb\", \"cph\"),\n    comment = \"jQuery library; authors listed in inst/www/shared/jquery-AUTHORS.txt\"),\n    person(family = \"jQuery UI contributors\", role = c(\"ctb\", \"cph\"),\n    comment = \"jQuery UI library; authors listed in inst/www/shared/jqueryui/AUTHORS.txt\"),\n    person(\"Mark\", \"Otto\", role = \"ctb\",\n    comment = \"Bootstrap library\"),\n    person(\"Jacob\", \"Thornton\", role = \"ctb\",\n    comment = \"Bootstrap library\"),\n    person(family = \"Bootstrap contributors\", role = \"ctb\",\n    comment = \"Bootstrap library\"),\n    person(family = \"Twitter, Inc\", role = \"cph\",\n    comment = \"Bootstrap library\"),\n    person(\"Prem Nawaz\", \"Khan\", role = \"ctb\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(\"Victor\", \"Tsaran\", role = \"ctb\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(\"Dennis\", \"Lembree\", role = \"ctb\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(\"Srinivasu\", \"Chakravarthula\", role = \"ctb\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(\"Cathy\", \"O'Connor\", role = \"ctb\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(family = \"PayPal, Inc\", role = \"cph\",\n    comment = \"Bootstrap accessibility plugin\"),\n    person(\"Stefan\", \"Petre\", role = c(\"ctb\", \"cph\"),\n    comment = \"Bootstrap-datepicker library\"),\n    person(\"Andrew\", \"Rowls\", role = c(\"ctb\", \"cph\"),\n    comment = \"Bootstrap-datepicker library\"),\n    person(\"Brian\", \"Reavis\", role = c(\"ctb\", \"cph\"),\n    comment = \"selectize.js library\"),\n    person(\"Salmen\", \"Bejaoui\", role = c(\"ctb\", \"cph\"),\n    comment = \"selectize-plugin-a11y library\"),\n    person(\"Denis\", \"Ineshin\", role = c(\"ctb\", \"cph\"),\n    comment = \"ion.rangeSlider library\"),\n    person(\"Sami\", \"Samhuri\", role = c(\"ctb\", \"cph\"),\n    comment = \"Javascript strftime library\"),\n    person(family = \"SpryMedia Limited\", role = c(\"ctb\", \"cph\"),\n    comment = \"DataTables library\"),\n    person(\"John\", \"Fraser\", role = c(\"ctb\", \"cph\"),\n    comment = \"showdown.js library\"),\n    person(\"John\", \"Gruber\", role = c(\"ctb\", \"cph\"),\n    comment = \"showdown.js library\"),\n    person(\"Ivan\", \"Sagalaev\", role = c(\"ctb\", \"cph\"),\n    comment = \"highlight.js library\"),\n    person(family = \"R Core Team\", role = c(\"ctb\", \"cph\"),\n    comment = \"tar implementation from R\")\n    )",
         "Description": "Makes it incredibly easy to build interactive web\n    applications with R. Automatic \"reactive\" binding between inputs and\n    outputs and extensive prebuilt widgets make it possible to build\n    beautiful, responsive, and powerful applications with minimal effort.",
         "License": "GPL-3 | file LICENSE",
         "Depends": "R (>= 3.0.2), methods",
-        "Imports": "utils, grDevices, httpuv (>= 1.5.2), mime (>= 0.3), jsonlite\n(>= 0.9.16), xtable, fontawesome (>= 0.4.0), htmltools (>=\n0.5.4), R6 (>= 2.0), sourcetools, later (>= 1.0.0), promises\n(>= 1.1.0), tools, crayon, rlang (>= 0.4.10), fastmap (>=\n1.1.1), withr, commonmark (>= 1.7), glue (>= 1.3.2), bslib (>=\n0.6.0), cachem (>= 1.1.0), lifecycle (>= 0.2.0)",
-        "Suggests": "datasets, DT, Cairo (>= 1.5-5), testthat (>= 3.0.0), knitr\n(>= 1.6), markdown, rmarkdown, ggplot2, reactlog (>= 1.0.0),\nmagrittr, yaml, future, dygraphs, ragg, showtext, sass",
+        "Imports": "utils, grDevices, httpuv (>= 1.5.2), mime (>= 0.3), jsonlite\n(>= 0.9.16), xtable, fontawesome (>= 0.4.0), htmltools (>=\n0.5.4), R6 (>= 2.0), sourcetools, later (>= 1.0.0), promises\n(>= 1.3.2), tools, crayon, rlang (>= 0.4.10), fastmap (>=\n1.1.1), withr, commonmark (>= 1.7), glue (>= 1.3.2), bslib (>=\n0.6.0), cachem (>= 1.1.0), lifecycle (>= 0.2.0)",
+        "Suggests": "coro (>= 1.1.0), datasets, DT, Cairo (>= 1.5-5), testthat (>=\n3.0.0), knitr (>= 1.6), markdown, rmarkdown, ggplot2, reactlog\n(>= 1.0.0), magrittr, yaml, future, dygraphs, ragg, showtext,\nsass",
         "URL": "https://shiny.posit.co/, https://github.com/rstudio/shiny",
         "BugReports": "https://github.com/rstudio/shiny/issues",
         "Collate": "'globals.R' 'app-state.R' 'app_template.R' 'bind-cache.R'\n'bind-event.R' 'bookmark-state-local.R' 'bookmark-state.R'\n'bootstrap-deprecated.R' 'bootstrap-layout.R' 'conditions.R'\n'map.R' 'utils.R' 'bootstrap.R' 'busy-indicators-spinners.R'\n'busy-indicators.R' 'cache-utils.R' 'deprecated.R' 'devmode.R'\n'diagnose.R' 'extended-task.R' 'fileupload.R' 'graph.R'\n'reactives.R' 'reactive-domains.R' 'history.R' 'hooks.R'\n'html-deps.R' 'image-interact-opts.R' 'image-interact.R'\n'imageutils.R' 'input-action.R' 'input-checkbox.R'\n'input-checkboxgroup.R' 'input-date.R' 'input-daterange.R'\n'input-file.R' 'input-numeric.R' 'input-password.R'\n'input-radiobuttons.R' 'input-select.R' 'input-slider.R'\n'input-submit.R' 'input-text.R' 'input-textarea.R'\n'input-utils.R' 'insert-tab.R' 'insert-ui.R' 'jqueryui.R'\n'knitr.R' 'middleware-shiny.R' 'middleware.R' 'timer.R'\n'shiny.R' 'mock-session.R' 'modal.R' 'modules.R'\n'notifications.R' 'priorityqueue.R' 'progress.R' 'react.R'\n'reexports.R' 'render-cached-plot.R' 'render-plot.R'\n'render-table.R' 'run-url.R' 'runapp.R' 'serializers.R'\n'server-input-handlers.R' 'server-resource-paths.R' 'server.R'\n'shiny-options.R' 'shiny-package.R' 'shinyapp.R' 'shinyui.R'\n'shinywrappers.R' 'showcase.R' 'snapshot.R' 'staticimports.R'\n'tar.R' 'test-export.R' 'test-server.R' 'test.R'\n'update-input.R' 'utils-lang.R' 'version_bs_date_picker.R'\n'version_ion_range_slider.R' 'version_jquery.R'\n'version_jqueryui.R' 'version_selectize.R' 'version_strftime.R'\n'viewer.R'",
@@ -3952,19 +3902,19 @@
         "Config/testthat/edition": "3",
         "Config/Needs/check": "shinytest2",
         "NeedsCompilation": "no",
-        "Packaged": "2024-07-31 17:44:44 UTC; cpsievert",
+        "Packaged": "2024-12-13 21:47:15 UTC; cpsievert",
         "Author": "Winston Chang [aut, cre] (<https://orcid.org/0000-0002-1576-2126>),\n  Joe Cheng [aut],\n  JJ Allaire [aut],\n  Carson Sievert [aut] (<https://orcid.org/0000-0002-4958-2844>),\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Yihui Xie [aut],\n  Jeff Allen [aut],\n  Jonathan McPherson [aut],\n  Alan Dipert [aut],\n  Barbara Borges [aut],\n  Posit Software, PBC [cph, fnd],\n  jQuery Foundation [cph] (jQuery library and jQuery UI library),\n  jQuery contributors [ctb, cph] (jQuery library; authors listed in\n    inst/www/shared/jquery-AUTHORS.txt),\n  jQuery UI contributors [ctb, cph] (jQuery UI library; authors listed in\n    inst/www/shared/jqueryui/AUTHORS.txt),\n  Mark Otto [ctb] (Bootstrap library),\n  Jacob Thornton [ctb] (Bootstrap library),\n  Bootstrap contributors [ctb] (Bootstrap library),\n  Twitter, Inc [cph] (Bootstrap library),\n  Prem Nawaz Khan [ctb] (Bootstrap accessibility plugin),\n  Victor Tsaran [ctb] (Bootstrap accessibility plugin),\n  Dennis Lembree [ctb] (Bootstrap accessibility plugin),\n  Srinivasu Chakravarthula [ctb] (Bootstrap accessibility plugin),\n  Cathy O'Connor [ctb] (Bootstrap accessibility plugin),\n  PayPal, Inc [cph] (Bootstrap accessibility plugin),\n  Stefan Petre [ctb, cph] (Bootstrap-datepicker library),\n  Andrew Rowls [ctb, cph] (Bootstrap-datepicker library),\n  Brian Reavis [ctb, cph] (selectize.js library),\n  Salmen Bejaoui [ctb, cph] (selectize-plugin-a11y library),\n  Denis Ineshin [ctb, cph] (ion.rangeSlider library),\n  Sami Samhuri [ctb, cph] (Javascript strftime library),\n  SpryMedia Limited [ctb, cph] (DataTables library),\n  John Fraser [ctb, cph] (showdown.js library),\n  John Gruber [ctb, cph] (showdown.js library),\n  Ivan Sagalaev [ctb, cph] (highlight.js library),\n  R Core Team [ctb, cph] (tar implementation from R)",
         "Maintainer": "Winston Chang <winston@posit.co>",
         "Repository": "RSPM",
-        "Date/Publication": "2024-08-01 10:50:02 UTC",
-        "Built": "R 4.4.0; ; 2024-08-02 04:38:07 UTC; windows",
+        "Date/Publication": "2024-12-14 00:10:02 UTC",
+        "Built": "R 4.4.0; ; 2024-12-14 04:24:48 UTC; windows",
         "RemoteType": "standard",
         "RemotePkgRef": "shiny",
         "RemoteRef": "shiny",
         "RemoteRepos": "https://packagemanager.posit.co/cran/latest",
         "RemoteReposName": "CRAN",
         "RemotePkgPlatform": "x86_64-w64-mingw32",
-        "RemoteSha": "1.9.1"
+        "RemoteSha": "1.10.0"
       }
     },
     "shinyGovstyle": {
@@ -5125,10 +5075,10 @@
       "checksum": "2c95cb00ebd7546ccec06638cd813767"
     },
     ".github/workflows/automated-tests.yaml": {
-      "checksum": "6931bf75bdf4bab085740a4914111d64"
+      "checksum": "ca3cdd3545767ce53e5cd8b4f32c8d10"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "641f95a6270b02bfb2873b4045401228"
+      "checksum": "156260598ce08a074dce84e674d28647"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "778992839c1aea6c23558a953e074432"
@@ -5137,7 +5087,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "efb6d0b60cefcad12cadf7a4c38c6439"
+      "checksum": "4ff1e4f81c2bcdf8eb03547319f4f51d"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5260,7 +5210,7 @@
       "checksum": "0d0a8b87597ac0ba526ec608d7fb8c2d"
     },
     "google-analytics.html": {
-      "checksum": "521b47ed7a165578f8e7b55641ef07c7"
+      "checksum": "f2437bd3366b2deac82b1d3cf9a48c60"
     },
     "LICENSE": {
       "checksum": "4ff1ab40947c9cebe66adef6c76f9ba7"
@@ -5269,7 +5219,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "47353550f47571fcbd91b31edf598025"
+      "checksum": "044cce3cdea866f6b8f28f1286a104de"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5278,34 +5228,34 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "3ec6bf86ec5179c00764e377dcedf354"
+      "checksum": "165492a9235bad903fccba9db2f20eb8"
     },
     "R/enabler1_page.R": {
-      "checksum": "69c0fa0fe9ce314c4b3895db164576c8"
+      "checksum": "563966a26cdecdeaa82073f2c5c8787c"
     },
     "R/enabler2_page.R": {
-      "checksum": "423b6257d9921146f4b3e8c94c7b70e8"
+      "checksum": "f4968496fb3e93b1247c47ae771575e5"
     },
     "R/enabler3_page.R": {
-      "checksum": "22ebb55d35e22e63d8f4b51d11bf06ec"
+      "checksum": "0a815cd407219966715228ae5e2803ac"
     },
     "R/intro_panel.R": {
-      "checksum": "264169b44e22fcb1849557abbd2d5cc8"
+      "checksum": "f1c635039e076143b958713fb59818db"
     },
     "R/omitted_data.R": {
-      "checksum": "da6edb6de490aa15ff8e5288af3cfd10"
+      "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "a9f076df67d7a25e8d72fafa05ec57ea"
+      "checksum": "16838f71eeb54e256539cef8fbb563f0"
     },
     "R/outcome2_page.R": {
-      "checksum": "6ee3b2fda63bdf6019e0e8dfa0ecb57f"
+      "checksum": "70e219cb4e1ee8c1e3f517216502d077"
     },
     "R/outcome3_page.R": {
-      "checksum": "86f560897fe7e88bab84d0c6e876ed8e"
+      "checksum": "f2bb779d7448685c8b45d5daf4233ca5"
     },
     "R/outcome4_page.R": {
-      "checksum": "1d2bd4484a3b798a1cd71d464470c6a9"
+      "checksum": "b39a036cb73126bae3f0f1e5a252433a"
     },
     "R/plotting.R": {
       "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
@@ -5314,22 +5264,22 @@
       "checksum": "d711d1f1ca6e1ffb83001592272245ca"
     },
     "R/standard_panels.R": {
-      "checksum": "534d2347a0126cb44665a3fd2afa44d6"
+      "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
     },
     "R/user_guide.R": {
-      "checksum": "3d60fc4b7e79d6ad5fa74f8a0d90e88e"
+      "checksum": "20406fc610c964abdfc3491e47a168be"
     },
     "README.md": {
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "8b9d9ddcfe13ffaf9c320686ec653d49"
+      "checksum": "151baee7894fca311ffee0b8689a251c"
     },
     "server.R": {
-      "checksum": "7dbf80a3eca06e6839e795787526c6d8"
+      "checksum": "9342176b681ae39c7682d55d79809dfe"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5395,13 +5345,13 @@
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "3482b9873553593e399c596292574386"
+      "checksum": "6f68c0ad79404a26044f9551858e365f"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "a8e25adc0fca31453cd46d8658147c18"
+      "checksum": "7a68dc373e89d9277ae132c6325d5381"
     },
     "ui.R": {
-      "checksum": "97682050c09f31ea7ef7a8edc8c04a95"
+      "checksum": "18158efd1df78e14bb16f57cb52f195d"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"

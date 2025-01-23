@@ -1,5 +1,5 @@
 omitted_data_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "omitted_data",
     "Omitted data reasons",
     gov_main_layout(

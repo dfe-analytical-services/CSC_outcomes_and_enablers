@@ -1,5 +1,5 @@
 outcome3_tab <- function() {
-  tabPanel(
+  nav_panel(
     value = "outcome3_page",
     "Safety",
     gov_main_layout(
