@@ -1275,18 +1275,18 @@
         "RoxygenNote": "7.3.2",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.2; ; 2025-01-07 17:19:55 UTC; windows",
+        "Built": "R 4.4.2; ; 2025-01-23 15:24:07 UTC; windows",
         "RemoteType": "github",
+        "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "2de5915421cf2cdccceb9440ee694254f2f6af1c",
-        "RemoteHost": "api.github.com",
+        "RemoteSha": "6cf934469231689d6d31daa3410beb41f49960b6",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "2de5915421cf2cdccceb9440ee694254f2f6af1c"
+        "GithubSHA1": "6cf934469231689d6d31daa3410beb41f49960b6"
       }
     },
     "diffobj": {
@@ -5078,7 +5078,7 @@
       "checksum": "ca3cdd3545767ce53e5cd8b4f32c8d10"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "156260598ce08a074dce84e674d28647"
+      "checksum": "061d2db807c3dc2d16340f29968ee41c"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "778992839c1aea6c23558a953e074432"
@@ -5087,7 +5087,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "4ff1e4f81c2bcdf8eb03547319f4f51d"
+      "checksum": "ebeb4233b7e3a15ad018b8a2298e06eb"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5200,6 +5200,9 @@
     "datafiles_log.csv": {
       "checksum": "00cadf83ee04ff511899bf9d3d43c6ac"
     },
+    "deploy-parameters.yaml": {
+      "checksum": "52b4b156baba28c0e6c0c601c1bb120d"
+    },
     "DESCRIPTION": {
       "checksum": "12ec8a8981de38a0c0e149b9e67ae51c"
     },
@@ -5276,7 +5279,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "151baee7894fca311ffee0b8689a251c"
+      "checksum": "25ba8031d33cbe42165d3f5c738ecaa1"
     },
     "server.R": {
       "checksum": "9342176b681ae39c7682d55d79809dfe"
@@ -5351,7 +5354,7 @@
       "checksum": "7a68dc373e89d9277ae132c6325d5381"
     },
     "ui.R": {
-      "checksum": "18158efd1df78e14bb16f57cb52f195d"
+      "checksum": "19e7d606f5f0f0b82d4793600954de45"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
