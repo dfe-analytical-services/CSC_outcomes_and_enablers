@@ -52,7 +52,7 @@ GET_location <- function(file = "data/la_children_who_started_to_be_looked_after
 
 
 # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
-GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2023.csv") {
+GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv") {
   workforce_location <- read.csv(file)
   workforce_location <- read.csv(file)
   workforce_location <- workforce_location %>%
@@ -67,7 +67,7 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2023.csv
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
 
-read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") {
+read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") {
   workforce_data <- read.csv(file)
   workforce_data <- colClean(workforce_data) %>%
     mutate(geo_breakdown = case_when(
@@ -122,7 +122,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2023.csv") 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
-read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2023.csv") {
+read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_data <- read.csv(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
@@ -153,7 +153,7 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
-read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2023.csv") {
+read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     mutate(geo_breakdown = case_when(
