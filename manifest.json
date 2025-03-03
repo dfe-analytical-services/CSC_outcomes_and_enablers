@@ -5018,7 +5018,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "12046f23cb2e8cffd69aa32553baf618"
+      "checksum": "104bc80921efb02e391cda2c993a2e9d"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5047,14 +5047,8 @@
     "data/csww_headline_measures_2017_to_2022.csv": {
       "checksum": "b493dfa60f69f20a7e918fd361822677"
     },
-    "data/csww_indicators_2017_to_2023.csv": {
-      "checksum": "28e7ccbf03447d60102f56c48ceccda1"
-    },
     "data/csww_indicators_2017_to_2024.csv": {
       "checksum": "3e4050ebcc3e051c1a17ceceaeee44d1"
-    },
-    "data/csww_role_by_characteristics_inpost_2019_to_2023.csv": {
-      "checksum": "8a4a41e84c60641e832fb842050bfcc5"
     },
     "data/csww_role_by_characteristics_inpost_2019_to_2024.csv": {
       "checksum": "a3dc4b24788e1cde455d44aa8eeb4a3d"
@@ -5135,7 +5129,7 @@
       "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "datafiles_log.csv": {
-      "checksum": "4bfe257dc910507a42acb6de18cdc62f"
+      "checksum": "086c7fd664dc3e0b090eddfc65ba3de2"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
