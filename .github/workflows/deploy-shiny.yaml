@@ -10,7 +10,7 @@ on:
   
 jobs:
   deploy:
-    uses: dfe-analytical-services/dfeshiny/.github/workflows/dashboard_deploy_template.yaml@bugfix/r-4.4.3-fail
+    uses: dfe-analytical-services/dfeshiny/.github/workflows/dashboard_deploy_template.yaml@bugfix/main
     with:
       parameter_file: deploy-parameters.yaml
     secrets:
