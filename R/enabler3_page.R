@@ -240,6 +240,15 @@ enabler3_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+                          tags$li(
+                            "After the 2024 collection had closed, Birmingham local authority informed the Department that there were data quality issues with the figures they reported in the collection. This affects their data on agency workers, caseload and absence. To reflect these issues:",
+                            tags$ul(
+                              tags$li("For the national and regional figures, 2024 data for Birmingham has been included in the caseload figures/rates and agency worker counts but excluded from the sickness absence figures/rates and agency worker rates."),
+                              tags$li("2024 data for Birmingham has been provided as ‘u’ in the underlying data for these measures to indicate low reliability.
+")
+                            )
+                          ),
+                          tags$li("The decision to include or exclude Birmingham's figures from the regional and national figures is based on assessments of under and over reporting in these statistics, with included figures not being deemed to have a considerable impact on national/regional trends and excluded figures deemed to have a greater impact. The Department will further investigate these data quality issues with the local authority and revise the data in this statistical release if necessary in due course."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
