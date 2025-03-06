@@ -5009,7 +5009,7 @@
       "checksum": "ca3cdd3545767ce53e5cd8b4f32c8d10"
     },
     ".github/workflows/deploy-shiny.yaml": {
-      "checksum": "7e1c448495ab17232d858aad64ee984e"
+      "checksum": "703a6549e79ed4c801a2c0f1302bdc24"
     },
     ".github/workflows/tidyCode.yaml": {
       "checksum": "778992839c1aea6c23558a953e074432"
@@ -5018,7 +5018,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "f3d222acef2baa75b56672a44e9699aa"
+      "checksum": "14dbe5aa0984577ed2fd5cc9e0629fdf"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5168,7 +5168,7 @@
       "checksum": "563966a26cdecdeaa82073f2c5c8787c"
     },
     "R/enabler2_page.R": {
-      "checksum": "f4968496fb3e93b1247c47ae771575e5"
+      "checksum": "ee65ef97a2801264db888f9cb335f2bf"
     },
     "R/enabler3_page.R": {
       "checksum": "0a815cd407219966715228ae5e2803ac"
@@ -5213,7 +5213,7 @@
       "checksum": "1495e75f333edc71960c53b8c3136cf9"
     },
     "server.R": {
-      "checksum": "9342176b681ae39c7682d55d79809dfe"
+      "checksum": "5131982b3368bc65980292073e368538"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
