@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "We have updated the Dashboard with the latest published data for Children in Need (1st Nov 2024), Children Looked After (14th Nov 2024) and Ofsted Leadership Ratings (up to 30th August 2024)"
+        "We have updated the Dashboard with the latest published data for Children's social work workforce (27th Feb 2025)"
       )
     ),
     bslib::navset_pill_list(
