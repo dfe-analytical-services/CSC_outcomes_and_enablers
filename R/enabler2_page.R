@@ -130,7 +130,7 @@ enabler2_tab <- function() {
                               tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
                               tags$li("Average per capita (of all children in a local authority) spend on children’s services is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales", "ONS published mid-2023 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
                               tags$li("Average per capita (of all children in a local authority) spend on children’s services has been rounded to the nearest whole number."),
-                              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
+                              tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2023-to-2024-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2023 to 2024 individual local authority data – outturn", target = "_blank")),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
@@ -177,7 +177,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Share of spend is calculated by taking total children’s services expenditure minus total CLA expenditure, divided by total children’s services expenditure."),
-                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2022-to-2023-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2022 to 2023 individual local authority data – outturn", target = "_blank")),
+                          tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2023-to-2024-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2023 to 2024 individual local authority data – outturn", target = "_blank")),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, refer to the", a(href = "https://www.gov.uk/government/publications/general-fund-revenue-account-outturn/general-fund-revenue-account-outturn-general-guidance-notes", "General fund revenue account outturn: general guidance notes.", target = "_blank"),
