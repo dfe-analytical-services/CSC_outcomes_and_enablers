@@ -4726,7 +4726,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "174a7054bc4a7ac8748c5dce9aff42fd"
+      "checksum": "9ed2e3b1ef0a4a5e396cc254235a73d5"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -4837,7 +4837,7 @@
       "checksum": "2903e55712c2c92a393e8c75a904fcf9"
     },
     "data_dictionary.R": {
-      "checksum": "eddde669391350608bf4e5febbf698e0"
+      "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
       "checksum": "086c7fd664dc3e0b090eddfc65ba3de2"
@@ -4906,13 +4906,16 @@
       "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
     },
     "R/read_data.R": {
-      "checksum": "0c52c5bb90a0532ede428a7ab863364c"
+      "checksum": "8e507b2ba9259f96a02f8aceae13d948"
     },
     "R/standard_panels.R": {
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "29246ac01566506c9ae1da02ccf26679"
+      "checksum": "af7d4f935b612bfcfe897b978b149fba"
+    },
+    "R/stats_neighbours_testing.R": {
+      "checksum": "54895058e008a64c1213099fcc4aad37"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"

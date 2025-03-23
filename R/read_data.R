@@ -1691,7 +1691,16 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
     rename("Percentage" = "percentage", "Number" = "number") %>%
     filter(!(new_la_code %in% dropList))
 
-  return(data2)
+  data_totals <- data2 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, Number) %>%
+    filter(placement_stability == "Total children") %>%
+    rename(total_number = "Number") %>%
+    select(-placement_stability)
+
+  data3 <- data2 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
+
+  return(data3)
 }
 
 ## Placement type and distance----

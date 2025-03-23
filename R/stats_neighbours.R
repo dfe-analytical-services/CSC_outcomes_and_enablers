@@ -1,21 +1,23 @@
+rm(ls())
 library(data.table)
 
 source("global.R")
 # lookup <- stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")
 
-stats_neighbours_long <- stats_neighbours %>%
-  pivot_longer(
-    cols = starts_with("SN"),
-    names_to = c("SN_rank"),
-    names_pattern = "(\\d+)",
-    values_to = "SN_LA_name"
-  ) %>%
-  left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
-  setDT()
-
-
+get_stats_neighbours_long <- function() {
+  stats_neighbours_long <- stats_neighbours %>%
+    pivot_longer(
+      cols = starts_with("SN"),
+      names_to = c("SN_rank"),
+      names_pattern = "(\\d+)",
+      values_to = "SN_LA_name"
+    ) %>%
+    left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
+    setDT()
+}
+stats_neighbours_long <- get_stats_neighbours_long()
 #
-# 1. rounding?
+# 1. rounding? where to do the rounding and what would be the effect of rounding if we go down the lay route of averaging rounded numbers....
 # 2. which LA fields and datasets to map with? Assumption is on old_la_code
 # 3. what to do with SN LA codes which are not in the dataset. for example, Dag includes Barnet as a SN but we have no data for that LA
 # 4. what about numbers stored as characters? we can't aggregate these!
@@ -49,7 +51,7 @@ sn_aggregations <- function(stats_neighbours_long,
   funs <- rep(c(mean, sum), lengths(agg_cols))
   new_cols <- unlist(agg_cols)
 
-  # 3 managing redacted values -----
+  ## 3 managing redacted values -----
 
 
   # step to remove an LA from SN calculations if it has ANY redacted values
@@ -75,9 +77,12 @@ sn_aggregations <- function(stats_neighbours_long,
   if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc))]
 
   sn_agg[, geographic_level := "Statistical neighbours"]
+  by.y <- c("old_la_code", group_cols[-1])
+  cols_to_keep <- unique(c("geo_breakdown", "time_period", "old_la_code", by.y))
+  dataset[, .SD, .SDcols = cols_to_keep]
 
-  cols_to_keep <- ""
-  sn_finalised <- merge(sn_agg, dataset[, .(geo_breakdown, time_period, old_la_code, new_la_code, la_name)], by.x = group_cols, by.y = c("old_la_code", group_cols[-1]))
+
+  sn_finalised <- merge(sn_agg, dataset[, .SD, .SDcols = cols_to_keep], by.x = group_cols, by.y = by.y)
   setnames(sn_finalised, c("LA.number"), "old_la_code")
 
   sn_finalised
@@ -91,59 +96,55 @@ names(sn_metrics)
 sn_metrics[]
 
 ## Examples
+# TESTS: putting it all together
+test_sn <- function(stats_neighbours_long,
+                    dataset,
+                    sum_cols,
+                    mean_cols,
+                    group_cols = c("LA.number", "time_period"),
+                    select_geographic_level,
+                    select_geo_breakdown,
+                    check_compare_national = TRUE,
+                    check_compare_regional = TRUE,
+                    check_compare_sn = TRUE,
+                    dimensional_filters = list(),
+                    verbose = TRUE) {
+  setDT(dataset)
+  sn_metrics <- sn_aggregations(stats_neighbours_long,
+    dataset = dataset,
+    sum_cols = sum_cols,
+    mean_cols = mean_cols,
+    group_cols = group_cols
+  )
 
 
+  if (verbose == TRUE) print(sn_metrics)
 
-# TESTS: SN Aggregations
-
-# CIN ----
-sn_metrics <- sn_aggregations(stats_neighbours_long,
-  dataset = cin_rates,
-  sum_cols = c("CIN_number"),
-  mean_cols = c("CIN_rate"),
-  group_cols = c("LA.number", "time_period")
-)
-
-# CLA rates ----
-aggregated_calc <- parse(text = paste0("10000 * Number/population_estimate"))
-calc_name <- "calc_rate"
-sn_metrics <- sn_aggregations(stats_neighbours_long,
-  dataset = cla_rates,
-  mean_cols = c("Rate Per 10000"),
-  sum_cols = c("population_estimate", "Number"),
-  group_cols = c("LA.number", "time_period", "population_count"),
-  aggregated_calc = "",
-  calc_name = ""
-)
-if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc))]
-sn_metrics
+  # now add the computed metrics to the original dataset
+  dataset_with_sn <- rbindlist(l = list(dataset, sn_metrics), fill = TRUE)
 
 
-# ceased_CLA-data ----
-aggregated_calc <- parse(text = paste0("100 * `Number ceased`/Total_num"))
-calc_name <- "calc_perc"
-sn_metrics <- sn_aggregations(stats_neighbours_long,
-  dataset = ceased_cla_data,
-  mean_cols = c("Ceased (%)"),
-  sum_cols = c("Number ceased", "Total_num"),
-  group_cols = c("LA.number", "time_period", "characteristic")
-) # ,
-# aggregated_calc,
-# calc_name)
-if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc))]
-sn_metrics[characteristic == "Special guardianship orders"]
-sn_metrics[characteristic == "Residence order or child arrangement order granted"]
+  filter_time_series_data(
+    dataset = dataset_with_sn,
+    select_geographic_level = select_geographic_level,
+    select_geo_breakdown = select_geo_breakdown,
+    check_compare_national = check_compare_national,
+    check_compare_regional = check_compare_regional,
+    check_compare_sn = check_compare_sn,
+    dimensional_filters = dimensional_filters
+  )
+}
 
 
 
 
-mean(c(1, 2, 3, NA), na.rm = TRUE)
 
 
 
-write.csv(sn_metrics, file = "c:/Users/mweller1/Documents/projects/CSC_outcomes_and_enablers/sn_metrics.csv")
 
-sn_metrics[LA.number == 207]
+
+
+
 
 
 ## Filtering logic for the dataset to aid plotting (and tables hopefully)
@@ -181,50 +182,6 @@ filter_time_series_data <- function(dataset, select_geographic_level, select_geo
 
   return(filtered_data)
 }
-
-# TESTS: filtering datasets ----
-
-# default values for testing
-select_geographic_level <- "Local authority"
-select_geo_breakdown <- "Merton"
-dimensional_filters <- list("characteristic" = "Special guardianship orders")
-
-### CLA rates ----
-
-filter_time_series_data(
-  dataset = cla_rates,
-  select_geographic_level = select_geographic_level,
-  select_geo_breakdown = select_geo_breakdown,
-  check_compare_national = TRUE,
-  check_compare_regional = TRUE,
-  check_compare_sn = TRUE,
-  dimensional_filters = list("population_count" = "Children starting to be looked after each year")
-)
-### CIN filtering ----
-filter_time_series_data(
-  dataset = cin_rates,
-  select_geographic_level = select_geographic_level,
-  select_geo_breakdown = select_geo_breakdown,
-  check_compare_national = TRUE,
-  check_compare_regional = TRUE,
-  check_compare_sn = TRUE,
-  dimensional_filters = list()
-)
-
-### CLA filtering ----
-filter_time_series_data(
-  dataset = ceased_cla_data,
-  select_geographic_level = select_geographic_level,
-  select_geo_breakdown = select_geo_breakdown,
-  check_compare_national = TRUE,
-  check_compare_regional = TRUE,
-  check_compare_sn = TRUE,
-  dimensional_filters = list(characteristic = "Special guardianship orders")
-)
-
-
-### Repeat referrals
-
 
 
 ### OLD CODE
