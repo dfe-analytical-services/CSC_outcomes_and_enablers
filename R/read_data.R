@@ -1729,6 +1729,18 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
       TRUE ~ as.numeric(percentage)
     )) %>%
     filter(!(new_la_code %in% dropList))
+
+  data_totals <- data2 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
+    filter(characteristic == "Total") %>%
+    rename(total_number = "number") %>%
+    mutate(total_number = as.numeric(total_number)) %>%
+    select(-characteristic)
+
+  data3 <- data2 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
+
+  return(data3)
 }
 
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
