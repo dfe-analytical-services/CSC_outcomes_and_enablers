@@ -1859,7 +1859,16 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       TRUE ~ as.numeric(percentage)
     ))
 
+  data_totals <- data3 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
+    filter(characteristic == "SDQ score was received") %>%
+    rename(sdq_score_recd = "number") %>%
+    select(-characteristic)
+
   data4 <- data3 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
+
+  data5 <- data4 %>%
     mutate(score_label = case_when(
       (number_num >= 0 & number_num < 14) ~ "Normal",
       (number_num >= 14 & number_num < 17) ~ "Borderline",
@@ -1868,7 +1877,7 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       TRUE ~ as.character("Error")
     ))
 
-  return(data4)
+  return(data5)
 }
 
 ## Placement order and match data ----
