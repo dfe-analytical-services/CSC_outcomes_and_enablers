@@ -38,6 +38,7 @@ shhh(library(readODS))
 shhh(library(readxl))
 shhh(library(janitor))
 shhh(library(scales))
+shhh(library(data.table))
 
 # shhh(library(shinya11y)) # used to test the accessibility of the dashboard
 
@@ -94,52 +95,50 @@ google_analytics_key <- "Q13T4ENF6C"
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Read in the workforce data
+# Prepare all datasets ----
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Stats Neighbours ----
+## Read in the stats_neighbours and generate a long table for all stats neighbour aggregations
+stats_neighbours <- head(statistical_neighbours(), 152)
+stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
+## Read in the workforce data ----
 workforce_data <- suppressWarnings(read_workforce_data())
 location_data <- GET_location() # fact table linking LA to its region
-
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
-# Read in the workforce characteristics data (Enabler 2)
-# workforce_char <- read_workforce_char_data()
-
+## Read in the workforce characteristics data (Enabler 2) ----
 workforce_eth <- suppressWarnings(read_workforce_eth_data())
 workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
 combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
-# Read in ofsted leadership data (Enabler 3)
-
+## Read in ofsted leadership data (Enabler 3) ----
 spending_data <- suppressWarnings(read_spending_data())
 spending_data_no_cla <- suppressWarnings(read_spending_data2())
 spending_per_capita <- suppressWarnings(read_per_capita_spending())
-
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
 ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
 
-# Read in the CLA data (outcome 1)
+## Read in the CLA data (outcome 1) ----
 cla_rates <- suppressWarnings(read_cla_rate_data())
-
 cla_placements <- suppressWarnings(read_cla_placement_data())
 combined_cla_data <- suppressWarnings(merge_cla_dataframes())
 combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes())
-# uasc_data <- test_uasc()
 
-# Read in the CIN  data (outcome 1)
+## Read in the CIN  data (outcome 1) ----
 cin_rates <- suppressWarnings(read_cin_rate_data())
 cin_referrals <- suppressWarnings(read_cin_referral_data())
 
-
-# Read in the outcomes data (outcome 1)
+## Read in the outcomes data (outcome 1) ----
 outcomes_absence <- suppressWarnings(read_outcomes_absence_data())
 outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data())
 outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
 
-# Read in outcome 2 data
+## Read in outcome 2 data ----
 ceased_cla_data <- suppressWarnings(read_outcome2())
 
-# Read in outcome 3 data
+## Read in outcome 3 data ----
 repeat_cpp <- suppressWarnings(read_cpp_in_year_data())
 duration_cpp <- suppressWarnings(read_cpp_by_duration_data())
 assessment_factors <- suppressWarnings(read_assessment_factors())
@@ -153,7 +152,7 @@ extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Traff
 
 hospital_admissions <- suppressWarnings(read_a_and_e_data())
 
-# Read in outcome 4 data
+## Read in outcome 4 data ----
 placement_data <- suppressWarnings(read_placement_info_data())
 
 # Define the custom order
@@ -176,9 +175,6 @@ care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodat
 wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 
 placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
-
-# Read in stats neighbours
-stats_neighbours <- head(statistical_neighbours(), 152)
 
 
 # Download button --------------------
