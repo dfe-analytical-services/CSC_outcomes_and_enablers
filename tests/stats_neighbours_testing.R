@@ -1,5 +1,5 @@
 # source("./global.R")
-source("./R/stats_neighbours.R")
+# source("./R/stats_neighbours.R")
 
 ## these are the tests for Stats Neighbours
 
