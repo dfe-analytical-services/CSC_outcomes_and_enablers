@@ -1,4 +1,3 @@
-rm(ls())
 library(data.table)
 
 source("global.R")
@@ -63,7 +62,7 @@ sn_aggregations <- function(stats_neighbours_long,
   # 4 now perform the aggregations to the LA and time_period level across the SNs -----
   # summary function to aggegate the dataset of metrics for SNs and calculate sums, means as required
   sn_agg <- sn_dataset[
-    j = Map(function(f, x) ceiling(f(as.numeric(x), na.rm = TRUE)), funs, .SD),
+    j = Map(function(f, x) round(f(as.numeric(x), na.rm = TRUE)), funs, .SD),
     by = mget(group_cols),
     .SDcols = unlist(agg_cols)
   ]
@@ -74,7 +73,7 @@ sn_aggregations <- function(stats_neighbours_long,
   # TODO: populate the character columns which are displayed in the table
 
   # now perform any additional calculations, defining the calculation and the field name (ie LHS and RHS of `:=`)
-  if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc))]
+  if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc)), verbose = TRUE]
 
   sn_agg[, geographic_level := "Statistical neighbours"]
   by.y <- c("old_la_code", group_cols[-1])
@@ -89,11 +88,7 @@ sn_aggregations <- function(stats_neighbours_long,
 }
 
 
-## Function to prepare the data for appending to the existing dataset
-names(dataset)
-names(sn_metrics)
 
-sn_metrics[]
 
 ## Examples
 # TESTS: putting it all together
@@ -137,18 +132,15 @@ test_sn <- function(stats_neighbours_long,
 
 
 
-
-
-
-
-
-
-
-
-
-
+## Function to prepare the data for appending to the existing dataset
 ## Filtering logic for the dataset to aid plotting (and tables hopefully)
-filter_time_series_data <- function(dataset, select_geographic_level, select_geo_breakdown, check_compare_national, check_compare_regional, check_compare_sn, dimensional_filters = list()) {
+filter_time_series_data <- function(dataset,
+                                    select_geographic_level,
+                                    select_geo_breakdown,
+                                    check_compare_national,
+                                    check_compare_regional,
+                                    check_compare_sn,
+                                    dimensional_filters = list()) {
   # default values for testing
   # elect_geographic_level <- "Local authority"
   # select_geo_breakdown <- "Merton"
@@ -184,22 +176,6 @@ filter_time_series_data <- function(dataset, select_geographic_level, select_geo
 }
 
 
-### OLD CODE
-
-output$outcome1_choice_text2 <- renderText({
-  # Checking to see if they picked national average comparison
-  if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-    paste0("You have also selected to compare with the ", tags$b("National Average."))
-    # If they picked regional comparison
-  } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-    paste0("You have also selected to compare with the ", tags$b("Regional average."))
-    # Picked both national and regional comparison
-  } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-    paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-  }
-})
-
-
 
 # Analysis of redacted values in SNs -----
 
@@ -210,11 +186,11 @@ get_redacted_las <- function(sn_dataset, new_cols, group_cols) {
   la_redactions[row_sums > 0]$LA.number
 }
 
-sn_dataset[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = new_cols, by = mget(group_cols)]
-
-
-sn_dataset[, Reduce(is.na, .SD), .SDcols = new_cols]
-for (col in new_cols) print(table(redacted_las[[col]]))
+# sn_dataset[, lapply(.SD, function(x) sum(is.na(x))), .SDcols = new_cols, by = mget(group_cols)]
+#
+#
+# sn_dataset[, Reduce(is.na, .SD), .SDcols = new_cols]
+# for (col in new_cols) print(table(redacted_las[[col]]))
 
 
 
@@ -230,11 +206,6 @@ AndEQUAL <- function(cond) {
     lapply(names(cond), function(var) call("==", as.name(var), cond[[var]]))
   )
 }
-cond <- list(characteristic = "Special guardianship orders")
-cond <- list(new_la_code = "E09000024")
-
-
-dataset[eval(AndEQUAL(cond))]
 
 
 AndISNA <- function(cond) {
@@ -243,6 +214,5 @@ AndISNA <- function(cond) {
     lapply(names(cond), function(var) call("is.na", as.name(var), cond[[var]]))
   )
 }
-cond <- list(x = 0, z = 0)
-AndEQUAL(cond)
-dataset
+# cond <- list(x = 0, z = 0)
+# AndEQUAL(cond)
