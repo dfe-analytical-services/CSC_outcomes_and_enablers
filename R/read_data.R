@@ -1777,13 +1777,23 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
     # filter out old dorset code
     filter(!(new_la_code %in% dropList))
 
+  data_totals <- data3 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number) %>%
+    filter(activity == "Total") %>%
+    rename(total_number = "number") %>%
+    mutate(total_number = as.numeric(total_number)) %>%
+    select(-activity)
+
+  data4 <- data3 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age))
+
 
   # Age column needs to be uniform with the accommodation data as they share the same age range filter
   # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
-  data3["age"][data3["age"] == "Aged 17 to 18"] <- "17 to 18 years"
-  data3["age"][data3["age"] == "Aged 19 to 21"] <- "19 to 21 years"
+  data4["age"][data4["age"] == "Aged 17 to 18"] <- "17 to 18 years"
+  data4["age"][data4["age"] == "Aged 19 to 21"] <- "19 to 21 years"
 
-  return(data3)
+  return(data4)
 }
 
 ## Care leavers accommodation -----
@@ -1816,7 +1826,19 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
     # filter out old dorset code
     filter(!(new_la_code %in% dropList))
 
-  return(data3)
+  data_totals <- data3 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number) %>%
+    filter(accommodation_suitability == "Suitability total") %>%
+    rename(total_number = "number") %>%
+    mutate(total_number = as.numeric(total_number)) %>%
+    select(-accommodation_suitability)
+
+  data4 <- data3 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age))
+
+  # TODO: in care_leavers_activity_data we clean the text in the age field, check whether this is necessary in this file
+
+  return(data4)
 }
 
 
@@ -1859,14 +1881,21 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       TRUE ~ as.numeric(percentage)
     ))
 
+  # pull out the SDQ_scores_received column
   data_totals <- data3 %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
     filter(characteristic == "SDQ score was received") %>%
     rename(sdq_score_recd = "number") %>%
+    mutate(sdq_score_recd = as.numeric(sdq_score_recd)) %>%
     select(-characteristic)
 
+  # join the sdq_score_recd totals to the original dataset and calculate the weighted score
   data4 <- data3 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group)) %>%
+    mutate(sdq_score_recd_x_score = case_when(
+      characteristic == "SDQ average score" ~ (as.numeric(sdq_score_recd) * as.numeric(number)),
+      TRUE ~ NA
+    ))
 
   data5 <- data4 %>%
     mutate(score_label = case_when(
