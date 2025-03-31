@@ -28,6 +28,7 @@ convert_perc_cols_to_numeric <- function(x) {
   return(x)
 }
 
+# TODO: redundant function is not used anywhere
 remove_old_la_data <- function(data) {
   ons_la_data <- read.csv("data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv")
   ons_la_data <- ons_la_data %>%
@@ -1043,17 +1044,27 @@ a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
 read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {
-  cin_rate_data <- read.csv(file)
+  cin_rate_data <- fread(file)
+
+  # initial cleansing steps
   cin_rate_data <- colClean(cin_rate_data) %>%
-    mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
-      as.character(round(as.numeric(At31_episodes_rate))),
-      At31_episodes_rate
-    )) %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cin_rate_data,
+    median_cols = c("At31_episodes_rate"),
+    sum_cols = c("At31_episodes"),
+    group_cols = c("LA.number", "time_period")
+  )
+  cin_rate_data <- rbindlist(l = list(cin_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # handle the redactions by creating numeric columns with arbitrary values to aid table sort order
+  cin_rate_data <- cin_rate_data %>%
     mutate(CIN_number = case_when(
       At31_episodes == "c" ~ -100,
       At31_episodes == "low" ~ -200,
@@ -1071,26 +1082,44 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv
       At31_episodes_rate == "x" ~ -300,
       At31_episodes_rate == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes_rate)
+    ))
+
+  # finalise the dataset by rounding rates and selecting relevant columns
+  cin_rate_data <- cin_rate_data %>%
+    mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
+      as.character(round(as.numeric(At31_episodes_rate), 0)),
+      At31_episodes_rate
     )) %>%
     mutate(CIN_rate = round(CIN_rate, 0)) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
-    distinct() %>%
-    return(cin_rate_data)
+    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
+    distinct()
+
+  return(cin_rate_data)
 }
 
 # CIN referrals data
 read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
-  cin_referral_data <- read.csv(file)
+  cin_referral_data <- fread(file)
+
+  # initial cleansing steps
   cin_referral_data <- colClean(cin_referral_data) %>%
-    mutate(Re_referrals_percent = ifelse(!is.na(as.numeric(Re_referrals_percent)),
-      format(as.numeric(as.character(Re_referrals_percent)), nsmall = 1),
-      Re_referrals_percent
-    )) %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
+      geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cin_referral_data,
+    median_cols = c("Re_referrals_percent"), # what medians are we taking
+    sum_cols = c("Referrals", "Re_referrals"),
+    group_cols = c("LA.number", "time_period")
+  )
+  cin_referral_data <- rbindlist(l = list(cin_referral_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # handle the redactions by creating numeric columns with arbitrary values to aid table sort order
+  cin_referral_data <- cin_referral_data %>%
     mutate(Referrals_num = case_when(
       Referrals == "c" ~ -100,
       Referrals == "low" ~ -200,
@@ -1123,11 +1152,19 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
       Re_referrals_percent == "x" ~ -300,
       Re_referrals_percent == "z" ~ -400,
       TRUE ~ as.numeric(Re_referrals_percent)
+    ))
+
+  # finalise the dataset by rounding rates and selecting relevant columns
+  cin_referral_data <- cin_referral_data %>%
+    mutate(Re_referrals_percent = ifelse(!is.na(as.numeric(Re_referrals_percent)),
+      format(as.numeric(as.character(Re_referrals_percent)), nsmall = 1),
+      Re_referrals_percent
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, region_code, region_name, new_la_code, old_la_code, la_name,
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, region_code, region_name, new_la_code, old_la_code, la_name,
       Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage, `Re-referrals (%)`
     ) %>%
+    mutate(`Re-referrals (%)` = round(`Re-referrals (%)`, 1)) %>%
     distinct()
 
   return(cin_referral_data)
@@ -1949,7 +1986,7 @@ read_placement_order_match_data <- function(file = "data/national_cla_adopted_av
   return(data)
 }
 
-# Statistical Neighbours ------------
+# Statistical Neighbours read and convert to long format ------------
 statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
   stats_neighbours <- read.csv(file)
 
@@ -1965,4 +2002,16 @@ statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupi
 
 
   return(df)
+}
+
+get_stats_neighbours_long <- function() {
+  stats_neighbours_long <- stats_neighbours %>%
+    pivot_longer(
+      cols = starts_with("SN"),
+      names_to = c("SN_rank"),
+      names_pattern = "(\\d+)",
+      values_to = "SN_LA_name"
+    ) %>%
+    left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
+    setDT()
 }

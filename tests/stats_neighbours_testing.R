@@ -16,7 +16,7 @@ x <- {
     select_geographic_level = select_geographic_level,
     select_geo_breakdown = select_geo_breakdown,
     sum_cols = c("CIN_number"),
-    mean_cols = c("CIN_rate"),
+    median_cols = c("CIN_rate"),
     group_cols = c("LA.number", "time_period"),
     dimensional_filters = list(),
     verbose = FALSE
@@ -31,8 +31,8 @@ dimensional_filters <- list()
 x <- {
   test_sn(stats_neighbours_long,
     dataset = cin_referrals,
-    mean_cols = c(),
-    sum_cols = c("Referrals_num", "Re_referrals_num"),
+    median_cols = c("Re_referrals_percent"),
+    sum_cols = c("Referrals", "Re_referrals"),
     group_cols = c("LA.number", "time_period"),
     select_geographic_level = select_geographic_level,
     select_geo_breakdown = select_geo_breakdown,
@@ -370,7 +370,7 @@ dimensional_filters <- list("characteristic" = "Special guardianship orders")
 ### CLA rates ----
 
 filter_time_series_data(
-  dataset = cla_rates,
+  dataset_in = cla_rates,
   select_geographic_level = select_geographic_level,
   select_geo_breakdown = select_geo_breakdown,
   check_compare_national = TRUE,

@@ -1212,42 +1212,22 @@ server <- function(input, output, session) {
     )
   })
 
-  # CIN rate plot
+  ## CIN rate plot -----
   output$plot_cin_rate <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    # not both
-    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_rates %>%
-        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        rename("CIN rate per 10,000" = CIN_rate)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        rename("CIN rate per 10,000" = CIN_rate)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        rename("CIN rate per 10,000" = CIN_rate)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        rename("CIN rate per 10,000" = CIN_rate)
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = cin_rates,
+      select_geographic_level = input$select_geography_o1,
+      select_geo_breakdown = input$geographic_breakdown_o1,
+      check_compare_national = input$national_comparison_checkbox_o1,
+      check_compare_regional = input$region_comparison_checkbox_o1,
+      check_compare_sn = input$sn_comparison_checkbox_o1
+    ) %>% rename("CIN rate per 10,000" = CIN_rate)
 
 
     if (input$geographic_breakdown_o1 == "City of London") {
@@ -1275,41 +1255,19 @@ server <- function(input, output, session) {
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_rates %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = cin_rates,
+      select_geographic_level = input$select_geography_o1,
+      select_geo_breakdown = input$geographic_breakdown_o1,
+      check_compare_national = input$national_comparison_checkbox_o1,
+      check_compare_regional = input$region_comparison_checkbox_o1,
+      check_compare_sn = input$sn_comparison_checkbox_o1
+    ) %>%
+      select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
+      rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_rates %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_rates %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, At31_episodes, CIN_rate) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CIN number at 31 March` = `At31_episodes`, `CIN rates per 10,000` = `CIN_rate`)
-    }
-
+    # now output the table itself
     reactable(
       filtered_data,
       defaultColDef = colDef(align = "center"),
@@ -1433,43 +1391,22 @@ server <- function(input, output, session) {
 
 
   ## CIN referrals --------------------------
-  ## CIN referral plot
+  ### CIN referral plot ----
   output$plot_cin_referral <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
 
-    # not both
-    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_referrals %>%
-        filter(geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) # %>%
-      # rename("Re_referrals_percentage" = "Re-referrals (%)")
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_referrals %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") # %>%
-      # rename("Re_referrals_percentage" = "Re-referrals (%)")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) # %>%
-      # rename("Re_referrals_percentage" = "Re-referrals (%)")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) # %>%
-      # rename("Re_referrals_percentage" = "Re-referrals (%)")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = cin_referrals,
+      select_geographic_level = input$select_geography_o1,
+      select_geo_breakdown = input$geographic_breakdown_o1,
+      check_compare_national = input$national_comparison_checkbox_o1,
+      check_compare_regional = input$region_comparison_checkbox_o1,
+      check_compare_sn = input$sn_comparison_checkbox_o1
+    )
 
     # Set the max y-axis scale
     max_rate <- max(filtered_data$`Re-referrals (%)`, na.rm = TRUE)
@@ -1489,46 +1426,26 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # CIN referral table
+  ### CIN referral table ----
   output$table_cin_referral <- renderReactable({
     shiny::validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
       need(input$geographic_breakdown_o1 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_referrals %>%
-        filter(geo_breakdown %in% input$geographic_breakdown_o1) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      filtered_data <- cin_referrals %>%
-        filter((geographic_level %in% input$select_geography_o1 & geo_breakdown %in% input$geographic_breakdown_o1) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name))) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o1)
-
-      filtered_data <- cin_referrals %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o1, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
-        rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`, `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`)
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = cin_referrals,
+      select_geographic_level = input$select_geography_o1,
+      select_geo_breakdown = input$geographic_breakdown_o1,
+      check_compare_national = input$national_comparison_checkbox_o1,
+      check_compare_regional = input$region_comparison_checkbox_o1,
+      check_compare_sn = input$sn_comparison_checkbox_o1
+    ) %>%
+      rename(
+        `Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`,
+        `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`
+      )
 
     reactable(
       filtered_data,
