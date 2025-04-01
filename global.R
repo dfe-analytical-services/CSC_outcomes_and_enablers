@@ -66,6 +66,7 @@ cs_num <- function(value) {
 # Source any scripts here. Scripts may be needed to process data before it gets to the server file.
 # It's best to do this here instead of the server file, to improve performance.
 
+source("R/stats_neighbours.R")
 source("R/read_data.R")
 
 # appLoadingCSS ----------------------------------------------------------------------------

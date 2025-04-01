@@ -140,26 +140,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome1_choice_text1 <- renderText({
-    if (input$select_geography_o1 == "National") {
-      paste0("You have selected ", tags$b(input$select_geography_o1), " level statistics on ", tags$b("England"), ".")
-    } else if (input$select_geography_o1 == "Regional") {
-      paste0("You have selected ", tags$b(input$select_geography_o1), " level statistics for ", tags$b(input$geographic_breakdown_o1), ".")
-    } else if (input$select_geography_o1 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_o1), " level statistics for ", tags$b(input$geographic_breakdown_o1), ", in ", region_for_la_o1(), ".")
-    }
+    generate_choice_text1(input$select_geography_o1, input$geographic_breakdown_o1, region_for_la_o1())
   })
 
   output$outcome1_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox_o1) && is.null(input$region_comparison_checkbox_o1)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox_o1) && !is.null(input$region_comparison_checkbox_o1)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-    }
+    generate_choice_text2(input$national_comparison_checkbox_o1, input$region_comparison_checkbox_o1, input$sn_comparison_checkbox_o1)
   })
 
   observeEvent(input$select_geography_o1, {
