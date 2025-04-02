@@ -805,17 +805,28 @@ pivot_ofsted_data <- function() {
 # Outcome 1 -------------------
 # CLA rate per 10k children data
 read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children.csv") {
-  cla_rate_data <- read.csv(file)
+  cla_rate_data <- fread(file)
+
   cla_rate_data <- colClean(cla_rate_data) %>%
+    # removing old Dorset, Poole, Bournemouth, Northamptonshire
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
-      format(as.numeric(as.character(rate_per_10000)), nsmall = 0),
-      rate_per_10000
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cla_rate_data,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c("number"),
+    group_cols = c("LA.number", "time_period", "population_count")
+  )
+  cla_rate_data <- rbindlist(l = list(cla_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cla_rate_data <- cla_rate_data %>%
     mutate(`Rate Per 10000` = case_when(
       rate_per_10000 == "c" ~ -100,
       rate_per_10000 == "low" ~ -200,
@@ -833,10 +844,13 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
       number == "x" ~ -300,
       number == "z" ~ -400,
       TRUE ~ as.numeric(number)
+    ))
+  cla_rate_data <- cla_rate_data %>%
+    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
+      as.character(round(as.numeric(rate_per_10000), 0)),
+      rate_per_10000
     )) %>%
-    # removing old Dorset, Poole, Bournemouth, Northamptonshire
-    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
+    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
     distinct()
 
   return(cla_rate_data)
@@ -910,7 +924,8 @@ merge_cla_dataframes <- function() {
   # merge two data frames
   merged_data <- merge(cla_rates, cla_placements,
     by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name")
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    allow.cartesian = TRUE
   )
 
   merged_data <- merged_data %>%
@@ -983,7 +998,8 @@ merge_cla_31_march_dataframes <- function() {
   # merge two data frames
   merged_31_march_data <- merge(cla_rates, cla_31_march_data,
     by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name")
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    allow.cartesian = TRUE
   )
 
   merged_31_march_data <- merged_31_march_data %>%
@@ -1040,7 +1056,8 @@ merge_cla_31_march_dataframes <- function() {
   return(merged_31_march_data)
 }
 
-a <- merge_cla_31_march_dataframes()
+# TODO: redundant code?
+# a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
 read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {
@@ -1174,14 +1191,28 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
-  outcomes_absence_data <- read.csv(file)
+  # Notes: there is no removal of old LAs here
+  outcomes_absence_data <- fread(file)
+
   # Select only columns we want
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = outcomes_absence_data,
+    median_cols = c("pt_overall", "pt_pupils_pa_10_exact", "pt_sess_authorised", "pt_sess_unauthorised"),
+    sum_cols = c("t_pupils", "t_sess_overall", "t_sess_possible"),
+    group_cols = c("LA.number", "time_period", "school_type", "social_care_group"),
+  )
+  outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  outcomes_absence_data <- outcomes_absence_data %>%
     mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
       format(as.numeric(as.character(pt_overall)), nsmall = 1),
       pt_overall
@@ -1191,7 +1222,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
       pt_pupils_pa_10_exact
     )) %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
       school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
       pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
@@ -1252,20 +1283,34 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
 
 # Outcome 1 Outcomes KS2 data for education attainment
 read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
-  outcomes_ks2_data <- read.csv(file)
-  # Select only columns we want
+  outcomes_ks2_data <- fread(file)
+
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = outcomes_ks2_data,
+    median_cols = c("pt_rwm_met_expected_standard"),
+    sum_cols = c("t_rwm_eligible_pupils"),
+    group_cols = c("LA.number", "time_period", "social_care_group"),
+  )
+  outcomes_ks2_data <- rbindlist(l = list(outcomes_ks2_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
       format(as.numeric(as.character(pt_rwm_met_expected_standard)), nsmall = 0),
       pt_rwm_met_expected_standard
     )) %>%
+    # TODO: reduce the number of columns
+    # Select only columns we want
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
       t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
@@ -1298,25 +1343,38 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
 
 # Outcome 1 Outcomes KS4 data for education attainment
 read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
-  outcomes_ks4_data <- read.csv(file)
+  outcomes_ks4_data <- fread(file)
+
   # Select only columns we want
   outcomes_ks4_data <- outcomes_ks4_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(avg_att8 = ifelse(!is.na(as.numeric(avg_att8)),
-      format(as.numeric(as.character(avg_att8)), nsmall = 1),
-      avg_att8
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = outcomes_ks4_data,
+    median_cols = c("avg_att8"),
+    sum_cols = c("t_pupils"),
+    group_cols = c("LA.number", "time_period", "social_care_group"),
+  )
+  browser()
+  outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
+  outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
-      geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
       t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
       t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
-    )
+    ) %>%
+    mutate(avg_att8 = ifelse(!is.na(as.numeric(avg_att8)),
+      format(as.numeric(as.character(avg_att8)), nsmall = 1),
+      avg_att8
+    ))
 
   # Make number columns numeric
   outcomes_ks4_data <- outcomes_ks4_data %>%
@@ -1338,7 +1396,6 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
       t_pupils == "z" ~ -400,
       TRUE ~ as.numeric(t_pupils)
     ))
-
 
   return(outcomes_ks4_data)
 }

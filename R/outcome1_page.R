@@ -18,7 +18,7 @@ outcome1_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o1",
               label = "Select a geographical level:",
-              choices = unique(cla_rates %>% pull("geographic_level")),
+              choices = unique(cla_rates %>% filter(geographic_level != "Statistical neighbours") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
