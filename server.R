@@ -2389,7 +2389,8 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_o2
   }, {
-    choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
+    #    choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o1 & ceased_cla_data$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
@@ -2407,26 +2408,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome2_choice_text1 <- renderText({
-    if (input$select_geography_o2 == "National") {
-      paste0("You have selected ", tags$b(input$select_geography_o2), " level statistics on ", tags$b("England"), ".")
-    } else if (input$select_geography_o2 == "Regional") {
-      paste0("You have selected ", tags$b(input$select_geography_o2), " level statistics for ", tags$b(input$geographic_breakdown_o2), ".")
-    } else if (input$select_geography_o2 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_o2), " level statistics for ", tags$b(input$geographic_breakdown_o2), ", in ", region_for_la_o2(), ".")
-    }
+    generate_choice_text1(input$select_geography_o2, input$geographic_breakdown_o2, region_for_la_o2())
   })
 
   output$outcome2_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-    }
+    generate_choice_text2(input$national_comparison_checkbox_o2, input$region_comparison_checkbox_o2, input$sn_comparison_checkbox_o2)
   })
 
   observeEvent(input$select_geography_o2, {
@@ -2472,43 +2458,24 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(ceased_cla_data$time_period), ")", "</p>")
   })
 
-  # SGO ----
-  # time series and table
+  ## SGO ----
+  ### SGO time series chart ----
   output$SGO_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    # not both
-    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter(geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) %>%
-        filter(characteristic == "Special guardianship orders")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
-        filter(characteristic == "Special guardianship orders")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
-        filter(characteristic == "Special guardianship orders")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
-        filter(characteristic == "Special guardianship orders")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = ceased_cla_data,
+      select_geographic_level = input$select_geography_o2,
+      select_geo_breakdown = input$geographic_breakdown_o2,
+      check_compare_national = input$national_comparison_checkbox_o2,
+      check_compare_regional = input$region_comparison_checkbox_o2,
+      check_compare_sn = input$sn_comparison_checkbox_o2,
+      dimensional_filters = list("characteristic" = "Special guardianship orders")
+    )
 
     # Set the max y-axis scale
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
@@ -2527,51 +2494,28 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-
+  ### SGO time series table ----
   output$table_sgo_ceased <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
-        filter(characteristic == "Special guardianship orders") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-    }
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = ceased_cla_data,
+      select_geographic_level = input$select_geography_o2,
+      select_geo_breakdown = input$geographic_breakdown_o2,
+      check_compare_national = input$national_comparison_checkbox_o2,
+      check_compare_regional = input$region_comparison_checkbox_o2,
+      check_compare_sn = input$sn_comparison_checkbox_o2,
+      dimensional_filters = list("characteristic" = "Special guardianship orders")
+    ) %>%
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),
@@ -2583,7 +2527,7 @@ server <- function(input, output, session) {
     )
   })
   ##
-  # SGO by region -----
+  # SGO by region
 
   output$plot_sgo_ceased_reg <- plotly::renderPlotly({
     shiny::validate(
@@ -2718,42 +2662,23 @@ server <- function(input, output, session) {
 
 
   ## CAO ----
-  # time series and table
+  ### CAO time series plot ----
   output$CAO_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    # not both
-    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter(geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) %>%
-        filter(characteristic == "Residence order or child arrangement order granted")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
-        filter(characteristic == "Residence order or child arrangement order granted")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
-        filter(characteristic == "Residence order or child arrangement order granted")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
-        filter(characteristic == "Residence order or child arrangement order granted")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = ceased_cla_data,
+      select_geographic_level = input$select_geography_o2,
+      select_geo_breakdown = input$geographic_breakdown_o2,
+      check_compare_national = input$national_comparison_checkbox_o2,
+      check_compare_regional = input$region_comparison_checkbox_o2,
+      check_compare_sn = input$sn_comparison_checkbox_o2,
+      dimensional_filters = list("characteristic" = "Residence order or child arrangement order granted")
+    )
 
     # Set the max y-axis scale
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Residence order or child arrangement order granted"], na.rm = TRUE)
@@ -2772,52 +2697,27 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-
+  ### CAO time series table ----
   output$table_cao_ceased <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% input$geographic_breakdown_o2)) %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o2) && is.null(input$region_comparison_checkbox_o2)) {
-      filtered_data <- ceased_cla_data %>%
-        filter((geographic_level %in% input$select_geography_o2 & geo_breakdown %in% input$geographic_breakdown_o2) | geographic_level == "National") %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name))) %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o2) && !is.null(input$region_comparison_checkbox_o2)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o2)
-
-      filtered_data <- ceased_cla_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o2, location$region_name) | geographic_level == "National")) %>%
-        filter(characteristic == "Residence order or child arrangement order granted") %>%
-        select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`)
-    }
-
-    data <- filtered_data %>%
+    filtered_data <- filter_time_series_data(
+      dataset_in = ceased_cla_data,
+      select_geographic_level = input$select_geography_o2,
+      select_geo_breakdown = input$geographic_breakdown_o2,
+      check_compare_national = input$national_comparison_checkbox_o2,
+      check_compare_regional = input$region_comparison_checkbox_o2,
+      check_compare_sn = input$sn_comparison_checkbox_o2,
+      dimensional_filters = list("characteristic" = "Residence order or child arrangement order granted")
+    ) %>%
+      select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Number ceased` = colDef(cell = cellfunc),

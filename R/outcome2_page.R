@@ -18,7 +18,7 @@ outcome2_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o2",
               label = "Select a geographical level:",
-              choices = unique(ceased_cla_data %>% pull("geographic_level")),
+              choices = unique(ceased_cla_data %>% filter(geographic_level != "Statistical neighbours") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -34,14 +34,15 @@ outcome2_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(5, 7)
+            panel(),
+            col_widths = c(4, 4, 4)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o2 != 'National'",
               column(
-                width = 5,
+                width = 12,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o2",
                   cb_labels = "Compare with national",
@@ -55,7 +56,7 @@ outcome2_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o2 == 'Local authority')",
               column(
-                width = 7,
+                width = 12,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o2",
                   cb_labels = "Compare with region",
@@ -66,7 +67,21 @@ outcome2_tab <- function() {
                 )
               )
             ),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "(input.select_geography_o2 == 'Local authority')",
+              column(
+                width = 12,
+                checkbox_Input(
+                  inputId = "sn_comparison_checkbox_o2",
+                  cb_labels = "Compare with statistical neighbours",
+                  checkboxIds = "Yes_sn_o2",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
+            col_widths = c(4, 4, 4)
           )
         )
       ),

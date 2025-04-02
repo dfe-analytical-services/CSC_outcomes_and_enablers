@@ -1361,7 +1361,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
     sum_cols = c("t_pupils"),
     group_cols = c("LA.number", "time_period", "social_care_group"),
   )
-  browser()
+
   outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
   outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
@@ -1465,16 +1465,30 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
 # read outcome 2 function but without manual calculation of the percentages.
 read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
   # drop old LA's
-  outcome2_raw <- read.csv("data/la_children_who_ceased_during_the_year.csv")
-  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
+  ceased_cla_data <- fread(file)
 
-  final_filtered_data <- outcome2_raw %>% filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove)
-  ceased_cla_data <- final_filtered_data %>%
+  # TODO: remove make this logic a function as we have various implementations of it
+  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
+  ceased_cla_data <- ceased_cla_data %>% filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove)
+  ceased_cla_data <- ceased_cla_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = ceased_cla_data,
+    median_cols = c("percentage"),
+    sum_cols = c("number"),
+    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
+  )
+
+  ceased_cla_data <- rbindlist(l = list(ceased_cla_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  ceased_cla_data <- ceased_cla_data %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
       format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
@@ -1502,13 +1516,14 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
     filter(characteristic == "Total") %>%
     rename("Total_num" = "Number ceased") %>%
     mutate("Total" = number) %>%
-    select(time_period, geographic_level, geo_breakdown, cla_group, Total_num, Total)
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, cla_group, Total_num, Total)
 
-  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "cla_group"))
+  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "cla_group"))
   joined <- joined %>%
-    select("time_period", "geographic_level", "geo_breakdown", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
+    select("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
   # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
   # For charts, char values do not work so use column "Ceased (%)"
+
   return(joined)
 }
 
