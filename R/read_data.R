@@ -1400,9 +1400,9 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   return(outcomes_ks4_data)
 }
 
-# Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans
+# Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans ----
 read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
-  cpp_in_year_data <- read.csv(file)
+  cpp_in_year_data <- fread(file)
 
   # Select only columns we want
   cpp_in_year_data <- cpp_in_year_data %>%
@@ -1410,15 +1410,28 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cpp_in_year_data,
+    median_cols = c("CPP_subsequent_percent"),
+    sum_cols = c("CPP_start", "CPP_subsequent"),
+    group_cols = c("LA.number", "time_period", "category"),
+  )
+  cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cpp_in_year_data <- cpp_in_year_data %>%
     mutate(CPP_subsequent_percent = ifelse(!is.na(as.numeric(CPP_subsequent_percent)),
       format(as.numeric(as.character(CPP_subsequent_percent)), nsmall = 1),
       CPP_subsequent_percent
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
     )
 
+  # TODO: should we create additional numeric columns for the count aggregations?
   cpp_in_year_data <- cpp_in_year_data %>%
     mutate(`Repeat_CPP_percent` = case_when(
       CPP_subsequent_percent == "c" ~ -100,
@@ -1429,24 +1442,38 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
       CPP_subsequent_percent == "z" ~ -400,
       TRUE ~ as.numeric(CPP_subsequent_percent)
     ))
+
+  return(cpp_in_year_data)
 }
 
 read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
-  cpp_by_duration_data <- read.csv(file) # %>%
-  # filter(geographic_level != "Local authority")
+  cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(`X2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cpp_by_duration_data,
+    median_cols = c("X2_years_or_more_percent"),
+    sum_cols = c("X2_years_or_more"),
+    group_cols = c("LA.number", "time_period"),
+  )
+  cpp_by_duration_data <- rbindlist(l = list(cpp_by_duration_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
+  cpp_by_duration_data <- cpp_by_duration_data %>%
+    mutate(`2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
       format(as.numeric(as.character(`X2_years_or_more_percent`)), nsmall = 1),
       `X2_years_or_more_percent`
     )) %>%
     select(
-      time_period, geographic_level, geo_breakdown, country_code, region_code, region_name, old_la_code,
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, old_la_code,
       CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
       more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
     ) %>%
@@ -1459,6 +1486,7 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
       `X2_years_or_more_percent` == "z" ~ -400,
       TRUE ~ as.numeric(X2_years_or_more_percent)
     ))
+  return(cpp_by_duration_data)
 }
 
 # Outcome 2 ----
@@ -1698,10 +1726,20 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
   return(admissions_data3)
 }
 
-a <- suppressWarnings(read_a_and_e_data())
+# TODO: remove this redundant line of test code
+# a <- suppressWarnings(read_a_and_e_data())
+
+
 ## Assessment Factors ------
 read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
-  data <- read.csv(file)
+  ass_fac_data_raw <- fread(file)
+  ass_fac_data_raw <- ass_fac_data_raw %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    ))
+
   columns <- c(
     "Episodes_with_assessment_factor",
     "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
@@ -1715,12 +1753,14 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
-  data2 <- data %>%
+  # original steps to pivot and clean columns
+  ass_fac_data <- ass_fac_data_raw %>%
     pivot_longer(
       cols = columns,
       names_to = "assessment_factor",
       values_to = "value"
     ) %>%
+    data.table() %>%
     mutate(Number = case_when(
       value == "c" ~ -100,
       value == "low" ~ -200,
@@ -1730,28 +1770,53 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
       value == "z" ~ -400,
       TRUE ~ as.numeric(value)
     )) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
     mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
     select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
 
-  # Data needs to be rates per 10,000
-  # Using the population data from CLA rates data
-  populations <- suppressWarnings(read_cla_rate_data()) %>%
+  # Using the population data from CLA rates data, because Data needs to be rates per 10,000
+  if (exists(x = "cla_rates")) {
+    populations <- copy(cla_rates)
+  } else {
+    populations <- suppressWarnings(read_cla_rate_data())
+  }
+  populations <- populations %>%
+    filter(geo_breakdown != "Statistical neighbours") %>%
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
+  ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
+    mutate(`rate_per_10000` = (Number / as.numeric(population_estimate)) * 10000) %>%
+    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
+    filter(time_period != 2018)
 
-  # data3 <- left_join(data2, populations, by = c("geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
-  data3 <- left_join(data2, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many")
-  data4 <- data3 %>%
-    mutate(`rate_per_10000` = (data3$Number / as.numeric(data3$population_estimate)) * 10000)
 
-  data4$rate_per_10000 <- round(data4$rate_per_10000, digits = 0)
 
-  data5 <- data4 %>%
+  # TODO: this need some consideration to get the correct order (suggest to move population retieval earlier in piece)....
+  # ass_fac_data[is.na(population_estimate)][,.N, by = list(time_period, geo_breakdown)] %>%
+  #   #dcast(formula = geo_breakdown ~ time_period)
+  #   dcast(formula = time_period ~ geo_breakdown)
+  #
+  # ass_fac_data[is.na(population_estimate)][,.N, by = list(time_period)][order(-N)]
+  # ass_fac_data[time_period > "2019"][is.na(population_estimate)][,.N, by = list(geo_breakdown)][order(-N)]
+
+
+
+  # select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, old_la_code, new_la_code, category, assessment_factor, value, Number) %>%
+  # Remove rows for 2018 where no population estimate is available
+
+
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = ass_fac_data,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "assessment_factor"),
+  )
+  ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
+  ass_fac_data <- ass_fac_data %>%
     mutate(rate_per_10000 = case_when(
       value == "c" ~ -100,
       value == "low" ~ -200,
@@ -1760,24 +1825,18 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
       value == "x" ~ -300,
       value == "z" ~ -400,
       TRUE ~ as.numeric(rate_per_10000)
-    ))
+    )) %>%
+    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
 
-  # Remove rows for 2018 where no population estimate is available
-  data5 <- data5 %>%
-    filter(time_period != 2018)
-
-  return(data5)
+  return(ass_fac_data)
 }
 
 
 
 # Outcome 4 -----
-## Number of placements -----
 
 read_number_placements_data <- function(file = "data/la_cla_placement_stability.csv") {
-  data <- read.csv(file)
 
-  data2 <- data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,

@@ -2881,26 +2881,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome3_choice_text1 <- renderText({
-    if (input$select_geography_o3 == "National") {
-      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics on ", tags$b("England"), ".")
-    } else if (input$select_geography_o3 == "Regional") {
-      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ".")
-    } else if (input$select_geography_o3 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_o3), " level statistics for ", tags$b(input$geographic_breakdown_o3), ", in ", region_for_la_o3(), ".")
-    }
+    generate_choice_text1(input$select_geography_o3, input$geographic_breakdown_o3, region_for_la_o3())
   })
 
   output$outcome3_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-    }
+    generate_choice_text2(input$national_comparison_checkbox_o3, input$region_comparison_checkbox_o3, input$sn_comparison_checkbox_o3)
   })
 
   observeEvent(input$select_geography_o3, {
@@ -2928,43 +2913,25 @@ server <- function(input, output, session) {
     )
   })
 
-  #### Repeat CPP ----
-  # time series and table
+  ## Repeat CPP ----
+  ### Repeat CPP time series plot ----
   output$repeat_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    # not both
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- repeat_cpp %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) %>%
-        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- repeat_cpp %>%
-        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
-        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
-        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
-        rename("Repeat CPP (%)" = "Repeat_CPP_percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = repeat_cpp,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list()
+    ) %>%
+      rename("Repeat CPP (%)" = "Repeat_CPP_percent")
 
     max_rate <- max(repeat_cpp$`Repeat_CPP_percent`, na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
@@ -2982,45 +2949,25 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
+  ### Repeat CPP time series table ----
   output$table_repeat_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
-        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- repeat_cpp %>%
-        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
-        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
-        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- repeat_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
-        rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = repeat_cpp,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list()
+    ) %>%
+      select(time_period, geo_breakdown, CPP_start, CPP_subsequent, CPP_subsequent_percent) %>%
+      rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP Starts" = "CPP_start", "Repeat CPP" = "CPP_subsequent", "Repeat CPP (%)" = "CPP_subsequent_percent")
 
     reactable(
       filtered_data,
@@ -3161,7 +3108,7 @@ server <- function(input, output, session) {
   })
 
 
-  #### CPP 2+ years ----
+  ## CPP 2+ years ----
   # Child protection plan longer than two years headline box
   output$cpp_duration_txt <- renderText({
     stat <- format(duration_cpp %>%
@@ -3177,39 +3124,25 @@ server <- function(input, output, session) {
     )
   })
 
-  # time series and table
+  ### CPP 2+ time series chart ----
   output$duration_cpp_time_series <- plotly::renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       # need(input$select_geography_o3 != "Local authority", "LA data not available due to large amount of suppression. Please select 'Omitted Data Reasons' for more information"),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    # not both
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- duration_cpp %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- duration_cpp %>%
-        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National")
 
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- duration_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)))
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- duration_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National"))
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = duration_cpp,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list()
+    )
 
     # Set the max y-axis scale
     max_rate <- max(duration_cpp$`CPP_2_years_or_more_percent`, na.rm = TRUE)
@@ -3228,47 +3161,30 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
+  ### CPP 2+ time series table ----
   output$table_duration_cpp <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location.")
     )
-    # neither checkboxes
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- duration_cpp %>%
-        filter((geo_breakdown %in% input$geographic_breakdown_o3)) %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- duration_cpp %>%
-        filter((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = duration_cpp,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list()
+    )
 
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- duration_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name))) %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- duration_cpp %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National")) %>%
-        select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent)
-    }
-
-    data <- filtered_data %>%
+    filtered_data <- filtered_data %>%
+      select(time_period, geo_breakdown, X2_years_or_more, X2_years_or_more_percent) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "CPP 2+ Years" = "X2_years_or_more", "CPP 2+ Years (%)" = "X2_years_or_more_percent")
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CPP 2+ Years` = colDef(cell = cellfunc),
@@ -3572,39 +3488,25 @@ server <- function(input, output, session) {
     )
   })
 
-  # time series chart
-  # the time series chart, by region and la charts will need to be filtered by the extra dropdown
+  ## Assessment Factors ----
+  ### Assessment Factors time series chart, by region and la charts will need to be filtered by the extra dropdown ----
   output$child_abuse_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1)
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = assessment_factors,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list("assessment_factor" = input$assessment_factors_1)
+    )
 
     max_y_lim <- max(filtered_data$rate_per_10000) + 20
 
@@ -3621,49 +3523,32 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # child abuse ts table alternative
+  ### Assessment Factors child abuse ts table ----
   output$ca_ts_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = assessment_factors,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list("assessment_factor" = input$assessment_factors_1)
+    )
 
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_1) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
-    }
-
-    data <- filtered_data %>%
+    filtered_data <- filtered_data %>%
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -3800,7 +3685,8 @@ server <- function(input, output, session) {
     )
   })
 
-  #### EFH titles -------
+  ## EFH (Harms outside the home) -------
+  ### EFH titles ----
   output$efh_header1 <- renderUI({
     h2(paste(input$assessment_factors_2, " cases"))
   })
@@ -3811,7 +3697,8 @@ server <- function(input, output, session) {
     h2(paste(input$assessment_factors_2, " cases, by local authority"))
   })
 
-  ### Harms outside the home ------
+
+  ### Harms outside the home bar plot------
   output$extra_familial_all_af_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
@@ -3851,7 +3738,7 @@ server <- function(input, output, session) {
     )
   })
 
-  # time series chart
+  ### EF time series chart ----
   # the time series chart, by region and la charts will need to be filtered by the extra dropdown
   output$efh_ts_plot <- renderPlotly({
     shiny::validate(
@@ -3859,31 +3746,17 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_2)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_2)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2)
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = assessment_factors,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list("assessment_factor" = input$assessment_factors_2)
+    )
 
     max_y_lim <- max(filtered_data$rate_per_10000) + 20
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o3, input$geographic_breakdown_o3, "rate_per_10000", "Rate per 10,000", max_y_lim) %>%
@@ -3900,49 +3773,29 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # child abuse ts table alternative
+  ### EF child abuse ts table alternative ----
   output$efh_ts_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
       need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
-    if (is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3 & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o3) && is.null(input$region_comparison_checkbox_o3)) {
-      filtered_data <- assessment_factors %>%
-        filter(((geographic_level %in% input$select_geography_o3 & geo_breakdown %in% input$geographic_breakdown_o3) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name)) & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o3) && !is.null(input$region_comparison_checkbox_o3)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o3)
-
-      filtered_data <- assessment_factors %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o3, location$region_name) | geographic_level == "National") & assessment_factor %in% input$assessment_factors_2) %>%
-        select(time_period, geo_breakdown, assessment_factor, rate_per_10000)
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = assessment_factors,
+      select_geographic_level = input$select_geography_o3,
+      select_geo_breakdown = input$geographic_breakdown_o3,
+      check_compare_national = input$national_comparison_checkbox_o3,
+      check_compare_regional = input$region_comparison_checkbox_o3,
+      check_compare_sn = input$sn_comparison_checkbox_o3,
+      dimensional_filters = list("assessment_factor" = input$assessment_factors_2)
+    ) %>%
+      select(time_period, geo_breakdown, assessment_factor, rate_per_10000) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Assessment factor` = `assessment_factor`, `Rate per 10,000` = `rate_per_10000`)
 
-
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Rate per 10,000` = colDef(cell = cellfunc, defaultSortOrder = "desc")
