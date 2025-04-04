@@ -1834,9 +1834,12 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 
 
 # Outcome 4 -----
+## Number of placements (placement_changes_data) -----
 
 read_number_placements_data <- function(file = "data/la_cla_placement_stability.csv") {
+  placement_changes_data <- fread(file)
 
+  placement_changes_data <- placement_changes_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
@@ -1846,7 +1849,19 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
       format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = placement_changes_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "cla_group", "placement_stability"),
+  )
+  placement_changes_data <- rbindlist(l = list(placement_changes_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  placement_changes_data <- placement_changes_data %>%
     mutate(Percent = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -1859,23 +1874,14 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
     rename("Percentage" = "percentage", "Number" = "number") %>%
     filter(!(new_la_code %in% dropList))
 
-  data_totals <- data2 %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, Number) %>%
-    filter(placement_stability == "Total children") %>%
-    rename(total_number = "Number") %>%
-    select(-placement_stability)
-
-  data3 <- data2 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
-
-  return(data3)
+  return(placement_changes_data)
 }
 
 ## Placement type and distance----
 read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
-  data <- read.csv(file)
+  placement_info_data <- fread(file)
 
-  data2 <- data %>%
+  placement_info_data <- placement_info_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
@@ -1885,8 +1891,20 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
       format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
-    )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = placement_info_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
+  )
+  placement_info_data <- rbindlist(l = list(placement_info_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  placement_info_data <- placement_info_data %>%
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
     mutate(Percent = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -1898,26 +1916,16 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
     )) %>%
     filter(!(new_la_code %in% dropList))
 
-  data_totals <- data2 %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
-    filter(characteristic == "Total") %>%
-    rename(total_number = "number") %>%
-    mutate(total_number = as.numeric(total_number)) %>%
-    select(-characteristic)
-
-  data3 <- data2 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group))
-
-  return(data3)
+  return(placement_info_data)
 }
 
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
 
 ## Care leavers activity -----
 read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activity.csv") {
-  data <- read.csv(file)
+  cl_activity_data <- fread(file)
 
-  data2 <- data %>%
+  cl_activity_data <- cl_activity_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
@@ -1926,13 +1934,20 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
       format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
-    )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number, percentage)
+    ))
 
-  # Need to do some aggregation so that the activity type is In education/training/employment and NOT in education/training/employment
-  # be careful with suppression
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cl_activity_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "age", "activity"),
+  )
+  cl_activity_data <- rbindlist(l = list(cl_activity_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-  data3 <- data2 %>%
+  cl_activity_data <- cl_activity_data %>%
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, age, activity, number, percentage) %>%
     mutate(percent = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -1945,42 +1960,44 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
     # filter out old dorset code
     filter(!(new_la_code %in% dropList))
 
-  data_totals <- data3 %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, activity, number) %>%
-    filter(activity == "Total") %>%
-    rename(total_number = "number") %>%
-    mutate(total_number = as.numeric(total_number)) %>%
-    select(-activity)
-
-  data4 <- data3 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age))
-
-
   # Age column needs to be uniform with the accommodation data as they share the same age range filter
   # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
-  data4["age"][data4["age"] == "Aged 17 to 18"] <- "17 to 18 years"
-  data4["age"][data4["age"] == "Aged 19 to 21"] <- "19 to 21 years"
+  cl_activity_data[age == "Aged 17 to 18", age := "17 to 18 years"]
+  cl_activity_data[age == "Aged 19 to 21", age := "19 to 21 years"]
 
-  return(data4)
+  return(cl_activity_data)
 }
 
 ## Care leavers accommodation -----
 read_care_leavers_accommodation_suitability <- function(file = "data/la_care_leavers_accommodation_suitability.csv") {
-  data <- read.csv(file)
+  cl_accom_data <- fread(file)
 
-  data2 <- data %>%
+  cl_accom_data <- cl_accom_data %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
-    )) %>%
+    ))
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = cl_accom_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "age", "accommodation_suitability"),
+  )
+  cl_accom_data <- rbindlist(l = list(cl_accom_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cl_accom_data <- cl_accom_data %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
       format(as.numeric(as.character(percentage)), nsmall = 0),
       percentage
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number, percentage)
-
-  data3 <- data2 %>%
+    select(
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code,
+      age, accommodation_suitability, number, percentage
+    ) %>%
     mutate(percent = case_when(
       # percent is numeric, percentage is character
       percentage == "c" ~ -100,
@@ -1994,19 +2011,9 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
     # filter out old dorset code
     filter(!(new_la_code %in% dropList))
 
-  data_totals <- data3 %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age, accommodation_suitability, number) %>%
-    filter(accommodation_suitability == "Suitability total") %>%
-    rename(total_number = "number") %>%
-    mutate(total_number = as.numeric(total_number)) %>%
-    select(-accommodation_suitability)
-
-  data4 <- data3 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, age))
-
   # TODO: in care_leavers_activity_data we clean the text in the age field, check whether this is necessary in this file
 
-  return(data4)
+  return(cl_accom_data)
 }
 
 

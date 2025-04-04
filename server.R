@@ -3935,7 +3935,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_o4
   }, {
-    choices <- sort(unique(placement_data[(placement_data$geographic_level == input$select_geography_o4 & placement_data$time_period == max(placement_data$time_period)), "geo_breakdown"]), decreasing = FALSE)
+    choices <- sort(unique(placement_data[geographic_level == input$select_geography_o4 & time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
 
     updateSelectizeInput(
       session = session,
@@ -3953,26 +3953,11 @@ server <- function(input, output, session) {
   })
 
   output$outcome4_choice_text1 <- renderText({
-    if (input$select_geography_o4 == "National") {
-      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics on ", tags$b("England"), ".")
-    } else if (input$select_geography_o4 == "Regional") {
-      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics for ", tags$b(input$geographic_breakdown_o4), ".")
-    } else if (input$select_geography_o4 == "Local authority") {
-      paste0("You have selected ", tags$b(input$select_geography_o4), " level statistics for ", tags$b(input$geographic_breakdown_o4), ", in ", region_for_la_o4(), ".")
-    }
+    generate_choice_text1(input$select_geography_o4, input$geographic_breakdown_o4, region_for_la_o4())
   })
 
   output$outcome4_choice_text2 <- renderText({
-    # Checking to see if they picked national average comparison
-    if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      paste0("You have also selected to compare with the ", tags$b("National Average."))
-      # If they picked regional comparison
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      paste0("You have also selected to compare with the ", tags$b("Regional average."))
-      # Picked both national and regional comparison
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      paste0("You have also selected to compare with the ", tags$b("National average"), " and the ", tags$b("Regional average."))
-    }
+    generate_choice_text2(input$national_comparison_checkbox_o4, input$region_comparison_checkbox_o4, input$sn_comparison_checkbox_o4)
   })
 
   observeEvent(input$select_geography_o4, {
@@ -4137,43 +4122,26 @@ server <- function(input, output, session) {
     )
   })
 
-  ### Placement type charts and tables ----
-  # Time series chart
+  ## Placement type charts and tables ----
+  #### Placement type Time series chart ----
   output$placement_type_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown) %>%
-        rename("Placements (%)" = "Percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
-        rename("Placements (%)" = "Percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown) %>%
-        rename("Placements (%)" = "Percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
-        rename("Placements (%)" = "Percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("characteristic" = "Placed more than 20 miles from home")
+    ) %>%
+      rename("Placements (%)" = "Percent")
 
     # Set the max y-axis scale
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic %in% c(unique(placement_type_filter))], na.rm = TRUE)
@@ -4192,47 +4160,28 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
+  ### Placement type Time series table ----
   output$placement_type_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic %in% input$placement_type_breakdown) %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic %in% input$placement_type_breakdown) %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic %in% input$placement_type_breakdown) %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("characteristic" = input$placement_type_breakdown)
+    ) %>%
+      select(time_period, geo_breakdown, characteristic, Percent) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Type` = `characteristic`, `Placements (%)` = `Percent`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -4377,43 +4326,24 @@ server <- function(input, output, session) {
 
 
 
-  ### Placement changes ----
-  # Time series chart
+  ## Placement changes ----
+  #### Placement changes Time series chart ----
   output$placement_changes_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_changes_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year") %>%
-        rename("CLA with 3 or more placements (%)" = "Percent")
-
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_changes_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") &
-          placement_stability == "With 3 or more placements during the year") %>%
-        rename("CLA with 3 or more placements (%)" = "Percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year") %>%
-        rename("CLA with 3 or more placements (%)" = "Percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
-        rename("CLA with 3 or more placements (%)" = "Percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_changes_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("placement_stability" = "With 3 or more placements during the year")
+    ) %>%
+      rename("CLA with 3 or more placements (%)" = "Percent")
 
     # Set the max y-axis scale
     max_rate <- max(placement_changes_data$`Percent`[placement_changes_data$placement_stability == "With 3 or more placements during the year"], na.rm = TRUE)
@@ -4432,47 +4362,29 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
+  #### Placement changes Time series table ----
   output$placement_changes_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_changes_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & placement_stability == "With 3 or more placements during the year") %>%
-        select(time_period, geo_breakdown, Percent)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_changes_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
-        select(time_period, geo_breakdown, Percent)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & placement_stability == "With 3 or more placements during the year") %>%
-        select(time_period, geo_breakdown, Percent)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_changes_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & placement_stability == "With 3 or more placements during the year") %>%
-        select(time_period, geo_breakdown, Percent)
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_changes_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("placement_stability" = "With 3 or more placements during the year")
+    ) %>%
+      select(time_period, geo_breakdown, Percent) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `CLA with 3 or more placements during the year(%)` = `Percent`)
 
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `CLA with 3 or more placements during the year(%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -4616,45 +4528,24 @@ server <- function(input, output, session) {
   })
 
   ## Placement Distance -------------
-  # Time series chart
+  #### Placement distance Time series chart ----
   output$placement_distance_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
-
-      # filtered_data <- placement_data %>%
-      #   filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
-      #   rename("Placements more then 20 miles from home (%)" = "Percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
-        rename("Placements more then 20 miles from home (%)" = "Percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("characteristic" = "Placed more than 20 miles from home")
+    ) %>%
+      rename("Placements more then 20 miles from home (%)" = "Percent")
 
     # Set the max y-axis scale
     max_rate <- max(placement_data$`Percent`[placement_data$characteristic == "Placed more than 20 miles from home"], na.rm = TRUE)
@@ -4674,47 +4565,28 @@ server <- function(input, output, session) {
   })
 
 
-  # timeseries table alternative
+  #### Placement distance timeseries table ----
   output$placement_dist_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & characteristic == "Placed more than 20 miles from home") %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- placement_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & characteristic == "Placed more than 20 miles from home") %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- placement_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & characteristic == "Placed more than 20 miles from home") %>%
-        select(time_period, geo_breakdown, characteristic, Percent)
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = placement_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("characteristic" = "Placed more than 20 miles from home")
+    ) %>%
+      select(time_period, geo_breakdown, characteristic, Percent) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Placement Distance` = `characteristic`, `Placements (%)` = `Percent`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Placements (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -5193,7 +5065,7 @@ server <- function(input, output, session) {
 
 
 
-  ## care leavers ---------
+  ## Care leavers ---------
   ### care leavers employment----
   ### Dynamic header text
 
@@ -5208,42 +5080,25 @@ server <- function(input, output, session) {
   })
 
 
-  # Time series chart
+  #### CL Time series chart ----
   output$care_activity_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_activity_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        rename("Care leavers in education, employment or training (%)" = "percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_activity_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        rename("Care leavers in education, employment or training (%)" = "percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        rename("Care leavers in education, employment or training (%)" = "percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        rename("Care leavers in education, employment or training (%)" = "percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = care_leavers_activity_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("activity" = "Total in education, employment or training", "age" = input$leavers_age)
+    ) %>%
+      rename("Care leavers in education, employment or training (%)" = "percent")
 
     # Set the max y-axis scale
     max_rate <- max(care_leavers_activity_data$`percent`[care_leavers_activity_data$activity == "Total in education, employment or training"], na.rm = TRUE)
@@ -5263,48 +5118,29 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # timeseries table alternative
+  ##### CL timeseries table ----
   output$cl_activity_ts_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an assessment factor.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_activity_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        select(time_period, geo_breakdown, activity, age, percent)
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_activity_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        select(time_period, geo_breakdown, activity, age, percent)
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        select(time_period, geo_breakdown, activity, age, percent)
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_activity_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & activity == "Total in education, employment or training") %>%
-        select(time_period, geo_breakdown, activity, age, percent)
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = care_leavers_activity_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("activity" = "Total in education, employment or training", "age" = input$leavers_age)
+    ) %>%
+      select(time_period, geo_breakdown, activity, age, percent) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Activity` = `activity`, `Age range` = `age`, `Care leavers in education, employment or training (%)` = `percent`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in education, employment or training (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
@@ -5459,42 +5295,25 @@ server <- function(input, output, session) {
     h2(paste("Care leavers in suitable accommodation (", input$leavers_age, ") by local authority"))
   })
 
-  # Time series chart
+  ##### CL Accom Time series chart ----
   output$care_accommodation_ts_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-    }
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = care_leavers_accommodation_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("accommodation_suitability" = "Accommodation considered suitable", "age" = input$leavers_age)
+    ) %>%
+      rename("Care leavers in suitable accommodation (%)" = "percent")
 
     # Set the max y-axis scale
     max_rate <- max(care_leavers_accommodation_data$`percent`[care_leavers_accommodation_data$accommodation_suitability == "Accommodation considered suitable"], na.rm = TRUE)
@@ -5513,52 +5332,30 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # timeseries table alternative
+  #### CL Accom timeseries table ----
   output$cl_accommodation_ts_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
       need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$leavers_age != "", "Select an age range.")
     )
-    if (is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter(geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4 & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
 
-      # national only
-    } else if (!is.null(input$national_comparison_checkbox_o4) && is.null(input$region_comparison_checkbox_o4)) {
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter(((geographic_level %in% input$select_geography_o4 & geo_breakdown %in% input$geographic_breakdown_o4) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-
-      # regional only
-    } else if (is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name)) & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-
-      # both selected
-    } else if (!is.null(input$national_comparison_checkbox_o4) && !is.null(input$region_comparison_checkbox_o4)) {
-      location <- location_data %>%
-        filter(la_name %in% input$geographic_breakdown_o4)
-
-      filtered_data <- care_leavers_accommodation_data %>%
-        filter((geo_breakdown %in% c(input$geographic_breakdown_o4, location$region_name) | geographic_level == "National") & age %in% input$leavers_age & accommodation_suitability == "Accommodation considered suitable") %>%
-        select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
-        rename("Care leavers in suitable accommodation (%)" = "percent")
-    }
-
-    data <- filtered_data %>%
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_time_series_data(
+      dataset_in = care_leavers_accommodation_data,
+      select_geographic_level = input$select_geography_o4,
+      select_geo_breakdown = input$geographic_breakdown_o4,
+      check_compare_national = input$national_comparison_checkbox_o4,
+      check_compare_regional = input$region_comparison_checkbox_o4,
+      check_compare_sn = input$sn_comparison_checkbox_o4,
+      dimensional_filters = list("accommodation_suitability" = "Accommodation considered suitable", "age" = input$leavers_age)
+    ) %>%
+      select(time_period, geo_breakdown, accommodation_suitability, age, percent) %>%
+      rename("Care leavers in suitable accommodation (%)" = "percent") %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Accommodation suitability` = `accommodation_suitability`, `Age range` = `age`)
 
     reactable(
-      data,
+      filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Care leavers in suitable accommodation (%)` = colDef(cell = cellfunc, defaultSortOrder = "desc")
