@@ -69,10 +69,10 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 # and level breakdown (region names and la names)
 
 read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") {
-  workforce_data <- read.csv(file)
+  workforce_data <- fread(file)
   workforce_data <- colClean(workforce_data) %>%
     mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "National" ~ "National",
       geographic_level == "Regional" ~ region_name,
       geographic_level == "Local authority" ~ la_name
     )) %>%
@@ -80,7 +80,24 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") 
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
       "turnover_rate_headcount", "agency_rate_headcount", "caseload_fte"
-    ) %>%
+    )
+
+  # old_la_code is a critical field and it's stored as a character in this dataset (with some exceptions e.g. 314 / 318 and 240 / 941)
+  workforce_data[, original_old_la_code := old_la_code]
+  workforce_data[, old_la_code := as.numeric(old_la_code)]
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
+    dataset = workforce_data,
+    median_cols = c("turnover_rate_fte", "agency_rate_fte", "vacancy_rate_fte", "caseload_fte"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period")
+  )
+  workforce_data <- rbindlist(l = list(workforce_data, sn_metrics), fill = TRUE, use.names = TRUE)
+  workforce_data[, old_la_code := (original_old_la_code)]
+
+  workforce_data <- workforce_data %>%
     mutate(turnover_rate_fte = ifelse(!is.na(as.numeric(turnover_rate_fte)),
       format(as.numeric(as.character(turnover_rate_fte)), nsmall = 1),
       turnover_rate_fte
@@ -101,7 +118,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") 
     filter(!(new_la_code %in% dropList)) %>%
     distinct()
 
-  workforce_data2 <- suppressWarnings(workforce_data %>%
+  workforce_data <- suppressWarnings(workforce_data %>%
     mutate(across(
       .cols = grep("fte", colnames(workforce_data)),
       .fns = ~ case_when(
@@ -116,7 +133,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") 
       .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
     )))
 
-  return(workforce_data2)
+  return(workforce_data)
 }
 
 
