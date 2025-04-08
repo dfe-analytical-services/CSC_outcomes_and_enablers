@@ -2159,7 +2159,7 @@ statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupi
   return(df)
 }
 
-get_stats_neighbours_long <- function() {
+get_stats_neighbours_long <- function(stats_neighbours) {
   stats_neighbours_long <- stats_neighbours %>%
     pivot_longer(
       cols = starts_with("SN"),
@@ -2168,5 +2168,7 @@ get_stats_neighbours_long <- function() {
       values_to = "SN_LA_name"
     ) %>%
     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
-    setDT()
+    as.data.table()
+
+  return(stats_neighbours_long)
 }
