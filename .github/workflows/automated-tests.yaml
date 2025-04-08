@@ -8,4 +8,4 @@ name: Automated tests
 
 jobs:
   automatedTests:
-    uses: dfe-analytical-services/dfeshiny/.github/workflows/automated_tests_template.yaml@main
+    uses: dfe-analytical-services/dfeshiny/.github/workflows/automated_tests_template.yaml@workflows/ui-tests-add-global-read-in

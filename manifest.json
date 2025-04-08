@@ -856,7 +856,7 @@
         "SystemRequirements": "Google Chrome or other Chromium-based browser.\nchromium: chromium (rpm) or chromium-browser (deb)",
         "Author": "Garrick Aden-Buie [aut, cre] (<https://orcid.org/0000-0002-7111-0077>),\n  Winston Chang [aut],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Posit Software, PBC [cph, fnd]",
         "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
-        "Built": "R 4.4.3; ; 2025-04-07 16:17:32 UTC; windows",
+        "Built": "R 4.4.2; ; 2025-04-02 10:19:29 UTC; windows",
         "RemoteType": "github",
         "RemoteHost": "api.github.com",
         "RemoteUsername": "rstudio",
@@ -5201,7 +5201,7 @@
       "checksum": "2c95cb00ebd7546ccec06638cd813767"
     },
     ".github/workflows/automated-tests.yaml": {
-      "checksum": "7fec9834ee9927cf76307a613d0e699e"
+      "checksum": "d9ea22854042e8ee5e18507dab68a0e5"
     },
     ".github/workflows/deploy-shiny.yaml": {
       "checksum": "061d2db807c3dc2d16340f29968ee41c"
@@ -5212,26 +5212,8 @@
     ".hooks/pre-commit.R": {
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
-    ".idea/CSC_outcomes_and_enablers.iml": {
-      "checksum": "5681b7c470da9ed271f1de1465174d12"
-    },
-    ".idea/inspectionProfiles/profiles_settings.xml": {
-      "checksum": "05dbe611f5bdb7a801adb3f064d4bfa9"
-    },
-    ".idea/modules.xml": {
-      "checksum": "8ddc480876db3bc3b38b29e4da288a96"
-    },
-    ".idea/vcs.xml": {
-      "checksum": "74d3a64f52848d5e8db631b1685e58c8"
-    },
-    ".idea/workspace.xml": {
-      "checksum": "6787fcc6ef1f9ef8cf09c447266dd131"
-    },
-    ".RData": {
-      "checksum": "933af2a7a6ee99d219ef9da2f37ba287"
-    },
     ".Rprofile": {
-      "checksum": "b1e10c317db4f766c60dbd2426d2abd9"
+      "checksum": "4ab740294f751b7e7d39a72efac721cd"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5354,7 +5336,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "9386a1d31fd75273e0230788a5cb2bc3"
+      "checksum": "325d87c4796fbdda654bcbbbe9cb641b"
     },
     "google-analytics.html": {
       "checksum": "f2437bd3366b2deac82b1d3cf9a48c60"
@@ -5417,7 +5399,7 @@
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "26506ddf9978b566b7c765d53d55cddb"
+      "checksum": "747bf6d070bd795b3d823be2e85a4454"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -5429,7 +5411,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "818b6ba6ce74adeea4e75b7d643de954"
+      "checksum": "969d36564489e320064ad5a661fd1354"
     },
     "server.R": {
       "checksum": "3d04ec3fe3973f54de1cb5b02e11bbd0"
@@ -5443,56 +5425,50 @@
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
-    "tests/testthat/_snaps/initial_load/basic_load-001.json": {
-      "checksum": "8189dd220774f0b75864744a986f9d36"
-    },
-    "tests/testthat/_snaps/initial_load/basic_load-001_.png": {
-      "checksum": "e0a4e7952ddf50e8f4e0b4e7e375ab34"
-    },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "88ecdc72cd844cb0288456b9e196244f"
+      "checksum": "504fd5711552ec0cc2fd26c14e418774"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "6b439fca2911c3cce2363871477f9b1b"
+      "checksum": "8ab3e92b8e7c9c51414b3bb3ad34cee4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "58a88bb6237366f32a2222aa40ac98a5"
+      "checksum": "749e3086847a44de4384c984afd010eb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
-      "checksum": "440848d4dd0864152e6bc3f1f29a4dcd"
+      "checksum": "6b52b41eec1c86c85843796fd86955be"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "9783ffbc0d13ef645ac7ec003475cc9f"
+      "checksum": "6e2fda1f007c363aab955ee5664ed1c4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "6fc43d16e639fd21d4a43105f143b106"
+      "checksum": "be392e4e9b50a0a7b83585a05f9bae9e"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "54b923a1585beaa551f020f350702173"
+      "checksum": "a286d2a6ee3e2aaa71eb91f314f98dda"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "dc00aee4e3b9b0125ad724b527b1c8f8"
+      "checksum": "cdd34a4405f987c53b6079048f50a15e"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "d424ab30da3494099829f82da6be32a4"
+      "checksum": "e79d028cbe6c9cebbae9bac7637904bb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
-      "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
+      "checksum": "7c9c431124a3614202777ac23a84153b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-013.json": {
-      "checksum": "d627f2856b43f5e9cd2bc0e49dce86bb"
+      "checksum": "4e68335721bfe2e11883c78d3141dd55"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-014.json": {
-      "checksum": "d15cb9296bef57bded0467fffe3baf63"
+      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "d15cb9296bef57bded0467fffe3baf63"
+      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
