@@ -7,7 +7,6 @@
 #
 # ---------------------------------------------------------
 
-
 # Library calls ---------------------------------------------------------------------------------
 shhh <- suppressPackageStartupMessages # It's a library, so shhh!
 shhh(library(rsconnect))
@@ -42,7 +41,6 @@ shhh(library(data.table))
 
 # shhh(library(shinya11y)) # used to test the accessibility of the dashboard
 
-
 shhh(library(htmltools))
 
 lapply(list.files("R/ui_panels/", full.names = TRUE, recursive = TRUE), source)
@@ -66,7 +64,6 @@ cs_num <- function(value) {
 # Source any scripts here. Scripts may be needed to process data before it gets to the server file.
 # It's best to do this here instead of the server file, to improve performance.
 
-source("R/stats_neighbours.R")
 source("R/read_data.R")
 
 # appLoadingCSS ----------------------------------------------------------------------------
@@ -102,6 +99,7 @@ google_analytics_key <- "Q13T4ENF6C"
 ## Read in the stats_neighbours and generate a long table for all stats neighbour aggregations
 stats_neighbours <- head(statistical_neighbours(), 152)
 stats_neighbours_long <- get_stats_neighbours_long()
+source("R/stats_neighbours.R")
 
 ## Read in the workforce data ----
 workforce_data <- suppressWarnings(read_workforce_data())
@@ -148,7 +146,13 @@ af_child_abuse_extra_filter <- assessment_factors %>%
   select(assessment_factor) %>%
   pull("assessment_factor")
 
-extra_familial_harm_af <- c("Going missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation")
+extra_familial_harm_af <- c(
+  "Going missing",
+  "Child sexual exploitation",
+  "Trafficking",
+  "Gangs",
+  "Child criminal exploitation"
+)
 # "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
 
 hospital_admissions <- suppressWarnings(read_a_and_e_data())
@@ -157,11 +161,18 @@ hospital_admissions <- suppressWarnings(read_a_and_e_data())
 placement_data <- suppressWarnings(read_placement_info_data())
 
 # Define the custom order
-custom_order <- c("Foster placements", "Secure homes and children's homes", "Independent and semi-independent living arrangements/supported accommodation")
+custom_order <- c(
+  "Foster placements",
+  "Secure homes and children's homes",
+  "Independent and semi-independent living arrangements/supported accommodation"
+)
 
 # Sort the values based on the custom order
 placement_type_filter <- placement_data %>%
-  filter(str_detect(characteristic, "Semi|semi|Foster|foster|Settings|settings|Secure|secure")) %>%
+  filter(str_detect(
+    characteristic,
+    "Semi|semi|Foster|foster|Settings|settings|Secure|secure"
+  )) %>%
   select(characteristic) %>%
   pull("characteristic") %>%
   unique() %>%
@@ -180,7 +191,10 @@ placement_order_match_data <- suppressWarnings(read_placement_order_match_data()
 
 # Download button --------------------
 # Function to create a download button for reactable
-csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CSV") {
+csvDownloadButton <- function(
+    id,
+    filename = "data.csv",
+    label = "Download as CSV") {
   tags$button(
     tagList(icon("download"), label),
     onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
@@ -192,7 +206,8 @@ csvDownloadButton <- function(id, filename = "data.csv", label = "Download as CS
 # Expandable section ------------------
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(
-    class = "govuk-details", id = inputId,
+    class = "govuk-details",
+    id = inputId,
     shiny::tags$summary(
       class = "govuk-details__summary",
       shiny::tags$span(
