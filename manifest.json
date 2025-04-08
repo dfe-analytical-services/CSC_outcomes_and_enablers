@@ -754,32 +754,43 @@
       }
     },
     "chromote": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
+      "Source": "github",
+      "Repository": null,
       "description": {
         "Package": "chromote",
         "Title": "Headless Chrome Web Browser Interface",
-        "Version": "0.4.0",
-        "Authors@R": "c(\n    person(\"Winston\", \"Chang\", , \"winston@posit.co\", role = c(\"aut\", \"cre\")),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Garrick\", \"Aden-Buie\", , \"garrick@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0002-7111-0077\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
+        "Version": "0.5.0.9000",
+        "Authors@R": "c(\n    person(\"Garrick\", \"Aden-Buie\", , \"garrick@posit.co\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0002-7111-0077\")),\n    person(\"Winston\", \"Chang\", , \"winston@posit.co\", role = \"aut\"),\n    person(\"Barret\", \"Schloerke\", , \"barret@posit.co\", role = \"aut\",\n           comment = c(ORCID = \"0000-0001-9986-114X\")),\n    person(\"Posit Software, PBC\", role = c(\"cph\", \"fnd\"))\n  )",
         "Description": "An implementation of the 'Chrome DevTools Protocol', for\n    controlling a headless Chrome web browser.",
         "License": "GPL-2",
         "URL": "https://rstudio.github.io/chromote/,\nhttps://github.com/rstudio/chromote",
         "BugReports": "https://github.com/rstudio/chromote/issues",
-        "Imports": "curl, fastmap, jsonlite, later (>= 1.1.0), magrittr, processx,\npromises (>= 1.1.1), R6, rlang, utils, websocket (>= 1.2.0)",
-        "Suggests": "showimage, testthat (>= 3.0.0)",
+        "Imports": "cli,\ncurl,\nfastmap,\njsonlite,\nlater (>= 1.1.0),\nmagrittr,\nprocessx,\npromises (>= 1.1.1),\nR6,\nrlang (>= 1.1.0),\nutils,\nwebsocket (>= 1.2.0),\nwithr,\nzip",
+        "Suggests": "knitr,\nrmarkdown,\nshowimage,\ntestthat (>= 3.0.0)",
+        "VignetteBuilder": "knitr",
         "Config/Needs/website": "tidyverse/tidytemplate",
         "Config/testthat/edition": "3",
+        "Config/testthat/parallel": "FALSE",
+        "Config/testthat/start-first": "chromote_session",
         "Encoding": "UTF-8",
         "Language": "en-US",
+        "Roxygen": "list(markdown = TRUE)",
         "RoxygenNote": "7.3.2",
         "SystemRequirements": "Google Chrome or other Chromium-based browser.\nchromium: chromium (rpm) or chromium-browser (deb)",
-        "NeedsCompilation": "no",
-        "Packaged": "2025-01-24 16:36:51 UTC; garrick",
-        "Author": "Winston Chang [aut, cre],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Garrick Aden-Buie [aut] (<https://orcid.org/0000-0002-7111-0077>),\n  Posit Software, PBC [cph, fnd]",
-        "Maintainer": "Winston Chang <winston@posit.co>",
-        "Repository": "CRAN",
-        "Date/Publication": "2025-01-25 00:20:02 UTC",
-        "Built": "R 4.4.3; ; 2025-03-09 02:55:35 UTC; windows"
+        "Author": "Garrick Aden-Buie [aut, cre] (<https://orcid.org/0000-0002-7111-0077>),\n  Winston Chang [aut],\n  Barret Schloerke [aut] (<https://orcid.org/0000-0001-9986-114X>),\n  Posit Software, PBC [cph, fnd]",
+        "Maintainer": "Garrick Aden-Buie <garrick@posit.co>",
+        "Built": "R 4.4.3; ; 2025-04-07 16:17:32 UTC; windows",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteUsername": "rstudio",
+        "RemoteRepo": "chromote",
+        "RemoteRef": "main",
+        "RemoteSha": "098db477f23f6bf577e4abae6c9fb613060d7031",
+        "GithubHost": "api.github.com",
+        "GithubRepo": "chromote",
+        "GithubUsername": "rstudio",
+        "GithubRef": "main",
+        "GithubSHA1": "098db477f23f6bf577e4abae6c9fb613060d7031"
       }
     },
     "cli": {
@@ -4725,8 +4736,26 @@
     ".hooks/pre-commit.R": {
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
+    ".idea/CSC_outcomes_and_enablers.iml": {
+      "checksum": "5681b7c470da9ed271f1de1465174d12"
+    },
+    ".idea/inspectionProfiles/profiles_settings.xml": {
+      "checksum": "05dbe611f5bdb7a801adb3f064d4bfa9"
+    },
+    ".idea/modules.xml": {
+      "checksum": "8ddc480876db3bc3b38b29e4da288a96"
+    },
+    ".idea/vcs.xml": {
+      "checksum": "74d3a64f52848d5e8db631b1685e58c8"
+    },
+    ".idea/workspace.xml": {
+      "checksum": "6787fcc6ef1f9ef8cf09c447266dd131"
+    },
+    ".RData": {
+      "checksum": "933af2a7a6ee99d219ef9da2f37ba287"
+    },
     ".Rprofile": {
-      "checksum": "f583b6b2727c5b977a105923fec436fe"
+      "checksum": "b1e10c317db4f766c60dbd2426d2abd9"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -4852,7 +4881,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "0d0a8b87597ac0ba526ec608d7fb8c2d"
+      "checksum": "9386a1d31fd75273e0230788a5cb2bc3"
     },
     "google-analytics.html": {
       "checksum": "f2437bd3366b2deac82b1d3cf9a48c60"
@@ -4882,7 +4911,7 @@
       "checksum": "ee65ef97a2801264db888f9cb335f2bf"
     },
     "R/enabler3_page.R": {
-      "checksum": "0574892db67645dd9c88642039c0c828"
+      "checksum": "2b04381401748f771fd369c2bb16470e"
     },
     "R/intro_panel.R": {
       "checksum": "f1c635039e076143b958713fb59818db"
@@ -4891,31 +4920,31 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "16838f71eeb54e256539cef8fbb563f0"
+      "checksum": "77efb2cc9692d121ba9e6213a8626a52"
     },
     "R/outcome2_page.R": {
-      "checksum": "70e219cb4e1ee8c1e3f517216502d077"
+      "checksum": "ad1c8ed10136f9359252fc5b4088af15"
     },
     "R/outcome3_page.R": {
-      "checksum": "f2bb779d7448685c8b45d5daf4233ca5"
+      "checksum": "5ac5e60d1e61aaf050881a33609e29ce"
     },
     "R/outcome4_page.R": {
-      "checksum": "b39a036cb73126bae3f0f1e5a252433a"
+      "checksum": "057e4a43853f90d4076f86117c9b2f2f"
     },
     "R/plotting.R": {
-      "checksum": "b16fad93ef943d3cd43ee82d9dceb96e"
+      "checksum": "e25bacad15a4cf7974de5e75a99fa27c"
     },
     "R/read_data.R": {
-      "checksum": "7d6a5a11c44f70904d4824d9aaa3177a"
+      "checksum": "63cb74a3aef4f41d408864e45e75343f"
+    },
+    "R/rendering_functions.R": {
+      "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
     },
     "R/standard_panels.R": {
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "af7d4f935b612bfcfe897b978b149fba"
-    },
-    "R/stats_neighbours_testing.R": {
-      "checksum": "05c68b1e93a3d27bbbba25e09ab3e077"
+      "checksum": "26506ddf9978b566b7c765d53d55cddb"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -4930,67 +4959,70 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "1495e75f333edc71960c53b8c3136cf9"
+      "checksum": "818b6ba6ce74adeea4e75b7d643de954"
     },
     "server.R": {
-      "checksum": "35fc95f9cea1539249e4a2d076d2f626"
+      "checksum": "3d04ec3fe3973f54de1cb5b02e11bbd0"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
+    },
+    "tests/stats_neighbours_testing.R": {
+      "checksum": "d97776426bfbe915b902e9d58fa56505"
     },
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001.json": {
-      "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
+      "checksum": "8189dd220774f0b75864744a986f9d36"
     },
     "tests/testthat/_snaps/initial_load/basic_load-001_.png": {
-      "checksum": "18d74b34ea33375f6ff7fe7a848e63bd"
+      "checksum": "e0a4e7952ddf50e8f4e0b4e7e375ab34"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "504fd5711552ec0cc2fd26c14e418774"
+      "checksum": "88ecdc72cd844cb0288456b9e196244f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "8ab3e92b8e7c9c51414b3bb3ad34cee4"
+      "checksum": "6b439fca2911c3cce2363871477f9b1b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
+      "checksum": "694088dfc01959bd668c1955e0173790"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
+      "checksum": "694088dfc01959bd668c1955e0173790"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "40d044e6a31dc70224d5706237e63f45"
+      "checksum": "58a88bb6237366f32a2222aa40ac98a5"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
-      "checksum": "7a0af85657f081e10baee0756c5afc3f"
+      "checksum": "440848d4dd0864152e6bc3f1f29a4dcd"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "cef96745b591c2b4cda6f5752631632d"
+      "checksum": "9783ffbc0d13ef645ac7ec003475cc9f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "be392e4e9b50a0a7b83585a05f9bae9e"
+      "checksum": "6fc43d16e639fd21d4a43105f143b106"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "a286d2a6ee3e2aaa71eb91f314f98dda"
+      "checksum": "54b923a1585beaa551f020f350702173"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "cdd34a4405f987c53b6079048f50a15e"
+      "checksum": "dc00aee4e3b9b0125ad724b527b1c8f8"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "e79d028cbe6c9cebbae9bac7637904bb"
+      "checksum": "d424ab30da3494099829f82da6be32a4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
-      "checksum": "7c9c431124a3614202777ac23a84153b"
+      "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-013.json": {
-      "checksum": "4e68335721bfe2e11883c78d3141dd55"
+      "checksum": "d627f2856b43f5e9cd2bc0e49dce86bb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-014.json": {
-      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
+      "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
+      "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
