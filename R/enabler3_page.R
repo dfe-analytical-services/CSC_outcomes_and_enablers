@@ -17,7 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% pull("geographic_level")),
+              choices = unique(workforce_data %>% filter(geographic_level != "Statistical neighbours") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -30,13 +30,14 @@ enabler3_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(5, 7)
+            panel(),
+            col_widths = c(4, 4, 4)
           ),
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_e3 != 'National'",
               column(
-                width = 5,
+                width = 12,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_e3",
                   cb_labels = "Compare with national",
@@ -50,7 +51,7 @@ enabler3_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_e3 == 'Local authority')",
               column(
-                width = 7,
+                width = 12,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_e3",
                   cb_labels = "Compare with region",
@@ -59,9 +60,23 @@ enabler3_tab <- function() {
                   hint_label = NULL,
                   small = TRUE
                 )
-              ),
+              )
             ),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "(input.select_geography_e3 == 'Local authority')",
+              column(
+                width = 12,
+                checkbox_Input(
+                  inputId = "sn_comparison_checkbox_e3",
+                  cb_labels = "Compare with statistical neighbours",
+                  checkboxIds = "Yes_sn_e3",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
+            col_widths = c(4, 4, 4)
           ),
         )
       ),
