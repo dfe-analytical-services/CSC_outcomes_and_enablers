@@ -3,7 +3,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     name = "CSC_outcomes_and_enablers_error_test",
     load_timeout = 240 * 1000,
     timeout = 120 * 1000,
-    wait = TRUE,
+    wait = FALSE,
     height = 886, width = 1203,
     variant = NULL,
     expect_values_screenshot_args = FALSE

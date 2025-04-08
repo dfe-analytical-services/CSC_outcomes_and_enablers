@@ -5213,7 +5213,7 @@
       "checksum": "940dff53b51d664e52e90e4349a97eaa"
     },
     ".Rprofile": {
-      "checksum": "4ab740294f751b7e7d39a72efac721cd"
+      "checksum": "2484eb0e962d21b505da34f33b2a27a1"
     },
     "azure-pipelines.yml": {
       "checksum": "e79f9a1b9e2ba5983dc6312b1fbf22ba"
@@ -5425,6 +5425,9 @@
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
+    "tests/testthat/_snaps/initial_load/CSC_outcomes_and_enablers_initial_load-001.json": {
+      "checksum": "8189dd220774f0b75864744a986f9d36"
+    },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
       "checksum": "504fd5711552ec0cc2fd26c14e418774"
     },
@@ -5471,13 +5474,13 @@
       "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
     },
     "tests/testthat/setup-shinytest2.R": {
-      "checksum": "d3e71278de0398bd2acaa6e00ad59114"
+      "checksum": "966ddbc21e28ea3e1c3699249cee9d0a"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "6f68c0ad79404a26044f9551858e365f"
+      "checksum": "c2b6e20c6e16d154cc33bf39cc73caa6"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "7a68dc373e89d9277ae132c6325d5381"
+      "checksum": "7c6f45f04e8c69781129489b3dad4015"
     },
     "ui.R": {
       "checksum": "262f446b22cb0d11769076bf8853136d"
