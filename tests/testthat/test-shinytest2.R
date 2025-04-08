@@ -3,8 +3,9 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     name = "CSC_outcomes_and_enablers_error_test",
     load_timeout = 240 * 1000,
     timeout = 120 * 1000,
-    wait = FALSE,
-    height = 886, width = 1203,
+    wait = TRUE,
+    height = 886,
+    width = 1203,
     variant = NULL,
     expect_values_screenshot_args = FALSE
   )
@@ -16,7 +17,10 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   app$set_inputs(geographic_breakdown_o1 = "East Midlands")
   app$wait_for_idle(500)
   Sys.sleep(2)
-  app$expect_values(input = c("navlistPanel"), output = c("outcome1_choice_text1", "outcome1_choice_text2"))
+  app$expect_values(
+    input = c("navlistPanel"),
+    output = c("outcome1_choice_text1", "outcome1_choice_text2")
+  )
 
   # outcome 1 - checking family stability tab
   app$set_inputs(
@@ -30,12 +34,18 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o1", "outcome1_panels",
-      "national_comparison_checkbox_o1", "regional_comparison_checkbox_o1"
+      "navlistPanel",
+      "select_geography_o1",
+      "outcome1_panels",
+      "national_comparison_checkbox_o1",
+      "regional_comparison_checkbox_o1"
     ),
     output = c(
-      "outcome2_choice_text1", "outcome2_choice_text2",
-      "cla_rate_headline_txt", "uasc_rate_headline_txt", "cla_march_rate_headline_txt"
+      "outcome2_choice_text1",
+      "outcome2_choice_text2",
+      "cla_rate_headline_txt",
+      "uasc_rate_headline_txt",
+      "cla_march_rate_headline_txt"
     )
   )
 
@@ -50,12 +60,21 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o1", "national_comparison_checkbox_o1",
-      "regional_comparison_checkbox_o1", "outcome1_panels"
+      "navlistPanel",
+      "select_geography_o1",
+      "national_comparison_checkbox_o1",
+      "regional_comparison_checkbox_o1",
+      "outcome1_panels"
     ),
     output = c(
-      "outcome1_choice_text1", "outcome1_choice_text2", "absence_CIN_headline_txt", "absence_CPP_headline_txt",
-      "absence_CLA_headline_txt", "persistent_CIN_headline_txt", "persistent_CPP_headline_txt", "persistent_CLA_headline_txt"
+      "outcome1_choice_text1",
+      "outcome1_choice_text2",
+      "absence_CIN_headline_txt",
+      "absence_CPP_headline_txt",
+      "absence_CLA_headline_txt",
+      "persistent_CIN_headline_txt",
+      "persistent_CPP_headline_txt",
+      "persistent_CLA_headline_txt"
     )
   )
 
@@ -70,12 +89,21 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o1", "national_comparison_checkbox_o1",
-      "regional_comparison_checkbox_o1", "outcome1_panels"
+      "navlistPanel",
+      "select_geography_o1",
+      "national_comparison_checkbox_o1",
+      "regional_comparison_checkbox_o1",
+      "outcome1_panels"
     ),
     output = c(
-      "outcome1_choice_text1", "outcome1_choice_text2", "KS2_CIN_headline_txt", "KS2_CPP_headline_txt",
-      "KS2_CLA_headline_txt", "KS4_CIN_headline_txt", "KS4_CPP_headline_txt", "KS4_CLA_headline_txt"
+      "outcome1_choice_text1",
+      "outcome1_choice_text2",
+      "KS2_CIN_headline_txt",
+      "KS2_CPP_headline_txt",
+      "KS2_CLA_headline_txt",
+      "KS4_CIN_headline_txt",
+      "KS4_CPP_headline_txt",
+      "KS4_CLA_headline_txt"
     )
   )
 
@@ -94,12 +122,17 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o2", "outcome2_panels",
-      "national_comparison_checkbox_o2", "regional_comparison_checkbox_o2"
+      "navlistPanel",
+      "select_geography_o2",
+      "outcome2_panels",
+      "national_comparison_checkbox_o2",
+      "regional_comparison_checkbox_o2"
     ),
     output = c(
-      "outcome2_choice_text1", "outcome2_choice_text2",
-      "SGO_headline_txt", "CAO_headline_txt"
+      "outcome2_choice_text1",
+      "outcome2_choice_text2",
+      "SGO_headline_txt",
+      "CAO_headline_txt"
     )
   )
 
@@ -112,11 +145,15 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o2", "outcome2_panels"
+      "navlistPanel",
+      "select_geography_o2",
+      "outcome2_panels"
     ),
     output = c(
-      "outcome2_choice_text1", "outcome2_choice_text2",
-      "SGO_headline_txt", "CAO_headline_txt"
+      "outcome2_choice_text1",
+      "outcome2_choice_text2",
+      "SGO_headline_txt",
+      "CAO_headline_txt"
     )
   )
 
@@ -134,11 +171,18 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o3", "geographic_breakdown_o3", "outcome3_panels",
-      "national_comparison_checkbox_o3", "regional_comparison_checkbox_o3"
+      "navlistPanel",
+      "select_geography_o3",
+      "geographic_breakdown_o3",
+      "outcome3_panels",
+      "national_comparison_checkbox_o3",
+      "regional_comparison_checkbox_o3"
     ),
     output = c(
-      "outcome3_choice_text1", "outcome3_choice_text2", "cpp_in_year_txt", "cpp_duration_txt",
+      "outcome3_choice_text1",
+      "outcome3_choice_text2",
+      "cpp_in_year_txt",
+      "cpp_duration_txt",
       "hosp_admissions_txt"
     )
   )
@@ -154,11 +198,15 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o3", "geographic_breakdown_o3", "outcome3_panels",
+      "navlistPanel",
+      "select_geography_o3",
+      "geographic_breakdown_o3",
+      "outcome3_panels",
       "national_comparison_checkbox_o3"
     ),
     output = c(
-      "outcome3_choice_text1", "outcome3_choice_text2"
+      "outcome3_choice_text1",
+      "outcome3_choice_text2"
     )
   )
 
@@ -173,14 +221,17 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o3", "geographic_breakdown_o3", "outcome3_panels",
+      "navlistPanel",
+      "select_geography_o3",
+      "geographic_breakdown_o3",
+      "outcome3_panels",
       "national_comparison_checkbox_o3"
     ),
     output = c(
-      "outcome3_choice_text1", "outcome3_choice_text2"
+      "outcome3_choice_text1",
+      "outcome3_choice_text2"
     )
   )
-
 
   # Outcome 4 - Looking at local authority level with national checkbox
   app$set_inputs(
@@ -194,10 +245,18 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o3", "geographic_breakdown_o3", "outcome4_panels",
-      "national_comparison_checkbox_o3", "regional_comparison_checkbox_o3"
+      "navlistPanel",
+      "select_geography_o3",
+      "geographic_breakdown_o3",
+      "outcome4_panels",
+      "national_comparison_checkbox_o3",
+      "regional_comparison_checkbox_o3"
     ),
-    output = c("outcome4_choice_text1", "outcome4_choice_text2", "wellbeing_score_stat")
+    output = c(
+      "outcome4_choice_text1",
+      "outcome4_choice_text2",
+      "wellbeing_score_stat"
+    )
   )
 
   # Outcome 4 - Looking at local authority level with national checkbox
@@ -212,12 +271,20 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_o3", "geographic_breakdown_o3", "outcome4_panels",
-      "national_comparison_checkbox_o3", "regional_comparison_checkbox_o3"
+      "navlistPanel",
+      "select_geography_o3",
+      "geographic_breakdown_o3",
+      "outcome4_panels",
+      "national_comparison_checkbox_o3",
+      "regional_comparison_checkbox_o3"
     ),
     output = c(
-      "outcome4_choice_text1", "outcome4_choice_text2", "care_leavers_employment_txt1", "care_leavers_employment_txt2",
-      "care_leavers_accommodation_txt1", "care_leavers_accommodation_txt2"
+      "outcome4_choice_text1",
+      "outcome4_choice_text2",
+      "care_leavers_employment_txt1",
+      "care_leavers_employment_txt2",
+      "care_leavers_accommodation_txt1",
+      "care_leavers_accommodation_txt2"
     )
   )
 
@@ -234,11 +301,17 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_e2", "geographic_breakdown_e2", "enabler2_panels"
+      "navlistPanel",
+      "select_geography_e2",
+      "geographic_breakdown_e2",
+      "enabler2_panels"
     ),
     output = c(
-      "enabler2_choice_text1", "enabler2_choice_text2",
-      "total_spending_txt", "avg_spend_per_child", "spend_minus_cla_txt"
+      "enabler2_choice_text1",
+      "enabler2_choice_text2",
+      "total_spending_txt",
+      "avg_spend_per_child",
+      "spend_minus_cla_txt"
     )
   )
 
@@ -251,11 +324,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_e2", "geographic_breakdown_e2", "enabler2_panels"
+      "navlistPanel",
+      "select_geography_e2",
+      "geographic_breakdown_e2",
+      "enabler2_panels"
     ),
     output = c(
-      "enabler2_choice_text1", "enabler2_choice_text2", "ofsted_la_headline", "ofsted_outstanding_headline",
-      "ofsted_good_headline", "ofsted_improvement_headline", "ofsted_inadequate_headline"
+      "enabler2_choice_text1",
+      "enabler2_choice_text2",
+      "ofsted_la_headline",
+      "ofsted_outstanding_headline",
+      "ofsted_good_headline",
+      "ofsted_improvement_headline",
+      "ofsted_inadequate_headline"
     )
   )
 
@@ -269,12 +350,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_e3", "geographic_breakdown_e3", "enabler3_panels",
-      "national_comparison_checkbox_e3", "regional_comparison_checkbox_e3"
+      "navlistPanel",
+      "select_geography_e3",
+      "geographic_breakdown_e3",
+      "enabler3_panels",
+      "national_comparison_checkbox_e3",
+      "regional_comparison_checkbox_e3"
     ),
     output = c(
-      "enabler3_choice_text1", "enabler3_choice_text2", "s_w_headline_txt",
-      "agency_rate_txt", "vacancy_rate_txt"
+      "enabler3_choice_text1",
+      "enabler3_choice_text2",
+      "s_w_headline_txt",
+      "agency_rate_txt",
+      "vacancy_rate_txt"
     )
   )
 
@@ -290,9 +378,17 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   Sys.sleep(2)
   app$expect_values(
     input = c(
-      "navlistPanel", "select_geography_e3", "geographic_breakdown_e3", "enabler3_panels",
-      "national_comparison_checkbox_e3", "regional_comparison_checkbox_e3"
+      "navlistPanel",
+      "select_geography_e3",
+      "geographic_breakdown_e3",
+      "enabler3_panels",
+      "national_comparison_checkbox_e3",
+      "regional_comparison_checkbox_e3"
     ),
-    output = c("enabler3_choice_text1", "enabler3_choice_text2", "non_white_txt")
+    output = c(
+      "enabler3_choice_text1",
+      "enabler3_choice_text2",
+      "non_white_txt"
+    )
   )
 })

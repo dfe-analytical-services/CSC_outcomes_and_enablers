@@ -65,6 +65,7 @@ cs_num <- function(value) {
 # It's best to do this here instead of the server file, to improve performance.
 
 source("R/read_data.R")
+source("R/stats_neighbours.R")
 
 # appLoadingCSS ----------------------------------------------------------------------------
 # Set up loading screen
@@ -97,7 +98,6 @@ google_analytics_key <- "Q13T4ENF6C"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Stats Neighbours ----
 ## Read in the stats_neighbours and generate a long table for all stats neighbour aggregations
-source("R/stats_neighbours.R")
 stats_neighbours <- head(statistical_neighbours(), 152)
 stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
