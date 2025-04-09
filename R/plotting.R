@@ -440,7 +440,7 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
   combined_ethnicity_data$Workforce <- as.numeric(combined_ethnicity_data$Workforce)
 
   # Reshape the dataframe to a long format
-  combined_ethnicity_data_long <- melt(combined_ethnicity_data,
+  combined_ethnicity_data_long <- reshape2::melt(combined_ethnicity_data,
     id.vars = c("geo_breakdown", "geographic_level.x", "time_period", "Ethnicity"),
     measure.vars = c("Workforce", "Population"),
     variable.name = "Data",
