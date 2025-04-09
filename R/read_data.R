@@ -1495,7 +1495,7 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
     stats_neighbours_long,
     dataset = cpp_by_duration_data,
     median_cols = c("X2_years_or_more_percent"),
-    sum_cols = c("X2_years_or_more"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period"),
   )
   cpp_by_duration_data <- rbindlist(l = list(cpp_by_duration_data, sn_metrics), fill = TRUE, use.names = TRUE)
