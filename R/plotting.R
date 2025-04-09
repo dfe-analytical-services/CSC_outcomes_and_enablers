@@ -2399,7 +2399,7 @@ stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL
 # Ordering tables with suppression
 cellfunc <- function(value) {
   if (is.na(value)) {
-    return("NA")
+    return("z")
   } else if (value == -100) {
     return("c")
   } else if (value == -200) {
@@ -2418,7 +2418,7 @@ cellfunc <- function(value) {
 # Ordering tables with suppression
 cellfunc_decimal_percent <- function(value) {
   if (is.na(value)) {
-    return("NA")
+    return("z")
   } else if (value == -100) {
     return("c")
   } else if (value == -200) {

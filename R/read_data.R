@@ -1229,6 +1229,11 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
   )
   outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
       format(as.numeric(as.character(pt_overall)), nsmall = 1),
@@ -1314,10 +1319,16 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
     stats_neighbours_long,
     dataset = outcomes_ks2_data,
     median_cols = c("pt_rwm_met_expected_standard"),
-    sum_cols = c("t_rwm_eligible_pupils"),
+    sum_cols = c("t_rwm_eligible_pupils"), # TODO: modify?
     group_cols = c("LA.number", "time_period", "social_care_group"),
   )
   outcomes_ks2_data <- rbindlist(l = list(outcomes_ks2_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_rwm_met_expected_standard", "t_rwm_eligible_pupils")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_ks2_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
@@ -1380,6 +1391,12 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   )
 
   outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("avg_att8", "t_pupils")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_ks4_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
   outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
