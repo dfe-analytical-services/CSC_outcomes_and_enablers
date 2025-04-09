@@ -1434,7 +1434,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     stats_neighbours_long,
     dataset = cpp_in_year_data,
     median_cols = c("CPP_subsequent_percent"),
-    sum_cols = c("CPP_start", "CPP_subsequent"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "category"),
   )
   cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
@@ -1527,7 +1527,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
     stats_neighbours_long,
     dataset = ceased_cla_data,
     median_cols = c("percentage"),
-    sum_cols = c("number"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
   )
 
