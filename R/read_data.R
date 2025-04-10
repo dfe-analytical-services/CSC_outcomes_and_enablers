@@ -1211,6 +1211,10 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
   # Notes: there is no removal of old LAs here
   outcomes_absence_data <- fread(file)
 
+  # due to a modified field name in the input dataset (10/04/2025) we perform a rename
+  outcomes_absence_data <- outcomes_absence_data %>%
+    rename(school_type = phase_type_grouping)
+
   # Select only columns we want
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(geo_breakdown = case_when(
@@ -1245,7 +1249,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
     )) %>%
     select(
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
-      "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
+      "time_period", "geographic_level", "region_name", social_care_group,
       school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
       pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
     )
