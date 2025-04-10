@@ -1229,6 +1229,11 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
   )
   outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
   outcomes_absence_data <- outcomes_absence_data %>%
     mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
       format(as.numeric(as.character(pt_overall)), nsmall = 1),
@@ -1314,10 +1319,16 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
     stats_neighbours_long,
     dataset = outcomes_ks2_data,
     median_cols = c("pt_rwm_met_expected_standard"),
-    sum_cols = c("t_rwm_eligible_pupils"),
+    sum_cols = c("t_rwm_eligible_pupils"), # TODO: modify?
     group_cols = c("LA.number", "time_period", "social_care_group"),
   )
   outcomes_ks2_data <- rbindlist(l = list(outcomes_ks2_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_rwm_met_expected_standard", "t_rwm_eligible_pupils")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_ks2_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
     mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
@@ -1380,6 +1391,12 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
   )
 
   outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("avg_att8", "t_pupils")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_ks4_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
   outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
@@ -1434,7 +1451,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
     stats_neighbours_long,
     dataset = cpp_in_year_data,
     median_cols = c("CPP_subsequent_percent"),
-    sum_cols = c("CPP_start", "CPP_subsequent"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "category"),
   )
   cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
@@ -1478,7 +1495,7 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
     stats_neighbours_long,
     dataset = cpp_by_duration_data,
     median_cols = c("X2_years_or_more_percent"),
-    sum_cols = c("X2_years_or_more"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period"),
   )
   cpp_by_duration_data <- rbindlist(l = list(cpp_by_duration_data, sn_metrics), fill = TRUE, use.names = TRUE)
@@ -1527,7 +1544,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
     stats_neighbours_long,
     dataset = ceased_cla_data,
     median_cols = c("percentage"),
-    sum_cols = c("number"),
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
   )
 
@@ -1801,7 +1818,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
   ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
-    mutate(`rate_per_10000` = (Number / as.numeric(population_estimate)) * 10000) %>%
+    mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
     mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     filter(time_period != 2018)
 

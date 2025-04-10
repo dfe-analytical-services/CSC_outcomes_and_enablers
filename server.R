@@ -1362,6 +1362,7 @@ server <- function(input, output, session) {
       check_compare_regional = input$region_comparison_checkbox_o1,
       check_compare_sn = input$sn_comparison_checkbox_o1
     ) %>%
+      select(time_period, geo_breakdown, Referrals, Re_referrals, `Re-referrals (%)`) %>%
       rename(
         `Time period` = `time_period`, `Location` = `geo_breakdown`, `Referrals in the year` = `Referrals`,
         `Re-referrals within 12 months of a previous referral` = `Re_referrals`, `Re-referrals within 12 months (%)` = `Re-referrals (%)`
@@ -1997,7 +1998,7 @@ server <- function(input, output, session) {
 
     # filter the dataset based on the context and user selections
     filtered_data <- filter_time_series_data(
-      dataset_in = outcomes_ks2_data,
+      dataset_in = outcomes_ks2,
       select_geographic_level = input$select_geography_o1,
       select_geo_breakdown = input$geographic_breakdown_o1,
       check_compare_national = input$national_comparison_checkbox_o1,
@@ -2032,7 +2033,7 @@ server <- function(input, output, session) {
 
     # filter the dataset based on the context and user selections
     filtered_data <- filter_time_series_data(
-      dataset_in = outcomes_ks2_data,
+      dataset_in = outcomes_ks2,
       select_geographic_level = input$select_geography_o1,
       select_geo_breakdown = input$geographic_breakdown_o1,
       check_compare_national = input$national_comparison_checkbox_o1,
