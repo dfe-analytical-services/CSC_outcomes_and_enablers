@@ -1818,7 +1818,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
   ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
-    mutate(`rate_per_10000` = (Number / as.numeric(population_estimate)) * 10000) %>%
+    mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
     mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     filter(time_period != 2018)
 
