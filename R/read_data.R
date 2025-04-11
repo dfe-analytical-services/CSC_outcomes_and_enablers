@@ -68,7 +68,7 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
 
-read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") {
+read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_2024.csv") {
   workforce_data <- fread(file)
   workforce_data <- colClean(workforce_data) %>%
     mutate(geo_breakdown = case_when(
@@ -88,7 +88,7 @@ read_workforce_data <- function(file = "data/csww_indicators_2017_to_2024.csv") 
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = workforce_data,
     median_cols = c("turnover_rate_fte", "agency_rate_fte", "vacancy_rate_fte", "caseload_fte"),
     sum_cols = c(),
@@ -702,7 +702,7 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
 
 # Ofsted leadership data
 # read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
-read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
+read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
   file <- "data/LA_Inspection_Outcomes_as_at_March_2024.ods"
   # ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
@@ -750,7 +750,7 @@ read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_a
   ofsted_leadership_data$geographic_level <- "Local authority"
 
   # Get old_la_code values from cla_rates
-  cla_rates_selected <- read_cla_rate_data() %>% select(geo_breakdown, old_la_code)
+  cla_rates_selected <- read_cla_rate_data(sn_long = sn_long) %>% select(geo_breakdown, old_la_code)
   cla_rates_selected <- cla_rates_selected %>% distinct(geo_breakdown, old_la_code, .keep_all = TRUE)
   ofsted_leadership_data <- left_join(ofsted_leadership_data, cla_rates_selected, by = c("geo_breakdown" = "geo_breakdown"))
 
@@ -805,9 +805,9 @@ read_ofsted_leadership_data <- function(file = "data/LA_Inspection_Outcomes_as_a
 }
 
 
-pivot_ofsted_data <- function() {
+pivot_ofsted_data <- function(ofsted_leadership_data) {
   # Pivoted version
-  ofsted_leadership_data_long <- read_ofsted_leadership_data() %>%
+  ofsted_leadership_data_long <- ofsted_leadership_data %>%
     pivot_longer(
       cols = c(inadequate_count, requires_improvement_count, good_count, outstanding_count),
       names_to = "Rating",
@@ -821,7 +821,7 @@ pivot_ofsted_data <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Outcome 1 -------------------
 # CLA rate per 10k children data
-read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children.csv") {
+read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k_children.csv") {
   cla_rate_data <- fread(file)
 
   cla_rate_data <- colClean(cla_rate_data) %>%
@@ -835,7 +835,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cla_rate_data,
     median_cols = c("rate_per_10000"),
     sum_cols = c("number"),
@@ -875,7 +875,7 @@ read_cla_rate_data <- function(file = "data/cla_number_and_rate_per_10k_children
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-read_cla_placement_data <- function(file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
+read_cla_placement_data <- function(sn_long, file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
   cla_placement_data <- read.csv(file)
   cla_placement_data <- colClean(cla_placement_data) %>%
     mutate(geo_breakdown = case_when(
@@ -924,10 +924,10 @@ read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteri
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-merge_cla_dataframes <- function() {
+merge_cla_dataframes <- function(sn_long) {
   # Read the data
-  cla_rates <- read_cla_rate_data()
-  cla_placements <- read_cla_placement_data()
+  cla_rates <- read_cla_rate_data(sn_long = sn_long)
+  cla_placements <- read_cla_placement_data(sn_long)
 
   # Rename the columns to make it clear which dataset they come from
   cla_rates <- rename(cla_rates,
@@ -998,9 +998,9 @@ merge_cla_dataframes <- function() {
 
   return(merged_data)
 }
-merge_cla_31_march_dataframes <- function() {
+merge_cla_31_march_dataframes <- function(sn_long) {
   # Read the data
-  cla_rates <- read_cla_rate_data()
+  cla_rates <- read_cla_rate_data(sn_long)
   cla_31_march_data <- read_cla_31_march_data()
 
   # Rename the columns to make it clear which dataset they come from
@@ -1077,7 +1077,7 @@ merge_cla_31_march_dataframes <- function() {
 # a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
-read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv") {
+read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to_2024.csv") {
   cin_rate_data <- fread(file)
 
   # initial cleansing steps
@@ -1089,7 +1089,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv
     ))
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cin_rate_data,
     median_cols = c("At31_episodes_rate"),
     sum_cols = c("At31_episodes"),
@@ -1116,7 +1116,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv
       At31_episodes_rate == "x" ~ -300,
       At31_episodes_rate == "z" ~ -400,
       TRUE ~ as.numeric(At31_episodes_rate)
-    ))
+    ))  
 
   # finalise the dataset by rounding rates and selecting relevant columns
   cin_rate_data <- cin_rate_data %>%
@@ -1132,7 +1132,7 @@ read_cin_rate_data <- function(file = "data/b1_children_in_need_2013_to_2024.csv
 }
 
 # CIN referrals data
-read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
+read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
   cin_referral_data <- fread(file)
 
   # initial cleansing steps
@@ -1144,7 +1144,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
     ))
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cin_referral_data,
     median_cols = c("Re_referrals_percent"), # what medians are we taking
     sum_cols = c("Referrals", "Re_referrals"),
@@ -1207,7 +1207,7 @@ read_cin_referral_data <- function(file = "data/c1_children_in_need_referrals_an
 
 
 # Outcome 1 Outcomes absence data for child well being and development
-read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.csv") {
+read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_terms_la.csv") {
   # Notes: there is no removal of old LAs here
   outcomes_absence_data <- fread(file)
 
@@ -1221,7 +1221,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = outcomes_absence_data,
     median_cols = c("pt_overall", "pt_pupils_pa_10_exact", "pt_sess_authorised", "pt_sess_unauthorised"),
     sum_cols = c("t_pupils", "t_sess_overall", "t_sess_possible"),
@@ -1304,7 +1304,7 @@ read_outcomes_absence_data <- function(file = "data/absence_six_half_terms_la.cs
 
 
 # Outcome 1 Outcomes KS2 data for education attainment
-read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
+read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
   outcomes_ks2_data <- fread(file)
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
@@ -1316,7 +1316,7 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = outcomes_ks2_data,
     median_cols = c("pt_rwm_met_expected_standard"),
     sum_cols = c("t_rwm_eligible_pupils"), # TODO: modify?
@@ -1370,7 +1370,7 @@ read_outcomes_ks2_data <- function(file = "data/ks2_la.csv") {
 
 
 # Outcome 1 Outcomes KS4 data for education attainment
-read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
+read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
   outcomes_ks4_data <- fread(file)
 
   # Select only columns we want
@@ -1383,7 +1383,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = outcomes_ks4_data,
     median_cols = c("avg_att8"),
     sum_cols = c("t_pupils"),
@@ -1435,7 +1435,7 @@ read_outcomes_ks4_data <- function(file = "data/ks4_la.csv") {
 }
 
 # Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans ----
-read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
+read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
   cpp_in_year_data <- fread(file)
 
   # Select only columns we want
@@ -1448,7 +1448,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long= sn_long,
     dataset = cpp_in_year_data,
     median_cols = c("CPP_subsequent_percent"),
     sum_cols = c(),
@@ -1480,7 +1480,7 @@ read_cpp_in_year_data <- function(file = "data/d3_cpps_subsequent_plan_2013_to_2
   return(cpp_in_year_data)
 }
 
-read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
+read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
@@ -1492,7 +1492,7 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cpp_by_duration_data,
     median_cols = c("X2_years_or_more_percent"),
     sum_cols = c(),
@@ -1525,7 +1525,7 @@ read_cpp_by_duration_data <- function(file = "data/d5_cpps_at31march_by_duration
 
 # Outcome 2 ----
 # read outcome 2 function but without manual calculation of the percentages.
-read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.csv") {
+read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_the_year.csv") {
   # drop old LA's
   ceased_cla_data <- fread(file)
 
@@ -1541,7 +1541,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = ceased_cla_data,
     median_cols = c("percentage"),
     sum_cols = c(),
@@ -1595,7 +1595,7 @@ read_outcome2 <- function(file = "data/la_children_who_ceased_during_the_year.cs
 # LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
-read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
+read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
   la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
   region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
 
@@ -1630,7 +1630,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
     ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-  la_codes <- suppressWarnings(read_workforce_data()) %>%
+  la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
     filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
     select(old_la_code, new_la_code) %>%
     distinct() %>%
@@ -1765,7 +1765,7 @@ read_a_and_e_data <- function(la_file = "data/la_hospital_admissions_2223.csv", 
 
 
 ## Assessment Factors ------
-read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
+read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
   ass_fac_data_raw <- fread(file)
   ass_fac_data_raw <- ass_fac_data_raw %>%
     mutate(geo_breakdown = case_when(
@@ -1841,7 +1841,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = ass_fac_data,
     median_cols = c("rate_per_10000"),
     sum_cols = c(), # "value", "population_estimate"
@@ -1870,7 +1870,7 @@ read_assessment_factors <- function(file = "data/c3_factors_identified_at_end_of
 # Outcome 4 -----
 ## Number of placements (placement_changes_data) -----
 
-read_number_placements_data <- function(file = "data/la_cla_placement_stability.csv") {
+read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_stability.csv") {
   placement_changes_data <- fread(file)
 
   placement_changes_data <- placement_changes_data %>%
@@ -1887,7 +1887,7 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    cn_long = sn_long,
     dataset = placement_changes_data,
     median_cols = c("percentage"),
     sum_cols = c(), # "value", "population_estimate"
@@ -1912,7 +1912,7 @@ read_number_placements_data <- function(file = "data/la_cla_placement_stability.
 }
 
 ## Placement type and distance----
-read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
+read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by_characteristics.csv") {
   placement_info_data <- fread(file)
 
   placement_info_data <- placement_info_data %>%
@@ -1929,7 +1929,7 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = placement_info_data,
     median_cols = c("percentage"),
     sum_cols = c(), # "value", "population_estimate"
@@ -1956,7 +1956,7 @@ read_placement_info_data <- function(file = "data/la_cla_on_31_march_by_characte
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
 
 ## Care leavers activity -----
-read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activity.csv") {
+read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leavers_activity.csv") {
   cl_activity_data <- fread(file)
 
   cl_activity_data <- cl_activity_data %>%
@@ -1972,7 +1972,7 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cl_activity_data,
     median_cols = c("percentage"),
     sum_cols = c(), # "value", "population_estimate"
@@ -2003,7 +2003,7 @@ read_care_leavers_activity_data <- function(file = "data/la_care_leavers_activit
 }
 
 ## Care leavers accommodation -----
-read_care_leavers_accommodation_suitability <- function(file = "data/la_care_leavers_accommodation_suitability.csv") {
+read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la_care_leavers_accommodation_suitability.csv") {
   cl_accom_data <- fread(file)
 
   cl_accom_data <- cl_accom_data %>%
@@ -2015,7 +2015,7 @@ read_care_leavers_accommodation_suitability <- function(file = "data/la_care_lea
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    stats_neighbours_long,
+    sn_long = sn_long,
     dataset = cl_accom_data,
     median_cols = c("percentage"),
     sum_cols = c(), # "value", "population_estimate"

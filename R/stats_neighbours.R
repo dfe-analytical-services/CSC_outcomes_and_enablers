@@ -5,7 +5,7 @@
 # 4. what about numbers stored as characters? we can't aggregate these!
 
 
-sn_aggregations <- function(stats_neighbours_long,
+sn_aggregations <- function(sn_long,
                             dataset,
                             sum_cols,
                             median_cols,
@@ -17,7 +17,7 @@ sn_aggregations <- function(stats_neighbours_long,
   # 1 get the mapping for SN -----
   # merge the SN definitions with the dataset for LAs to aggregate
   sn_dataset <- merge(
-    stats_neighbours_long,
+    sn_long,
     dataset[geographic_level == "Local authority"],
     by.x = "SN_LA_number",
     by.y = "old_la_code",
