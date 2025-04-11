@@ -76,7 +76,7 @@ sn_aggregations <- function(sn_long,
 
 ## Examples
 # TESTS: putting it all together
-test_sn <- function(stats_neighbours_long,
+test_sn <- function(sn_long,
                     dataset,
                     sum_cols,
                     median_cols,

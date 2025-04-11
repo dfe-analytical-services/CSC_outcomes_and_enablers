@@ -28,6 +28,53 @@ convert_perc_cols_to_numeric <- function(x) {
   return(x)
 }
 
+decimal_rounding <- function(value, digits) {
+  if (!is.na(as.numeric(value))) {
+    value_round <- format(round(as.numeric(value), digits = digits), nsmall = digits)
+  } else {
+    value_round <- value
+  }
+  return(value_round)
+}
+
+insert_geo_breakdown <- function(dataset) {
+  dataset <- dataset %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National", # NA_character_,
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    ))
+  return(dataset)
+}
+
+redacted_to_negative <- function(dataset, col_old, col_new) {
+  # dataset <- data.table(a = c("c", "23", "22.22", "NA", NA))
+  # col_old <- "a"
+  # col_new <- "b"
+  dataset <- dataset %>%
+    mutate(!!sym(col_new) := case_when(
+      !!sym(col_old) == "c" ~ -100,
+      !!sym(col_old) == "low" ~ -200,
+      !!sym(col_old) == "k" ~ -200,
+      !!sym(col_old) == "u" ~ -250,
+      !!sym(col_old) == "x" ~ -300,
+      !!sym(col_old) == "z" ~ -400,
+      TRUE ~ as.numeric(!!sym(col_old))
+    ))
+  return(dataset)
+}
+redacted_to_na <- function(dataset, col_old, col_new) {
+  # dataset <- data.table(a = c("c", "23", "22.22", "NA", NA))
+  # col_old <- "a"
+  # col_new <- "b"
+  dataset <- dataset %>%
+    mutate(!!sym(col_new) := case_when(
+      !!sym(col_old) %in% c("c", "x", "Z") ~ NA,
+      TRUE ~ as.numeric(!!sym(col_old))
+    ))
+  return(dataset)
+}
+
 # TODO: redundant function is not used anywhere
 remove_old_la_data <- function(data) {
   ons_la_data <- read.csv("data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv")
@@ -1081,12 +1128,11 @@ read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to
   cin_rate_data <- fread(file)
 
   # initial cleansing steps
-  cin_rate_data <- colClean(cin_rate_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+  cin_rate_data <- cin_rate_data %>%
+    colClean() %>%
+    mutate(At31_episodes_rate = sapply(At31_episodes_rate, decimal_rounding, 0)) %>%
+    insert_geo_breakdown()
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -1094,36 +1140,18 @@ read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to
     median_cols = c("At31_episodes_rate"),
     sum_cols = c("At31_episodes"),
     group_cols = c("LA.number", "time_period")
-  )
+  ) %>%
+    mutate(At31_episodes_rate = sapply(At31_episodes_rate, decimal_rounding, 0))
+
   cin_rate_data <- rbindlist(l = list(cin_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-  # handle the redactions by creating numeric columns with arbitrary values to aid table sort order
+  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
   cin_rate_data <- cin_rate_data %>%
-    mutate(CIN_number = case_when(
-      At31_episodes == "c" ~ -100,
-      At31_episodes == "low" ~ -200,
-      At31_episodes == "k" ~ -200,
-      At31_episodes == "u" ~ -250,
-      At31_episodes == "x" ~ -300,
-      At31_episodes == "z" ~ -400,
-      TRUE ~ as.numeric(At31_episodes)
-    )) %>%
-    mutate(CIN_rate = case_when(
-      At31_episodes_rate == "c" ~ -100,
-      At31_episodes_rate == "low" ~ -200,
-      At31_episodes_rate == "k" ~ -200,
-      At31_episodes_rate == "u" ~ -250,
-      At31_episodes_rate == "x" ~ -300,
-      At31_episodes_rate == "z" ~ -400,
-      TRUE ~ as.numeric(At31_episodes_rate)
-    ))  
+    redacted_to_negative(col_old = "At31_episodes", col_new = "CIN_number") %>%
+    redacted_to_negative(col_old = "At31_episodes_rate", col_new = "CIN_rate")
 
   # finalise the dataset by rounding rates and selecting relevant columns
   cin_rate_data <- cin_rate_data %>%
-    mutate(At31_episodes_rate = ifelse(!is.na(as.numeric(At31_episodes_rate)),
-      as.character(round(as.numeric(At31_episodes_rate), 0)),
-      At31_episodes_rate
-    )) %>%
     mutate(CIN_rate = round(CIN_rate, 0)) %>%
     select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
     distinct()
@@ -1136,12 +1164,11 @@ read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_ref
   cin_referral_data <- fread(file)
 
   # initial cleansing steps
-  cin_referral_data <- colClean(cin_referral_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+  cin_referral_data <- cin_referral_data %>%
+    colClean() %>%
+    mutate(Re_referrals_percent = sapply(Re_referrals_percent, decimal_rounding, 1)) %>%
+    insert_geo_breakdown()
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -1152,41 +1179,12 @@ read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_ref
   )
   cin_referral_data <- rbindlist(l = list(cin_referral_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-  # handle the redactions by creating numeric columns with arbitrary values to aid table sort order
+  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
   cin_referral_data <- cin_referral_data %>%
-    mutate(Referrals_num = case_when(
-      Referrals == "c" ~ -100,
-      Referrals == "low" ~ -200,
-      Referrals == "k" ~ -200,
-      Referrals == "u" ~ -250,
-      Referrals == "x" ~ -300,
-      Referrals == "z" ~ -400,
-      TRUE ~ as.numeric(Referrals)
-    )) %>%
-    mutate(Re_referrals_num = case_when(
-      Re_referrals == "c" ~ -100,
-      Re_referrals == "low" ~ -200,
-      Re_referrals == "k" ~ -200,
-      Re_referrals == "u" ~ -250,
-      Re_referrals == "x" ~ -300,
-      Re_referrals == "z" ~ -400,
-      TRUE ~ as.numeric(Re_referrals)
-    )) %>%
-    mutate(Re_referrals_percentage = case_when(
-      Re_referrals_percent == "Z" ~ NA,
-      Re_referrals_percent == "x" ~ NA,
-      Re_referrals_percent == "c" ~ NA,
-      TRUE ~ as.numeric(Re_referrals_percent)
-    )) %>%
-    mutate(`Re-referrals (%)` = case_when(
-      Re_referrals_percent == "c" ~ -100,
-      Re_referrals_percent == "low" ~ -200,
-      Re_referrals_percent == "k" ~ -200,
-      Re_referrals_percent == "u" ~ -250,
-      Re_referrals_percent == "x" ~ -300,
-      Re_referrals_percent == "z" ~ -400,
-      TRUE ~ as.numeric(Re_referrals_percent)
-    ))
+    redacted_to_negative(col_old = "Referrals", col_new = "Referrals_num") %>%
+    redacted_to_negative(col_old = "Re_referrals", col_new = "Re_referrals_num") %>%
+    redacted_to_na(col_old = "Re_referrals_percent", col_new = "Re_referrals_percentage") %>%
+    redacted_to_negative(col_old = "Re_referrals_percent", col_new = "Re-referrals (%)")
 
   # finalise the dataset by rounding rates and selecting relevant columns
   cin_referral_data <- cin_referral_data %>%
@@ -1213,11 +1211,10 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
 
   # Select only columns we want
   outcomes_absence_data <- outcomes_absence_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+    mutate(pt_overall = sapply(pt_overall, decimal_rounding, 1)) %>%
+    mutate(pt_pupils_pa_10_exact = sapply(pt_pupils_pa_10_exact, decimal_rounding, 1)) %>%
+    insert_geo_breakdown()
+
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1234,69 +1231,21 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
   time_periods_to_update <- c(201920, 202021)
   outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
+  # Make % columns numeric
   outcomes_absence_data <- outcomes_absence_data %>%
-    mutate(pt_overall = ifelse(!is.na(as.numeric(pt_overall)),
-      format(as.numeric(as.character(pt_overall)), nsmall = 1),
-      pt_overall
-    )) %>%
-    mutate(pt_pupils_pa_10_exact = ifelse(!is.na(as.numeric(pt_pupils_pa_10_exact)),
-      format(as.numeric(as.character(pt_pupils_pa_10_exact)), nsmall = 1),
-      pt_pupils_pa_10_exact
-    )) %>%
+    redacted_to_negative(col_old = "pt_overall", col_new = "Overall absence (%)") %>%
+    redacted_to_negative(col_old = "pt_pupils_pa_10_exact", col_new = "Persistent absentees (%)") %>%
+    redacted_to_negative(col_old = "pt_sess_authorised", col_new = "Authorised absence (%)") %>%
+    redacted_to_negative(col_old = "pt_sess_unauthorised", col_new = "Unauthorised absence (%)") %>%
+    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
+
+  outcomes_absence_data <- outcomes_absence_data %>%
     select(
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", year_breakdown, social_care_group,
       school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
       pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
     )
-
-  # Make % columns numeric
-  outcomes_absence_data <- outcomes_absence_data %>%
-    mutate(`Overall absence (%)` = case_when(
-      pt_overall == "c" ~ -100,
-      pt_overall == "low" ~ -200,
-      pt_overall == "k" ~ -200,
-      pt_overall == "u" ~ -250,
-      pt_overall == "x" ~ -300,
-      pt_overall == "z" ~ -400,
-      TRUE ~ as.numeric(pt_overall)
-    )) %>%
-    mutate(`Persistent absentees (%)` = case_when(
-      pt_pupils_pa_10_exact == "c" ~ -100,
-      pt_pupils_pa_10_exact == "low" ~ -200,
-      pt_pupils_pa_10_exact == "k" ~ -200,
-      pt_pupils_pa_10_exact == "u" ~ -250,
-      pt_pupils_pa_10_exact == "x" ~ -300,
-      pt_pupils_pa_10_exact == "z" ~ -400,
-      TRUE ~ as.numeric(pt_pupils_pa_10_exact)
-    )) %>%
-    mutate(`Authorised absence (%)` = case_when(
-      pt_sess_authorised == "c" ~ -100,
-      pt_sess_authorised == "low" ~ -200,
-      pt_sess_authorised == "k" ~ -200,
-      pt_sess_authorised == "u" ~ -250,
-      pt_sess_authorised == "x" ~ -300,
-      pt_sess_authorised == "z" ~ -400,
-      TRUE ~ as.numeric(pt_sess_authorised)
-    )) %>%
-    mutate(`Unauthorised absence (%)` = case_when(
-      pt_sess_unauthorised == "c" ~ -100,
-      pt_sess_unauthorised == "low" ~ -200,
-      pt_sess_unauthorised == "k" ~ -200,
-      pt_sess_unauthorised == "u" ~ -250,
-      pt_sess_unauthorised == "x" ~ -300,
-      pt_sess_unauthorised == "z" ~ -400,
-      TRUE ~ as.numeric(pt_sess_unauthorised)
-    )) %>%
-    mutate(`Total pupils` = case_when(
-      t_pupils == "c" ~ -100,
-      t_pupils == "low" ~ -200,
-      t_pupils == "k" ~ -200,
-      t_pupils == "u" ~ -250,
-      t_pupils == "x" ~ -300,
-      t_pupils == "z" ~ -400,
-      TRUE ~ as.numeric(t_pupils)
-    ))
 
 
   return(outcomes_absence_data)
@@ -1308,11 +1257,8 @@ read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
   outcomes_ks2_data <- fread(file)
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+    mutate(pt_rwm_met_expected_standard = sapply(pt_rwm_met_expected_standard, decimal_rounding, 0)) %>%
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1331,10 +1277,8 @@ read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
 
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
-    mutate(pt_rwm_met_expected_standard = ifelse(!is.na(as.numeric(pt_rwm_met_expected_standard)),
-      format(as.numeric(as.character(pt_rwm_met_expected_standard)), nsmall = 0),
-      pt_rwm_met_expected_standard
-    )) %>%
+    # Make % columns numeric
+    redacted_to_negative(col_old = "pt_rwm_met_expected_standard", col_new = "Expected standard reading writing maths (%)") %>%
     # TODO: reduce the number of columns
     # Select only columns we want
     select(
@@ -1351,17 +1295,6 @@ read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
       avg_mat_progress_score_lower_CI, avg_mat_progress_score_upper_CI
     )
 
-  # Make % columns numeric
-  outcomes_ks2_data <- outcomes_ks2_data %>%
-    mutate(`Expected standard reading writing maths (%)` = case_when(
-      pt_rwm_met_expected_standard == "c" ~ -100,
-      pt_rwm_met_expected_standard == "low" ~ -200,
-      pt_rwm_met_expected_standard == "k" ~ -200,
-      pt_rwm_met_expected_standard == "u" ~ -250,
-      pt_rwm_met_expected_standard == "x" ~ -300,
-      pt_rwm_met_expected_standard == "z" ~ -400,
-      TRUE ~ as.numeric(pt_rwm_met_expected_standard)
-    ))
 
 
   return(outcomes_ks2_data)
@@ -1375,11 +1308,8 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
 
   # Select only columns we want
   outcomes_ks4_data <- outcomes_ks4_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+    mutate(avg_att8, sapply(avg_att8, decimal_rounding, 1)) %>%
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1398,38 +1328,16 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
   outcomes_ks4_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
   outcomes_ks4_data <- outcomes_ks4_data %>%
+    # Make number columns numeric
+    redacted_to_negative(col_old = "avg_att8", col_new = "Average Attainment 8") %>%
+    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils") %>%
     select(
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
       t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
       t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
-    ) %>%
-    mutate(avg_att8 = ifelse(!is.na(as.numeric(avg_att8)),
-      format(as.numeric(as.character(avg_att8)), nsmall = 1),
-      avg_att8
-    ))
-
-  # Make number columns numeric
-  outcomes_ks4_data <- outcomes_ks4_data %>%
-    mutate(`Average Attainment 8` = case_when(
-      avg_att8 == "c" ~ -100,
-      avg_att8 == "low" ~ -200,
-      avg_att8 == "k" ~ -200,
-      avg_att8 == "u" ~ -250,
-      avg_att8 == "x" ~ -300,
-      avg_att8 == "z" ~ -400,
-      TRUE ~ as.numeric(avg_att8)
-    )) %>%
-    mutate(`Total pupils` = case_when(
-      t_pupils == "c" ~ -100,
-      t_pupils == "low" ~ -200,
-      t_pupils == "k" ~ -200,
-      t_pupils == "u" ~ -250,
-      t_pupils == "x" ~ -300,
-      t_pupils == "z" ~ -400,
-      TRUE ~ as.numeric(t_pupils)
-    ))
+    )
 
   return(outcomes_ks4_data)
 }
@@ -1448,7 +1356,7 @@ read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    sn_long= sn_long,
+    sn_long = sn_long,
     dataset = cpp_in_year_data,
     median_cols = c("CPP_subsequent_percent"),
     sum_cols = c(),
@@ -1887,7 +1795,7 @@ read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_s
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
-    cn_long = sn_long,
+    sn_long = sn_long,
     dataset = placement_changes_data,
     median_cols = c("percentage"),
     sum_cols = c(), # "value", "population_estimate"
