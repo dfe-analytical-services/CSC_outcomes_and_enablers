@@ -1007,7 +1007,7 @@ server <- function(input, output, session) {
       dimensional_filters = list("population_count" = "Children looked after at 31 March each year")
     )
 
-    filtered <- filtered_data %>%
+    filtered_data <- filtered_data %>%
       select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
 
@@ -1717,7 +1717,6 @@ server <- function(input, output, session) {
     )
 
     filtered_data <- filtered_data %>% mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
-
     # Set the max y-axis scale
     max_rate <- max(outcomes_absence$`Persistent absentees (%)`[!outcomes_absence$school_type %in% c("Special", "State-funded AP school")], na.rm = TRUE)
 
@@ -2024,7 +2023,7 @@ server <- function(input, output, session) {
   })
 
 
-  ### ks2 TABLE ----
+  ### ks2 time series TABLE ----
   output$table_ks2_expected <- renderReactable({
     validate(
       need(input$select_geography_o1 != "", "Select a geography level."),
