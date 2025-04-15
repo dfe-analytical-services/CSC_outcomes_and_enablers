@@ -1333,13 +1333,9 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
 read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
   cpp_in_year_data <- fread(file)
 
-  # Select only columns we want
+  # add geo_breakdown
   cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1351,26 +1347,13 @@ read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_
   )
   cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
+  # round and create the sort order numeric column
   cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(CPP_subsequent_percent = ifelse(!is.na(as.numeric(CPP_subsequent_percent)),
-      format(as.numeric(as.character(CPP_subsequent_percent)), nsmall = 1),
-      CPP_subsequent_percent
-    )) %>%
     select(
       time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
-    )
-
-  # TODO: should we create additional numeric columns for the count aggregations?
-  cpp_in_year_data <- cpp_in_year_data %>%
-    mutate(`Repeat_CPP_percent` = case_when(
-      CPP_subsequent_percent == "c" ~ -100,
-      CPP_subsequent_percent == "low" ~ -200,
-      CPP_subsequent_percent == "k" ~ -200,
-      CPP_subsequent_percent == "u" ~ -250,
-      CPP_subsequent_percent == "x" ~ -300,
-      CPP_subsequent_percent == "z" ~ -400,
-      TRUE ~ as.numeric(CPP_subsequent_percent)
-    ))
+    ) %>%
+    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "CPP_subsequent_percent", col_new = "Repeat_CPP_percent")
 
   return(cpp_in_year_data)
 }
@@ -1379,11 +1362,7 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1397,24 +1376,15 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
 
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
-    mutate(`2_years_or_more_percent` = ifelse(!is.na(as.numeric(`X2_years_or_more_percent`)),
-      format(as.numeric(as.character(`X2_years_or_more_percent`)), nsmall = 1),
-      `X2_years_or_more_percent`
-    )) %>%
+    mutate(X2_years_or_more_percent = sapply(X2_years_or_more_percent, decimal_rounding, digits = 1)) %>%
     select(
       time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, old_la_code,
       CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
       more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
     ) %>%
-    mutate(`CPP_2_years_or_more_percent` = case_when(
-      `X2_years_or_more_percent` == "c" ~ -100,
-      `X2_years_or_more_percent` == "low" ~ -200,
-      `X2_years_or_more_percent` == "k" ~ -200,
-      `X2_years_or_more_percent` == "u" ~ -250,
-      `X2_years_or_more_percent` == "x" ~ -300,
-      `X2_years_or_more_percent` == "z" ~ -400,
-      TRUE ~ as.numeric(X2_years_or_more_percent)
-    ))
+    redacted_to_negative(col_old = "X2_years_or_more_percent", col_new = "CPP_2_years_or_more_percent")
+
+
   return(cpp_by_duration_data)
 }
 
@@ -1426,10 +1396,9 @@ read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_th
 
   # TODO: remove make this logic a function as we have various implementations of it
   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
-  ceased_cla_data <- ceased_cla_data %>% filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove)
   ceased_cla_data <- ceased_cla_data %>%
-    insert_geo_breakdown() %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 1))
+    filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove) %>%
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1438,12 +1407,11 @@ read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_th
     median_cols = c("percentage"),
     sum_cols = c(),
     group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
-  ) %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 1))
-
+  )
   ceased_cla_data <- rbindlist(l = list(ceased_cla_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   ceased_cla_data <- ceased_cla_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
     # Make number columns numeric
     redacted_to_negative(col_old = "percentage", col_new = "Ceased (%)") %>%
     redacted_to_negative(col_old = "number", col_new = "Number ceased")
