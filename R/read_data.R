@@ -34,10 +34,10 @@ clean_date <- function(dataset) {
   return(dataset)
 }
 
-decimal_rounding_char <- function(value, digits) {
+decimal_rounding <- function(value, digits) {
   if (!is.na(as.numeric(value))) {
-    value_round <- format(as.numeric(as.character(pt_overall)), nsmall = digits)
-    # value_round <- format(true_round(value, digits = digits), nsmall = digits)
+    # value_round <- format(as.numeric(as.character(value)), nsmall = digits)
+    value_round <- format(true_round(value, digits = digits), nsmall = digits)
   } else {
     value_round <- value
   }
@@ -151,10 +151,6 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
   workforce_data <- workforce_data %>%
     colClean() %>%
     insert_geo_breakdown() %>%
-    mutate(turnover_rate_fte = sapply(turnover_rate_fte, decimal_rounding, 1)) %>%
-    mutate(agency_rate_fte = sapply(agency_rate_fte, decimal_rounding, 1)) %>%
-    mutate(vacancy_rate_fte = sapply(vacancy_rate_fte, decimal_rounding, 1)) %>%
-    mutate(caseload_fte = sapply(caseload_fte, decimal_rounding, 1)) %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
@@ -179,6 +175,10 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
   workforce_data <- workforce_data %>%
     # removing old Dorset
     filter(!(new_la_code %in% dropList)) %>%
+    mutate(turnover_rate_fte = sapply(turnover_rate_fte, decimal_rounding, 1)) %>%
+    mutate(agency_rate_fte = sapply(agency_rate_fte, decimal_rounding, 1)) %>%
+    mutate(vacancy_rate_fte = sapply(vacancy_rate_fte, decimal_rounding, 1)) %>%
+    mutate(caseload_fte = sapply(caseload_fte, decimal_rounding, 1)) %>%
     distinct()
 
   workforce_data <- suppressWarnings(workforce_data %>%
@@ -1335,7 +1335,9 @@ read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_
 
   # add geo_breakdown
   cpp_in_year_data <- cpp_in_year_data %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1))
+
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
