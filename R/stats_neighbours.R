@@ -157,6 +157,9 @@ filter_time_series_data <- function(dataset_in,
 
   filtered_data[geographic_level == "Statistical neighbours", geo_breakdown := "Statistical neighbours"]
 
+
+  filtered_data <- filtered_data[order(-time_period, factor(geographic_level, levels = c("National", "Regional", "Local authority", "Statistical neighbours")))]
+
   return(filtered_data)
 }
 
