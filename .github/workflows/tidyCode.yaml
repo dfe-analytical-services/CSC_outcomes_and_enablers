@@ -28,7 +28,7 @@ jobs:
         run: sudo apt-get install libcurl4-openssl-dev
         
     
-      - name: Install fontconfig and harfbuzz dependencies
+      - name: Install other dependencies
         run: sudo apt-get install libfontconfig1-dev libharfbuzz-dev chromium libfribidi-dev libharfbuzz-dev libjpeg-dev libtiff-dev libx11-dev pandoc
 
       - uses: r-lib/actions/setup-renv@v2
