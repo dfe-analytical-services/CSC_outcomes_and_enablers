@@ -5261,7 +5261,7 @@
       "checksum": "20279ae7193e2041bb976e425645b17f"
     },
     ".Rprofile": {
-      "checksum": "2ee706640c6d14adbc1a06820617182f"
+      "checksum": "67f1064b3713f6606664c708fe1bc819"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5435,7 +5435,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "422750b1c611b2e901f3ef3e1ac7e194"
+      "checksum": "94b025b8c31a092ce0c54b46ee425288"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
@@ -5471,52 +5471,52 @@
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/CSC_outcomes_and_enablers_initial_load-001.json": {
-      "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
+      "checksum": "8189dd220774f0b75864744a986f9d36"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "504fd5711552ec0cc2fd26c14e418774"
+      "checksum": "88ecdc72cd844cb0288456b9e196244f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "8ab3e92b8e7c9c51414b3bb3ad34cee4"
+      "checksum": "6b439fca2911c3cce2363871477f9b1b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
+      "checksum": "694088dfc01959bd668c1955e0173790"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
+      "checksum": "694088dfc01959bd668c1955e0173790"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "a75425b6ea0c4790efb3115ac39eac96"
+      "checksum": "6bc82414e4a2cfe94d320be94c03e0bf"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
-      "checksum": "4f217ac416c843ea1b00b3014dde6bf7"
+      "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "f89cc778d10882eea9afa8efcce4f753"
+      "checksum": "e600f55bacbef11ab99becbb54315283"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "be392e4e9b50a0a7b83585a05f9bae9e"
+      "checksum": "6fc43d16e639fd21d4a43105f143b106"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "a286d2a6ee3e2aaa71eb91f314f98dda"
+      "checksum": "54b923a1585beaa551f020f350702173"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "cdd34a4405f987c53b6079048f50a15e"
+      "checksum": "dc00aee4e3b9b0125ad724b527b1c8f8"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "e79d028cbe6c9cebbae9bac7637904bb"
+      "checksum": "d424ab30da3494099829f82da6be32a4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
-      "checksum": "7c9c431124a3614202777ac23a84153b"
+      "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-013.json": {
-      "checksum": "4e68335721bfe2e11883c78d3141dd55"
+      "checksum": "d627f2856b43f5e9cd2bc0e49dce86bb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-014.json": {
-      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
+      "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
+      "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"

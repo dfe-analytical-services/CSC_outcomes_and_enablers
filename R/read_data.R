@@ -1683,44 +1683,29 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
 ## Number of placements (placement_changes_data) -----
 
 read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_stability.csv") {
-  placement_changes_data <- fread(file)
+  placement_chg_data <- fread(file)
 
-  placement_changes_data <- placement_changes_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 0),
-      percentage
-    )) %>%
+  placement_chg_data <- placement_chg_data %>%
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown() %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
-    dataset = placement_changes_data,
+    dataset = placement_chg_data,
     median_cols = c("percentage"),
-    sum_cols = c(), # "value", "population_estimate"
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "cla_group", "placement_stability"),
   )
-  placement_changes_data <- rbindlist(l = list(placement_changes_data, sn_metrics), fill = TRUE, use.names = TRUE)
+  placement_chg_data <- rbindlist(l = list(placement_chg_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-  placement_changes_data <- placement_changes_data %>%
-    mutate(Percent = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    rename("Percentage" = "percentage", "Number" = "number") %>%
-    filter(!(new_la_code %in% dropList))
+  placement_chg_data <- placement_chg_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "Percent") %>%
+    rename("Percentage" = "percentage", "Number" = "number")
 
-  return(placement_changes_data)
+  return(placement_chg_data)
 }
 
 ## Placement type and distance----
@@ -1728,39 +1713,25 @@ read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by
   placement_info_data <- fread(file)
 
   placement_info_data <- placement_info_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
+    filter(!(new_la_code %in% dropList)) %>%
+    # custom filter to reduce dataset :-)
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 0),
-      percentage
-    ))
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
     dataset = placement_info_data,
     median_cols = c("percentage"),
-    sum_cols = c(), # "value", "population_estimate"
+    sum_cols = c(),
     group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
   )
   placement_info_data <- rbindlist(l = list(placement_info_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   placement_info_data <- placement_info_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
     select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
-    mutate(Percent = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    filter(!(new_la_code %in% dropList))
+    redacted_to_negative(col_old = "percentage", col_new = "Percent")
 
   return(placement_info_data)
 }
