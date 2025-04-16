@@ -102,7 +102,7 @@ stats_neighbours <- head(statistical_neighbours(), 152)
 stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
 ## Read in the workforce data ----
-workforce_data <- suppressWarnings(read_workforce_data())
+workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
 location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
@@ -116,31 +116,31 @@ combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 spending_data <- suppressWarnings(read_spending_data())
 spending_data_no_cla <- suppressWarnings(read_spending_data2())
 spending_per_capita <- suppressWarnings(read_per_capita_spending())
-ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data())
-ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data())
+ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data(sn_long = stats_neighbours_long))
+ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data(ofsted_leadership_data))
 
 ## Read in the CLA data (outcome 1) ----
-cla_rates <- suppressWarnings(read_cla_rate_data())
+cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
 cla_placements <- suppressWarnings(read_cla_placement_data())
-combined_cla_data <- suppressWarnings(merge_cla_dataframes())
-combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes())
+combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
+combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
 ## Read in the CIN  data (outcome 1) ----
-cin_rates <- suppressWarnings(read_cin_rate_data())
-cin_referrals <- suppressWarnings(read_cin_referral_data())
+cin_rates <- suppressWarnings(read_cin_rate_data(sn_long = stats_neighbours_long))
+cin_referrals <- suppressWarnings(read_cin_referral_data(sn_long = stats_neighbours_long))
 
 ## Read in the outcomes data (outcome 1) ----
-outcomes_absence <- suppressWarnings(read_outcomes_absence_data())
-outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data())
-outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data())
+outcomes_absence <- suppressWarnings(read_outcomes_absence_data(sn_long = stats_neighbours_long))
+outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data(sn_long = stats_neighbours_long))
+outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data(sn_long = stats_neighbours_long))
 
 ## Read in outcome 2 data ----
-ceased_cla_data <- suppressWarnings(read_outcome2())
+ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 
 ## Read in outcome 3 data ----
-repeat_cpp <- suppressWarnings(read_cpp_in_year_data())
-duration_cpp <- suppressWarnings(read_cpp_by_duration_data())
-assessment_factors <- suppressWarnings(read_assessment_factors())
+repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
+duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
+assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
 af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
   select(assessment_factor) %>%
@@ -155,10 +155,10 @@ extra_familial_harm_af <- c(
 )
 # "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
 
-hospital_admissions <- suppressWarnings(read_a_and_e_data())
+hospital_admissions <- suppressWarnings(read_a_and_e_data(sn_long = stats_neighbours_long))
 
 ## Read in outcome 4 data ----
-placement_data <- suppressWarnings(read_placement_info_data())
+placement_data <- suppressWarnings(read_placement_info_data(sn_long = stats_neighbours_long))
 
 # Define the custom order
 custom_order <- c(
@@ -179,10 +179,10 @@ placement_type_filter <- placement_data %>%
   factor(levels = custom_order) %>%
   sort()
 
-placement_changes_data <- suppressWarnings(read_number_placements_data())
+placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long = stats_neighbours_long))
 
-care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data())
-care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability())
+care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(sn_long = stats_neighbours_long))
+care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
 
 wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 
