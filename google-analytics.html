@@ -91,6 +91,17 @@ Adding in custom google analytics tracking for the domain tabs
     ).getAttribute('data-value')
     });
   });
+
+  $(document).on('click', '.accordion-button', function(e) {
+    gtag(
+      'event', 
+      'Accordion', 
+      {
+        'event_label' : 'Accordion', 
+        'event_category' : e.currentTarget['innerText']
+      }
+    );
+  });
   
 </script>
       
