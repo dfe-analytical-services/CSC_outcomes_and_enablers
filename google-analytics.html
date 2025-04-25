@@ -24,7 +24,7 @@ The tracking number below MUST be replaced with a unique number, contact the sta
 */
   gtag('config', 'G-Q13T4ENF6C');
   
-
+// This handles tracking the top level choices menu via the active navlistPanel
   $(document).on('click', 'ul#navlistPanel', function(e) {
     gtag('event', 'navlistPanel', {'event_category' : 'navbar click',
     'event_label' : document.querySelector(
@@ -44,53 +44,21 @@ The tracking number below MUST be replaced with a unique number, contact the sta
 Adding in custom google analytics tracking for the domain tabs
 */
 
-  $(document).on('click', 'ul#outcome1_panels', function(e) {
-    gtag('event', 'Outcome1 Domains', {'event_category' : 'O1 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome1_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
+  $(document).on('click', 'ul.nav-tabs a.active', function(e) {
+    gtag(
+      'event', 
+      'Tab selection', 
+      {
+        'event_category' : 'Tab selection', 
+        'event_label' : e.currentTarget['innerText']
+      }
+    );
   });
   
-  $(document).on('click', 'ul#outcome2_panels', function(e) {
-    gtag('event', 'Outcome2 Domains', {'event_category' : 'O2 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome2_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
   
-  $(document).on('click', 'ul#outcome3_panels', function(e) {
-    gtag('event', 'Outcome3 Domains', {'event_category' : 'O3 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome3_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
-  
-  $(document).on('click', 'ul#outcome4_panels', function(e) {
-    gtag('event', 'Outcome4 Domains', {'event_category' : 'O4 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome4_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
- 
- $(document).on('click', 'ul#enabler2_panels', function(e) {
-    gtag('event', 'Enabler2 Domains', {'event_category' : 'E2 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#enabler2_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
-  
-  $(document).on('click', 'ul#enabler3_panels', function(e) {
-    gtag('event', 'Enabler3 Domains', {'event_category' : 'E3 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#enabler3_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
+/*
+Adding in custom google analytics tracking for the Accordian selections
+*/
 
   $(document).on('click', '.accordion-button', function(e) {
     console.log(e.currentTarget['innerText']);
@@ -107,6 +75,60 @@ Adding in custom google analytics tracking for the domain tabs
       }
     );
   });
+  
+/*
+  Adding in custom google analytics tracking for the geographic  selections
+
+*/
+
+$(document).on('change', 'select', function(e) {
+      var selectedValue = $(this).val();
+      var selectedId = $(this).attr("id");
+      
+      if (selectedId.startsWith("geographic_breakdown_")) {
+          console.log('Selected value:', selectedValue);
+          console.log('Selected id:', selectedId);
+      
+          gtag(
+            'event', 
+            'Dropdown: Geo-select', 
+          {
+            'event_category' : 'geographic_breakdown', 
+            'event_label' : selectedId,
+            'event_value' : selectedValue
+          });
+      }
+    });
+    
+$(document).on('change', 'select', function(e) {
+      var selectedValue = $(this).val();
+      var selectedId = $(this).attr("id");
+      
+      if (selectedId == "wellbeing_extra_breakdown" || 
+          selectedId == "wellbeing_school_breakdown" || 
+          selectedId == "attainment_extra_breakdown" ||
+          selectedId == "assessment_factors_1" ||
+          selectedId == "assessment_factors_2" ||
+          selectedId == "placement_type_breakdown" ||
+          selectedId == "select_age_group_04" ||
+          selectedId == "leavers_age") {
+            
+          console.log('Selected value:', selectedValue);
+          console.log('Selected id:', selectedId);
+      
+          gtag(
+            'event', 
+            'Dropdown: Non-geographic', 
+          {
+            'event_category' : selectedId, 
+            'event_label' : selectedId,
+            'event_value' : selectedValue
+          }
+    );
+      // You can add more actions here
+  
+      }
+    });
   
 </script>
       
