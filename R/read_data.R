@@ -1213,7 +1213,7 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
 
   # manual step to ensure COVID years are redacted to X
   cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
-  time_periods_to_update <- c(201920, 202021)
+  time_periods_to_update <- c(201920)
   outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
   # Make % columns numeric
@@ -1307,11 +1307,6 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
   )
 
   outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("avg_att8", "t_pupils")
-  time_periods_to_update <- c(201920, 202021)
-  outcomes_ks4_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
   outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
