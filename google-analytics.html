@@ -40,9 +40,7 @@ The tracking number below MUST be replaced with a unique number, contact the sta
     });
   });
 
-/*
-Adding in custom google analytics tracking for the domain tabs
-*/
+/* Adding in custom google analytics tracking for the domain tabs */
 
   $(document).on('click', 'ul.nav-tabs a.active', function(e) {
     gtag(
@@ -61,11 +59,6 @@ Adding in custom google analytics tracking for the Accordian selections
 */
 
   $(document).on('click', '.accordion-button', function(e) {
-    console.log(e.currentTarget['innerText']);
-  });
-
-
-  $(document).on('click', '.accordion-button', function(e) {
     gtag(
       'event', 
       'Accordion', 
@@ -76,10 +69,7 @@ Adding in custom google analytics tracking for the Accordian selections
     );
   });
   
-/*
-  Adding in custom google analytics tracking for the geographic  selections
-
-*/
+/*  Adding in custom google analytics tracking for the geographic  selections */
 
 $(document).on('change', 'select', function(e) {
       var selectedValue = $(this).val();
@@ -93,13 +83,14 @@ $(document).on('change', 'select', function(e) {
             'event', 
             'Dropdown: Geo-select', 
           {
-            'event_category' : 'geographic_breakdown', 
-            'event_label' : selectedId,
-            'event_value' : selectedValue
+            'event_category' : selectedId, 
+            'event_label' : selectedValue 
           });
       }
     });
-    
+
+/*  Adding in custom google analytics tracking for the Non-geographic  selections */    
+
 $(document).on('change', 'select', function(e) {
       var selectedValue = $(this).val();
       var selectedId = $(this).attr("id");
@@ -110,19 +101,19 @@ $(document).on('change', 'select', function(e) {
           selectedId == "assessment_factors_1" ||
           selectedId == "assessment_factors_2" ||
           selectedId == "placement_type_breakdown" ||
-          selectedId == "select_age_group_04" ||
+          selectedId == "select_age_group_o4" ||
           selectedId == "leavers_age") {
             
           console.log('Selected value:', selectedValue);
           console.log('Selected id:', selectedId);
       
+         
           gtag(
             'event', 
             'Dropdown: Non-geographic', 
           {
             'event_category' : selectedId, 
-            'event_label' : selectedId,
-            'event_value' : selectedValue
+            'event_label' : selectedValue
           }
     );
       // You can add more actions here

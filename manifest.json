@@ -4761,7 +4761,7 @@
       "checksum": "933af2a7a6ee99d219ef9da2f37ba287"
     },
     ".Rprofile": {
-      "checksum": "ea4adc4ce8af500685f487404b5be4d8"
+      "checksum": "15658c9ac507d1bce5a3c1a0d4f68f3a"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4887,7 +4887,7 @@
       "checksum": "1a057fd68a3166ab9d3c7c421e507f53"
     },
     "google-analytics.html": {
-      "checksum": "0c7f62444a763cd3f6db381d11b2fd9f"
+      "checksum": "b9db08c0af5b450c0a56eeb2a14c9643"
     },
     "LICENSE": {
       "checksum": "4ff1ab40947c9cebe66adef6c76f9ba7"
@@ -4938,7 +4938,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/qa_sn_datasets.R": {
-      "checksum": "2574a3340554f9e8b88ef9244093ba5a"
+      "checksum": "1a89c631b98ef8e9cbdb047c62f03934"
     },
     "R/read_data.R": {
       "checksum": "4a1529e42ed7bbc43286226e6b9fae37"
