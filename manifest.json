@@ -4767,7 +4767,7 @@
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data/absence_six_half_terms_la.csv": {
-      "checksum": "4e2b9dbd20b997733a0ad01b7c390ad3"
+      "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
     },
     "data/b1_children_in_need_2013_to_2024.csv": {
       "checksum": "2389c14063a39fc2816e644f6e8c2a34"
@@ -4800,10 +4800,10 @@
       "checksum": "7dd016de4b8149c1fed1f87fe9ddfdc3"
     },
     "data/ks2_la.csv": {
-      "checksum": "fef1f0974fbc36997a4ee85e8ecbbc87"
+      "checksum": "4aeaad225b9d7381d1273f898a0ff474"
     },
     "data/ks4_la.csv": {
-      "checksum": "1058aa406422ec0c75d37e70ac476d20"
+      "checksum": "0cc6471e8caf67ac56f1de59dd0f4acc"
     },
     "data/la_care_leavers_accommodation_suitability.csv": {
       "checksum": "fefa6aad9d456b9218840d70327c3275"
@@ -4896,7 +4896,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "186a84d4932924378e293cffe4691305"
+      "checksum": "37c279ebfa06ef74ef15782ffb26d0b0"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -4905,7 +4905,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "eb3047dc818d5e5a1fefb9f42c9d0220"
+      "checksum": "1a70dc3064e5bebde57071bfbc56c389"
     },
     "R/enabler1_page.R": {
       "checksum": "563966a26cdecdeaa82073f2c5c8787c"
@@ -4923,7 +4923,7 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "77efb2cc9692d121ba9e6213a8626a52"
+      "checksum": "2e7fcf2a2926fd0fe141f56107b180c9"
     },
     "R/outcome2_page.R": {
       "checksum": "ad1c8ed10136f9359252fc5b4088af15"
@@ -4968,7 +4968,7 @@
       "checksum": "969d36564489e320064ad5a661fd1354"
     },
     "server.R": {
-      "checksum": "bd006ea692af55be7b0a7b1305d88b4d"
+      "checksum": "7d270a5c2c3d95caf128b5200035d999"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5037,7 +5037,7 @@
       "checksum": "93e204438081c9063cb3879d594f07b5"
     },
     "ui.R": {
-      "checksum": "262f446b22cb0d11769076bf8853136d"
+      "checksum": "3c784298d53f774f4689b7119ab4b4f1"
     },
     "www/cookie-consent.js": {
       "checksum": "942789aa3ef2153ae6e6236579b53a2e"
