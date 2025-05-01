@@ -18,7 +18,7 @@ outcome4_tab <- function() {
               inputId = "select_geography_o4",
               label = "Select a geographical level:",
               # Change this to look at the relevant dataset for outcome 4
-              choices = unique(placement_data %>% filter(geographic_level != "Statistical neighbours") %>% pull("geographic_level")),
+              choices = unique(placement_data %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL

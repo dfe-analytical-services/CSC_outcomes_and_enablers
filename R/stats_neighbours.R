@@ -33,7 +33,7 @@ sn_aggregations <- function(sn_long,
   ]
   # we need to make sure the columns names with V1...V3 are renamed to the aggregated metrics we have calculated
   setnames(sn_agg, old = paste0("V", 1:length(new_cols)), new = new_cols)
-  sn_agg[, geographic_level := "Statistical neighbours"]
+  sn_agg[, geographic_level := "Statistical neighbours (median)"]
 
   # 4. final step to tidy up the dataset to return with certain key fields
   by.y <- c("old_la_code", group_cols[-1])
@@ -41,7 +41,7 @@ sn_aggregations <- function(sn_long,
   sn_finalised <- merge(sn_agg, dataset[, .SD, .SDcols = cols_to_keep], by.x = group_cols, by.y = by.y)
   setnames(sn_finalised, c("LA.number"), "old_la_code")
   sn_finalised[, geo_breakdown_sn := geo_breakdown]
-  sn_finalised[, geo_breakdown := "Statistical neighbours"]
+  sn_finalised[, geo_breakdown := "Statistical neighbours (median)"]
 
   return(sn_finalised)
 }
@@ -131,13 +131,13 @@ filter_time_series_data <- function(dataset_in,
     filtered_data <- rbindlist(
       l = list(
         filtered_data,
-        dataset[geographic_level == "Statistical neighbours" & geo_breakdown_sn == select_geo_breakdown]
+        dataset[geographic_level == "Statistical neighbours (median)" & geo_breakdown_sn == select_geo_breakdown]
       )
     )
   }
 
-  filtered_data[geographic_level == "Statistical neighbours", geo_breakdown := "Statistical neighbours"]
-  filtered_data <- filtered_data[order(-time_period, factor(geographic_level, levels = c("National", "Regional", "Local authority", "Statistical neighbours")))]
+  filtered_data[geographic_level == "Statistical neighbours (median)", geo_breakdown := "Statistical neighbours (median)"]
+  filtered_data <- filtered_data[order(-time_period, factor(geographic_level, levels = c("National", "Regional", "Local authority", "Statistical neighbours (median)")))]
 
   return(filtered_data)
 }

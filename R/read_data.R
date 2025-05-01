@@ -1643,7 +1643,7 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     populations <- suppressWarnings(read_cla_rate_data())
   }
   populations <- populations %>%
-    filter(geo_breakdown != "Statistical neighbours") %>%
+    filter(geo_breakdown != "Statistical neighbours (median)") %>%
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
   ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%

@@ -4761,7 +4761,7 @@
       "checksum": "933af2a7a6ee99d219ef9da2f37ba287"
     },
     ".Rprofile": {
-      "checksum": "2a58c6507a2733c38288d75c5b6873b1"
+      "checksum": "afc43d543b359389e57029d5566358c3"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4914,7 +4914,7 @@
       "checksum": "ee65ef97a2801264db888f9cb335f2bf"
     },
     "R/enabler3_page.R": {
-      "checksum": "2b04381401748f771fd369c2bb16470e"
+      "checksum": "e789eb1b48a3ab3da3c894f31ebda09b"
     },
     "R/intro_panel.R": {
       "checksum": "f1c635039e076143b958713fb59818db"
@@ -4923,22 +4923,22 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "2e7fcf2a2926fd0fe141f56107b180c9"
+      "checksum": "57b3736867c726eb86e89125425ed797"
     },
     "R/outcome2_page.R": {
-      "checksum": "ad1c8ed10136f9359252fc5b4088af15"
+      "checksum": "c7e53ecd214185ac965ecabc022ff3e1"
     },
     "R/outcome3_page.R": {
-      "checksum": "5ac5e60d1e61aaf050881a33609e29ce"
+      "checksum": "5919e070fde5a2ffd18eac50151440db"
     },
     "R/outcome4_page.R": {
-      "checksum": "057e4a43853f90d4076f86117c9b2f2f"
+      "checksum": "ddbf598cce37f23c4f4b8a0111079d18"
     },
     "R/plotting.R": {
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "801bd3b2d47e7fda875cb2000e263d2a"
+      "checksum": "25ce1c300e27fb390d656ed5e186df7d"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
@@ -4947,13 +4947,13 @@
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "522e474cd269b092addd99bba2546197"
+      "checksum": "03be894204eb93a200389f25b142a731"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
     },
     "R/user_guide.R": {
-      "checksum": "20406fc610c964abdfc3491e47a168be"
+      "checksum": "2c78f045d31f3a0ca11569836ad62086"
     },
     "README.html": {
       "checksum": "35bfef78ab5877bd3f03bde575ecda29"
@@ -4971,7 +4971,7 @@
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
     },
     "tests/stats_neighbours_testing.R": {
-      "checksum": "d97776426bfbe915b902e9d58fa56505"
+      "checksum": "369c3afa089051891bab92b6531c66c4"
     },
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
