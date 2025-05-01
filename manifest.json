@@ -4761,7 +4761,7 @@
       "checksum": "933af2a7a6ee99d219ef9da2f37ba287"
     },
     ".Rprofile": {
-      "checksum": "75d59f9f860a6ba2e78fd9161f1cc11f"
+      "checksum": "854645f7a14339041d30a8a36c2c250a"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4923,7 +4923,7 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "57b3736867c726eb86e89125425ed797"
+      "checksum": "d0cf2ae0359160ed787948edd6477a39"
     },
     "R/outcome2_page.R": {
       "checksum": "c7e53ecd214185ac965ecabc022ff3e1"
@@ -4965,13 +4965,13 @@
       "checksum": "969d36564489e320064ad5a661fd1354"
     },
     "server.R": {
-      "checksum": "648f8ba27ab82a0f5f48d2c9d6a44183"
+      "checksum": "3d9b82161d1e8556b9aedf694307a3aa"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
     },
     "tests/stats_neighbours_testing.R": {
-      "checksum": "369c3afa089051891bab92b6531c66c4"
+      "checksum": "d97776426bfbe915b902e9d58fa56505"
     },
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
