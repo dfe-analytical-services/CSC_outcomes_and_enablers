@@ -4139,7 +4139,7 @@ server <- function(input, output, session) {
       check_compare_national = input$national_comparison_checkbox_o4,
       check_compare_regional = input$region_comparison_checkbox_o4,
       check_compare_sn = input$sn_comparison_checkbox_o4,
-      dimensional_filters = list("characteristic" = "Placed more than 20 miles from home")
+      dimensional_filters = list("characteristic" = input$placement_type_breakdown)
     ) %>%
       rename("Placements (%)" = "Percent")
 
