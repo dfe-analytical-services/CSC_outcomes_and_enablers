@@ -124,7 +124,7 @@ filter_time_series_data <- function(dataset_in,
       filter(la_name %in% select_geo_breakdown) %>%
       pull(region_name)
     if (length(location == 1)) {
-      filtered_data <- rbindlist(l = list(filtered_data, dataset[geographic_level == "Regional" & geo_breakdown == region_name]))
+      filtered_data <- rbindlist(l = list(filtered_data, dataset[geographic_level == "Regional" & geo_breakdown == location]))
     }
   }
   if (!is.null(check_compare_sn)) {
