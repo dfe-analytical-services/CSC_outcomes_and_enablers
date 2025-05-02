@@ -29,20 +29,13 @@ function getActivePage() {
   const activeNavLink = document.querySelector('ul#navlistPanel > li.nav-item > a.nav-link.active');
   return activeNavLink ? activeNavLink.getAttribute('data-value') : 'Unknown Page';
 }
+
 function getActiveTab() {
-  const activeTabPane = document.querySelector('.tab-pane.active.show');
+  const activeTabPane = document.querySelector('.tabbable .tab-pane.active.show');
   return activeTabPane ? activeTabPane.getAttribute('data-value') : 'Unknown Tab';
 }
-  
-// This handles tracking the top level choices menu via the active navlistPanel
-  $(document).on('click', 'ul#navlistPanel', function(e) {
-    gtag('event', 'navlistPanel', {'event_category' : 'navbar click',
-    'event_label' : document.querySelector(
-      'ul#navlistPanel > li.nav-item > a.nav-link.active'
-    ).getAttribute('data-value')
-    });
-  });
 
+  // record disconnected events
   $(document).on('shiny:disconnected', function(e) {
     gtag('event', 'disconnect', { 
       'event_label' : 'Disconnect',
@@ -50,80 +43,57 @@ function getActiveTab() {
     });
   });
 
-/* Adding in custom google analytics tracking for the domain tabs */
-  $(document).on('click', 'ul.nav-tabs a', function(e) {
-  gtag('event', 'Tab selection', {
-    'event_category': getActivePage() + ' - Tab selection',
-    'event_label': e.currentTarget.innerText.trim()
-  });
-});
-
-
-/*
-  $(document).on('click', 'ul.nav-tabs a.active', function(e) {
-    gtag(
-      'event', 
-      'Tab selection', 
-      {
-        'event_category' : 'Tab selection', 
-        'event_label' : e.currentTarget['innerText']
-      }
-    );
-  });
-  */
-  
-/*
-Adding in custom google analytics tracking for the Accordian selections
-
-
-  $(document).on('click', '.accordion-button', function(e) {
-    gtag(
-      'event', 
-      'Accordion', 
-      {
-        'event_category' : 'Accordion', 
-        'event_label' : e.currentTarget['innerText']
-      }
-    );
-  });
-*/  
-  $(document).on('click', '.accordion-button', function(e) {
-  const button = e.currentTarget;
-  const collapseId = button.getAttribute('data-bs-target') || button.getAttribute('aria-controls');
-  const collapseEl = collapseId ? document.getElementById(collapseId.replace('#', '')) : null;
-  // Only track if accordion is being **opened** (i.e., not already visible)
-  if (collapseEl && !collapseEl.classList.contains('show')) {
-    const label = button.innerText.trim();
-    gtag('event', 'Accordion Opened', {
-      event_category: getActivePage() + ' > ' + getActiveTab(),
-      event_label: label
+  // This handles tracking the top level choices menu via the active navlistPanel
+  $(document).on('click', 'ul#navlistPanel', function(e) {
+    gtag('event', 'navlistPanel', {'event_category' : 'navbar click',
+    'event_label' : getActivePage()
     });
-  }
-});
-  
-/*  Adding in custom google analytics tracking for the geographic  selections */
+  });
 
-$(document).on('change', 'select', function(e) {
+  /* Adding in custom google analytics tracking for the domain tabs */
+  $(document).on('click', 'ul.nav-tabs a', function(e) {
+    gtag('event', 'Domain selection', {
+      'event_category': getActivePage() + ' - Domain selection',
+      'event_label': e.currentTarget.innerText.trim()
+    });
+  });
+
+  // Adding in custom google analytics tracking for the Accordian selections
+  $(document).on('click', '.accordion-button', function(e) {
+    const button = e.currentTarget;
+    const collapseId = button.getAttribute('data-bs-target') || button.getAttribute('aria-controls');
+    const collapseEl = collapseId ? document.getElementById(collapseId.replace('#', '')) : null;
+    // Only track if accordion is being **opened** (i.e., not already visible)
+    if (collapseEl && !collapseEl.classList.contains('show')) {
+      const label = button.innerText.trim();
+      console.log('Active page: ' + getActivePage());
+      console.log('Active domain: ' + getActiveTab());
+      gtag('event', 'Accordion Opened', {
+        event_category: getActivePage() + ' > ' + getActiveTab(),
+        event_label: label
+      });
+    }
+  });
+  
+  /*  Adding in custom google analytics tracking for the geographic  selections */
+  $(document).on('change', 'select', function(e) {
       var selectedValue = $(this).val();
       var selectedId = $(this).attr("id");
       
       if (selectedId.startsWith("geographic_breakdown_")) {
-          console.log('Selected value:', selectedValue);
-          console.log('Selected id:', selectedId);
-      
+          
           gtag(
             'event', 
             'Dropdown: Geo-select', 
           {
-            'event_category' : selectedId, 
+            'event_category' : getActivePage() + ' > ' + getActiveTab(), 
             'event_label' : selectedValue 
           });
       }
     });
 
-/*  Adding in custom google analytics tracking for the Non-geographic  selections */    
-
-$(document).on('change', 'select', function(e) {
+  /*  Adding in custom google analytics tracking for the Non-geographic  selections */    
+  $(document).on('change', 'select', function(e) {
       var selectedValue = $(this).val();
       var selectedId = $(this).attr("id");
       
@@ -135,22 +105,15 @@ $(document).on('change', 'select', function(e) {
           selectedId == "placement_type_breakdown" ||
           selectedId == "select_age_group_o4" ||
           selectedId == "leavers_age") {
-            
-          console.log('Selected value:', selectedValue);
-          console.log('Selected id:', selectedId);
-      
          
           gtag(
             'event', 
             'Dropdown: Non-geographic', 
           {
-            'event_category' : selectedId, 
+            'event_category' : getActivePage() + ' > ' + getActiveTab() + ' > ' + selectedId, 
             'event_label' : selectedValue
-          }
-    );
-      // You can add more actions here
-  
-      }
+          });
+        }
     });
   
 </script>
