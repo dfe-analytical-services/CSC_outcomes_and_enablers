@@ -1217,7 +1217,7 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
 
   # manual step to ensure COVID years are redacted to X
   cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
-  time_periods_to_update <- c(201920, 202021)
+  time_periods_to_update <- c(201920)
   outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
   # Make % columns numeric
@@ -1311,11 +1311,6 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
   )
 
   outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("avg_att8", "t_pupils")
-  time_periods_to_update <- c(201920, 202021)
-  outcomes_ks4_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
   outcomes_ks4_data <- outcomes_ks4_data %>%
     select(
@@ -1648,7 +1643,7 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     populations <- suppressWarnings(read_cla_rate_data())
   }
   populations <- populations %>%
-    filter(geo_breakdown != "Statistical neighbours") %>%
+    filter(geo_breakdown != "Statistical neighbours (median)") %>%
     select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
     distinct()
   ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
@@ -1744,18 +1739,10 @@ read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by
 
 ## Care leavers activity -----
 read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leavers_activity.csv") {
-  cl_activity_data <- fread(file)
-
-  cl_activity_data <- cl_activity_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 0),
-      percentage
-    ))
+  cl_activity_data <- fread(file) %>%
+    # filter out old dorset code
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1769,17 +1756,8 @@ read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leaver
 
   cl_activity_data <- cl_activity_data %>%
     select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, age, activity, number, percentage) %>%
-    mutate(percent = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    # filter out old dorset code
-    filter(!(new_la_code %in% dropList))
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
 
   # Age column needs to be uniform with the accommodation data as they share the same age range filter
   # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
@@ -1791,14 +1769,10 @@ read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leaver
 
 ## Care leavers accommodation -----
 read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la_care_leavers_accommodation_suitability.csv") {
-  cl_accom_data <- fread(file)
-
-  cl_accom_data <- cl_accom_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    ))
+  cl_accom_data <- fread(file) %>%
+    # filter out old dorset code
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1811,26 +1785,12 @@ read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la
   cl_accom_data <- rbindlist(l = list(cl_accom_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   cl_accom_data <- cl_accom_data %>%
-    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 0),
-      percentage
-    )) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
     select(
       time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code,
       age, accommodation_suitability, number, percentage
     ) %>%
-    mutate(percent = case_when(
-      # percent is numeric, percentage is character
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    # filter out old dorset code
-    filter(!(new_la_code %in% dropList))
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
 
   # TODO: in care_leavers_activity_data we clean the text in the age field, check whether this is necessary in this file
 

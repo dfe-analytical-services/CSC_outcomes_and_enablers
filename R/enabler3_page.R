@@ -17,7 +17,7 @@ enabler3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_e3",
               label = "Select a geographical level:",
-              choices = unique(workforce_data %>% filter(geographic_level != "Statistical neighbours") %>% pull("geographic_level")),
+              choices = unique(workforce_data %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
