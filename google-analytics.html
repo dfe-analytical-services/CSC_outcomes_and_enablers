@@ -27,11 +27,11 @@ The tracking number below MUST be replaced with a unique number, contact the sta
   
 function getActivePage() {
   const activeNavLink = document.querySelector('ul#navlistPanel > li.nav-item > a.nav-link.active');
-  return activeNavLink ? activeNavLink.getAttribute('data-value') : 'Unknown Page';
+  return activeNavLink ? activeNavLink.innerText.trim() : 'Unknown Page';
 }
 
 function getActiveTab() {
-  const activeTabPane = document.querySelector('.tabbable .tab-pane.active.show');
+  const activeTabPane = document.querySelector('.tab-pane.active.show .tab-pane.active');
   return activeTabPane ? activeTabPane.getAttribute('data-value') : 'Unknown Tab';
 }
 
@@ -61,19 +61,16 @@ function getActiveTab() {
   // Adding in custom google analytics tracking for the Accordian selections
   $(document).on('click', '.accordion-button', function(e) {
     const button = e.currentTarget;
-    const collapseId = button.getAttribute('data-bs-target') || button.getAttribute('aria-controls');
-    const collapseEl = collapseId ? document.getElementById(collapseId.replace('#', '')) : null;
     // Only track if accordion is being **opened** (i.e., not already visible)
-    if (collapseEl && !collapseEl.classList.contains('show')) {
+    if ( button.getAttribute('aria-expanded') === 'true') {
       const label = button.innerText.trim();
-      console.log('Active page: ' + getActivePage());
-      console.log('Active domain: ' + getActiveTab());
       gtag('event', 'Accordion Opened', {
         event_category: getActivePage() + ' > ' + getActiveTab(),
         event_label: label
       });
     }
   });
+  
   
   /*  Adding in custom google analytics tracking for the geographic  selections */
   $(document).on('change', 'select', function(e) {
