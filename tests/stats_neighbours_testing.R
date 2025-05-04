@@ -245,7 +245,7 @@ if (TRUE == FALSE) {
     )
   }
   cols_to_update <- c("number", "number_num")
-  x[geographic_level == "Statistical neighbours", (cols_to_update) := eval(parse(text = "round(sdq_score_recd_x_score / sdq_score_recd, digits = 1)"))]
+  x[geographic_level == "Statistical neighbours (median)", (cols_to_update) := eval(parse(text = "round(sdq_score_recd_x_score / sdq_score_recd, digits = 1)"))]
   x
   names(x)
 
@@ -264,7 +264,7 @@ if (TRUE == FALSE) {
   }
 
   cols_to_update <- c("percentage", "percent")
-  x[geographic_level == "Statistical neighbours", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
+  x[geographic_level == "Statistical neighbours (median)", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
   x
   names(x)
 
@@ -283,7 +283,7 @@ if (TRUE == FALSE) {
   }
 
   cols_to_update <- c("percentage", "percent")
-  x[geographic_level == "Statistical neighbours", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
+  x[geographic_level == "Statistical neighbours (median)", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
   x
   names(x)
 
@@ -302,7 +302,7 @@ if (TRUE == FALSE) {
   }
 
   cols_to_update <- c("percentage", "percent")
-  x[geographic_level == "Statistical neighbours", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
+  x[geographic_level == "Statistical neighbours (median)", (cols_to_update) := eval(parse(text = "round(100 * as.numeric(number) / total_number, digits = 0)"))]
   x
   names(x)
 
