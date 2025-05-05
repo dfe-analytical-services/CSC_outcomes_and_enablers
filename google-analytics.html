@@ -112,6 +112,40 @@ function getActiveTab() {
           });
         }
     });
+    
+    // event handler for the expansion of details section
+    $(document).on('click', 'details', function(e) {
+      const elDetails = e.currentTarget;
+      
+      if (!elDetails.open) {
+        var spanText = elDetails.querySelector("span").innerText.trim();
+        var label = elDetails.getAttribute("id")
+        gtag(
+            'event', 
+            'Details expanded', 
+          {
+            'event_category' : spanText, 
+            'event_label' : label
+          });
+      }
+    });
+    
+    // event handler for download buttons
+    $(document).on('click', 'button', function(e) {
+      const button = e.currentTarget;
+      if (button.hasAttribute('onclick')) {
+        var onclick = button.getAttribute('onclick');
+        if (onclick.startsWith('customDownloadDataCSV')) {
+          var event_name = button.innerText.trim();
+          var event_category = getActivePage() + " > " + getActiveTab();
+          var event_label = onclick.split("'")[1];
+          gtag('event', event_name, {
+            'event_category' : event_category, 
+            'event_label' : event_label
+          });
+        }
+      }
+    });
   
 </script>
       
