@@ -1648,8 +1648,6 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     distinct()
   ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
     mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
-    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
-    # mutate(`rate_per_10000` = sapply(rate_per_10000, decimal_rounding, digits = 0)) %>%
     filter(time_period != 2018)
 
 
@@ -1660,13 +1658,12 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     median_cols = c("rate_per_10000"),
     sum_cols = c(),
     group_cols = c("LA.number", "time_period", "assessment_factor"),
-  ) %>%
-    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
-
+  )
   ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
 
   ass_fac_data <- ass_fac_data %>%
+    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     redacted_to_negative(col_old = "value", col_new = "Number") %>%
     redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
   # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
