@@ -43,6 +43,13 @@ sn_aggregations <- function(sn_long,
   sn_finalised[, geo_breakdown_sn := geo_breakdown]
   sn_finalised[, geo_breakdown := "Statistical neighbours (median)"]
 
+  # tidy up the data points before and after the LA values for special cases
+  # North Northamptonshire start 2023
+  # West Northamptonshire start 2023
+  # Cumbria end 2023
+  sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("North Northamptonshire", "West Northamptonshire") & time_period < "2022")]
+  sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("Cumbria") & time_period > "2023")]
+
   return(sn_finalised)
 }
 
