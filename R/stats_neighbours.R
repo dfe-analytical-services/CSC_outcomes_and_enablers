@@ -5,9 +5,6 @@ sn_aggregations <- function(sn_long,
                             group_cols = c("LA.number", "time_period"),
                             aggregated_calc = "",
                             calc_name = "") {
-  # tests
-
-
   # 1 get the mappings for SN -----
   # merge the datasetwith the SN mappings for LAs to aggregate
   sn_dataset <- merge(

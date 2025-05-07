@@ -4764,7 +4764,7 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "c352b7f0bd5a9c7d05dd7c2bb58a9176"
+      "checksum": "05c1c2fdc222387e43e569c0b97c29f3"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4944,7 +4944,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "10bc567176e0349efbe948bd0d0a6e6d"
+      "checksum": "f96b7f9791c2b0cf5a557de7ae1648c7"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
@@ -4953,7 +4953,7 @@
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "6e77087e7a8d784f831d10172596c00f"
+      "checksum": "590b430576095cf248f69cebc967b432"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
