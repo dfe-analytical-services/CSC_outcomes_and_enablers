@@ -4757,14 +4757,20 @@
     ".idea/workspace.xml": {
       "checksum": "97ac09e80f73e4fa6ff565acc4d89f89"
     },
+    ".Rbuildignore": {
+      "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
+    },
     ".RData": {
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "23d6716b5147382198ebf711d1c13305"
+      "checksum": "c352b7f0bd5a9c7d05dd7c2bb58a9176"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
+    },
+    "data-raw/cin_rates.R": {
+      "checksum": "3a05aeca8aed9e324a90fcb88c4959b5"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4923,16 +4929,16 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "aa3ac670597c0da7a99449602abde3c3"
+      "checksum": "6d3ef99b120bf700ce8036bfeed16884"
     },
     "R/outcome2_page.R": {
-      "checksum": "c7e53ecd214185ac965ecabc022ff3e1"
+      "checksum": "71b786b2fb1bd4cb8e655433c165db22"
     },
     "R/outcome3_page.R": {
-      "checksum": "5919e070fde5a2ffd18eac50151440db"
+      "checksum": "141ef54ccd8e356f758bce3ef8511f13"
     },
     "R/outcome4_page.R": {
-      "checksum": "ddbf598cce37f23c4f4b8a0111079d18"
+      "checksum": "667bed8b20e8f442c7f01b964f77c2b8"
     },
     "R/plotting.R": {
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
