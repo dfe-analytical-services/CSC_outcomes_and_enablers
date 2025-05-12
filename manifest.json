@@ -4757,14 +4757,20 @@
     ".idea/workspace.xml": {
       "checksum": "97ac09e80f73e4fa6ff565acc4d89f89"
     },
+    ".Rbuildignore": {
+      "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
+    },
     ".RData": {
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "23d6716b5147382198ebf711d1c13305"
+      "checksum": "befc1288ec38e743ada1f92c462d1be7"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
+    },
+    "data-raw/summary_page_metadata.xlsx": {
+      "checksum": "aa7931cf43b8cfced65ba96e40507830"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4872,7 +4878,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "086c7fd664dc3e0b090eddfc65ba3de2"
+      "checksum": "b617ea34595e8b271ef567c5bb58bade"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4938,7 +4944,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "10bc567176e0349efbe948bd0d0a6e6d"
+      "checksum": "27669e6f28a30f0422a1f5ba8dc219f1"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"

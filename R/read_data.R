@@ -1933,3 +1933,100 @@ get_stats_neighbours_long <- function(stats_neighbours) {
 
   return(stats_neighbours_long)
 }
+
+
+# dropdowns
+choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
+choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
+choices <- sort(unique(placement_data[geographic_level == input$select_geography_o4 & time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
+choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e2, ][["geo_breakdown"]]), decreasing = FALSE)
+choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+
+
+not_a_function <- function() {
+  choices_o1 <- sort(unique(cla_rates[(cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+  choices_o2 <- sort(unique(ceased_cla_data[(ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
+  choices_o3 <- sort(unique(cla_rates[(cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
+  choices_o4 <- sort(unique(placement_data[time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
+  choices_e2 <- sort(unique(spending_data[["geo_breakdown"]]), decreasing = FALSE)
+  choices_e3 <- sort(unique(workforce_data[time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+
+
+  geographies_by_page <- dcast(
+    rbindlist(list(
+      list(page = "o1", geographies = choices_o1),
+      list(page = "o2", geographies = choices_o2),
+      list(page = "o3", geographies = choices_o3),
+      list(page = "o4", geographies = choices_o4),
+      list(page = "e2", geographies = choices_e2),
+      list(page = "e3", geographies = choices_e3)
+    )),
+    geographies ~ page,
+    fun.aggregate = length
+  )
+  geographies_by_page$page_count <- rowSums(geographies_by_page[, .SD, .SDcols = !c("geographies")])
+  geographies_by_page[page_count != 6]
+}
+
+
+collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column) {
+  dataset_in <- copy(get0(dataset_name))
+  setDT(dataset_in)
+  # browser()
+  # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
+  if (length(dimensional_filters) > 0) {
+    dataset_in <- dataset_in[eval(AndEQUAL(dimensional_filters))]
+  }
+  # get the latest date
+  time_period_latest <- max(dataset_in$time_period)
+
+  # we need to add the geo_breakdown_sn if it doesn't exist
+  if (!("geo_breakdown_sn" %in% names(dataset_in))) {
+    dataset_in[, geo_breakdown_sn := NA]
+  }
+
+  # filter by time_period, extract the metric and build the text values for the table headings & accordions
+  dataset_in[
+    i = time_period == time_period_latest,
+    j = .(
+      sort_order = sort_order,
+      tab_name = tab_name,
+      accordion_text = accordion_text,
+      heading_text = heading_text,
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn,
+      metric_text = metric_display_text,
+      value_column = get(value_column)
+    )
+  ]
+}
+
+
+collect_summary_data_all <- function() {
+  metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
+
+  summary_data <- rbindlist(lapply(metric_parameters$sort_order, function(x, metric_parameters) {
+    this_metric <- metric_parameters[sort_order == x]
+    collect_summary_data_metric(
+      sort_order = x,
+      tab_name = this_metric$tab_name,
+      accordion_text = this_metric$accordion_text,
+      heading_text = this_metric$heading_text,
+      metric_display_text = this_metric$metric_display_text,
+      value_column = this_metric$value_column,
+      dimensional_filters = eval(parse(text = this_metric$dimensional_filters)),
+      dataset_name = this_metric$dataset_name
+    )
+  }, metric_parameters))
+}
+
+
+display_summary_data <- function(geo_level, geo_breakdown) {
+  # take the summary dataset and filter + transform it
+  filtered_summary_data <- summary_data[geographic_level == "National"]
+  # if national display national only
+
+  # if regional display the regions selected and National
+
+  # if LA selected then display the LA, it's SN, it's region and national
+}
