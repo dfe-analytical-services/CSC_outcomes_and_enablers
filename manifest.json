@@ -4764,13 +4764,10 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "05c1c2fdc222387e43e569c0b97c29f3"
+      "checksum": "c3ba6bc350391fcdc406523cd72017df"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
-    },
-    "data-raw/cin_rates.R": {
-      "checksum": "3a05aeca8aed9e324a90fcb88c4959b5"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4944,7 +4941,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "f96b7f9791c2b0cf5a557de7ae1648c7"
+      "checksum": "c4e016e0fdc1361729b005ee62e8e8d4"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
@@ -5038,6 +5035,9 @@
     },
     "tests/testthat/test-shinytest2.R": {
       "checksum": "93e204438081c9063cb3879d594f07b5"
+    },
+    "tests/testthat/test_read_data.R": {
+      "checksum": "a5c0ffcdfc31e9e3d8ba913ca94fe41e"
     },
     "ui.R": {
       "checksum": "3c784298d53f774f4689b7119ab4b4f1"

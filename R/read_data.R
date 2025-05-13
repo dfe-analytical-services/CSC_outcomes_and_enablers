@@ -29,14 +29,16 @@ convert_perc_cols_to_numeric <- function(x) {
 }
 
 clean_date <- function(dataset) {
+  if (!(class(dataset) %in% c("data.frame", "data.table"))) stop("clean_date expects a data.frame or a data.table")
+  if (!("time_period" %in% names(dataset))) stop("clean_date expects a dataset with column time_period")
   dataset <- dataset %>%
     mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
   return(dataset)
 }
 
 decimal_rounding <- function(value, digits) {
+  if (!is.numeric(digits) | is.null((digits))) stop("decimal_rounding requires digits to be numeric")
   if (!is.na(as.numeric(value))) {
-    # value_round <- format(as.numeric(as.character(value)), nsmall = digits)
     value_round <- format(true_round(value, digits = digits), nsmall = digits)
   } else {
     value_round <- value
@@ -55,6 +57,10 @@ true_round <- function(number, digits) {
 }
 
 insert_geo_breakdown <- function(dataset) {
+  if (!(class(dataset)[1] %in% c("data.frame", "data.table"))) stop("insert_geo_breakdown expects a data.frame or a data.table")
+  if (!("geographic_level" %in% names(dataset))) stop("insert_geo_breakdown expects a dataset with column geographic_level")
+  if (!("region_name" %in% names(dataset))) stop("insert_geo_breakdown expects a dataset with column region_name")
+  if (!("la_name" %in% names(dataset))) stop("insert_geo_breakdown expects a dataset with column la_name")
   dataset <- dataset %>%
     mutate(geo_breakdown = case_when(
       geographic_level == "National" ~ "National", # NA_character_,
@@ -1666,9 +1672,6 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     redacted_to_negative(col_old = "value", col_new = "Number") %>%
     redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
-  # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
-  # select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
-
 
   return(ass_fac_data)
 }
