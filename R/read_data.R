@@ -1640,7 +1640,7 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
   if (exists(x = "cla_rates")) {
     populations <- copy(cla_rates)
   } else {
-    populations <- suppressWarnings(read_cla_rate_data())
+    populations <- suppressWarnings(read_cla_rate_data(sn_long = sn_long))
   }
   populations <- populations %>%
     filter(geo_breakdown != "Statistical neighbours (median)") %>%
