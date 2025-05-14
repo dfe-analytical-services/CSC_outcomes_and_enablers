@@ -1183,18 +1183,18 @@
         "RoxygenNote": "7.3.2",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.3; ; 2025-03-11 11:37:09 UTC; windows",
+        "Built": "R 4.4.3; ; 2025-05-13 14:49:07 UTC; windows",
         "RemoteType": "github",
+        "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "ccaea9d03ca490e4a51320228734a34822d9f8d9",
-        "RemoteHost": "api.github.com",
+        "RemoteSha": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "ccaea9d03ca490e4a51320228734a34822d9f8d9"
+        "GithubSHA1": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a"
       }
     },
     "diffobj": {
@@ -4764,13 +4764,10 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "05c1c2fdc222387e43e569c0b97c29f3"
+      "checksum": "979e4ff0d2eb18db0fef4b528184a650"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
-    },
-    "data-raw/cin_rates.R": {
-      "checksum": "3a05aeca8aed9e324a90fcb88c4959b5"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4968,7 +4965,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "881d5a42bc86815c291a2ee2aab033fe"
+      "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
       "checksum": "f975fe8191362a2ff8a33bdafb97c859"
@@ -4989,22 +4986,22 @@
       "checksum": "88ecdc72cd844cb0288456b9e196244f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "6b439fca2911c3cce2363871477f9b1b"
+      "checksum": "9bbe1630865e6bd02e7f5e421239c678"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "a75425b6ea0c4790efb3115ac39eac96"
+      "checksum": "180284f3e983e4379483761e2ddc0e61"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
       "checksum": "4f217ac416c843ea1b00b3014dde6bf7"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "f89cc778d10882eea9afa8efcce4f753"
+      "checksum": "b7c9949656e43285f38619503baba789"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
       "checksum": "6fc43d16e639fd21d4a43105f143b106"
@@ -5013,10 +5010,10 @@
       "checksum": "54b923a1585beaa551f020f350702173"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "dc00aee4e3b9b0125ad724b527b1c8f8"
+      "checksum": "a19735484f7eadfeb3e25d0836e58ad2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "d424ab30da3494099829f82da6be32a4"
+      "checksum": "50fa0cf0f59b4d0fdba1216d35054c8b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
       "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
@@ -5028,7 +5025,7 @@
       "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "d15cb9296bef57bded0467fffe3baf63"
+      "checksum": "dc90507a4426d006c22dc0a2612f8e95"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
@@ -5037,7 +5034,7 @@
       "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "93e204438081c9063cb3879d594f07b5"
+      "checksum": "3e61a4ecb1417464f4d7844c866d6ccb"
     },
     "ui.R": {
       "checksum": "3c784298d53f774f4689b7119ab4b4f1"
