@@ -18,7 +18,7 @@ outcome4_tab <- function() {
               inputId = "select_geography_o4",
               label = "Select a geographical level:",
               # Change this to look at the relevant dataset for outcome 4
-              choices = unique(placement_data %>% pull("geographic_level")),
+              choices = unique(placement_data %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -34,13 +34,15 @@ outcome4_tab <- function() {
                 options = NULL
               )
             ),
-            col_widths = c(5, 7)
+            panel(),
+            col_widths = c(4, 4, 4)
           ),
+          # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o4 != 'National'",
               column(
-                width = 5,
+                width = 12,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o4",
                   cb_labels = "Compare with national",
@@ -54,7 +56,7 @@ outcome4_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o4 == 'Local authority')",
               column(
-                width = 7,
+                width = 12,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o4",
                   cb_labels = "Compare with region",
@@ -65,7 +67,21 @@ outcome4_tab <- function() {
                 )
               )
             ),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "(input.select_geography_o4 == 'Local authority')",
+              column(
+                width = 12,
+                checkbox_Input(
+                  inputId = "sn_comparison_checkbox_o4",
+                  cb_labels = "Compare with statistical neighbours",
+                  checkboxIds = "Yes_sn_o4",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
+            col_widths = c(4, 4, 4)
           )
         )
       ),
@@ -75,7 +91,7 @@ outcome4_tab <- function() {
         p(htmlOutput("outcome4_choice_text1"), htmlOutput("outcome4_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o4 == 'Cumbria')",
-          p("Cumbria are still in the latest statistics (except for hospital admissions) because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
         br(),
         div(

@@ -9,8 +9,8 @@ outcome3_tab <- function() {
           h1("Outcome 3: Children and young people are safe in and outside of their home")
         )
       ),
+      # dropdown boxes
       gov_row(
-        # Input boxes
         div(
           class = "input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
@@ -18,27 +18,31 @@ outcome3_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o3",
               label = "Select a geographical level:",
-              choices = unique(cla_rates %>% pull("geographic_level")),
+              choices = unique(ceased_cla_data %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
             ),
-            conditionalPanel(condition = "input.select_geography_o3 != 'National'", selectizeInput(
-              inputId = "geographic_breakdown_o3",
-              label = "Select a location: ",
-              choices = NULL,
-              selected = NULL,
-              multiple = FALSE,
-              options = NULL
-            )),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "input.select_geography_o3 != 'National'",
+              selectizeInput(
+                inputId = "geographic_breakdown_o3",
+                label = "Select a location: ",
+                choices = NULL,
+                selected = NULL,
+                multiple = FALSE,
+                options = NULL
+              )
+            ),
+            panel(),
+            col_widths = c(4, 4, 4)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o3 != 'National'",
               column(
-                width = 5,
+                width = 12,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o3",
                   cb_labels = "Compare with national",
@@ -52,7 +56,7 @@ outcome3_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o3 == 'Local authority')",
               column(
-                width = 7,
+                width = 12,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o3",
                   cb_labels = "Compare with region",
@@ -61,9 +65,23 @@ outcome3_tab <- function() {
                   hint_label = NULL,
                   small = TRUE
                 )
-              ),
+              )
             ),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "(input.select_geography_o3 == 'Local authority')",
+              column(
+                width = 12,
+                checkbox_Input(
+                  inputId = "sn_comparison_checkbox_o3",
+                  cb_labels = "Compare with statistical neighbours",
+                  checkboxIds = "Yes_sn_o3",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
+            col_widths = c(4, 4, 4)
           )
         )
       ),
@@ -74,7 +92,7 @@ outcome3_tab <- function() {
         p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
-          p("Cumbria are still in the latest statistics (except for hospital admissions) because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          p("Cumbria are included in the latest statistics (except for hospital statistics) because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
       gov_row(

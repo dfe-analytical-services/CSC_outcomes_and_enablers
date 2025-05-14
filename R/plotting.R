@@ -440,7 +440,7 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
   combined_ethnicity_data$Workforce <- as.numeric(combined_ethnicity_data$Workforce)
 
   # Reshape the dataframe to a long format
-  combined_ethnicity_data_long <- melt(combined_ethnicity_data,
+  combined_ethnicity_data_long <- reshape2::melt(combined_ethnicity_data,
     id.vars = c("geo_breakdown", "geographic_level.x", "time_period", "Ethnicity"),
     measure.vars = c("Workforce", "Population"),
     variable.name = "Data",
@@ -2398,7 +2398,9 @@ stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL
 
 # Ordering tables with suppression
 cellfunc <- function(value) {
-  if (value == -100) {
+  if (is.na(value)) {
+    return("z")
+  } else if (value == -100) {
     return("c")
   } else if (value == -200) {
     return("k")
@@ -2415,7 +2417,9 @@ cellfunc <- function(value) {
 
 # Ordering tables with suppression
 cellfunc_decimal_percent <- function(value) {
-  if (value == -100) {
+  if (is.na(value)) {
+    return("z")
+  } else if (value == -100) {
     return("c")
   } else if (value == -200) {
     return("k")

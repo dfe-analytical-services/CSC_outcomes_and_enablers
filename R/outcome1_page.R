@@ -18,7 +18,7 @@ outcome1_tab <- function() {
             selectizeInput(
               inputId = "select_geography_o1",
               label = "Select a geographical level:",
-              choices = unique(cla_rates %>% pull("geographic_level")),
+              choices = unique(cla_rates %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
               multiple = FALSE,
               options = NULL
@@ -31,14 +31,15 @@ outcome1_tab <- function() {
               multiple = FALSE,
               options = NULL
             )),
-            col_widths = c(5, 7)
+            panel(),
+            col_widths = c(4, 4, 4)
           ),
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
               condition = "input.select_geography_o1 != 'National'",
               column(
-                width = 5,
+                width = 12,
                 checkbox_Input(
                   inputId = "national_comparison_checkbox_o1",
                   cb_labels = "Compare with national",
@@ -52,7 +53,7 @@ outcome1_tab <- function() {
             conditionalPanel(
               condition = "(input.select_geography_o1 == 'Local authority')",
               column(
-                width = 7,
+                width = 12,
                 checkbox_Input(
                   inputId = "region_comparison_checkbox_o1",
                   cb_labels = "Compare with region",
@@ -61,9 +62,23 @@ outcome1_tab <- function() {
                   hint_label = NULL,
                   small = TRUE
                 )
-              ),
+              )
             ),
-            col_widths = c(5, 7)
+            conditionalPanel(
+              condition = "(input.select_geography_o1 == 'Local authority')",
+              column(
+                width = 12,
+                checkbox_Input(
+                  inputId = "sn_comparison_checkbox_o1",
+                  cb_labels = "Compare with statistical neighbours",
+                  checkboxIds = "Yes_sn_o1",
+                  label = "",
+                  hint_label = NULL,
+                  small = TRUE
+                )
+              )
+            ),
+            col_widths = c(4, 4, 4)
           )
         )
       ),
@@ -74,7 +89,7 @@ outcome1_tab <- function() {
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Cumbria')",
-          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
       gov_row(
@@ -923,7 +938,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -973,7 +988,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1046,7 +1061,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1095,7 +1110,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in 2021 and 2022 national totals, and regional totals for inner London and London. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1252,7 +1267,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1296,7 +1311,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1366,7 +1381,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
@@ -1413,7 +1428,7 @@ outcome1_tab <- function() {
                               tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
                               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
                               tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                              tags$li("Children in need data is not available for Hackney local authority for the 2020 to 2021 or the 2021 to 2022 collection year. Hackney was unable to provide a return for both the 2021 and the 2022 children in need census, due to a cyberattack which had a significant impact on their management information systems. Refer to the methodology section for more information."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
                               tags$br(),
                               p(
                                 "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),

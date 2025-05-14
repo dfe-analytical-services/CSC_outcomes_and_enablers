@@ -24,15 +24,18 @@ The tracking number below MUST be replaced with a unique number, contact the sta
 */
   gtag('config', 'G-Q13T4ENF6C');
   
+  
+function getActivePage() {
+  const activeNavLink = document.querySelector('ul#navlistPanel > li.nav-item > a.nav-link.active');
+  return activeNavLink ? activeNavLink.innerText.trim() : 'Unknown Page';
+}
 
-  $(document).on('click', 'ul#navlistPanel', function(e) {
-    gtag('event', 'navlistPanel', {'event_category' : 'navbar click',
-    'event_label' : document.querySelector(
-      'ul#navlistPanel > li.nav-item > a.nav-link.active'
-    ).getAttribute('data-value')
-    });
-  });
+function getActiveTab() {
+  const activeTabPane = document.querySelector('.tab-pane.active.show .tab-pane.active');
+  return activeTabPane ? activeTabPane.getAttribute('data-value') : 'Unknown Tab';
+}
 
+  // record disconnected events
   $(document).on('shiny:disconnected', function(e) {
     gtag('event', 'disconnect', { 
       'event_label' : 'Disconnect',
@@ -40,57 +43,109 @@ The tracking number below MUST be replaced with a unique number, contact the sta
     });
   });
 
-/*
-Adding in custom google analytics tracking for the domain tabs
-*/
+  // This handles tracking the top level choices menu via the active navlistPanel
+  $(document).on('click', 'ul#navlistPanel', function(e) {
+    gtag('event', 'navlistPanel', {'event_category' : 'navbar click',
+    'event_label' : getActivePage()
+    });
+  });
 
-  $(document).on('click', 'ul#outcome1_panels', function(e) {
-    gtag('event', 'Outcome1 Domains', {'event_category' : 'O1 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome1_panels > li.active > a'
-    ).getAttribute('data-value')
+  /* Adding in custom google analytics tracking for the domain tabs */
+  $(document).on('click', 'ul.nav-tabs a', function(e) {
+    gtag('event', 'Domain selection', {
+      'event_category': getActivePage() + ' - Domain selection',
+      'event_label': e.currentTarget.innerText.trim()
     });
+  });
+
+  // Adding in custom google analytics tracking for the Accordian selections
+  $(document).on('click', '.accordion-button', function(e) {
+    const button = e.currentTarget;
+    // Only track if accordion is being **opened** (i.e., not already visible)
+    if ( button.getAttribute('aria-expanded') === 'true') {
+      const label = button.innerText.trim();
+      gtag('event', 'Accordion Opened', {
+        event_category: getActivePage() + ' > ' + getActiveTab(),
+        event_label: label
+      });
+    }
   });
   
-  $(document).on('click', 'ul#outcome2_panels', function(e) {
-    gtag('event', 'Outcome2 Domains', {'event_category' : 'O2 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome2_panels > li.active > a'
-    ).getAttribute('data-value')
-    });
-  });
   
-  $(document).on('click', 'ul#outcome3_panels', function(e) {
-    gtag('event', 'Outcome3 Domains', {'event_category' : 'O3 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome3_panels > li.active > a'
-    ).getAttribute('data-value')
+  /*  Adding in custom google analytics tracking for the geographic  selections */
+  $(document).on('change', 'select', function(e) {
+      var selectedValue = $(this).val();
+      var selectedId = $(this).attr("id");
+      
+      if (selectedId.startsWith("geographic_breakdown_")) {
+          
+          gtag(
+            'event', 
+            'Dropdown: Geo-select', 
+          {
+            'event_category' : getActivePage() + ' > ' + getActiveTab(), 
+            'event_label' : selectedValue 
+          });
+      }
     });
-  });
-  
-  $(document).on('click', 'ul#outcome4_panels', function(e) {
-    gtag('event', 'Outcome4 Domains', {'event_category' : 'O4 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#outcome4_panels > li.active > a'
-    ).getAttribute('data-value')
+
+  /*  Adding in custom google analytics tracking for the Non-geographic  selections */    
+  $(document).on('change', 'select', function(e) {
+      var selectedValue = $(this).val();
+      var selectedId = $(this).attr("id");
+      
+      if (selectedId == "wellbeing_extra_breakdown" || 
+          selectedId == "wellbeing_school_breakdown" || 
+          selectedId == "attainment_extra_breakdown" ||
+          selectedId == "assessment_factors_1" ||
+          selectedId == "assessment_factors_2" ||
+          selectedId == "placement_type_breakdown" ||
+          selectedId == "select_age_group_o4" ||
+          selectedId == "leavers_age") {
+         
+          gtag(
+            'event', 
+            'Dropdown: Non-geographic', 
+          {
+            'event_category' : getActivePage() + ' > ' + getActiveTab() + ' > ' + selectedId, 
+            'event_label' : selectedValue
+          });
+        }
     });
-  });
- 
- $(document).on('click', 'ul#enabler2_panels', function(e) {
-    gtag('event', 'Enabler2 Domains', {'event_category' : 'E2 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#enabler2_panels > li.active > a'
-    ).getAttribute('data-value')
+    
+    // event handler for the expansion of details section
+    $(document).on('click', 'details', function(e) {
+      const elDetails = e.currentTarget;
+      
+      if (!elDetails.open) {
+        var spanText = elDetails.querySelector("span").innerText.trim();
+        var label = elDetails.getAttribute("id")
+        gtag(
+            'event', 
+            'Details expanded', 
+          {
+            'event_category' : spanText, 
+            'event_label' : label
+          });
+      }
     });
-  });
-  
-  $(document).on('click', 'ul#enabler3_panels', function(e) {
-    gtag('event', 'Enabler3 Domains', {'event_category' : 'E3 Domain clicks',
-    'event_label' : document.querySelector(
-    'ul#enabler3_panels > li.active > a'
-    ).getAttribute('data-value')
+    
+    // event handler for download buttons
+    $(document).on('click', 'button', function(e) {
+      const button = e.currentTarget;
+      if (button.hasAttribute('onclick')) {
+        var onclick = button.getAttribute('onclick');
+        if (onclick.startsWith('customDownloadDataCSV')) {
+          var event_name = button.innerText.trim();
+          var event_category = getActivePage() + " > " + getActiveTab();
+          var event_label = onclick.split("'")[1];
+          gtag('event', event_name, {
+            'event_category' : event_category, 
+            'event_label' : event_label
+          });
+        }
+      }
     });
-  });
   
 </script>
       
