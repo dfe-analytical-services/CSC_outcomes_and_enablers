@@ -3,7 +3,8 @@
     "national_comparison_checkbox_o2": null,
     "navlistPanel": "outcome2_page",
     "outcome2_panels": "Families engaging and receiving support from their family network",
-    "select_geography_o2": "Regional"
+    "select_geography_o2": "Regional",
+    "sn_comparison_checkbox_o2": null
   },
   "output": {
     "CAO_headline_txt": "4%<br><p style='font-size:16px; font-weight:500;'>(2024)<\/p>",

@@ -4764,7 +4764,7 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "979e4ff0d2eb18db0fef4b528184a650"
+      "checksum": "6a497a627697df344ecb7f0e08846056"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4941,7 +4941,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "f96b7f9791c2b0cf5a557de7ae1648c7"
+      "checksum": "38cf169389fdbe232841fe4520fb7289"
     },
     "R/rendering_functions.R": {
       "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"

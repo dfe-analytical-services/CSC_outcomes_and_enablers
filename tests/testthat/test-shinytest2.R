@@ -29,6 +29,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     geographic_breakdown_o1 = "Kent",
     national_comparison_checkbox_o1 = TRUE,
     regional_comparison_checkbox_o1 = FALSE,
+    sn_comparison_checkbox_o1 = FALSE,
     outcome1_panels = "Family stability"
   )
   Sys.sleep(2)
@@ -38,7 +39,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "select_geography_o1",
       "outcome1_panels",
       "national_comparison_checkbox_o1",
-      "regional_comparison_checkbox_o1"
+      "regional_comparison_checkbox_o1",
+      "sn_comparison_checkbox_o1"
     ),
     output = c(
       "outcome2_choice_text1",
@@ -55,6 +57,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     select_geography_o1 = "Local authority",
     national_comparison_checkbox_o1 = TRUE,
     regional_comparison_checkbox_o1 = TRUE,
+    sn_comparison_checkbox_o1 = FALSE,
     outcome1_panels = "Child wellbeing and development"
   )
   Sys.sleep(2)
@@ -64,6 +67,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "select_geography_o1",
       "national_comparison_checkbox_o1",
       "regional_comparison_checkbox_o1",
+      "sn_comparison_checkbox_o1",
       "outcome1_panels"
     ),
     output = c(
@@ -84,6 +88,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     select_geography_o1 = "Local authority",
     national_comparison_checkbox_o1 = FALSE,
     regional_comparison_checkbox_o1 = TRUE,
+    sn_comparison_checkbox_o1 = TRUE,
     outcome1_panels = "Educational attainment"
   )
   Sys.sleep(2)
@@ -93,6 +98,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "select_geography_o1",
       "national_comparison_checkbox_o1",
       "regional_comparison_checkbox_o1",
+      "sn_comparison_checkbox_o1",
       "outcome1_panels"
     ),
     output = c(
@@ -126,7 +132,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "select_geography_o2",
       "outcome2_panels",
       "national_comparison_checkbox_o2",
-      "regional_comparison_checkbox_o2"
+      "regional_comparison_checkbox_o2",
+      "sn_comparison_checkbox_o2"
     ),
     output = c(
       "outcome2_choice_text1",
@@ -166,6 +173,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     geographic_breakdown_o3 = "Barking and Dagenham",
     national_comparison_checkbox_o3 = FALSE,
     regional_comparison_checkbox_o3 = FALSE,
+    sn_comparison_checkbox_o3 = FALSE,
     outcome3_panels = "Child safety - general"
   )
   Sys.sleep(2)
@@ -176,7 +184,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "geographic_breakdown_o3",
       "outcome3_panels",
       "national_comparison_checkbox_o3",
-      "regional_comparison_checkbox_o3"
+      "regional_comparison_checkbox_o3",
+      "sn_comparison_checkbox_o3"
     ),
     output = c(
       "outcome3_choice_text1",
@@ -240,17 +249,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     geographic_breakdown_o4 = "Bedford",
     national_comparison_checkbox_o4 = FALSE,
     regional_comparison_checkbox_o4 = TRUE,
+    sn_comparison_checkbox_o4 = TRUE,
     outcome4_panels = "Child wellbeing"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_o3",
-      "geographic_breakdown_o3",
+      "select_geography_o4",
+      "geographic_breakdown_o4",
       "outcome4_panels",
-      "national_comparison_checkbox_o3",
-      "regional_comparison_checkbox_o3"
+      "national_comparison_checkbox_o4",
+      "regional_comparison_checkbox_o4",
+      "sn_comparison_checkbox_o4"
     ),
     output = c(
       "outcome4_choice_text1",
@@ -266,17 +277,18 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     geographic_breakdown_o4 = "Halton",
     national_comparison_checkbox_o4 = TRUE,
     regional_comparison_checkbox_o4 = TRUE,
+    sn_comparison_checkbox_o4 = TRUE,
     outcome4_panels = "Quality of life for care experienced people"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_o3",
-      "geographic_breakdown_o3",
+      "select_geography_o4",
+      "geographic_breakdown_o4",
       "outcome4_panels",
-      "national_comparison_checkbox_o3",
-      "regional_comparison_checkbox_o3"
+      "national_comparison_checkbox_o4",
+      "regional_comparison_checkbox_o4"
     ),
     output = c(
       "outcome4_choice_text1",
@@ -373,6 +385,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     geographic_breakdown_e2 = "Medway",
     national_comparison_checkbox_e3 = TRUE,
     regional_comparison_checkbox_e3 = TRUE,
+    sn_comparison_checkbox_e3 = TRUE,
     enabler3_panels = "Social worker ethnicity"
   )
   Sys.sleep(2)
@@ -383,7 +396,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "geographic_breakdown_e3",
       "enabler3_panels",
       "national_comparison_checkbox_e3",
-      "regional_comparison_checkbox_e3"
+      "regional_comparison_checkbox_e3",
+      "sn_comparison_checkbox_e3"
     ),
     output = c(
       "enabler3_choice_text1",
