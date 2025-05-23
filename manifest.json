@@ -1183,18 +1183,18 @@
         "RoxygenNote": "7.3.2",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.3; ; 2025-03-11 11:37:09 UTC; windows",
+        "Built": "R 4.4.3; ; 2025-05-13 14:49:07 UTC; windows",
         "RemoteType": "github",
+        "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "ccaea9d03ca490e4a51320228734a34822d9f8d9",
-        "RemoteHost": "api.github.com",
+        "RemoteSha": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "ccaea9d03ca490e4a51320228734a34822d9f8d9"
+        "GithubSHA1": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a"
       }
     },
     "diffobj": {
@@ -4764,13 +4764,13 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "befc1288ec38e743ada1f92c462d1be7"
+      "checksum": "3f6cc00adf0c588ad674e2562f1dd2ea"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data-raw/summary_page_metadata.xlsx": {
-      "checksum": "aa7931cf43b8cfced65ba96e40507830"
+      "checksum": "b3100417ad5c13c693f130fb1dc29027"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4890,7 +4890,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "1a057fd68a3166ab9d3c7c421e507f53"
+      "checksum": "85a0a41499bbd1ddf186a0ef1a5c2d7d"
     },
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
@@ -4944,16 +4944,19 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "27669e6f28a30f0422a1f5ba8dc219f1"
+      "checksum": "dfbc7c88c7ea4379db122114e3aa021e"
     },
     "R/rendering_functions.R": {
-      "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
+      "checksum": "f5c642e7512d8531f33a41c02a0df65e"
     },
     "R/standard_panels.R": {
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
       "checksum": "6e77087e7a8d784f831d10172596c00f"
+    },
+    "R/summary_page.R": {
+      "checksum": "569f4f01caef65b8e137dc4e035cd9a2"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -4971,7 +4974,7 @@
       "checksum": "881d5a42bc86815c291a2ee2aab033fe"
     },
     "server.R": {
-      "checksum": "f975fe8191362a2ff8a33bdafb97c859"
+      "checksum": "0b0aabff2c4e3eccaaef79e176e00404"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -4989,13 +4992,13 @@
       "checksum": "88ecdc72cd844cb0288456b9e196244f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "6b439fca2911c3cce2363871477f9b1b"
+      "checksum": "8ab3e92b8e7c9c51414b3bb3ad34cee4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "694088dfc01959bd668c1955e0173790"
+      "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
       "checksum": "a75425b6ea0c4790efb3115ac39eac96"
@@ -5013,10 +5016,10 @@
       "checksum": "54b923a1585beaa551f020f350702173"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "dc00aee4e3b9b0125ad724b527b1c8f8"
+      "checksum": "cdd34a4405f987c53b6079048f50a15e"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "d424ab30da3494099829f82da6be32a4"
+      "checksum": "e79d028cbe6c9cebbae9bac7637904bb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
       "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
@@ -5028,7 +5031,7 @@
       "checksum": "d15cb9296bef57bded0467fffe3baf63"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "d15cb9296bef57bded0467fffe3baf63"
+      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
@@ -5040,7 +5043,7 @@
       "checksum": "93e204438081c9063cb3879d594f07b5"
     },
     "ui.R": {
-      "checksum": "3c784298d53f774f4689b7119ab4b4f1"
+      "checksum": "999796ff519d7bc177abcad723fef5f1"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

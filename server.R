@@ -117,6 +117,96 @@ server <- function(input, output, session) {
 
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  # Summary Page ----
+  # Geographic breakdown o1 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_sp
+  }, {
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_sp & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_sp",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+  ## outcome 1 confirmation text ----
+  region_for_la_sp <- reactive({
+    selected_la <- input$geographic_breakdown_sp
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$summary_page_choice_text1 <- renderText({
+    generate_choice_text1(input$select_geography_sp, input$geographic_breakdown_sp, region_for_la_sp())
+  })
+
+  output$summary_page_choice_text2 <- renderText({
+    generate_choice_text2(summary_page = TRUE, input$select_geography_sp)
+  })
+
+
+  ## Summary page data REACTIVE, filtered for the required geographies ----
+  summary_data_filtered <- reactive({
+    shiny::validate(
+      need(input$select_geography_sp != "", "Select a geography level."),
+      need(input$geographic_breakdown_sp != "", "Select a location.")
+    )
+
+    # filter the dataset based on the context and user selections
+    filtered_data <- filter_summary_data(
+      data_in = copy(summary_data),
+      select_geographic_level = input$select_geography_sp,
+      select_geo_breakdown = input$geographic_breakdown_sp
+    )
+    filtered_data
+  })
+
+  ## Summary Page outcomes table ----
+  output$tbl_summary_page_outcomes <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_sp != "", "Select a geography level."),
+      need(input$geographic_breakdown_sp != "", "Select a location.")
+    )
+
+    table_data <- transform_summary_data(summary_data_filtered()[tab_name == "Outcomes"])
+    cols_to_remove <- c("sort_order", "tab_name")
+    table_data[, (cols_to_remove) := NULL]
+
+
+    # select the right columns and give them user-friendly names
+    reactable(
+      table_data,
+      defaultColDef = colDef(align = "center"),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
+  ## Summary Page enablers table ----
+  output$tbl_summary_page_enablers <- renderReactable({
+    shiny::validate(
+      need(input$select_geography_sp != "", "Select a geography level."),
+      need(input$geographic_breakdown_sp != "", "Select a location.")
+    )
+
+    table_data <- transform_summary_data(summary_data_filtered()[tab_name == "Enablers"])
+    cols_to_remove <- c("sort_order", "tab_name")
+    table_data[, (cols_to_remove) := NULL]
+
+    # select the right columns and give them user-friendly names
+    reactable(
+      table_data,
+      defaultColDef = colDef(align = "center"),
+      defaultPageSize = 15,
+      searchable = TRUE,
+    )
+  })
+
+
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {

@@ -140,8 +140,1229 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
     unique()
 }
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Stats Neighbours ----
+
+#### Statistical Neighbours read and convert to long format ------------
+statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
+  stats_neighbours <- read.csv(file)
+
+  # Create a lookup table
+  lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
+
+  df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
+
+  for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
+    df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
+  }
+
+  return(df)
+}
+
+get_stats_neighbours_long <- function(stats_neighbours) {
+  stats_neighbours_long <- stats_neighbours %>%
+    pivot_longer(
+      cols = starts_with("SN"),
+      names_to = c("SN_rank"),
+      names_pattern = "(\\d+)",
+      values_to = "SN_LA_name"
+    ) %>%
+    left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
+    as.data.table()
+
+  return(stats_neighbours_long)
+}
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+## Summary Page ----
+#### Summary Page dataset build ----
+
+# dropdowns
+# choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+# choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
+# choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
+# choices <- sort(unique(placement_data[geographic_level == input$select_geography_o4 & time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
+# choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e2, ][["geo_breakdown"]]), decreasing = FALSE)
+# choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+
+
+not_a_function <- function() {
+  choices_o1 <- sort(unique(cla_rates[(cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+  choices_o2 <- sort(unique(ceased_cla_data[(ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
+  choices_o3 <- sort(unique(cla_rates[(cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
+  choices_o4 <- sort(unique(placement_data[time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
+  choices_e2 <- sort(unique(spending_data[["geo_breakdown"]]), decreasing = FALSE)
+  choices_e3 <- sort(unique(workforce_data[time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+
+
+  geographies_by_page <- dcast(
+    rbindlist(list(
+      list(page = "o1", geographies = choices_o1),
+      list(page = "o2", geographies = choices_o2),
+      list(page = "o3", geographies = choices_o3),
+      list(page = "o4", geographies = choices_o4),
+      list(page = "e2", geographies = choices_e2),
+      list(page = "e3", geographies = choices_e3)
+    )),
+    geographies ~ page,
+    fun.aggregate = length
+  )
+  geographies_by_page$page_count <- rowSums(geographies_by_page[, .SD, .SDcols = !c("geographies")])
+  geographies_by_page[page_count != 6]
+}
+
+
+collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column, ass_factor = NULL) {
+  # function to pull current year data for all geographies (including stat neighbours)
+  dataset_in <- copy(get0(dataset_name))
+  setDT(dataset_in)
+  # browser()
+
+  # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
+  if (dataset_name == "zassessment_factors") {
+    print(ass_factor)
+    dataset_in <- dataset_in[assessment_factor %in% ass_factor, env = list(ass_factor = ass_factor)] # assessment_factor
+  } else if (length(dimensional_filters) > 0) {
+    dataset_in <- dataset_in[eval(AndEQUAL(dimensional_filters))]
+  }
+
+  # get the latest date
+  time_period_latest <- max(dataset_in$time_period)
+
+  # we need to add the geo_breakdown_sn if it doesn't exist (some headline stats do not appear in timeseries charts/tables
+  # so have not been through the calculation for stat neighbours)
+  if (!("geo_breakdown_sn" %in% names(dataset_in))) {
+    dataset_in[, geo_breakdown_sn := NA]
+  }
+
+  # filter by time_period, extract the metric and build the text values for the table headings & accordions
+  dataset_out <- dataset_in[
+    i = time_period == time_period_latest,
+    j = .(
+      sort_order = sort_order,
+      tab_name = tab_name,
+      accordion_text = accordion_text,
+      heading_text = heading_text,
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn,
+      metric_text = metric_display_text,
+      value = get(value_column)
+    )
+  ]
+
+  # one off hack for needing non-white calculation as 100 minus white percentage
+  if (dataset_name == "workforce_eth") {
+    dataset_out[is.numeric(value), value := (100 - as.numeric(value))]
+  }
+
+  return(dataset_out)
+}
+
+
+collect_summary_data_all <- function() {
+  metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
+
+  summary_data <- rbindlist(lapply(metric_parameters$sort_order[-(24:40)], function(x, metric_parameters) {
+    this_metric <- metric_parameters[sort_order == x]
+    print(x)
+    # browser()
+    tab_name <- this_metric$tab_name
+    accordion_text <- this_metric$accordion_text
+    heading_text <- this_metric$heading_text
+    metric_display_text <- this_metric$metric_display_text
+    value_column <- this_metric$value_column
+    dataset_name <- this_metric$dataset_name
+    dimensional_filters <- eval(parse(text = this_metric$dimensional_filters))
+    assessment_factor <- this_metric$assessment_factor
+    collect_summary_data_metric(
+      sort_order = x,
+      tab_name = tab_name,
+      accordion_text = accordion_text,
+      heading_text = heading_text,
+      metric_display_text = metric_display_text,
+      value_column = value_column,
+      dataset_name = dataset_name,
+      dimensional_filters = dimensional_filters,
+      ass_factor = assessment_factor
+    )
+  }, metric_parameters))
+
+  # now for each section we need to move the date into the header, determining which date to use!
+  date_frequency <- unique(summary_data[, .(tab_name, accordion_text, heading_text, time_period, metric_text)])[, .N, by = .(tab_name, accordion_text, heading_text, time_period)]
+  date_per_heading <- merge(date_frequency, date_frequency[, .(N = max(N)), by = .(tab_name, accordion_text, heading_text)])
+  setnames(date_per_heading, "time_period", "header_time_period")
+  date_per_heading[, N := NULL]
+  summary_data <- merge(summary_data, date_per_heading)
+  summary_data[header_time_period != time_period, metric_text := paste0(metric_text, "(", time_period, ")")]
+  summary_data[, heading_text := paste0(heading_text, "(", time_period, ")")]
+  return(summary_data)
+}
+
+
+filter_summary_data <- function(data_in, select_geographic_level, select_geo_breakdown) {
+  # take the summary dataset and filter it based on geographic selections
+  # if national display national only
+  if (select_geographic_level == "National") {
+    filtered_summary_data <- data_in[geographic_level == "National"]
+  } else if (select_geographic_level == "Regional") {
+    # if regional display the regions selected and National
+
+    filtered_summary_data <- data_in[geographic_level == "National" | (geographic_level == "Regional" & geo_breakdown == select_geo_breakdown)]
+  } else if (select_geographic_level == "Local authority") {
+    # if LA selected then display the LA, it's SN, it's region and national
+    # get the region from the LA and apply additional filtering
+    region_name <- location_data %>%
+      filter(la_name %in% select_geo_breakdown) %>%
+      pull(region_name)
+    filtered_summary_data <- data_in[geographic_level == "National" |
+      (geographic_level == "Regional" & geo_breakdown == region_name) |
+      (geographic_level == "Local authority" & geo_breakdown == select_geo_breakdown) |
+      (geographic_level == "Statistical neighbours (median)" & geo_breakdown_sn == select_geo_breakdown)]
+  }
+  filtered_summary_data
+}
+
+# summary_data <- collect_summary_data_all()
+# writexl::write_xlsx(summary_data, "~/CSC shiny dashboard/summary_data_for_QA.xlsx")
+# filter_summary_data(summary_data, select_geographic_level = "Local authority", select_geo_breakdown = "Sutton")
+
+transform_summary_data <- function(filtered_summary_data) {
+  transformed_data <- dcast(filtered_summary_data, sort_order + tab_name + accordion_text + heading_text + metric_text + time_period ~ geo_breakdown + geo_breakdown_sn, value.var = "value", fun.aggregate = function(x) x[1])
+}
+
+
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Outcome 1 -------------------
+# CLA rate per 10k children data
+read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k_children.csv") {
+  cla_rate_data <- fread(file)
+
+  cla_rate_data <- cla_rate_data %>%
+    colClean() %>%
+    # removing old Dorset, Poole, Bournemouth, Northamptonshire
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cla_rate_data,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c("number"),
+    group_cols = c("LA.number", "time_period", "population_count")
+  )
+  cla_rate_data <- rbindlist(l = list(cla_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cla_rate_data <- cla_rate_data %>%
+    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "rate_per_10000", col_new = "Rate Per 10000") %>%
+    redacted_to_negative(col_old = "number", col_new = "Number") %>%
+    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
+    distinct()
+
+  return(cla_rate_data)
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+read_cla_placement_data <- function(sn_long, file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
+  cla_placement_data <- read.csv(file)
+  cla_placement_data <- colClean(cla_placement_data) %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(Percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
+    distinct()
+
+  return(cla_placement_data)
+}
+read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
+  cla_31_march_data <- read.csv(file)
+  cla_31_march_data <- colClean(cla_31_march_data) %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    mutate(Percentage = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    )) %>%
+    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
+    distinct()
+
+  return(cla_31_march_data)
+}
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+merge_cla_dataframes <- function(sn_long) {
+  # Read the data
+  cla_rates <- read_cla_rate_data(sn_long = sn_long)
+  cla_placements <- read_cla_placement_data(sn_long)
+
+  # Rename the columns to make it clear which dataset they come from
+  cla_rates <- rename(cla_rates,
+    rates_number = number
+  )
+
+  cla_placements <- rename(cla_placements,
+    placements_number = number
+  )
+
+  # merge two data frames
+  merged_data <- merge(cla_rates, cla_placements,
+    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    allow.cartesian = TRUE
+  )
+
+  merged_data <- merged_data %>%
+    mutate(placement_per_10000 = round(as.numeric(placements_number) / as.numeric(population_estimate) * 10000)) %>%
+    mutate(`Placement Rate Per 10000` = case_when(
+      placements_number == "c" ~ -100,
+      placements_number == "low" ~ -200,
+      placements_number == "k" ~ -200,
+      placements_number == "u" ~ -250,
+      placements_number == "x" ~ -300,
+      placements_number == "z" ~ -400,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
+      TRUE ~ as.numeric(placement_per_10000)
+    )) %>%
+    mutate("placement_per_10000" = case_when(
+      placements_number == "c" ~ "c",
+      placements_number == "low" ~ "low",
+      placements_number == "k" ~ "k",
+      placements_number == "u" ~ "u",
+      placements_number == "x" ~ "x",
+      placements_number == "z" ~ "z",
+      percentage == "c" ~ "c",
+      percentage == "low" ~ "low",
+      percentage == "k" ~ "k",
+      percentage == "u" ~ "u",
+      percentage == "x" ~ "x",
+      percentage == "z" ~ "z",
+      rate_per_10000 == "c" ~ "c",
+      rate_per_10000 == "low" ~ "low",
+      rate_per_10000 == "k" ~ "k",
+      rate_per_10000 == "u" ~ "u",
+      rate_per_10000 == "x" ~ "x",
+      rate_per_10000 == "z" ~ "z",
+      TRUE ~ as.character(placement_per_10000)
+    )) %>%
+    mutate(characteristic = case_when(
+      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
+      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      TRUE ~ as.character(characteristic)
+    ))
+
+  return(merged_data)
+}
+merge_cla_31_march_dataframes <- function(sn_long) {
+  # Read the data
+  cla_rates <- read_cla_rate_data(sn_long)
+  cla_31_march_data <- read_cla_31_march_data()
+
+  # Rename the columns to make it clear which dataset they come from
+  cla_rates <- rename(cla_rates,
+    rates_number = number
+  )
+
+  cla_31_march_data <- rename(cla_31_march_data,
+    cla_31_march_number = number
+  )
+
+  # merge two data frames
+  merged_31_march_data <- merge(cla_rates, cla_31_march_data,
+    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
+    allow.cartesian = TRUE
+  )
+
+  merged_31_march_data <- merged_31_march_data %>%
+    mutate(placement_per_10000 = round(as.numeric(cla_31_march_number) / as.numeric(population_estimate) * 10000)) %>%
+    mutate(`Placement Rate Per 10000` = case_when(
+      cla_31_march_number == "c" ~ -100,
+      cla_31_march_number == "low" ~ -200,
+      cla_31_march_number == "k" ~ -200,
+      cla_31_march_number == "u" ~ -250,
+      cla_31_march_number == "x" ~ -300,
+      cla_31_march_number == "z" ~ -400,
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      rate_per_10000 == "c" ~ -100,
+      rate_per_10000 == "low" ~ -200,
+      rate_per_10000 == "k" ~ -200,
+      rate_per_10000 == "u" ~ -250,
+      rate_per_10000 == "x" ~ -300,
+      rate_per_10000 == "z" ~ -400,
+      TRUE ~ as.numeric(placement_per_10000)
+    )) %>%
+    mutate("placement_per_10000" = case_when(
+      cla_31_march_number == "c" ~ "c",
+      cla_31_march_number == "low" ~ "low",
+      cla_31_march_number == "k" ~ "k",
+      cla_31_march_number == "u" ~ "u",
+      cla_31_march_number == "x" ~ "x",
+      cla_31_march_number == "z" ~ "z",
+      percentage == "c" ~ "c",
+      percentage == "low" ~ "low",
+      percentage == "k" ~ "k",
+      percentage == "u" ~ "u",
+      percentage == "x" ~ "x",
+      percentage == "z" ~ "z",
+      rate_per_10000 == "c" ~ "c",
+      rate_per_10000 == "low" ~ "low",
+      rate_per_10000 == "k" ~ "k",
+      rate_per_10000 == "u" ~ "u",
+      rate_per_10000 == "x" ~ "x",
+      rate_per_10000 == "z" ~ "z",
+      TRUE ~ as.character(placement_per_10000)
+    )) %>%
+    mutate(characteristic = case_when(
+      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
+      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      TRUE ~ as.character(characteristic)
+    ))
+
+  return(merged_31_march_data)
+}
+
+# TODO: redundant code?
+# a <- merge_cla_31_march_dataframes()
+
+# CIN rate per 10k children data
+read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to_2024.csv") {
+  cin_rate_data <- fread(file)
+
+  # initial cleansing steps
+  cin_rate_data <- cin_rate_data %>%
+    colClean() %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cin_rate_data,
+    median_cols = c("At31_episodes_rate"),
+    sum_cols = c("At31_episodes"),
+    group_cols = c("LA.number", "time_period")
+  )
+
+  cin_rate_data <- rbindlist(l = list(cin_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
+  cin_rate_data <- cin_rate_data %>%
+    mutate(At31_episodes_rate = sapply(At31_episodes_rate, decimal_rounding, 0)) %>%
+    mutate(At31_episodes = sapply(At31_episodes, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "At31_episodes", col_new = "CIN_number") %>%
+    redacted_to_negative(col_old = "At31_episodes_rate", col_new = "CIN_rate")
+
+  # finalise the dataset by rounding rates and selecting relevant columns
+  cin_rate_data <- cin_rate_data %>%
+    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
+    distinct()
+
+  return(cin_rate_data)
+}
+
+# CIN referrals data
+read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
+  cin_referral_data <- fread(file)
+
+  # initial cleansing steps
+  cin_referral_data <- cin_referral_data %>%
+    colClean() %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cin_referral_data,
+    median_cols = c("Re_referrals_percent"), # what medians are we taking
+    sum_cols = c(), # "Referrals", "Re_referrals"),
+    group_cols = c("LA.number", "time_period")
+  )
+
+  cin_referral_data <- rbindlist(l = list(cin_referral_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
+  cin_referral_data <- cin_referral_data %>%
+    mutate(Re_referrals_percent = sapply(Re_referrals_percent, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "Referrals", col_new = "Referrals_num") %>%
+    redacted_to_negative(col_old = "Re_referrals", col_new = "Re_referrals_num") %>%
+    redacted_to_na(col_old = "Re_referrals_percent", col_new = "Re_referrals_percentage") %>%
+    redacted_to_negative(col_old = "Re_referrals_percent", col_new = "Re-referrals (%)")
+
+  # finalise the dataset by rounding rates and selecting relevant columns
+  cin_referral_data <- cin_referral_data %>%
+    select(
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, region_code, region_name, new_la_code, old_la_code, la_name,
+      Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage, `Re-referrals (%)`
+    ) %>%
+    distinct()
+
+  return(cin_referral_data)
+}
+
+
+
+# Outcome 1 Outcomes absence data for child well being and development
+read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_terms_la.csv") {
+  # Notes: there is no removal of old LAs here
+  outcomes_absence_data <- fread(file)
+
+  # due to a modified field name in the input dataset (10/04/2025) we perform a rename
+  outcomes_absence_data <- outcomes_absence_data %>%
+    rename(school_type = phase_type_grouping)
+
+  # Select only columns we want
+  outcomes_absence_data <- outcomes_absence_data %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = outcomes_absence_data,
+    median_cols = c("pt_overall", "pt_pupils_pa_10_exact"), # "pt_sess_authorised", "pt_sess_unauthorised"),
+    sum_cols = c("t_pupils"),
+    group_cols = c("LA.number", "time_period", "school_type", "social_care_group"),
+  )
+  outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
+  time_periods_to_update <- c(201920)
+  outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
+  # Make % columns numeric
+  outcomes_absence_data <- outcomes_absence_data %>%
+    select(
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
+      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
+    ) %>%
+    mutate(pt_overall = sapply(pt_overall, decimal_rounding, 1)) %>%
+    mutate(pt_pupils_pa_10_exact = sapply(pt_pupils_pa_10_exact, decimal_rounding, 1)) %>%
+    mutate(pt_sess_authorised = sapply(pt_sess_authorised, decimal_rounding, 1)) %>%
+    mutate(pt_sess_unauthorised = sapply(pt_sess_unauthorised, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "pt_overall", col_new = "Overall absence (%)") %>%
+    redacted_to_negative(col_old = "pt_pupils_pa_10_exact", col_new = "Persistent absentees (%)") %>%
+    redacted_to_negative(col_old = "pt_sess_authorised", col_new = "Authorised absence (%)") %>%
+    redacted_to_negative(col_old = "pt_sess_unauthorised", col_new = "Unauthorised absence (%)") %>%
+    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
+
+  return(outcomes_absence_data)
+}
+
+
+# Outcome 1 Outcomes KS2 data for education attainment
+read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
+  outcomes_ks2_data <- fread(file)
+
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = outcomes_ks2_data,
+    median_cols = c("pt_rwm_met_expected_standard"),
+    sum_cols = c("t_rwm_eligible_pupils"), # TODO: modify?
+    group_cols = c("LA.number", "time_period", "social_care_group"),
+  )
+  outcomes_ks2_data <- rbindlist(l = list(outcomes_ks2_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # manual step to ensure COVID years are redacted to X
+  cols_to_update <- c("pt_rwm_met_expected_standard", "t_rwm_eligible_pupils")
+  time_periods_to_update <- c(201920, 202021)
+  outcomes_ks2_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
+
+
+  outcomes_ks2_data <- outcomes_ks2_data %>%
+    # TODO: reduce the number of columns
+    # Select only columns we want
+    select(
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
+      t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
+      pt_mat_met_expected_standard, t_rwm_eligible_pupils, t_rwm_met_expected_standard, pt_rwm_met_expected_standard,
+      t_gps_eligible_pupils, t_gps_met_expected_standard, pt_gps_met_expected_standard, t_scita_eligible_pupils,
+      t_scita_met_expected_standard, pt_scita_met_expected_standard, t_read_progress_eligible_pupils,
+      t_read_progress_score, avg_read_progress_score, avg_read_progress_score_lower_CI, avg_read_progress_score_upper_CI,
+      t_writta_progress_eligible_pupils, t_writta_progress_score, avg_writta_progress_score, avg_writta_progress_score_lower_CI,
+      avg_writta_progress_score_upper_CI, t_mat_progress_eligible_pupils, t_mat_progress_score, avg_mat_progress_score,
+      avg_mat_progress_score_lower_CI, avg_mat_progress_score_upper_CI
+    ) %>%
+    mutate(pt_rwm_met_expected_standard = sapply(pt_rwm_met_expected_standard, decimal_rounding, 0)) %>%
+    # Make % columns numeric
+    redacted_to_negative(col_old = "pt_rwm_met_expected_standard", col_new = "Expected standard reading writing maths (%)")
+  # redacted_to_negative(col_old = "t_rwm_eligible_pupils", col_new = "?")
+
+
+
+  return(outcomes_ks2_data)
+}
+
+
+
+# Outcome 1 Outcomes KS4 data for education attainment
+read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
+  outcomes_ks4_data <- fread(file)
+
+  # Select only columns we want
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = outcomes_ks4_data,
+    median_cols = c("avg_att8"),
+    sum_cols = c("t_pupils"),
+    group_cols = c("LA.number", "time_period", "social_care_group"),
+  )
+
+  outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  outcomes_ks4_data <- outcomes_ks4_data %>%
+    select(
+      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
+      "time_period", "geographic_level", "region_name", social_care_group,
+      version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
+      t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
+      t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
+    ) %>%
+    mutate(avg_att8 = sapply(avg_att8, decimal_rounding, 1)) %>%
+    # Make number columns numeric
+    redacted_to_negative(col_old = "avg_att8", col_new = "Average Attainment 8") %>%
+    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
+
+  return(outcomes_ks4_data)
+}
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Outcome 2 ----
+# read outcome 2 function but without manual calculation of the percentages.
+read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_the_year.csv") {
+  # drop old LA's
+  ceased_cla_data <- fread(file)
+
+  # TODO: remove make this logic a function as we have various implementations of it
+  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
+  ceased_cla_data <- ceased_cla_data %>%
+    filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove) %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = ceased_cla_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
+  )
+  ceased_cla_data <- rbindlist(l = list(ceased_cla_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  ceased_cla_data <- ceased_cla_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    # Make number columns numeric
+    redacted_to_negative(col_old = "percentage", col_new = "Ceased (%)") %>%
+    redacted_to_negative(col_old = "number", col_new = "Number ceased")
+
+  totals <- ceased_cla_data %>%
+    filter(characteristic == "Total") %>%
+    rename("Total_num" = "Number ceased") %>%
+    mutate("Total" = number) %>%
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, cla_group, Total_num, Total)
+
+  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "cla_group"))
+  joined <- joined %>%
+    select("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
+  # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
+  # For charts, char values do not work so use column "Ceased (%)"
+
+  return(joined)
+}
+
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Outcome 3 ----
+### Outcome 3 Child Safety General ----
+##### Child Protection Plans starting during year, which were second or subsequent plans (accordion 1) ----
+read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
+  cpp_in_year_data <- fread(file)
+
+  # add geo_breakdown
+  cpp_in_year_data <- cpp_in_year_data %>%
+    insert_geo_breakdown() %>%
+    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1))
+
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cpp_in_year_data,
+    median_cols = c("CPP_subsequent_percent"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "category"),
+  )
+  cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  # round and create the sort order numeric column
+  cpp_in_year_data <- cpp_in_year_data %>%
+    select(
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
+    ) %>%
+    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "CPP_subsequent_percent", col_new = "Repeat_CPP_percent")
+
+  return(cpp_in_year_data)
+}
+
+### CPP by duration (accordion 2)
+read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
+  cpp_by_duration_data <- read.csv(file) %>% data.table()
+
+  cpp_by_duration_data <- cpp_by_duration_data %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cpp_by_duration_data,
+    median_cols = c("X2_years_or_more_percent"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period"),
+  )
+  cpp_by_duration_data <- rbindlist(l = list(cpp_by_duration_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cpp_by_duration_data <- cpp_by_duration_data %>%
+    mutate(X2_years_or_more_percent = sapply(X2_years_or_more_percent, decimal_rounding, digits = 1)) %>%
+    select(
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, old_la_code,
+      CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
+      more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
+    ) %>%
+    redacted_to_negative(col_old = "X2_years_or_more_percent", col_new = "CPP_2_years_or_more_percent")
+
+
+  return(cpp_by_duration_data)
+}
+
+### Hospital admissions (accordion 3) ------
+# Data for this indicator is from an API and only shows the latest data
+# LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+# Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
+
+read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
+  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
+  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
+
+  la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
+  region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
+
+  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+    select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
+    rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
+    distinct()
+
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
+  admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
+
+  admissions_data <- admissions_data_joined %>%
+    mutate(Value = case_when(
+      is.na(Value) ~ -300,
+      TRUE ~ as.numeric(Value)
+    )) %>%
+    mutate(Denominator = case_when(
+      is.na(Denominator) ~ -300,
+      TRUE ~ as.numeric(Denominator)
+    ))
+  admissions_data$Value <- round(admissions_data$Value, digits = 1)
+
+  admissions_data2 <- admissions_data %>%
+    mutate(rate_per_10000 = case_when(
+      Value == -300 ~ "x",
+      TRUE ~ as.character(Value)
+    ))
+
+  # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
+  la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
+    select(old_la_code, new_la_code) %>%
+    distinct() %>%
+    separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
+
+  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
+  admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
+  admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
+
+  # Name changes
+
+  admissions_data3 <- admissions_data3 %>%
+    mutate(geo_breakdown = case_when(
+      geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
+      geo_breakdown == "Bristol" ~ "Bristol, City of",
+      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
+      geo_breakdown == "Kingston upon Hull" ~ "Kingston upon Hull, City of",
+      TRUE ~ as.character(geo_breakdown)
+    ))
+
+  # Inner London Data
+
+  inner_london <- c(
+    "Westminster",
+    "Tower Hamlets",
+    "Camden",
+    "Hackney",
+    "Kensington and Chelsea",
+    "Southwark",
+    "Lewisham",
+    "Islington",
+    "Wandsworth",
+    "Hammersmith and Fulham",
+    "Haringey",
+    "Lambeth",
+    "Newham",
+    "City of London"
+  )
+  inner_london_data <- admissions_data3 %>%
+    filter(geo_breakdown %in% inner_london)
+
+  inner_london_stat <- inner_london_data %>%
+    summarise(
+      time_period = first(time_period),
+      geographic_level = "Regional",
+      geo_breakdown = "Inner London",
+      new_la_code = "E13000001",
+      Value = sum(Value),
+      Count = sum(Count, na.rm = TRUE),
+      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
+      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
+      old_la_code = NA
+    )
+
+  # Outer London Data
+
+  Outer_london <- c(
+    "Bexley",
+    "Greenwich",
+    "Harrow",
+    "Brent",
+    "Waltham Forest",
+    "Ealing",
+    "Richmond upon Thames",
+    "Hillingdon",
+    "Kingston upon Thames",
+    "Hounslow",
+    "Bromley",
+    "Barnet",
+    "Croydon",
+    "Enfield",
+    "Merton",
+    "Sutton",
+    "Barking and Dagenham",
+    "Redbridge",
+    "Havering"
+  )
+
+  Outer_london_data <- admissions_data3 %>%
+    filter(geo_breakdown %in% Outer_london)
+
+  Outer_london_stat <- Outer_london_data %>%
+    summarise(
+      time_period = first(time_period),
+      geographic_level = "Regional",
+      geo_breakdown = "Outer London",
+      new_la_code = "E13000002",
+      Value = sum(Value),
+      Count = sum(Count, na.rm = TRUE),
+      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
+      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
+      old_la_code = NA
+    )
+
+  # Inner and Outer London
+
+  inner_and_outer_london <- rbind(inner_london_stat, Outer_london_stat)
+
+  # rate per 10000
+
+  inner_and_outer_london <- inner_and_outer_london %>%
+    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
+    mutate(Value = Count / (Denominator / 10000))
+
+  # Convert rate_per_10000 to a character for all rows
+  admissions_data3 <- admissions_data3 %>%
+    mutate(rate_per_10000 = case_when(
+      is.na(rate_per_10000) ~ "x",
+      TRUE ~ as.character(rate_per_10000)
+    ))
+
+  # Add Inner and Outer London to the data frame
+
+  admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
+
+  # Round headline values
+  admissions_data3 <- admissions_data3 %>%
+    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
+      as.character(round(as.numeric(rate_per_10000))),
+      rate_per_10000
+    ))
+
+  # Round plot values
+  admissions_data3 <- admissions_data3 %>%
+    mutate(Value = round(Value), 0)
+
+  return(admissions_data3)
+}
+
+
+
+## Child abuse/Neglect / Harms outside the home ----
+### Assessment Factors ------
+read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
+  ass_fac_data_raw <- fread(file)
+  ass_fac_data_raw <- ass_fac_data_raw %>%
+    insert_geo_breakdown()
+
+  columns <- c(
+    "Episodes_with_assessment_factor",
+    "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
+    "Drug_Misuse_parent", "Drug_Misuse_person", "Domestic_Abuse_child", "Domestic_Abuse_parent",
+    "Domestic_Abuse_person", "Mental_Health_child", "Mental_Health_parent", "Mental_Health_person", "Learning_Disability_child",
+    "Learning_Disability_parent", "Learning_Disability_person", "Physical_Disability_child",
+    "Physical_Disability_parent", "Physical_Disability_person", "Young_Carer", "Privately_fostered",
+    "Unaccompanied_asylum_seeker", "Going_missing", "Child_sexual_exploitation", "Trafficking", "Gangs",
+    "Socially_unacceptable_behaviour", "Self_harm", "Neglect", "Emotional_Abuse", "Physical_Abuse_unknown",
+    "Physical_Abuse_child_on_child", "Physical_Abuse_adult_on_child", "Sexual_Abuse_unknown", "Sexual_Abuse_child_on_child",
+    "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
+  )
+
+  # original steps to pivot and clean columns
+  ass_fac_data <- ass_fac_data_raw %>%
+    pivot_longer(
+      cols = columns,
+      names_to = "assessment_factor",
+      values_to = "value"
+    ) %>%
+    data.table() %>%
+    mutate(assessment_factor = gsub("_", " ", assessment_factor))
+
+  # Using the population data from CLA rates data, because Data needs to be rates per 10,000
+  if (exists(x = "cla_rates")) {
+    populations <- copy(cla_rates)
+  } else {
+    populations <- suppressWarnings(read_cla_rate_data())
+  }
+  populations <- populations %>%
+    filter(geo_breakdown != "Statistical neighbours (median)") %>%
+    select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
+    distinct()
+  ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
+    mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
+    filter(time_period != 2018)
+
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = ass_fac_data,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "assessment_factor"),
+  )
+  ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
+  ass_fac_data <- ass_fac_data %>%
+    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
+    redacted_to_negative(col_old = "value", col_new = "Number") %>%
+    redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
+  # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
+  # select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
+
+
+  return(ass_fac_data)
+}
+
+
+
+# Outcome 4 -----
+## Number of placements (placement_changes_data) -----
+
+read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_stability.csv") {
+  placement_chg_data <- fread(file)
+
+  placement_chg_data <- placement_chg_data %>%
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown() %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = placement_chg_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "cla_group", "placement_stability"),
+  )
+  placement_chg_data <- rbindlist(l = list(placement_chg_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  placement_chg_data <- placement_chg_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "Percent") %>%
+    rename("Percentage" = "percentage", "Number" = "number")
+
+  return(placement_chg_data)
+}
+
+## Placement type and distance----
+read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by_characteristics.csv") {
+  placement_info_data <- fread(file)
+
+  placement_info_data <- placement_info_data %>%
+    filter(!(new_la_code %in% dropList)) %>%
+    # custom filter to reduce dataset :-)
+    filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = placement_info_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
+  )
+  placement_info_data <- rbindlist(l = list(placement_info_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  placement_info_data <- placement_info_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "Percent")
+
+  return(placement_info_data)
+}
+
+# Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
+
+## Care leavers activity -----
+read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leavers_activity.csv") {
+  cl_activity_data <- fread(file) %>%
+    # filter out old dorset code
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cl_activity_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "age", "activity"),
+  )
+  cl_activity_data <- rbindlist(l = list(cl_activity_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cl_activity_data <- cl_activity_data %>%
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, age, activity, number, percentage) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+
+  # Age column needs to be uniform with the accommodation data as they share the same age range filter
+  # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
+  cl_activity_data[age == "Aged 17 to 18", age := "17 to 18 years"]
+  cl_activity_data[age == "Aged 19 to 21", age := "19 to 21 years"]
+
+  return(cl_activity_data)
+}
+
+## Care leavers accommodation -----
+read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la_care_leavers_accommodation_suitability.csv") {
+  cl_accom_data <- fread(file) %>%
+    # filter out old dorset code
+    filter(!(new_la_code %in% dropList)) %>%
+    insert_geo_breakdown()
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = cl_accom_data,
+    median_cols = c("percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "age", "accommodation_suitability"),
+  )
+  cl_accom_data <- rbindlist(l = list(cl_accom_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  cl_accom_data <- cl_accom_data %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    select(
+      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code,
+      age, accommodation_suitability, number, percentage
+    ) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+
+  # TODO: in care_leavers_activity_data we clean the text in the age field, check whether this is necessary in this file
+
+  return(cl_accom_data)
+}
+
+
+## Wellbeing of child -----
+
+read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_cla.csv") {
+  data <- read.csv(file)
+
+  data2 <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National",
+      geographic_level == "Regional" ~ region_name,
+      geographic_level == "Local authority" ~ la_name
+    )) %>%
+    filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
+    filter(!(new_la_code %in% dropList)) %>%
+    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
+      format(as.numeric(as.character(percentage)), nsmall = 1),
+      percentage
+    )) %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
+
+  data3 <- data2 %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    )) %>%
+    mutate(percentage_num = case_when(
+      percentage == "c" ~ -100,
+      percentage == "low" ~ -200,
+      percentage == "k" ~ -200,
+      percentage == "u" ~ -250,
+      percentage == "x" ~ -300,
+      percentage == "z" ~ -400,
+      TRUE ~ as.numeric(percentage)
+    ))
+
+  # pull out the SDQ_scores_received column
+  data_totals <- data3 %>%
+    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
+    filter(characteristic == "SDQ score was received") %>%
+    rename(sdq_score_recd = "number") %>%
+    mutate(sdq_score_recd = as.numeric(sdq_score_recd)) %>%
+    select(-characteristic)
+
+  # join the sdq_score_recd totals to the original dataset and calculate the weighted score
+  data4 <- data3 %>%
+    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group)) %>%
+    mutate(sdq_score_recd_x_score = case_when(
+      characteristic == "SDQ average score" ~ (as.numeric(sdq_score_recd) * as.numeric(number)),
+      TRUE ~ NA
+    ))
+
+  data5 <- data4 %>%
+    mutate(score_label = case_when(
+      (number_num >= 0 & number_num < 14) ~ "Normal",
+      (number_num >= 14 & number_num < 17) ~ "Borderline",
+      (number_num >= 17 & number_num <= 40) ~ "Cause for concern",
+      (number_num < 0) ~ "Supressed Score",
+      TRUE ~ as.character("Error")
+    ))
+
+  return(data5)
+}
+
+## Placement order and match data ----
+read_placement_order_match_data <- function(file = "data/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
+  data <- read.csv(file)
+
+  data <- data %>%
+    mutate(geo_breakdown = case_when(
+      geographic_level == "National" ~ "National"
+    )) %>%
+    filter(stage_of_adoption_process == "2. Average time between decision that child should be placed for adoption and matching of child and adopters")
+
+  data <- data %>%
+    mutate(number_num = case_when(
+      number == "c" ~ -100,
+      number == "low" ~ -200,
+      number == "k" ~ -200,
+      number == "u" ~ -250,
+      number == "x" ~ -300,
+      number == "z" ~ -400,
+      TRUE ~ as.numeric(number)
+    ))
+
+  # total(all ages)
+
+  data <- data %>%
+    mutate(age_start_poc = case_when(
+      age_start_poc == "Total" ~ "Total (all ages)",
+      TRUE ~ as.character(age_start_poc)
+    ))
+
+  data$months <- sapply(strsplit(data$number, ":"), function(x) {
+    years <- as.numeric(x[1])
+    months <- as.numeric(x[2])
+    months <- years * 12 + months
+    return(months)
+  })
+
+
+  return(data)
+}
+
+
+
+
+
+
+
+
+
+
 # Enabler 2 -----------------
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
@@ -198,7 +1419,6 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
 
   return(workforce_data)
 }
-
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -878,1155 +2098,4 @@ pivot_ofsted_data <- function(ofsted_leadership_data) {
     )
 
   return(ofsted_leadership_data_long)
-}
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Outcome 1 -------------------
-# CLA rate per 10k children data
-read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k_children.csv") {
-  cla_rate_data <- fread(file)
-
-  cla_rate_data <- cla_rate_data %>%
-    colClean() %>%
-    # removing old Dorset, Poole, Bournemouth, Northamptonshire
-    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cla_rate_data,
-    median_cols = c("rate_per_10000"),
-    sum_cols = c("number"),
-    group_cols = c("LA.number", "time_period", "population_count")
-  )
-  cla_rate_data <- rbindlist(l = list(cla_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  cla_rate_data <- cla_rate_data %>%
-    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
-    redacted_to_negative(col_old = "rate_per_10000", col_new = "Rate Per 10000") %>%
-    redacted_to_negative(col_old = "number", col_new = "Number") %>%
-    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, population_count, population_estimate, number, Number, rate_per_10000, `Rate Per 10000`) %>%
-    distinct()
-
-  return(cla_rate_data)
-}
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-read_cla_placement_data <- function(sn_long, file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
-  cla_placement_data <- read.csv(file)
-  cla_placement_data <- colClean(cla_placement_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(Percentage = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
-    distinct()
-
-  return(cla_placement_data)
-}
-read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
-  cla_31_march_data <- read.csv(file)
-  cla_31_march_data <- colClean(cla_31_march_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(Percentage = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    )) %>%
-    filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
-    select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
-    distinct()
-
-  return(cla_31_march_data)
-}
-
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-merge_cla_dataframes <- function(sn_long) {
-  # Read the data
-  cla_rates <- read_cla_rate_data(sn_long = sn_long)
-  cla_placements <- read_cla_placement_data(sn_long)
-
-  # Rename the columns to make it clear which dataset they come from
-  cla_rates <- rename(cla_rates,
-    rates_number = number
-  )
-
-  cla_placements <- rename(cla_placements,
-    placements_number = number
-  )
-
-  # merge two data frames
-  merged_data <- merge(cla_rates, cla_placements,
-    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    allow.cartesian = TRUE
-  )
-
-  merged_data <- merged_data %>%
-    mutate(placement_per_10000 = round(as.numeric(placements_number) / as.numeric(population_estimate) * 10000)) %>%
-    mutate(`Placement Rate Per 10000` = case_when(
-      placements_number == "c" ~ -100,
-      placements_number == "low" ~ -200,
-      placements_number == "k" ~ -200,
-      placements_number == "u" ~ -250,
-      placements_number == "x" ~ -300,
-      placements_number == "z" ~ -400,
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      rate_per_10000 == "c" ~ -100,
-      rate_per_10000 == "low" ~ -200,
-      rate_per_10000 == "k" ~ -200,
-      rate_per_10000 == "u" ~ -250,
-      rate_per_10000 == "x" ~ -300,
-      rate_per_10000 == "z" ~ -400,
-      TRUE ~ as.numeric(placement_per_10000)
-    )) %>%
-    mutate("placement_per_10000" = case_when(
-      placements_number == "c" ~ "c",
-      placements_number == "low" ~ "low",
-      placements_number == "k" ~ "k",
-      placements_number == "u" ~ "u",
-      placements_number == "x" ~ "x",
-      placements_number == "z" ~ "z",
-      percentage == "c" ~ "c",
-      percentage == "low" ~ "low",
-      percentage == "k" ~ "k",
-      percentage == "u" ~ "u",
-      percentage == "x" ~ "x",
-      percentage == "z" ~ "z",
-      rate_per_10000 == "c" ~ "c",
-      rate_per_10000 == "low" ~ "low",
-      rate_per_10000 == "k" ~ "k",
-      rate_per_10000 == "u" ~ "u",
-      rate_per_10000 == "x" ~ "x",
-      rate_per_10000 == "z" ~ "z",
-      TRUE ~ as.character(placement_per_10000)
-    )) %>%
-    mutate(characteristic = case_when(
-      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
-      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
-      TRUE ~ as.character(characteristic)
-    ))
-
-
-  return(merged_data)
-}
-merge_cla_31_march_dataframes <- function(sn_long) {
-  # Read the data
-  cla_rates <- read_cla_rate_data(sn_long)
-  cla_31_march_data <- read_cla_31_march_data()
-
-  # Rename the columns to make it clear which dataset they come from
-  cla_rates <- rename(cla_rates,
-    rates_number = number
-  )
-
-  cla_31_march_data <- rename(cla_31_march_data,
-    cla_31_march_number = number
-  )
-
-  # merge two data frames
-  merged_31_march_data <- merge(cla_rates, cla_31_march_data,
-    by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
-    allow.cartesian = TRUE
-  )
-
-  merged_31_march_data <- merged_31_march_data %>%
-    mutate(placement_per_10000 = round(as.numeric(cla_31_march_number) / as.numeric(population_estimate) * 10000)) %>%
-    mutate(`Placement Rate Per 10000` = case_when(
-      cla_31_march_number == "c" ~ -100,
-      cla_31_march_number == "low" ~ -200,
-      cla_31_march_number == "k" ~ -200,
-      cla_31_march_number == "u" ~ -250,
-      cla_31_march_number == "x" ~ -300,
-      cla_31_march_number == "z" ~ -400,
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      rate_per_10000 == "c" ~ -100,
-      rate_per_10000 == "low" ~ -200,
-      rate_per_10000 == "k" ~ -200,
-      rate_per_10000 == "u" ~ -250,
-      rate_per_10000 == "x" ~ -300,
-      rate_per_10000 == "z" ~ -400,
-      TRUE ~ as.numeric(placement_per_10000)
-    )) %>%
-    mutate("placement_per_10000" = case_when(
-      cla_31_march_number == "c" ~ "c",
-      cla_31_march_number == "low" ~ "low",
-      cla_31_march_number == "k" ~ "k",
-      cla_31_march_number == "u" ~ "u",
-      cla_31_march_number == "x" ~ "x",
-      cla_31_march_number == "z" ~ "z",
-      percentage == "c" ~ "c",
-      percentage == "low" ~ "low",
-      percentage == "k" ~ "k",
-      percentage == "u" ~ "u",
-      percentage == "x" ~ "x",
-      percentage == "z" ~ "z",
-      rate_per_10000 == "c" ~ "c",
-      rate_per_10000 == "low" ~ "low",
-      rate_per_10000 == "k" ~ "k",
-      rate_per_10000 == "u" ~ "u",
-      rate_per_10000 == "x" ~ "x",
-      rate_per_10000 == "z" ~ "z",
-      TRUE ~ as.character(placement_per_10000)
-    )) %>%
-    mutate(characteristic = case_when(
-      characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
-      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
-      TRUE ~ as.character(characteristic)
-    ))
-
-
-  return(merged_31_march_data)
-}
-
-# TODO: redundant code?
-# a <- merge_cla_31_march_dataframes()
-
-# CIN rate per 10k children data
-read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to_2024.csv") {
-  cin_rate_data <- fread(file)
-
-  # initial cleansing steps
-  cin_rate_data <- cin_rate_data %>%
-    colClean() %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cin_rate_data,
-    median_cols = c("At31_episodes_rate"),
-    sum_cols = c("At31_episodes"),
-    group_cols = c("LA.number", "time_period")
-  )
-
-  cin_rate_data <- rbindlist(l = list(cin_rate_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
-  cin_rate_data <- cin_rate_data %>%
-    mutate(At31_episodes_rate = sapply(At31_episodes_rate, decimal_rounding, 0)) %>%
-    mutate(At31_episodes = sapply(At31_episodes, decimal_rounding, 0)) %>%
-    redacted_to_negative(col_old = "At31_episodes", col_new = "CIN_number") %>%
-    redacted_to_negative(col_old = "At31_episodes_rate", col_new = "CIN_rate")
-
-  # finalise the dataset by rounding rates and selecting relevant columns
-  cin_rate_data <- cin_rate_data %>%
-    select(geographic_level, geo_breakdown, geo_breakdown_sn, time_period, region_code, region_name, new_la_code, old_la_code, la_name, CIN_number, At31_episodes, CIN_rate, At31_episodes_rate) %>%
-    distinct()
-
-  return(cin_rate_data)
-}
-
-# CIN referrals data
-read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
-  cin_referral_data <- fread(file)
-
-  # initial cleansing steps
-  cin_referral_data <- cin_referral_data %>%
-    colClean() %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cin_referral_data,
-    median_cols = c("Re_referrals_percent"), # what medians are we taking
-    sum_cols = c(), # "Referrals", "Re_referrals"),
-    group_cols = c("LA.number", "time_period")
-  )
-
-  cin_referral_data <- rbindlist(l = list(cin_referral_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # handle the redactions by creating numeric columns from char columns with arbitrary values to aid table sort order
-  cin_referral_data <- cin_referral_data %>%
-    mutate(Re_referrals_percent = sapply(Re_referrals_percent, decimal_rounding, 1)) %>%
-    redacted_to_negative(col_old = "Referrals", col_new = "Referrals_num") %>%
-    redacted_to_negative(col_old = "Re_referrals", col_new = "Re_referrals_num") %>%
-    redacted_to_na(col_old = "Re_referrals_percent", col_new = "Re_referrals_percentage") %>%
-    redacted_to_negative(col_old = "Re_referrals_percent", col_new = "Re-referrals (%)")
-
-  # finalise the dataset by rounding rates and selecting relevant columns
-  cin_referral_data <- cin_referral_data %>%
-    select(
-      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, region_code, region_name, new_la_code, old_la_code, la_name,
-      Referrals, Re_referrals, Re_referrals_percent, Referrals_num, Re_referrals_num, Re_referrals_percentage, `Re-referrals (%)`
-    ) %>%
-    distinct()
-
-  return(cin_referral_data)
-}
-
-
-
-# Outcome 1 Outcomes absence data for child well being and development
-read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_terms_la.csv") {
-  # Notes: there is no removal of old LAs here
-  outcomes_absence_data <- fread(file)
-
-  # due to a modified field name in the input dataset (10/04/2025) we perform a rename
-  outcomes_absence_data <- outcomes_absence_data %>%
-    rename(school_type = phase_type_grouping)
-
-  # Select only columns we want
-  outcomes_absence_data <- outcomes_absence_data %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = outcomes_absence_data,
-    median_cols = c("pt_overall", "pt_pupils_pa_10_exact"), # "pt_sess_authorised", "pt_sess_unauthorised"),
-    sum_cols = c("t_pupils"),
-    group_cols = c("LA.number", "time_period", "school_type", "social_care_group"),
-  )
-  outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
-  time_periods_to_update <- c(201920)
-  outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
-
-  # Make % columns numeric
-  outcomes_absence_data <- outcomes_absence_data %>%
-    select(
-      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
-      "time_period", "geographic_level", "region_name", social_care_group,
-      school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
-      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
-    ) %>%
-    mutate(pt_overall = sapply(pt_overall, decimal_rounding, 1)) %>%
-    mutate(pt_pupils_pa_10_exact = sapply(pt_pupils_pa_10_exact, decimal_rounding, 1)) %>%
-    mutate(pt_sess_authorised = sapply(pt_sess_authorised, decimal_rounding, 1)) %>%
-    mutate(pt_sess_unauthorised = sapply(pt_sess_unauthorised, decimal_rounding, 1)) %>%
-    redacted_to_negative(col_old = "pt_overall", col_new = "Overall absence (%)") %>%
-    redacted_to_negative(col_old = "pt_pupils_pa_10_exact", col_new = "Persistent absentees (%)") %>%
-    redacted_to_negative(col_old = "pt_sess_authorised", col_new = "Authorised absence (%)") %>%
-    redacted_to_negative(col_old = "pt_sess_unauthorised", col_new = "Unauthorised absence (%)") %>%
-    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
-
-  return(outcomes_absence_data)
-}
-
-
-# Outcome 1 Outcomes KS2 data for education attainment
-read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
-  outcomes_ks2_data <- fread(file)
-
-  outcomes_ks2_data <- outcomes_ks2_data %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = outcomes_ks2_data,
-    median_cols = c("pt_rwm_met_expected_standard"),
-    sum_cols = c("t_rwm_eligible_pupils"), # TODO: modify?
-    group_cols = c("LA.number", "time_period", "social_care_group"),
-  )
-  outcomes_ks2_data <- rbindlist(l = list(outcomes_ks2_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("pt_rwm_met_expected_standard", "t_rwm_eligible_pupils")
-  time_periods_to_update <- c(201920, 202021)
-  outcomes_ks2_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
-
-
-  outcomes_ks2_data <- outcomes_ks2_data %>%
-    # TODO: reduce the number of columns
-    # Select only columns we want
-    select(
-      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
-      "time_period", "geographic_level", "region_name", social_care_group,
-      version, t_read_eligible_pupils, t_read_met_expected_standard, pt_read_met_expected_standard, t_writta_eligible_pupils,
-      t_writta_met_expected_standard, pt_writta_met_expected_standard, t_mat_eligible_pupils, t_mat_met_expected_standard,
-      pt_mat_met_expected_standard, t_rwm_eligible_pupils, t_rwm_met_expected_standard, pt_rwm_met_expected_standard,
-      t_gps_eligible_pupils, t_gps_met_expected_standard, pt_gps_met_expected_standard, t_scita_eligible_pupils,
-      t_scita_met_expected_standard, pt_scita_met_expected_standard, t_read_progress_eligible_pupils,
-      t_read_progress_score, avg_read_progress_score, avg_read_progress_score_lower_CI, avg_read_progress_score_upper_CI,
-      t_writta_progress_eligible_pupils, t_writta_progress_score, avg_writta_progress_score, avg_writta_progress_score_lower_CI,
-      avg_writta_progress_score_upper_CI, t_mat_progress_eligible_pupils, t_mat_progress_score, avg_mat_progress_score,
-      avg_mat_progress_score_lower_CI, avg_mat_progress_score_upper_CI
-    ) %>%
-    mutate(pt_rwm_met_expected_standard = sapply(pt_rwm_met_expected_standard, decimal_rounding, 0)) %>%
-    # Make % columns numeric
-    redacted_to_negative(col_old = "pt_rwm_met_expected_standard", col_new = "Expected standard reading writing maths (%)")
-  # redacted_to_negative(col_old = "t_rwm_eligible_pupils", col_new = "?")
-
-
-
-  return(outcomes_ks2_data)
-}
-
-
-
-# Outcome 1 Outcomes KS4 data for education attainment
-read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
-  outcomes_ks4_data <- fread(file)
-
-  # Select only columns we want
-  outcomes_ks4_data <- outcomes_ks4_data %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = outcomes_ks4_data,
-    median_cols = c("avg_att8"),
-    sum_cols = c("t_pupils"),
-    group_cols = c("LA.number", "time_period", "social_care_group"),
-  )
-
-  outcomes_ks4_data <- rbindlist(l = list(outcomes_ks4_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  outcomes_ks4_data <- outcomes_ks4_data %>%
-    select(
-      geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
-      "time_period", "geographic_level", "region_name", social_care_group,
-      version, t_pupils, t_att8, avg_att8, t_l2basics_95, pt_l2basics_95, t_l2basics_94, pt_l2basics_94,
-      t_ebacc_e_ptq_ee, pt_ebacc_e_ptq_ee, t_ebaccaps, avg_ebaccaps, t_inp8calc,
-      t_p8score, avg_p8score, p8score_CI_low, p8score_CI_upp
-    ) %>%
-    mutate(avg_att8 = sapply(avg_att8, decimal_rounding, 1)) %>%
-    # Make number columns numeric
-    redacted_to_negative(col_old = "avg_att8", col_new = "Average Attainment 8") %>%
-    redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
-
-  return(outcomes_ks4_data)
-}
-
-# Outcome 3 Child Protection Plans starting during year, which were second or subsequent plans ----
-read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
-  cpp_in_year_data <- fread(file)
-
-  # add geo_breakdown
-  cpp_in_year_data <- cpp_in_year_data %>%
-    insert_geo_breakdown() %>%
-    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1))
-
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cpp_in_year_data,
-    median_cols = c("CPP_subsequent_percent"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period", "category"),
-  )
-  cpp_in_year_data <- rbindlist(l = list(cpp_in_year_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  # round and create the sort order numeric column
-  cpp_in_year_data <- cpp_in_year_data %>%
-    select(
-      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, new_la_code, old_la_code, la_name, CPP_start, CPP_subsequent, CPP_subsequent_percent
-    ) %>%
-    mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1)) %>%
-    redacted_to_negative(col_old = "CPP_subsequent_percent", col_new = "Repeat_CPP_percent")
-
-  return(cpp_in_year_data)
-}
-
-read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
-  cpp_by_duration_data <- read.csv(file) %>% data.table()
-
-  cpp_by_duration_data <- cpp_by_duration_data %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cpp_by_duration_data,
-    median_cols = c("X2_years_or_more_percent"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period"),
-  )
-  cpp_by_duration_data <- rbindlist(l = list(cpp_by_duration_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-
-  cpp_by_duration_data <- cpp_by_duration_data %>%
-    mutate(X2_years_or_more_percent = sapply(X2_years_or_more_percent, decimal_rounding, digits = 1)) %>%
-    select(
-      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, region_name, old_la_code,
-      CPP_At31, `X3_months_or_less`, `X3_months_or_less_percent`, more_than_3_months_6_months, more_than_3_months_6_months_percent, more_than_6_months_less_than_1_year,
-      more_than_6_months_less_than_1_year_percent, `X1_year_less_than_2_years`, `X1_year_less_than_2_years_percent`, `X2_years_or_more`, `X2_years_or_more_percent`
-    ) %>%
-    redacted_to_negative(col_old = "X2_years_or_more_percent", col_new = "CPP_2_years_or_more_percent")
-
-
-  return(cpp_by_duration_data)
-}
-
-# Outcome 2 ----
-# read outcome 2 function but without manual calculation of the percentages.
-read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_the_year.csv") {
-  # drop old LA's
-  ceased_cla_data <- fread(file)
-
-  # TODO: remove make this logic a function as we have various implementations of it
-  las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
-  ceased_cla_data <- ceased_cla_data %>%
-    filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove) %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = ceased_cla_data,
-    median_cols = c("percentage"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
-  )
-  ceased_cla_data <- rbindlist(l = list(ceased_cla_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  ceased_cla_data <- ceased_cla_data %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
-    # Make number columns numeric
-    redacted_to_negative(col_old = "percentage", col_new = "Ceased (%)") %>%
-    redacted_to_negative(col_old = "number", col_new = "Number ceased")
-
-  totals <- ceased_cla_data %>%
-    filter(characteristic == "Total") %>%
-    rename("Total_num" = "Number ceased") %>%
-    mutate("Total" = number) %>%
-    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, cla_group, Total_num, Total)
-
-  joined <- left_join(ceased_cla_data, totals, by = c("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "cla_group"))
-  joined <- joined %>%
-    select("time_period", "geographic_level", "geo_breakdown", "geo_breakdown_sn", "old_la_code", "new_la_code", "cla_group", "characteristic", "number", "Number ceased", "Total_num", "Total", "percentage", "Ceased (%)")
-  # For tables, we want to show the suppressed letters so use columns "percentage" and "number".
-  # For charts, char values do not work so use column "Ceased (%)"
-
-  return(joined)
-}
-
-# Outcome 3 --------------------------------
-## Hospital admissions ------
-# Data for this indicator is from an API and only shows the latest data
-# LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
-# Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
-
-read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
-  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
-  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
-
-  la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
-  region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
-
-  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
-    select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
-    rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
-    distinct()
-
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
-  admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
-
-  admissions_data <- admissions_data_joined %>%
-    mutate(Value = case_when(
-      is.na(Value) ~ -300,
-      TRUE ~ as.numeric(Value)
-    )) %>%
-    mutate(Denominator = case_when(
-      is.na(Denominator) ~ -300,
-      TRUE ~ as.numeric(Denominator)
-    ))
-  admissions_data$Value <- round(admissions_data$Value, digits = 1)
-
-  admissions_data2 <- admissions_data %>%
-    mutate(rate_per_10000 = case_when(
-      Value == -300 ~ "x",
-      TRUE ~ as.character(Value)
-    ))
-
-  # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-  la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-    select(old_la_code, new_la_code) %>%
-    distinct() %>%
-    separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
-
-  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
-  admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
-  admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
-
-  # Name changes
-
-  admissions_data3 <- admissions_data3 %>%
-    mutate(geo_breakdown = case_when(
-      geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
-      geo_breakdown == "Bristol" ~ "Bristol, City of",
-      geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
-      geo_breakdown == "Kingston upon Hull" ~ "Kingston upon Hull, City of",
-      TRUE ~ as.character(geo_breakdown)
-    ))
-
-  # Inner London Data
-
-  inner_london <- c(
-    "Westminster",
-    "Tower Hamlets",
-    "Camden",
-    "Hackney",
-    "Kensington and Chelsea",
-    "Southwark",
-    "Lewisham",
-    "Islington",
-    "Wandsworth",
-    "Hammersmith and Fulham",
-    "Haringey",
-    "Lambeth",
-    "Newham",
-    "City of London"
-  )
-  inner_london_data <- admissions_data3 %>%
-    filter(geo_breakdown %in% inner_london)
-
-  inner_london_stat <- inner_london_data %>%
-    summarise(
-      time_period = first(time_period),
-      geographic_level = "Regional",
-      geo_breakdown = "Inner London",
-      new_la_code = "E13000001",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
-      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
-      old_la_code = NA
-    )
-
-  # Outer London Data
-
-  Outer_london <- c(
-    "Bexley",
-    "Greenwich",
-    "Harrow",
-    "Brent",
-    "Waltham Forest",
-    "Ealing",
-    "Richmond upon Thames",
-    "Hillingdon",
-    "Kingston upon Thames",
-    "Hounslow",
-    "Bromley",
-    "Barnet",
-    "Croydon",
-    "Enfield",
-    "Merton",
-    "Sutton",
-    "Barking and Dagenham",
-    "Redbridge",
-    "Havering"
-  )
-
-  Outer_london_data <- admissions_data3 %>%
-    filter(geo_breakdown %in% Outer_london)
-
-  Outer_london_stat <- Outer_london_data %>%
-    summarise(
-      time_period = first(time_period),
-      geographic_level = "Regional",
-      geo_breakdown = "Outer London",
-      new_la_code = "E13000002",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
-      Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
-      old_la_code = NA
-    )
-
-  # Inner and Outer London
-
-  inner_and_outer_london <- rbind(inner_london_stat, Outer_london_stat)
-
-  # rate per 10000
-
-  inner_and_outer_london <- inner_and_outer_london %>%
-    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
-    mutate(Value = Count / (Denominator / 10000))
-
-  # Convert rate_per_10000 to a character for all rows
-  admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = case_when(
-      is.na(rate_per_10000) ~ "x",
-      TRUE ~ as.character(rate_per_10000)
-    ))
-
-  # Add Inner and Outer London to the data frame
-
-  admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
-
-  # Round headline values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
-      as.character(round(as.numeric(rate_per_10000))),
-      rate_per_10000
-    ))
-
-  # Round plot values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(Value = round(Value), 0)
-
-  return(admissions_data3)
-}
-
-# TODO: remove this redundant line of test code
-# a <- suppressWarnings(read_a_and_e_data())
-
-
-## Assessment Factors ------
-read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
-  ass_fac_data_raw <- fread(file)
-  ass_fac_data_raw <- ass_fac_data_raw %>%
-    insert_geo_breakdown()
-
-  columns <- c(
-    "Episodes_with_assessment_factor",
-    "Alcohol_Misuse_child", "Alcohol_Misuse_parent", "Alcohol_Misuse_person", "Drug_Misuse_child",
-    "Drug_Misuse_parent", "Drug_Misuse_person", "Domestic_Abuse_child", "Domestic_Abuse_parent",
-    "Domestic_Abuse_person", "Mental_Health_child", "Mental_Health_parent", "Mental_Health_person", "Learning_Disability_child",
-    "Learning_Disability_parent", "Learning_Disability_person", "Physical_Disability_child",
-    "Physical_Disability_parent", "Physical_Disability_person", "Young_Carer", "Privately_fostered",
-    "Unaccompanied_asylum_seeker", "Going_missing", "Child_sexual_exploitation", "Trafficking", "Gangs",
-    "Socially_unacceptable_behaviour", "Self_harm", "Neglect", "Emotional_Abuse", "Physical_Abuse_unknown",
-    "Physical_Abuse_child_on_child", "Physical_Abuse_adult_on_child", "Sexual_Abuse_unknown", "Sexual_Abuse_child_on_child",
-    "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
-  )
-
-  # original steps to pivot and clean columns
-  ass_fac_data <- ass_fac_data_raw %>%
-    pivot_longer(
-      cols = columns,
-      names_to = "assessment_factor",
-      values_to = "value"
-    ) %>%
-    data.table() %>%
-    mutate(assessment_factor = gsub("_", " ", assessment_factor))
-
-  # Using the population data from CLA rates data, because Data needs to be rates per 10,000
-  if (exists(x = "cla_rates")) {
-    populations <- copy(cla_rates)
-  } else {
-    populations <- suppressWarnings(read_cla_rate_data())
-  }
-  populations <- populations %>%
-    filter(geo_breakdown != "Statistical neighbours (median)") %>%
-    select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
-    distinct()
-  ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
-    mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
-    filter(time_period != 2018)
-
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = ass_fac_data,
-    median_cols = c("rate_per_10000"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period", "assessment_factor"),
-  )
-  ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-
-  ass_fac_data <- ass_fac_data %>%
-    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
-    redacted_to_negative(col_old = "value", col_new = "Number") %>%
-    redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
-  # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
-  # select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
-
-
-  return(ass_fac_data)
-}
-
-
-
-# Outcome 4 -----
-## Number of placements (placement_changes_data) -----
-
-read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_stability.csv") {
-  placement_chg_data <- fread(file)
-
-  placement_chg_data <- placement_chg_data %>%
-    filter(!(new_la_code %in% dropList)) %>%
-    insert_geo_breakdown() %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = placement_chg_data,
-    median_cols = c("percentage"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period", "cla_group", "placement_stability"),
-  )
-  placement_chg_data <- rbindlist(l = list(placement_chg_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  placement_chg_data <- placement_chg_data %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
-    redacted_to_negative(col_old = "percentage", col_new = "Percent") %>%
-    rename("Percentage" = "percentage", "Number" = "number")
-
-  return(placement_chg_data)
-}
-
-## Placement type and distance----
-read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by_characteristics.csv") {
-  placement_info_data <- fread(file)
-
-  placement_info_data <- placement_info_data %>%
-    filter(!(new_la_code %in% dropList)) %>%
-    # custom filter to reduce dataset :-)
-    filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = placement_info_data,
-    median_cols = c("percentage"),
-    sum_cols = c(),
-    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
-  )
-  placement_info_data <- rbindlist(l = list(placement_info_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  placement_info_data <- placement_info_data %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
-    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, cla_group, characteristic, number, percentage) %>%
-    redacted_to_negative(col_old = "percentage", col_new = "Percent")
-
-  return(placement_info_data)
-}
-
-# Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
-
-## Care leavers activity -----
-read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leavers_activity.csv") {
-  cl_activity_data <- fread(file) %>%
-    # filter out old dorset code
-    filter(!(new_la_code %in% dropList)) %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cl_activity_data,
-    median_cols = c("percentage"),
-    sum_cols = c(), # "value", "population_estimate"
-    group_cols = c("LA.number", "time_period", "age", "activity"),
-  )
-  cl_activity_data <- rbindlist(l = list(cl_activity_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  cl_activity_data <- cl_activity_data %>%
-    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, age, activity, number, percentage) %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
-    redacted_to_negative(col_old = "percentage", col_new = "percent")
-
-  # Age column needs to be uniform with the accommodation data as they share the same age range filter
-  # "17 to 18 years" sounds better than "aged 17 to 18" but this can be swapped around if needed
-  cl_activity_data[age == "Aged 17 to 18", age := "17 to 18 years"]
-  cl_activity_data[age == "Aged 19 to 21", age := "19 to 21 years"]
-
-  return(cl_activity_data)
-}
-
-## Care leavers accommodation -----
-read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la_care_leavers_accommodation_suitability.csv") {
-  cl_accom_data <- fread(file) %>%
-    # filter out old dorset code
-    filter(!(new_la_code %in% dropList)) %>%
-    insert_geo_breakdown()
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = cl_accom_data,
-    median_cols = c("percentage"),
-    sum_cols = c(), # "value", "population_estimate"
-    group_cols = c("LA.number", "time_period", "age", "accommodation_suitability"),
-  )
-  cl_accom_data <- rbindlist(l = list(cl_accom_data, sn_metrics), fill = TRUE, use.names = TRUE)
-
-  cl_accom_data <- cl_accom_data %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
-    select(
-      time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code,
-      age, accommodation_suitability, number, percentage
-    ) %>%
-    redacted_to_negative(col_old = "percentage", col_new = "percent")
-
-  # TODO: in care_leavers_activity_data we clean the text in the age field, check whether this is necessary in this file
-
-  return(cl_accom_data)
-}
-
-
-## Wellbeing of child -----
-
-read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_cla.csv") {
-  data <- read.csv(file)
-
-  data2 <- data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
-    filter(!(new_la_code %in% dropList)) %>%
-    mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
-      format(as.numeric(as.character(percentage)), nsmall = 1),
-      percentage
-    )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
-
-  data3 <- data2 %>%
-    mutate(number_num = case_when(
-      number == "c" ~ -100,
-      number == "low" ~ -200,
-      number == "k" ~ -200,
-      number == "u" ~ -250,
-      number == "x" ~ -300,
-      number == "z" ~ -400,
-      TRUE ~ as.numeric(number)
-    )) %>%
-    mutate(percentage_num = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    ))
-
-  # pull out the SDQ_scores_received column
-  data_totals <- data3 %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number) %>%
-    filter(characteristic == "SDQ score was received") %>%
-    rename(sdq_score_recd = "number") %>%
-    mutate(sdq_score_recd = as.numeric(sdq_score_recd)) %>%
-    select(-characteristic)
-
-  # join the sdq_score_recd totals to the original dataset and calculate the weighted score
-  data4 <- data3 %>%
-    inner_join(data_totals, by = join_by(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group)) %>%
-    mutate(sdq_score_recd_x_score = case_when(
-      characteristic == "SDQ average score" ~ (as.numeric(sdq_score_recd) * as.numeric(number)),
-      TRUE ~ NA
-    ))
-
-  data5 <- data4 %>%
-    mutate(score_label = case_when(
-      (number_num >= 0 & number_num < 14) ~ "Normal",
-      (number_num >= 14 & number_num < 17) ~ "Borderline",
-      (number_num >= 17 & number_num <= 40) ~ "Cause for concern",
-      (number_num < 0) ~ "Supressed Score",
-      TRUE ~ as.character("Error")
-    ))
-
-  return(data5)
-}
-
-## Placement order and match data ----
-read_placement_order_match_data <- function(file = "data/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
-  data <- read.csv(file)
-
-  data <- data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National"
-    )) %>%
-    filter(stage_of_adoption_process == "2. Average time between decision that child should be placed for adoption and matching of child and adopters")
-
-  data <- data %>%
-    mutate(number_num = case_when(
-      number == "c" ~ -100,
-      number == "low" ~ -200,
-      number == "k" ~ -200,
-      number == "u" ~ -250,
-      number == "x" ~ -300,
-      number == "z" ~ -400,
-      TRUE ~ as.numeric(number)
-    ))
-
-  # total(all ages)
-
-  data <- data %>%
-    mutate(age_start_poc = case_when(
-      age_start_poc == "Total" ~ "Total (all ages)",
-      TRUE ~ as.character(age_start_poc)
-    ))
-
-  data$months <- sapply(strsplit(data$number, ":"), function(x) {
-    years <- as.numeric(x[1])
-    months <- as.numeric(x[2])
-    months <- years * 12 + months
-    return(months)
-  })
-
-
-  return(data)
-}
-
-# Statistical Neighbours read and convert to long format ------------
-statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
-  stats_neighbours <- read.csv(file)
-
-  # Create a lookup table
-  lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
-
-  df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
-
-
-  for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
-    df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
-  }
-
-
-  return(df)
-}
-
-get_stats_neighbours_long <- function(stats_neighbours) {
-  stats_neighbours_long <- stats_neighbours %>%
-    pivot_longer(
-      cols = starts_with("SN"),
-      names_to = c("SN_rank"),
-      names_pattern = "(\\d+)",
-      values_to = "SN_LA_name"
-    ) %>%
-    left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
-    as.data.table()
-
-  return(stats_neighbours_long)
-}
-
-
-# dropdowns
-choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
-choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
-choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
-choices <- sort(unique(placement_data[geographic_level == input$select_geography_o4 & time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
-choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e2, ][["geo_breakdown"]]), decreasing = FALSE)
-choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
-
-
-not_a_function <- function() {
-  choices_o1 <- sort(unique(cla_rates[(cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
-  choices_o2 <- sort(unique(ceased_cla_data[(ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
-  choices_o3 <- sort(unique(cla_rates[(cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
-  choices_o4 <- sort(unique(placement_data[time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
-  choices_e2 <- sort(unique(spending_data[["geo_breakdown"]]), decreasing = FALSE)
-  choices_e3 <- sort(unique(workforce_data[time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
-
-
-  geographies_by_page <- dcast(
-    rbindlist(list(
-      list(page = "o1", geographies = choices_o1),
-      list(page = "o2", geographies = choices_o2),
-      list(page = "o3", geographies = choices_o3),
-      list(page = "o4", geographies = choices_o4),
-      list(page = "e2", geographies = choices_e2),
-      list(page = "e3", geographies = choices_e3)
-    )),
-    geographies ~ page,
-    fun.aggregate = length
-  )
-  geographies_by_page$page_count <- rowSums(geographies_by_page[, .SD, .SDcols = !c("geographies")])
-  geographies_by_page[page_count != 6]
-}
-
-
-collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column) {
-  dataset_in <- copy(get0(dataset_name))
-  setDT(dataset_in)
-  # browser()
-  # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
-  if (length(dimensional_filters) > 0) {
-    dataset_in <- dataset_in[eval(AndEQUAL(dimensional_filters))]
-  }
-  # get the latest date
-  time_period_latest <- max(dataset_in$time_period)
-
-  # we need to add the geo_breakdown_sn if it doesn't exist
-  if (!("geo_breakdown_sn" %in% names(dataset_in))) {
-    dataset_in[, geo_breakdown_sn := NA]
-  }
-
-  # filter by time_period, extract the metric and build the text values for the table headings & accordions
-  dataset_in[
-    i = time_period == time_period_latest,
-    j = .(
-      sort_order = sort_order,
-      tab_name = tab_name,
-      accordion_text = accordion_text,
-      heading_text = heading_text,
-      time_period, geographic_level, geo_breakdown, geo_breakdown_sn,
-      metric_text = metric_display_text,
-      value_column = get(value_column)
-    )
-  ]
-}
-
-
-collect_summary_data_all <- function() {
-  metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
-
-  summary_data <- rbindlist(lapply(metric_parameters$sort_order, function(x, metric_parameters) {
-    this_metric <- metric_parameters[sort_order == x]
-    collect_summary_data_metric(
-      sort_order = x,
-      tab_name = this_metric$tab_name,
-      accordion_text = this_metric$accordion_text,
-      heading_text = this_metric$heading_text,
-      metric_display_text = this_metric$metric_display_text,
-      value_column = this_metric$value_column,
-      dimensional_filters = eval(parse(text = this_metric$dimensional_filters)),
-      dataset_name = this_metric$dataset_name
-    )
-  }, metric_parameters))
-}
-
-
-display_summary_data <- function(geo_level, geo_breakdown) {
-  # take the summary dataset and filter + transform it
-  filtered_summary_data <- summary_data[geographic_level == "National"]
-  # if national display national only
-
-  # if regional display the regions selected and National
-
-  # if LA selected then display the LA, it's SN, it's region and national
 }
