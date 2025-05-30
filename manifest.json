@@ -4932,16 +4932,16 @@
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
     "R/outcome1_page.R": {
-      "checksum": "aa3ac670597c0da7a99449602abde3c3"
+      "checksum": "6d3ef99b120bf700ce8036bfeed16884"
     },
     "R/outcome2_page.R": {
-      "checksum": "c7e53ecd214185ac965ecabc022ff3e1"
+      "checksum": "71b786b2fb1bd4cb8e655433c165db22"
     },
     "R/outcome3_page.R": {
-      "checksum": "5919e070fde5a2ffd18eac50151440db"
+      "checksum": "141ef54ccd8e356f758bce3ef8511f13"
     },
     "R/outcome4_page.R": {
-      "checksum": "ddbf598cce37f23c4f4b8a0111079d18"
+      "checksum": "667bed8b20e8f442c7f01b964f77c2b8"
     },
     "R/plotting.R": {
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
@@ -4956,7 +4956,7 @@
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "6e77087e7a8d784f831d10172596c00f"
+      "checksum": "590b430576095cf248f69cebc967b432"
     },
     "R/summary_page.R": {
       "checksum": "a56d1cc63abecc82a72b037f613133b1"
@@ -4974,7 +4974,7 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "881d5a42bc86815c291a2ee2aab033fe"
+      "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
       "checksum": "6c635f0e147ee1c29c8c377f81f320d3"
@@ -5004,13 +5004,13 @@
       "checksum": "58bbabb9f5d0dc9a273861b0b4eb7f3b"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "a75425b6ea0c4790efb3115ac39eac96"
+      "checksum": "180284f3e983e4379483761e2ddc0e61"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
       "checksum": "4f217ac416c843ea1b00b3014dde6bf7"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "f89cc778d10882eea9afa8efcce4f753"
+      "checksum": "b7c9949656e43285f38619503baba789"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
       "checksum": "6fc43d16e639fd21d4a43105f143b106"
@@ -5043,7 +5043,7 @@
       "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "93e204438081c9063cb3879d594f07b5"
+      "checksum": "3e61a4ecb1417464f4d7844c866d6ccb"
     },
     "ui.R": {
       "checksum": "999796ff519d7bc177abcad723fef5f1"

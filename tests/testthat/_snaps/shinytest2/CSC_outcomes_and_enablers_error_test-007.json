@@ -4,7 +4,8 @@
     "national_comparison_checkbox_o3": null,
     "navlistPanel": "outcome3_page",
     "outcome3_panels": "Child safety – general",
-    "select_geography_o3": "Local authority"
+    "select_geography_o3": "Local authority",
+    "sn_comparison_checkbox_o3": null
   },
   "output": {
     "cpp_duration_txt": "6.0%<br><p style='font-size:16px; font-weight:500;'>(2024)<\/p>",

@@ -3,7 +3,8 @@
     "national_comparison_checkbox_o1": null,
     "navlistPanel": "outcome1_page",
     "outcome1_panels": "Access to support and getting help",
-    "select_geography_o1": "Local authority"
+    "select_geography_o1": "Local authority",
+    "sn_comparison_checkbox_o1": null
   },
   "output": {
 

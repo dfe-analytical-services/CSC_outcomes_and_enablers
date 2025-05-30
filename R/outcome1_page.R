@@ -89,7 +89,7 @@ outcome1_tab <- function() {
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_o1 == 'Cumbria')",
-          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
       gov_row(
