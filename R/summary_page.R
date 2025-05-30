@@ -46,6 +46,8 @@ summary_page_tab <- function() {
           p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         ),
       ),
+      # now the main body of the page with 2 tabs containing accordions (4 outcomes, 2 enablers) and domain sections within each.
+      # The tables are within the domains
       gov_row(
         br(),
         div(
@@ -55,22 +57,86 @@ summary_page_tab <- function() {
             # Domain 1 --------------
             tabPanel(
               "Outcomes",
-              fluidRow(
-                br()
-              ),
-              fluidRow(
-                reactableOutput("tbl_summary_page_outcomes")
-              ),
+              accordion(
+                id = "summary_page_outcomes",
+                open = TRUE,
+                multiple = TRUE,
+                # Social Worker Turnover --------------
+                accordion_panel(
+                  "Outcome 1: Children, young people and families stay together",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("outcome1"),
+                    sp_domain_ui(id = "Access to support and getting help"),
+                    sp_domain_ui(id = "Family stability"),
+                    sp_domain_ui(id = "Child wellbeing and development"),
+                    sp_domain_ui(id = "Educational attainment"),
+                  )
+                ),
+                accordion_panel(
+                  "Outcome 2: Children and young people are supported by their family network",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("outcome2"),
+                    sp_domain_ui(id = "Families engaging and receiving support from their family network"),
+                  )
+                ),
+                accordion_panel(
+                  "Outcome 3: Children and young people are safe in and outside of their home",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("outcome3"),
+                    sp_domain_ui(id = "Child safety – general"),
+                    sp_domain_ui(id = "Child abuse / neglect"),
+                    sp_domain_ui(id = "Harms outside the home"),
+                  )
+                ),
+                accordion_panel(
+                  "Outcome 4: Children in care and care leavers have stable, loving homes",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("outcome4"),
+                    sp_domain_ui(id = "Stability and quality of where a child lives"),
+                    sp_domain_ui(id = "Quality of life for care experienced people")
+                  )
+                )
+              )
             ),
+
 
             # Domain 2 --------------
             tabPanel(
               "Enablers",
-              fluidRow(
-                br()
-              ),
-              fluidRow(
-                reactableOutput("tbl_summary_page_enablers")
+              accordion(
+                id = "summary_page_enablers",
+                open = TRUE,
+                multiple = TRUE,
+                # Social Worker Turnover --------------
+                accordion_panel(
+                  "Enabler: Leaders drive conditions for effective practice",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("enabler1"),
+                    sp_domain_ui(id = "Spending"),
+                    sp_domain_ui(id = "Culture focused on outcomes from children and families and continually improving services")
+                  )
+                ),
+                accordion_panel(
+                  "Enabler: The workforce is equipped and effective.",
+                  # add the header row here (generate on the fly based on the user selections )
+                  gov_row(
+                    # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
+                    sp_accordion_cols_ui("enabler2"),
+                    sp_domain_ui(id = "Workforce stability"),
+                    sp_domain_ui(id = "Quality of support for children and families"),
+                    sp_domain_ui(id = "Social worker ethnicity")
+                  )
+                )
               )
             )
           )

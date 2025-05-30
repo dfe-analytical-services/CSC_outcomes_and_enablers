@@ -220,7 +220,10 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 
   # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
   if (dataset_name == "zassessment_factors") {
+    browser()
     print(ass_factor)
+    data.table(assessment_factor = ass_factor)
+    merge(dataset_in, data.table(assessment_factor = ass_factor), by = "assessment_factor")
     dataset_in <- dataset_in[assessment_factor %in% ass_factor, env = list(ass_factor = ass_factor)] # assessment_factor
   } else if (length(dimensional_filters) > 0) {
     dataset_in <- dataset_in[eval(AndEQUAL(dimensional_filters))]
@@ -261,30 +264,36 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 collect_summary_data_all <- function() {
   metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
 
-  summary_data <- rbindlist(lapply(metric_parameters$sort_order[-(24:40)], function(x, metric_parameters) {
-    this_metric <- metric_parameters[sort_order == x]
-    print(x)
-    # browser()
-    tab_name <- this_metric$tab_name
-    accordion_text <- this_metric$accordion_text
-    heading_text <- this_metric$heading_text
-    metric_display_text <- this_metric$metric_display_text
-    value_column <- this_metric$value_column
-    dataset_name <- this_metric$dataset_name
-    dimensional_filters <- eval(parse(text = this_metric$dimensional_filters))
-    assessment_factor <- this_metric$assessment_factor
-    collect_summary_data_metric(
-      sort_order = x,
-      tab_name = tab_name,
-      accordion_text = accordion_text,
-      heading_text = heading_text,
-      metric_display_text = metric_display_text,
-      value_column = value_column,
-      dataset_name = dataset_name,
-      dimensional_filters = dimensional_filters,
-      ass_factor = assessment_factor
+  summary_data <- rbindlist(
+    lapply(
+      metric_parameters$sort_order[-(24:40)],
+      function(x, metric_parameters) {
+        this_metric <- metric_parameters[sort_order == x]
+        tab_name <- this_metric$tab_name
+        accordion_text <- this_metric$accordion_text
+        heading_text <- this_metric$heading_text
+        metric_display_text <- this_metric$metric_display_text
+        value_column <- this_metric$value_column
+        dataset_name <- this_metric$dataset_name
+        dimensional_filters <- eval(parse(text = this_metric$dimensional_filters))
+        assessment_factor <- this_metric$assessment_factor
+        collect_summary_data_metric(
+          sort_order = x,
+          tab_name = tab_name,
+          accordion_text = accordion_text,
+          heading_text = heading_text,
+          metric_display_text = metric_display_text,
+          value_column = value_column,
+          dataset_name = dataset_name,
+          dimensional_filters = dimensional_filters,
+          ass_factor = assessment_factor
+        )
+      }, metric_parameters
     )
-  }, metric_parameters))
+  )
+
+  # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
+  summary_data[nchar(time_period) == 6, time_period := paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))]
 
   # now for each section we need to move the date into the header, determining which date to use!
   date_frequency <- unique(summary_data[, .(tab_name, accordion_text, heading_text, time_period, metric_text)])[, .N, by = .(tab_name, accordion_text, heading_text, time_period)]
@@ -292,42 +301,12 @@ collect_summary_data_all <- function() {
   setnames(date_per_heading, "time_period", "header_time_period")
   date_per_heading[, N := NULL]
   summary_data <- merge(summary_data, date_per_heading)
-  summary_data[header_time_period != time_period, metric_text := paste0(metric_text, "(", time_period, ")")]
-  summary_data[, heading_text := paste0(heading_text, "(", time_period, ")")]
+  summary_data[header_time_period != time_period, metric_text := paste0(metric_text, " (", time_period, ")")]
+  summary_data[, heading_text := paste0(heading_text, " (", time_period, ")")]
   return(summary_data)
 }
 
 
-filter_summary_data <- function(data_in, select_geographic_level, select_geo_breakdown) {
-  # take the summary dataset and filter it based on geographic selections
-  # if national display national only
-  if (select_geographic_level == "National") {
-    filtered_summary_data <- data_in[geographic_level == "National"]
-  } else if (select_geographic_level == "Regional") {
-    # if regional display the regions selected and National
-
-    filtered_summary_data <- data_in[geographic_level == "National" | (geographic_level == "Regional" & geo_breakdown == select_geo_breakdown)]
-  } else if (select_geographic_level == "Local authority") {
-    # if LA selected then display the LA, it's SN, it's region and national
-    # get the region from the LA and apply additional filtering
-    region_name <- location_data %>%
-      filter(la_name %in% select_geo_breakdown) %>%
-      pull(region_name)
-    filtered_summary_data <- data_in[geographic_level == "National" |
-      (geographic_level == "Regional" & geo_breakdown == region_name) |
-      (geographic_level == "Local authority" & geo_breakdown == select_geo_breakdown) |
-      (geographic_level == "Statistical neighbours (median)" & geo_breakdown_sn == select_geo_breakdown)]
-  }
-  filtered_summary_data
-}
-
-# summary_data <- collect_summary_data_all()
-# writexl::write_xlsx(summary_data, "~/CSC shiny dashboard/summary_data_for_QA.xlsx")
-# filter_summary_data(summary_data, select_geographic_level = "Local authority", select_geo_breakdown = "Sutton")
-
-transform_summary_data <- function(filtered_summary_data) {
-  transformed_data <- dcast(filtered_summary_data, sort_order + tab_name + accordion_text + heading_text + metric_text + time_period ~ geo_breakdown + geo_breakdown_sn, value.var = "value", fun.aggregate = function(x) x[1])
-}
 
 
 

@@ -4764,13 +4764,13 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "3f6cc00adf0c588ad674e2562f1dd2ea"
+      "checksum": "fa10f73e2899d6cf96035ded6201b10e"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data-raw/summary_page_metadata.xlsx": {
-      "checksum": "b3100417ad5c13c693f130fb1dc29027"
+      "checksum": "461ab929d16c6efef2480a930d9c45e9"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4925,6 +4925,9 @@
     "R/intro_panel.R": {
       "checksum": "f1c635039e076143b958713fb59818db"
     },
+    "R/mod_summary_page.R": {
+      "checksum": "3fc1eec79d2681703e2fb85c6670a075"
+    },
     "R/omitted_data.R": {
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
     },
@@ -4944,7 +4947,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "dfbc7c88c7ea4379db122114e3aa021e"
+      "checksum": "52b4bafecbced2cf0feaa818c164ec27"
     },
     "R/rendering_functions.R": {
       "checksum": "f5c642e7512d8531f33a41c02a0df65e"
@@ -4956,7 +4959,7 @@
       "checksum": "6e77087e7a8d784f831d10172596c00f"
     },
     "R/summary_page.R": {
-      "checksum": "569f4f01caef65b8e137dc4e035cd9a2"
+      "checksum": "a56d1cc63abecc82a72b037f613133b1"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -4974,7 +4977,7 @@
       "checksum": "881d5a42bc86815c291a2ee2aab033fe"
     },
     "server.R": {
-      "checksum": "0b0aabff2c4e3eccaaef79e176e00404"
+      "checksum": "6c635f0e147ee1c29c8c377f81f320d3"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5052,7 +5055,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "74e6bc8ade64591616bb15161ad9ee17"
+      "checksum": "aa3abf81f5757ccad0e3f01a97f35e3a"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

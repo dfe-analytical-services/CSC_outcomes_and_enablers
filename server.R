@@ -117,6 +117,7 @@ server <- function(input, output, session) {
 
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
   # Summary Page ----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {
@@ -148,63 +149,72 @@ server <- function(input, output, session) {
   })
 
 
-  ## Summary page data REACTIVE, filtered for the required geographies ----
-  summary_data_filtered <- reactive({
-    shiny::validate(
-      need(input$select_geography_sp != "", "Select a geography level."),
-      need(input$geographic_breakdown_sp != "", "Select a location.")
-    )
+  rv_summary_page <- reactiveValues(summary_data_filtered = NULL, select_geographic_level = NULL)
 
-    # filter the dataset based on the context and user selections
+  observeEvent(req(input$geographic_breakdown_sp, input$select_geography_sp), {
+    # browser()
     filtered_data <- filter_summary_data(
       data_in = copy(summary_data),
       select_geographic_level = input$select_geography_sp,
       select_geo_breakdown = input$geographic_breakdown_sp
     )
-    filtered_data
-  })
 
-  ## Summary Page outcomes table ----
-  output$tbl_summary_page_outcomes <- renderReactable({
-    shiny::validate(
-      need(input$select_geography_sp != "", "Select a geography level."),
-      need(input$geographic_breakdown_sp != "", "Select a location.")
-    )
-
-    table_data <- transform_summary_data(summary_data_filtered()[tab_name == "Outcomes"])
-    cols_to_remove <- c("sort_order", "tab_name")
-    table_data[, (cols_to_remove) := NULL]
-
-
-    # select the right columns and give them user-friendly names
-    reactable(
-      table_data,
-      defaultColDef = colDef(align = "center"),
-      defaultPageSize = 15,
-      searchable = TRUE,
-    )
+    rv_summary_page$summary_data_filtered <- filtered_data
+    rv_summary_page$select_geographic_level <- input$select_geography_sp
   })
 
 
-  ## Summary Page enablers table ----
-  output$tbl_summary_page_enablers <- renderReactable({
-    shiny::validate(
-      need(input$select_geography_sp != "", "Select a geography level."),
-      need(input$geographic_breakdown_sp != "", "Select a location.")
-    )
 
-    table_data <- transform_summary_data(summary_data_filtered()[tab_name == "Enablers"])
-    cols_to_remove <- c("sort_order", "tab_name")
-    table_data[, (cols_to_remove) := NULL]
+  ## Summary page data REACTIVE, filtered for the required geographies ----
+  # summary_data_filtered <- reactive({
+  #   shiny::validate(
+  #     need(input$select_geography_sp != "", "Select a geography level."),
+  #     need(input$geographic_breakdown_sp != "", "Select a location.")
+  #   )
+  #
+  #   # filter the dataset based on the context and user selections
+  #   filtered_data <- filter_summary_data(
+  #     data_in = copy(summary_data),
+  #     select_geographic_level = input$select_geography_sp,
+  #     select_geo_breakdown = input$geographic_breakdown_sp
+  #   )
+  #   filtered_data
+  # })
+  #
 
-    # select the right columns and give them user-friendly names
-    reactable(
-      table_data,
-      defaultColDef = colDef(align = "center"),
-      defaultPageSize = 15,
-      searchable = TRUE,
-    )
-  })
+  # Outcome 1 domains on summary page ----
+  sp_accordion_cols_server(id = "outcome1", rv_summary_page)
+  sp_domain_server(id = "Access to support and getting help", rv_summary_page)
+  sp_domain_server(id = "Family stability", rv_summary_page)
+  sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
+  sp_domain_server(id = "Educational attainment", rv_summary_page)
+
+  # Outcome 2 domain on summary page
+  sp_accordion_cols_server(id = "outcome2", rv_summary_page)
+  sp_domain_server(id = "Families engaging and receiving support from their family network", rv_summary_page)
+
+  # outcome 3 domains on summary page
+  sp_accordion_cols_server(id = "outcome3", rv_summary_page)
+  sp_domain_server(id = "Child safety – general", rv_summary_page)
+  sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
+  sp_domain_server(id = "Harms outside the home", rv_summary_page)
+
+  # outcome 4 domains on summary page
+  sp_accordion_cols_server(id = "outcome4", rv_summary_page)
+  sp_domain_server(id = "Stability and quality of where a child lives", rv_summary_page)
+  sp_domain_server(id = "Quality of life for care experienced people", rv_summary_page)
+
+  # Enabler 2 domains on summary page ----
+  sp_accordion_cols_server(id = "enabler1", rv_summary_page)
+  sp_domain_server(id = "Spending", rv_summary_page)
+  sp_domain_server(id = "Culture focused on outcomes from children and families and continually improving services", rv_summary_page)
+
+  # Enabler 3 domain on summary page
+  sp_accordion_cols_server(id = "enabler2", rv_summary_page)
+  sp_domain_server(id = "Workforce stability", rv_summary_page)
+  sp_domain_server(id = "Quality of support for children and families", rv_summary_page)
+  sp_domain_server(id = "Social worker ethnicity", rv_summary_page)
+
 
 
   # Outcome 1 -----
