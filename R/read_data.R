@@ -212,11 +212,10 @@ not_a_function <- function() {
 }
 
 
-collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column, ass_factor = NULL) {
+collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column, value_format, ass_factor = NULL) {
   # function to pull current year data for all geographies (including stat neighbours)
   dataset_in <- copy(get0(dataset_name))
   setDT(dataset_in)
-  # browser()
 
   # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
   if (dataset_name == "zassessment_factors") {
@@ -248,6 +247,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
       heading_text = heading_text,
       time_period, geographic_level, geo_breakdown, geo_breakdown_sn,
       metric_text = metric_display_text,
+      value_format = value_format,
       value = get(value_column)
     )
   ]
@@ -256,6 +256,28 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   if (dataset_name == "workforce_eth") {
     dataset_out[is.numeric(value), value := (100 - as.numeric(value))]
   }
+  percent_format <- function(x) {
+    if (is.na(as.numeric(x))) {
+      return(x)
+    }
+    if (is.numeric(as.numeric(x))) {
+      x_formatted <- paste0(x, "%")
+      return(x_formatted)
+    }
+  }
+  curreny_per_capita_format <- function(x) {
+    if (is.na(as.numeric(x))) {
+      return(x)
+    }
+    if (is.numeric(as.numeric(x))) {
+      x_formatted <- paste0("~£", x)
+      return(x_formatted)
+    }
+  }
+  # quick and dirty method to add the percentage sign where required
+  dataset_out[value_format == "percent", value := sapply(value, percent_format)]
+  # quick and dirty method to add the percentage sign where required
+  dataset_out[value_format == "currency_per_capita", value := sapply(value, curreny_per_capita_format)]
 
   return(dataset_out)
 }
@@ -274,6 +296,7 @@ collect_summary_data_all <- function() {
         heading_text <- this_metric$heading_text
         metric_display_text <- this_metric$metric_display_text
         value_column <- this_metric$value_column
+        value_format <- this_metric$value_format
         dataset_name <- this_metric$dataset_name
         dimensional_filters <- eval(parse(text = this_metric$dimensional_filters))
         assessment_factor <- this_metric$assessment_factor
@@ -284,6 +307,7 @@ collect_summary_data_all <- function() {
           heading_text = heading_text,
           metric_display_text = metric_display_text,
           value_column = value_column,
+          value_format = value_format,
           dataset_name = dataset_name,
           dimensional_filters = dimensional_filters,
           ass_factor = assessment_factor

@@ -163,7 +163,19 @@ server <- function(input, output, session) {
     rv_summary_page$select_geographic_level <- input$select_geography_sp
   })
 
-
+  output$summary_page_download <- downloadHandler(
+    filename = function() {
+      paste("summary_page_data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(transform_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level), file)
+    }
+  )
+  # tags$script(
+  #   HTML("var header = $('.navbar > .container-fluid');
+  #                             header.append('<div style=\"float:right; padding-top: 8px\"><button id=\"signin\" type=\"button\" class=\"btn btn-primary action-button\" onclick=\"signIn()\">Sign In</button></div>')")
+  # )
+  # )
 
   ## Summary page data REACTIVE, filtered for the required geographies ----
   # summary_data_filtered <- reactive({

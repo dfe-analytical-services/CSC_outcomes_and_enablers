@@ -4764,13 +4764,13 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "16cd3e2b74baf9f9139eb66c32d4b7b3"
+      "checksum": "7640436bc0d3cfcd3ecbfcd7a2ebf2dd"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data-raw/summary_page_metadata.xlsx": {
-      "checksum": "461ab929d16c6efef2480a930d9c45e9"
+      "checksum": "1055c3d74c473d5c3fa7ae70f09b183b"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4890,7 +4890,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "85a0a41499bbd1ddf186a0ef1a5c2d7d"
+      "checksum": "809d7d23a6da30a5853ac0dcee3b5791"
     },
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
@@ -4926,7 +4926,7 @@
       "checksum": "f1c635039e076143b958713fb59818db"
     },
     "R/mod_summary_page.R": {
-      "checksum": "3fc1eec79d2681703e2fb85c6670a075"
+      "checksum": "0a6c7860a8066bd89461ba6554afc584"
     },
     "R/omitted_data.R": {
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
@@ -4947,7 +4947,7 @@
       "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
     },
     "R/read_data.R": {
-      "checksum": "059b8be9b0fb226ee44ab8f052508090"
+      "checksum": "063e10e435cda7c66d2b009910d286ce"
     },
     "R/rendering_functions.R": {
       "checksum": "fa0f61e3bb8a50acc11d5d8be1954375"
@@ -4959,7 +4959,7 @@
       "checksum": "590b430576095cf248f69cebc967b432"
     },
     "R/summary_page.R": {
-      "checksum": "a56d1cc63abecc82a72b037f613133b1"
+      "checksum": "6d79da5e655a052ccdacabf16f85b8b4"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -4977,7 +4977,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "1972dc11f1ca6762ecf710cf4b413486"
+      "checksum": "e4368c513f6615c36bb084e705292e63"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5064,7 +5064,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "aa3abf81f5757ccad0e3f01a97f35e3a"
+      "checksum": "680bb18af428529f1fda167cea5e6bd2"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

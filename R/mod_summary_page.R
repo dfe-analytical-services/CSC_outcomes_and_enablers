@@ -105,6 +105,8 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   )
 
   # browser()
+  # TODO:  when we do the download we need to remove the empty columns
+
   # ensure columns are in the correct order
 
   if (select_geographic_level == "National") {

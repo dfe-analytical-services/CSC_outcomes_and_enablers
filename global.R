@@ -207,7 +207,6 @@ csvDownloadButton <- function(
   )
 }
 
-
 # Expandable section ------------------
 expandable <- function(inputId, label, contents) {
   govDetails <- shiny::tags$details(
