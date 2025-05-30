@@ -8,11 +8,12 @@ generate_choice_text1 <- function(select_geography, geographic_breakdown, region
   }
 }
 
-generate_choice_text2 <- function(summary_page = FALSE, select_geography = NULL, national_comparison_checkbox = NULL, region_comparison_checkbox = NULL, sn_comparison_checkbox = NULL) {
+generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_comparison_checkbox = NULL, sn_comparison_checkbox = NULL, summary_page = NULL, select_geography = NULL) {
+  # browser()
   comparisons <- c()
   choice_text2 <- ""
 
-  if (summary_page == FALSE) {
+  if (is.null(summary_page)) {
     # Checking to see if they picked national average comparison
     if (!is.null(national_comparison_checkbox)) comparisons <- c(comparisons, "National average")
     if (!is.null(region_comparison_checkbox)) comparisons <- c(comparisons, "Regional average")

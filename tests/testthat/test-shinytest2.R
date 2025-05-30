@@ -10,6 +10,57 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
     expect_values_screenshot_args = FALSE
   )
 
+  # Summary Page ----
+  app$set_inputs(navlistPanel = "summary_page")
+  app$set_inputs(select_geography_sp = "")
+  app$set_inputs(select_geography_sp = "Regional")
+  app$set_inputs(geographic_breakdown_sp = "East Midlands")
+  app$wait_for_idle(500)
+  Sys.sleep(2)
+  app$expect_values(
+    input = c("navlistPanel"),
+    output = c("summary_page_choice_text1", "summary_page_choice_text2")
+  )
+
+  # Summary_page - Outcomes tab
+  app$set_inputs(
+    navlistPanel = "summary_page",
+    select_geography_sp = "Local authority",
+    geographic_breakdown_sp = "Kent",
+    summary_page_panels = "Outcomes"
+  )
+  Sys.sleep(2)
+  app$expect_values(
+    input = c(
+      "navlistPanel",
+      "select_geography_sp",
+      "summary_page_panels"
+    ),
+    output = c(
+      "summary_page_choice_text1",
+      "summary_page_choice_text2"
+    )
+  )
+
+  # Summary Page enablers tab
+  app$set_inputs(
+    navlistPanel = "summary_page",
+    select_geography_sp = "Local authority",
+    summary_page_panels = "Enablers"
+  )
+  Sys.sleep(2)
+  app$expect_values(
+    input = c(
+      "navlistPanel",
+      "select_geography_sp",
+      "summary_page_panels"
+    ),
+    output = c(
+      "summary_page_choice_text1",
+      "summary_page_choice_text2"
+    )
+  )
+
   # Outcome 1 ----
   app$set_inputs(navlistPanel = "outcome1_page")
   app$set_inputs(select_geography_o1 = "")

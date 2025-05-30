@@ -145,7 +145,7 @@ server <- function(input, output, session) {
   })
 
   output$summary_page_choice_text2 <- renderText({
-    generate_choice_text2(summary_page = TRUE, input$select_geography_sp)
+    generate_choice_text2(summary_page = TRUE, select_geography = input$select_geography_sp)
   })
 
 
