@@ -102,6 +102,7 @@ ui <- function(input, output, session) {
       fluid = TRUE,
       widths = c(2, 10),
       introductionPanel(),
+      summary_page_tab(),
       "Outcomes",
       outcome1_tab(),
       outcome2_tab(),

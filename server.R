@@ -117,6 +117,106 @@ server <- function(input, output, session) {
 
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Summary Page ----
+  # Geographic breakdown o1 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_sp
+  }, {
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_sp & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_sp",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+  ## outcome 1 confirmation text ----
+  region_for_la_sp <- reactive({
+    selected_la <- input$geographic_breakdown_sp
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$summary_page_choice_text1 <- renderText({
+    generate_choice_text1(input$select_geography_sp, input$geographic_breakdown_sp, region_for_la_sp())
+  })
+
+  output$summary_page_choice_text2 <- renderText({
+    generate_choice_text2(summary_page = TRUE, select_geography = input$select_geography_sp)
+  })
+
+
+  rv_summary_page <- reactiveValues(summary_data_filtered = NULL, select_geographic_level = NULL)
+
+  observeEvent(req(input$geographic_breakdown_sp, input$select_geography_sp), {
+    # browser()
+    filtered_data <- filter_summary_data(
+      data_in = copy(summary_data),
+      select_geographic_level = input$select_geography_sp,
+      select_geo_breakdown = input$geographic_breakdown_sp
+    )
+
+    rv_summary_page$summary_data_filtered <- filtered_data
+    rv_summary_page$select_geographic_level <- input$select_geography_sp
+  })
+
+
+
+  ## Summary page data REACTIVE, filtered for the required geographies ----
+  # summary_data_filtered <- reactive({
+  #   shiny::validate(
+  #     need(input$select_geography_sp != "", "Select a geography level."),
+  #     need(input$geographic_breakdown_sp != "", "Select a location.")
+  #   )
+  #
+  #   # filter the dataset based on the context and user selections
+  #   filtered_data <- filter_summary_data(
+  #     data_in = copy(summary_data),
+  #     select_geographic_level = input$select_geography_sp,
+  #     select_geo_breakdown = input$geographic_breakdown_sp
+  #   )
+  #   filtered_data
+  # })
+  #
+
+  # Outcome 1 domains on summary page ----
+  sp_accordion_cols_server(id = "outcome1", rv_summary_page)
+  sp_domain_server(id = "Access to support and getting help", rv_summary_page)
+  sp_domain_server(id = "Family stability", rv_summary_page)
+  sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
+  sp_domain_server(id = "Educational attainment", rv_summary_page)
+
+  # Outcome 2 domain on summary page
+  sp_accordion_cols_server(id = "outcome2", rv_summary_page)
+  sp_domain_server(id = "Families engaging and receiving support from their family network", rv_summary_page)
+
+  # outcome 3 domains on summary page
+  sp_accordion_cols_server(id = "outcome3", rv_summary_page)
+  sp_domain_server(id = "Child safety – general", rv_summary_page)
+  sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
+  sp_domain_server(id = "Harms outside the home", rv_summary_page)
+
+  # outcome 4 domains on summary page
+  sp_accordion_cols_server(id = "outcome4", rv_summary_page)
+  sp_domain_server(id = "Stability and quality of where a child lives", rv_summary_page)
+  sp_domain_server(id = "Quality of life for care experienced people", rv_summary_page)
+
+  # Enabler 2 domains on summary page ----
+  sp_accordion_cols_server(id = "enabler1", rv_summary_page)
+  sp_domain_server(id = "Spending", rv_summary_page)
+  sp_domain_server(id = "Culture focused on outcomes from children and families and continually improving services", rv_summary_page)
+
+  # Enabler 3 domain on summary page
+  sp_accordion_cols_server(id = "enabler2", rv_summary_page)
+  sp_domain_server(id = "Workforce stability", rv_summary_page)
+  sp_domain_server(id = "Quality of support for children and families", rv_summary_page)
+  sp_domain_server(id = "Social worker ethnicity", rv_summary_page)
+
+
+
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {

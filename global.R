@@ -189,6 +189,11 @@ wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
 placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
 
 
+## Summary Data ----
+summary_data <- collect_summary_data_all()
+
+
+
 # Download button --------------------
 # Function to create a download button for reactable
 csvDownloadButton <- function(
