@@ -1,7 +1,7 @@
 summary_page_tab <- function() {
   nav_panel(
     value = "summary_page",
-    "Summary Page",
+    "Summary",
     gov_main_layout(
       gov_row(
         column(
@@ -32,7 +32,7 @@ summary_page_tab <- function() {
               options = NULL
             )),
             panel(),
-            col_widths = c(4, 4, 4)
+            col_widths = c(6, 6)
           )
         )
       ),
@@ -51,6 +51,15 @@ summary_page_tab <- function() {
       gov_row(
         br(),
         div(
+          div(
+            style = "position:absolute;right:1em;margin-top:-20px",
+            downloadButton(
+              "summary_page_download",
+              label = "Download CSV",
+              class = "btn btn-default",
+              icon = shiny::icon("download")
+            ) # actionButton('load_inputs', 'Load inputs') #CSSDownloader
+          ),
           tabsetPanel(
             id = "summary_page_panels",
             type = "tabs",
@@ -90,8 +99,8 @@ summary_page_tab <- function() {
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome3"),
                     sp_domain_ui(id = "Child safety – general"),
-                    sp_domain_ui(id = "Child abuse / neglect"),
-                    sp_domain_ui(id = "Harms outside the home"),
+                    # sp_domain_ui(id = "Child abuse / neglect"),
+                    # sp_domain_ui(id = "Harms outside the home"),
                   )
                 ),
                 accordion_panel(
