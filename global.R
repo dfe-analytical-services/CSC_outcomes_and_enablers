@@ -107,15 +107,15 @@ location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
 ## Read in the workforce characteristics data (Enabler 2) ----
-workforce_eth <- suppressWarnings(read_workforce_eth_data())
+workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
 workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
 combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
 
 ## Read in ofsted leadership data (Enabler 3) ----
-spending_data <- suppressWarnings(read_spending_data())
-spending_data_no_cla <- suppressWarnings(read_spending_data2())
-spending_per_capita <- suppressWarnings(read_per_capita_spending())
+spending_data <- suppressWarnings(read_spending_data(sn_long = stats_neighbours_long))
+spending_data_no_cla <- suppressWarnings(read_spending_data2(sn_long = stats_neighbours_long))
+spending_per_capita <- suppressWarnings(read_per_capita_spending(sn_long = stats_neighbours_long))
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data(sn_long = stats_neighbours_long))
 ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data(ofsted_leadership_data))
 
@@ -191,7 +191,6 @@ placement_order_match_data <- suppressWarnings(read_placement_order_match_data()
 
 ## Summary Data ----
 summary_data <- collect_summary_data_all()
-
 
 
 # Download button --------------------

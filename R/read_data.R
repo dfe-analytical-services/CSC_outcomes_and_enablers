@@ -270,7 +270,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
       return(x)
     }
     if (is.numeric(as.numeric(x))) {
-      x_formatted <- paste0("~£", x)
+      x_formatted <- paste0("~£", prettyNum(x, big.mark = ",", scientific = FALSE))
       return(x_formatted)
     }
   }
@@ -319,7 +319,7 @@ collect_summary_data_all <- function() {
   # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
   summary_data[nchar(time_period) == 6, time_period := paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))]
 
-  # now for each section we need to move the date into the header, determining which date to use!
+  # now for each section (apart from Ofsted leadership we need to move the date into the header, determining which date to use!
   date_frequency <- unique(summary_data[, .(tab_name, accordion_text, heading_text, time_period, metric_text)])[, .N, by = .(tab_name, accordion_text, heading_text, time_period)]
   date_per_heading <- merge(date_frequency, date_frequency[, .(N = max(N)), by = .(tab_name, accordion_text, heading_text)])
   setnames(date_per_heading, "time_period", "header_time_period")
@@ -391,6 +391,8 @@ read_cla_placement_data <- function(sn_long, file = "data/la_children_who_starte
 
   return(cla_placement_data)
 }
+
+
 read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
   cla_31_march_data <- read.csv(file)
   cla_31_march_data <- colClean(cla_31_march_data) %>%
@@ -418,21 +420,35 @@ read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteri
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 merge_cla_dataframes <- function(sn_long) {
-  # Read the data
-  cla_rates <- read_cla_rate_data(sn_long = sn_long)
-  cla_placements <- read_cla_placement_data(sn_long)
+  # Read the data of just get it from the global environment if it already exists
+  if (exists(x = "cla_rates")) {
+    cla_rates_local <- copy(cla_rates)
+  } else {
+    cla_rates_local <- suppressWarnings(read_cla_rate_data(sn_long = sn_long))
+  }
+
+  if (exists("cla_placements")) {
+    cla_placements_local <- copy(cla_placements)
+  } else {
+    cla_placements_local <- suppressWarnings(read_cla_placement_data())
+  }
+  setDT(cla_placements_local)
+  setDT(cla_rates_local)
+
 
   # Rename the columns to make it clear which dataset they come from
-  cla_rates <- rename(cla_rates,
+  cla_rates_local <- rename(cla_rates_local,
     rates_number = number
   )
 
-  cla_placements <- rename(cla_placements,
+  cla_placements_local <- rename(cla_placements_local,
     placements_number = number
   )
 
   # merge two data frames
-  merged_data <- merge(cla_rates, cla_placements,
+  merged_data <- merge(
+    cla_rates_local[geographic_level != "Statistical neighbours (median)"],
+    cla_placements_local[geographic_level != "Statistical neighbours (median)"],
     by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
     by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
     allow.cartesian = TRUE
@@ -488,15 +504,30 @@ merge_cla_dataframes <- function(sn_long) {
       TRUE ~ as.character(characteristic)
     ))
 
-  return(merged_data)
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = merged_data,
+    median_cols = c("placement_per_10000"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "population_count", "characteristic")
+  )
+  merged_data <- rbindlist(l = list(merged_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  merged_data <- merged_data %>%
+    mutate(placement_per_10000 = sapply(placement_per_10000, decimal_rounding, 0)) %>%
+    return(merged_data)
 }
+
 merge_cla_31_march_dataframes <- function(sn_long) {
   # Read the data
-  cla_rates <- read_cla_rate_data(sn_long)
+  cla_rates_local <- read_cla_rate_data(sn_long)
   cla_31_march_data <- read_cla_31_march_data()
 
+  setDT(cla_31_march_data)
+
   # Rename the columns to make it clear which dataset they come from
-  cla_rates <- rename(cla_rates,
+  cla_rates_local <- rename(cla_rates_local,
     rates_number = number
   )
 
@@ -505,7 +536,7 @@ merge_cla_31_march_dataframes <- function(sn_long) {
   )
 
   # merge two data frames
-  merged_31_march_data <- merge(cla_rates, cla_31_march_data,
+  merged_31_march_data <- merge(cla_rates_local[geographic_level != "Statistical neighbours (median)"], cla_31_march_data[geographic_level != "Statistical neighbours (median)"],
     by.x = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
     by.y = c("geo_breakdown", "time_period", "geographic_level", "region_code", "region_name", "new_la_code", "old_la_code", "la_name"),
     allow.cartesian = TRUE
@@ -561,7 +592,19 @@ merge_cla_31_march_dataframes <- function(sn_long) {
       TRUE ~ as.character(characteristic)
     ))
 
-  return(merged_31_march_data)
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = merged_31_march_data,
+    median_cols = c("placement_per_10000"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "population_count", "characteristic")
+  )
+  merged_31_march_data <- rbindlist(l = list(merged_31_march_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  merged_31_march_data <- merged_31_march_data %>%
+    mutate(placement_per_10000 = sapply(placement_per_10000, decimal_rounding, 0)) %>%
+    return(merged_31_march_data)
 }
 
 # TODO: redundant code?
@@ -1426,7 +1469,7 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
-read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_data <- read.csv(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
@@ -1449,6 +1492,24 @@ read_workforce_eth_data <- function(file = "data/csww_role_by_characteristics_in
   workforce_ethnicity_data <- mutate(workforce_ethnicity_data, code = coalesce(new_la_code, region_code, country_code))
 
   workforce_ethnicity_data <- convert_perc_cols_to_numeric(workforce_ethnicity_data)
+
+
+  # add stat neighbours
+  setDT(workforce_ethnicity_data)
+  workforce_ethnicity_data[, old_la_code := as.numeric(old_la_code)]
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = workforce_ethnicity_data,
+    median_cols = c("inpost_headcount_percentage"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period"),
+  )
+
+  final_dataset <- rbindlist(l = list(workforce_ethnicity_data, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  final_dataset <- final_dataset %>%
+    mutate(`inpost_headcount_percentage` = sapply(`inpost_headcount_percentage`, decimal_rounding, 1))
 
   return(workforce_ethnicity_data)
 }
@@ -1674,7 +1735,7 @@ read_ethnic_population_data <- function(file1 = "data/ons-ethnic-population-reg.
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 merge_eth_dataframes <- function() {
   # Read the data
-  workforce_eth <- read_workforce_eth_data()
+  workforce_eth <- read_workforce_eth_data(sn_long = stats_neighbours_long)[geographic_level != "Statistical neighbours (median)"]
   population_eth <- read_ethnic_population_data()
 
 
@@ -1706,7 +1767,8 @@ merge_eth_dataframes <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Enabler 3 -------------------
 # Spending
-read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
+
+read_spending_data <- function(sn_long, file = "data/RSX_2023-24_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RSX_LA_Data_2023-24", range = "A11:CW423")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
 
@@ -1810,11 +1872,27 @@ read_spending_data <- function(file = "data/RSX_2023-24_data_by_LA.ods") {
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share, "CS Share")
   # final_dataset$cs_share <- janitor::round_half_up(final_dataset$cs_share)
 
-  return(final_dataset)
+  # add stat neighbours
+  setDT(final_dataset)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = final_dataset,
+    median_cols = c("CS Share"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period"),
+  )
+
+  final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  final_dataset <- final_dataset %>%
+    mutate(`CS Share` = sapply(`CS Share`, decimal_rounding, 1)) %>%
+    return(final_dataset)
 }
 
 # read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
-read_per_capita_spending <- function(file = "data/mye23tablesew.xlsx") {
+read_per_capita_spending <- function(sn_long, file = "data/mye23tablesew.xlsx") {
   population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
   test_df <- population_estimates
   test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
@@ -1864,8 +1942,8 @@ read_per_capita_spending <- function(file = "data/mye23tablesew.xlsx") {
     rbind(outer_row) %>%
     select(-c(new_la_code))
 
-  spending_data <- suppressWarnings(read_spending_data())
-  joined_data <- left_join(spending_data, population5, by = c("geographic_level", "geo_breakdown"))
+  spending_data <- suppressWarnings(read_spending_data(sn_long = sn_long))
+  joined_data <- left_join(spending_data[geographic_level != "Statistical neighbours (median)"], population5, by = c("geographic_level", "geo_breakdown"))
   joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
   joined_data$cost_per_capita <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
 
@@ -1882,10 +1960,26 @@ read_per_capita_spending <- function(file = "data/mye23tablesew.xlsx") {
   joined_data2$`Cost per child` <- formatC(joined_data2$`Cost per child`, format = "f", big.mark = ",", digits = 0)
   joined_data2$cost_per_capita <- janitor::round_half_up(joined_data2$cost_per_capita)
 
-  return(joined_data2)
+  # add stat neighbours
+  setDT(joined_data2)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = joined_data2,
+    median_cols = c("Cost per child"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period")
+  )
+
+  final_dataset <- rbindlist(l = list(joined_data2, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  final_dataset <- final_dataset %>%
+    mutate(`Cost per child` = sapply(`Cost per child`, decimal_rounding, 0)) %>%
+    return(final_dataset)
 }
 
-read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
+read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RO3_LA_Data_2023-24", range = "A12:CP424")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")
 
@@ -1983,7 +2077,22 @@ read_spending_data2 <- function(file = "data/RO3_2023-24_data_by_LA.ods") {
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
   # final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
 
-  return(final_dataset)
+  setDT(final_dataset)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = final_dataset,
+    median_cols = c("Excluding CLA Share"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period")
+  )
+
+  final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
+
+  final_dataset <- final_dataset %>%
+    mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1)) %>%
+    return(final_dataset)
 }
 
 # Ofsted leadership data
@@ -2000,7 +2109,8 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
 
   # Convert "Inspection date" column to date format and copy the year into new "time_period" column
   ofsted_leadership_data$`Inspection date` <- as.Date(ofsted_leadership_data$`Inspection date`, format = "%d/%m/%Y")
-  ofsted_leadership_data$time_period <- format(ofsted_leadership_data$`Inspection date`, "%Y")
+  ofsted_leadership_data$inspection_year <- format(ofsted_leadership_data$`Inspection date`, "%Y")
+  ofsted_leadership_data$time_period <- max(format(ofsted_leadership_data$`Inspection date`, "%Y"))
 
   ofsted_leadership_data <- ofsted_leadership_data %>%
     select(-c(
@@ -2058,12 +2168,15 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       inadequate_count = sum(inadequate_count),
       requires_improvement_count = sum(requires_improvement_count),
       good_count = sum(good_count),
-      outstanding_count = sum(outstanding_count)
+      outstanding_count = sum(outstanding_count),
+      time_period = max(time_period)
     )
 
-  max(ofsted_leadership_data$time_period)
-
-  region_counts$time_period <- max(ofsted_leadership_data$time_period)
+  # region_counts$time_period <- max(ofsted_leadership_data$time_period)
+  # region_counts$time_period_min <- min(ofsted_leadership_data$time_period)
+  # region_counts$time_period_max <- max(ofsted_leadership_data$time_period)
+  # region_counts <- region_counts %>%
+  #   mutate(time_period_range = ifelse(time_period_max == time_period_min, time_period_max, paste(time_period_min, time_period_max, sep = "-")))
 
   region_counts$geographic_level <- "Regional"
 
@@ -2071,7 +2184,8 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
   national_counts <- region_counts %>%
     summarise(
       geo_breakdown = "National",
-      time_period = max(ofsted_leadership_data$time_period),
+      time_period = max(time_period),
+      # time_period_max = max(ofsted_leadership_data$time_period),
       geographic_level = "National",
       requires_improvement_count = sum(requires_improvement_count),
       inadequate_count = sum(inadequate_count),
@@ -2080,9 +2194,23 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     )
 
 
-
   # Combine the new data with the existing data
   ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, national_counts)
+
+  # add stat neighbours
+  setDT(ofsted_leadership_data)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = ofsted_leadership_data,
+    median_cols = c(),
+    sum_cols = c("requires_improvement_count", "inadequate_count", "good_count", "outstanding_count"), # "value", "population_estimate"
+    group_cols = c("LA.number")
+  )
+  # sn_metrics[, time_period := max(time_period)]
+
+  ofsted_leadership_data <- rbindlist(l = list(ofsted_leadership_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   # Flip the data so the geographic_levels are in order for the dropdown
   ofsted_leadership_data <- ofsted_leadership_data[nrow(ofsted_leadership_data):1, ]
