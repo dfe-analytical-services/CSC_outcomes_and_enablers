@@ -28,6 +28,11 @@ convert_perc_cols_to_numeric <- function(x) {
   return(x)
 }
 
+region_for_la <- function(dt, old_la_code) {
+
+
+
+}
 clean_date <- function(dataset) {
   dataset <- dataset %>%
     mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
@@ -1293,10 +1298,10 @@ read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la
 }
 
 
-## Wellbeing of child -----
+## Wellbeing of child -(SDQ) ----
 
-read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_cla.csv") {
-  data <- read.csv(file)
+read_wellbeing_child_data <- function(sn_long, file = "data/la_conviction_health_outcome_cla.csv") {
+  data <- fread(file)
 
   data2 <- data %>%
     mutate(geo_breakdown = case_when(
@@ -1313,24 +1318,8 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, characteristic, number, percentage)
 
   data3 <- data2 %>%
-    mutate(number_num = case_when(
-      number == "c" ~ -100,
-      number == "low" ~ -200,
-      number == "k" ~ -200,
-      number == "u" ~ -250,
-      number == "x" ~ -300,
-      number == "z" ~ -400,
-      TRUE ~ as.numeric(number)
-    )) %>%
-    mutate(percentage_num = case_when(
-      percentage == "c" ~ -100,
-      percentage == "low" ~ -200,
-      percentage == "k" ~ -200,
-      percentage == "u" ~ -250,
-      percentage == "x" ~ -300,
-      percentage == "z" ~ -400,
-      TRUE ~ as.numeric(percentage)
-    ))
+    redacted_to_negative(col_old = "number", col_new = "number_num") %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percentage_num")
 
   # pull out the SDQ_scores_received column
   data_totals <- data3 %>%
@@ -1357,7 +1346,20 @@ read_wellbeing_child_data <- function(file = "data/la_conviction_health_outcome_
       TRUE ~ as.character("Error")
     ))
 
-  return(data5)
+  # add stats neighbours
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = data5,
+    median_cols = c("number"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period", "cla_group", "characteristic"),
+  )
+  final_dataset <- rbindlist(l = list(data5, sn_metrics), fill = TRUE, use.names = TRUE)
+  final_dataset <- final_dataset %>%
+    mutate(percentage = sapply(number, decimal_rounding, 1))
+
+  return(final_dataset)
 }
 
 ## Placement order and match data ----
@@ -2083,7 +2085,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
     dataset = final_dataset,
-    median_cols = c("Excluding CLA Share"),
+    median_cols = c("minus_cla_share"),
     sum_cols = c(), # "value", "population_estimate"
     group_cols = c("LA.number", "time_period")
   )
@@ -2091,7 +2093,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
 
   final_dataset <- final_dataset %>%
-    mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1)) %>%
+    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
     return(final_dataset)
 }
 
@@ -2206,7 +2208,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     dataset = ofsted_leadership_data,
     median_cols = c(),
     sum_cols = c("requires_improvement_count", "inadequate_count", "good_count", "outstanding_count"), # "value", "population_estimate"
-    group_cols = c("LA.number")
+    group_cols = c("LA.number", "time_period")
   )
   # sn_metrics[, time_period := max(time_period)]
 

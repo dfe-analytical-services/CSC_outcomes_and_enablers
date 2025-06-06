@@ -214,6 +214,7 @@ server <- function(input, output, session) {
   # outcome 4 domains on summary page
   sp_accordion_cols_server(id = "outcome4", rv_summary_page)
   sp_domain_server(id = "Stability and quality of where a child lives", rv_summary_page)
+  sp_domain_server(id = "Child wellbeing", rv_summary_page)
   sp_domain_server(id = "Quality of life for care experienced people", rv_summary_page)
 
   # Enabler 2 domains on summary page ----

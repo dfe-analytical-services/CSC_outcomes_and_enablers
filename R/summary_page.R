@@ -6,7 +6,7 @@ summary_page_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Summary Page")
+          h1("Summary")
         )
       ),
       gov_row(
@@ -110,6 +110,7 @@ summary_page_tab <- function() {
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome4"),
                     sp_domain_ui(id = "Stability and quality of where a child lives"),
+                    sp_domain_ui(id = "Child wellbeing"),
                     sp_domain_ui(id = "Quality of life for care experienced people")
                   )
                 )

@@ -370,17 +370,15 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
 
 # Ethnicity Rate ----
 
-plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
+plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
   ethnicity_data <- workforce_eth[
-    workforce_eth$geo_breakdown %in% geo_breakdown &
-      workforce_eth$role == "Total" &
-      workforce_eth$breakdown_topic == "Ethnicity major" &
-      !(workforce_eth$breakdown %in% c("Known", "Total", "Not known")) &
-      workforce_eth$time_period >= (max(workforce_eth$time_period) - 3),
-    c(
-      "time_period", "geo_breakdown", "breakdown_topic", "breakdown",
-      "inpost_headcount_percentage"
-    )
+    i = geographic_level == select_geographic_level &
+      geo_breakdown %in% select_geo_breakdown &
+      role == "Total" &
+      breakdown_topic == "Ethnicity major" &
+      !(breakdown %in% c("Known", "Total", "Not known")) &
+      time_period >= (max(workforce_eth$time_period) - 3),
+    j = .(time_period, geo_breakdown, breakdown_topic, breakdown, inpost_headcount_percentage)
   ]
 
   # Ensure 'percentage' is numeric

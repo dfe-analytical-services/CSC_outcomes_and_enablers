@@ -9,7 +9,6 @@ generate_choice_text1 <- function(select_geography, geographic_breakdown, region
 }
 
 generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_comparison_checkbox = NULL, sn_comparison_checkbox = NULL, summary_page = NULL, select_geography = NULL) {
-  # browser()
   comparisons <- c()
   choice_text2 <- ""
 

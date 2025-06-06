@@ -184,7 +184,7 @@ placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long =
 care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(sn_long = stats_neighbours_long))
 care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
 
-wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
+wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(sn_long = stats_neighbours_long))
 
 placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
 

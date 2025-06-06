@@ -6,6 +6,15 @@ sp_accordion_cols_ui <- function(id) {
 }
 
 
+#' Summary Page accordion column headers module server
+#'
+#' @param id
+#' @param rv reactiveValues containing the filtered dataset and geographic level
+#'
+#' @returns
+#' @export
+#'
+#' @examples
 sp_accordion_cols_server <- function(id, rv) {
   moduleServer(id, function(input, output, session) {
     data_in <- reactive(rv$summary_data_filtered)
@@ -38,20 +47,20 @@ sp_domain_ui <- function(id) {
   )
 }
 
-
-
 sp_domain_server <- function(id, rv) {
   moduleServer(id, function(input, output, session) {
+    # note that we need to guard against 2 domains starting with the same text string e.g. 'Child wellbeing' and 'Child wellbeing and development'
+    # if (id == "Child wellbeing") id <- "Child wellbeing ("
     data_in <- reactive(rv$summary_data_filtered)
     output$domain_text <- renderText({
       req(data_in())
-      data_in()[str_starts(heading_text, id)]$heading_text[1]
+      data_in()[str_starts(heading_text, paste(id, "\\("))]$heading_text[1]
     })
     output$domain_table <- renderReactable({
       req(data_in())
       req(rv$select_geographic_level)
       reactable(
-        data = transform_summary_data(data_in()[str_starts(heading_text, id)], rv$select_geographic_level),
+        data = transform_summary_data(data_in()[str_starts(heading_text, paste(id, "\\("))], rv$select_geographic_level),
         class = "hidden-column-headers",
         # Prevent hidden column headers from being tabbed/focused
         sortable = FALSE,
@@ -99,12 +108,11 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   # browser()
   transformed_data <- dcast(
     filtered_summary_data,
-    metric_text ~ geographic_level,
+    sort_order + metric_text ~ geographic_level,
     value.var = "value",
     fun.aggregate = function(x) x[1]
   )
 
-  # browser()
   # TODO:  when we do the download we need to remove the empty columns
 
   # ensure columns are in the correct order
@@ -129,6 +137,8 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   if ("Local authority" %in% geographic_levels) setnames(transformed_data, old = "Local authority", new = filtered_summary_data[geographic_level == "Local authority"]$geo_breakdown[1])
   if ("Statistical neighbours (median)" %in% geographic_levels) setnames(transformed_data, old = "Statistical neighbours (median)", new = "Statistical neighbours")
 
+  transformed_data[, sort_order := NULL]
+
   if (headers_only) {
     dt_temp <- data.table(matrix(ncol = ncol(transformed_data), nrow = 0))
     table_col_names <- names(transformed_data)
@@ -136,6 +146,6 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
     dt_temp <- rbindlist(list(dt_temp, as.list(table_col_names)))
     return(dt_temp)
   }
-
+  # transformed_data <- transformed_data[order(sort_order)]
   return(transformed_data)
 }
