@@ -50,6 +50,7 @@ sp_domain_server <- function(id, rv) {
     output$domain_table <- renderReactable({
       req(data_in())
       req(rv$select_geographic_level)
+
       reactable(
         data = transform_summary_data(data_in()[str_starts(heading_text, paste(id, "\\("))], rv$select_geographic_level),
         class = "hidden-column-headers",

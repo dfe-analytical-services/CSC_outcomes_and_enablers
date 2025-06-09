@@ -4764,13 +4764,13 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "537152e783313f79f9e6eeefc3e3452f"
+      "checksum": "4474a520e9146bd93aa651b8355e688a"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data-raw/summary_page_metadata.xlsx": {
-      "checksum": "e6e9e0952bab4b42957b1124877a59a5"
+      "checksum": "8c8c3e8b723762ff2c68c54fd79b9af8"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4929,7 +4929,7 @@
       "checksum": "f1c635039e076143b958713fb59818db"
     },
     "R/mod_summary_page.R": {
-      "checksum": "a8fd625a4d360ee8a0309b77d1916c86"
+      "checksum": "98d95c5d5d33a9f4dfb66318c06eb2fd"
     },
     "R/omitted_data.R": {
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
