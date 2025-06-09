@@ -785,3 +785,8 @@ div .hidden-table-body,
 div .hidden-column-headers {
   padding-left: 10px !important;
 }
+
+
+div .panel .card .mb-3 .panel-default .border-default {
+  visibility: hidden !important;
+}

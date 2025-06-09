@@ -2093,8 +2093,9 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
 
   final_dataset <- final_dataset %>%
-    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
-    return(final_dataset)
+    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1))
+
+  return(final_dataset)
 }
 
 # Ofsted leadership data
