@@ -6,15 +6,6 @@ sp_accordion_cols_ui <- function(id) {
 }
 
 
-#' Summary Page accordion column headers module server
-#'
-#' @param id
-#' @param rv reactiveValues containing the filtered dataset and geographic level
-#'
-#' @returns
-#' @export
-#'
-#' @examples
 sp_accordion_cols_server <- function(id, rv) {
   moduleServer(id, function(input, output, session) {
     data_in <- reactive(rv$summary_data_filtered)

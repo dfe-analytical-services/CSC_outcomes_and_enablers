@@ -4764,7 +4764,7 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "b9a2b3f66685cf162f5df45ee8aed8d3"
+      "checksum": "56e8ef0b52834762ef9b2996c89f4aaa"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4856,6 +4856,9 @@
     "data/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
     },
+    "data/ofsted_region_mapping_corrections.csv": {
+      "checksum": "bb0404259d6ba27335f29f986496c5fd"
+    },
     "data/ons-ethnic-population-la.csv": {
       "checksum": "49faab561048dd5e857bcfd1704796e4"
     },
@@ -4878,7 +4881,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "b617ea34595e8b271ef567c5bb58bade"
+      "checksum": "bc467affa0b265e24aa83a23ad602538"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4926,7 +4929,7 @@
       "checksum": "f1c635039e076143b958713fb59818db"
     },
     "R/mod_summary_page.R": {
-      "checksum": "60cd28e8a28fed3fafdccdaa2602fdc7"
+      "checksum": "a8fd625a4d360ee8a0309b77d1916c86"
     },
     "R/omitted_data.R": {
       "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
@@ -4947,7 +4950,7 @@
       "checksum": "448b33588bdecb9d706af015b96e4683"
     },
     "R/read_data.R": {
-      "checksum": "0d048168b5f0922f5787384248bb94d9"
+      "checksum": "9753f055a82ce04e75f8e82accf01053"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -5064,7 +5067,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "b5e2b8aa02c2ea8fac33de355c081e80"
+      "checksum": "78898b682a00317da1c120ede41943a4"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
