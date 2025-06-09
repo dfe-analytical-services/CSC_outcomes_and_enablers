@@ -2098,7 +2098,6 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
 }
 
 # Ofsted leadership data
-# read_ofsted_leadership_data <- function(file = "data/Childrens_social_care_in_England_2023_underlying_data.ods") {
 read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
   file <- "data/LA_Inspection_Outcomes_as_at_March_2024.ods"
@@ -2143,6 +2142,14 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       geo_breakdown == "St Helens" ~ "St. Helens",
       TRUE ~ as.character(geo_breakdown)
     ))
+
+  setDT(ofsted_leadership_data)
+  # we now need a step to correct the ofsted regions using a csv file with the correct mappings
+  ofsted_region_corrections <- fread("./data/ofsted_region_mapping_corrections.csv")
+
+  ofsted_leadership_data <- merge(ofsted_leadership_data, ofsted_region_corrections, by.x = "geo_breakdown", by.y = "la_name", all.x = TRUE)
+  ofsted_leadership_data[!is.na(region_name_correct), region := region_name_correct][, region_name_correct := NULL]
+
 
   # Assign all current values as "Local authority" (before combining data to get Regional and National values)
   ofsted_leadership_data$geographic_level <- "Local authority"
