@@ -97,7 +97,6 @@ filter_summary_data <- function(data_in, select_geographic_level, select_geo_bre
 # filter_summary_data(summary_data, select_geographic_level = "Local authority", select_geo_breakdown = "Sutton")
 
 transform_summary_data <- function(filtered_summary_data, select_geographic_level = NULL, headers_only = FALSE) {
-  # browser()
   transformed_data <- dcast(
     filtered_summary_data,
     sort_order + metric_text ~ geographic_level,
@@ -140,4 +139,21 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   }
   # transformed_data <- transformed_data[order(sort_order)]
   return(transformed_data)
+}
+
+
+download_summary_data <- function(summary_data_filtered, select_geographic_level) {
+  # take the data and prepare it (crosstab, column order/naming etc)
+  download_data <- transform_summary_data(summary_data_filtered, select_geographic_level)
+  # remove unrequired columns
+  if (select_geographic_level != "Local authority") download_data[, (c("Local authority", "Statistical neighbours (median)")) := NULL]
+  if (select_geographic_level == "National") download_data[, Regional := NULL]
+  # add in the accordion text and heading text
+  extra_columns <- unique(summary_data_filtered[, .(tab_name, sort_order, metric_text, heading_text, accordion_text)])
+  download_data <- merge(download_data, extra_columns, by = "metric_text")
+  setcolorder(download_data, c("tab_name", "accordion_text", "heading_text"))
+  downoad_data <- download_data[order(-tab_name, sort_order)]
+  # download_data[, sort_order := NULL]
+
+  return(download_data)
 }
