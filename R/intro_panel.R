@@ -38,7 +38,7 @@ introductionPanel <- function() {
             p("The enablers included in the dashboard refer to aspects of the children’s social care system that facilitate effective support for children, young people and families.
               The enablers are foundational to good practice. The enablers included are:"),
             tags$ul(
-              tags$li("multi-agency working is prioritised and effective"),
+              tags$li("multi-agency working is prioritised and effective (data currently unavailable)"),
               tags$li("leaders drive conditions for effective practice"),
               tags$li("the workforce is equipped and effective"),
               style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"

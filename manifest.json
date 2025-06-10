@@ -4764,13 +4764,13 @@
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
     ".Rprofile": {
-      "checksum": "3f3823f67724dacf8a1bba1ae3205739"
+      "checksum": "aa2ed25d914bfc6976d696efcd5f5d3f"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
     },
     "data-raw/summary_page_metadata.xlsx": {
-      "checksum": "129a20c764b782bbe4c661a8175014ba"
+      "checksum": "0fd8832398f7a5cec21ce719caefad5f"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4916,9 +4916,6 @@
     "R/disclaimer.R": {
       "checksum": "1a70dc3064e5bebde57071bfbc56c389"
     },
-    "R/enabler1_page.R": {
-      "checksum": "563966a26cdecdeaa82073f2c5c8787c"
-    },
     "R/enabler2_page.R": {
       "checksum": "ee65ef97a2801264db888f9cb335f2bf"
     },
@@ -4926,13 +4923,13 @@
       "checksum": "e789eb1b48a3ab3da3c894f31ebda09b"
     },
     "R/intro_panel.R": {
-      "checksum": "f1c635039e076143b958713fb59818db"
+      "checksum": "268df5c6a95f3ec3380db42e81245ff5"
     },
     "R/mod_summary_page.R": {
       "checksum": "ac45c7aa6696cc0610adaffa595c25d5"
     },
     "R/omitted_data.R": {
-      "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
+      "checksum": "817b0f93920c1705714733d41dd051cc"
     },
     "R/outcome1_page.R": {
       "checksum": "6d3ef99b120bf700ce8036bfeed16884"
@@ -4950,7 +4947,7 @@
       "checksum": "6d9de7dbcdc4921135482e6327b4a0ab"
     },
     "R/read_data.R": {
-      "checksum": "488f0d5245bb1e3f3911c165a400aa80"
+      "checksum": "b93322dbbc34c38a26aac34d094e99e0"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -5058,7 +5055,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "999796ff519d7bc177abcad723fef5f1"
+      "checksum": "53c68547f42b57c71f79aa541c5b7321"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

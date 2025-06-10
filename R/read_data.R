@@ -608,8 +608,9 @@ merge_cla_31_march_dataframes <- function(sn_long) {
   merged_31_march_data <- rbindlist(l = list(merged_31_march_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   merged_31_march_data <- merged_31_march_data %>%
-    mutate(placement_per_10000 = sapply(placement_per_10000, decimal_rounding, 0)) %>%
-    return(merged_31_march_data)
+    mutate(placement_per_10000 = sapply(placement_per_10000, decimal_rounding, 0))
+
+  return(merged_31_march_data)
 }
 
 # TODO: redundant code?
@@ -1357,7 +1358,7 @@ read_wellbeing_child_data <- function(sn_long, file = "data/la_conviction_health
   )
   final_dataset <- rbindlist(l = list(data5, sn_metrics), fill = TRUE, use.names = TRUE)
   final_dataset <- final_dataset %>%
-    mutate(percentage = sapply(number, decimal_rounding, 1))
+    mutate(number = sapply(number, decimal_rounding, 1))
 
   return(final_dataset)
 }

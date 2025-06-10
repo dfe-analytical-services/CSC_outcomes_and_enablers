@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "We have updated the Dashboard with the latest published data for Outcomes for children in need, including children looked after by local authorities in England (10th April 2025)"
+        "The next release will include the revised children’s services statistical neighbour groupings for all local authorities"
       )
     ),
     bslib::navset_pill_list(
@@ -109,7 +109,6 @@ ui <- function(input, output, session) {
       outcome3_tab(),
       outcome4_tab(),
       "Enablers",
-      enabler1_tab(),
       enabler2_tab(),
       enabler3_tab(),
       "Support",
