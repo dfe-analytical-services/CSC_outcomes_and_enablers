@@ -376,7 +376,7 @@ plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
       geo_breakdown %in% select_geo_breakdown &
       role == "Total" &
       breakdown_topic == "Ethnicity major" &
-      !(breakdown %in% c("Known", "Total", "Not known")) &
+      !(breakdown %in% c("Known", "Total", "Not known", "Non-white")) &
       time_period >= (max(workforce_eth$time_period) - 3),
     j = .(time_period, geo_breakdown, breakdown_topic, breakdown, inpost_headcount_percentage)
   ]
@@ -425,7 +425,7 @@ plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
 plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
   # Filter the data based on 'geo_breakdown', 'geographic_level'
   combined_ethnicity_data <- combined_ethnicity_data[
-    combined_ethnicity_data$geo_breakdown %in% geo_breakdown,
+    combined_ethnicity_data$geo_breakdown %in% geo_breakdown & combined_ethnicity_data$breakdown != "Non-white",
     c(
       "time_period", "geo_breakdown", "geographic_level.x", "breakdown",
       "inpost_headcount_percentage", "Percentage"

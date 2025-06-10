@@ -152,7 +152,6 @@ server <- function(input, output, session) {
   rv_summary_page <- reactiveValues(summary_data_filtered = NULL, select_geographic_level = NULL)
 
   observeEvent(req(input$geographic_breakdown_sp, input$select_geography_sp), {
-    # browser()
     filtered_data <- filter_summary_data(
       data_in = copy(summary_data),
       select_geographic_level = input$select_geography_sp,
@@ -168,7 +167,7 @@ server <- function(input, output, session) {
       paste("summary_page_data_", Sys.Date(), ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(transform_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level), file)
+      write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
     }
   )
   # tags$script(
@@ -7075,17 +7074,17 @@ server <- function(input, output, session) {
 
   ## Ethnicity and Diversity Domain-----
   output$non_white_txt <- renderText({
-    white_stat <- workforce_eth %>%
+    non_white_stat <- workforce_eth %>%
       filter(time_period == max(workforce_eth$time_period) &
         geo_breakdown %in% input$geographic_breakdown_e3 &
         role == "Total" &
-        breakdown == "White") %>%
+        breakdown == "Non-white") %>%
       select(inpost_headcount_percentage)
 
     if (input$geographic_breakdown_e3 == "") {
       non_white_stat <- "NA"
     } else {
-      non_white_stat <- format(100 - as.numeric(white_stat), nsmall = 1)
+      non_white_stat <- format(as.numeric(non_white_stat), nsmall = 1)
     }
     paste0(non_white_stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
   })
@@ -7112,7 +7111,12 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
     data <- workforce_eth %>%
-      filter(geo_breakdown %in% input$geographic_breakdown_e3, role == "Total", breakdown_topic == "Ethnicity major") %>%
+      filter(
+        geo_breakdown %in% input$geographic_breakdown_e3,
+        role == "Total",
+        breakdown_topic == "Ethnicity major",
+        breakdown != "Non-white"
+      ) %>%
       select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "inpost_headcount_percentage")
 
@@ -7153,6 +7157,7 @@ server <- function(input, output, session) {
     )
     data <- combined_ethnicity_data %>%
       filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      filter(breakdown != "Non-white") %>%
       select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage) %>%
       rename("Location" = "geo_breakdown", "Ethnicity group" = "breakdown", "Workforce (%)" = "inpost_headcount_percentage", "Population (%)" = "Percentage")
 

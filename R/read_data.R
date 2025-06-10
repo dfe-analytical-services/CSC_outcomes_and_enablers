@@ -258,9 +258,9 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   ]
 
   # one off hack for needing non-white calculation as 100 minus white percentage
-  if (dataset_name == "workforce_eth") {
-    dataset_out[is.numeric(value), value := (100 - as.numeric(value))]
-  }
+  # if (dataset_name == "workforce_eth") {
+  #   dataset_out[is.numeric(value), value := (100 - as.numeric(value))]
+  # }
   percent_format <- function(x) {
     if (is.na(as.numeric(x))) {
       return(x)
@@ -1472,15 +1472,10 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
 read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
-  workforce_ethnicity_data <- read.csv(file)
+  workforce_ethnicity_data <- fread(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
-    mutate(inpost_headcount_percentage = as.numeric(inpost_headcount_percentage)) %>%
+    insert_geo_breakdown() %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -1493,11 +1488,21 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
   workforce_ethnicity_data$region_code[workforce_ethnicity_data$region_code == ""] <- NA
   workforce_ethnicity_data <- mutate(workforce_ethnicity_data, code = coalesce(new_la_code, region_code, country_code))
 
-  workforce_ethnicity_data <- convert_perc_cols_to_numeric(workforce_ethnicity_data)
+  workforce_ethnicity_data <- convert_perc_cols_to_numeric(as.data.frame(workforce_ethnicity_data))
+
+  # now we need to create a Non-white set of metrics
+  setDT(workforce_ethnicity_data)
+  non_white_data <- workforce_ethnicity_data[breakdown == "White" & role == "Total"]
+  non_white_data[is.numeric(as.numeric(inpost_headcount_percentage)), inpost_headcount_percentage := as.character(100 - as.numeric(inpost_headcount_percentage))]
+  non_white_data[, breakdown := "Non-white"]
+
+  # and then append these to the dataset
+  workforce_ethnicity_data <- rbindlist(list(workforce_ethnicity_data, non_white_data))
+
 
 
   # add stat neighbours
-  setDT(workforce_ethnicity_data)
+
   workforce_ethnicity_data[, old_la_code := as.numeric(old_la_code)]
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1505,7 +1510,7 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
     dataset = workforce_ethnicity_data,
     median_cols = c("inpost_headcount_percentage"),
     sum_cols = c(), # "value", "population_estimate"
-    group_cols = c("LA.number", "time_period"),
+    group_cols = c("LA.number", "time_period", "role", "breakdown_topic", "breakdown")
   )
 
   final_dataset <- rbindlist(l = list(workforce_ethnicity_data, sn_metrics), fill = TRUE, use.names = TRUE)
@@ -1513,7 +1518,10 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
   final_dataset <- final_dataset %>%
     mutate(`inpost_headcount_percentage` = sapply(`inpost_headcount_percentage`, decimal_rounding, 1))
 
-  return(workforce_ethnicity_data)
+  # this line has been removed from near the top
+  # mutate(inpost_headcount_percentage = as.numeric(inpost_headcount_percentage)) %>%
+
+  return(final_dataset)
 }
 
 
