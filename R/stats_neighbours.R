@@ -7,6 +7,7 @@ sn_aggregations <- function(sn_long,
                             calc_name = "") {
   # 1 get the mappings for SN -----
   # merge the datasetwith the SN mappings for LAs to aggregate
+  if (class(dataset)[1] != "data.table") setDT(dataset)
   sn_dataset <- merge(
     sn_long,
     dataset[geographic_level == "Local authority"],

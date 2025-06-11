@@ -1105,6 +1105,21 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
   admissions_data3 <- admissions_data3 %>%
     mutate(Value = round(Value), 0)
 
+  # add stats neighbours
+  # now calculate SN metrics and append to the bottom of the dataset
+  setDT(admissions_data3)
+  admissions_data3[, old_la_code := as.numeric(old_la_code)]
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = admissions_data3,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period"),
+  )
+  admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
+
   return(admissions_data3)
 }
 

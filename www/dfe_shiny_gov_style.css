@@ -787,6 +787,7 @@ div .hidden-column-headers {
 }
 
 
-div .panel .card .mb-3 .panel-default .border-default {
+div .panel.card.mb-3.panel-default.border-default {
   visibility: hidden !important;
+  display: none !important;
 }
