@@ -281,12 +281,11 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   }
   # quick and dirty method to add the percentage sign where required
   dataset_out[value_format == "percent", value := sapply(value, percent_format)]
-  # quick and dirty method to add the percentage sign where required
+  # quick and dirty method to add the currency where required
   dataset_out[value_format == "currency_per_capita", value := sapply(value, curreny_per_capita_format)]
 
   return(dataset_out)
 }
-
 
 collect_summary_data_all <- function() {
   metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
@@ -320,6 +319,9 @@ collect_summary_data_all <- function() {
       }, metric_parameters
     )
   )
+
+  # if any NA have crept in we need to display "na"
+  summary_data[is.na(value), value := "na"]
 
   # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
   summary_data[nchar(time_period) == 6, time_period := paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))]
