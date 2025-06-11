@@ -340,7 +340,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 /* Headline Stats boxes */
 .card, .well{
-  --bs-card-color: #1d70b8!important;
+  --bs-card-color: #white !important;
   --bs-card-spacer-y: 0em;
   --bs-card-spacer-x: 0em;
   
@@ -787,6 +787,9 @@ div .hidden-column-headers {
 }
 
 
-div .panel .card .mb-3 .panel-default .border-default {
+div .panel.card.mb-3.panel-default.border-default {
   visibility: hidden !important;
+  display: none !important;
+  
+  
 }

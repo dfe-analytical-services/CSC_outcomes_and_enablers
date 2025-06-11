@@ -281,12 +281,11 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   }
   # quick and dirty method to add the percentage sign where required
   dataset_out[value_format == "percent", value := sapply(value, percent_format)]
-  # quick and dirty method to add the percentage sign where required
+  # quick and dirty method to add the currency where required
   dataset_out[value_format == "currency_per_capita", value := sapply(value, curreny_per_capita_format)]
 
   return(dataset_out)
 }
-
 
 collect_summary_data_all <- function() {
   metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
@@ -320,6 +319,9 @@ collect_summary_data_all <- function() {
       }, metric_parameters
     )
   )
+
+  # if any NA have crept in we need to display "na"
+  summary_data[is.na(value), value := "na"]
 
   # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
   summary_data[nchar(time_period) == 6, time_period := paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))]
@@ -1104,6 +1106,21 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
   # Round plot values
   admissions_data3 <- admissions_data3 %>%
     mutate(Value = round(Value), 0)
+
+  # add stats neighbours
+  # now calculate SN metrics and append to the bottom of the dataset
+  setDT(admissions_data3)
+  admissions_data3[, old_la_code := as.numeric(old_la_code)]
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = admissions_data3,
+    median_cols = c("rate_per_10000"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period"),
+  )
+  admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
 
   return(admissions_data3)
 }
