@@ -4922,7 +4922,7 @@ server <- function(input, output, session) {
       context <- " down from "
     } else if ((as.numeric(stat_current) > as.numeric(stat_prev))) {
       context <- " up from "
-    } else if ((as.numeric(stat_current) <- as.numeric(stat_prev))) {
+    } else if ((as.numeric(stat_current) == as.numeric(stat_prev))) {
       context <- " no change from "
     } else {
       context <- " compared to "

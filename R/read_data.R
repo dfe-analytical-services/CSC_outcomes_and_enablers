@@ -1915,8 +1915,9 @@ read_spending_data <- function(sn_long, file = "data/RSX_2023-24_data_by_LA.ods"
   final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
 
   final_dataset <- final_dataset %>%
-    mutate(`CS Share` = sapply(`CS Share`, decimal_rounding, 1)) %>%
-    return(final_dataset)
+    mutate(`CS Share` = sapply(`CS Share`, decimal_rounding, 1))
+
+  return(final_dataset)
 }
 
 # read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
