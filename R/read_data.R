@@ -223,13 +223,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   setDT(dataset_in)
 
   # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
-  if (dataset_name == "zassessment_factors") {
-    browser()
-    print(ass_factor)
-    data.table(assessment_factor = ass_factor)
-    merge(dataset_in, data.table(assessment_factor = ass_factor), by = "assessment_factor")
-    dataset_in <- dataset_in[assessment_factor %in% ass_factor, env = list(ass_factor = ass_factor)] # assessment_factor
-  } else if (length(dimensional_filters) > 0) {
+  if (length(dimensional_filters) > 0) {
     dataset_in <- dataset_in[eval(AndEQUAL(dimensional_filters))]
   }
 
@@ -257,10 +251,6 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
     )
   ]
 
-  # one off hack for needing non-white calculation as 100 minus white percentage
-  # if (dataset_name == "workforce_eth") {
-  #   dataset_out[is.numeric(value), value := (100 - as.numeric(value))]
-  # }
   percent_format <- function(x) {
     if (is.na(as.numeric(x))) {
       return(x)
@@ -292,7 +282,7 @@ collect_summary_data_all <- function() {
 
   summary_data <- rbindlist(
     lapply(
-      metric_parameters$sort_order[-(24:40)],
+      metric_parameters$sort_order,
       function(x, metric_parameters) {
         this_metric <- metric_parameters[sort_order == x]
         tab_name <- this_metric$tab_name
@@ -334,11 +324,9 @@ collect_summary_data_all <- function() {
   summary_data <- merge(summary_data, date_per_heading)
   summary_data[header_time_period != time_period, metric_text := paste0(metric_text, " (", time_period, ")")]
   summary_data[, heading_text := paste0(heading_text, " (", time_period, ")")]
+
   return(summary_data)
 }
-
-
-
 
 
 
@@ -1120,7 +1108,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
   )
   admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
 
-
+  admissions_data3 <- admissions_data3 %>%
+    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0))
 
   return(admissions_data3)
 }

@@ -56,6 +56,7 @@ sp_domain_server <- function(id, rv) {
         class = "hidden-column-headers",
         # Prevent hidden column headers from being tabbed/focused
         sortable = FALSE,
+        defaultPageSize = 20,
         defaultColDef = colDef(minWidth = 200, align = "center"),
         columns = list(
           metric_text = colDef(minWidth = 500, align = "left") # 50% width, 200px minimum
