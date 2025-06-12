@@ -1171,13 +1171,12 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
   )
   ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-
   ass_fac_data <- ass_fac_data %>%
     mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     redacted_to_negative(col_old = "value", col_new = "Number") %>%
-    redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
-  # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
-  # select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := value]
 
 
   return(ass_fac_data)
