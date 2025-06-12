@@ -1171,13 +1171,12 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
   )
   ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
-
   ass_fac_data <- ass_fac_data %>%
     mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
     redacted_to_negative(col_old = "value", col_new = "Number") %>%
-    redacted_to_negative(col_old = "value", col_new = "rate_per_10000", copy_numeric_vals = FALSE)
-  # mutate(`rate_per_10000` = round(rate_per_10000, digits = 0))
-  # select(time_period, geographic_level, geo_breakdown, old_la_code, new_la_code, category, assessment_factor, value, Number)
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := value]
 
 
   return(ass_fac_data)
@@ -2071,7 +2070,23 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
 
   df2$minus_cla_share <- round(df2$minus_cla_share, 1)
 
-  final_dataset <- df2 %>%
+  # final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
+  final_dataset <- copy(df2)
+
+  # now calculate SN metrics and append to the bottom of the dataset
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = final_dataset,
+    median_cols = c("minus_cla_share"),
+    sum_cols = c(), # "value", "population_estimate"
+    group_cols = c("LA.number", "time_period")
+  )
+
+  final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
+
+
+
+  final_dataset <- final_dataset %>%
     mutate(exp = case_when(
       `CLA Expenditure` == "x" ~ -300,
       TRUE ~ as.numeric(cla_exp)
@@ -2092,24 +2107,11 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
       format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
       `Excluding CLA Share`
     )) %>%
-    select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
-  # final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
-
-  setDT(final_dataset)
-
-  # now calculate SN metrics and append to the bottom of the dataset
-  sn_metrics <- sn_aggregations(
-    sn_long = sn_long,
-    dataset = final_dataset,
-    median_cols = c("minus_cla_share"),
-    sum_cols = c(), # "value", "population_estimate"
-    group_cols = c("LA.number", "time_period")
-  )
-
-  final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
+    select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
 
   final_dataset <- final_dataset %>%
-    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1))
+    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
+    mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1))
 
   return(final_dataset)
 }
