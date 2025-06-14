@@ -144,7 +144,8 @@ assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_n
 af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
   select(assessment_factor) %>%
-  pull("assessment_factor")
+  pull("assessment_factor") %>%
+  unique()
 
 extra_familial_harm_af <- c(
   "Going missing",

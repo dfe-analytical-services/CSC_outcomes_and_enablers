@@ -1,60 +1,61 @@
-"la_name","region_name_correct"
-"Barking and Dagenham","Outer London"
-"Barnet","Outer London"
-"Barnsley","Yorkshire and The Humber"
-"Bexley","Outer London"
-"Bradford","Yorkshire and The Humber"
-"Brent","Outer London"
-"Bromley","Outer London"
-"Calderdale","Yorkshire and The Humber"
-"Camden","Inner London"
-"City of London","Inner London"
-"Croydon","Outer London"
-"Darlington","North East"
-"Doncaster","Yorkshire and The Humber"
-"Ealing","Outer London"
-"East Riding of Yorkshire","Yorkshire and The Humber"
-"Enfield","Outer London"
-"Gateshead","North East"
-"Greenwich","Outer London"
-"Hackney","Inner London"
-"Hammersmith and Fulham","Inner London"
-"Haringey","Inner London"
-"Harrow","Outer London"
-"Hartlepool","North East"
-"Havering","Outer London"
-"Hillingdon","Outer London"
-"Hounslow","Outer London"
-"Islington","Inner London"
-"Kensington and Chelsea","Inner London"
-"Kingston upon Hull, City of","Yorkshire and The Humber"
-"Kingston upon Thames","Outer London"
-"Kirklees","Yorkshire and The Humber"
-"Lambeth","Inner London"
-"Leeds","Yorkshire and The Humber"
-"Lewisham","Inner London"
-"Merton","Outer London"
-"Middlesbrough","North East"
-"Newcastle upon Tyne","North East"
-"Newham","Inner London"
-"North East Lincolnshire","Yorkshire and The Humber"
-"North Lincolnshire","Yorkshire and The Humber"
-"North Tyneside","North East"
-"North Yorkshire","Yorkshire and The Humber"
-"Northumberland","North East"
-"Redbridge","Outer London"
-"Redcar and Cleveland","North East"
-"Richmond upon Thames","Outer London"
-"Rotherham","Yorkshire and The Humber"
-"Sheffield","Yorkshire and The Humber"
-"South Tyneside","North East"
-"Southwark","Inner London"
-"Stockton-on-Tees","North East"
-"Sunderland","North East"
-"Sutton","Outer London"
-"Tower Hamlets","Inner London"
-"Wakefield","Yorkshire and The Humber"
-"Waltham Forest","Outer London"
-"Wandsworth","Inner London"
-"Westminster","Inner London"
-"York","Yorkshire and The Humber"
+la_name,region_name_correct
+Barking and Dagenham,Outer London
+Barnet,Outer London
+Barnsley,Yorkshire and The Humber
+Bexley,Outer London
+Bradford,Yorkshire and The Humber
+Brent,Outer London
+Bromley,Outer London
+Calderdale,Yorkshire and The Humber
+Camden,Inner London
+City of London,Inner London
+County Durham,North East
+Croydon,Outer London
+Darlington,North East
+Doncaster,Yorkshire and The Humber
+Ealing,Outer London
+East Riding of Yorkshire,Yorkshire and The Humber
+Enfield,Outer London
+Gateshead,North East
+Greenwich,Outer London
+Hackney,Inner London
+Hammersmith and Fulham,Inner London
+Haringey,Inner London
+Harrow,Outer London
+Hartlepool,North East
+Havering,Outer London
+Hillingdon,Outer London
+Hounslow,Outer London
+Islington,Inner London
+Kensington and Chelsea,Inner London
+"Kingston upon Hull, City of",Yorkshire and The Humber
+Kingston upon Thames,Outer London
+Kirklees,Yorkshire and The Humber
+Lambeth,Inner London
+Leeds,Yorkshire and The Humber
+Lewisham,Inner London
+Merton,Outer London
+Middlesbrough,North East
+Newcastle upon Tyne,North East
+Newham,Inner London
+North East Lincolnshire,Yorkshire and The Humber
+North Lincolnshire,Yorkshire and The Humber
+North Tyneside,North East
+North Yorkshire,Yorkshire and The Humber
+Northumberland,North East
+Redbridge,Outer London
+Redcar and Cleveland,North East
+Richmond upon Thames,Outer London
+Rotherham,Yorkshire and The Humber
+Sheffield,Yorkshire and The Humber
+South Tyneside,North East
+Southwark,Inner London
+Stockton-on-Tees,North East
+Sunderland,North East
+Sutton,Outer London
+Tower Hamlets,Inner London
+Wakefield,Yorkshire and The Humber
+Waltham Forest,Outer London
+Wandsworth,Inner London
+Westminster,Inner London
+York,Yorkshire and The Humber

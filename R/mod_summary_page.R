@@ -106,9 +106,10 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   )
 
   # TODO:  when we do the download we need to remove the empty columns
+  # if (transformed_data$metric_text[1] == "")
+
 
   # ensure columns are in the correct order
-
   if (select_geographic_level == "National") {
     transformed_data[, c("Regional", "Local authority", "Statistical neighbours (median)") := ""]
     setcolorder(transformed_data, c("metric_text", "National", "Regional", "Local authority", "Statistical neighbours (median)"), skip_absent = TRUE)
@@ -123,6 +124,13 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
     setcolorder(transformed_data, c("metric_text", "Local authority", "Statistical neighbours (median)", "Regional", "National"), skip_absent = TRUE)
   }
 
+  # code to add na to this indicator as there is no regional or LA data
+  cols_to_set_na <- c()
+  if (select_geographic_level == "Regional") cols_to_set_na <- c("Regional")
+  if (select_geographic_level == "Local authority") cols_to_set_na <- c("Regional", "Local authority", "Statistical neighbours (median)")
+  if (length(cols_to_set_na) > 0) transformed_data[metric_text == "Average number of months between decision that a child should be placed for adoption and matching of child and adopters", (cols_to_set_na) := "n/a"]
+
+
   # get the column names correct with region_name and la_name
   geographic_levels <- unique(filtered_summary_data$geographic_level)
   if ("Regional" %in% geographic_levels) setnames(transformed_data, old = "Regional", new = filtered_summary_data[geographic_level == "Regional"]$geo_breakdown[1])
@@ -131,11 +139,14 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
 
   transformed_data[, sort_order := NULL]
 
+
+  # we need to update the column heading table (i.e. headers_only) and remove the LA and Region and Stat neighbour column heading text and set it to blank
   if (headers_only) {
     dt_temp <- data.table(matrix(ncol = ncol(transformed_data), nrow = 0))
     table_col_names <- names(transformed_data)
     setnames(dt_temp, new = table_col_names)
     dt_temp <- rbindlist(list(dt_temp, as.list(table_col_names)))
+    # browser()
     return(dt_temp)
   }
   # transformed_data <- transformed_data[order(sort_order)]
@@ -146,9 +157,11 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
 download_summary_data <- function(summary_data_filtered, select_geographic_level) {
   # take the data and prepare it (crosstab, column order/naming etc)
   download_data <- transform_summary_data(summary_data_filtered, select_geographic_level)
+
   # remove unrequired columns
   if (select_geographic_level != "Local authority") download_data[, (c("Local authority", "Statistical neighbours (median)")) := NULL]
   if (select_geographic_level == "National") download_data[, Regional := NULL]
+
   # add in the accordion text and heading text
   extra_columns <- unique(summary_data_filtered[, .(tab_name, sort_order, metric_text, heading_text, accordion_text)])
   download_data <- merge(download_data, extra_columns, by = "metric_text")
