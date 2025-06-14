@@ -1492,7 +1492,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
 all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_breakdown = NULL) {
   data <- assessment_factors %>%
-    filter(assessment_factor %in% (factorslist)) %>%
+    filter(assessment_factor %in% unique(factorslist)) %>%
     filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
 
   p <- ggplot(data, aes(
@@ -1515,7 +1515,7 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
   annotate_y <- 0
-  if (max(data$rate_per_10000) == 0) {
+  if (max(data$rate_per_10000, na.rm = TRUE) == 0) {
     p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
   }
   return(p)
