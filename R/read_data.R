@@ -2019,6 +2019,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   # calculate the share of the expenditure not for CLA
   # data3$minus_cla_share <- janitor::round_half_up(((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100)
   data3$minus_cla_share <- ((data3$total_exp - data3$cla_exp) / (data3$total_exp)) * 100
+
   data3 <- data3 %>%
     mutate(minus_cla_share = case_when(
       `CLA Expenditure` == "x" ~ 0,
@@ -2071,7 +2072,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
 
   setDT(df2)
   df2[`CLA Expenditure` == "x" | `Total Expenditure` == "x", minus_cla_share := NA]
-
+  df2[, minus_cla_share := true_round(minus_cla_share, 1)]
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
