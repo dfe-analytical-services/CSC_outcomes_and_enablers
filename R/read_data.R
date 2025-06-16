@@ -2024,6 +2024,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
       `CLA Expenditure` == "x" ~ 0,
       TRUE ~ as.numeric(minus_cla_share)
     ))
+
   merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
@@ -2068,25 +2069,27 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   df <- full_join(merged_data, national_data, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "CLA Expenditure", "Total Expenditure", "cla_exp", "total_exp", "minus_cla_share"))
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
 
-  df2$minus_cla_share <- round(df2$minus_cla_share, 1)
+  setDT(df2)
+  df2[`CLA Expenditure` == "x" | `Total Expenditure` == "x", minus_cla_share := NA]
 
-  # final_dataset$minus_cla_share <- janitor::round_half_up(final_dataset$minus_cla_share)
-  final_dataset <- copy(df2)
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
-    dataset = final_dataset,
+    dataset = df2,
     median_cols = c("minus_cla_share"),
     sum_cols = c(), # "value", "population_estimate"
     group_cols = c("LA.number", "time_period")
   )
 
-  final_dataset <- rbindlist(l = list(final_dataset, sn_metrics), fill = TRUE, use.names = TRUE)
-
-
+  final_dataset <- rbindlist(l = list(df2, sn_metrics), fill = TRUE, use.names = TRUE)
 
   final_dataset <- final_dataset %>%
+    mutate(minus_cla_share = sapply(as.character(minus_cla_share), decimal_rounding, 1)) %>%
+    mutate(`Excluding CLA Share` = case_when(
+      is.na(minus_cla_share) ~ "x",
+      TRUE ~ as.character(minus_cla_share)
+    )) %>%
     mutate(exp = case_when(
       `CLA Expenditure` == "x" ~ -300,
       TRUE ~ as.numeric(cla_exp)
@@ -2099,19 +2102,16 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
       `Total Expenditure` == "x" ~ -300,
       TRUE ~ as.numeric(minus_cla_share)
     )) %>%
-    mutate(`Excluding CLA Share` = case_when(
-      minus_cla_share == -300 ~ "x",
-      TRUE ~ as.character(minus_cla_share)
-    )) %>%
-    mutate(`Excluding CLA Share` = ifelse(!is.na(as.numeric(`Excluding CLA Share`)),
-      format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
-      `Excluding CLA Share`
-    )) %>%
     select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
 
-  final_dataset <- final_dataset %>%
-    mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
-    mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1))
+  # mutate(`Excluding CLA Share` = ifelse(!is.na(as.numeric(`Excluding CLA Share`)),
+  #   format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
+  #   `Excluding CLA Share`
+  # )) %>%
+
+  # final_dataset <- final_dataset %>%
+  #   mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
+  #   mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1))
 
   return(final_dataset)
 }
@@ -2208,6 +2208,20 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
 
   region_counts$geographic_level <- "Regional"
 
+  # Create a new dataframe for the London counts
+  london_counts <- region_counts %>%
+    filter(geo_breakdown %in% c("Inner London", "Outer London")) %>%
+    summarise(
+      geo_breakdown = "London",
+      time_period = max(time_period),
+      # time_period_max = max(ofsted_leadership_data$time_period),
+      geographic_level = "Regional",
+      requires_improvement_count = sum(requires_improvement_count),
+      inadequate_count = sum(inadequate_count),
+      good_count = sum(good_count),
+      outstanding_count = sum(outstanding_count)
+    )
+
   # Create a new dataframe for the national counts
   national_counts <- region_counts %>%
     summarise(
@@ -2221,9 +2235,8 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       outstanding_count = sum(outstanding_count)
     )
 
-
   # Combine the new data with the existing data
-  ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, national_counts)
+  ofsted_leadership_data <- bind_rows(ofsted_leadership_data, region_counts, london_counts, national_counts)
 
   # add stat neighbours
   setDT(ofsted_leadership_data)
