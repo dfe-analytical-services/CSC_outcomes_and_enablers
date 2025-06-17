@@ -783,7 +783,7 @@ btn is the user guide button
 }
 div .hidden-table-body,
 div .hidden-column-headers {
-  padding-left: 10px !important;
+  padding-left: 0px !important;
 }
 
 

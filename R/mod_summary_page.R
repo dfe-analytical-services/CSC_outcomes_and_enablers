@@ -135,7 +135,7 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
   geographic_levels <- unique(filtered_summary_data$geographic_level)
   if ("Regional" %in% geographic_levels) setnames(transformed_data, old = "Regional", new = filtered_summary_data[geographic_level == "Regional"]$geo_breakdown[1])
   if ("Local authority" %in% geographic_levels) setnames(transformed_data, old = "Local authority", new = filtered_summary_data[geographic_level == "Local authority"]$geo_breakdown[1])
-  if ("Statistical neighbours (median)" %in% geographic_levels) setnames(transformed_data, old = "Statistical neighbours (median)", new = "Statistical neighbours")
+  # if ("Statistical neighbours (median)" %in% geographic_levels) setnames(transformed_data, old = "Statistical neighbours (median)", new = "Statistical neighbours")
 
   transformed_data[, sort_order := NULL]
 
