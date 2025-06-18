@@ -28,11 +28,6 @@ convert_perc_cols_to_numeric <- function(x) {
   return(x)
 }
 
-region_for_la <- function(dt, old_la_code) {
-
-
-
-}
 clean_date <- function(dataset) {
   dataset <- dataset %>%
     mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period))))
@@ -111,20 +106,6 @@ redacted_to_na <- function(dataset, col_old, col_new) {
   return(dataset)
 }
 
-# TODO: redundant function is not used anywhere
-remove_old_la_data <- function(data) {
-  ons_la_data <- read.csv("data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv")
-  ons_la_data <- ons_la_data %>%
-    select(UTLA23CD, UTLA23NM) %>%
-    filter(!str_starts(UTLA23CD, "W")) %>%
-    unique()
-
-  removed_old_las <- data %>% filter(new_la_code == "" | new_la_code %in% (ons_la_data$UTLA23CD))
-
-  return(removed_old_las)
-}
-
-
 # Need a fact table for the LA's and their Regions
 GET_location <- function(file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
   FACT_location <- read.csv(file)
@@ -182,41 +163,7 @@ get_stats_neighbours_long <- function(stats_neighbours) {
 ## Summary Page ----
 #### Summary Page dataset build ----
 
-# dropdowns
-# choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
-# choices <- sort(unique(ceased_cla_data[(ceased_cla_data$geographic_level == input$select_geography_o2 & ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
-# choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o3 & cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
-# choices <- sort(unique(placement_data[geographic_level == input$select_geography_o4 & time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
-# choices <- sort(unique(spending_data[spending_data$geographic_level == input$select_geography_e2, ][["geo_breakdown"]]), decreasing = FALSE)
-# choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
-
-
-not_a_function <- function() {
-  choices_o1 <- sort(unique(cla_rates[(cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
-  choices_o2 <- sort(unique(ceased_cla_data[(ceased_cla_data$time_period == max(ceased_cla_data$time_period))]$geo_breakdown), decreasing = FALSE)
-  choices_o3 <- sort(unique(cla_rates[(cla_rates$time_period == max(cla_rates$time_period))]$geo_breakdown), decreasing = FALSE)
-  choices_o4 <- sort(unique(placement_data[time_period == max(placement_data$time_period)]$geo_breakdown), decreasing = FALSE)
-  choices_e2 <- sort(unique(spending_data[["geo_breakdown"]]), decreasing = FALSE)
-  choices_e3 <- sort(unique(workforce_data[time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
-
-
-  geographies_by_page <- dcast(
-    rbindlist(list(
-      list(page = "o1", geographies = choices_o1),
-      list(page = "o2", geographies = choices_o2),
-      list(page = "o3", geographies = choices_o3),
-      list(page = "o4", geographies = choices_o4),
-      list(page = "e2", geographies = choices_e2),
-      list(page = "e3", geographies = choices_e3)
-    )),
-    geographies ~ page,
-    fun.aggregate = length
-  )
-  geographies_by_page$page_count <- rowSums(geographies_by_page[, .SD, .SDcols = !c("geographies")])
-  geographies_by_page[page_count != 6]
-}
-
-
+# this function will retrieve the summary_datafor a single indicator from a named dataset, metric and filtering
 collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_filters = list(), tab_name, accordion_text, heading_text, metric_display_text, value_column, value_format, ass_factor = NULL) {
   # function to pull current year data for all geographies (including stat neighbours)
   dataset_in <- copy(get0(dataset_name))
@@ -277,6 +224,9 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
   return(dataset_out)
 }
 
+
+# this function is the controller of summary_data build.  It takes the input metadata from Excel and processes each indicator (i.e. row of the metadata table)
+# data for all indicators is combined into a single data.table for use in the summary page
 collect_summary_data_all <- function() {
   metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
 
@@ -316,11 +266,12 @@ collect_summary_data_all <- function() {
   # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
   summary_data[nchar(time_period) == 6, time_period := paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))]
 
-  # now for each section (apart from Ofsted leadership we need to move the date into the header, determining which date to use!
+  # now for each section heading/domain (apart from Ofsted leadership) we need to move the date into the header, determining which date to use!
   date_frequency <- unique(summary_data[, .(tab_name, accordion_text, heading_text, time_period, metric_text)])[, .N, by = .(tab_name, accordion_text, heading_text, time_period)]
   date_per_heading <- merge(date_frequency, date_frequency[, .(N = max(N)), by = .(tab_name, accordion_text, heading_text)])
   setnames(date_per_heading, "time_period", "header_time_period")
   date_per_heading[, N := NULL]
+  # there may be discrepancies on dates within a heading so individual exceptions to the norm are corrected by adding the date in brackets within the indicator text.....
   summary_data <- merge(summary_data, date_per_heading)
   summary_data[header_time_period != time_period, metric_text := paste0(metric_text, " (", time_period, ")")]
   summary_data[, heading_text := paste0(heading_text, " (", time_period, ")")]
@@ -1749,9 +1700,9 @@ read_ethnic_population_data <- function(file1 = "data/ons-ethnic-population-reg.
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-merge_eth_dataframes <- function() {
+merge_eth_dataframes <- function(sn_long) {
   # Read the data
-  workforce_eth <- read_workforce_eth_data(sn_long = stats_neighbours_long)[geographic_level != "Statistical neighbours (median)"]
+  workforce_eth <- read_workforce_eth_data(sn_long = sn_long)[geographic_level != "Statistical neighbours (median)"]
   population_eth <- read_ethnic_population_data()
 
 
