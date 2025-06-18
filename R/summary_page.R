@@ -42,8 +42,12 @@ summary_page_tab <- function() {
         # Confirmation of user selection
         p(htmlOutput("summary_page_choice_text1"), htmlOutput("summary_page_choice_text2")),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_sp == 'Cumbria')",
-          p("Cumbria are still in the latest statistics because they relate to the year ending 31 March 2023. Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
+          condition = "(input.geographic_breakdown_sp %in% c('Kingston upon Thames', 'Richmond upon Thames')",
+          p("Workforce data is unavailable on the summary page. Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_sp %in% c('North Northamptonshire','West Northamptonshire')",
+          p("Workforce data is unavailable on the summary page. North Northamptonshire and West Northamptonshire submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page.")
         ),
       ),
       # now the main body of the page with 2 tabs containing accordions (4 outcomes, 2 enablers) and domain sections within each.

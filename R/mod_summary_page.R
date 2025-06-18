@@ -1,3 +1,6 @@
+# Modules and helper functionas for the Summary Page ----
+
+# the accordion UI only contains the table headers
 sp_accordion_cols_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -5,7 +8,7 @@ sp_accordion_cols_ui <- function(id) {
   )
 }
 
-
+# the accordion server contains this function to transform the data for tabulation and rendering via reactable
 sp_accordion_cols_server <- function(id, rv) {
   moduleServer(id, function(input, output, session) {
     data_in <- reactive(rv$summary_data_filtered)
@@ -30,6 +33,7 @@ sp_accordion_cols_server <- function(id, rv) {
   })
 }
 
+# the domain UI contains the heading (domain text) and the all-important Reactable itself.  The table contains one or more indicators
 sp_domain_ui <- function(id) {
   ns <- NS(id)
   tagList(
@@ -38,6 +42,7 @@ sp_domain_ui <- function(id) {
   )
 }
 
+# the domain server generates the domain text output and the table of indicators by filtering, transforming, rendering a reactable and formatting it
 sp_domain_server <- function(id, rv) {
   moduleServer(id, function(input, output, session) {
     # note that we need to guard against 2 domains starting with the same text string e.g. 'Child wellbeing' and 'Child wellbeing and development'
@@ -67,10 +72,10 @@ sp_domain_server <- function(id, rv) {
 }
 
 
-# supporting functions for summary page: Filter and transform ----
+# Supporting functions for summary page: Filter, transform, tabulate ----
 
+# take the summary dataset and filter it based on geographic selections
 filter_summary_data <- function(data_in, select_geographic_level, select_geo_breakdown) {
-  # take the summary dataset and filter it based on geographic selections
   # if national display national only
   if (select_geographic_level == "National") {
     filtered_summary_data <- data_in[geographic_level == "National"]
@@ -90,13 +95,9 @@ filter_summary_data <- function(data_in, select_geographic_level, select_geo_bre
   }
   filtered_summary_data
 }
-## dat_sp <- filter_summary_data(summary_data, "Local authority", "Merton")
 
 
-# summary_data <- collect_summary_data_all()
-# writexl::write_xlsx(summary_data, "~/CSC shiny dashboard/summary_data_for_QA.xlsx")
-# filter_summary_data(summary_data, select_geographic_level = "Local authority", select_geo_breakdown = "Sutton")
-
+# the workhorse of the table generation to pivot the filtered summary data wider and then make sure the columns are correctly names/ordered
 transform_summary_data <- function(filtered_summary_data, select_geographic_level = NULL, headers_only = FALSE) {
   transformed_data <- dcast(
     filtered_summary_data,
@@ -107,7 +108,6 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
 
   # TODO:  when we do the download we need to remove the empty columns
   # if (transformed_data$metric_text[1] == "")
-
 
   # ensure columns are in the correct order
   if (select_geographic_level == "National") {
@@ -154,6 +154,7 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
 }
 
 
+# the function helps to generate the dataset for download
 download_summary_data <- function(summary_data_filtered, select_geographic_level) {
   # take the data and prepare it (crosstab, column order/naming etc)
   download_data <- transform_summary_data(summary_data_filtered, select_geographic_level)
@@ -162,7 +163,7 @@ download_summary_data <- function(summary_data_filtered, select_geographic_level
   if (select_geographic_level != "Local authority") download_data[, (c("Local authority", "Statistical neighbours (median)")) := NULL]
   if (select_geographic_level == "National") download_data[, Regional := NULL]
 
-  # add in the accordion text and heading text
+  # add in the accordion text and heading text to the download
   extra_columns <- unique(summary_data_filtered[, .(tab_name, sort_order, metric_text, heading_text, accordion_text)])
   download_data <- merge(download_data, extra_columns, by = "metric_text")
   setcolorder(download_data, c("tab_name", "accordion_text", "heading_text"))

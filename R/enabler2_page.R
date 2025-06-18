@@ -218,29 +218,6 @@ enabler2_tab <- function() {
                   )
                 )
               ),
-              # fluidRow(
-              #   # Quick fix for now, for some reason the multi conditions wouldn't work
-              #   conditionalPanel(
-              #     condition = "input.geographic_breakdown_e2 == 'Inner London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
-              #     p("London, Inner London and Outer London have been grouped together.")
-              #   ),
-              #   conditionalPanel(
-              #     condition = "input.geographic_breakdown_e2 == 'London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
-              #     p("London, Inner London and Outer London have been grouped together.")
-              #   ),
-              #   conditionalPanel(
-              #     condition = "input.geographic_breakdown_e2 == 'Outer London'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
-              #     p("London, Inner London and Outer London have been grouped together.")
-              #   ),
-              #   conditionalPanel(
-              #     condition = "input.geographic_breakdown_e2 == 'North East'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
-              #     p("North East and Yorkshire and The Humber have been grouped together.")
-              #   ),
-              #   conditionalPanel(
-              #     condition = "input.geographic_breakdown_e2 == 'Yorkshire and The Humber'", # || input.geographic_breakdown_e3 == 'Outer London' || input.geographic_breakdown_e3 == 'London')",
-              #     p("North East and Yorkshire and The Humber have been grouped together.")
-              #   )
-              # ),
               conditionalPanel(
                 condition = "input.select_geography_e2 != 'Local authority'",
                 fluidRow(
