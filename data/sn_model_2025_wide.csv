@@ -1,0 +1,154 @@
+﻿old_la_code,la_name,region_ind,region_name,SN_1,SN_1P,SN_2,SN_2P,SN_3,SN_3P,SN_4,SN_4P,SN_5,SN_5P,SN_6,SN_6P,SN_7,SN_7P,SN_8,SN_8P,SN_9,SN_9P,SN_10,SN_10P
+301,Barking and Dagenham,3,London,308,Close ,821,Close ,313,Close ,333,Somewhat close,336,Somewhat close,307,Somewhat close,304,Somewhat close,312,Somewhat close,874,Somewhat close,203,Somewhat close
+302,Barnet,3,London,320,Close ,870,Close ,310,Close ,317,Close ,315,Close ,306,Close ,209,Close ,312,Close ,309,Close ,307,Close 
+370,Barnsley,9,Yorkshire and The Humber,372,Very close,384,Very close,357,Very close,371,Very close,332,Very close,894,Very close,840,Very close,390,Very close,807,Very close,394,Very close
+800,Bath and North East Somerset,7,South West,816,Very close,358,Close ,919,Close ,356,Close ,938,Close ,314,Close ,825,Close ,931,Close ,873,Close ,916,Close 
+822,Bedford,2,East of England,303,Very close,826,Very close,941,Very close,311,Very close,937,Very close,839,Very close,886,Very close,935,Very close,881,Very close,866,Very close
+303,Bexley,3,London,311,Extremely close,822,Very close,886,Very close,881,Very close,883,Very close,887,Very close,826,Very close,866,Very close,839,Very close,351,Very close
+330,Birmingham,8,West Midlands,892,Very close,352,Very close,380,Very close,391,Close ,353,Close ,889,Close ,373,Close ,806,Close ,852,Close ,355,Close 
+889,Blackburn with Darwen,5,North West,380,Very close,353,Very close,350,Close ,831,Close ,354,Close ,335,Close ,373,Close ,861,Close ,330,Close ,382,Close 
+890,Blackpool,5,North West,805,Very close,806,Very close,394,Very close,341,Very close,393,Close ,807,Close ,354,Close ,880,Close ,355,Close ,861,Close 
+350,Bolton,5,North West,354,Very close,831,Very close,353,Very close,357,Very close,335,Very close,355,Close ,889,Close ,331,Close ,373,Close ,874,Close 
+839,"Bournemouth, Christchurch and Poole",7,South West,822,Very close,882,Very close,886,Very close,878,Very close,826,Very close,303,Very close,938,Very close,926,Very close,845,Close ,881,Close 
+867,Bracknell Forest,6,South East,919,Very close,850,Very close,825,Very close,931,Very close,869,Very close,938,Very close,803,Very close,823,Very close,916,Very close,865,Very close
+380,Bradford,9,Yorkshire and The Humber,889,Very close,330,Very close,353,Close ,373,Close ,831,Close ,354,Close ,350,Close ,335,Close ,333,Close ,382,Close 
+304,Brent,3,London,307,Close ,316,Close ,313,Close ,309,Close ,821,Close ,871,Somewhat close,301,Somewhat close,308,Somewhat close,320,Somewhat close,317,Somewhat close
+846,Brighton and Hove,6,South East,801,Close ,882,Somewhat close,302,Somewhat close,314,Somewhat close,800,Somewhat close,383,Somewhat close,209,Somewhat close,826,Somewhat close,212,Somewhat close,816,Somewhat close
+801,"Bristol, City of",7,South West,846,Close ,383,Close ,882,Close ,373,Close ,826,Close ,851,Close ,870,Close ,302,Close ,839,Somewhat close,382,Somewhat close
+305,Bromley,3,London,919,Very close,358,Very close,825,Very close,869,Very close,867,Close ,931,Close ,850,Close ,868,Close ,334,Close ,936,Close 
+825,Buckinghamshire,6,South East,931,Very close,919,Very close,869,Very close,936,Very close,873,Very close,867,Very close,823,Very close,868,Very close,358,Very close,850,Very close
+351,Bury,5,North West,888,Very close,908,Very close,392,Very close,886,Very close,332,Very close,891,Very close,808,Very close,926,Very close,887,Very close,303,Very close
+381,Calderdale,9,Yorkshire and The Humber,839,Close ,845,Close ,878,Close ,921,Close ,926,Close ,882,Close ,350,Somewhat close,929,Somewhat close,383,Somewhat close,356,Somewhat close
+873,Cambridgeshire,2,East of England,931,Extremely close,919,Very close,825,Very close,803,Very close,937,Very close,916,Very close,938,Very close,823,Very close,850,Very close,869,Very close
+202,Camden,3,London,206,Close ,213,Close ,205,Somewhat close,210,Somewhat close,208,Somewhat close,207,Somewhat close,209,Somewhat close,309,Somewhat close,204,Somewhat close,302,Not close
+823,Central Bedfordshire,2,East of England,825,Very close,803,Very close,873,Very close,850,Very close,865,Very close,931,Very close,938,Very close,867,Very close,869,Very close,919,Very close
+895,Cheshire East,5,North West,916,Very close,937,Very close,815,Very close,877,Very close,865,Very close,850,Very close,896,Very close,931,Very close,885,Very close,855,Very close
+896,Cheshire West and Chester,5,North West,334,Very close,356,Very close,895,Very close,937,Very close,885,Very close,916,Very close,877,Very close,878,Very close,938,Close ,929,Close 
+201,City of London,3,London,202,Not close,205,Not close,207,Not close,210,Not close,208,Not close,206,Not close,212,Not close,213,Not close,209,Not close,846,Not close
+908,Cornwall,7,South West,926,Very close,351,Very close,845,Very close,830,Very close,929,Very close,935,Very close,878,Very close,891,Very close,888,Very close,886,Very close
+840,County Durham,4,North East,876,Very close,344,Very close,390,Very close,807,Very close,372,Very close,370,Very close,394,Very close,393,Very close,808,Very close,841,Very close
+331,Coventry,8,West Midlands,831,Very close,852,Very close,874,Very close,350,Close ,336,Close ,312,Close ,354,Close ,335,Close ,821,Close ,861,Close 
+306,Croydon,3,London,209,Close ,320,Close ,383,Close ,870,Close ,826,Close ,882,Close ,302,Close ,852,Close ,355,Close ,203,Close 
+942,Cumberland,5,North West,943,Very close,925,Very close,884,Very close,888,Close ,813,Close ,384,Close ,860,Close ,929,Close ,371,Close ,370,Close 
+841,Darlington,4,North East,390,Very close,808,Very close,332,Very close,384,Very close,888,Very close,894,Very close,372,Very close,357,Very close,840,Very close,371,Very close
+831,Derby,1,East Midlands,331,Very close,350,Very close,335,Very close,852,Very close,382,Very close,874,Very close,354,Very close,373,Very close,357,Close ,861,Close 
+830,Derbyshire,1,East Midlands,891,Extremely close,933,Very close,935,Very close,926,Very close,860,Very close,878,Very close,893,Very close,929,Very close,838,Very close,885,Very close
+878,Devon,7,South West,845,Very close,838,Very close,926,Very close,886,Very close,933,Very close,935,Very close,938,Very close,830,Very close,881,Very close,885,Very close
+371,Doncaster,9,Yorkshire and The Humber,372,Very close,370,Very close,384,Very close,894,Very close,357,Very close,812,Very close,335,Very close,861,Very close,354,Very close,813,Very close
+838,Dorset,7,South West,933,Very close,878,Very close,893,Very close,935,Very close,885,Very close,881,Very close,830,Very close,886,Very close,938,Very close,815,Very close
+332,Dudley,8,West Midlands,384,Very close,894,Very close,808,Very close,372,Very close,370,Very close,887,Very close,357,Very close,888,Very close,841,Very close,925,Very close
+307,Ealing,3,London,313,Very close,317,Close ,312,Close ,320,Close ,304,Close ,309,Close ,310,Close ,871,Close ,821,Close ,302,Close 
+811,East Riding of Yorkshire,9,Yorkshire and The Humber,860,Very close,893,Very close,815,Very close,877,Very close,855,Very close,933,Very close,884,Very close,943,Very close,937,Very close,830,Very close
+845,East Sussex,6,South East,878,Very close,886,Very close,908,Very close,926,Very close,881,Very close,351,Very close,838,Very close,938,Very close,929,Very close,839,Close 
+308,Enfield,3,London,301,Close ,309,Close ,821,Somewhat close,330,Somewhat close,352,Somewhat close,307,Somewhat close,320,Somewhat close,203,Somewhat close,306,Somewhat close,355,Somewhat close
+881,Essex,2,East of England,886,Very close,938,Very close,916,Very close,802,Very close,935,Very close,850,Very close,937,Very close,933,Very close,303,Very close,865,Very close
+390,Gateshead,4,North East,841,Very close,357,Very close,393,Very close,372,Very close,808,Very close,840,Very close,807,Very close,394,Very close,332,Very close,384,Very close
+916,Gloucestershire,7,South West,937,Extremely close,938,Very close,850,Very close,802,Very close,865,Very close,895,Very close,855,Very close,931,Very close,881,Very close,885,Very close
+203,Greenwich,3,London,209,Close ,208,Close ,306,Close ,210,Close ,355,Close ,320,Close ,851,Somewhat close,852,Somewhat close,391,Somewhat close,870,Somewhat close
+204,Hackney,3,London,210,Somewhat close,206,Somewhat close,309,Somewhat close,208,Somewhat close,211,Somewhat close,209,Somewhat close,202,Somewhat close,352,Not close,320,Not close,213,Not close
+876,Halton,5,North West,342,Very close,840,Very close,344,Very close,394,Very close,807,Close ,370,Close ,390,Close ,372,Close ,808,Close ,343,Close 
+205,Hammersmith and Fulham,3,London,208,Very close,207,Very close,209,Close ,210,Close ,212,Close ,202,Somewhat close,302,Somewhat close,309,Somewhat close,306,Somewhat close,206,Somewhat close
+850,Hampshire,6,South East,865,Extremely close,802,Very close,916,Very close,938,Very close,869,Very close,867,Very close,803,Very close,937,Very close,931,Very close,855,Very close
+309,Haringey,3,London,320,Close ,307,Close ,209,Close ,208,Close ,302,Close ,308,Close ,210,Close ,304,Close ,313,Somewhat close,317,Somewhat close
+310,Harrow,3,London,317,Very close,312,Close ,302,Close ,307,Close ,320,Close ,870,Close ,313,Close ,315,Close ,871,Somewhat close,826,Somewhat close
+805,Hartlepool,4,North East,807,Very close,394,Very close,393,Very close,890,Very close,806,Close ,390,Close ,840,Close ,876,Close ,372,Close ,340,Close 
+311,Havering,3,London,303,Extremely close,822,Very close,883,Very close,881,Very close,886,Very close,866,Very close,941,Very close,826,Very close,887,Close ,938,Close 
+884,"Herefordshire, County of",8,West Midlands,943,Very close,860,Very close,925,Very close,893,Very close,933,Very close,888,Very close,935,Very close,811,Very close,815,Very close,830,Very close
+919,Hertfordshire,2,East of England,931,Very close,825,Very close,873,Very close,867,Very close,938,Very close,305,Very close,850,Very close,358,Very close,916,Very close,869,Very close
+312,Hillingdon,3,London,313,Very close,317,Very close,320,Close ,874,Close ,307,Close ,852,Close ,310,Close ,870,Close ,871,Close ,331,Close 
+313,Hounslow,3,London,307,Very close,312,Very close,871,Very close,317,Close ,320,Close ,821,Close ,304,Close ,310,Close ,852,Close ,301,Close 
+921,Isle of Wight,6,South East,357,Very close,908,Very close,926,Close ,880,Close ,879,Close ,350,Close ,929,Close ,372,Close ,354,Close ,351,Close 
+420,Isles of Scilly,7,South West,869,Not close,825,Not close,872,Not close,931,Not close,850,Not close,936,Not close,873,Not close,802,Not close,867,Not close,865,Not close
+206,Islington,3,London,202,Close ,210,Close ,208,Close ,213,Close ,204,Somewhat close,205,Somewhat close,209,Somewhat close,309,Somewhat close,203,Not close,352,Not close
+207,Kensington and Chelsea,3,London,205,Very close,202,Somewhat close,208,Somewhat close,213,Somewhat close,210,Somewhat close,209,Somewhat close,212,Somewhat close,206,Not close,302,Not close,203,Not close
+886,Kent,6,South East,881,Very close,845,Very close,878,Very close,303,Very close,935,Very close,926,Very close,891,Very close,938,Very close,822,Very close,933,Very close
+810,"Kingston upon Hull, City of",9,Yorkshire and The Humber,333,Very close,336,Very close,861,Very close,335,Close ,812,Close ,354,Close ,806,Close ,371,Close ,831,Somewhat close,372,Somewhat close
+314,Kingston upon Thames,3,London,319,Close ,315,Close ,919,Close ,305,Close ,800,Close ,868,Close ,358,Close ,318,Close ,936,Close ,825,Close 
+382,Kirklees,9,Yorkshire and The Humber,373,Very close,357,Very close,851,Very close,831,Very close,879,Close ,354,Close ,351,Close ,384,Close ,908,Close ,390,Close 
+340,Knowsley,5,North West,342,Close ,876,Close ,394,Close ,805,Close ,807,Close ,343,Close ,344,Close ,393,Close ,840,Close ,341,Close 
+208,Lambeth,3,London,210,Very close,209,Very close,205,Very close,203,Close ,309,Close ,206,Close ,306,Somewhat close,320,Somewhat close,202,Somewhat close,212,Somewhat close
+888,Lancashire,5,North West,925,Very close,351,Very close,332,Very close,884,Very close,841,Very close,808,Very close,384,Very close,891,Very close,929,Very close,359,Very close
+383,Leeds,9,Yorkshire and The Humber,851,Very close,882,Very close,373,Very close,826,Close ,382,Close ,355,Close ,801,Close ,852,Close ,306,Close ,839,Close 
+856,Leicester,1,East Midlands,821,Close ,871,Somewhat close,304,Somewhat close,316,Somewhat close,333,Somewhat close,380,Somewhat close,307,Not close,313,Not close,330,Not close,889,Not close
+855,Leicestershire,1,East Midlands,916,Very close,803,Very close,937,Very close,802,Very close,850,Very close,865,Very close,933,Very close,938,Very close,811,Very close,891,Very close
+209,Lewisham,3,London,208,Very close,210,Close ,306,Close ,205,Close ,203,Close ,320,Close ,309,Close ,302,Close ,383,Somewhat close,355,Somewhat close
+925,Lincolnshire,1,East Midlands,888,Very close,384,Very close,884,Very close,813,Very close,926,Very close,935,Very close,332,Very close,940,Very close,830,Very close,933,Very close
+341,Liverpool,5,North West,890,Very close,805,Close ,806,Close ,355,Close ,393,Close ,340,Close ,394,Close ,391,Close ,807,Somewhat close,354,Somewhat close
+821,Luton,2,East of England,871,Close ,874,Close ,331,Close ,313,Close ,312,Close ,856,Close ,307,Close ,333,Close ,852,Close ,301,Close 
+352,Manchester,5,North West,892,Very close,330,Very close,391,Close ,308,Somewhat close,380,Somewhat close,355,Somewhat close,806,Somewhat close,852,Somewhat close,309,Somewhat close,353,Somewhat close
+887,Medway,6,South East,866,Very close,332,Very close,886,Very close,303,Very close,926,Very close,935,Very close,883,Very close,891,Very close,351,Very close,384,Very close
+315,Merton,3,London,319,Very close,314,Close ,870,Close ,302,Close ,826,Close ,822,Close ,306,Close ,919,Close ,310,Close ,873,Somewhat close
+806,Middlesbrough,4,North East,890,Very close,805,Close ,861,Close ,354,Close ,391,Close ,336,Close ,335,Close ,393,Close ,341,Close ,355,Close 
+826,Milton Keynes,6,South East,822,Very close,303,Very close,882,Very close,870,Very close,839,Very close,311,Very close,919,Close ,886,Close ,319,Close ,383,Close 
+391,Newcastle upon Tyne,4,North East,355,Very close,373,Close ,806,Close ,851,Close ,892,Close ,383,Close ,330,Close ,852,Close ,352,Close ,890,Close 
+316,Newham,3,London,304,Close ,301,Somewhat close,308,Somewhat close,856,Somewhat close,309,Somewhat close,821,Somewhat close,307,Somewhat close,313,Not close,352,Not close,871,Not close
+926,Norfolk,2,East of England,935,Very close,908,Very close,878,Very close,830,Very close,929,Very close,886,Very close,933,Very close,925,Very close,891,Very close,887,Very close
+812,North East Lincolnshire,9,Yorkshire and The Humber,371,Very close,861,Very close,372,Very close,894,Very close,335,Close ,384,Close ,841,Close ,370,Close ,807,Close ,357,Close 
+813,North Lincolnshire,9,Yorkshire and The Humber,384,Very close,925,Very close,371,Very close,370,Very close,940,Very close,332,Very close,942,Close ,372,Close ,894,Close ,888,Close 
+940,North Northamptonshire,1,East Midlands,866,Very close,941,Very close,935,Very close,925,Very close,933,Very close,883,Very close,891,Very close,813,Very close,887,Very close,384,Very close
+802,North Somerset,7,South West,850,Very close,916,Very close,865,Very close,937,Very close,855,Very close,881,Very close,938,Very close,803,Very close,891,Very close,886,Very close
+392,North Tyneside,4,North East,351,Very close,891,Very close,808,Very close,802,Very close,841,Close ,888,Close ,334,Close ,908,Close ,390,Close ,886,Close 
+815,North Yorkshire,9,Yorkshire and The Humber,893,Extremely close,895,Very close,811,Very close,860,Very close,916,Very close,877,Very close,937,Very close,884,Very close,865,Very close,933,Very close
+929,Northumberland,4,North East,926,Very close,830,Very close,888,Very close,908,Very close,878,Very close,840,Very close,838,Very close,886,Very close,885,Very close,935,Very close
+892,Nottingham,1,East Midlands,330,Very close,352,Very close,391,Close ,806,Close ,380,Close ,333,Somewhat close,852,Somewhat close,353,Somewhat close,373,Somewhat close,355,Somewhat close
+891,Nottinghamshire,1,East Midlands,830,Extremely close,935,Very close,933,Very close,886,Very close,926,Very close,937,Very close,855,Very close,802,Very close,860,Very close,888,Very close
+353,Oldham,5,North West,889,Very close,350,Very close,354,Very close,380,Close ,335,Close ,831,Close ,861,Close ,331,Close ,330,Close ,333,Close 
+931,Oxfordshire,6,South East,873,Extremely close,919,Very close,825,Very close,937,Very close,916,Very close,850,Very close,867,Very close,938,Very close,869,Very close,803,Very close
+874,Peterborough,2,East of England,331,Very close,831,Very close,312,Close ,350,Close ,852,Close ,335,Close ,821,Close ,354,Close ,336,Close ,883,Close 
+879,Plymouth,7,South West,357,Very close,880,Very close,894,Very close,332,Very close,372,Very close,384,Very close,382,Close ,390,Close ,887,Close ,908,Close 
+851,Portsmouth,6,South East,373,Very close,383,Very close,382,Very close,355,Very close,852,Very close,882,Close ,879,Close ,831,Close ,390,Close ,357,Close 
+870,Reading,6,South East,826,Very close,302,Close ,312,Close ,315,Close ,822,Close ,306,Close ,320,Close ,383,Close ,852,Close ,310,Close 
+317,Redbridge,3,London,310,Very close,312,Very close,320,Very close,307,Close ,313,Close ,302,Close ,871,Close ,870,Close ,852,Close ,821,Somewhat close
+807,Redcar and Cleveland,4,North East,394,Very close,393,Very close,805,Very close,372,Very close,390,Very close,840,Very close,370,Very close,357,Very close,371,Very close,880,Very close
+318,Richmond upon Thames,3,London,868,Close ,314,Close ,936,Close ,872,Close ,305,Somewhat close,358,Somewhat close,825,Somewhat close,919,Somewhat close,800,Somewhat close,869,Somewhat close
+354,Rochdale,5,North West,335,Very close,357,Very close,861,Very close,350,Very close,394,Very close,371,Very close,372,Very close,831,Very close,353,Very close,355,Very close
+372,Rotherham,9,Yorkshire and The Humber,370,Very close,357,Very close,371,Very close,384,Very close,894,Very close,332,Very close,807,Very close,394,Very close,390,Very close,840,Very close
+857,Rutland,1,East Midlands,865,Close ,815,Close ,893,Close ,895,Close ,850,Close ,823,Close ,916,Close ,855,Close ,869,Close ,811,Close 
+355,Salford,5,North West,373,Very close,354,Very close,851,Very close,391,Very close,390,Close ,350,Close ,393,Close ,357,Close ,852,Close ,383,Close 
+333,Sandwell,8,West Midlands,336,Very close,810,Very close,861,Close ,335,Close ,354,Close ,380,Close ,806,Close ,331,Close ,353,Close ,821,Close 
+343,Sefton,5,North West,344,Very close,342,Close ,359,Close ,888,Close ,876,Close ,840,Close ,808,Close ,340,Close ,841,Close ,351,Close 
+373,Sheffield,9,Yorkshire and The Humber,382,Very close,851,Very close,355,Very close,383,Very close,831,Very close,354,Close ,391,Close ,852,Close ,357,Close ,350,Close 
+893,Shropshire,8,West Midlands,815,Extremely close,933,Very close,860,Very close,811,Very close,838,Very close,884,Very close,830,Very close,885,Very close,943,Very close,916,Very close
+871,Slough,6,South East,313,Very close,312,Close ,821,Close ,307,Close ,317,Close ,310,Somewhat close,304,Somewhat close,874,Somewhat close,320,Somewhat close,856,Somewhat close
+334,Solihull,8,West Midlands,356,Very close,896,Very close,937,Very close,877,Very close,886,Very close,916,Very close,802,Very close,895,Very close,881,Very close,919,Very close
+933,Somerset,7,South West,935,Very close,830,Very close,838,Very close,893,Very close,885,Very close,891,Very close,878,Very close,860,Very close,855,Very close,881,Very close
+803,South Gloucestershire,7,South West,855,Very close,850,Very close,938,Very close,873,Very close,823,Very close,802,Very close,916,Very close,881,Very close,931,Very close,865,Very close
+393,South Tyneside,4,North East,394,Very close,807,Very close,390,Very close,805,Very close,840,Very close,357,Very close,372,Very close,354,Close ,890,Close ,841,Close 
+852,Southampton,6,South East,331,Very close,831,Very close,851,Very close,373,Close ,312,Close ,355,Close ,874,Close ,383,Close ,350,Close ,320,Close 
+882,Southend-on-Sea,2,East of England,839,Very close,383,Very close,826,Very close,351,Very close,845,Close ,851,Close ,886,Close ,303,Close ,392,Close ,822,Close 
+210,Southwark,3,London,208,Very close,209,Close ,205,Close ,206,Close ,203,Close ,309,Close ,202,Somewhat close,204,Somewhat close,306,Somewhat close,320,Somewhat close
+342,St Helens,5,North West,876,Very close,343,Close ,340,Close ,840,Close ,807,Close ,370,Close ,394,Close ,344,Close ,808,Close ,894,Close 
+860,Staffordshire,8,West Midlands,811,Very close,884,Very close,893,Very close,815,Very close,933,Very close,830,Very close,877,Very close,891,Very close,943,Very close,888,Very close
+356,Stockport,5,North West,334,Very close,358,Very close,896,Very close,916,Very close,919,Very close,938,Very close,937,Very close,802,Very close,803,Very close,873,Very close
+808,Stockton-on-Tees,4,North East,841,Very close,332,Very close,888,Very close,390,Very close,384,Very close,351,Very close,840,Very close,372,Very close,894,Very close,344,Very close
+861,Stoke-on-Trent,8,West Midlands,335,Very close,354,Very close,336,Very close,371,Very close,812,Very close,810,Very close,333,Close ,357,Close ,831,Close ,372,Close 
+935,Suffolk,2,East of England,933,Very close,926,Very close,830,Very close,891,Very close,878,Very close,881,Very close,886,Very close,838,Very close,925,Very close,940,Very close
+394,Sunderland,4,North East,807,Very close,393,Very close,805,Very close,372,Very close,357,Very close,880,Very close,390,Very close,840,Very close,370,Very close,354,Very close
+936,Surrey,6,South East,868,Very close,825,Very close,358,Very close,919,Very close,869,Close ,823,Close ,872,Close ,931,Close ,867,Close ,873,Close 
+319,Sutton,3,London,315,Very close,919,Very close,826,Close ,873,Close ,931,Close ,314,Close ,822,Close ,938,Close ,839,Close ,825,Close 
+866,Swindon,7,South West,887,Very close,940,Very close,883,Very close,303,Very close,822,Very close,941,Very close,935,Very close,311,Very close,891,Close ,886,Close 
+357,Tameside,5,North West,372,Very close,390,Very close,354,Very close,370,Very close,384,Very close,332,Very close,894,Very close,879,Very close,394,Very close,880,Very close
+894,Telford and Wrekin,8,West Midlands,384,Very close,372,Very close,332,Very close,370,Very close,357,Very close,371,Very close,841,Very close,390,Very close,879,Very close,808,Very close
+883,Thurrock,2,East of England,866,Very close,303,Very close,311,Very close,887,Very close,940,Very close,822,Very close,941,Close ,332,Close ,925,Close ,935,Close 
+880,Torbay,7,South West,357,Very close,394,Very close,879,Very close,372,Very close,807,Very close,921,Close ,370,Close ,390,Close ,354,Close ,894,Close 
+211,Tower Hamlets,3,London,204,Somewhat close,206,Not close,316,Not close,352,Not close,202,Not close,309,Not close,213,Not close,210,Not close,330,Not close,304,Not close
+358,Trafford,5,North West,919,Very close,356,Very close,825,Very close,931,Very close,936,Very close,305,Very close,895,Very close,873,Very close,916,Very close,334,Very close
+384,Wakefield,9,Yorkshire and The Humber,332,Very close,370,Very close,894,Very close,372,Very close,925,Very close,357,Very close,371,Very close,813,Very close,841,Very close,888,Very close
+335,Walsall,8,West Midlands,354,Very close,861,Very close,357,Very close,336,Very close,371,Very close,831,Very close,350,Very close,372,Very close,812,Close ,333,Close 
+320,Waltham Forest,3,London,317,Very close,302,Close ,312,Close ,306,Close ,307,Close ,309,Close ,313,Close ,310,Close ,209,Close ,852,Close 
+212,Wandsworth,3,London,205,Close ,314,Somewhat close,315,Somewhat close,208,Somewhat close,209,Somewhat close,302,Somewhat close,870,Somewhat close,801,Somewhat close,846,Somewhat close,305,Somewhat close
+877,Warrington,5,North West,895,Very close,937,Very close,860,Very close,811,Very close,815,Very close,916,Very close,334,Very close,893,Very close,885,Very close,865,Very close
+937,Warwickshire,8,West Midlands,916,Extremely close,895,Very close,931,Very close,802,Very close,855,Very close,938,Very close,850,Very close,877,Very close,865,Very close,881,Very close
+869,West Berkshire,6,South East,825,Very close,850,Very close,931,Very close,867,Very close,919,Very close,873,Very close,823,Very close,865,Very close,916,Very close,305,Very close
+941,West Northamptonshire,1,East Midlands,822,Very close,940,Very close,937,Very close,866,Very close,933,Very close,935,Very close,311,Very close,855,Very close,931,Very close,303,Very close
+938,West Sussex,6,South East,916,Very close,881,Very close,850,Very close,919,Very close,937,Very close,865,Very close,802,Very close,931,Very close,803,Very close,878,Very close
+213,Westminster,3,London,202,Close ,206,Close ,210,Somewhat close,207,Somewhat close,205,Somewhat close,208,Somewhat close,203,Not close,352,Not close,204,Not close,309,Not close
+943,Westmorland and Furness,5,North West,884,Very close,942,Very close,860,Very close,893,Very close,811,Very close,815,Very close,925,Very close,933,Very close,935,Close ,830,Close 
+359,Wigan,5,North West,888,Very close,925,Very close,343,Close ,877,Close ,860,Close ,332,Close ,929,Close ,884,Close ,808,Close ,893,Close 
+865,Wiltshire,7,South West,850,Extremely close,916,Very close,802,Very close,938,Very close,855,Very close,937,Very close,895,Very close,881,Very close,815,Very close,803,Very close
+868,Windsor and Maidenhead,6,South East,936,Very close,825,Very close,872,Close ,358,Close ,919,Close ,869,Close ,305,Close ,823,Close ,931,Close ,867,Close 
+344,Wirral,5,North West,840,Very close,343,Very close,876,Very close,808,Very close,394,Close ,390,Close ,807,Close ,888,Close ,351,Close ,393,Close 
+872,Wokingham,6,South East,868,Close ,936,Close ,825,Close ,869,Close ,305,Close ,358,Close ,318,Close ,919,Close ,867,Close ,823,Close 
+336,Wolverhampton,8,West Midlands,333,Very close,861,Very close,335,Very close,810,Very close,354,Close ,331,Close ,371,Close ,831,Close ,806,Close ,812,Close 
+885,Worcestershire,8,West Midlands,933,Very close,916,Very close,838,Very close,937,Very close,893,Very close,938,Very close,878,Very close,830,Very close,881,Very close,815,Very close
+816,York,9,Yorkshire and The Humber,916,Very close,800,Very close,802,Very close,919,Close ,937,Close ,931,Close ,938,Close ,358,Close ,850,Close ,356,Close 
