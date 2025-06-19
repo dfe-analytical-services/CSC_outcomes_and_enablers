@@ -42,11 +42,11 @@ summary_page_tab <- function() {
         # Confirmation of user selection
         p(htmlOutput("summary_page_choice_text1"), htmlOutput("summary_page_choice_text2")),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_sp %in% c('Kingston upon Thames', 'Richmond upon Thames')",
+          condition = "input.geographic_breakdown_sp == 'Kingston upon Thames' | input.geographic_breakdown_sp == 'Richmond upon Thames'",
           p("Workforce data is unavailable on the summary page. Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page")
         ),
         conditionalPanel(
-          condition = "(input.geographic_breakdown_sp %in% c('North Northamptonshire','West Northamptonshire')",
+          condition = "input.geographic_breakdown_sp  == 'North Northamptonshire' | input.geographic_breakdown_sp == 'West Northamptonshire'",
           p("Workforce data is unavailable on the summary page. North Northamptonshire and West Northamptonshire submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page.")
         ),
       ),
