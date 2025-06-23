@@ -1822,20 +1822,20 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  selected_la <- dataset %>%
+  selected_la_code <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
+    pull(old_la_code) %>%
+    as.numeric()
 
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_codes <- stats_neighbours %>%
+    # filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+    filter(stats_neighbours$LA.number == selected_la_code) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.numeric()
 
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), old_la_code %in% c(selected_la_code, sn_codes)) %>%
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -1880,7 +1880,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       )
   } else {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_codes)) %>%
       select(geo_breakdown, `yvalue`, score_label) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
