@@ -138,6 +138,9 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   stats_neighbours_raw <- fread(file)
 
+  # one-off hack to correct St Helens
+  stats_neighbours_raw[la_name == "St Helens", la_name := "St. Helens"]
+
   # Create a lookup table
   setnames(stats_neighbours_raw, old = c("old_la_code", "la_name"), new = c("LA.number", "LA.Name"))
   lookup <- stats_neighbours_raw %>% select("LA.Name", "LA.number")
