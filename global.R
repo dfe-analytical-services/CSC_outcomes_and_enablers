@@ -98,8 +98,8 @@ google_analytics_key <- "Q13T4ENF6C"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Stats Neighbours ----
 ## Read in the stats_neighbours and generate a long table for all stats neighbour aggregations
-stats_neighbours <- get_statistical_neighbours_new() # head(statistical_neighbours(), 152)
-stats_neighbours_long <- get_stats_neighbours_long_new(stats_neighbours)
+stats_neighbours <- get_statistical_neighbours() # head(statistical_neighbours(), 152)
+stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
 ## Read in the workforce data ----
 workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))

@@ -1,3 +1,5 @@
+# Aggregation function for a dataset to calculate median or sum values for various columns based on dynamic groupings
+
 sn_aggregations <- function(sn_long,
                             dataset,
                             sum_cols,
@@ -103,7 +105,7 @@ filter_time_series_data <- function(dataset_in,
                                     check_compare_sn,
                                     dimensional_filters = list()) {
   # default values for testing
-  # elect_geographic_level <- "Local authority"
+  # select_geographic_level <- "Local authority"
   # select_geo_breakdown <- "Merton"
   # dimensional_filters <- list("characteristic" = "Special guardianship orders")
 

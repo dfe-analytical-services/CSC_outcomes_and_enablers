@@ -135,33 +135,34 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 ## Stats Neighbours ----
 
 
-get_statistical_neighbours_new <- function(file = "./data/sn_model_2025_wide.csv") {
+get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   stats_neighbours_raw <- fread(file)
 
   # Create a lookup table
   setnames(stats_neighbours_raw, old = c("old_la_code", "la_name"), new = c("LA.number", "LA.Name"))
-  # setnames(stats_neighbours_raw, old = c("old_la_code", "la_name"), new = c("LA.number", "LA.Name"))
   lookup <- stats_neighbours_raw %>% select("LA.Name", "LA.number")
 
   setnames(stats_neighbours_raw, gsub(pattern = "SN_", "SN", names(stats_neighbours_raw)))
 
   df <- stats_neighbours_raw %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
 
-  # for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
-  #   df[[col]] <- lookup$LA.number[match(df[[col]], lookup$"LA.number")]
-  # }
-  #
+  for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
+    df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
+  }
+  # return a data.frame
+  setDF(df)
+
   return(df)
 }
 
 
-get_stats_neighbours_long_new <- function(stats_neighbours) {
+get_stats_neighbours_long <- function(stats_neighbours) {
   stats_neighbours_long <- stats_neighbours %>%
     pivot_longer(
       cols = starts_with("SN"),
       names_to = c("SN_rank"),
       names_pattern = "(\\d+)",
-      values_to = "SN_LA_number" # SN_LA_name
+      values_to = "SN_LA_name" # SN_LA_name
     ) %>%
     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
     as.data.table()
