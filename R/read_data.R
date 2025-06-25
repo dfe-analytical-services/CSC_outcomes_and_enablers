@@ -938,10 +938,13 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
 # LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
-read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
-  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
-  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
+read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2324.csv", region_file = "data/region_hospital_admissions_22324.csv") {
+  la_admissions <- read.csv("data/la_hospital_admissions_2324.csv") # la_file)
+  region_admissions <- read.csv("data/region_hospital_admissions_2324.csv") # region_file)
 
+  # additional step to clean dots out of the coumn names
+  setnames(la_admissions, "Area.Name", "AreaName")
+  setnames(region_admissions, "Area.Name", "AreaName")
   la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
   region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
 

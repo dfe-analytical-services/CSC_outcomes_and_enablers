@@ -4749,7 +4749,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "f52b391d8a21082d6ca5bf70306f397e"
+      "checksum": "bf9c61cecbc5406f87ce59b5e04dba76"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "f983ad6ce7a95b423f453c948e523aa1"
+      "checksum": "9a07b8a10510ec6195233d7a0543f9c5"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4835,6 +4835,9 @@
     "data/la_hospital_admissions_2223.csv": {
       "checksum": "5b75787a51921b41fa88ccf26a82d90a"
     },
+    "data/la_hospital_admissions_2324.csv": {
+      "checksum": "14a5815a802671978d89db4bf66d2b2b"
+    },
     "data/LA_Inspection_Outcomes_as_at_March_2024.ods": {
       "checksum": "e875d8bc283581687b442ee8d56c0145"
     },
@@ -4868,6 +4871,9 @@
     "data/region_hospital_admissions_2223.csv": {
       "checksum": "b5ebfdc652376dc59f7003437bbdcfe1"
     },
+    "data/region_hospital_admissions_2324.csv": {
+      "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
+    },
     "data/RO3_2023-24_data_by_LA.ods": {
       "checksum": "0c2c67cd45568a7e9d442c5204eac0aa"
     },
@@ -4881,7 +4887,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "0d2d3681a8b6e3b6b47da8cafc9ca7d6"
+      "checksum": "68258376a66749d38b0cec780b6abd12"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4947,7 +4953,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "257944afd2eabe57e77c97859723a4e6"
+      "checksum": "97e8df42bf10ec80e8df5070cde8ab67"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
