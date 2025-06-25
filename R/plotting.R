@@ -370,17 +370,15 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
 
 # Ethnicity Rate ----
 
-plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
+plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
   ethnicity_data <- workforce_eth[
-    workforce_eth$geo_breakdown %in% geo_breakdown &
-      workforce_eth$role == "Total" &
-      workforce_eth$breakdown_topic == "Ethnicity major" &
-      !(workforce_eth$breakdown %in% c("Known", "Total", "Not known")) &
-      workforce_eth$time_period >= (max(workforce_eth$time_period) - 3),
-    c(
-      "time_period", "geo_breakdown", "breakdown_topic", "breakdown",
-      "inpost_headcount_percentage"
-    )
+    i = geographic_level == select_geographic_level &
+      geo_breakdown %in% select_geo_breakdown &
+      role == "Total" &
+      breakdown_topic == "Ethnicity major" &
+      !(breakdown %in% c("Known", "Total", "Not known", "Non-white")) &
+      time_period >= (max(workforce_eth$time_period) - 3),
+    j = .(time_period, geo_breakdown, breakdown_topic, breakdown, inpost_headcount_percentage)
   ]
 
   # Ensure 'percentage' is numeric
@@ -427,7 +425,7 @@ plot_ethnicity_rate <- function(geo_breakdown, geographic_level) {
 plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
   # Filter the data based on 'geo_breakdown', 'geographic_level'
   combined_ethnicity_data <- combined_ethnicity_data[
-    combined_ethnicity_data$geo_breakdown %in% geo_breakdown,
+    combined_ethnicity_data$geo_breakdown %in% geo_breakdown & combined_ethnicity_data$breakdown != "Non-white",
     c(
       "time_period", "geo_breakdown", "geographic_level.x", "breakdown",
       "inpost_headcount_percentage", "Percentage"
@@ -1494,7 +1492,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
 
 all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_breakdown = NULL) {
   data <- assessment_factors %>%
-    filter(assessment_factor %in% (factorslist)) %>%
+    filter(assessment_factor %in% unique(factorslist)) %>%
     filter(geo_breakdown == selected_geo_breakdown, time_period == max(time_period))
 
   p <- ggplot(data, aes(
@@ -1517,7 +1515,7 @@ all_assessment_factors_plot <- function(dataset, factorslist, selected_geo_break
   # logic to check if the table is empty or not
   annotate_x <- length(unique(data$assessment_factor)) / 2
   annotate_y <- 0
-  if (max(data$rate_per_10000) == 0) {
+  if (max(data$rate_per_10000, na.rm = TRUE) == 0) {
     p <- p + annotate(x = annotate_x, y = annotate_y, geom = "text", label = "There is no data to plot, view the table alternative below for more details.", color = "red")
   }
   return(p)

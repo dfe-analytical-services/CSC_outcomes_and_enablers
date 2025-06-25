@@ -107,21 +107,21 @@ location_data <- GET_location() # fact table linking LA to its region
 location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
 
 ## Read in the workforce characteristics data (Enabler 2) ----
-workforce_eth <- suppressWarnings(read_workforce_eth_data())
+workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
 workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
 population_eth <- suppressWarnings(read_ethnic_population_data())
-combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes())
+combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes(sn_long = stats_neighbours_long))
 
 ## Read in ofsted leadership data (Enabler 3) ----
-spending_data <- suppressWarnings(read_spending_data())
-spending_data_no_cla <- suppressWarnings(read_spending_data2())
-spending_per_capita <- suppressWarnings(read_per_capita_spending())
+spending_data <- suppressWarnings(read_spending_data(sn_long = stats_neighbours_long))
+spending_data_no_cla <- suppressWarnings(read_spending_data2(sn_long = stats_neighbours_long))
+spending_per_capita <- suppressWarnings(read_per_capita_spending(sn_long = stats_neighbours_long))
 ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data(sn_long = stats_neighbours_long))
 ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data(ofsted_leadership_data))
 
 ## Read in the CLA data (outcome 1) ----
 cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
-cla_placements <- suppressWarnings(read_cla_placement_data())
+cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
 combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
 combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
@@ -141,11 +141,12 @@ ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_lon
 repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
 duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
 assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
+
 af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
   select(assessment_factor) %>%
-  pull("assessment_factor")
-
+  pull("assessment_factor") %>%
+  unique()
 extra_familial_harm_af <- c(
   "Going missing",
   "Child sexual exploitation",
@@ -184,9 +185,13 @@ placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long =
 care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(sn_long = stats_neighbours_long))
 care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
 
-wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data())
+wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(sn_long = stats_neighbours_long))
 
 placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
+
+
+## Summary Data ----
+summary_data <- collect_summary_data_all()
 
 
 # Download button --------------------
@@ -201,7 +206,6 @@ csvDownloadButton <- function(
     class = "btn btn-default"
   )
 }
-
 
 # Expandable section ------------------
 expandable <- function(inputId, label, contents) {

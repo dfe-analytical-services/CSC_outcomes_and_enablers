@@ -4745,17 +4745,11 @@
     ".idea/modules.xml": {
       "checksum": "8ddc480876db3bc3b38b29e4da288a96"
     },
-    ".idea/shelf/Uncommitted_changes_before_Update_at_17_04_2025_00_09_[Changes]/shelved.patch": {
-      "checksum": "1de07154dd14895247477488fb9df905"
-    },
-    ".idea/shelf/Uncommitted_changes_before_Update_at_17_04_2025_00_09__Changes_.xml": {
-      "checksum": "687c9379ea7437ac0e74d98670c43a8b"
-    },
     ".idea/vcs.xml": {
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "97ac09e80f73e4fa6ff565acc4d89f89"
+      "checksum": "4a31030b9e46bef1d12288fa66a49cde"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4763,11 +4757,17 @@
     ".RData": {
       "checksum": "1474174bd0036ecde388785c2690e5b9"
     },
+    ".RDataTmp": {
+      "checksum": "e0120ecd6121b1fa2e6db868611357d3"
+    },
     ".Rprofile": {
-      "checksum": "79b5b783a726d29ab6baa03b5f2b67e9"
+      "checksum": "93efb90d777d37e9463cd7f400ca20f8"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
+    },
+    "data-raw/summary_page_metadata.xlsx": {
+      "checksum": "ac726414a5a6d42d0a5c413bf9ec79df"
     },
     "data/absence_six_half_terms_la.csv": {
       "checksum": "fa6c52a712f3f4b9c654ec1078f2c089"
@@ -4853,6 +4853,9 @@
     "data/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
     },
+    "data/ofsted_region_mapping_corrections.csv": {
+      "checksum": "4b08fc3013bb115ff3d5945c5bb393ad"
+    },
     "data/ons-ethnic-population-la.csv": {
       "checksum": "49faab561048dd5e857bcfd1704796e4"
     },
@@ -4875,7 +4878,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "086c7fd664dc3e0b090eddfc65ba3de2"
+      "checksum": "bc467affa0b265e24aa83a23ad602538"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4887,7 +4890,7 @@
       "checksum": "8ec293c34e23ac3b9507ce2ffadcd080"
     },
     "global.R": {
-      "checksum": "1a057fd68a3166ab9d3c7c421e507f53"
+      "checksum": "0981d6100ffeafc85c64b6984d01f5dd"
     },
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
@@ -4910,20 +4913,20 @@
     "R/disclaimer.R": {
       "checksum": "1a70dc3064e5bebde57071bfbc56c389"
     },
-    "R/enabler1_page.R": {
-      "checksum": "563966a26cdecdeaa82073f2c5c8787c"
-    },
     "R/enabler2_page.R": {
-      "checksum": "ee65ef97a2801264db888f9cb335f2bf"
+      "checksum": "dcee2696750883cdbc0bda0575ac3ab3"
     },
     "R/enabler3_page.R": {
-      "checksum": "e789eb1b48a3ab3da3c894f31ebda09b"
+      "checksum": "83911b3784829cd3bc56489beb2f1738"
     },
     "R/intro_panel.R": {
-      "checksum": "f1c635039e076143b958713fb59818db"
+      "checksum": "268df5c6a95f3ec3380db42e81245ff5"
+    },
+    "R/mod_summary_page.R": {
+      "checksum": "c2be32275b55709ee206f4ec87925603"
     },
     "R/omitted_data.R": {
-      "checksum": "0dfa626b12b11dcecdba9121f5cd4e0a"
+      "checksum": "817b0f93920c1705714733d41dd051cc"
     },
     "R/outcome1_page.R": {
       "checksum": "6d3ef99b120bf700ce8036bfeed16884"
@@ -4938,19 +4941,22 @@
       "checksum": "667bed8b20e8f442c7f01b964f77c2b8"
     },
     "R/plotting.R": {
-      "checksum": "add1f7f3f8215e7ac6c0fb9e8cc13df2"
+      "checksum": "d5ebedb5f0fc9ca14e799b87ea43b14c"
     },
     "R/read_data.R": {
-      "checksum": "6038485ac83aa3c73ad431285c871d92"
+      "checksum": "4482d99b43887d548cb753a9b271a7f3"
     },
     "R/rendering_functions.R": {
-      "checksum": "fcea919a4a9fdc1c489153c8aa3929a6"
+      "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
     },
     "R/standard_panels.R": {
       "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
     },
     "R/stats_neighbours.R": {
-      "checksum": "590b430576095cf248f69cebc967b432"
+      "checksum": "792368322334625431eea6dc8433eda4"
+    },
+    "R/summary_page.R": {
+      "checksum": "a526239408de77f7021d720c7cd694b1"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -4968,7 +4974,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "f975fe8191362a2ff8a33bdafb97c859"
+      "checksum": "194c0f92c5fc0a16ca622b76ee843e3c"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -4983,49 +4989,58 @@
       "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "88ecdc72cd844cb0288456b9e196244f"
+      "checksum": "d0da19d07856cd19e15a584fad30e1d6"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "9bbe1630865e6bd02e7f5e421239c678"
+      "checksum": "93f78f64784df26f72d9aca00f966b92"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "39eb1624d678f1026af039747e80059c"
+      "checksum": "ed5244ad9504498ab2b8cfd9a8f43af2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
-      "checksum": "39eb1624d678f1026af039747e80059c"
+      "checksum": "504fd5711552ec0cc2fd26c14e418774"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-005.json": {
-      "checksum": "180284f3e983e4379483761e2ddc0e61"
+      "checksum": "125c8c92fc001f90ffa5d84fa092150c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-006.json": {
-      "checksum": "4f217ac416c843ea1b00b3014dde6bf7"
+      "checksum": "59f83b9e3c4205372ed9d3a67a7a54d3"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-007.json": {
-      "checksum": "b7c9949656e43285f38619503baba789"
+      "checksum": "59f83b9e3c4205372ed9d3a67a7a54d3"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "6fc43d16e639fd21d4a43105f143b106"
+      "checksum": "081e0f73e7a3ffa3b96182523e24aad1"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "54b923a1585beaa551f020f350702173"
+      "checksum": "4f217ac416c843ea1b00b3014dde6bf7"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "a19735484f7eadfeb3e25d0836e58ad2"
+      "checksum": "b9c14326e36af8db8e459444d196dbaf"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
-      "checksum": "50fa0cf0f59b4d0fdba1216d35054c8b"
+      "checksum": "be392e4e9b50a0a7b83585a05f9bae9e"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-012.json": {
-      "checksum": "ffd4c23e53a1e7e6a82b64609aa067a4"
+      "checksum": "a286d2a6ee3e2aaa71eb91f314f98dda"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-013.json": {
-      "checksum": "d627f2856b43f5e9cd2bc0e49dce86bb"
+      "checksum": "4b1e8cc9fbd37cf2306fb7edf518f888"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-014.json": {
-      "checksum": "d15cb9296bef57bded0467fffe3baf63"
+      "checksum": "2f4e30ec2a1fcbe9479256842a3d6f16"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-015.json": {
-      "checksum": "dc90507a4426d006c22dc0a2612f8e95"
+      "checksum": "7c9c431124a3614202777ac23a84153b"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-016.json": {
+      "checksum": "4e68335721bfe2e11883c78d3141dd55"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-017.json": {
+      "checksum": "74122bd115fdf2519e0ab0ba49f0c117"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-018.json": {
+      "checksum": "686caee8d717bdcbab9dd2f7b4719847"
     },
     "tests/testthat/setup-shinytest2.R": {
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
@@ -5034,10 +5049,10 @@
       "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "3e61a4ecb1417464f4d7844c866d6ccb"
+      "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "3c784298d53f774f4689b7119ab4b4f1"
+      "checksum": "53c68547f42b57c71f79aa541c5b7321"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
@@ -5046,7 +5061,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "74e6bc8ade64591616bb15161ad9ee17"
+      "checksum": "551cccb49b6b0e443e1df719ba531ae9"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

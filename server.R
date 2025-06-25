@@ -117,6 +117,118 @@ server <- function(input, output, session) {
 
 
   # CSC server logic ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+  # Summary Page ----
+  # Geographic breakdown o1 (list of either LA names or Region names)
+  observeEvent(eventExpr = {
+    input$select_geography_sp
+  }, {
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_sp & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+
+    updateSelectizeInput(
+      session = session,
+      inputId = "geographic_breakdown_sp",
+      selected = choices[1],
+      choices = choices,
+    )
+  })
+  ## outcome 1 confirmation text ----
+  region_for_la_sp <- reactive({
+    selected_la <- input$geographic_breakdown_sp
+    location_data %>%
+      filter(la_name == selected_la) %>%
+      pull(region_name)
+  })
+
+  output$summary_page_choice_text1 <- renderText({
+    generate_choice_text1(input$select_geography_sp, input$geographic_breakdown_sp, region_for_la_sp())
+  })
+
+  output$summary_page_choice_text2 <- renderText({
+    generate_choice_text2(summary_page = TRUE, select_geography = input$select_geography_sp)
+  })
+
+
+  rv_summary_page <- reactiveValues(summary_data_filtered = NULL, select_geographic_level = NULL)
+
+  observeEvent(req(input$geographic_breakdown_sp, input$select_geography_sp), {
+    filtered_data <- filter_summary_data(
+      data_in = copy(summary_data),
+      select_geographic_level = input$select_geography_sp,
+      select_geo_breakdown = input$geographic_breakdown_sp
+    )
+
+    rv_summary_page$summary_data_filtered <- filtered_data
+    rv_summary_page$select_geographic_level <- input$select_geography_sp
+  })
+
+  output$summary_page_download <- downloadHandler(
+    filename = function() {
+      paste("summary_page_data_", Sys.Date(), ".csv", sep = "")
+    },
+    content = function(file) {
+      write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
+    }
+  )
+  # tags$script(
+  #   HTML("var header = $('.navbar > .container-fluid');
+  #                             header.append('<div style=\"float:right; padding-top: 8px\"><button id=\"signin\" type=\"button\" class=\"btn btn-primary action-button\" onclick=\"signIn()\">Sign In</button></div>')")
+  # )
+  # )
+
+  ## Summary page data REACTIVE, filtered for the required geographies ----
+  # summary_data_filtered <- reactive({
+  #   shiny::validate(
+  #     need(input$select_geography_sp != "", "Select a geography level."),
+  #     need(input$geographic_breakdown_sp != "", "Select a location.")
+  #   )
+  #
+  #   # filter the dataset based on the context and user selections
+  #   filtered_data <- filter_summary_data(
+  #     data_in = copy(summary_data),
+  #     select_geographic_level = input$select_geography_sp,
+  #     select_geo_breakdown = input$geographic_breakdown_sp
+  #   )
+  #   filtered_data
+  # })
+  #
+
+  # Outcome 1 domains on summary page ----
+  sp_accordion_cols_server(id = "outcome1", rv_summary_page)
+  sp_domain_server(id = "Access to support and getting help", rv_summary_page)
+  sp_domain_server(id = "Family stability", rv_summary_page)
+  sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
+  sp_domain_server(id = "Educational attainment", rv_summary_page)
+
+  # Outcome 2 domain on summary page
+  sp_accordion_cols_server(id = "outcome2", rv_summary_page)
+  sp_domain_server(id = "Families engaging and receiving support from their family network", rv_summary_page)
+
+  # outcome 3 domains on summary page
+  sp_accordion_cols_server(id = "outcome3", rv_summary_page)
+  sp_domain_server(id = "Child safety – general", rv_summary_page)
+  sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
+  sp_domain_server(id = "Harms outside the home", rv_summary_page)
+
+  # outcome 4 domains on summary page
+  sp_accordion_cols_server(id = "outcome4", rv_summary_page)
+  sp_domain_server(id = "Stability and quality of where a child lives", rv_summary_page)
+  sp_domain_server(id = "Child wellbeing", rv_summary_page)
+  sp_domain_server(id = "Quality of life for care experienced people", rv_summary_page)
+
+  # Enabler 2 domains on summary page ----
+  sp_accordion_cols_server(id = "enabler1", rv_summary_page)
+  sp_domain_server(id = "Spending", rv_summary_page)
+  sp_domain_server(id = "Culture focused on outcomes from children and families and continually improving services", rv_summary_page)
+
+  # Enabler 3 domain on summary page
+  sp_accordion_cols_server(id = "enabler2", rv_summary_page)
+  sp_domain_server(id = "Workforce stability", rv_summary_page)
+  sp_domain_server(id = "Quality of support for children and families", rv_summary_page)
+  sp_domain_server(id = "Social worker ethnicity", rv_summary_page)
+
+
+
   # Outcome 1 -----
   # Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {
@@ -4810,7 +4922,7 @@ server <- function(input, output, session) {
       context <- " down from "
     } else if ((as.numeric(stat_current) > as.numeric(stat_prev))) {
       context <- " up from "
-    } else if ((as.numeric(stat_current) <- as.numeric(stat_prev))) {
+    } else if ((as.numeric(stat_current) == as.numeric(stat_prev))) {
       context <- " no change from "
     } else {
       context <- " compared to "
@@ -5886,35 +5998,43 @@ server <- function(input, output, session) {
     }
   })
 
-
-  output$ofsted_outstanding_headline <- renderText({
-    data <- ofsted_leadership_data_long %>%
+  # this reactive is used in the 4 headline boxes
+  ofsted_ratings_data <- reactive({
+    ofsted_leadership_data_long %>%
       mutate(Rating = recode(Rating,
         "inadequate_count" = "Inadequate",
         "requires_improvement_count" = "Requires Improvement",
         "good_count" = "Good",
         "outstanding_count" = "Outstanding"
-      ))
+      )) %>%
+      filter(geo_breakdown == input$geographic_breakdown_e2)
+  })
 
+  output$ofsted_outstanding_headline <- renderText({
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
-        stat <- data %>%
-          filter(geo_breakdown == "London")
-        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$inspection_date), ")", "</p>")
-      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
-        stat <- data %>%
-          filter(geo_breakdown == "North East, Yorkshire and the Humber")
-        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else {
-        stat <- data %>%
-          filter(geo_breakdown == input$geographic_breakdown_e2)
-        stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      }
+      # browser()
+      stat <- ofsted_ratings_data()
+      stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+      paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
+
+      # if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "London")
+      #   stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$inspection_date), ")", "</p>")
+      # } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "North East, Yorkshire and the Humber")
+      #   stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == input$geographic_breakdown_e2)
+      #   stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # }
     }
   })
 
@@ -5930,22 +6050,25 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
-        stat <- data %>%
-          filter(geo_breakdown == "London")
-        stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
-        stat <- data %>%
-          filter(geo_breakdown == "North East, Yorkshire and the Humber")
-        stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else {
-        stat <- data %>%
-          filter(geo_breakdown == input$geographic_breakdown_e2)
-        stat_final <- stat$Count[which(stat$Rating == "Good")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      }
+      stat <- ofsted_ratings_data()
+      stat_final <- stat$Count[which(stat$Rating == "Good")]
+      paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
+      # if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "London")
+      #   stat_final <- stat$Count[which(stat$Rating == "Good")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "North East, Yorkshire and the Humber")
+      #   stat_final <- stat$Count[which(stat$Rating == "Good")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == input$geographic_breakdown_e2)
+      #   stat_final <- stat$Count[which(stat$Rating == "Good")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # }
     }
   })
 
@@ -5961,22 +6084,25 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
-        stat <- data %>%
-          filter(geo_breakdown == "London")
-        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
-        stat <- data %>%
-          filter(geo_breakdown == "North East, Yorkshire and the Humber")
-        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else {
-        stat <- data %>%
-          filter(geo_breakdown == input$geographic_breakdown_e2)
-        stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      }
+      stat <- ofsted_ratings_data()
+      stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+      paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
+      # if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "London")
+      #   stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "North East, Yorkshire and the Humber")
+      #   stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == input$geographic_breakdown_e2)
+      #   stat_final <- stat$Count[which(stat$Rating == "Requires Improvement")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # }
     }
   })
 
@@ -5992,22 +6118,26 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
-        stat <- data %>%
-          filter(geo_breakdown == "London")
-        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
-        stat <- data %>%
-          filter(geo_breakdown == "North East, Yorkshire and the Humber")
-        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      } else {
-        stat <- data %>%
-          filter(geo_breakdown == input$geographic_breakdown_e2)
-        stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
-        paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
-      }
+      stat <- ofsted_ratings_data()
+      stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+      paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
+
+      # if (input$geographic_breakdown_e2 %in% c("Inner London", "Outer London", "London")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "London")
+      #   stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else if (input$geographic_breakdown_e2 %in% c("North East", "Yorkshire and The Humber")) {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == "North East, Yorkshire and the Humber")
+      #   stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # } else {
+      #   stat <- data %>%
+      #     filter(geo_breakdown == input$geographic_breakdown_e2)
+      #   stat_final <- stat$Count[which(stat$Rating == "Inadequate")]
+      #   paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(data$time_period), ")", "</p>")
+      # }
     }
   })
 
@@ -6962,17 +7092,17 @@ server <- function(input, output, session) {
 
   ## Ethnicity and Diversity Domain-----
   output$non_white_txt <- renderText({
-    white_stat <- workforce_eth %>%
+    non_white_stat <- workforce_eth %>%
       filter(time_period == max(workforce_eth$time_period) &
         geo_breakdown %in% input$geographic_breakdown_e3 &
         role == "Total" &
-        breakdown == "White") %>%
+        breakdown == "Non-white") %>%
       select(inpost_headcount_percentage)
 
     if (input$geographic_breakdown_e3 == "") {
       non_white_stat <- "NA"
     } else {
-      non_white_stat <- format(100 - as.numeric(white_stat), nsmall = 1)
+      non_white_stat <- format(as.numeric(non_white_stat), nsmall = 1)
     }
     paste0(non_white_stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(workforce_eth$time_period), ")", "</p>")
   })
@@ -6999,7 +7129,12 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
     data <- workforce_eth %>%
-      filter(geo_breakdown %in% input$geographic_breakdown_e3, role == "Total", breakdown_topic == "Ethnicity major") %>%
+      filter(
+        geo_breakdown %in% input$geographic_breakdown_e3,
+        role == "Total",
+        breakdown_topic == "Ethnicity major",
+        breakdown != "Non-white"
+      ) %>%
       select(time_period, geo_breakdown, breakdown, inpost_headcount, inpost_headcount_percentage) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "inpost_headcount_percentage")
 
@@ -7040,6 +7175,7 @@ server <- function(input, output, session) {
     )
     data <- combined_ethnicity_data %>%
       filter(geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      filter(breakdown != "Non-white") %>%
       select(geo_breakdown, breakdown, inpost_headcount_percentage, Percentage) %>%
       rename("Location" = "geo_breakdown", "Ethnicity group" = "breakdown", "Workforce (%)" = "inpost_headcount_percentage", "Population (%)" = "Percentage")
 

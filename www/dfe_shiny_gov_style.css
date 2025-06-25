@@ -340,7 +340,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 /* Headline Stats boxes */
 .card, .well{
-  --bs-card-color: #1d70b8!important;
+  --bs-card-color: #white !important;
   --bs-card-spacer-y: 0em;
   --bs-card-spacer-x: 0em;
   
@@ -708,4 +708,88 @@ btn is the user guide button
   --bs-nav-tabs-link-active-border-color: #0b3b6a #0b3b6a #0b3b6a !important;
   border-bottom: solid #0b3b6a;
   font-weight: 700;
+}
+
+/* Summary Page CSS */
+#summary_page_outcomes .accordion .accordion-header,
+#summary_page_enablers .accordion .accordion-header {
+  background-color: #1d70b8 !important;
+  color: white !important;
+}
+
+
+#summary_page_outcomes .accordion-body,
+#summary_page_enablers .accordion-body {
+    padding: 0px  15px !important;
+}
+
+#summary_page_outcomes .accordion-button,
+#summary_page_enablers .accordion-button {
+  background-color: #1d70b8 !important;
+  color: #fff !important;
+}
+
+#summary_page_outcomes .accordion-title,
+#summary_page_enablers .accordion-title {
+  background-color: #1d70b8 !important;
+  color: white !important;
+  font-size: 24px !important;
+}
+
+#summary_page_outcomes div[id$="-domain_text"],
+#summary_page_enablers div[id$="-domain_text"] {
+  background-color: white !important;
+  line-height: 45px !important;
+  font-size: 19px !important;
+  padding-left: 12px !important;
+  font-weight: 550 !important;
+}
+
+/* Visually hide column headers, but keep them accessible to screen reader users. */
+.hidden-column-headers .rt-thead {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  font-size: 19px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* this hides the body of the table containing the column headers to display at the top of the accordion */
+.hidden-table-body .rt-tr-group {
+    display: none !important;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: none;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.hidden-table-body .rt-th-inner {
+  font-size: 19px;
+}
+.hidden-table-headers .rt-tr {
+  font-size: 16px;
+}
+
+.hidden-table-headers .rt-tr {
+  font-size: 19px;
+}
+div .hidden-table-body,
+div .hidden-column-headers {
+  padding-left: 0px !important;
+}
+
+
+div .panel.card.mb-3.panel-default.border-default {
+  visibility: hidden !important;
+  display: none !important;
+  
+  
 }
