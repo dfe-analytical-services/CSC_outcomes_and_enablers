@@ -9033,7 +9033,7 @@ server <- function(input, output, session) {
             tags$ul(
               tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
               tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
-              tags$li("Until all data publications for Outcome 3 indicators are updated with local authority changes, Cumberland and Westmorland and Furness have been combined into Cumbria for hospital admissions data."),
+              # tags$li("Until all data publications for Outcome 3 indicators are updated with local authority changes, Cumberland and Westmorland and Furness have been combined into Cumbria for hospital admissions data."),
               tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
               tags$br(),
               p(
