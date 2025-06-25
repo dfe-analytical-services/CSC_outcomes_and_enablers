@@ -948,7 +948,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
   region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
 
-  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+  admissions_data_joined <- rbind(la_admissions[, c(1:13, 18, 19)], region_admissions[, c(1:13, 18, 19)]) %>%
     select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
     rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
     distinct()
