@@ -951,14 +951,14 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   # note the hard-coded cleansing here as the input files provided require a couple of hacks
   admissions_data_joined <- rbind(
     la_admissions[la_admissions$Category == "" & la_admissions$Sex == "Persons", c(1:13, 18, 19)],
-    region_admissions[region_admissions$Category == "" & la_admissions$Sex == "Persons", c(1:13, 18, 19)]
+    region_admissions[region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
   ) %>%
     select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
     rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
     distinct()
 
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Regions (statistical)"] <- "Regional"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Counties & UAs (from Apr 2023)"] <- "Local authority"
   admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
 
