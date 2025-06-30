@@ -1144,6 +1144,15 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
+  # this helps us to narrow down to only the AFs we are going to report
+  af_to_keep <- c(
+    "Domestic Abuse child", "Domestic Abuse parent", "Domestic Abuse person",
+    "Neglect", "Emotional Abuse", "Physical Abuse unknown", "Physical Abuse child on child",
+    "Physical Abuse adult on child", "Sexual Abuse unknown", "Sexual Abuse child on child",
+    "Sexual Abuse adult on child", "Faith linked abuse", "Going missing",
+    "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
+  )
+
   # original steps to pivot and clean columns
   ass_fac_data <- ass_fac_data_raw %>%
     pivot_longer(
@@ -1152,7 +1161,8 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
       values_to = "value"
     ) %>%
     data.table() %>%
-    mutate(assessment_factor = gsub("_", " ", assessment_factor))
+    mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
+    filter(assessment_factor %in% af_to_keep)
 
   # Using the population data from CLA rates data, because Data needs to be rates per 10,000
   if (exists(x = "cla_rates")) {
@@ -1168,23 +1178,31 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
     filter(time_period != 2018)
 
+  # now we need to tidy up, creating the character column and populating it appropriately
+  ass_fac_data <- ass_fac_data %>%
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  ass_fac_data[is.na(as.numeric(value)), rate_per_10000_char := value]
+  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := "z"]
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
     dataset = ass_fac_data,
-    median_cols = c("rate_per_10000"),
-    sum_cols = c(),
+    median_cols = c("rate_per_10000_char", "rate_per_10000"),
+    sum_cols = c("value"),
     group_cols = c("LA.number", "time_period", "assessment_factor"),
   )
+  sn_metrics <- sn_metrics %>%
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  sn_metrics[is.na(rate_per_10000_char), rate_per_10000_char := "z"]
+
   ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   ass_fac_data <- ass_fac_data %>%
-    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
-    redacted_to_negative(col_old = "value", col_new = "Number") %>%
-    mutate(rate_per_10000_char = as.character(rate_per_10000))
-
-  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := value]
+    mutate(`rate_per_10000_char` = sapply(rate_per_10000_char, decimal_rounding, digits = 0)) %>%
+    redacted_to_negative(col_old = "value", col_new = "Number")
 
 
   return(ass_fac_data)
