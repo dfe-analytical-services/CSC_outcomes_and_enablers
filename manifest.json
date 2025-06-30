@@ -4749,7 +4749,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "f52b391d8a21082d6ca5bf70306f397e"
+      "checksum": "1655f22ba962b2371aeb67a1a0428f27"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "f983ad6ce7a95b423f453c948e523aa1"
+      "checksum": "3d22214fca429064131ed4b1a85d1a21"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4928,6 +4928,9 @@
     "R/mod_summary_page.R": {
       "checksum": "c2be32275b55709ee206f4ec87925603"
     },
+    "R/mod_timeseries_section.R": {
+      "checksum": "3de0186faca6a7caf96b7ac0ef776b1d"
+    },
     "R/omitted_data.R": {
       "checksum": "817b0f93920c1705714733d41dd051cc"
     },
@@ -4947,7 +4950,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "257944afd2eabe57e77c97859723a4e6"
+      "checksum": "0454c954ae70673b9f560881039a00ec"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
