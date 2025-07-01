@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "3d22214fca429064131ed4b1a85d1a21"
+      "checksum": "b8eda22f60a4641dc2a44854494817a5"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4928,9 +4928,6 @@
     "R/mod_summary_page.R": {
       "checksum": "c2be32275b55709ee206f4ec87925603"
     },
-    "R/mod_timeseries_section.R": {
-      "checksum": "3de0186faca6a7caf96b7ac0ef776b1d"
-    },
     "R/omitted_data.R": {
       "checksum": "817b0f93920c1705714733d41dd051cc"
     },
@@ -4950,7 +4947,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "0454c954ae70673b9f560881039a00ec"
+      "checksum": "ed5f6a18b657d9c534f87516fd1c7ee7"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"

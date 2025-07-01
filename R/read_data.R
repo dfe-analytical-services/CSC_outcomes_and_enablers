@@ -1202,6 +1202,7 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
 
   ass_fac_data <- ass_fac_data %>%
     mutate(`rate_per_10000_char` = sapply(rate_per_10000_char, decimal_rounding, digits = 0)) %>%
+    redacted_to_negative(col_old = "rate_per_10000_char", col_new = "rate_per_10000") %>%
     redacted_to_negative(col_old = "value", col_new = "Number")
 
 
