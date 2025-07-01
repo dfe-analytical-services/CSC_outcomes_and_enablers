@@ -305,6 +305,9 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
                   gov_row(
+                    timeseries_section_ui("hospital_admissions")
+                  ),
+                  gov_row(
                     insert_text(
                       inputId = "admissions_warning",
                       text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")

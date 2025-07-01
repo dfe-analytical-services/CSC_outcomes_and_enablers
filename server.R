@@ -3429,6 +3429,13 @@ server <- function(input, output, session) {
   })
 
   ### Hospital admissions -----
+  # hospital admission is a recently added chart/table and uses a reactiveValues() and moduleServer set up.
+
+  # selected_values <- reactiveValues(geographic_breakdown_o3 = input$geographic_breakdown_o3,
+  #                                   select_geography_o3 = input$geographic_breakdown_o3)
+
+  timeseries_section_server("hospital_admissons", dataset = hospital_admissions, selected_geography = reactive(input$select_geograpy_o3), selected_geo_breakdown = reactive(input$geographic_breakdown_o3))
+
   output$hosp_admissions_txt <- renderText({
     stat <- format(hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period) &

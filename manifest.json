@@ -4749,7 +4749,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "bf9c61cecbc5406f87ce59b5e04dba76"
+      "checksum": "1655f22ba962b2371aeb67a1a0428f27"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "c26589cc5a57d93b4963d3fd1b500882"
+      "checksum": "56f82c88371c50efec92c4f95e00bbd4"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4934,6 +4934,9 @@
     "R/mod_summary_page.R": {
       "checksum": "c2be32275b55709ee206f4ec87925603"
     },
+    "R/mod_timeseries_section.R": {
+      "checksum": "ce4c01a56118ddca076e6d5a49d8cace"
+    },
     "R/omitted_data.R": {
       "checksum": "817b0f93920c1705714733d41dd051cc"
     },
@@ -4944,7 +4947,7 @@
       "checksum": "8e0d0426457c11ab4aa39ea2469ebdf5"
     },
     "R/outcome3_page.R": {
-      "checksum": "e8efe9a91e44a5c698c83a3d051696df"
+      "checksum": "7e3d41881faace041902d757a5119f85"
     },
     "R/outcome4_page.R": {
       "checksum": "166a670b42156ecbba0df56dc03e2fda"
@@ -4983,7 +4986,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "13c49d3f4b3c23578607cfd8ee2f8615"
+      "checksum": "8a2a0e70ae312ca0c7ccd3fbfd47d64c"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
