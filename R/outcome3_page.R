@@ -305,6 +305,13 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
                   gov_row(
+                    h2("Rate of children in need (CIN)"),
+                    p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
+                    Looking at the flow of children who become CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."),
+                    insert_text(inputId = "CIN_definition", text = paste(
+                      "<b>", "Rate of children in need (CIN)", "</b><br>",
+                      "The rate of children in need is calculated as the number of children in need at 31 March, per 10,000 children in the population."
+                    )),
                     timeseries_section_ui("hospital_admissions")
                   ),
                   gov_row(

@@ -1123,7 +1123,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
 
   admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0))
+    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "rate_per_10000", col_new = "Rate_per_10000")
 
   return(admissions_data3)
 }

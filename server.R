@@ -145,7 +145,7 @@ server <- function(input, output, session) {
   })
 
   output$summary_page_choice_text2 <- renderText({
-    generate_choice_text2(summary_page = TRUE, select_geography = input$select_geography_sp)
+    generate_choice_text2(input$national_comparison_checkbox_sp, input$region_comparison_checkbox_sp, input$sn_comparison_checkbox_sp)
   })
 
 
@@ -3431,10 +3431,35 @@ server <- function(input, output, session) {
   ### Hospital admissions -----
   # hospital admission is a recently added chart/table and uses a reactiveValues() and moduleServer set up.
 
-  # selected_values <- reactiveValues(geographic_breakdown_o3 = input$geographic_breakdown_o3,
-  #                                   select_geography_o3 = input$geographic_breakdown_o3)
+  rv_hosp_admissions <- reactiveValues(select_geographic_level = NULL, select_geo_breakdown = NULL, check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL)
 
-  timeseries_section_server("hospital_admissons", dataset = hospital_admissions, selected_geography = reactive(input$select_geograpy_o3), selected_geo_breakdown = reactive(input$geographic_breakdown_o3))
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_o3, input$geographic_breakdown_o3, input$national_comparison_checkbox_o3, input$region_comparison_checkbox_o3, input$sn_comparison_checkbox_o3
+  ), {
+    req(input$select_geography_o3, input$geographic_breakdown_o3)
+    rv_hosp_admissions$select_geographic_level <- input$select_geography_o3
+    rv_hosp_admissions$select_geo_breakdown <- input$geographic_breakdown_o3
+    rv_hosp_admissions$check_compare_national <- input$national_comparison_checkbox_o3
+    rv_hosp_admissions$check_compare_regional <- input$region_comparison_checkbox_o3
+    rv_hosp_admissions$check_compare_sn <- input$sn_comparison_checkbox_o3
+  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
+
+  timeseries_section_server("hospital_admissions",
+    rv = rv_hosp_admissions,
+    dataset = copy(hospital_admissions),
+    chart_title = "My title",
+    yvalue = "Rate_per_10000",
+    yaxis_title = "Rate per 10k",
+    max_rate = calculate_max_rate(hospital_admissions, "Rate_per_10000"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Rate per 10k" = "Rate_per_10000"),
+    rt_col_defs = list(
+      "Rate per 10k" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+
+  # timeseries_section_server("hospital_admissons", dataset = hospital_admissions, selected_geography = reactive(input$select_geograpy_o3), selected_geo_breakdown = reactive(input$geographic_breakdown_o3))
 
   output$hosp_admissions_txt <- renderText({
     stat <- format(hospital_admissions %>%
