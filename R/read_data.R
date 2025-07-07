@@ -973,7 +973,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
       is.na(Denominator) ~ -300,
       TRUE ~ as.numeric(Denominator)
     ))
-  admissions_data$Value <- round(admissions_data$Value, digits = 1)
+  # admissions_data$Value <- round(admissions_data$Value, digits = 1)
 
   admissions_data2 <- admissions_data %>%
     mutate(rate_per_10000 = case_when(
@@ -1099,15 +1099,16 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
 
   # Round headline values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
-      as.character(round(as.numeric(rate_per_10000))),
-      rate_per_10000
-    ))
-
-  # Round plot values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(Value = round(Value), 0)
+  # this doesn't need to be done at this point
+  # admissions_data3 <- admissions_data3 %>%
+  #   mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
+  #     as.character(round(as.numeric(rate_per_10000))),
+  #     rate_per_10000
+  #   ))
+  #
+  # # Round plot values
+  # admissions_data3 <- admissions_data3 %>%
+  #   mutate(Value = round(Value), 0)
 
   # add stats neighbours
   # now calculate SN metrics and append to the bottom of the dataset
@@ -1124,6 +1125,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
 
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
+    mutate(Value = sapply(Value, decimal_rounding, 0)) %>%
     redacted_to_negative(col_old = "rate_per_10000", col_new = "Rate_per_10000")
 
   return(admissions_data3)
