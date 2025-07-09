@@ -1025,8 +1025,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     filter(geo_breakdown %in% inner_london)
 
   inner_london_stat <- inner_london_data %>%
+    group_by(time_period) %>%
     summarise(
-      time_period = first(time_period),
       geographic_level = "Regional",
       geo_breakdown = "Inner London",
       new_la_code = "E13000001",
@@ -1065,8 +1065,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     filter(geo_breakdown %in% Outer_london)
 
   Outer_london_stat <- Outer_london_data %>%
+    group_by(time_period) %>%
     summarise(
-      time_period = first(time_period),
       geographic_level = "Regional",
       geo_breakdown = "Outer London",
       new_la_code = "E13000002",
