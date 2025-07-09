@@ -1,3 +1,5 @@
+# Aggregation function for a dataset to calculate median or sum values for various columns based on dynamic groupings
+
 sn_aggregations <- function(sn_long,
                             dataset,
                             sum_cols,
@@ -46,7 +48,7 @@ sn_aggregations <- function(sn_long,
   # West Northamptonshire start 2023
   # Cumbria end 2023
   sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("North Northamptonshire", "West Northamptonshire") & time_period < "2022")]
-  sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("Cumbria") & time_period > "2023")]
+  # sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("Cumbria") & time_period > "2023")]
 
   return(sn_finalised)
 }
@@ -103,7 +105,7 @@ filter_time_series_data <- function(dataset_in,
                                     check_compare_sn,
                                     dimensional_filters = list()) {
   # default values for testing
-  # elect_geographic_level <- "Local authority"
+  # select_geographic_level <- "Local authority"
   # select_geo_breakdown <- "Merton"
   # dimensional_filters <- list("characteristic" = "Special guardianship orders")
 

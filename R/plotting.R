@@ -1822,20 +1822,14 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
 
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -1880,7 +1874,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       )
   } else {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(geo_breakdown, `yvalue`, score_label) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -1929,20 +1923,15 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
+
 
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(geo_breakdown, `yvalue`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -1987,7 +1976,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       )
   } else {
     filtered_data <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(geo_breakdown, `yvalue`, score_label) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))),
@@ -2037,7 +2026,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
   # label if no cases for selected factor
 
   if (selected_geo_lvl == "Local authority") {
-    selected_row <- filtered_data %>% filter(selected_la$geo_breakdown == Breakdown)
+    selected_row <- filtered_data %>% filter(Breakdown == selected_geo_breakdown)
     selected_rate <- selected_row$`Rate Per 10000`
     if (length(selected_rate) > 0 && selected_rate < 1) {
       y_max <- ylim_upper
@@ -2053,16 +2042,10 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
 
   colors <- setNames(
     c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
@@ -2075,7 +2058,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
   )
 
   filtered_data <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
     filter(
       population_count == "Children starting to be looked after each year",
       characteristic %in% c("UASC", "Non-UASC")
@@ -2135,16 +2118,10 @@ statistical_neighbours_plot_uasc_31_march <- function(dataset, selected_geo_brea
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la <- selected_la[1:nrow(stats_neighbours), ]
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
 
   colors <- setNames(
     c("#28A197", "#12436D", "#28A1977F", "#12436D7F"),
@@ -2157,7 +2134,7 @@ statistical_neighbours_plot_uasc_31_march <- function(dataset, selected_geo_brea
   )
 
   filtered_data <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
     filter(
       population_count == "Children looked after at 31 March each year",
       characteristic %in% c("UASC", "Non-UASC")
@@ -2215,23 +2192,16 @@ statistical_neighbours_plot_uasc_31_march <- function(dataset, selected_geo_brea
 
 statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) {
   # Find the old_la_code for the selected geo_breakdown
-  selected_la_code <- dataset %>%
-    filter(geo_breakdown == selected_geo_breakdown) %>%
-    pull(old_la_code) %>%
-    unique()
-
-  # Get the list of statistical neighbours for the selected old_la_code
-  neighbours_list <- stats_neighbours %>%
-    filter(LA.number == selected_la_code) %>%
-    select(starts_with("SN")) %>%
-    unlist() %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
     as.character()
 
   # Filter the main dataset for the selected geo_breakdown and its neighbours
   # and only include rows where Count equals 1
   filtered_data <- dataset %>%
     filter(
-      geo_breakdown %in% c(selected_geo_breakdown, neighbours_list),
+      geo_breakdown %in% c(selected_geo_breakdown, sn_names),
       Count == 1,
       geographic_level == "Local authority"
     ) %>%
@@ -2268,19 +2238,14 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
 }
 
 stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
+
   if (is.null(selectedcolumn)) {
     data2 <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(time_period, geo_breakdown, `yvalue`) %>%
       mutate(
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
@@ -2297,7 +2262,7 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
       arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
   } else {
     data2 <- dataset %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(all_of(c("time_period", "geo_breakdown", selectedcolumn, yvalue))) %>%
       mutate(
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
@@ -2316,18 +2281,13 @@ stats_neighbours_table <- function(dataset, selected_geo_breakdown = NULL, selec
 }
 
 stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue) {
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown == selected_geo_breakdown) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
+
   data2 <- dataset %>%
-    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+    filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
     select(geo_breakdown, characteristic, `yvalue`) %>%
     mutate(
       is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
@@ -2345,20 +2305,14 @@ stats_neighbours_table_uasc <- function(dataset, selected_geo_breakdown = NULL, 
 }
 
 stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, selectedcolumn = NULL, yvalue = NULL) {
-  selected_la <- dataset %>%
-    filter(geographic_level == "Local authority", geo_breakdown == selected_geo_breakdown, Count == 1) %>%
-    select(geo_breakdown, old_la_code)
-
-  selected_la$old_la_code <- as.numeric(selected_la$old_la_code)
-
-  neighbours_list <- stats_neighbours %>%
-    filter(stats_neighbours$LA.number == selected_la$old_la_code) %>%
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
-    as.list()
+    as.character()
 
   if (is.null(selectedcolumn)) {
     data2 <- dataset %>%
-      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list), Count == 1) %>%
+      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, sn_names), Count == 1) %>%
       select(latest_rating, geo_breakdown, `yvalue`) %>%
       mutate(
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")
@@ -2375,7 +2329,7 @@ stats_neighbours_table_ofsted <- function(dataset, selected_geo_breakdown = NULL
       arrange(desc(!!sym(str_to_title(str_replace_all(yvalue, "_", " ")))))
   } else {
     data2 <- dataset %>%
-      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, neighbours_list)) %>%
+      filter(geographic_level == "Local authority", geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
       select(all_of(c("latest_rating", "geo_breakdown", selectedcolumn, yvalue))) %>%
       mutate(
         is_selected = ifelse(geo_breakdown == selected_geo_breakdown, selected_geo_breakdown, "statistical neighbours")

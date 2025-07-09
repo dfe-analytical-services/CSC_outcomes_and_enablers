@@ -22,7 +22,8 @@ data/absence_six_half_terms_la.csv,published
 data/ks2_la.csv,published
 data/ks4_la.csv,published
 data/LTLA-UTLA_Apr23_Lookup_England-Wales.csv,reference
-data/New_Statistical_Neighbour_Groupings_April_2021.csv,published
+data/sn_model_2025_wide.csv,published
+data/New_Statistical_Neighbour_Groupings_April_2021.csv,reference
 data/d3_cpps_subsequent_plan_2013_to_2024.csv,published
 data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv,published
 data/d5_cpps_at31march_by_duration_2013_to_2024.csv,published

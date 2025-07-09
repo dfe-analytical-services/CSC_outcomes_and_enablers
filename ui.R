@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "The next release will include the revised children’s services statistical neighbour groupings for all local authorities"
+        "This latest release now includes the revised children’s services statistical neighbour groupings for all local authorities."
       )
     ),
     bslib::navset_pill_list(

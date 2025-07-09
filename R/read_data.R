@@ -64,6 +64,11 @@ insert_geo_breakdown <- function(dataset) {
   return(dataset)
 }
 
+# function to remove CUmbria from a dataset
+remove_cumbria_data <- function(dataset) {
+  if ("geo_breakdown" %in% names(dataset)) dataset %>% filter(geo_breakdown != "Cumbria")
+}
+
 redacted_to_negative <- function(dataset, col_old, col_new, copy_numeric_vals = TRUE) {
   # dataset <- data.table(a = c("c", "23", "22.22", "NA", NA))
   # col_old <- "a"
@@ -129,21 +134,30 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Stats Neighbours ----
 
-#### Statistical Neighbours read and convert to long format ------------
-statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
-  stats_neighbours <- read.csv(file)
+
+get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
+  stats_neighbours_raw <- fread(file)
+
+  # one-off hack to correct St Helens
+  stats_neighbours_raw[la_name == "St Helens", la_name := "St. Helens"]
 
   # Create a lookup table
-  lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
+  setnames(stats_neighbours_raw, old = c("old_la_code", "la_name"), new = c("LA.number", "LA.Name"))
+  lookup <- stats_neighbours_raw %>% select("LA.Name", "LA.number")
 
-  df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
+  setnames(stats_neighbours_raw, gsub(pattern = "SN_", "SN", names(stats_neighbours_raw)))
+
+  df <- stats_neighbours_raw %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
 
   for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
     df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
   }
+  # return a data.frame
+  setDF(df)
 
   return(df)
 }
+
 
 get_stats_neighbours_long <- function(stats_neighbours) {
   stats_neighbours_long <- stats_neighbours %>%
@@ -151,13 +165,45 @@ get_stats_neighbours_long <- function(stats_neighbours) {
       cols = starts_with("SN"),
       names_to = c("SN_rank"),
       names_pattern = "(\\d+)",
-      values_to = "SN_LA_name"
+      values_to = "SN_LA_name" # SN_LA_name
     ) %>%
     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
     as.data.table()
 
   return(stats_neighbours_long)
 }
+
+
+
+# #### Statistical Neighbours read and convert to long format ------------
+# statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
+#   stats_neighbours <- read.csv(file)
+#
+#   # Create a lookup table
+#   lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
+#
+#   df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
+#
+#   for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
+#     df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
+#   }
+#
+#   return(df)
+# }
+#
+# get_stats_neighbours_long <- function(stats_neighbours) {
+#   stats_neighbours_long <- stats_neighbours %>%
+#     pivot_longer(
+#       cols = starts_with("SN"),
+#       names_to = c("SN_rank"),
+#       names_pattern = "(\\d+)",
+#       values_to = "SN_LA_name"
+#     ) %>%
+#     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
+#     as.data.table()
+#
+#   return(stats_neighbours_long)
+# }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Summary Page ----
@@ -293,6 +339,8 @@ read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     insert_geo_breakdown()
 
+  cla_rate_data <- remove_cumbria_data(cla_rate_data)
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -317,11 +365,7 @@ read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k
 read_cla_placement_data <- function(sn_long, file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
   cla_placement_data <- read.csv(file)
   cla_placement_data <- colClean(cla_placement_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
+    insert_geo_breakdown() %>%
     mutate(Percentage = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -331,9 +375,12 @@ read_cla_placement_data <- function(sn_long, file = "data/la_children_who_starte
       percentage == "z" ~ -400,
       TRUE ~ as.numeric(percentage)
     )) %>%
+    setDT() %>%
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    remove_cumbria_data() %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
-    distinct()
+    distinct() %>%
+    setDF() # just to make sure we aren't breaking anything though it would be preferable to stick to data.table everywhere!
 
   return(cla_placement_data)
 }
@@ -342,11 +389,7 @@ read_cla_placement_data <- function(sn_long, file = "data/la_children_who_starte
 read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
   cla_31_march_data <- read.csv(file)
   cla_31_march_data <- colClean(cla_31_march_data) %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
+    insert_geo_breakdown() %>%
     mutate(Percentage = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -357,8 +400,11 @@ read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteri
       TRUE ~ as.numeric(percentage)
     )) %>%
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
+    setDT() %>%
+    remove_cumbria_data() %>%
     select(geographic_level, geo_breakdown, time_period, region_code, region_name, new_la_code, old_la_code, la_name, cla_group, characteristic, number, percentage) %>%
-    distinct()
+    distinct() %>%
+    setDF()
 
   return(cla_31_march_data)
 }
@@ -564,7 +610,8 @@ read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to
   # initial cleansing steps
   cin_rate_data <- cin_rate_data %>%
     colClean() %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -599,7 +646,8 @@ read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_ref
   # initial cleansing steps
   cin_referral_data <- cin_referral_data %>%
     colClean() %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -644,7 +692,8 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
 
   # Select only columns we want
   outcomes_absence_data <- outcomes_absence_data %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -688,7 +737,8 @@ read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
   outcomes_ks2_data <- fread(file)
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -740,7 +790,8 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
 
   # Select only columns we want
   outcomes_ks4_data <- outcomes_ks4_data %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -781,7 +832,8 @@ read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_th
   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
   ceased_cla_data <- ceased_cla_data %>%
     filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove) %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -825,6 +877,7 @@ read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_
   # add geo_breakdown
   cpp_in_year_data <- cpp_in_year_data %>%
     insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     mutate(CPP_subsequent_percent = sapply(CPP_subsequent_percent, decimal_rounding, 1))
 
 
@@ -854,7 +907,8 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -900,6 +954,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
   admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
   admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
+
+  admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
 
   admissions_data <- admissions_data_joined %>%
     mutate(Value = case_when(
@@ -1072,7 +1128,8 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
 read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
   ass_fac_data_raw <- fread(file)
   ass_fac_data_raw <- ass_fac_data_raw %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   columns <- c(
     "Episodes_with_assessment_factor",
@@ -1087,6 +1144,15 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     "Sexual_Abuse_adult_on_child", "Female_Genital_Mutilation", "Faith_linked_abuse", "Child_criminal_exploitation", "Other"
   )
 
+  # this helps us to narrow down to only the AFs we are going to report
+  af_to_keep <- c(
+    "Domestic Abuse child", "Domestic Abuse parent", "Domestic Abuse person",
+    "Neglect", "Emotional Abuse", "Physical Abuse unknown", "Physical Abuse child on child",
+    "Physical Abuse adult on child", "Sexual Abuse unknown", "Sexual Abuse child on child",
+    "Sexual Abuse adult on child", "Faith linked abuse", "Going missing",
+    "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
+  )
+
   # original steps to pivot and clean columns
   ass_fac_data <- ass_fac_data_raw %>%
     pivot_longer(
@@ -1095,7 +1161,8 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
       values_to = "value"
     ) %>%
     data.table() %>%
-    mutate(assessment_factor = gsub("_", " ", assessment_factor))
+    mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
+    filter(assessment_factor %in% af_to_keep)
 
   # Using the population data from CLA rates data, because Data needs to be rates per 10,000
   if (exists(x = "cla_rates")) {
@@ -1111,23 +1178,32 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
     mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
     filter(time_period != 2018)
 
+  # now we need to tidy up, creating the character column and populating it appropriately
+  ass_fac_data <- ass_fac_data %>%
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  ass_fac_data[is.na(as.numeric(value)), rate_per_10000_char := value]
+  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := "z"]
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
     dataset = ass_fac_data,
-    median_cols = c("rate_per_10000"),
-    sum_cols = c(),
+    median_cols = c("rate_per_10000_char", "rate_per_10000"),
+    sum_cols = c("value"),
     group_cols = c("LA.number", "time_period", "assessment_factor"),
   )
+  sn_metrics <- sn_metrics %>%
+    mutate(rate_per_10000_char = as.character(rate_per_10000))
+
+  sn_metrics[is.na(rate_per_10000_char), rate_per_10000_char := "z"]
+
   ass_fac_data <- rbindlist(l = list(ass_fac_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   ass_fac_data <- ass_fac_data %>%
-    mutate(`rate_per_10000` = round(rate_per_10000, digits = 0)) %>%
-    redacted_to_negative(col_old = "value", col_new = "Number") %>%
-    mutate(rate_per_10000_char = as.character(rate_per_10000))
-
-  ass_fac_data[is.na(rate_per_10000_char), rate_per_10000_char := value]
+    mutate(`rate_per_10000_char` = sapply(rate_per_10000_char, decimal_rounding, digits = 0)) %>%
+    redacted_to_negative(col_old = "rate_per_10000_char", col_new = "rate_per_10000") %>%
+    redacted_to_negative(col_old = "value", col_new = "Number")
 
 
   return(ass_fac_data)
@@ -1144,6 +1220,7 @@ read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_s
   placement_chg_data <- placement_chg_data %>%
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
 
   # now calculate SN metrics and append to the bottom of the dataset
@@ -1172,7 +1249,8 @@ read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by
     filter(!(new_la_code %in% dropList)) %>%
     # custom filter to reduce dataset :-)
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1199,7 +1277,8 @@ read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leaver
   cl_activity_data <- fread(file) %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1229,7 +1308,8 @@ read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la
   cl_accom_data <- fread(file) %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
-    insert_geo_breakdown()
+    insert_geo_breakdown() %>%
+    remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1261,11 +1341,8 @@ read_wellbeing_child_data <- function(sn_long, file = "data/la_conviction_health
   data <- fread(file)
 
   data2 <- data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National",
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
+    insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
     filter(!(new_la_code %in% dropList)) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
@@ -1377,6 +1454,7 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
   workforce_data <- workforce_data %>%
     colClean() %>%
     insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, turnover_rate_fte, time_period, "time_period", "turnover_rate_fte", "absence_rate_fte",
       "agency_rate_fte", "agency_cover_rate_fte", "vacancy_rate_fte", "vacancy_agency_cover_rate_fte",
@@ -1433,6 +1511,7 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
     insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -1488,11 +1567,8 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
 read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
-    mutate(geo_breakdown = case_when(
-      geographic_level == "National" ~ "National", # NA_character_,
-      geographic_level == "Regional" ~ region_name,
-      geographic_level == "Local authority" ~ la_name
-    )) %>%
+    insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
     select(
       geographic_level, geo_breakdown, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", "role", breakdown_topic, breakdown,
@@ -1771,6 +1847,7 @@ read_spending_data <- function(sn_long, file = "data/RSX_2023-24_data_by_LA.ods"
   merged_data$geo_breakdown <- merged_data$la_name
   merged_data$time_period <- "2023/24"
   merged_data <- merged_data %>%
+    remove_cumbria_data() %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share) %>%
     # removing old Dorset
     filter(!(new_la_code %in% dropList))
@@ -1894,24 +1971,24 @@ read_per_capita_spending <- function(sn_long, file = "data/mye23tablesew.xlsx") 
 
   # Need to make sure the LA's in population estimates are the same as the spending data LA's
   # Joining west moreland + cumberland to get cumbria
-  cumbria_pop <- sum(population3[(population3$geo_breakdown == "Westmorland and Furness" | population3$geo_breakdown == "Cumberland"), "under18"], na.rm = FALSE)
-  new_row1 <- data.frame(new_la_code = "E10000006", geographic_level = "Local authority", geo_breakdown = "Cumbria", under18 = cumbria_pop)
-  population4 <- rbind(population3, new_row1)
+  # cumbria_pop <- sum(population3[(population3$geo_breakdown == "Westmorland and Furness" | population3$geo_breakdown == "Cumberland"), "under18"], na.rm = FALSE)
+  # new_row1 <- data.frame(new_la_code = "E10000006", geographic_level = "Local authority", geo_breakdown = "Cumbria", under18 = cumbria_pop)
+  # population4 <- rbind(population3, new_row1)
 
   # Joining up LA's to get population Estimates for inner and outer london
   outer_london_list <- c("E09000002", "E09000003", "E09000004", "E09000005", "E09000006", "E09000008", "E09000009", "E09000010", "E09000011", "E09000015", "E09000016", "E09000017", "E09000018", "E09000021", "E09000024", "E09000026", "E09000027", "E09000029", "E09000031")
   inner_london_list <- c("E09000007", "E09000001", "E09000012", "E09000013", "E09000014", "E09000019", "E09000020", "E09000022", "E09000023", "E09000025", "E09000028", "E09000030", "E09000032", "E09000033")
-  inner_london <- sum(population4[(population4$new_la_code %in% inner_london_list), "under18"], na.rm = FALSE)
-  outer_london <- sum(population4[(population4$new_la_code %in% outer_london_list), "under18"], na.rm = FALSE)
+  inner_london <- sum(population3[(population3$new_la_code %in% inner_london_list), "under18"], na.rm = FALSE)
+  outer_london <- sum(population3[(population3$new_la_code %in% outer_london_list), "under18"], na.rm = FALSE)
   inner_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Inner London", under18 = inner_london)
   outer_row <- data.frame(new_la_code = "", geographic_level = "Regional", geo_breakdown = "Outer London", under18 = outer_london)
 
-  population5 <- rbind(population4, inner_row) %>%
+  population4 <- rbind(population3, inner_row) %>%
     rbind(outer_row) %>%
     select(-c(new_la_code))
 
   spending_data <- suppressWarnings(read_spending_data(sn_long = sn_long))
-  joined_data <- left_join(spending_data[geographic_level != "Statistical neighbours (median)"], population5, by = c("geographic_level", "geo_breakdown"))
+  joined_data <- left_join(spending_data[geographic_level != "Statistical neighbours (median)"], population4, by = c("geographic_level", "geo_breakdown"))
   joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
   joined_data$cost_per_capita <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
 
@@ -1930,6 +2007,7 @@ read_per_capita_spending <- function(sn_long, file = "data/mye23tablesew.xlsx") 
 
   # add stat neighbours
   setDT(joined_data2)
+  joined_data2 <- remove_cumbria_data(joined_data2)
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -2022,6 +2100,7 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
   df2 <- full_join(df, regional_spending, by = c("time_period", "geographic_level", "geo_breakdown", "new_la_code", "old_la_code", "cla_exp", "total_exp", "minus_cla_share"))
 
   setDT(df2)
+  df2 <- remove_cumbria_data(df2)
   df2[`CLA Expenditure` == "x" | `Total Expenditure` == "x", minus_cla_share := NA]
   df2[, minus_cla_share := true_round(minus_cla_share, 1)]
 
@@ -2112,7 +2191,8 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       geo_breakdown == "Richmond Upon Thames" ~ "Richmond upon Thames",
       geo_breakdown == "St Helens" ~ "St. Helens",
       TRUE ~ as.character(geo_breakdown)
-    ))
+    )) %>%
+    remove_cumbria_data()
 
   setDT(ofsted_leadership_data)
   # we now need a step to correct the ofsted regions using a csv file with the correct mappings
