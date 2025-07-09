@@ -132,8 +132,7 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## Stats Neighbours ----
-
+# #### Statistical Neighbours read and convert to long format ------------
 
 get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   stats_neighbours_raw <- fread(file)
@@ -158,7 +157,6 @@ get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   return(df)
 }
 
-
 get_stats_neighbours_long <- function(stats_neighbours) {
   stats_neighbours_long <- stats_neighbours %>%
     pivot_longer(
@@ -173,37 +171,6 @@ get_stats_neighbours_long <- function(stats_neighbours) {
   return(stats_neighbours_long)
 }
 
-
-
-# #### Statistical Neighbours read and convert to long format ------------
-# statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
-#   stats_neighbours <- read.csv(file)
-#
-#   # Create a lookup table
-#   lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
-#
-#   df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
-#
-#   for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
-#     df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
-#   }
-#
-#   return(df)
-# }
-#
-# get_stats_neighbours_long <- function(stats_neighbours) {
-#   stats_neighbours_long <- stats_neighbours %>%
-#     pivot_longer(
-#       cols = starts_with("SN"),
-#       names_to = c("SN_rank"),
-#       names_pattern = "(\\d+)",
-#       values_to = "SN_LA_name"
-#     ) %>%
-#     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
-#     as.data.table()
-#
-#   return(stats_neighbours_long)
-# }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Summary Page ----
@@ -967,7 +934,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   admissions_data <- admissions_data_joined %>%
     mutate(Value = case_when(
       is.na(Value) ~ -300,
-      TRUE ~ as.numeric(Value)
+      TRUE ~ as.numeric(decimal_rounding(Value, 1))
     )) %>%
     mutate(Denominator = case_when(
       is.na(Denominator) ~ -300,
@@ -2145,15 +2112,6 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
     )) %>%
     select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
 
-  # mutate(`Excluding CLA Share` = ifelse(!is.na(as.numeric(`Excluding CLA Share`)),
-  #   format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
-  #   `Excluding CLA Share`
-  # )) %>%
-
-  # final_dataset <- final_dataset %>%
-  #   mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
-  #   mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1))
-
   return(final_dataset)
 }
 
@@ -2242,12 +2200,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       time_period = max(time_period)
     )
 
-  # region_counts$time_period <- max(ofsted_leadership_data$time_period)
-  # region_counts$time_period_min <- min(ofsted_leadership_data$time_period)
-  # region_counts$time_period_max <- max(ofsted_leadership_data$time_period)
-  # region_counts <- region_counts %>%
-  #   mutate(time_period_range = ifelse(time_period_max == time_period_min, time_period_max, paste(time_period_min, time_period_max, sep = "-")))
-
   region_counts$geographic_level <- "Regional"
 
   # Create a new dataframe for the London counts
@@ -2256,7 +2208,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     summarise(
       geo_breakdown = "London",
       time_period = max(time_period),
-      # time_period_max = max(ofsted_leadership_data$time_period),
       geographic_level = "Regional",
       requires_improvement_count = sum(requires_improvement_count),
       inadequate_count = sum(inadequate_count),
@@ -2269,7 +2220,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     summarise(
       geo_breakdown = "National",
       time_period = max(time_period),
-      # time_period_max = max(ofsted_leadership_data$time_period),
       geographic_level = "National",
       requires_improvement_count = sum(requires_improvement_count),
       inadequate_count = sum(inadequate_count),

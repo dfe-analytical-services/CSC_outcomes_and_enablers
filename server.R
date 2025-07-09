@@ -170,28 +170,6 @@ server <- function(input, output, session) {
       write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
     }
   )
-  # tags$script(
-  #   HTML("var header = $('.navbar > .container-fluid');
-  #                             header.append('<div style=\"float:right; padding-top: 8px\"><button id=\"signin\" type=\"button\" class=\"btn btn-primary action-button\" onclick=\"signIn()\">Sign In</button></div>')")
-  # )
-  # )
-
-  ## Summary page data REACTIVE, filtered for the required geographies ----
-  # summary_data_filtered <- reactive({
-  #   shiny::validate(
-  #     need(input$select_geography_sp != "", "Select a geography level."),
-  #     need(input$geographic_breakdown_sp != "", "Select a location.")
-  #   )
-  #
-  #   # filter the dataset based on the context and user selections
-  #   filtered_data <- filter_summary_data(
-  #     data_in = copy(summary_data),
-  #     select_geographic_level = input$select_geography_sp,
-  #     select_geo_breakdown = input$geographic_breakdown_sp
-  #   )
-  #   filtered_data
-  # })
-  #
 
   # Outcome 1 domains on summary page ----
   sp_accordion_cols_server(id = "outcome1", rv_summary_page)
@@ -3536,13 +3514,11 @@ server <- function(input, output, session) {
     national_data <- hospital_admissions %>%
       filter(geographic_level == "National") %>%
       select(time_period, geo_breakdown, Value)
-
+    browser()
     max_y_lim <- max(data$`Rate per 10,000`) + 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
-    #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
-    # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
     title <- paste0("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by\nlocal authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
 
@@ -3712,7 +3688,6 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1) %>%
-      # rename("rate_per_10000" = "Rate per 10,000") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
     max_lim <- max(data$rate_per_10000) + 20
@@ -3733,7 +3708,6 @@ server <- function(input, output, session) {
   output$child_abuse_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
 
@@ -3953,7 +3927,6 @@ server <- function(input, output, session) {
   output$efh_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -3978,7 +3951,6 @@ server <- function(input, output, session) {
   output$efh_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -4339,7 +4311,6 @@ server <- function(input, output, session) {
   output$placement_type_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
 
