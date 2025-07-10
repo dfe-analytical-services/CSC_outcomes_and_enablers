@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "50e6f8f4ead711776df109a6f3f5040d"
+      "checksum": "e2f1558eea1a9aea526f4af253ae7035"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4911,7 +4911,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_sources.R": {
-      "checksum": "fc0b88e2b9275bec614e1f9a3287c01f"
+      "checksum": "2ef120b0bab66a5c0f301ae9404cddbb"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -4920,7 +4920,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "0b53ebf9669c06998935540e5819de2f"
+      "checksum": "9270d796958567b19d128a7980f61dac"
     },
     "R/enabler2_page.R": {
       "checksum": "dcee2696750883cdbc0bda0575ac3ab3"
@@ -4947,7 +4947,7 @@
       "checksum": "8e0d0426457c11ab4aa39ea2469ebdf5"
     },
     "R/outcome3_page.R": {
-      "checksum": "a07d3c43bd7dcaf69b81a68eba1baa99"
+      "checksum": "7da3e2e5e172d47b1f15208f1b10714b"
     },
     "R/outcome4_page.R": {
       "checksum": "166a670b42156ecbba0df56dc03e2fda"
@@ -4989,7 +4989,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "fd726e626bb711f36952ea3044b82a6e"
+      "checksum": "f52be9851b073bc86b1598afb182931f"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5067,7 +5067,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "0782c9df33a16929790ac62b1fe97497"
+      "checksum": "055b3d216dd0d7aed1b1d0aa7cb5363c"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
