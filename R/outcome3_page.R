@@ -305,11 +305,54 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
                   gov_row(
-                    insert_text(
-                      inputId = "admissions_warning",
-                      text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")
-                    ),
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years)"),
+                    # p("Hospital admissions"),
+                    insert_text(inputId = "hospital_admissions_definition", text = paste(
+                      "<b>", "Hospital admissions", "</b><br>",
+                      "Unintentional and deliberate injuries to children and young people (0 to 14 years)"
+                    )),
+                    timeseries_section_ui("hospital_admissions"), ### this is where the module is invoked to build the chart/table
+                    details(
+                      inputId = "admissions_timeseries_add_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+                          tags$li("For time points prior to 2012, all values between 1 and 5 have been suppressed and, where necessary, other LAs and comparators have also been suppressed in order to prevent possible disclosure and disclosure by differencing."),
+                          tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall respectively."),
+                          tags$li(
+                            "In 2023, NHS England announced a ",
+                            a(
+                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2ffind-data-and-publications%2fstatement-of-administrative-sources%2fmethodological-changes%2fimpact-of-changes-to-recording-of-same-day-emergency-care-activity-to-hospital-episode-statistics-hes-data&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742842317%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=Ic0fzE6wEChYvL5zD4LnrOnvsXvYJ%2Bwkql7DoTnjRY4%3D&reserved=0",
+                              "methodological change", target = "_blank"
+                            ),
+                            " to require Trusts to report Same Day Emergency Care (SDEC) to the Emergency Care Data Set (ECDS) by July 2024. Early adopter sites began to report SDEC to ECDS from 2021/22, with other Trusts changing their reporting in 2022/23 or 2023/24. Some Trusts had previously reported this activity as part of the Admitted Patient Care data set, and moving to report to ECDS may reduce the number of admissions reported for this indicator. NHSE have advised it is not possible accurately to identify SDEC in current data flows, but the impact of the change is expected to vary by diagnosis, with indicators related to injuries and external causes potentially most affected."
+                          ),
+                          tags$li(
+                            "When considering if SDEC recording practice has reduced the number of admissions reported for this indicator at local level, please refer to the ",
+                            a(
+                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2fdata-collections-and-data-sets%2fdata-sets%2femergency-care-data-set-ecds%2fsame-day-emergency-care&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742856428%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=qiwVNfRx2vQW6ZLF0CKyGJL2mqmLgt%2fZWKiqa8ufy18%3D&reserved=0",
+                              "published list", target = "_blank"
+                            ),
+                            " of sites who have reported when they began to report SDEC to ECDS."
+                          ),
+                          tags$br(),
+                          p(
+                            "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
                   ),
+                  # gov_row(
+                  #   insert_text(
+                  #     inputId = "admissions_warning",
+                  #     text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")
+                  #   ),
+                  # ),
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
@@ -332,13 +375,30 @@ outcome3_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+                          tags$li("For time points prior to 2012, all values between 1 and 5 have been suppressed and, where necessary, other LAs and comparators have also been suppressed in order to prevent possible disclosure and disclosure by differencing."),
                           tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
-                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall respectively."),
+                          tags$li(
+                            "In 2023, NHS England announced a ",
+                            a(
+                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2ffind-data-and-publications%2fstatement-of-administrative-sources%2fmethodological-changes%2fimpact-of-changes-to-recording-of-same-day-emergency-care-activity-to-hospital-episode-statistics-hes-data&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742842317%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=Ic0fzE6wEChYvL5zD4LnrOnvsXvYJ%2Bwkql7DoTnjRY4%3D&reserved=0",
+                              "methodological change", target = "_blank"
+                            ),
+                            " to require Trusts to report Same Day Emergency Care (SDEC) to the Emergency Care Data Set (ECDS) by July 2024. Early adopter sites began to report SDEC to ECDS from 2021/22, with other Trusts changing their reporting in 2022/23 or 2023/24. Some Trusts had previously reported this activity as part of the Admitted Patient Care data set, and moving to report to ECDS may reduce the number of admissions reported for this indicator. NHSE have advised it is not possible accurately to identify SDEC in current data flows, but the impact of the change is expected to vary by diagnosis, with indicators related to injuries and external causes potentially most affected."
+                          ),
+                          tags$li(
+                            "When considering if SDEC recording practice has reduced the number of admissions reported for this indicator at local level, please refer to the ",
+                            a(
+                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2fdata-collections-and-data-sets%2fdata-sets%2femergency-care-data-set-ecds%2fsame-day-emergency-care&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742856428%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=qiwVNfRx2vQW6ZLF0CKyGJL2mqmLgt%2fZWKiqa8ufy18%3D&reserved=0",
+                              "published list", target = "_blank"
+                            ),
+                            " of sites who have reported when they began to report SDEC to ECDS."
+                          ),
                           tags$br(),
                           p(
-                            "For more information on the data, refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
+                            "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
                             tags$br(),
-                            "For more information on the definitions and methodology, refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
+                            "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
                           )
                         )
                       )
@@ -393,19 +453,31 @@ outcome3_tab <- function() {
                   label = "Additional information:",
                   help_text = (
                     tags$ul(
-                      tags$li("These figures are based on assessment factors recorded against individual episodes of need, which begin when a child is referred to children’s social care services and is assessed as being in need of children’s social care services. Each unique factor is counted once against a given episode, irrespective of the number of times the same factor was recorded in that episode. However, as a child can have more than one episode of need during the year (ending 31 March), the same child can be recorded more than once for a given factor."),
-                      tags$li("Information on child on child and adult on child physical and sexual abuse was collected and reported on for the fourth time in 2024. Previously physical abuse and sexual abuse was collected and reported on (irrespective of whether it was child on child or adult on child) and some local authorities have provided information on the old basis only, or a mixture of the old and new basis, since 2021. The old physical and sexual abuse categories have therefore been included to provide a more complete account of this category of assessment."),
+                      tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+                      tags$li("For time points prior to 2012, all values between 1 and 5 have been suppressed and, where necessary, other LAs and comparators have also been suppressed in order to prevent possible disclosure and disclosure by differencing."),
+                      tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
+                      tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall respectively."),
                       tags$li(
-                        "Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to",
-                        a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need methodology", target = "_blank"),
-                        "for more information."
+                        "In 2023, NHS England announced a ",
+                        a(
+                          href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2ffind-data-and-publications%2fstatement-of-administrative-sources%2fmethodological-changes%2fimpact-of-changes-to-recording-of-same-day-emergency-care-activity-to-hospital-episode-statistics-hes-data&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742842317%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=Ic0fzE6wEChYvL5zD4LnrOnvsXvYJ%2Bwkql7DoTnjRY4%3D&reserved=0",
+                          "methodological change", target = "_blank"
+                        ),
+                        " to require Trusts to report Same Day Emergency Care (SDEC) to the Emergency Care Data Set (ECDS) by July 2024. Early adopter sites began to report SDEC to ECDS from 2021/22, with other Trusts changing their reporting in 2022/23 or 2023/24. Some Trusts had previously reported this activity as part of the Admitted Patient Care data set, and moving to report to ECDS may reduce the number of admissions reported for this indicator. NHSE have advised it is not possible accurately to identify SDEC in current data flows, but the impact of the change is expected to vary by diagnosis, with indicators related to injuries and external causes potentially most affected."
                       ),
-                      tags$li("Herefordshire local authority considerably underreported their data on factors identified at the end of assessment. Impacted data is shown as ‘u’ to indicate low reliability but are included in the national totals and regional totals."),
+                      tags$li(
+                        "When considering if SDEC recording practice has reduced the number of admissions reported for this indicator at local level, please refer to the ",
+                        a(
+                          href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2fdata-collections-and-data-sets%2fdata-sets%2femergency-care-data-set-ecds%2fsame-day-emergency-care&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742856428%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=qiwVNfRx2vQW6ZLF0CKyGJL2mqmLgt%2fZWKiqa8ufy18%3D&reserved=0",
+                          "published list", target = "_blank"
+                        ),
+                        " of sites who have reported when they began to report SDEC to ECDS."
+                      ),
                       tags$br(),
                       p(
-                        "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
+                        "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
                         tags$br(),
-                        "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/characteristics-of-children-in-need-methodology", "Children in need methodology.", target = "_blank")
+                        "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
                       )
                     )
                   )

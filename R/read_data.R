@@ -132,8 +132,7 @@ GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## Stats Neighbours ----
-
+# #### Statistical Neighbours read and convert to long format ------------
 
 get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   stats_neighbours_raw <- fread(file)
@@ -158,7 +157,6 @@ get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
   return(df)
 }
 
-
 get_stats_neighbours_long <- function(stats_neighbours) {
   stats_neighbours_long <- stats_neighbours %>%
     pivot_longer(
@@ -173,37 +171,6 @@ get_stats_neighbours_long <- function(stats_neighbours) {
   return(stats_neighbours_long)
 }
 
-
-
-# #### Statistical Neighbours read and convert to long format ------------
-# statistical_neighbours <- function(file = "data/New_Statistical_Neighbour_Groupings_April_2021.csv") {
-#   stats_neighbours <- read.csv(file)
-#
-#   # Create a lookup table
-#   lookup <- stats_neighbours %>% select("LA.Name", "LA.number")
-#
-#   df <- stats_neighbours %>% select("LA.Name", "LA.number", "SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")
-#
-#   for (col in c("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10")) {
-#     df[[col]] <- lookup$LA.Name[match(df[[col]], lookup$"LA.number")]
-#   }
-#
-#   return(df)
-# }
-#
-# get_stats_neighbours_long <- function(stats_neighbours) {
-#   stats_neighbours_long <- stats_neighbours %>%
-#     pivot_longer(
-#       cols = starts_with("SN"),
-#       names_to = c("SN_rank"),
-#       names_pattern = "(\\d+)",
-#       values_to = "SN_LA_name"
-#     ) %>%
-#     left_join(stats_neighbours %>% select(SN_LA_name = "LA.Name", SN_LA_number = "LA.number")) %>%
-#     as.data.table()
-#
-#   return(stats_neighbours_long)
-# }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ## Summary Page ----
@@ -938,41 +905,47 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
 # LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
-read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2223.csv", region_file = "data/region_hospital_admissions_2223.csv") {
-  la_admissions <- read.csv("data/la_hospital_admissions_2223.csv") # la_file)
-  region_admissions <- read.csv("data/region_hospital_admissions_2223.csv") # region_file)
+read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2324.csv", region_file = "data/region_hospital_admissions_22324.csv") {
+  la_admissions <- read.csv("data/la_hospital_admissions_2324.csv") # la_file)
+  region_admissions <- read.csv("data/region_hospital_admissions_2324.csv") # region_file)
 
+  # additional step to clean dots out of the coumn names
+  setnames(la_admissions, "Area.Name", "AreaName")
+  setnames(region_admissions, "Area.Name", "AreaName")
   la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
   region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
 
-  admissions_data_joined <- rbind(la_admissions, region_admissions) %>%
+  # note the hard-coded cleansing here as the input files provided require a couple of hacks
+  admissions_data_joined <- rbind(
+    la_admissions[la_admissions$Category == "" & la_admissions$Sex == "Persons", c(1:13, 18, 19)],
+    region_admissions[region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
+  ) %>%
     select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
     rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
     distinct()
 
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Government Office Region (E12)"] <- "Regional"
-  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Upper tier local authorities (post 4/23)"] <- "Local authority"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Regions (statistical)"] <- "Regional"
+  admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "Counties & UAs (from Apr 2023)"] <- "Local authority"
   admissions_data_joined["geographic_level"][admissions_data_joined["geographic_level"] == "England"] <- "National"
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
 
   admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
 
-  admissions_data <- admissions_data_joined %>%
-    mutate(Value = case_when(
-      is.na(Value) ~ -300,
-      TRUE ~ as.numeric(Value)
-    )) %>%
-    mutate(Denominator = case_when(
-      is.na(Denominator) ~ -300,
-      TRUE ~ as.numeric(Denominator)
-    ))
-  admissions_data$Value <- round(admissions_data$Value, digits = 1)
 
-  admissions_data2 <- admissions_data %>%
-    mutate(rate_per_10000 = case_when(
-      Value == -300 ~ "x",
-      TRUE ~ as.character(Value)
-    ))
+
+  # admissions_data <- admissions_data_joined %>%
+  #   # mutate(Value = case_when(
+  #   #   is.na(Value) ~ -300,
+  #   #   TRUE ~ as.numeric(Value)
+  #   # )) %>%
+  #   mutate(Denominator = as.numeric(Denominator)) %>%
+  #   mutate(Denominator = as.numeric(Denominator))
+
+  # admissions_data2 <- admissions_data %>%
+  #   mutate(rate_per_10000 = case_when(
+  #     Value == -300 ~ "x",
+  #     TRUE ~ as.character(Value)
+  #   ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
@@ -981,13 +954,13 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
     distinct() %>%
     separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
 
-  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
-  admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
-  admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
+  admissions_data2 <- left_join(admissions_data_joined, la_codes, by = c("new_la_code"))
+  # admissions_data2$Count <- as.numeric(gsub(",", "", admissions_data2$Count))
+  # admissions_data2$rate_per_10000 <- as.numeric(admissions_data2$rate_per_10000)
 
   # Name changes
 
-  admissions_data3 <- admissions_data3 %>%
+  admissions_data2 <- admissions_data2 %>%
     mutate(geo_breakdown = case_when(
       geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
       geo_breakdown == "Bristol" ~ "Bristol, City of",
@@ -1014,19 +987,18 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
     "Newham",
     "City of London"
   )
-  inner_london_data <- admissions_data3 %>%
+  inner_london_data <- admissions_data2 %>%
     filter(geo_breakdown %in% inner_london)
 
   inner_london_stat <- inner_london_data %>%
+    group_by(time_period) %>%
     summarise(
-      time_period = first(time_period),
       geographic_level = "Regional",
       geo_breakdown = "Inner London",
       new_la_code = "E13000001",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
+      Value = sum(Value, na.rm = TRUE),
+      Count = sum(Count[Denominator >= 0], na.rm = TRUE),
       Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
       old_la_code = NA
     )
 
@@ -1054,19 +1026,18 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
     "Havering"
   )
 
-  Outer_london_data <- admissions_data3 %>%
+  Outer_london_data <- admissions_data2 %>%
     filter(geo_breakdown %in% Outer_london)
 
   Outer_london_stat <- Outer_london_data %>%
+    group_by(time_period) %>%
     summarise(
-      time_period = first(time_period),
       geographic_level = "Regional",
       geo_breakdown = "Outer London",
       new_la_code = "E13000002",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
+      Value = sum(Value, na.rm = TRUE),
+      Count = sum(Count[Denominator >= 0], na.rm = TRUE),
       Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
       old_la_code = NA
     )
 
@@ -1077,46 +1048,38 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_22
   # rate per 10000
 
   inner_and_outer_london <- inner_and_outer_london %>%
-    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
+    # mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
     mutate(Value = Count / (Denominator / 10000))
 
-  # Convert rate_per_10000 to a character for all rows
-  admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = case_when(
-      is.na(rate_per_10000) ~ "x",
-      TRUE ~ as.character(rate_per_10000)
-    ))
-
   # Add Inner and Outer London to the data frame
+  admissions_data2 <- rbind(admissions_data2, inner_and_outer_london)
 
-  admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
 
-  # Round headline values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = ifelse(!is.na(as.numeric(rate_per_10000)),
-      as.character(round(as.numeric(rate_per_10000))),
-      rate_per_10000
+  # Convert rate_per_10000 to a character for all rows
+  admissions_data2 <- admissions_data2 %>%
+    mutate(rate_per_10000 = case_when(
+      is.na(Value) ~ "x",
+      TRUE ~ as.character(Value)
     ))
 
-  # Round plot values
-  admissions_data3 <- admissions_data3 %>%
-    mutate(Value = round(Value), 0)
 
   # add stats neighbours
   # now calculate SN metrics and append to the bottom of the dataset
-  setDT(admissions_data3)
-  admissions_data3[, old_la_code := as.numeric(old_la_code)]
+  setDT(admissions_data2)
+  admissions_data2[, old_la_code := as.numeric(old_la_code)]
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
-    dataset = admissions_data3,
-    median_cols = c("rate_per_10000"),
+    dataset = admissions_data2,
+    median_cols = c("rate_per_10000", "Value"),
     sum_cols = c(),
     group_cols = c("LA.number", "time_period"),
   )
-  admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
+  admissions_data3 <- rbindlist(l = list(admissions_data2, sn_metrics), fill = TRUE, use.names = TRUE)
 
   admissions_data3 <- admissions_data3 %>%
-    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0))
+    mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
+    mutate(Value = sapply(Value, true_round, 0)) # %>%
+  # redacted_to_negative(col_old = "Value", col_new = "Value")
 
   return(admissions_data3)
 }
@@ -2135,15 +2098,6 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
     )) %>%
     select(time_period, geographic_level, geo_breakdown, geo_breakdown_sn, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share, "Excluding CLA Share")
 
-  # mutate(`Excluding CLA Share` = ifelse(!is.na(as.numeric(`Excluding CLA Share`)),
-  #   format(as.numeric(as.character(`Excluding CLA Share`)), nsmall = 1),
-  #   `Excluding CLA Share`
-  # )) %>%
-
-  # final_dataset <- final_dataset %>%
-  #   mutate(`minus_cla_share` = sapply(`minus_cla_share`, decimal_rounding, 1)) %>%
-  #   mutate(`Excluding CLA Share` = sapply(`Excluding CLA Share`, decimal_rounding, 1))
-
   return(final_dataset)
 }
 
@@ -2232,12 +2186,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
       time_period = max(time_period)
     )
 
-  # region_counts$time_period <- max(ofsted_leadership_data$time_period)
-  # region_counts$time_period_min <- min(ofsted_leadership_data$time_period)
-  # region_counts$time_period_max <- max(ofsted_leadership_data$time_period)
-  # region_counts <- region_counts %>%
-  #   mutate(time_period_range = ifelse(time_period_max == time_period_min, time_period_max, paste(time_period_min, time_period_max, sep = "-")))
-
   region_counts$geographic_level <- "Regional"
 
   # Create a new dataframe for the London counts
@@ -2246,7 +2194,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     summarise(
       geo_breakdown = "London",
       time_period = max(time_period),
-      # time_period_max = max(ofsted_leadership_data$time_period),
       geographic_level = "Regional",
       requires_improvement_count = sum(requires_improvement_count),
       inadequate_count = sum(inadequate_count),
@@ -2259,7 +2206,6 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
     summarise(
       geo_breakdown = "National",
       time_period = max(time_period),
-      # time_period_max = max(ofsted_leadership_data$time_period),
       geographic_level = "National",
       requires_improvement_count = sum(requires_improvement_count),
       inadequate_count = sum(inadequate_count),
