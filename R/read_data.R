@@ -931,19 +931,21 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
 
   admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
 
-  admissions_data <- admissions_data_joined %>%
-    mutate(Value = case_when(
-      is.na(Value) ~ -300,
-      TRUE ~ as.numeric(Value)
-    )) %>%
-    mutate(Denominator = as.numeric(Denominator)) %>%
-    mutate(Value = true_round(Value, 1))
 
-  admissions_data2 <- admissions_data %>%
-    mutate(rate_per_10000 = case_when(
-      Value == -300 ~ "x",
-      TRUE ~ as.character(Value)
-    ))
+
+  # admissions_data <- admissions_data_joined %>%
+  #   # mutate(Value = case_when(
+  #   #   is.na(Value) ~ -300,
+  #   #   TRUE ~ as.numeric(Value)
+  #   # )) %>%
+  #   mutate(Denominator = as.numeric(Denominator)) %>%
+  #   mutate(Denominator = as.numeric(Denominator))
+
+  # admissions_data2 <- admissions_data %>%
+  #   mutate(rate_per_10000 = case_when(
+  #     Value == -300 ~ "x",
+  #     TRUE ~ as.character(Value)
+  #   ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
@@ -952,13 +954,13 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     distinct() %>%
     separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
 
-  admissions_data3 <- left_join(admissions_data2, la_codes, by = c("new_la_code"))
-  admissions_data3$Count <- as.numeric(gsub(",", "", admissions_data3$Count))
-  admissions_data3$rate_per_10000 <- as.numeric(admissions_data3$rate_per_10000)
+  admissions_data2 <- left_join(admissions_data_joined, la_codes, by = c("new_la_code"))
+  # admissions_data2$Count <- as.numeric(gsub(",", "", admissions_data2$Count))
+  # admissions_data2$rate_per_10000 <- as.numeric(admissions_data2$rate_per_10000)
 
   # Name changes
 
-  admissions_data3 <- admissions_data3 %>%
+  admissions_data2 <- admissions_data2 %>%
     mutate(geo_breakdown = case_when(
       geo_breakdown == "Yorkshire and the Humber" ~ "Yorkshire and The Humber",
       geo_breakdown == "Bristol" ~ "Bristol, City of",
@@ -985,7 +987,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     "Newham",
     "City of London"
   )
-  inner_london_data <- admissions_data3 %>%
+  inner_london_data <- admissions_data2 %>%
     filter(geo_breakdown %in% inner_london)
 
   inner_london_stat <- inner_london_data %>%
@@ -994,10 +996,9 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
       geographic_level = "Regional",
       geo_breakdown = "Inner London",
       new_la_code = "E13000001",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
+      Value = sum(Value, na.rm = TRUE),
+      Count = sum(Count[Denominator >= 0], na.rm = TRUE),
       Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
       old_la_code = NA
     )
 
@@ -1025,7 +1026,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     "Havering"
   )
 
-  Outer_london_data <- admissions_data3 %>%
+  Outer_london_data <- admissions_data2 %>%
     filter(geo_breakdown %in% Outer_london)
 
   Outer_london_stat <- Outer_london_data %>%
@@ -1034,10 +1035,9 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
       geographic_level = "Regional",
       geo_breakdown = "Outer London",
       new_la_code = "E13000002",
-      Value = sum(Value),
-      Count = sum(Count, na.rm = TRUE),
+      Value = sum(Value, na.rm = TRUE),
+      Count = sum(Count[Denominator >= 0], na.rm = TRUE),
       Denominator = sum(Denominator[Denominator >= 0], na.rm = TRUE),
-      rate_per_10000 = sum(rate_per_10000), # still numeric at this point
       old_la_code = NA
     )
 
@@ -1048,38 +1048,38 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   # rate per 10000
 
   inner_and_outer_london <- inner_and_outer_london %>%
-    mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
+    # mutate(rate_per_10000 = Count / (Denominator / 10000)) %>%
     mutate(Value = Count / (Denominator / 10000))
 
+  # Add Inner and Outer London to the data frame
+  admissions_data2 <- rbind(admissions_data2, inner_and_outer_london)
+
+
   # Convert rate_per_10000 to a character for all rows
-  admissions_data3 <- admissions_data3 %>%
+  admissions_data2 <- admissions_data2 %>%
     mutate(rate_per_10000 = case_when(
-      is.na(rate_per_10000) ~ "x",
-      TRUE ~ as.character(rate_per_10000)
+      is.na(Value) ~ "x",
+      TRUE ~ as.character(Value)
     ))
 
-  # Add Inner and Outer London to the data frame
-
-  admissions_data3 <- rbind(admissions_data3, inner_and_outer_london)
-
-  # Round headline values
 
   # add stats neighbours
   # now calculate SN metrics and append to the bottom of the dataset
-  setDT(admissions_data3)
-  admissions_data3[, old_la_code := as.numeric(old_la_code)]
+  setDT(admissions_data2)
+  admissions_data2[, old_la_code := as.numeric(old_la_code)]
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
-    dataset = admissions_data3,
-    median_cols = c("rate_per_10000"),
+    dataset = admissions_data2,
+    median_cols = c("rate_per_10000", "Value"),
     sum_cols = c(),
     group_cols = c("LA.number", "time_period"),
   )
-  admissions_data3 <- rbindlist(l = list(admissions_data3, sn_metrics), fill = TRUE, use.names = TRUE)
+  admissions_data3 <- rbindlist(l = list(admissions_data2, sn_metrics), fill = TRUE, use.names = TRUE)
 
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
-    redacted_to_negative(col_old = "rate_per_10000", col_new = "Value")
+    mutate(Value = sapply(Value, true_round, 0)) # %>%
+  # redacted_to_negative(col_old = "Value", col_new = "Value")
 
   return(admissions_data3)
 }

@@ -3426,18 +3426,15 @@ server <- function(input, output, session) {
     rv = rv_hosp_admissions,
     dataset = copy(hospital_admissions),
     chart_title = "My title",
-    yvalue = "Rate_per_10000",
+    yvalue = "Value",
     yaxis_title = "Rate per 10k",
-    max_rate = calculate_max_rate(hospital_admissions, "Rate_per_10000"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Rate per 10k" = "Rate_per_10000"),
+    max_rate = calculate_max_rate(hospital_admissions, "Value"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Rate per 10k" = "Value"),
     rt_col_defs = list(
       "Rate per 10k" = colDef(cell = cellfunc)
     ),
     decimal_percentage = TRUE
   )
-
-
-  # timeseries_section_server("hospital_admissons", dataset = hospital_admissions, selected_geography = reactive(input$select_geograpy_o3), selected_geo_breakdown = reactive(input$geographic_breakdown_o3))
 
   output$hosp_admissions_txt <- renderText({
     stat <- format(hospital_admissions %>%
@@ -3448,7 +3445,6 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
     }
-
     paste0(format(stat, nsmall = 0), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
   })
 
@@ -3514,7 +3510,7 @@ server <- function(input, output, session) {
     national_data <- hospital_admissions %>%
       filter(geographic_level == "National") %>%
       select(time_period, geo_breakdown, Value)
-    browser()
+
     max_y_lim <- max(data$`Rate per 10,000`) + 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000") +
