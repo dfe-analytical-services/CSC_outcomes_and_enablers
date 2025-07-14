@@ -3425,7 +3425,7 @@ server <- function(input, output, session) {
   timeseries_section_server("hospital_admissions",
     rv = rv_hosp_admissions,
     dataset = copy(hospital_admissions),
-    chart_title = "My title",
+    chart_title = "Hospital admissions rate per 10,000 children",
     yvalue = "Value",
     yaxis_title = "Rate per 10k",
     max_rate = calculate_max_rate(hospital_admissions, "Value"),
