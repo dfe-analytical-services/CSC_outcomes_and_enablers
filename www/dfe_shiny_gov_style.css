@@ -101,7 +101,9 @@ template. 80% works well here to reduce white space on the right hand side.*/
   font-weight:500;
 }
 .nav-tabs > li > a {
-  text-decoration: none
+  text-decoration: none;
+  color: #000;
+  font-weight: normal;
 }
 
 .nav-tabs > li.active > a,
@@ -117,7 +119,9 @@ template. 80% works well here to reduce white space on the right hand side.*/
   border: 2px solid #b1b4b6;
   border-bottom: 0;
   background-color: #fff;
-  text-decoration: none
+  text-decoration: none;
+  font-weight: bold !important;
+  color: #000;
 
 }
 
