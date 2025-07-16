@@ -918,7 +918,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
     filter(!(Area.Name %in% c("North Northamptonshire", "West Northamptonshire") & Time.period < "2022")) %>%
     filter(!(Area.Name %in% c("Cumberland", "Westmorland and Furness") & Time.period < "2023")) %>%
     filter(!(Area.Name %in% c("Dorset", "Bournemouth, Christchurch and Poole") & Time.period < "2019")) %>%
-    filter(!(Area.Name %in% c("Buckinghamshire") & Time.period < "2020"))
+    filter(!(Area.Name %in% c("Buckinghamshire UA") & Time.period < "2020"))
 
 
   # additional step to clean dots out of the coumn names
