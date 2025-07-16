@@ -25,7 +25,7 @@ calculate_max_rate <- function(dataset, column_name) {
   max_rate <- ceiling(max_rate / 20) * 20
 }
 
-timeseries_section_server <- function(id, rv, dataset, chart_title = "My Chart", yvalue, yaxis_title, max_rate, rt_columns, rt_col_defs, decimal_percentage) {
+timeseries_section_server <- function(id, rv, dataset, chart_title = "", yvalue, yaxis_title, max_rate, rt_columns, rt_col_defs, decimal_percentage) {
   moduleServer(id, function(input, output, session) {
     filtered_data <- reactive({
       req(rv$select_geographic_level)

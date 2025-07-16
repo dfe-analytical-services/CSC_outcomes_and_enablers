@@ -909,6 +909,10 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   la_admissions <- read.csv("data/la_hospital_admissions_2324.csv") # la_file)
   region_admissions <- read.csv("data/region_hospital_admissions_2324.csv") # region_file)
 
+  # remove North and West Northamptonshire for pre 20223
+  la_admissions <- la_admissions %>%
+    filter(!(Area.Name %in% c("North Northamptonshire", "West Northamptonshire") & Time.period >= "2023"))
+
   # additional step to clean dots out of the coumn names
   setnames(la_admissions, "Area.Name", "AreaName")
   setnames(region_admissions, "Area.Name", "AreaName")
@@ -918,7 +922,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   # note the hard-coded cleansing here as the input files provided require a couple of hacks
   admissions_data_joined <- rbind(
     la_admissions[la_admissions$Category == "" & la_admissions$Sex == "Persons", c(1:13, 18, 19)],
-    region_admissions[region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
+    region_admissions[region_admissions$Parent.Code == "E92000001" & region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
   ) %>%
     select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
     rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
@@ -930,22 +934,6 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
 
   admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
-
-
-
-  # admissions_data <- admissions_data_joined %>%
-  #   # mutate(Value = case_when(
-  #   #   is.na(Value) ~ -300,
-  #   #   TRUE ~ as.numeric(Value)
-  #   # )) %>%
-  #   mutate(Denominator = as.numeric(Denominator)) %>%
-  #   mutate(Denominator = as.numeric(Denominator))
-
-  # admissions_data2 <- admissions_data %>%
-  #   mutate(rate_per_10000 = case_when(
-  #     Value == -300 ~ "x",
-  #     TRUE ~ as.character(Value)
-  #   ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
