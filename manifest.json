@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "cd561c91e43a7f848ba93c769fb0455c"
+      "checksum": "0fde933e646065e9de5679a94667ea5b"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4832,9 +4832,6 @@
     "data/la_conviction_health_outcome_cla.csv": {
       "checksum": "b6740af3363f43e6d99029a9086bddbc"
     },
-    "data/la_hospital_admissions_2223.csv": {
-      "checksum": "5b75787a51921b41fa88ccf26a82d90a"
-    },
     "data/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
     },
@@ -4868,9 +4865,6 @@
     "data/ons-ethnic-population-reg.csv": {
       "checksum": "405c5cb7f2dbe76c51ed2021509d33ca"
     },
-    "data/region_hospital_admissions_2223.csv": {
-      "checksum": "b5ebfdc652376dc59f7003437bbdcfe1"
-    },
     "data/region_hospital_admissions_2324.csv": {
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
@@ -4887,7 +4881,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "68258376a66749d38b0cec780b6abd12"
+      "checksum": "c076d0a7754d36ca9f02ef90645a29b9"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4935,7 +4929,7 @@
       "checksum": "3b74b39519d37fa0b8fd47506e1839df"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "1bc3770215baf8d31c771b896b98a359"
+      "checksum": "64b842fde9e2a3ec57ba8f029dfd353a"
     },
     "R/omitted_data.R": {
       "checksum": "817b0f93920c1705714733d41dd051cc"
@@ -4956,7 +4950,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "f33f489d071b8ca8a8f2f0340fc07979"
+      "checksum": "faf793fa20ee092b9c127f3b75442c0f"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
