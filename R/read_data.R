@@ -911,7 +911,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
 
   # remove North and West Northamptonshire for pre 20223
   la_admissions <- la_admissions %>%
-    filter(!(Area.Name %in% c("North Northamptonshire", "West Northamptonshire") & Time.period >= "2023"))
+    filter(!(Area.Name %in% c("North Northamptonshire", "West Northamptonshire") & Time.period < "2022"))
 
   # additional step to clean dots out of the coumn names
   setnames(la_admissions, "Area.Name", "AreaName")
