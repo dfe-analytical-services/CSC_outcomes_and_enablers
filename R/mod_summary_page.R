@@ -99,7 +99,7 @@ filter_summary_data <- function(data_in, select_geographic_level, select_geo_bre
 
 # the workhorse of the table generation to pivot the filtered summary data wider and then make sure the columns are correctly names/ordered
 transform_summary_data <- function(filtered_summary_data, select_geographic_level = NULL, headers_only = FALSE) {
-  transformed_data <- dcast(
+  transformed_data <- dcast.data.table(
     filtered_summary_data,
     sort_order + metric_text ~ geographic_level,
     value.var = "value",

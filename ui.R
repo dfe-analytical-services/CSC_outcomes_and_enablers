@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "This latest release now includes the revised children’s services statistical neighbour groupings for all local authorities."
+        "Hospital Admissions for 0-14 years has been updated as of 04 February 2025."
       )
     ),
     bslib::navset_pill_list(
