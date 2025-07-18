@@ -714,13 +714,15 @@ btn is the user guide button
   font-weight: 700;
 }
 
-/* Summary Page CSS */
+
+/* -------------- Summary Page CSS -------------- */
+/* There are a number of aspects of styling related to the summary page including the accordions, tabs, sub tables and header tables, domain text*/
+
 #summary_page_outcomes .accordion .accordion-header,
 #summary_page_enablers .accordion .accordion-header {
   background-color: #1d70b8 !important;
   color: white !important;
 }
-
 
 #summary_page_outcomes .accordion-body,
 #summary_page_enablers .accordion-body {
@@ -731,6 +733,7 @@ btn is the user guide button
 #summary_page_enablers .accordion-button {
   background-color: #1d70b8 !important;
   color: #fff !important;
+  padding-left: 16px !important;
 }
 
 #summary_page_outcomes .accordion-title,
@@ -738,6 +741,7 @@ btn is the user guide button
   background-color: #1d70b8 !important;
   color: white !important;
   font-size: 24px !important;
+  padding-left: 0px !important;
 }
 
 #summary_page_outcomes div[id$="-domain_text"],
@@ -745,7 +749,6 @@ btn is the user guide button
   background-color: white !important;
   line-height: 45px !important;
   font-size: 19px !important;
-  padding-left: 12px !important;
   font-weight: 550 !important;
 }
 
@@ -775,14 +778,34 @@ btn is the user guide button
     overflow: auto;
 }
 
+/* For the column headings add some left padding to the first column to align with other elements */
+#summary_page_outcomes .hidden-table-body .rt-tr-header:first-child > :first-child,
+#summary_page_enablers .hidden-table-body .rt-tr-header:first-child > :first-child {
+  padding-left:8px !important;
+}
+
+/* For the domain text */ 
+#summary_page_outcomes div[id$="-domain_text"],
+#summary_page_enablers div[id$="-domain_text"] {
+  padding-left:14px !important;
+}
+
+#summary_page_outcomes [id$="-domain_table"] .rt-tr:first-child > :first-child,
+#summary_page_enablers [id$="-domain_table"] .rt-tr:first-child > :first-child {
+  padding-left:8px !important;
+} 
+
+
+
 .hidden-table-body .rt-th-inner {
   font-size: 19px;
 }
-.hidden-table-headers .rt-tr {
+
+.hidden-table-headers .rt-tr-inner {
   font-size: 16px;
 }
 
-.hidden-table-headers .rt-tr {
+.hidden-table-headers .rt-tr-inner {
   font-size: 19px;
 }
 div .hidden-table-body,
