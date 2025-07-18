@@ -203,7 +203,7 @@ csvDownloadButton <- function(
   tags$button(
     tagList(icon("download"), label),
     onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
-    class = "btn btn-default"
+    class = "govuk-button"
   )
 }
 
