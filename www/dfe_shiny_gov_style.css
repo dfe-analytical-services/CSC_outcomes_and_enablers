@@ -821,6 +821,10 @@ div .panel.card.mb-3.panel-default.border-default {
   
 }
 
+/* For the summary page selected tab */
+#summary_page_panels a.active {
+  font-weight: bold !important;
+}
 
 
 
