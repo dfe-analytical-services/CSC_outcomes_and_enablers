@@ -3539,7 +3539,22 @@ server <- function(input, output, session) {
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`) %>%
       arrange(desc(`Rate per 10,000`))
 
-
+    if (input$select_geography_o3 == "Regional") {
+      # Check if the selected region is London
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+      data <- data %>%
+        filter(`Local authority` %in% location)
+    }
     reactable(
       data,
       defaultColDef = colDef(align = "center"),

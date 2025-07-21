@@ -347,12 +347,6 @@ outcome3_tab <- function() {
                       )
                     )
                   ),
-                  # gov_row(
-                  #   insert_text(
-                  #     inputId = "admissions_warning",
-                  #     text = paste("This indicator shows the data for ages 0 to 14 years for the year", max(hospital_admissions$time_period), ", and does not have historical data available for comparison.")
-                  #   ),
-                  # ),
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
