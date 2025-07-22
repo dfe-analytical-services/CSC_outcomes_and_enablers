@@ -145,7 +145,7 @@ server <- function(input, output, session) {
   })
 
   output$summary_page_choice_text2 <- renderText({
-    generate_choice_text2(summary_page = TRUE, select_geography = input$select_geography_sp)
+    generate_choice_text2(input$national_comparison_checkbox_sp, input$region_comparison_checkbox_sp, input$sn_comparison_checkbox_sp)
   })
 
 
@@ -170,28 +170,6 @@ server <- function(input, output, session) {
       write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
     }
   )
-  # tags$script(
-  #   HTML("var header = $('.navbar > .container-fluid');
-  #                             header.append('<div style=\"float:right; padding-top: 8px\"><button id=\"signin\" type=\"button\" class=\"btn btn-primary action-button\" onclick=\"signIn()\">Sign In</button></div>')")
-  # )
-  # )
-
-  ## Summary page data REACTIVE, filtered for the required geographies ----
-  # summary_data_filtered <- reactive({
-  #   shiny::validate(
-  #     need(input$select_geography_sp != "", "Select a geography level."),
-  #     need(input$geographic_breakdown_sp != "", "Select a location.")
-  #   )
-  #
-  #   # filter the dataset based on the context and user selections
-  #   filtered_data <- filter_summary_data(
-  #     data_in = copy(summary_data),
-  #     select_geographic_level = input$select_geography_sp,
-  #     select_geo_breakdown = input$geographic_breakdown_sp
-  #   )
-  #   filtered_data
-  # })
-  #
 
   # Outcome 1 domains on summary page ----
   sp_accordion_cols_server(id = "outcome1", rv_summary_page)
@@ -3429,6 +3407,35 @@ server <- function(input, output, session) {
   })
 
   ### Hospital admissions -----
+  # hospital admission is a recently added chart/table and uses a reactiveValues() and moduleServer set up.
+
+  rv_hosp_admissions <- reactiveValues(select_geographic_level = NULL, select_geo_breakdown = NULL, check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL)
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_o3, input$geographic_breakdown_o3, input$national_comparison_checkbox_o3, input$region_comparison_checkbox_o3, input$sn_comparison_checkbox_o3
+  ), {
+    req(input$select_geography_o3, input$geographic_breakdown_o3)
+    rv_hosp_admissions$select_geographic_level <- input$select_geography_o3
+    rv_hosp_admissions$select_geo_breakdown <- input$geographic_breakdown_o3
+    rv_hosp_admissions$check_compare_national <- input$national_comparison_checkbox_o3
+    rv_hosp_admissions$check_compare_regional <- input$region_comparison_checkbox_o3
+    rv_hosp_admissions$check_compare_sn <- input$sn_comparison_checkbox_o3
+  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
+
+  timeseries_section_server("hospital_admissions",
+    rv = rv_hosp_admissions,
+    dataset = copy(hospital_admissions),
+    chart_title = "Hospital admissions rate per 10,000 children",
+    yvalue = "Value",
+    yaxis_title = "Rate per 10k",
+    max_rate = calculate_max_rate(hospital_admissions, "Value"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Rate per 10k" = "Value"),
+    rt_col_defs = list(
+      "Rate per 10k" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
   output$hosp_admissions_txt <- renderText({
     stat <- format(hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period) &
@@ -3438,7 +3445,6 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
       stat <- "NA"
     }
-
     paste0(format(stat, nsmall = 0), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
   })
 
@@ -3509,8 +3515,6 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o3, input$select_geography_o3, "Rate per 10,000", "Rate per 10,000") +
       scale_y_continuous(limits = c(0, max_y_lim))
-    #+ geom_abline(intercept = national_data$Value, slope = 0, aes(text = paste("National rate per 10,000: ", national_data$Value)))
-    # geom_hline(aes(yintercept = national_data$Value, text = paste("National rate per 10,000:",national_data$Value), colour = "#F46A25"), show.legend = FALSE)
     title <- paste0("Hospital admissions caused by unintentional and deliberate injuries to young people (0 to 14 years), by\nlocal authority (", max(p$data$time_period), ")")
     p <- p + ggtitle(title)
 
@@ -3535,7 +3539,22 @@ server <- function(input, output, session) {
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Rate per 10,000` = `Value`) %>%
       arrange(desc(`Rate per 10,000`))
 
-
+    if (input$select_geography_o3 == "Regional") {
+      # Check if the selected region is London
+      if (input$geographic_breakdown_o3 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_o3) %>%
+          pull(la_name)
+      }
+      data <- data %>%
+        filter(`Local authority` %in% location)
+    }
     reactable(
       data,
       defaultColDef = colDef(align = "center"),
@@ -3680,7 +3699,6 @@ server <- function(input, output, session) {
 
     data <- assessment_factors %>%
       filter(assessment_factor == input$assessment_factors_1) %>%
-      # rename("rate_per_10000" = "Rate per 10,000") %>%
       filter(time_period == max(time_period), geographic_level == "Regional")
 
     max_lim <- max(data$rate_per_10000) + 20
@@ -3701,7 +3719,6 @@ server <- function(input, output, session) {
   output$child_abuse_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_1 != "", "Select an assessment factor.")
     )
 
@@ -3921,7 +3938,6 @@ server <- function(input, output, session) {
   output$efh_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -3946,7 +3962,6 @@ server <- function(input, output, session) {
   output$efh_region_tbl <- renderReactable({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o3 != "", "Select a location."),
       need(input$assessment_factors_2 != "", "Select an assessment factor.")
     )
 
@@ -4307,7 +4322,6 @@ server <- function(input, output, session) {
   output$placement_type_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o4 != "", "Select a geography level."),
-      # need(input$geographic_breakdown_o4 != "", "Select a location."),
       need(input$placement_type_breakdown != "", "Select a placement type.")
     )
 
@@ -9032,14 +9046,30 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
+              tags$li("For time points prior to 2012, all values between 1 and 5 have been suppressed and, where necessary, other LAs and comparators have also been suppressed in order to prevent possible disclosure and disclosure by differencing."),
               tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
-              # tags$li("Until all data publications for Outcome 3 indicators are updated with local authority changes, Cumberland and Westmorland and Furness have been combined into Cumbria for hospital admissions data."),
-              tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall."),
+              tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall respectively."),
+              tags$li(
+                "In 2023, NHS England announced a ",
+                a(
+                  href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2ffind-data-and-publications%2fstatement-of-administrative-sources%2fmethodological-changes%2fimpact-of-changes-to-recording-of-same-day-emergency-care-activity-to-hospital-episode-statistics-hes-data&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742842317%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=Ic0fzE6wEChYvL5zD4LnrOnvsXvYJ%2Bwkql7DoTnjRY4%3D&reserved=0",
+                  "methodological change", target = "_blank"
+                ),
+                " to require Trusts to report Same Day Emergency Care (SDEC) to the Emergency Care Data Set (ECDS) by July 2024. Early adopter sites began to report SDEC to ECDS from 2021/22, with other Trusts changing their reporting in 2022/23 or 2023/24. Some Trusts had previously reported this activity as part of the Admitted Patient Care data set, and moving to report to ECDS may reduce the number of admissions reported for this indicator. NHSE have advised it is not possible accurately to identify SDEC in current data flows, but the impact of the change is expected to vary by diagnosis, with indicators related to injuries and external causes potentially most affected."
+              ),
+              tags$li(
+                "When considering if SDEC recording practice has reduced the number of admissions reported for this indicator at local level, please refer to the ",
+                a(
+                  href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2fdata-collections-and-data-sets%2fdata-sets%2femergency-care-data-set-ecds%2fsame-day-emergency-care&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742856428%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=qiwVNfRx2vQW6ZLF0CKyGJL2mqmLgt%2fZWKiqa8ufy18%3D&reserved=0",
+                  "published list", target = "_blank"
+                ),
+                " of sites who have reported when they began to report SDEC to ECDS."
+              ),
               tags$br(),
               p(
                 "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
                 tags$br(),
-                "For more information on the definitions and methodology, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
+                "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
               )
             )
           )
