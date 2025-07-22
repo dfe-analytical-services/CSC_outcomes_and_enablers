@@ -696,7 +696,7 @@ btn is the user guide button
 
 /* Nav bar headings */
 .navbar-brand{
-  --bs-navbar-brand-color: #1d70b8;
+  --bs-navbar-brand-color: #3D3D3D;
   font-family: "GDS Transport", arial, sans-serif !important;
   font-weight: 700;
 
