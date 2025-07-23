@@ -906,8 +906,20 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
 read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2324.csv", region_file = "data/region_hospital_admissions_22324.csv") {
+  # read the raw data from 2 csv files
   la_admissions <- read.csv("data/la_hospital_admissions_2324.csv") # la_file)
   region_admissions <- read.csv("data/region_hospital_admissions_2324.csv") # region_file)
+
+  # remove North and West Northamptonshire for pre 2022
+  # remove Cumberland & Westmorland and Furness for pre 2023
+  # remove BCP and Dorset for pre 2019
+  # remove Buckinghamshire for pre 2020
+  la_admissions <- la_admissions %>%
+    filter(!(Area.Name %in% c("North Northamptonshire", "West Northamptonshire") & Time.period < "2022")) %>%
+    filter(!(Area.Name %in% c("Cumberland", "Westmorland and Furness") & Time.period < "2023")) %>%
+    filter(!(Area.Name %in% c("Dorset", "Bournemouth, Christchurch and Poole") & Time.period < "2019")) %>%
+    filter(!(Area.Name %in% c("Buckinghamshire UA") & Time.period < "2020"))
+
 
   # additional step to clean dots out of the coumn names
   setnames(la_admissions, "Area.Name", "AreaName")
@@ -915,10 +927,11 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   la_admissions$AreaName <- sub(" UA$", "", la_admissions$AreaName)
   region_admissions$AreaName <- sub(" region \\(statistical\\)$", "", region_admissions$AreaName)
 
+
   # note the hard-coded cleansing here as the input files provided require a couple of hacks
   admissions_data_joined <- rbind(
     la_admissions[la_admissions$Category == "" & la_admissions$Sex == "Persons", c(1:13, 18, 19)],
-    region_admissions[region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
+    region_admissions[region_admissions$Parent.Code == "E92000001" & region_admissions$Category == "" & region_admissions$Sex == "Persons", c(1:13, 18, 19)]
   ) %>%
     select("Time.period", "Area.Type", "AreaName", "Area.Code", "Value", "Count", "Denominator") %>%
     rename(`time_period` = `Time.period`, `geographic_level` = `Area.Type`, `geo_breakdown` = `AreaName`, `new_la_code` = `Area.Code`) %>%
@@ -930,22 +943,6 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
   admissions_data_joined["geo_breakdown"][admissions_data_joined["geo_breakdown"] == "England"] <- "National"
 
   admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
-
-
-
-  # admissions_data <- admissions_data_joined %>%
-  #   # mutate(Value = case_when(
-  #   #   is.na(Value) ~ -300,
-  #   #   TRUE ~ as.numeric(Value)
-  #   # )) %>%
-  #   mutate(Denominator = as.numeric(Denominator)) %>%
-  #   mutate(Denominator = as.numeric(Denominator))
-
-  # admissions_data2 <- admissions_data %>%
-  #   mutate(rate_per_10000 = case_when(
-  #     Value == -300 ~ "x",
-  #     TRUE ~ as.character(Value)
-  #   ))
 
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
@@ -1078,8 +1075,11 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
 
   admissions_data3 <- admissions_data3 %>%
     mutate(rate_per_10000 = sapply(rate_per_10000, decimal_rounding, 0)) %>%
-    mutate(Value = sapply(Value, true_round, 0)) # %>%
-  # redacted_to_negative(col_old = "Value", col_new = "Value")
+    mutate(Value = sapply(Value, true_round, 0)) %>%
+    mutate(Value = case_when(
+      is.na(Value) ~ -300,
+      TRUE ~ as.numeric(Value)
+    ))
 
   return(admissions_data3)
 }

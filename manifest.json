@@ -4832,9 +4832,6 @@
     "data/la_conviction_health_outcome_cla.csv": {
       "checksum": "b6740af3363f43e6d99029a9086bddbc"
     },
-    "data/la_hospital_admissions_2223.csv": {
-      "checksum": "5b75787a51921b41fa88ccf26a82d90a"
-    },
     "data/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
     },
@@ -4868,9 +4865,6 @@
     "data/ons-ethnic-population-reg.csv": {
       "checksum": "405c5cb7f2dbe76c51ed2021509d33ca"
     },
-    "data/region_hospital_admissions_2223.csv": {
-      "checksum": "b5ebfdc652376dc59f7003437bbdcfe1"
-    },
     "data/region_hospital_admissions_2324.csv": {
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
@@ -4887,7 +4881,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "68258376a66749d38b0cec780b6abd12"
+      "checksum": "c076d0a7754d36ca9f02ef90645a29b9"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -4935,7 +4929,7 @@
       "checksum": "3b74b39519d37fa0b8fd47506e1839df"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "8da2f6fded43284484dcbf3af2996e9d"
+      "checksum": "64b842fde9e2a3ec57ba8f029dfd353a"
     },
     "R/omitted_data.R": {
       "checksum": "817b0f93920c1705714733d41dd051cc"
@@ -4947,7 +4941,7 @@
       "checksum": "8e0d0426457c11ab4aa39ea2469ebdf5"
     },
     "R/outcome3_page.R": {
-      "checksum": "7da3e2e5e172d47b1f15208f1b10714b"
+      "checksum": "27d504c91edfecc5818e62129c23d563"
     },
     "R/outcome4_page.R": {
       "checksum": "166a670b42156ecbba0df56dc03e2fda"
@@ -4956,7 +4950,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "d6530e78a7599f6804fcab8b9723b814"
+      "checksum": "faf793fa20ee092b9c127f3b75442c0f"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -4989,7 +4983,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "f52be9851b073bc86b1598afb182931f"
+      "checksum": "cda6e8f77795cb782a3e92f9865f2a44"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
