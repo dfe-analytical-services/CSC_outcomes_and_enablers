@@ -96,13 +96,10 @@ redacted_to_negative <- function(dataset, col_old, col_new, copy_numeric_vals = 
         TRUE ~ as.numeric(!!sym(col_new))
       ))
   }
-
   return(dataset)
 }
+
 redacted_to_na <- function(dataset, col_old, col_new) {
-  # dataset <- data.table(a = c("c", "23", "22.22", "NA", NA))
-  # col_old <- "a"
-  # col_new <- "b"
   dataset <- dataset %>%
     mutate(!!sym(col_new) := case_when(
       !!sym(col_old) %in% c("c", "x", "Z") ~ NA,
