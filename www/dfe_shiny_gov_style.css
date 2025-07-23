@@ -101,7 +101,9 @@ template. 80% works well here to reduce white space on the right hand side.*/
   font-weight:500;
 }
 .nav-tabs > li > a {
-  text-decoration: none
+  text-decoration: none;
+  color: #000;
+  font-weight: normal;
 }
 
 .nav-tabs > li.active > a,
@@ -117,7 +119,9 @@ template. 80% works well here to reduce white space on the right hand side.*/
   border: 2px solid #b1b4b6;
   border-bottom: 0;
   background-color: #fff;
-  text-decoration: none
+  text-decoration: none;
+  font-weight: bold !important;
+  color: #000;
 
 }
 
@@ -710,13 +714,15 @@ btn is the user guide button
   font-weight: 700;
 }
 
-/* Summary Page CSS */
+
+/* -------------- Summary Page CSS -------------- */
+/* There are a number of aspects of styling related to the summary page including the accordions, tabs, sub tables and header tables, domain text*/
+
 #summary_page_outcomes .accordion .accordion-header,
 #summary_page_enablers .accordion .accordion-header {
   background-color: #1d70b8 !important;
   color: white !important;
 }
-
 
 #summary_page_outcomes .accordion-body,
 #summary_page_enablers .accordion-body {
@@ -727,6 +733,7 @@ btn is the user guide button
 #summary_page_enablers .accordion-button {
   background-color: #1d70b8 !important;
   color: #fff !important;
+  padding-left: 16px !important;
 }
 
 #summary_page_outcomes .accordion-title,
@@ -734,6 +741,7 @@ btn is the user guide button
   background-color: #1d70b8 !important;
   color: white !important;
   font-size: 24px !important;
+  padding-left: 0px !important;
 }
 
 #summary_page_outcomes div[id$="-domain_text"],
@@ -741,7 +749,6 @@ btn is the user guide button
   background-color: white !important;
   line-height: 45px !important;
   font-size: 19px !important;
-  padding-left: 12px !important;
   font-weight: 550 !important;
 }
 
@@ -771,14 +778,34 @@ btn is the user guide button
     overflow: auto;
 }
 
+/* For the column headings add some left padding to the first column to align with other elements */
+#summary_page_outcomes .hidden-table-body .rt-tr-header:first-child > :first-child,
+#summary_page_enablers .hidden-table-body .rt-tr-header:first-child > :first-child {
+  padding-left:8px !important;
+}
+
+/* For the domain text */ 
+#summary_page_outcomes div[id$="-domain_text"],
+#summary_page_enablers div[id$="-domain_text"] {
+  padding-left:14px !important;
+}
+
+#summary_page_outcomes [id$="-domain_table"] .rt-tr:first-child > :first-child,
+#summary_page_enablers [id$="-domain_table"] .rt-tr:first-child > :first-child {
+  padding-left:8px !important;
+} 
+
+
+
 .hidden-table-body .rt-th-inner {
   font-size: 19px;
 }
-.hidden-table-headers .rt-tr {
+
+.hidden-table-headers .rt-tr-inner {
   font-size: 16px;
 }
 
-.hidden-table-headers .rt-tr {
+.hidden-table-headers .rt-tr-inner {
   font-size: 19px;
 }
 div .hidden-table-body,
@@ -792,4 +819,121 @@ div .panel.card.mb-3.panel-default.border-default {
   display: none !important;
   
   
+}
+
+/* For the summary page selected tab */
+#summary_page_panels a.active {
+  font-weight: bold !important;
+}
+
+
+
+
+
+/* GovStyle button */
+
+.govuk-button {
+    font-family: GDS Transport, arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.1875;
+    box-sizing: border-box;
+    display: inline-block;
+    position: relative;
+    width: 100%;
+    margin: 0 0 22px;
+    padding: 8px 10px 7px;
+    border: 2px solid transparent;
+    border-radius: 0;
+    color: #fff;
+    background-color: #00703c;
+    box-shadow: 0 2px 0 #002d18;
+    text-align: center;
+    vertical-align: top;
+    cursor: pointer;
+    -webkit-appearance: none
+}
+
+@media print {
+    .govuk-button {
+        font-family: sans-serif
+    }
+}
+
+@media (min-width:40.0625em) {
+    .govuk-button {
+        font-size: 1.1875rem;
+        line-height: 1
+    }
+}
+
+@media print {
+    .govuk-button {
+        font-size: 14pt;
+        line-height: 19px
+    }
+}
+
+@media (min-width:40.0625em) {
+    .govuk-button {
+        margin-bottom: 32px;
+        width: auto
+    }
+}
+
+.govuk-button:active, .govuk-button:hover, .govuk-button:link, .govuk-button:visited {
+    color: #fff;
+    text-decoration: none
+}
+
+.govuk-button::-moz-focus-inner {
+    padding: 0;
+    border: 0
+}
+
+.govuk-button:hover {
+    background-color: #005a30
+}
+
+.govuk-button:active {
+    top: 2px
+}
+
+.govuk-button:focus {
+    border-color: #fd0;
+    outline: 3px solid transparent;
+    box-shadow: inset 0 0 0 1px #fd0
+}
+
+.govuk-button:focus:not(:active):not(:hover) {
+    border-color: #fd0;
+    color: #0b0c0c;
+    background-color: #fd0;
+    box-shadow: 0 2px 0 #0b0c0c
+}
+
+.govuk-button:before {
+    content: "";
+    display: block;
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    bottom: -4px;
+    left: -2px;
+    background: transparent
+}
+
+.govuk-button:active:before {
+    top: -4px
+}
+
+.govuk-button[disabled] {
+    opacity: .5
+}
+
+.govuk-button[disabled]:hover {
+    background-color: #00703c;
+    cursor: not-allowed
 }
