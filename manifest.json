@@ -5070,7 +5070,7 @@
       "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
     },
     "R/summary_page.R": {
-      "checksum": "a526239408de77f7021d720c7cd694b1"
+      "checksum": "2e1e15823cedd19486e71308e2fbc9de"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
@@ -5172,7 +5172,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "551cccb49b6b0e443e1df719ba531ae9"
+      "checksum": "631d9dd381ecd9de3697654b15395d89"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
