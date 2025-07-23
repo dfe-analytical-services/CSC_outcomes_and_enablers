@@ -109,7 +109,7 @@ redacted_to_na <- function(dataset, col_old, col_new) {
 }
 
 # Need a fact table for the LA's and their Regions
-GET_location <- function(file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
+GET_location <- function(file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv") {
   FACT_location <- read.csv(file)
   FACT_location <- FACT_location %>%
     select(region_name, la_name, new_la_code, old_la_code) %>%
@@ -119,7 +119,7 @@ GET_location <- function(file = "data/la_children_who_started_to_be_looked_after
 
 
 # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
-GET_location_workforce <- function(file = "data/csww_indicators_2017_to_2024.csv") {
+GET_location_workforce <- function(file = "./data-raw/csww_indicators_2017_to_2024.csv") {
   workforce_location <- read.csv(file)
   workforce_location <- read.csv(file)
   workforce_location <- workforce_location %>%
@@ -238,7 +238,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 # this function is the controller of summary_data build.  It takes the input metadata from Excel and processes each indicator (i.e. row of the metadata table)
 # data for all indicators is combined into a single data.table for use in the summary page
 collect_summary_data_all <- function() {
-  metric_parameters <- data.table(read_excel(path = "./data-raw/summary_page_metadata.xlsx", sheet = 1))
+  metric_parameters <- data.table(read_excel(path = "./data/summary_page_metadata.xlsx", sheet = 1))
 
   summary_data <- rbindlist(
     lapply(
@@ -294,7 +294,7 @@ collect_summary_data_all <- function() {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Outcome 1 -------------------
 # CLA rate per 10k children data
-read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k_children.csv") {
+read_cla_rate_data <- function(sn_long, file = "./data-raw/cla_number_and_rate_per_10k_children.csv") {
   cla_rate_data <- fread(file)
 
   cla_rate_data <- cla_rate_data %>%
@@ -326,7 +326,7 @@ read_cla_rate_data <- function(sn_long, file = "data/cla_number_and_rate_per_10k
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-read_cla_placement_data <- function(sn_long, file = "data/la_children_who_started_to_be_looked_after_during_the_year.csv") {
+read_cla_placement_data <- function(sn_long, file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv") {
   cla_placement_data <- read.csv(file)
   cla_placement_data <- colClean(cla_placement_data) %>%
     insert_geo_breakdown() %>%
@@ -350,7 +350,7 @@ read_cla_placement_data <- function(sn_long, file = "data/la_children_who_starte
 }
 
 
-read_cla_31_march_data <- function(file = "data/la_cla_on_31_march_by_characteristics.csv") {
+read_cla_31_march_data <- function(file = "./data-raw/la_cla_on_31_march_by_characteristics.csv") {
   cla_31_march_data <- read.csv(file)
   cla_31_march_data <- colClean(cla_31_march_data) %>%
     insert_geo_breakdown() %>%
@@ -568,7 +568,7 @@ merge_cla_31_march_dataframes <- function(sn_long) {
 # a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
-read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to_2024.csv") {
+read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2013_to_2024.csv") {
   cin_rate_data <- fread(file)
 
   # initial cleansing steps
@@ -604,7 +604,7 @@ read_cin_rate_data <- function(sn_long, file = "data/b1_children_in_need_2013_to
 }
 
 # CIN referrals data
-read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
+read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
   cin_referral_data <- fread(file)
 
   # initial cleansing steps
@@ -646,7 +646,7 @@ read_cin_referral_data <- function(sn_long, file = "data/c1_children_in_need_ref
 
 
 # Outcome 1 Outcomes absence data for child well being and development
-read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_terms_la.csv") {
+read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_half_terms_la.csv") {
   # Notes: there is no removal of old LAs here
   outcomes_absence_data <- fread(file)
 
@@ -697,7 +697,7 @@ read_outcomes_absence_data <- function(sn_long, file = "data/absence_six_half_te
 
 
 # Outcome 1 Outcomes KS2 data for education attainment
-read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
+read_outcomes_ks2_data <- function(sn_long, file = "./data-raw/ks2_la.csv") {
   outcomes_ks2_data <- fread(file)
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
@@ -749,7 +749,7 @@ read_outcomes_ks2_data <- function(sn_long, file = "data/ks2_la.csv") {
 
 
 # Outcome 1 Outcomes KS4 data for education attainment
-read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
+read_outcomes_ks4_data <- function(sn_long, file = "./data-raw/ks4_la.csv") {
   outcomes_ks4_data <- fread(file)
 
   # Select only columns we want
@@ -788,7 +788,7 @@ read_outcomes_ks4_data <- function(sn_long, file = "data/ks4_la.csv") {
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Outcome 2 ----
 # read outcome 2 function but without manual calculation of the percentages.
-read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_the_year.csv") {
+read_outcome2 <- function(sn_long, file = "./data-raw/la_children_who_ceased_during_the_year.csv") {
   # drop old LA's
   ceased_cla_data <- fread(file)
 
@@ -835,7 +835,7 @@ read_outcome2 <- function(sn_long, file = "data/la_children_who_ceased_during_th
 # Outcome 3 ----
 ### Outcome 3 Child Safety General ----
 ##### Child Protection Plans starting during year, which were second or subsequent plans (accordion 1) ----
-read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_2013_to_2024.csv") {
+read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent_plan_2013_to_2024.csv") {
   cpp_in_year_data <- fread(file)
 
   # add geo_breakdown
@@ -867,7 +867,7 @@ read_cpp_in_year_data <- function(sn_long, file = "data/d3_cpps_subsequent_plan_
 }
 
 ### CPP by duration (accordion 2)
-read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
+read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
@@ -902,10 +902,10 @@ read_cpp_by_duration_data <- function(sn_long, file = "data/d5_cpps_at31march_by
 # LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
-read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_2324.csv", region_file = "data/region_hospital_admissions_22324.csv") {
+read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissions_2324.csv", region_file = "./data-raw/region_hospital_admissions_22324.csv") {
   # read the raw data from 2 csv files
-  la_admissions <- read.csv("data/la_hospital_admissions_2324.csv") # la_file)
-  region_admissions <- read.csv("data/region_hospital_admissions_2324.csv") # region_file)
+  la_admissions <- read.csv("./data-raw/la_hospital_admissions_2324.csv") # la_file)
+  region_admissions <- read.csv("./data-raw/region_hospital_admissions_2324.csv") # region_file)
 
   # remove North and West Northamptonshire for pre 2022
   # remove Cumberland & Westmorland and Furness for pre 2023
@@ -1085,7 +1085,7 @@ read_a_and_e_data <- function(sn_long, la_file = "data/la_hospital_admissions_23
 
 ## Child abuse/Neglect / Harms outside the home ----
 ### Assessment Factors ------
-read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
+read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
   ass_fac_data_raw <- fread(file)
   ass_fac_data_raw <- ass_fac_data_raw %>%
     insert_geo_breakdown() %>%
@@ -1174,7 +1174,7 @@ read_assessment_factors <- function(sn_long, file = "data/c3_factors_identified_
 # Outcome 4 -----
 ## Number of placements (placement_changes_data) -----
 
-read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_stability.csv") {
+read_number_placements_data <- function(sn_long, file = "./data-raw/la_cla_placement_stability.csv") {
   placement_chg_data <- fread(file)
 
   placement_chg_data <- placement_chg_data %>%
@@ -1202,7 +1202,7 @@ read_number_placements_data <- function(sn_long, file = "data/la_cla_placement_s
 }
 
 ## Placement type and distance----
-read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by_characteristics.csv") {
+read_placement_info_data <- function(sn_long, file = "./data-raw/la_cla_on_31_march_by_characteristics.csv") {
   placement_info_data <- fread(file)
 
   placement_info_data <- placement_info_data %>%
@@ -1233,7 +1233,7 @@ read_placement_info_data <- function(sn_long, file = "data/la_cla_on_31_march_by
 # Need to do some aggregation so that placement types is aggregated to these: "foster placements", "secure units, childrens's homes or semi-independent living", "other"
 
 ## Care leavers activity -----
-read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leavers_activity.csv") {
+read_care_leavers_activity_data <- function(sn_long, file = "./data-raw/la_care_leavers_activity.csv") {
   cl_activity_data <- fread(file) %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
@@ -1264,7 +1264,7 @@ read_care_leavers_activity_data <- function(sn_long, file = "data/la_care_leaver
 }
 
 ## Care leavers accommodation -----
-read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la_care_leavers_accommodation_suitability.csv") {
+read_care_leavers_accommodation_suitability <- function(sn_long, file = "./data-raw/la_care_leavers_accommodation_suitability.csv") {
   cl_accom_data <- fread(file) %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
@@ -1297,7 +1297,7 @@ read_care_leavers_accommodation_suitability <- function(sn_long, file = "data/la
 
 ## Wellbeing of child -(SDQ) ----
 
-read_wellbeing_child_data <- function(sn_long, file = "data/la_conviction_health_outcome_cla.csv") {
+read_wellbeing_child_data <- function(sn_long, file = "./data-raw/la_conviction_health_outcome_cla.csv") {
   data <- fread(file)
 
   data2 <- data %>%
@@ -1357,7 +1357,7 @@ read_wellbeing_child_data <- function(sn_long, file = "data/la_conviction_health
 }
 
 ## Placement order and match data ----
-read_placement_order_match_data <- function(file = "data/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
+read_placement_order_match_data <- function(file = "./data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv") {
   data <- read.csv(file)
 
   data <- data %>%
@@ -1409,7 +1409,7 @@ read_placement_order_match_data <- function(file = "data/national_cla_adopted_av
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
 
-read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_2024.csv") {
+read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%
     colClean() %>%
@@ -1466,7 +1466,7 @@ read_workforce_data <- function(sn_long, file = "data/csww_indicators_2017_to_20
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
-read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_data <- fread(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
@@ -1524,7 +1524,7 @@ read_workforce_eth_data <- function(sn_long, file = "data/csww_role_by_character
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
-read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     insert_geo_breakdown() %>%
@@ -1593,7 +1593,7 @@ read_workforce_eth_seniority_data <- function(file = "data/csww_role_by_characte
 # General population ethnicity data
 
 
-read_ethnic_population_data <- function(file1 = "data/ons-ethnic-population-reg.csv", file2 = "data/ons-ethnic-population-nat.csv", file3 = "data/ons-ethnic-population-la.csv") {
+read_ethnic_population_data <- function(file1 = "./data-raw/ons-ethnic-population-reg.csv", file2 = "./data-raw/ons-ethnic-population-nat.csv", file3 = "./data-raw/ons-ethnic-population-la.csv") {
   # Read the csv files
   df_regions <- read.csv(file1, check.names = FALSE)
   df_countries <- read.csv(file2, check.names = FALSE)
@@ -1771,7 +1771,7 @@ merge_eth_dataframes <- function(sn_long) {
 # Enabler 3 -------------------
 # Spending
 
-read_spending_data <- function(sn_long, file = "data/RSX_2023-24_data_by_LA.ods") {
+read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RSX_LA_Data_2023-24", range = "A11:CW423")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
 
@@ -1896,8 +1896,8 @@ read_spending_data <- function(sn_long, file = "data/RSX_2023-24_data_by_LA.ods"
   return(final_dataset)
 }
 
-# read_per_capita_spending <- function(file = "data/mye22final.xlsx") {
-read_per_capita_spending <- function(sn_long, file = "data/mye23tablesew.xlsx") {
+# read_per_capita_spending <- function(file = "./data-raw/mye22final.xlsx") {
+read_per_capita_spending <- function(sn_long, file = "./data-raw/mye23tablesew.xlsx") {
   population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
   test_df <- population_estimates
   test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
@@ -1985,7 +1985,7 @@ read_per_capita_spending <- function(sn_long, file = "data/mye23tablesew.xlsx") 
     return(final_dataset)
 }
 
-read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods") {
+read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RO3_LA_Data_2023-24", range = "A12:CP424")
   data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")
 
@@ -2099,9 +2099,9 @@ read_spending_data2 <- function(sn_long, file = "data/RO3_2023-24_data_by_LA.ods
 }
 
 # Ofsted leadership data
-read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outcomes_as_at_March_2024.ods") {
+read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
-  file <- "data/LA_Inspection_Outcomes_as_at_March_2024.ods"
+  file <- "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods"
   # ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
   ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
 
@@ -2147,7 +2147,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "data/LA_Inspection_Outc
 
   setDT(ofsted_leadership_data)
   # we now need a step to correct the ofsted regions using a csv file with the correct mappings
-  ofsted_region_corrections <- fread("./data/ofsted_region_mapping_corrections.csv")
+  ofsted_region_corrections <- fread("./data-raw/ofsted_region_mapping_corrections.csv")
 
   ofsted_leadership_data <- merge(ofsted_leadership_data, ofsted_region_corrections, by.x = "geo_breakdown", by.y = "la_name", all.x = TRUE)
   ofsted_leadership_data[!is.na(region_name_correct), region := region_name_correct][, region_name_correct := NULL]

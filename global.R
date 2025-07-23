@@ -96,12 +96,12 @@ google_analytics_key <- "Q13T4ENF6C"
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Read all RDS datasets into the Global environment ----
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# get the names of the RDS files in the ./data/rds/ directory
-rds_files_to_read <- dir("./data/rds/", pattern = "rds")
+# get the names of the RDS files in the ./data directory
+rds_files_to_read <- dir("./data/", pattern = "rds")
 
 for (rds_file in rds_files_to_read) {
   object_name <- gsub(pattern = ".rds", "", rds_file)
-  rds_file <- paste0("./data/rds/", rds_file)
+  rds_file <- paste0("./data/", rds_file)
   assign(object_name, readRDS(rds_file), envir = .GlobalEnv)
 }
 

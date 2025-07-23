@@ -1,5 +1,5 @@
 # This function implements the data pipeline for transforming input csv & xlsx files into curated datasets
-# The resulting datasets are saved to ./data/rds/ as rds files for reading in on startup
+# The resulting datasets are saved to ./data/ as rds files for reading in on startup
 
 run_data_pipeline <- function(clear_environment = FALSE) {
   # we need to clear everything from the environment first so that when the function completes we only have
@@ -88,7 +88,7 @@ run_data_pipeline <- function(clear_environment = FALSE) {
   dfs <- Filter(function(x) is(x, "data.frame"), mget(ls()))
 
   for (dataset_name in names(dfs)) {
-    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/rds/", print(dataset_name), ".rds"))
+    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
   }
 }
 
