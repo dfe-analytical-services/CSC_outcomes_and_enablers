@@ -131,7 +131,7 @@ GET_location_workforce <- function(file = "./data-raw/csww_indicators_2017_to_20
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # #### Statistical Neighbours read and convert to long format ------------
 
-get_statistical_neighbours <- function(file = "./data/sn_model_2025_wide.csv") {
+get_statistical_neighbours <- function(file = "./data-raw/sn_model_2025_wide.csv") {
   stats_neighbours_raw <- fread(file)
 
   # one-off hack to correct St Helens

@@ -1,10 +1,55 @@
-# This function implements the data pipeline for transforming input csv & xlsx files into curated datasets
-# The resulting datasets are saved to ./data/ as rds files for reading in on startup
+# **** Functions required to run the data pipeline ****
 
-run_data_pipeline <- function(clear_environment = FALSE) {
+
+# testing
+
+# source("./R/data_pipeline.R")
+if (TRUE == FALSE) {
+  x <- run_data_pipeline_step_1(clear_environment = TRUE)
+}
+
+
+
+# This function implements the first data pipeline step of transforming input csv & xlsx files into curated datasets
+# The resulting datasets are returned in a list at this point along with the parameters used to generate them.
+# Additional validation takes place to provide feedback on what has been generated and what differs to the rds datasets in the ./data/ folder of the repo
+# This is the first stage of the pipeline, to build the data in a temporary fashion with nothing in the main application being changed yet, that follows in step 2
+run_data_pipeline_step_1 <- function(clear_environment = FALSE) {
+  datasets_new <- pipeline_generate_datasets(clear_environment = TRUE)
+  datasets_rds <- pipeline_read_rds()
+
+
+  meta_rds <- pipeline_dataset_metadata(datasets_rds)
+  meta_new <- pipeline_dataset_metadata(datasets_new)
+
+  pipeline_comparison <- pipeline_compare_datasets(meta_rds, meta_new)
+
+  return(pipeline_comparison)
+}
+
+
+# This function is run by the user directly and handles the
+# saved to ./data/ as rds files for reading in on startup
+run_data_pipeline_step_2 <- function(pipeline_run) {
+  if (class(dfs)) {
+    for (dataset_name in names(dfs)) {
+      saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
+    }
+  }
+}
+
+
+# Supporting functions for running the data pipeline ----
+
+
+pipeline_generate_datasets <- function(clear_environment = FALSE) {
   # we need to clear everything from the environment first so that when the function completes we only have
   # the curated datasets in the environment
-  if (clear_environment == FALSE) stop() else rm(list = ls())
+  if (clear_environment == FALSE) {
+    return()
+  } else {
+    rm(list = ls())
+  }
 
   # Library calls ---------------------------------------------------------------------------------
   shhh <- suppressPackageStartupMessages # It's a library, so shhh!
@@ -17,6 +62,7 @@ run_data_pipeline <- function(clear_environment = FALSE) {
   shhh(library(data.table))
 
   # source supporting functions to prepare data
+  source("R/data_pipeline.R")
   source("R/read_data.R")
   source("R/stats_neighbours.R")
 
@@ -73,23 +119,86 @@ run_data_pipeline <- function(clear_environment = FALSE) {
   ## Read in outcome 4 data ----
   placement_data <- suppressWarnings(read_placement_info_data(sn_long = stats_neighbours_long))
   placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long = stats_neighbours_long))
-
   care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(sn_long = stats_neighbours_long))
   care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
-
   wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(sn_long = stats_neighbours_long))
-
   placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
 
-
   ## Summary Data ----
+  list2env(Filter(function(x) is(x, "data.frame"), mget(ls())), envir = .GlobalEnv)
   summary_data <- collect_summary_data_all()
 
-  dfs <- Filter(function(x) is(x, "data.frame"), mget(ls()))
+  datasets_new <- Filter(function(x) is(x, "data.frame"), mget(ls()))
 
-  for (dataset_name in names(dfs)) {
-    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
-  }
+  return(datasets_new)
 }
 
-# x = profvis::profvis({ run_data_pipeline(clear_environment = TRUE)})
+# Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output text generated
+pipeline_compare_datasets <- function(meta_rds, meta_new) {
+  user_feedback <- glue::glue("CSC Public Dashboard: Data pipeline diagnostics
+  Run date: { Sys.Date() }")
+
+  # compare datasets
+  dataset_name_comparison <- dcast(
+    rbindlist(list(
+      data.table(rds_or_new = "CURRENT", check_type = "dataset_name", dataset_name = meta_rds$dataset_names),
+      data.table(rds_or_new = "NEW", check_type = "dataset_name", dataset_name = meta_new$dataset_names)
+    )),
+    dataset_name ~ check_type + rds_or_new
+  )[, match_dataset_name := dataset_name_NEW == dataset_name_CURRENT]
+
+  dataset_class_comparison <- dcast(rbindlist(list(
+    data.table(rds_or_new = "CURRENT", check_type = "dataset_class", dataset_name = names(meta_rds$dataset_class), dataset_class = sapply(meta_rds$dataset_class, paste, collapse = ",")),
+    data.table(rds_or_new = "NEW", check_type = "dataset_class", dataset_name = names(meta_new$dataset_class), dataset_class = sapply(meta_new$dataset_class, paste, collapse = ","))
+  )), dataset_name ~ check_type + rds_or_new)[, match_dataset_class := dataset_class_NEW == dataset_class_CURRENT]
+
+  dataset_nrow_comparison <- dcast(rbindlist(list(
+    data.table(rds_or_new = "CURRENT", check_type = "num_rows", dataset_name = names(meta_rds$dataset_nrow), dataset_nrow = sapply(meta_rds$dataset_nrow, paste, collapse = ",")),
+    data.table(rds_or_new = "NEW", check_type = "num_rows", dataset_name = names(meta_new$dataset_class), dataset_nrow = sapply(meta_new$dataset_nrow, paste, collapse = ","))
+  )), dataset_name ~ check_type + rds_or_new)[, match_dataset_num_rows := num_rows_NEW == num_rows_CURRENT]
+
+  dataset_columns_comparison <- dcast(rbindlist(list(
+    data.table(rds_or_new = "CURRENT", check_type = "dataset_columns", dataset_name = names(meta_rds$dataset_columns), dataset_columns = sapply(meta_rds$dataset_columns, paste, collapse = ",")),
+    data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ","))
+  )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
+
+  return(list(
+    "dataset_name_comparison" = dataset_name_comparison,
+    "dataset_class_comparison" = dataset_class_comparison,
+    "dataset_nrow_comparison" = dataset_nrow_comparison,
+    "dataset_columns_comparison" = dataset_columns_comparison
+  ))
+}
+
+# Helper function to get all of the datasets currently in data folder into a list comparable with the new datasets
+pipeline_read_rds <- function() {
+  # first get the names of the RDS files in the ./data directory
+  rds_files_to_read <- dir("./data/", pattern = "rds")
+
+  # Read all RDS datasets into a list
+  datasets_rds <- lapply(rds_files_to_read, function(rds_file) {
+    rds_file <- paste0("./data/", rds_file)
+    readRDS(rds_file)
+  })
+
+  # rename the list elements to the object name for comparison
+  names(datasets_rds) <- sapply(rds_files_to_read, function(rds_file) {
+    object_name <- gsub(pattern = ".rds", "", rds_file)
+  })
+
+  return(datasets_rds)
+}
+
+# helper function to get metadata for the datasets in a list (works for current/rds and new)
+pipeline_dataset_metadata <- function(datasets_list) {
+  dataset_names <- names(datasets_list)
+  dataset_class <- sapply(datasets_list, class)
+  dataset_nrow <- sapply(datasets_list, nrow)
+  dataset_columns <- lapply(datasets_list, function(x) names(x))
+  return(list(
+    "dataset_names" = dataset_names,
+    "dataset_class" = dataset_class,
+    "dataset_nrow" = dataset_nrow,
+    "dataset_columns" = dataset_columns
+  ))
+}

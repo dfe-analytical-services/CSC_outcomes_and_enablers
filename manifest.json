@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "53aad04bd2ff9bc16017cfd0f4953370"
+      "checksum": "140e25fc9fc99d91dbd91248d5391a88"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5010,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "69a58cd7b5bba007d1c4e0c2368588c7"
+      "checksum": "bc000ca180e686fcda1331f5df0bc3b5"
     },
     "R/data_sources.R": {
       "checksum": "2ef120b0bab66a5c0f301ae9404cddbb"
@@ -5058,7 +5058,7 @@
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
     },
     "R/read_data.R": {
-      "checksum": "e6db5816c915ebe9ad17aa5c5b11b3d9"
+      "checksum": "850bcd2a1dd27d3f6563c6dd69749ce8"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
