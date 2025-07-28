@@ -1,11 +1,29 @@
 # **** Functions required to run the data pipeline ****
 
+# First it is necessary to clear the environment and source all of the functions in this file
 
-# testing
-
-# source("./R/data_pipeline.R")
 if (TRUE == FALSE) {
-  x <- run_data_pipeline_step_1(clear_environment = TRUE)
+  # clear the environment and source the necessary pipeline functions
+  rm(list = ls())
+  source("./R/data_pipeline.R")
+
+  # now run the first step of the pipeline to generate the new datasets and comparisons with current app data
+  pipeline_run <- run_data_pipeline_step_1(clear_environment = TRUE)
+
+
+  # now compare the current and old with the diagnostics provided
+  print(pipeline_run$pipeline_comparison)
+
+
+  # if the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline
+  pipeline_update_template <- list(
+    username <- Sys.getenv("USERNAME"),
+    run_datetime <- format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+    reason_for_pipeline_run <- ""
+  )
+
+  # finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder)
+  # run_data_pipeline_step_2(pipeline_run, pipeline_update_template)
 }
 
 
@@ -24,7 +42,7 @@ run_data_pipeline_step_1 <- function(clear_environment = FALSE) {
 
   pipeline_comparison <- pipeline_compare_datasets(meta_rds, meta_new)
 
-  return(pipeline_comparison)
+  return(list(datasets_new = datasets_new, pipeline_comparison = pipeline_comparison))
 }
 
 
