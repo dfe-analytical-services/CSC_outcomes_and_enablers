@@ -6,8 +6,9 @@ outcome1_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 1: Children, young people and families stay together and get the help they need")
-        )
+          tags$p("Outcome 1: Children, young people and families stay together and get the help they need", 
+                 style = "font-size:27px;")
+                  )
       ),
       gov_row(
         # Input boxes for geographic level and geographic breakdown
