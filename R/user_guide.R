@@ -7,9 +7,9 @@ tutorialPanel <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Dashboard user guide",class = "h2-27px"),
+          h2("Dashboard user guide", class = "h2-27px"),
           tags$br(),
-          h2("How to use this dashboard:",class = "h2-27px"),
+          h2("How to use this dashboard:", class = "h2-27px"),
           tags$ul(
             tags$li("Use the navigation bar on the left to select which outcome/enabler/indicator page you want to view"),
             tags$li("Within each outcome/enabler page, select a geographical level (National, Regional, Local authority) using the dropdown list at the top of each outcome and enabler page"),
@@ -28,7 +28,7 @@ tutorialPanel <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Interactive plots user guide",class = "h2-27px"),
+          h2("Interactive plots user guide", class = "h2-27px"),
           p("The menu bar along the top of the charts contains extra interactive features to:"),
           tags$ul(
             tags$li("Download chart as png file"),

@@ -6,7 +6,7 @@ outcome2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Outcome 2: Children and young people are supported by their family network",class = "h2-27px"),
+          h2("Outcome 2: Children and young people are supported by their family network", class = "h2-27px"),
         )
       ),
       # dropdown boxes
@@ -85,7 +85,7 @@ outcome2_tab <- function() {
           )
         )
       ),
-           # confirmation choice
+      # confirmation choice
       gov_row(
         p(htmlOutput("outcome2_choice_text1"), htmlOutput("outcome2_choice_text2")),
         # conditionalPanel(
@@ -94,7 +94,7 @@ outcome2_tab <- function() {
         # ),
       ),
       gov_row(
-       div(
+        div(
           tabsetPanel(
             id = "outcome2_panels",
             type = "tabs",

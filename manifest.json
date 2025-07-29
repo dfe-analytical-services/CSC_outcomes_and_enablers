@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "e63dc93c915517926807ee05d2563359"
+      "checksum": "50a5a60c1f774d3f9c91c1c67c8600a1"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5013,7 +5013,7 @@
       "checksum": "c3e9a8b1571bf8be2cdd52b2dab9996a"
     },
     "R/data_sources.R": {
-      "checksum": "2ef120b0bab66a5c0f301ae9404cddbb"
+      "checksum": "679588eab11f1e36bf6203b3e7ca5670"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5022,16 +5022,16 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "9270d796958567b19d128a7980f61dac"
+      "checksum": "3741fa7dbad0409377a33f4cc1857c2b"
     },
     "R/enabler2_page.R": {
-      "checksum": "dcee2696750883cdbc0bda0575ac3ab3"
+      "checksum": "821f12a19cd19e5bd1296a65adeb10b5"
     },
     "R/enabler3_page.R": {
-      "checksum": "83911b3784829cd3bc56489beb2f1738"
+      "checksum": "3c530e5879c244adba8a78a0e8317913"
     },
     "R/intro_panel.R": {
-      "checksum": "268df5c6a95f3ec3380db42e81245ff5"
+      "checksum": "69e83884b0c475231b287f8d0a7fe9fc"
     },
     "R/mod_summary_page.R": {
       "checksum": "3b74b39519d37fa0b8fd47506e1839df"
@@ -5040,19 +5040,19 @@
       "checksum": "64b842fde9e2a3ec57ba8f029dfd353a"
     },
     "R/omitted_data.R": {
-      "checksum": "817b0f93920c1705714733d41dd051cc"
+      "checksum": "8fb04da479f69eb38c04a445dca86009"
     },
     "R/outcome1_page.R": {
-      "checksum": "bfa98651f74db1bca8af53ae1fc1b850"
+      "checksum": "1fdc2695052579d2c209919c8e2c0f19"
     },
     "R/outcome2_page.R": {
-      "checksum": "8e0d0426457c11ab4aa39ea2469ebdf5"
+      "checksum": "76fd2677ef70379437f62d32673b8583"
     },
     "R/outcome3_page.R": {
-      "checksum": "27d504c91edfecc5818e62129c23d563"
+      "checksum": "4f4c0e85c670a9d14d00054ed6af0c10"
     },
     "R/outcome4_page.R": {
-      "checksum": "166a670b42156ecbba0df56dc03e2fda"
+      "checksum": "dd9288e550e9f31b630520920fdf199c"
     },
     "R/plotting.R": {
       "checksum": "8c62c2b81b514aed60c09c127eb40437"
@@ -5064,19 +5064,19 @@
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
     },
     "R/standard_panels.R": {
-      "checksum": "34d7fd8252b3507bb972e5ca95bd6d97"
+      "checksum": "73a4ae9ebbfa0c9acf26913807deb320"
     },
     "R/stats_neighbours.R": {
       "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
     },
     "R/summary_page.R": {
-      "checksum": "78d708051a06b7d0452e99ee9e566177"
+      "checksum": "b49f403dae6c5bf2fdb3d944d59dc3e3"
     },
     "R/ui_panels/accessibility_statement.R": {
-      "checksum": "bc947f0c9f414c2c47a43ee4d8d6a012"
+      "checksum": "8cb8a98a379421867aeb406114a7f524"
     },
     "R/user_guide.R": {
-      "checksum": "2c78f045d31f3a0ca11569836ad62086"
+      "checksum": "bb28d33d6f8652f4e89ad8b5d005baae"
     },
     "README.html": {
       "checksum": "35bfef78ab5877bd3f03bde575ecda29"
@@ -5175,7 +5175,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "087332a1dbb2ae50f25067741c86f983"
+      "checksum": "9555d6a859d49e9f628a2452de366489"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

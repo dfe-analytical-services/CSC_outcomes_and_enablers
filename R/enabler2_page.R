@@ -6,7 +6,7 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Enabler: Leaders drive conditions for effective practice",class = "h2-27px"),
+          h2("Enabler: Leaders drive conditions for effective practice", class = "h2-27px"),
         )
       ),
       gov_row(
@@ -42,8 +42,8 @@ enabler2_tab <- function() {
         )
       ),
       gov_row(
-      p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
-       ),
+        p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
+      ),
       gov_row(
         div(
           tabsetPanel(

@@ -6,7 +6,7 @@ enabler3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Enabler: The workforce is equipped and effective",class = "h2-27px"),
+          h2("Enabler: The workforce is equipped and effective", class = "h2-27px"),
         )
       ),
       gov_row(

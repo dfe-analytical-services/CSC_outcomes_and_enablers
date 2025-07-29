@@ -6,7 +6,7 @@ outcome3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Outcome 3: Children and young people are safe in and outside of their home",class = "h2-27px"),
+          h2("Outcome 3: Children and young people are safe in and outside of their home", class = "h2-27px"),
         )
       ),
       # dropdown boxes
@@ -87,7 +87,7 @@ outcome3_tab <- function() {
       ),
       # confirmation sentence
       gov_row(
-      p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
+        p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
         #   p("Cumbria are included in the latest statistics (except for hospital statistics) because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
