@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "50a5a60c1f774d3f9c91c1c67c8600a1"
+      "checksum": "dc2cfa7766b990d88226191b0edd3f35"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5025,10 +5025,10 @@
       "checksum": "3741fa7dbad0409377a33f4cc1857c2b"
     },
     "R/enabler2_page.R": {
-      "checksum": "821f12a19cd19e5bd1296a65adeb10b5"
+      "checksum": "1dc9f77de8683c15b74d25056804cd66"
     },
     "R/enabler3_page.R": {
-      "checksum": "3c530e5879c244adba8a78a0e8317913"
+      "checksum": "264a60f7febce28987db61ec3596af2f"
     },
     "R/intro_panel.R": {
       "checksum": "69e83884b0c475231b287f8d0a7fe9fc"
@@ -5043,19 +5043,19 @@
       "checksum": "8fb04da479f69eb38c04a445dca86009"
     },
     "R/outcome1_page.R": {
-      "checksum": "1fdc2695052579d2c209919c8e2c0f19"
+      "checksum": "1ff02f744edb963f38fd0a6e69da0a90"
     },
     "R/outcome2_page.R": {
-      "checksum": "76fd2677ef70379437f62d32673b8583"
+      "checksum": "cb222b6206b881f5786bae20cfedc63d"
     },
     "R/outcome3_page.R": {
-      "checksum": "4f4c0e85c670a9d14d00054ed6af0c10"
+      "checksum": "c4c7db71570c09861ce348a96ce64dc4"
     },
     "R/outcome4_page.R": {
-      "checksum": "dd9288e550e9f31b630520920fdf199c"
+      "checksum": "112bbeb8e7615844dada0a35aa7481ae"
     },
     "R/plotting.R": {
-      "checksum": "8c62c2b81b514aed60c09c127eb40437"
+      "checksum": "fb45d90abac46f7b44b60014c5d35542"
     },
     "R/read_data.R": {
       "checksum": "850bcd2a1dd27d3f6563c6dd69749ce8"
