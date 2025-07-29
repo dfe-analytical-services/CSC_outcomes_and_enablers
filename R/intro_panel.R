@@ -7,7 +7,7 @@ introductionPanel <- function() {
       gov_row(
         column(
           width = 12,
-          heading_text("Introduction", size = "l"),
+          h2("Introduction", size = "l",class = "h2-27px"),
           p(
             "This dashboard displays data indicators to help both local and central government understand progress towards the outcomes and enablers set out in the",
             a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
@@ -21,7 +21,7 @@ introductionPanel <- function() {
         layout_columns(
           column(
             width = 12,
-            h2("Outcomes"),
+            h2("Outcomes",class = "h2-27px"),
             p("The outcomes included in the dashboard are what children’s social care should achieve for the children, young people and families they support.
               They reflect the core purpose of children’s social care. The outcomes included are:"),
             tags$ul(
@@ -34,7 +34,7 @@ introductionPanel <- function() {
           ),
           column(
             width = 12,
-            h2("Enablers"),
+            h2("Enablers",class = "h2-27px"),
             p("The enablers included in the dashboard refer to aspects of the children’s social care system that facilitate effective support for children, young people and families.
               The enablers are foundational to good practice. The enablers included are:"),
             tags$ul(
@@ -47,7 +47,7 @@ introductionPanel <- function() {
         ),
       ),
       gov_row(
-        h2("Use and limitations"),
+        h2("Use and limitations",class = "h2-27px"),
         p("This dashboard is intended to be used by local authorities, regions, safeguarding partners, central government and the general public."),
         # br(),
         p("This dashboard is not intended to be a tool to measure local authority performance on children’s social care.

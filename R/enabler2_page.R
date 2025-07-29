@@ -6,7 +6,7 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler: Leaders drive conditions for effective practice")
+          h2("Enabler: Leaders drive conditions for effective practice",class = "h2-27px"),
         )
       ),
       gov_row(

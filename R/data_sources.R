@@ -4,7 +4,7 @@ data_sources_tab <- function() {
     "Data sources",
     gov_main_layout(
       gov_row(
-        h2("Data sources"),
+        h2("Data sources",class = "h2-27px"),
         p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics.", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
         tags$ul(
           tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions (last updated:	14 November 2024) (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),

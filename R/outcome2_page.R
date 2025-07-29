@@ -6,7 +6,7 @@ outcome2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 2: Children and young people are supported by their family network")
+          h2("Outcome 2: Children and young people are supported by their family network",class = "h2-27px"),
         )
       ),
       # dropdown boxes

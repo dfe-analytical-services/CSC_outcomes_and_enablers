@@ -6,7 +6,7 @@ outcome4_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 4: Children in care and care leavers have stable, loving homes")
+          h2("Outcome 4: Children in care and care leavers have stable, loving homes",class = "h2-27px"),
         )
       ),
       gov_row(
