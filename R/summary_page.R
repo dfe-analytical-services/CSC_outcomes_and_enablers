@@ -36,10 +36,8 @@ summary_page_tab <- function() {
           )
         )
       ),
-      br(),
-      gov_row(
-        br(),
-        # Confirmation of user selection
+       gov_row(
+       # Confirmation of user selection
         p(htmlOutput("summary_page_choice_text1"), htmlOutput("summary_page_choice_text2")),
         conditionalPanel(
           condition = "input.geographic_breakdown_sp == 'Kingston upon Thames' | input.geographic_breakdown_sp == 'Richmond upon Thames'",
@@ -53,8 +51,7 @@ summary_page_tab <- function() {
       # now the main body of the page with 2 tabs containing accordions (4 outcomes, 2 enablers) and domain sections within each.
       # The tables are within the domains
       gov_row(
-        br(),
-        div(
+         div(
           div(
             style = "position:absolute;right:1em;margin-top:-20px",
             downloadButton(
