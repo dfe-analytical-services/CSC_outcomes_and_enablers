@@ -87,7 +87,7 @@ enabler2_tab <- function() {
                 accordion_panel(
                   "Share of local authority total spend on children’s services, and per child spend",
                   gov_row(
-                    h2("Share of local authority total spend on children’s services, and per child spend"),
+                    h2("Share of local authority total spend on children’s services, and per child spend", class = "h2-27px"),
                     p("This metric provides contextual information on the resource prioritisation within each local authority."),
                     # extra dropdown for choice to view per child spend or share of spending
                     div(
@@ -154,7 +154,7 @@ enabler2_tab <- function() {
                 accordion_panel(
                   "Share of children’s services spend not on CLA",
                   gov_row(
-                    h2("Share of children’s services spend not on CLA by region"),
+                    h2("Share of children’s services spend not on CLA by region", class = "h2-27px"),
                     p("Prioritising funding and resources that help families early helps children and young people thrive. This metric looks at the resource prioritisation between early and later statutory intervention."),
                     plotlyOutput("plot_spend_excl_cla_region"),
                     br(),
@@ -183,7 +183,7 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Share of children’s services spend not on CLA by local authority"),
+                    h2("Share of children’s services spend not on CLA by local authority", class = "h2-27px"),
                     radioGroupButtons(
                       "spending2_stats_toggle",
                       label = NULL,
@@ -270,7 +270,7 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Ofsted – The impact of leaders on social work practice with children and families nationally"),
+                    h2("Ofsted – The impact of leaders on social work practice with children and families nationally", class = "h2-27px"),
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted"),
@@ -300,7 +300,7 @@ enabler2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Ofsted – The impact of leaders on social work practice with children and families by region"),
+                    h2("Ofsted – The impact of leaders on social work practice with children and families by region", class = "h2-27px"),
                     warning_text(inputId = "warn", text = "Latest leadership rating years for each local authority may differ. View the table at the top to see the latest year for each LA."),
                     p("This is a static chart and will not react to geographical level, location, or comparison checkboxes selected in the filters at the top."),
                     plotlyOutput("plot_ofsted_reg"),

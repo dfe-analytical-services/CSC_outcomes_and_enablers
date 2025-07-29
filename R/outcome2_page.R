@@ -127,7 +127,7 @@ outcome2_tab <- function() {
                 accordion_panel(
                   "Percentage of children who cease being looked after due to special guardianship order (SGO)",
                   gov_row(
-                    h2("Special guardianship order (SGO)"),
+                    h2("Special guardianship order (SGO)", class = "h2-27px"),
                     p("Children ceasing to be looked after during the year due to the reason of special guardianship order."),
                     insert_text(inputId = "SGO_def", text = paste(
                       tags$b("Special guardianship order"), " - A special guardianship order is a private law order (under section14A Children Act 1989) appointing one or more individuals to be a child's 'special guardian'."
@@ -163,7 +163,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Special guardianship order (SGO) by region"),
+                    h2("Special guardianship order (SGO) by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The chart represents data from 2023."),
@@ -198,7 +198,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Special guardianship order (SGO) by local authority"),
+                    h2("Special guardianship order (SGO) by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "sgo_stats_toggle",
@@ -214,7 +214,7 @@ outcome2_tab <- function() {
                 accordion_panel(
                   "Percentage of children who cease being looked after due to residence order or child arrangements order (CAO)",
                   gov_row(
-                    h2("Residence order or child arrangements order (CAO)"),
+                    h2("Residence order or child arrangements order (CAO)", class = "h2-27px"),
                     p("Children ceasing to be looked after during the year due to the reason of child arrangements order."),
                     insert_text(inputId = "CAO_def", text = paste(
                       tags$b("Child arrangements order"), " - An order from court which details the arrangements for a child, including where and with whom the child will live, and who else they will spend time or have contact with. A child arrangements order is usually used to determine arrangements between parents but can also be used to order that a child lives with, or otherwise has contact with, another person, such as a family member or friend."
@@ -249,7 +249,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or child arrangements order (CAO) by region"),
+                    h2("Residence order or child arrangements order (CAO) by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top.
 
                       The chart represents data from 2023."),
@@ -284,7 +284,7 @@ outcome2_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Residence order or child arrangements order (CAO) by local authority"),
+                    h2("Residence order or child arrangements order (CAO) by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(ceased_cla_data$time_period))),
                     radioGroupButtons(
                       "cao_stats_toggle",

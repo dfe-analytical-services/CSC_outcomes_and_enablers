@@ -123,7 +123,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Rate of children in need (CIN)",
                   gov_row(
-                    h2("Rate of children in need (CIN)"),
+                    h2("Rate of children in need (CIN)", class = "h2-27px"),
                     p("Helping children to stay together with their families means ensuring the right support is in place at earlier stages of intervention.
                     Looking at the flow of children who become CIN will show children being supported by the wider system. Combined with family stability indicators, this will reflect a broad view of flow into and through the children’s social care system."),
                     insert_text(inputId = "CIN_definition", text = paste(
@@ -186,7 +186,7 @@ outcome1_tab <- function() {
                   ),
                   # cin by region
                   gov_row(
-                    h2("CIN rates by region"),
+                    h2("CIN rates by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cin_rate_reg"),
@@ -246,7 +246,7 @@ outcome1_tab <- function() {
                   ),
                   # cin by local authority
                   gov_row(
-                    h2("CIN rates by local authority"),
+                    h2("CIN rates by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(cin_rates$time_period))),
                     radioGroupButtons(
                       "cin_stats_toggle",
@@ -262,7 +262,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Repeat referrals (within 12 months)",
                   gov_row(
-                    h2("Repeat referrals (within 12 months)"),
+                    h2("Repeat referrals (within 12 months)", class = "h2-27px"),
                     p("If children are being referred to services repeatedly, this suggests that they and their families may not be receiving
                    the support necessary to allow them to thrive  independently as a family unit. Multiple referrals can be inefficient and
                    cause additional upset and trauma for the child and family, therefore reducing the rate of repeat referrals will result in better outcomes."),
@@ -304,7 +304,7 @@ outcome1_tab <- function() {
                   ),
                   # re-referrals by region
                   gov_row(
-                    h2("Re-referrals by region"),
+                    h2("Re-referrals by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cin_referral_reg"),
@@ -341,7 +341,7 @@ outcome1_tab <- function() {
                   ),
                   # re-referrals by local authority
                   gov_row(
-                    h2("Re-referrals by local authority"),
+                    h2("Re-referrals by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(cin_referrals$time_period))),
                     radioGroupButtons(
                       "cin_referral_stats_toggle",
@@ -403,7 +403,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Children starting to be looked after each year",
                   gov_row(
-                    h2("Children starting to be looked after each year"),
+                    h2("Children starting to be looked after each year", class = "h2-27px"),
                     p("This measures the flow of those children moving into care."),
                     insert_text(inputId = "cla_rate_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
@@ -442,7 +442,7 @@ outcome1_tab <- function() {
                   ),
                   # CLA rate region
                   gov_row(
-                    h2("Rate of children starting to be looked after by region"),
+                    h2("Rate of children starting to be looked after by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_rate_reg"),
@@ -478,7 +478,7 @@ outcome1_tab <- function() {
                   ),
                   ## cla rate by local authority
                   gov_row(
-                    h2("Rate of children starting to be looked after by local authority"),
+                    h2("Rate of children starting to be looked after by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     radioGroupButtons(
                       "cla_stats_toggle",
@@ -494,7 +494,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Rate of children looked after on 31 March",
                   gov_row(
-                    h2("Rate of children looked after on 31 March"),
+                    h2("Rate of children looked after on 31 March", class = "h2-27px"),
                     p("This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"),
                     insert_text(inputId = "cla_31_March_rate_definition", text = paste(
                       "<b>", "Rate of children looked after on 31 March", "</b><br>",
@@ -533,7 +533,7 @@ outcome1_tab <- function() {
                   ),
                   # cla on 31 march by region
                   gov_row(
-                    h2("Rate of children looked after on 31 March by region"),
+                    h2("Rate of children looked after on 31 March by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cla_march_reg"),
@@ -568,7 +568,7 @@ outcome1_tab <- function() {
                   ),
                   # cla on 31 march by local authority
                   gov_row(
-                    h2("Rate of children looked after on 31 March by local authority"),
+                    h2("Rate of children looked after on 31 March by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(cla_rates$time_period))),
                     br(),
                     radioGroupButtons(
@@ -585,7 +585,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Children starting to be looked after each year, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children starting to be looked after who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children starting to be looked after who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p("This measures the flow of those children moving into care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
                     insert_text(inputId = "cla_rate__starting_definition", text = paste(
                       "<b>", "Rate of children who started to be looked after", "</b><br>",
@@ -628,7 +628,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC region
                   gov_row(
-                    h2("Rate of children starting to be looked after by region who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children starting to be looked after by region who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -668,7 +668,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC by local authority
                   gov_row(
-                    h2("Rate of children starting to be looked after by local authority who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children starting to be looked after by local authority who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
                       "uasc_stats_toggle",
@@ -684,7 +684,7 @@ outcome1_tab <- function() {
                 accordion_panel(
                   "Children looked after each year on 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
-                    h2("Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p("This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."),
                     insert_text(inputId = "cla_rate_31_march_definition", text = paste(
                       "<b>", "Rate of children looked after on the 31st March", "</b><br>",
@@ -727,7 +727,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC region
                   gov_row(
-                    h2("Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     p(sprintf("The chart represents data from %s.", max(combined_cla_data$time_period))),
                     br(),
@@ -767,7 +767,7 @@ outcome1_tab <- function() {
                   ),
                   ## CLA UASC 31st March by local authority
                   gov_row(
-                    h2("Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children"),
+                    h2("Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(combined_cla_data$time_period))),
                     radioGroupButtons(
                       "uasc_31_march_stats_toggle",
@@ -896,7 +896,7 @@ outcome1_tab <- function() {
                     accordion_panel(
                       "School attendance",
                       gov_row(
-                        h2("School attendance of children in need and children looked after"),
+                        h2("School attendance of children in need and children looked after", class = "h2-27px"),
                         p("Attending an education setting is a key component of long term development and wellbeing for
                       children and young people, which affects their outcomes. Barriers to attendance can be prevalent
                       amongst children in need, and children’s social care has an important role in helping to overcome
@@ -948,7 +948,7 @@ outcome1_tab <- function() {
                       ),
                       # absence by region
                       gov_row(
-                        h2("Absence rate by region"),
+                        h2("Absence rate by region", class = "h2-27px"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "Absence_definition", text = paste(
@@ -998,7 +998,7 @@ outcome1_tab <- function() {
                       ),
                       # absence by local authority
                       gov_row(
-                        h2("Absence rate by local authority"),
+                        h2("Absence rate by local authority", class = "h2-27px"),
                         # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                         htmlOutput("outcome1_time_period_text"),
@@ -1021,7 +1021,7 @@ outcome1_tab <- function() {
                     accordion_panel(
                       "Persistent absence",
                       gov_row(
-                        h2("Educational engagement: persistent absence"),
+                        h2("Educational engagement: persistent absence", class = "h2-27px"),
                         p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
                       which affects their outcomes. Barriers to engagement can be prevalent amongst children in need,
                       and children’s social care has an important role in helping to overcome those barriers."),
@@ -1071,7 +1071,7 @@ outcome1_tab <- function() {
                       ),
                       ## persistent absence by region
                       gov_row(
-                        h2("Persistent absence by region"),
+                        h2("Persistent absence by region", class = "h2-27px"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "Persistent_absence_definition", text = paste(
@@ -1119,7 +1119,7 @@ outcome1_tab <- function() {
                         ),
                       ),
                       gov_row(
-                        h2("Persistent absence rate by local authority"),
+                        h2("Persistent absence rate by local authority", class = "h2-27px"),
                         # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
                         htmlOutput("outcome1_time_period_text_2"),
@@ -1232,7 +1232,7 @@ outcome1_tab <- function() {
                     accordion_panel(
                       "Key stage 2 (KS2)",
                       gov_row(
-                        h2("Key stage 2 attainment"),
+                        h2("Key stage 2 attainment", class = "h2-27px"),
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances. Virtual school heads have a statutory duty to promote the educational attainment of all children in their care.
                           This includes ensuring suitable and timely educational provision and managing pupil premium plus funding aligned to objectives in the child’s personal education plan"),
                         insert_text(inputId = "ks2_definition", text = paste(
@@ -1276,7 +1276,7 @@ outcome1_tab <- function() {
                         ),
                       ),
                       gov_row(
-                        h2("KS2 attainment by region"),
+                        h2("KS2 attainment by region", class = "h2-27px"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "ks2_definition", text = paste(
@@ -1320,7 +1320,7 @@ outcome1_tab <- function() {
                         ),
                       ),
                       gov_row(
-                        h2("KS2 attainment by local authority"),
+                        h2("KS2 attainment by local authority", class = "h2-27px"),
                         # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_ks2$time_period))),
                         htmlOutput("outcome1_time_period_text_3"),
@@ -1343,7 +1343,7 @@ outcome1_tab <- function() {
                     accordion_panel(
                       "Key stage 4 (KS4)",
                       gov_row(
-                        h2("Key stage 4 attainment"),
+                        h2("Key stage 4 attainment", class = "h2-27px"),
                         p("Educational attainment is a key component of long-term development and wellbeing for children and young people, which affects their outcomes. Children should be supported to access and make progress in education to support their development and life chances.
                           Virtual school heads have a statutory duty to promote the educational attainment of all children in their care. This includes ensuring suitable and timely educational provision and managing pupil premium plus funding aligned to objectives in the child’s personal education plan."),
                         insert_text(inputId = "ks4_definition", text = paste(
@@ -1390,7 +1390,7 @@ outcome1_tab <- function() {
                         ),
                       ),
                       gov_row(
-                        h2("KS4 attainment by region"),
+                        h2("KS4 attainment by region", class = "h2-27px"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "ks4_definition", text = paste(
@@ -1437,7 +1437,7 @@ outcome1_tab <- function() {
                         ),
                       ),
                       gov_row(
-                        h2("KS4 attainment by local authority"),
+                        h2("KS4 attainment by local authority", class = "h2-27px"),
                         # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_ks4$time_period))),
                         htmlOutput("outcome1_time_period_text_4"),

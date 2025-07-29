@@ -6,7 +6,7 @@ outcome3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Outcome 3: Children and young people are safe in and outside of their home", class = "h2-27px"),
+          h2("Outcome 3: Children and young people are safe in and outside of their home", class = "h2-27px", class = "h2-27px"),
         )
       ),
       # dropdown boxes
@@ -136,7 +136,7 @@ outcome3_tab <- function() {
               accordion(
                 accordion_panel(
                   "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
-                  h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan"),
+                  h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan", class = "h2-27px"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
                     "<b>", "Child protection plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
@@ -170,7 +170,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Repeat child protection plan (CPP) by region"),
+                    h2("Repeat child protection plan (CPP) by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cpp_repeat_reg"),
@@ -203,7 +203,7 @@ outcome3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Repeat child protection plan (CPP)  by local authority"),
+                    h2("Repeat child protection plan (CPP)  by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(repeat_cpp$time_period))),
                     radioGroupButtons(
                       "CPP_stats_toggle",
@@ -218,7 +218,7 @@ outcome3_tab <- function() {
                 ### Repeat CPP 2+ ---------------------------------------------------
                 accordion_panel(
                   "Percentage of child protection plans (CPP) longer than 2 years",
-                  h2("Percentage of child protection plans (CPP) longer than 2 years"),
+                  h2("Percentage of child protection plans (CPP) longer than 2 years", class = "h2-27px"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
                     "<b>", "Child protection plan (CPP)", "</b><br>",
                     "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
@@ -251,7 +251,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Child protection plans (CPP) longer than 2 years, by region"),
+                    h2("Child protection plans (CPP) longer than 2 years, by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_cpp_duration_reg"),
@@ -284,7 +284,7 @@ outcome3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Child protection plans (CPP) longer than 2 years, by local authority"),
+                    h2("Child protection plans (CPP) longer than 2 years, by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(duration_cpp$time_period))),
                     radioGroupButtons(
                       "CPP_duration_stats_toggle",
@@ -302,7 +302,7 @@ outcome3_tab <- function() {
                 accordion_panel(
                   "Hospital admissions caused by unintentional and deliberate injuries to children and young people",
                   gov_row(
-                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years)"),
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years)", class = "h2-27px"),
                     # p("Hospital admissions"),
                     insert_text(inputId = "hospital_admissions_definition", text = paste(
                       "<b>", "Hospital admissions", "</b><br>",
@@ -345,7 +345,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("admissions_region_plot"),
@@ -396,7 +396,7 @@ outcome3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority"),
+                    h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years) by local authority", class = "h2-27px"),
                     br(),
                     radioGroupButtons(
                       "hosp_admission_toggle",
@@ -418,7 +418,7 @@ outcome3_tab <- function() {
                 br()
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect", class = "h2-27px"),
                 p("This metric looks at those children who are assessed as needing support for child abuse or neglect."),
                 warning_text(inputId = "assessment_factors_def1", text = paste(
                   "Factors identified at the end of assessment are additional factors that social workers record as being relevant in an episode of need.
@@ -591,7 +591,7 @@ outcome3_tab <- function() {
                 br(),
               ),
               gov_row(
-                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home"),
+                h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home", class = "h2-27px"),
                 p("This metric looks at those children who are assessed as needing support for harms outside the home."),
                 warning_text(
                   inputId = "assessment_factors_def2", text = paste(

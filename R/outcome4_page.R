@@ -152,7 +152,7 @@ outcome4_tab <- function() {
                 ## Placement changes during year -----------
                 accordion_panel(
                   "Percentage of CLA with 3 or more placements during the year",
-                  h2("Percentage of CLA with 3 or more placements during the year"),
+                  h2("Percentage of CLA with 3 or more placements during the year", class = "h2-27px"),
                   p("Those children who cannot remain living with families or family network should be provided with a stable home environment. Minimising changes to the number of times that children have to move home while in care is key to this ambition."),
                   gov_row(
                     plotlyOutput("placement_changes_ts_plot"),
@@ -182,7 +182,7 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Percentage of CLA with 3 or more placements during the year by region"),
+                    h2("Percentage of CLA with 3 or more placements during the year by region", class = "h2-27px"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("placement_changes_region_plot"),
@@ -213,7 +213,7 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Percentage of CLA with 3 or more placements during the year by LA"),
+                    h2("Percentage of CLA with 3 or more placements during the year by LA", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(placement_changes_data$time_period))),
                     radioGroupButtons(
                       "placement_changes_stats_toggle",
@@ -229,7 +229,7 @@ outcome4_tab <- function() {
                 accordion_panel(
                   "Distance of placements from home",
                   gov_row(
-                    h2("Placements more than 20 miles from home"),
+                    h2("Placements more than 20 miles from home", class = "h2-27px"),
                     p("Children should be supported to remain in school placements and to retain contact with friends and family networks where this is in their best interests. As such, where possible, children should be supported to remain close to their home address."),
                     insert_text(
                       inputId = "distance_definition",
@@ -266,7 +266,7 @@ outcome4_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Placements more than 20 miles from home by region"),
+                    h2("Placements more than 20 miles from home by region", class = "h2-27px"),
                     plotlyOutput("placement_dist_region_plot"),
                     br(),
                     details(
@@ -296,7 +296,7 @@ outcome4_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Placements more than 20 miles from home by local authority"),
+                    h2("Placements more than 20 miles from home by local authority", class = "h2-27px"),
                     p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
                     radioGroupButtons(
                       "placement_dist_stats_toggle",
@@ -311,7 +311,7 @@ outcome4_tab <- function() {
                 ## Type of placement ----------------
                 accordion_panel(
                   "Percentage of children living in foster, secure homes, children's homes, or supported accommodation",
-                  h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation"),
+                  h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation", class = "h2-27px"),
                   p("This indicator looks at the proportion of children living in different placement types. Where possible, the aim is to support children in care to live in foster care arrangements."),
                   gov_row(
                     # Box here to have an extra dropdown just for this section to split the percentage for each placement
@@ -362,7 +362,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by region"),
+                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by region", class = "h2-27px"),
                         p("This chart will only react to the placement type filter, not the geographical level and location selected in the filters at the top."),
                         br(),
                         insert_text(inputId = "Placement_types", text = paste(
@@ -399,7 +399,7 @@ outcome4_tab <- function() {
                         )
                       ),
                       gov_row(
-                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by LA"),
+                        h2("Percentage of children living in foster, secure homes, children's homes, or supported accommodation by LA", class = "h2-27px"),
                         p(sprintf("The charts below represent data from %s.", max(placement_data$time_period))),
                         insert_text(inputId = "Placement_types", text = paste(
                           "<b>", "Placement types", "</b><br>",
@@ -423,7 +423,7 @@ outcome4_tab <- function() {
                   "Average time between placement order and match for those children who are adopted",
                   gov_row(
                     div(
-                      h2("Average time between placement order and match for those children who are adopted"),
+                      h2("Average time between placement order and match for those children who are adopted", class = "h2-27px"),
                       p("For those children for whom adoption has been assessed as the right option, ensuring that the child moves to an appropriate home as soon as possible will increase stability for the child."),
                       class = "input_box",
                       style = "min-height:100%; height = 100%; overflow-y: visible",
@@ -499,7 +499,7 @@ outcome4_tab <- function() {
                 accordion_panel(
                   "Strengths and difficulties questionnaire (SDQ score)",
                   gov_row(
-                    h2("Strengths and difficulties questionnaire (SDQ score)"),
+                    h2("Strengths and difficulties questionnaire (SDQ score)", class = "h2-27px"),
                     insert_text(
                       inputId = "sdq_definition",
                       text = paste(
@@ -535,7 +535,7 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("SDQ score by Region"),
+                    h2("SDQ score by Region", class = "h2-27px"),
                     br(),
                     plotlyOutput("SDQ_region_plot"),
                     br(),
@@ -563,7 +563,7 @@ outcome4_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("SDQ score by local authority"),
+                    h2("SDQ score by local authority", class = "h2-27px"),
                     br(),
                     radioGroupButtons(
                       "sdq_score_toggle",
