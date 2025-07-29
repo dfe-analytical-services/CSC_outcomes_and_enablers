@@ -85,10 +85,10 @@ outcome2_tab <- function() {
           )
         )
       ),
-      br(),
+     # br(),
       # confirmation choice
       gov_row(
-        br(),
+      #  br(),
         p(htmlOutput("outcome2_choice_text1"), htmlOutput("outcome2_choice_text2")),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_o2 == 'Cumbria')",
@@ -96,7 +96,7 @@ outcome2_tab <- function() {
         # ),
       ),
       gov_row(
-        br(),
+      #  br(),
         div(
           tabsetPanel(
             id = "outcome2_panels",

@@ -41,11 +41,11 @@ enabler2_tab <- function() {
           )
         )
       ),
-      br(),
+     # br(),
       gov_row(
-        br(),
+      #  br(),
         p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
-        br(),
+      #  br(),
       ),
       gov_row(
         div(

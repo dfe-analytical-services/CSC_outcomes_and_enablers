@@ -82,9 +82,9 @@ outcome1_tab <- function() {
           )
         )
       ),
-      br(),
+     # br(),
       gov_row(
-        br(),
+      # br(),
         # Confirmation of user selection
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         # conditionalPanel(
@@ -93,7 +93,7 @@ outcome1_tab <- function() {
         # ),
       ),
       gov_row(
-        br(),
+       # br(),
         div(
           tabsetPanel(
             id = "outcome1_panels",

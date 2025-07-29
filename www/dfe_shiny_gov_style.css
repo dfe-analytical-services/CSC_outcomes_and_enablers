@@ -338,7 +338,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 .input_box{
   background-color: #e5e6e7;
-  padding: 19px;
+  padding: 19px 19px 0px 19px;
   height: 100%;
   min-height: 100%;
   color: #000;
