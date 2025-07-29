@@ -60,7 +60,7 @@ summary_page_tab <- function() {
             downloadButton(
               "summary_page_download",
               label = "Download CSV",
-              class = "btn btn-default",
+              class = "govuk-button",
               icon = shiny::icon("download")
             ) # actionButton('load_inputs', 'Load inputs') #CSSDownloader
           ),
