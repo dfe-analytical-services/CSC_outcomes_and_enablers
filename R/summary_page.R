@@ -6,7 +6,7 @@ summary_page_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Summary of National Framework indicators", class = "h2-27px")
+          h2("Summary of National Framework indicators"),
         )
       ),
       gov_row(

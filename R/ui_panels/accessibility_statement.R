@@ -5,7 +5,7 @@ a11y_panel <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Accessibility statement for Children's Social Care - Outcomes and Enablers dashboard", class = "h2-27px"),
+          h2("Accessibility statement for Children's Social Care - Outcomes and Enablers dashboard"),
           p(
             "This accessibility statement applies to the",
             "https://department-for-education.shinyapps.io/csc-outcomes-enablers/",
@@ -17,7 +17,7 @@ a11y_panel <- function() {
             ), ".",
             "This statement does not cover any other services run by the Department for Education (DfE) or GOV.UK."
           ),
-          h2("How you should be able to use this website", class = "h2-27px"),
+          h2("How you should be able to use this website"),
           p("We want as many people as possible to be able to use this website. You should be able to:"),
           tags$div(tags$ul(
             tags$li("change colours, contrast levels and fonts using browser or device settings"),
@@ -31,7 +31,7 @@ a11y_panel <- function() {
             a(href = "https://mcmw.abilitynet.org.uk/", "AbilityNet"),
             " has advice on making your device easier to use if you have a disability."
           ),
-          h2("How accessible this website is", class = "h2-27px"),
+          h2("How accessible this website is"),
           p("We know some parts of this website are not fully accessible:"),
           tags$div(tags$ul(
             tags$li(paste(
@@ -45,7 +45,7 @@ a11y_panel <- function() {
               "users to download."
             )),
           )), # TODO
-          h2("Feedback and contact information", class = "h2-27px"),
+          h2("Feedback and contact information"),
           p(
             "If you need information on this website in a different format please see the parent",
             "publications",
@@ -66,7 +66,7 @@ a11y_panel <- function() {
               "explore.statistics@education.gov.uk"
             )
           )),
-          h2("Enforcement procedure", class = "h2-27px"),
+          h2("Enforcement procedure"),
           p("The Equality and Human Rights Commission (EHRC) is responsible for enforcing the Public Sector Bodies
              (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018
              (the ‘accessibility regulations’)."),
@@ -79,7 +79,7 @@ a11y_panel <- function() {
             ),
             "."
           ),
-          h2("Technical information about this website's accessibility", class = "h2-27px"),
+          h2("Technical information about this website's accessibility"),
           p("The Department for Education (DfE) is committed to making its website accessible, in accordance with the
           Public Sector Bodies (Websites and Mobile Applications) (No. 2) Accessibility Regulations 2018."),
           h3("Compliance status"),
@@ -107,7 +107,7 @@ a11y_panel <- function() {
           )),
           h3("Disproportionate burden"),
           p("Not applicable."),
-          h2("How we tested this website", class = "h2-27px"),
+          h2("How we tested this website"),
           p(
             "The template used for this website was last tested on 12 March 2024 against",
             a(
@@ -144,7 +144,7 @@ a11y_panel <- function() {
             ),
             "."
           ),
-          h2("What we're doing to improve accessibility", class = "h2-27px"),
+          h2("What we're doing to improve accessibility"),
           p("We plan to continually test the service for accessibility issues, and are working through a prioritised
           list of issues to resolve."),
           p(
@@ -156,7 +156,7 @@ a11y_panel <- function() {
             ),
             "."
           ),
-          h2("Preparation of this accessibility statement", class = "h2-27px"),
+          h2("Preparation of this accessibility statement"),
           p("This statement was prepared on 1st July 2024. It was last reviewed on 8th October 2024."),
           p(
             "The template used for this website was last tested in March 2024 against the WCAG 2.2 AA standard.

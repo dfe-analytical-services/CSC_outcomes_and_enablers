@@ -5,8 +5,8 @@ support_links <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Support and feedback", class = "h2-27px"),
-          h2("Give us feedback", class = "h2-27px"),
+          h2("Support and feedback"),
+          h2("Give us feedback"),
           p(
             "If you have any feedback or suggestions for improvements, submit them using our ",
             a(
@@ -18,7 +18,7 @@ support_links <- function() {
             "If you spot any errors or bugs while using this dashboard, screenshot and email them to",
             a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", target = "_blank", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after")), "."
           ),
-          h2("Find more information on the data", class = "h2-27px"),
+          h2("Find more information on the data"),
           p("Most data included in the dashboard is children’s social care statistics published by DfE and available on", a(href = "https://explore-education-statistics.service.gov.uk/", "Explore Education Statistics.", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"), " The publications include:"),
           tags$ul(
             tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions", "Children looked after in England including adoptions (last updated:	14 November 2024) (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
@@ -32,12 +32,12 @@ support_links <- function() {
             tags$li(a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "Children's services statistical neighbour benchmarking tool (last updated: April 2021) (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;")),
             tags$li(a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england", "Outcomes for children in need including children looked after (last updated 18 April 2024) (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"))
           ),
-          h2("Contact us", class = "h2-27px"),
+          h2("Contact us"),
           p(
             "If you have questions about the dashboard or data within it, contact us at ",
             a(href = "mailto:CSCDashboard.FEEDBACK@education.gov.uk", target = "_blank", "CSCDashboard.FEEDBACK@education.gov.uk", .noWS = c("after"))
           ),
-          h2("See the source code", class = "h2-27px"),
+          h2("See the source code"),
           p(
             "The source code for this dashboard is available in our ",
             a(href = "https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers", target = "_blank", "GitHub repository (opens in a new tab)", .noWS = c("after")),

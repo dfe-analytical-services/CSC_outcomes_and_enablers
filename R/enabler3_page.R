@@ -6,7 +6,7 @@ enabler3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Enabler: The workforce is equipped and effective", class = "h2-27px"),
+          h2("Enabler: The workforce is equipped and effective"),
         )
       ),
       gov_row(
@@ -128,7 +128,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Social worker turnover",
                   gov_row(
-                    h2("Social worker turnover", class = "h2-27px"),
+                    h2("Social worker turnover"),
                     p("Prioritising a stable workforce allows children, young people and families to maintain consistent relationships with practitioners."),
                     insert_text(inputId = "social_work_turnover_definition", text = paste(
                       "The ", "<b>", "turnover rate", "</b>", " is calculated as (the number of) FTE (full-time equivalent) children and family social worker leavers in the year to 30 September divided by FTE children and family social workers in
@@ -166,7 +166,7 @@ enabler3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Turnover rates by region", class = "h2-27px"),
+                    h2("Turnover rates by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_turnover_reg"),
@@ -201,7 +201,7 @@ enabler3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Turnover rates by local authority", class = "h2-27px"),
+                    h2("Turnover rates by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "turnover_stats_toggle",
@@ -217,7 +217,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Agency rates",
                   gov_row(
-                    h2("Agency rates", class = "h2-27px"),
+                    h2("Agency rates"),
                     p("Prioritising a stable and permanent workforce allows children, young people and families to maintain consistent relationships with practitioners.
                            Agency workers should only be used as per the national agency rules from Autumn 2024."),
                     insert_text(inputId = "agency_rates_definition", text = paste(
@@ -264,7 +264,7 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Agency rates by region", class = "h2-27px"),
+                    h2("Agency rates by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_agency_reg"),
@@ -306,7 +306,7 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Agency rates by local authority", class = "h2-27px"),
+                    h2("Agency rates by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "agency_stats_toggle",
@@ -322,7 +322,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Vacancy rates",
                   gov_row(
-                    h2("Vacancy rates", class = "h2-27px"),
+                    h2("Vacancy rates"),
                     p("A workforce strategy should develop and maintain an effective workforce. With a well-supported workforce vacancy rates should remain low."),
                     insert_text(inputId = "vacancy_rates_definition", text = paste(
                       "<b>", "Vacancies", "</b>", "  are defined as any FTE (child and family social worker) vacancy at 30 September within a local authority’s organisational structure, including vacancies that are not being actively recruited for, and those covered by agency workers.", "<br>", "<br>",
@@ -361,7 +361,7 @@ enabler3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Vacancy rates by region", class = "h2-27px"),
+                    h2("Vacancy rates by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_vacancy_reg"),
@@ -395,7 +395,7 @@ enabler3_tab <- function() {
                     ),
                   ),
                   gov_row(
-                    h2("Vacancy rates by local authority", class = "h2-27px"),
+                    h2("Vacancy rates by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "vacancy_stats_toggle",
@@ -430,7 +430,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Social worker caseloads",
                   gov_row(
-                    h2("Social worker caseloads", class = "h2-27px"),
+                    h2("Social worker caseloads"),
                     p("Ensuring that practitioners have an appropriate caseload supports recruitment and
                          retention and allows practitioners to deliver impactful services."),
                     insert_text(inputId = "caseload_definition", text = paste(
@@ -470,7 +470,7 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Social worker caseloads by region", class = "h2-27px"),
+                    h2("Social worker caseloads by region"),
                     p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
                     plotlyOutput("plot_caseload_reg"),
@@ -504,7 +504,7 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Social worker caseloads by local authority", class = "h2-27px"),
+                    h2("Social worker caseloads by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
                     radioGroupButtons(
                       "caseload_stats_toggle",
@@ -539,7 +539,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Social worker ethnicity",
                   gov_row(
-                    h2("Social worker ethnicity", class = "h2-27px"),
+                    h2("Social worker ethnicity"),
                     p("A diverse workforce, across all levels, should enable practice which reflects the cultural, linguistic, and religious needs of the communities practitioners serve."),
                     insert_text(inputId = "Ethnicity_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
@@ -585,7 +585,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Social worker ethnicity vs. general population",
                   gov_row(
-                    h2("Social worker ethnicity vs. general population", class = "h2-27px"),
+                    h2("Social worker ethnicity vs. general population"),
                     insert_text(inputId = "Ethnicity_vs_general_definition", text = paste(
                       "<b>", "Ethnicity of social workers (headcount) vs. ethnicity of general population", "</b><br>",
                       "Headcount percentage by ethnicity group, for children and family social workers in post at 30 September with known ethnicity, compared to known ethnicity breakdown of general population."
@@ -631,7 +631,7 @@ enabler3_tab <- function() {
                 accordion_panel(
                   "Social worker ethnicity by seniority level",
                   gov_row(
-                    h2("Social worker ethnicity by seniority level", class = "h2-27px"),
+                    h2("Social worker ethnicity by seniority level"),
                     insert_text(inputId = "Ethnicity_by_role_definition", text = paste(
                       "<b>", "Ethnicity (headcount)", "</b><br>",
                       "Headcount percentage by ethnicity group and social worker role, for children and family social workers in post at 30 September with known ethnicity."
