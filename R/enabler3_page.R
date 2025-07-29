@@ -80,9 +80,7 @@ enabler3_tab <- function() {
           ),
         )
       ),
-     # br(),
       gov_row(
-      #  br(),
         p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames / Richmond upon Thames')",
@@ -92,7 +90,6 @@ enabler3_tab <- function() {
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire / West Northamptonshire')",
           p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
         ),
-       # br(),
         div(
           tabsetPanel(
             id = "enabler3_panels",

@@ -41,12 +41,9 @@ enabler2_tab <- function() {
           )
         )
       ),
-     # br(),
       gov_row(
-      #  br(),
-        p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
-      #  br(),
-      ),
+      p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
+       ),
       gov_row(
         div(
           tabsetPanel(
