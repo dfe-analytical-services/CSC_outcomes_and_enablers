@@ -55,37 +55,69 @@ template. 80% works well here to reduce white space on the right hand side.*/
   margin-right: 0px;
 }
 
-.nav-pills > li.active > a {
+/* this is the definition of the left-side navbar */
+.nav-pills > li.nav-item > a {
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  font-weight: 700;
+  font-weight: 400;
   line-height: 1.1428571429;
-  background-color: #f3f2f1 !important;
-  color: #000 !important;
   font-size: 15px;
+  padding: 10px;
+  border-left: 4px solid transparent;
+  text-decoration: underline !important;
+  background-color: white !important;
+  color: 	#1d70b8 !important;
+}
+/*
+.nav-pills > li.nav-item > a {
+  font-family: "GDS Transport", Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  font-weight: 400;
+  line-height: 1.1428571429;
+  font-size: 15px;
+  padding: 10px;
+  border-left: 4px solid transparent;
+  text-decoration: underline !important;
+  background-color: white !important;
+  color: 	#1d70b8 !important;
+}
+*/
+
+/* this rule is solely for the active navbar link */
+.nav-pills > li.nav-item > a.nav-link.active {
+  font-weight: 700;
+  background-color: #1d70b8 !important;
+  color: white !important;
   border-color: #1d70b8;
-  text-decoration: none
-  
+  text-decoration: none !important;
 }
 
-.nav-pills > li.active > a,
+#navlistPanel {
+  position: sticky;
+  top: 0;
+  overflow: hidden;
+}
+
+/*
 .nav-pills > li.active > a:focus,
 .nav-pills > li.active > a:hover {
   color: #000 !important;
 }
+*/
 
+/*
 .nav-pills > li > a:focus,
 .nav-pills > li > a:hover {
   border-color: #1d70b8;
   color: #003078 !important;
 }
-
 .nav-pills > li > a {
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  /*font-weight: 700;*/
+  font-weight: 700;
   font-weight: 400;
   line-height: 1.1428571429;
   font-size: 15px;
@@ -94,6 +126,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
   text-decoration: underline;
   color: 	#1d70b8 !important;
 }
+*/
 
 /* Tabs layout styling */
 .tabbable{
