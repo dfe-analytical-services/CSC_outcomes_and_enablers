@@ -129,13 +129,155 @@ template. 80% works well here to reduce white space on the right hand side.*/
 */
 
 /* Tabs layout styling */
-.tabbable{
+/* question around font-size and weight? */
+
+
+/* this is the div container which holds the tab control */
+.tabbable  {
+    margin-top: 5px;
+    margin-bottom: 20px;
+    font-family: GDS Transport, arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.25
+}
+
+@media (min-width:40.0625em) {
+    .tabbable {
+        margin-bottom: 30px;
+        font-size: 1.1875rem;
+        line-height: 1.3157894737
+    }
+}
+
+@media print {
+    .tabbable {
+        font-family: sans-serif
+        font-size: 14pt;
+        line-height: 1.15
+    }
+}
+
+/* this sections refers to the equivalent of govuk-tabs__list */
+.tabbable > ul.nav-tabs {
+    padding: 0;
+    list-style: none;
+    margin: 0 0 20px
+}
+
+@media (min-width:40.0625em) {
+    .tabbable > ul.nav-tabs {
+        margin-bottom: 30px
+    }
+}
+
+
+
+/* equates to govuk-tabs__list-item in the GDS website */
+
+
+
+.tabbable li.nav-item {
+  position: relative;
+  margin-right: 5px;
+  margin-bottom: 0;
+  margin-left: 0;
+  float: left;
+  padding 10px 10px;
+  background-color: #f3f2f1;
+  text-align: center;
+}
+
+
+
+
+
+.tabbable li:not(:has(a.active))  {
+  background-color: bg-white;
+}
+
+
+
+
+/* equates to govuk-tabs__tab in the GDS website */
+
+
+.tabbable li.nav-item > a {
+    font-family: GDS Transport, arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-decoration: underline;
+    text-decoration-thickness: max(1px, .0625rem);
+    text-underline-offset: .1578em;
+    display: inline-block;
+    margin-bottom: 0px;
+    color: black;
+}
+
+@media print {
+    .tabbable li.nav-item > a {
+        font-family: sans-serif
+    }
+}
+
+.tabbable li.nav-item > a.active {
+    text-decoration: none;
+}
+
+
+
+.tabbable li.nav-item > a.nav-link:hover {
+    text-decoration-thickness: max(3px, .1875rem, .12em);
+    -webkit-text-decoration-skip-ink: none;
+    text-decoration-skip-ink: none;
+    -webkit-text-decoration-skip: none;
+    text-decoration-skip: none
+}
+
+.tabbable li.nav-item > a.nav-link:focus {
+    outline: 3px solid transparent;
+    background-color: #fd0;
+    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    text-decoration: none;
+    -webkit-box-decoration-break: clone;
+    box-decoration-break: clone
+}
+
+==============================
+
+
+
+
+.tabbable li > a:visited {
+    color: #4c2c92
+}
+
+.tabbable li > a:hover {
+    color: rgba(11,12,12,.99);
+}
+}
+
+.tabbable li > a:active, .tabbable li > a:focus {
+    color: #0b0c0c
+}
+
+
+/*
+{
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-size:18px;
   font-weight:500;
 }
+
+.govuk-tabs 
+
+
+
+
 .nav-tabs > li > a {
   text-decoration: none;
   color: #000;
@@ -160,7 +302,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
   color: #000;
 
 }
-
+*/
 .well {
     min-height: 90vh;
     padding: 19px;
@@ -362,7 +504,7 @@ h2 {
   background-color: #1d70b8!important;
 }*/
 
-.bg-dark-blue{
+.bg-dark-blue {
   background-color: #fff!important;
   color: #000;
   font-size: 22px;
@@ -764,13 +906,6 @@ btn is the user guide button
   
 }
 
-/*Domain tab outlines*/
-.nav-tabs {
-  --bs-nav-tabs-link-active-border-color: #0b3b6a #0b3b6a #0b3b6a !important;
-  border-bottom: solid #0b3b6a;
-  font-weight: 700;
-}
-
 
 /* -------------- Summary Page CSS -------------- */
 /* There are a number of aspects of styling related to the summary page including the accordions, tabs, sub tables and header tables, domain text*/
@@ -836,8 +971,8 @@ btn is the user guide button
 }
 
 /* For the column headings add some left padding to the first column to align with other elements */
-#summary_page_outcomes .hidden-table-body .rt-tr-header:first-child > :first-child,
-#summary_page_enablers .hidden-table-body .rt-tr-header:first-child > :first-child {
+#summary_page_outcomes > .hidden-table-body > .rt-tr-header:first-child > :first-child,
+#summary_page_enablers > .hidden-table-body > .rt-tr-header:first-child > :first-child {
   padding-left:8px !important;
 }
 
@@ -878,11 +1013,11 @@ div .panel.card.mb-3.panel-default.border-default {
   
 }
 
-/* For the summary page selected tab */
+/* For the summary page selected tab 
 #summary_page_panels a.active {
   font-weight: bold !important;
 }
-
+*/
 
 
 
@@ -994,3 +1129,6 @@ div .panel.card.mb-3.panel-default.border-default {
     background-color: #00703c;
     cursor: not-allowed
 }
+
+
+
