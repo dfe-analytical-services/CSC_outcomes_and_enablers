@@ -6,13 +6,13 @@ summary_page_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Summary of National Framework indicators")
+          h2("Summary of National Framework indicators"),
         )
       ),
       gov_row(
         # Input boxes for geographic level and geographic breakdown
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -36,9 +36,7 @@ summary_page_tab <- function() {
           )
         )
       ),
-      br(),
       gov_row(
-        br(),
         # Confirmation of user selection
         p(htmlOutput("summary_page_choice_text1"), htmlOutput("summary_page_choice_text2")),
         conditionalPanel(
@@ -53,10 +51,9 @@ summary_page_tab <- function() {
       # now the main body of the page with 2 tabs containing accordions (4 outcomes, 2 enablers) and domain sections within each.
       # The tables are within the domains
       gov_row(
-        br(),
         div(
           div(
-            style = "position:absolute;right:1em;margin-top:-20px",
+            style = "position:absolute;right:1em;margin-top:-10px",
             downloadButton(
               "summary_page_download",
               label = "Download CSV",

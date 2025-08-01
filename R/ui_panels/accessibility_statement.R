@@ -5,7 +5,7 @@ a11y_panel <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Accessibility statement for Children's Social Care - Outcomes and Enablers dashboard"),
+          h2("Accessibility statement for Children's Social Care - Outcomes and Enablers dashboard"),
           p(
             "This accessibility statement applies to the",
             "https://department-for-education.shinyapps.io/csc-outcomes-enablers/",

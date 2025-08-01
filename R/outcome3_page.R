@@ -6,13 +6,13 @@ outcome3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 3: Children and young people are safe in and outside of their home")
+          h2("Outcome 3: Children and young people are safe in and outside of their home", class = "h2-27px"),
         )
       ),
       # dropdown boxes
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -85,10 +85,8 @@ outcome3_tab <- function() {
           )
         )
       ),
-      br(),
       # confirmation sentence
       gov_row(
-        br(),
         p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
@@ -96,7 +94,6 @@ outcome3_tab <- function() {
         # ),
       ),
       gov_row(
-        br(),
         div(
           tabsetPanel(
             id = "outcome3_panels",

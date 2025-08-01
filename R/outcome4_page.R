@@ -6,12 +6,12 @@ outcome4_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 4: Children in care and care leavers have stable, loving homes")
+          h2("Outcome 4: Children in care and care leavers have stable, loving homes"),
         )
       ),
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -85,15 +85,12 @@ outcome4_tab <- function() {
           )
         )
       ),
-      br(),
       gov_row(
-        br(),
         p(htmlOutput("outcome4_choice_text1"), htmlOutput("outcome4_choice_text2")),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_o4 == 'Cumbria')",
         #   p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         # ),
-        br(),
         div(
           tabsetPanel(
             id = "outcome4_panels",

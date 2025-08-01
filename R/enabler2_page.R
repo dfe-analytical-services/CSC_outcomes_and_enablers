@@ -6,12 +6,12 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler: Leaders drive conditions for effective practice")
+          h2("Enabler: Leaders drive conditions for effective practice"),
         )
       ),
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -41,11 +41,8 @@ enabler2_tab <- function() {
           )
         )
       ),
-      br(),
       gov_row(
-        br(),
         p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
-        br(),
       ),
       gov_row(
         div(
