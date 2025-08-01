@@ -99,9 +99,6 @@ outcome1_tab <- function() {
             tabPanel(
               "Access to support and getting help",
               fluidRow(
-                br()
-              ),
-              fluidRow(
                 br(),
                 column(
                   width = 6,
@@ -359,9 +356,6 @@ outcome1_tab <- function() {
             # Domain 2 --------------
             tabPanel(
               "Family stability",
-              fluidRow(
-                br(),
-              ),
               # Headline stats boxes
               fluidRow(
                 column(
@@ -785,7 +779,6 @@ outcome1_tab <- function() {
             # Domain 3 --------------
             tabPanel(
               "Child wellbeing and development",
-              br(),
               fluidRow(
                 column(
                   width = 4,
@@ -1147,7 +1140,6 @@ outcome1_tab <- function() {
             # Domain 4 ----
             tabPanel(
               "Educational attainment",
-              br(),
               fluidRow(
                 column(
                   width = 4,

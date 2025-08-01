@@ -53,7 +53,7 @@ summary_page_tab <- function() {
       gov_row(
         div(
           div(
-            style = "position:absolute;right:1em;margin-top:-20px",
+            style = "position:absolute;right:1em;margin-top:-10px",
             downloadButton(
               "summary_page_download",
               label = "Download CSV",

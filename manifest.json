@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "8138f2c20a13b7b2f529740d062a0a5f"
+      "checksum": "b0aa589f1ebf91b9d99580ee6c1debee"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5043,7 +5043,7 @@
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "f6b2aa64172ef35a41935a6958181a80"
+      "checksum": "70dd599758d91b80d4e53d879a650cd0"
     },
     "R/outcome2_page.R": {
       "checksum": "0129c46655f068d98c293803b8e6b9c0"
@@ -5070,7 +5070,7 @@
       "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
     },
     "R/summary_page.R": {
-      "checksum": "f4581cfad32f3142c6d2ee2fd5bda61e"
+      "checksum": "d74c06100ffeaa6595ea56e27f637017"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "27edbec916f88586657935644d2d55df"
@@ -5175,7 +5175,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "97979958dfaa172583aaf2b963c9aa79"
+      "checksum": "7d41a5a145b48c021caf7f3b5afca23e"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"

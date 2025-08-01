@@ -55,6 +55,17 @@ template. 80% works well here to reduce white space on the right hand side.*/
   margin-right: 0px;
 }
 
+/* this is the style for the .govuk-main-wrapper class which is used for padding
+   the main page and overrides the CSS defined in http://127.0.0.1:7491/shinyGovstyle/css/govuk-frontend-norem.css */
+
+@media (min-width: 40.0625em)  {
+  .govuk-main-wrapper {
+    padding-top: 20px !important;
+    padding-bottom: 20px !important;
+  }
+}
+
+
 /* this is the definition of the left-side navbar */
 .nav-pills > li.nav-item > a {
   font-family: "GDS Transport", Arial, sans-serif;
@@ -134,7 +145,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 /* this is the div container which holds the tab control */
 .tabbable  {
-    margin-top: 5px;
+    margin-top: 20px;
     margin-bottom: 20px;
     font-family: GDS Transport, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -263,6 +274,13 @@ template. 80% works well here to reduce white space on the right hand side.*/
     color: #0b0c0c
 }
 
+============================================================
+
+/* style the margin in the main wrapper for the 3rd div (i.e. the user feedback text) */
+
+main > div.nth-child(3) {
+  margin-bottom: 40px;
+}
 
 /*
 {
@@ -516,6 +534,7 @@ h2 {
 .geo_input_box{
   background-color: #e5e6e7;
   padding: 19px 19px 0px 19px;
+  margin-bottom: 30px;
   height: 100%;
   min-height: 100%;
   color: #000;
@@ -927,6 +946,11 @@ btn is the user guide button
   color: #fff !important;
   padding-left: 16px !important;
 }
+
+#summary_page_outcomes .accordion-button::after,
+#summary_page_enablers .accordion-button::after {
+    background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23ffffff'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !important;
+ }
 
 #summary_page_outcomes .accordion-title,
 #summary_page_enablers .accordion-title {
