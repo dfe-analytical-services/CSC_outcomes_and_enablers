@@ -53,9 +53,6 @@ enabler2_tab <- function() {
             tabPanel(
               "Spending",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -200,9 +197,6 @@ enabler2_tab <- function() {
             ## Ofsted ---------------------
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
-              fluidRow(
-                br()
-              ),
               fluidRow(
                 conditionalPanel(
                   condition = "input.select_geography_e2 == 'Local authority'",

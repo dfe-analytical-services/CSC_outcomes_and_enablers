@@ -99,9 +99,6 @@ outcome4_tab <- function() {
             tabPanel(
               "Stability and quality of where a child lives",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -479,9 +476,6 @@ outcome4_tab <- function() {
             tabPanel(
               "Child wellbeing",
               fluidRow(
-                br()
-              ),
-              fluidRow(
                 column(
                   width = 6,
                   value_box(
@@ -581,9 +575,6 @@ outcome4_tab <- function() {
             # Domain 3 ------
             tabPanel(
               "Quality of life for care experienced people",
-              fluidRow(
-                br()
-              ),
               fluidRow(
                 column(
                   width = 6,

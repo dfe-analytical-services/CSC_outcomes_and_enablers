@@ -101,9 +101,6 @@ outcome2_tab <- function() {
             tabPanel(
               "Families engaging and receiving support from their family network",
               fluidRow(
-                br()
-              ),
-              fluidRow(
                 column(
                   width = 6,
                   value_box(

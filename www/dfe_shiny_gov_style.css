@@ -65,7 +65,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
   }
 }
 
-
 /* this is the definition of the left-side navbar */
 .nav-pills > li.nav-item > a {
   font-family: "GDS Transport", Arial, sans-serif;
@@ -105,6 +104,14 @@ template. 80% works well here to reduce white space on the right hand side.*/
   text-decoration: none !important;
 }
 
+.nav-pills > li > a:focus,
+.nav-pills > li > a:hover {
+  border-color: #1d70b8;
+  color: #003078 !important;
+}
+
+
+
 #navlistPanel {
   position: sticky;
   top: 0;
@@ -119,11 +126,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
 */
 
 /*
-.nav-pills > li > a:focus,
-.nav-pills > li > a:hover {
-  border-color: #1d70b8;
-  color: #003078 !important;
-}
 .nav-pills > li > a {
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -145,7 +147,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 /* this is the div container which holds the tab control */
 .tabbable  {
-    margin-top: 20px;
+    margin-top: 40px;
     margin-bottom: 20px;
     font-family: GDS Transport, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -175,12 +177,13 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .tabbable > ul.nav-tabs {
     padding: 0;
     list-style: none;
-    margin: 0 0 20px
+    margin: 0 0 20px;
+    border-bottom-color: black;
 }
 
 @media (min-width:40.0625em) {
     .tabbable > ul.nav-tabs {
-        margin-bottom: 30px
+        margin-bottom: 20px
     }
 }
 
@@ -210,8 +213,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
 }
 
 
-
-
 /* equates to govuk-tabs__tab in the GDS website */
 
 
@@ -230,14 +231,15 @@ template. 80% works well here to reduce white space on the right hand side.*/
 @media print {
     .tabbable li.nav-item > a {
         font-family: sans-serif
+        border-color: white;
     }
 }
 
 .tabbable li.nav-item > a.active {
     text-decoration: none;
+    border-color: black;
+    border-bottom: white;
 }
-
-
 
 .tabbable li.nav-item > a.nav-link:hover {
     text-decoration-thickness: max(3px, .1875rem, .12em);
@@ -250,11 +252,17 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .tabbable li.nav-item > a.nav-link:focus {
     outline: 3px solid transparent;
     background-color: #fd0;
-    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    box-shadow: 0px 0px #fd0, 0 4px #0b0c0c;
     text-decoration: none;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone
 }
+
+.govuk-grid-row {
+    margin-right: 0px;
+    margin-left: -0px;
+}
+
 
 ==============================
 
@@ -278,9 +286,9 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 /* style the margin in the main wrapper for the 3rd div (i.e. the user feedback text) */
 
-main > div:nth-child(3) {
-  /*margin-bottom: 40px;*/
-  padding: 100px 0 !important;
+main:nth-child(3) {
+  margin-bottom: 30px;
+  /* padding: 100px 0 !important; */
 }
 
 /*
@@ -542,7 +550,7 @@ h2 {
 .geo_input_box{
   background-color: #e5e6e7;
   padding: 19px 19px 0px 19px;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   height: 100%;
   min-height: 100%;
   color: #000;
@@ -928,7 +936,8 @@ btn is the user guide button
   --bs-navbar-brand-color: #3D3D3D;
   font-family: "GDS Transport", arial, sans-serif !important;
   font-weight: 700;
-   margin-left: 13px;
+  margin-left: 8px;
+  padding-top: 12px;
 
   
 }
