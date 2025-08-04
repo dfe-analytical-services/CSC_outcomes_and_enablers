@@ -235,6 +235,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 
 .tabbable li.nav-item > a.active {
     text-decoration: none;
+    border-color: black;
 }
 
 
@@ -250,7 +251,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .tabbable li.nav-item > a.nav-link:focus {
     outline: 3px solid transparent;
     background-color: #fd0;
-    box-shadow: 0 -2px #fd0, 0 4px #0b0c0c;
+    box-shadow: 0px #fd0, 0 4px #0b0c0c;
     text-decoration: none;
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone
