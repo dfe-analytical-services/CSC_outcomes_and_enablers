@@ -101,9 +101,6 @@ outcome3_tab <- function() {
             tabPanel(
               "Child safety – general",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(

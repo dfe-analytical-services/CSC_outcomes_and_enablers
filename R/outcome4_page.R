@@ -99,9 +99,6 @@ outcome4_tab <- function() {
             tabPanel(
               "Stability and quality of where a child lives",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
