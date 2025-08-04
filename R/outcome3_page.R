@@ -411,9 +411,6 @@ outcome3_tab <- function() {
             # Child abuse / neglect -----
             tabPanel(
               "Child abuse / neglect",
-              fluidRow(
-                br()
-              ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"),
                 p("This metric looks at those children who are assessed as needing support for child abuse or neglect."),
@@ -584,9 +581,6 @@ outcome3_tab <- function() {
             # Harms outside the home ----
             tabPanel(
               "Harms outside the home",
-              fluidRow(
-                br(),
-              ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home"),
                 p("This metric looks at those children who are assessed as needing support for harms outside the home."),

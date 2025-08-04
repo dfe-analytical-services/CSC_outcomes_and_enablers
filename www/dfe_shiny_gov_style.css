@@ -65,7 +65,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
   }
 }
 
-
 /* this is the definition of the left-side navbar */
 .nav-pills > li.nav-item > a {
   font-family: "GDS Transport", Arial, sans-serif;
@@ -214,8 +213,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
 }
 
 
-
-
 /* equates to govuk-tabs__tab in the GDS website */
 
 
@@ -241,9 +238,8 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .tabbable li.nav-item > a.active {
     text-decoration: none;
     border-color: black;
+    border-bottom: white;
 }
-
-
 
 .tabbable li.nav-item > a.nav-link:hover {
     text-decoration-thickness: max(3px, .1875rem, .12em);
@@ -261,6 +257,12 @@ template. 80% works well here to reduce white space on the right hand side.*/
     -webkit-box-decoration-break: clone;
     box-decoration-break: clone
 }
+
+.govuk-grid-row {
+    margin-right: 0px;
+    margin-left: -0px;
+}
+
 
 ==============================
 

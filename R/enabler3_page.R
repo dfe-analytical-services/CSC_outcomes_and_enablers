@@ -97,9 +97,6 @@ enabler3_tab <- function() {
             tabPanel(
               "Workforce stability",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -415,9 +412,6 @@ enabler3_tab <- function() {
             tabPanel(
               "Quality of support for children and families",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -524,11 +518,8 @@ enabler3_tab <- function() {
             tabPanel(
               "Social worker ethnicity",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
-                  width = 6,
+                  width = 4,
                   value_box(
                     title = "Social workers from ethnic minority backgrounds",
                     value = htmlOutput("non_white_txt")
