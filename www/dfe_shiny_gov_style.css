@@ -105,6 +105,14 @@ template. 80% works well here to reduce white space on the right hand side.*/
   text-decoration: none !important;
 }
 
+.nav-pills > li > a:focus,
+.nav-pills > li > a:hover {
+  border-color: #1d70b8;
+  color: #003078 !important;
+}
+
+
+
 #navlistPanel {
   position: sticky;
   top: 0;
@@ -119,11 +127,6 @@ template. 80% works well here to reduce white space on the right hand side.*/
 */
 
 /*
-.nav-pills > li > a:focus,
-.nav-pills > li > a:hover {
-  border-color: #1d70b8;
-  color: #003078 !important;
-}
 .nav-pills > li > a {
   font-family: "GDS Transport", Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
