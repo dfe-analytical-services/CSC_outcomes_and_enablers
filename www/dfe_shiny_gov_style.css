@@ -179,6 +179,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
     list-style: none;
     margin: 0 0 20px;
     border-bottom-color: black;
+    border-bottom-width: 0.5px;
 }
 
 @media (min-width:40.0625em) {
@@ -222,10 +223,12 @@ template. 80% works well here to reduce white space on the right hand side.*/
     -moz-osx-font-smoothing: grayscale;
     text-decoration: underline;
     text-decoration-thickness: max(1px, .0625rem);
-    text-underline-offset: .1578em;
+    text-underline-offset: .2578em;
     display: inline-block;
     margin-bottom: 0px;
     color: black;
+    padding-top: 15px;
+    padding-bottom: 15px;
 }
 
 @media print {
@@ -238,6 +241,7 @@ template. 80% works well here to reduce white space on the right hand side.*/
 .tabbable li.nav-item > a.active {
     text-decoration: none;
     border-color: black;
+    border-width: 0.5px;
     border-bottom: white;
 }
 
