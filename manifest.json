@@ -4749,7 +4749,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "25d2ebedfdf394e306416d40bb733283"
+      "checksum": "071239561eaa59a19bb6007854bc122d"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4761,7 +4761,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "a0fe30eb8e46fffd33caeb57302e52fb"
+      "checksum": "560613773a1ae94e66ce8e6f3a147d81"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5010,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "c3e9a8b1571bf8be2cdd52b2dab9996a"
+      "checksum": "b634ce70b8c17af8f4ae537daaf47eaa"
     },
     "R/data_sources.R": {
       "checksum": "2ef120b0bab66a5c0f301ae9404cddbb"
@@ -5086,6 +5086,9 @@
     },
     "renv.lock": {
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
+    },
+    "Rprof.out": {
+      "checksum": "076cf1291a8cbef5c48dccf52e4d21e9"
     },
     "server.R": {
       "checksum": "cda6e8f77795cb782a3e92f9865f2a44"
