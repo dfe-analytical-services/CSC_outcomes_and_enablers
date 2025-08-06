@@ -53,13 +53,8 @@ summary_page_tab <- function() {
       gov_row(
         div(
           div(
-            style = "position:absolute;right:1em;margin-top:-10px",
-            downloadButton(
-              "summary_page_download",
-              label = "Download CSV",
-              class = "govuk-button",
-              icon = shiny::icon("download")
-            ) # actionButton('load_inputs', 'Load inputs') #CSSDownloader
+            csvDownloadButton(id = "summary_page_download", filename = "summary_page_download.csv"),
+            class = "download-button-summary-page"
           ),
           tabsetPanel(
             id = "summary_page_panels",

@@ -1067,8 +1067,8 @@ div .panel.card.mb-3.panel-default.border-default {
 
 
 
-/* GovStyle button */
 
+/* GovStyle button */
 .govuk-button {
     font-family: GDS Transport, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
@@ -1079,6 +1079,7 @@ div .panel.card.mb-3.panel-default.border-default {
     box-sizing: border-box;
     display: inline-block;
     position: relative;
+    float: right;
     width: 100%;
     margin: 0 0 22px;
     padding: 8px 10px 7px;
@@ -1115,7 +1116,7 @@ div .panel.card.mb-3.panel-default.border-default {
 
 @media (min-width:40.0625em) {
     .govuk-button {
-        margin-bottom: 32px;
+        margin-bottom: 12px;
         width: auto
     }
 }
@@ -1176,4 +1177,26 @@ div .panel.card.mb-3.panel-default.border-default {
 }
 
 
+
+
+.download-button-summary-page {
+    position: absolute;
+    right: 1em;
+    margin-top: 5px;
+    
+}
+
+/* sort out the download as csv button above the reactable to be on the right with the search box on the left in line */
+.rt-search {
+  align-self: baseline;
+}
+
+details div.govuk-grid-row > button {
+  top: 45px;
+  z-index: 9;
+}
+
+details div.govuk-grid-row:has(button) {
+  margin-top: -40px;
+}
 
