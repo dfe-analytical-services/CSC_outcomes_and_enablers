@@ -6,13 +6,13 @@ outcome1_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 1: Children, young people and families stay together and get the help they need")
+          h2("Outcome 1: Children, young people and families stay together and get the help they need"),
         )
       ),
       gov_row(
         # Input boxes for geographic level and geographic breakdown
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -82,9 +82,7 @@ outcome1_tab <- function() {
           )
         )
       ),
-      br(),
       gov_row(
-        br(),
         # Confirmation of user selection
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
         # conditionalPanel(
@@ -93,7 +91,6 @@ outcome1_tab <- function() {
         # ),
       ),
       gov_row(
-        br(),
         div(
           tabsetPanel(
             id = "outcome1_panels",
@@ -101,9 +98,6 @@ outcome1_tab <- function() {
             # Domain 1 --------------
             tabPanel(
               "Access to support and getting help",
-              fluidRow(
-                br()
-              ),
               fluidRow(
                 br(),
                 column(
@@ -362,9 +356,6 @@ outcome1_tab <- function() {
             # Domain 2 --------------
             tabPanel(
               "Family stability",
-              fluidRow(
-                br(),
-              ),
               # Headline stats boxes
               fluidRow(
                 column(
@@ -788,7 +779,6 @@ outcome1_tab <- function() {
             # Domain 3 --------------
             tabPanel(
               "Child wellbeing and development",
-              br(),
               fluidRow(
                 column(
                   width = 4,
@@ -1150,7 +1140,6 @@ outcome1_tab <- function() {
             # Domain 4 ----
             tabPanel(
               "Educational attainment",
-              br(),
               fluidRow(
                 column(
                   width = 4,

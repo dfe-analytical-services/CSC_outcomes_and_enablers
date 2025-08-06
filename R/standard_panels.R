@@ -5,7 +5,7 @@ support_links <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Support and feedback"),
+          h2("Support and feedback"),
           h2("Give us feedback"),
           p(
             "If you have any feedback or suggestions for improvements, submit them using our ",

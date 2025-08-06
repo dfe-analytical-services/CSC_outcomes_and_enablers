@@ -6,7 +6,7 @@ disclaimer_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Disclaimer")
+          h2("Disclaimer"),
         )
       ),
       br(),

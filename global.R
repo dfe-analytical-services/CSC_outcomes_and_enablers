@@ -147,10 +147,12 @@ csvDownloadButton <- function(
     id,
     filename = "data.csv",
     label = "Download as CSV") {
-  tags$button(
-    tagList(icon("download"), label),
-    onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
-    class = "govuk-button"
+  gov_row(
+    tags$button(
+      tagList(icon("download"), label),
+      onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
+      class = "govuk-button"
+    )
   )
 }
 
@@ -169,3 +171,7 @@ expandable <- function(inputId, label, contents) {
     shiny::tags$div(contents)
   )
 }
+
+
+# Reactable global settings ---------------
+options(reactable.language = reactableLang(searchPlaceholder = "Search within table"))

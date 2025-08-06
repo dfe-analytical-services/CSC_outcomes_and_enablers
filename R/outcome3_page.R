@@ -6,13 +6,13 @@ outcome3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Outcome 3: Children and young people are safe in and outside of their home")
+          h2("Outcome 3: Children and young people are safe in and outside of their home"),
         )
       ),
       # dropdown boxes
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -85,10 +85,8 @@ outcome3_tab <- function() {
           )
         )
       ),
-      br(),
       # confirmation sentence
       gov_row(
-        br(),
         p(htmlOutput("outcome3_choice_text1"), htmlOutput("outcome3_choice_text2")),
         # conditionalPanel(
         #   condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
@@ -96,16 +94,12 @@ outcome3_tab <- function() {
         # ),
       ),
       gov_row(
-        br(),
         div(
           tabsetPanel(
             id = "outcome3_panels",
             type = "tabs",
             tabPanel(
               "Child safety – general",
-              fluidRow(
-                br(),
-              ),
               fluidRow(
                 column(
                   width = 4,
@@ -417,9 +411,6 @@ outcome3_tab <- function() {
             # Child abuse / neglect -----
             tabPanel(
               "Child abuse / neglect",
-              fluidRow(
-                br()
-              ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"),
                 p("This metric looks at those children who are assessed as needing support for child abuse or neglect."),
@@ -590,9 +581,6 @@ outcome3_tab <- function() {
             # Harms outside the home ----
             tabPanel(
               "Harms outside the home",
-              fluidRow(
-                br(),
-              ),
               gov_row(
                 h2("Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms outside the home"),
                 p("This metric looks at those children who are assessed as needing support for harms outside the home."),

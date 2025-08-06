@@ -7,7 +7,7 @@ introductionPanel <- function() {
       gov_row(
         column(
           width = 12,
-          heading_text("Introduction", size = "l"),
+          h2("Introduction", size = "l"),
           p(
             "This dashboard displays data indicators to help both local and central government understand progress towards the outcomes and enablers set out in the",
             a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),

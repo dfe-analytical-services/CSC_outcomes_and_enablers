@@ -6,7 +6,7 @@ omitted_data_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Omitted data reason codes")
+          h2("Omitted data reason codes"),
         )
       ),
       br(),
