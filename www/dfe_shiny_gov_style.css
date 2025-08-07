@@ -1066,10 +1066,8 @@ div .panel.card.mb-3.panel-default.border-default {
 
 
 
-
-
-/* GovStyle button */
-.govuk-button {
+.govuk-button, .download-button-summary-page  {
+  
     font-family: GDS Transport, arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
@@ -1080,7 +1078,6 @@ div .panel.card.mb-3.panel-default.border-default {
     display: inline-block;
     position: relative;
     float: right;
-    width: 100%;
     margin: 0 0 22px;
     padding: 8px 10px 7px;
     border: 2px solid transparent;
@@ -1092,23 +1089,29 @@ div .panel.card.mb-3.panel-default.border-default {
     vertical-align: top;
     cursor: pointer;
     -webkit-appearance: none
+
+}
+
+/* GovStyle button */
+.govuk-button {
+    width: 100%;
 }
 
 @media print {
-    .govuk-button {
+    .govuk-button, .download-button-summary-page {
         font-family: sans-serif
     }
 }
 
 @media (min-width:40.0625em) {
-    .govuk-button {
+    .govuk-button, .download-button-summary-page {
         font-size: 1.1875rem;
         line-height: 1
     }
 }
 
 @media print {
-    .govuk-button {
+    .govuk-button, .download-button-summary-page {
         font-size: 14pt;
         line-height: 19px
     }
@@ -1121,7 +1124,8 @@ div .panel.card.mb-3.panel-default.border-default {
     }
 }
 
-.govuk-button:active, .govuk-button:hover, .govuk-button:link, .govuk-button:visited {
+.govuk-button:active, .govuk-button:hover, .govuk-button:link, .govuk-button:visited,
+.download-button-summary-page:active, .download-button-summary-page:hover, .download-button-summary-page:link, .download-button-summary-page:visited{
     color: #fff;
     text-decoration: none
 }
@@ -1131,7 +1135,7 @@ div .panel.card.mb-3.panel-default.border-default {
     border: 0
 }
 
-.govuk-button:hover {
+.govuk-button:hover, .download-button-summary-page:hover {
     background-color: #005a30
 }
 
@@ -1139,20 +1143,22 @@ div .panel.card.mb-3.panel-default.border-default {
     top: 2px
 }
 
-.govuk-button:focus {
+.govuk-button:focus, .download-button-summary-page:focus {
     border-color: #fd0;
     outline: 3px solid transparent;
     box-shadow: inset 0 0 0 1px #fd0
 }
 
-.govuk-button:focus:not(:active):not(:hover) {
+.govuk-button:focus:not(:active):not(:hover),
+.download-button-summary-page:focus:not(:active):not(:hover) {
     border-color: #fd0;
     color: #0b0c0c;
     background-color: #fd0;
     box-shadow: 0 2px 0 #0b0c0c
 }
 
-.govuk-button:before {
+.govuk-button:before,
+.download-button-summary-page:before {  
     content: "";
     display: block;
     position: absolute;
@@ -1176,9 +1182,6 @@ div .panel.card.mb-3.panel-default.border-default {
     cursor: not-allowed
 }
 
-
-
-
 .download-button-summary-page {
     position: absolute;
     right: 1em;
@@ -1191,11 +1194,11 @@ div .panel.card.mb-3.panel-default.border-default {
   align-self: baseline;
 }
 
-details div.govuk-grid-row > button {
-  top: 45px;
-  z-index: 9;
+/* this rule should override the above rule */
+details div.govuk-grid-row .govuk-button {
+    top: 45px;
+    z-index: 9;
 }
-
 details div.govuk-grid-row:has(button) {
   margin-top: -40px;
 }
