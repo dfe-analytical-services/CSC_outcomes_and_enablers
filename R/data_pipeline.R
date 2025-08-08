@@ -135,10 +135,28 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
     saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
   }
 
-  # now check that the data in the rds files matches the data we have generated
+  # now check that the data in the rds files matches the data we have generated ??
 
-  # now log the pipeline_run in the history
+  # now log the pipeline_run in the history, getting the sequentially next ID
+  print("* Saving pipeline run to history")
   pipeline_history <- readRDS("./data/pipeline/data_pipeline_run_history.rds")
+  last_pipeline_id <- if (length(pipeline_history) == 0) {
+    0
+  } else {
+    # loop through the list to get the maximum_id (ie. the latest run)
+    max(sapply(pipeline_history, function(x) x$pipeline_run_id))
+  }
+
+  # append this run to the pipeline_run_history list
+  pipeline_history[[length(pipeline_history) + 1]] <- list(
+    "pipeline_run_id" = last_pipeline_id + 1,
+    "parameters" = pipeline_run_parameters,
+    "pipeline_comparison" = pipeline_run$pipeline_comparison
+  )
+  # now save the updated history
+  saveRDS(pipeline_history, "./data/pipeline/data_pipeline_run_history.rds")
+
+  print("* Saving pipeline run to history")
 
   return("Step 2 successful: applicaion datasets updated.")
 }
