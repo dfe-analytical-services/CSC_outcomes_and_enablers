@@ -167,7 +167,10 @@ server <- function(input, output, session) {
       paste("summary_page_data_", Sys.Date(), ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
+      dt_out <- download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)]
+      setnames(dt_out, 1:4, c("Outcome/Enabler", "Category", "Domain", "Metric"))
+      setcolorder(dt_out, "sort_order")
+      write.csv(, file, row.names = FALSE)
     }
   )
 
