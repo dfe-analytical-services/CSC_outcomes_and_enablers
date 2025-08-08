@@ -20,10 +20,10 @@ if (TRUE == FALSE) {
   ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "REASON GOES HERE"
+  reason_for_pipeline_run <- "REASON GOES HERE" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
-  comparison_checked <- "Y"
+  comparison_checked <- "N" # <---- EDIT HERE
 
 
 
@@ -132,12 +132,13 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
     # write out to the console what is happening
     print(paste(dataset_name, " ---copied to---> ", paste0("./data/", dataset_name, ".rds")))
     # write the dataset out to rds file
-    # saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
+    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
   }
 
   # now check that the data in the rds files matches the data we have generated
 
-
+  # now log the pipeline_run in the history
+  pipeline_history <- readRDS("./data/pipeline/data_pipeline_run_history.rds")
 
   return("Step 2 successful: applicaion datasets updated.")
 }
