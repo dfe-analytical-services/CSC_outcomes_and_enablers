@@ -164,17 +164,7 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
 
 # Supporting functions for running the data pipeline ----
 
-
 pipeline_generate_datasets <- function() {
-  # we need to clear everything from the environment first so that when the function completes we only have
-  # the curated datasets in the environment
-  # browser()
-  # if (environment_is_clean == FALSE) {
-  #   return()
-  # } else {
-  #   rm(list = ls())
-  # }
-
   # Library calls ---------------------------------------------------------------------------------
   shhh <- suppressPackageStartupMessages # It's a library, so shhh!
   shhh(library(dplyr))
@@ -198,10 +188,14 @@ pipeline_generate_datasets <- function() {
   stats_neighbours <- get_statistical_neighbours() # head(statistical_neighbours(), 152)
   stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
+  ## Read in CLA placements data first as this is used in GET_location called in the next section
+  cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
+
   ## Read in the workforce data ----
   workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
-  location_data <- GET_location() # fact table linking LA to its region
-  location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
+  workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures)
+  location_data <- GET_location(cla_placements) # fact table linking LA to its region
+  location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
@@ -218,7 +212,6 @@ pipeline_generate_datasets <- function() {
 
   ## Read in the CLA data (outcome 1) ----
   cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
-  cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
   combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
   combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
