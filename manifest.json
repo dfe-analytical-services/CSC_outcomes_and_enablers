@@ -4754,14 +4754,11 @@
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
     },
-    ".RData": {
-      "checksum": "1474174bd0036ecde388785c2690e5b9"
-    },
     ".RDataTmp": {
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "f5859f6fcf8eb7fdb09ef8cc839ef9f5"
+      "checksum": "f05564cc1035f04645d7eaf6fbb4cd1e"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5088,7 +5085,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "cda6e8f77795cb782a3e92f9865f2a44"
+      "checksum": "de18aca9666859568f103cf30a4550bc"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
