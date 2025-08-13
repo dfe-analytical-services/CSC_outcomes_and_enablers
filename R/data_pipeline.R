@@ -1,41 +1,65 @@
-# **** Functions required to run the data pipeline ****
-
-# First it is necessary to clear the environment and source all of the functions in this file
+# **** Run the data pipeline ****
+# The section below which should be run step by step
 
 if (TRUE == FALSE) {
-  # clear the environment and source the necessary pipeline functions
+  # BEGIN PIPELINE ----
+
+  ## 1. First it is necessary to clear the environment and source all of the functions in this file -----
   rm(list = ls())
   source("./R/data_pipeline.R")
 
-  # now run the first step of the pipeline to generate the new datasets and comparisons with current app data
-  pipeline_run <- run_data_pipeline_step_1(clear_environment = TRUE)
+
+  ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current app data ----
+  pipeline_run <- run_data_pipeline_step_1()
 
 
-  # now compare the current and old with the diagnostics provided
+  ## 3. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
 
 
-  # if the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline
-  pipeline_update_template <- list(
-    username <- Sys.getenv("USERNAME"),
-    run_datetime <- format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
-    reason_for_pipeline_run <- ""
+  ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
+
+  # this must be entered, minimum 10 characters, please be verbose with explanation
+  reason_for_pipeline_run <- "REASON GOES HERE" # <---- EDIT HERE
+
+  # this must be updated to "Y" to signify the comparison has been checked
+  comparison_checked <- "N" # <---- EDIT HERE
+
+
+
+  ## 5. verify the update parameters ----
+  pipeline_run_parameters <- list(
+    "username" = Sys.getenv("USERNAME"),
+    "run_datetime" = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
+    "reason_for_pipeline_run" = reason_for_pipeline_run,
+    "comparison_checked" = comparison_checked
   )
 
-  # finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder)
-  # run_data_pipeline_step_2(pipeline_run, pipeline_update_template)
+  print(pipeline_run_parameters)
+
+
+  ## FINAL STEP - proceed with caution having completed steps 1-6 above
+
+
+  ## 6. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
+  print(run_data_pipeline_step_2(pipeline_run, pipeline_run_parameters))
+
+  # END PIPELINE ----
 }
 
+# ===========================================================================================================
+# DO NOT EDIT THE CODE BELOW HERE OR ATTEMPT TO RUN ANY OF THE FUNCTIONS DIRECTLY ----
+# ===========================================================================================================
 
+# Main Functions for the Data Pipeline ----
 
 # This function implements the first data pipeline step of transforming input csv & xlsx files into curated datasets
 # The resulting datasets are returned in a list at this point along with the parameters used to generate them.
 # Additional validation takes place to provide feedback on what has been generated and what differs to the rds datasets in the ./data/ folder of the repo
 # This is the first stage of the pipeline, to build the data in a temporary fashion with nothing in the main application being changed yet, that follows in step 2
-run_data_pipeline_step_1 <- function(clear_environment = FALSE) {
-  datasets_new <- pipeline_generate_datasets(clear_environment = TRUE)
+run_data_pipeline_step_1 <- function() {
+  datasets_new <- pipeline_generate_datasets()
   datasets_rds <- pipeline_read_rds()
-
 
   meta_rds <- pipeline_dataset_metadata(datasets_rds)
   meta_new <- pipeline_dataset_metadata(datasets_new)
@@ -46,28 +70,110 @@ run_data_pipeline_step_1 <- function(clear_environment = FALSE) {
 }
 
 
-# This function is run by the user directly and handles the
-# saved to ./data/ as rds files for reading in on startup
-run_data_pipeline_step_2 <- function(pipeline_run) {
-  if (class(dfs)) {
-    for (dataset_name in names(dfs)) {
-      saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
-    }
+# This function is run as the final step in the pipeline and handles the saving of
+# the datasets generated into ./data/ as rds files for reading in on startup
+
+run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
+  print("* Pipeline step 2 running ----")
+  # first we perform various checks on the input to this function
+  print("* Checking input parameters")
+  # do some checks on the pipeline_parameters
+  if (class(pipeline_run_parameters) != "list") {
+    return("pipeline_parameters is not a list")
   }
+  # expect elements with specific names
+  if (!identical(names(pipeline_run_parameters), c("username", "run_datetime", "reason_for_pipeline_run", "comparison_checked"))) {
+    return("pipeline_parameters does not contain the correct elements")
+  }
+  # expect a username with one or more chars
+  if (!nchar(pipeline_run_parameters$username) > 0) {
+    return("pipeline_run_parameters must have a username with more than zero chars")
+  }
+  # expect a run_date_time in the right format
+  if (!is(lubridate::as_datetime(pipeline_run_parameters$run_datetime), "POSIXct")) {
+    return("pipeline_run_parameters must have a run_datetime in the right format")
+  }
+  # expect a pipeline_run_reason with > 10 chars
+  if (!nchar(pipeline_run_parameters$reason_for_pipeline_run) >= 10) {
+    return("pipeline_run_parameters must have a reason with more than 10 chars")
+  }
+  # expect the checked elemnt to say "Y"
+  if (pipeline_run_parameters$comparison_checked != "Y") {
+    return("pipeline_run_parameters comparison_checked must be equal to 'Y'")
+  }
+
+  # do some checks on the pipeline_run
+  if (class(pipeline_run) != "list") {
+    return("pipeline_run must be a list")
+  }
+  if (!identical(names(pipeline_run), c("datasets_new", "pipeline_comparison"))) {
+    return("pipeline_run must")
+  }
+  # expect pipeline_run$datasets_new to be a list of named data objects
+  if (class(pipeline_run$datasets_new) != "list") {
+    return("pipeline_run datasets_new must be a list")
+  }
+  if (length(which(sapply(pipeline_run$datasets_new, function(x) !is(x, "data.frame")))) != 0) {
+    return("all pipeline_run datasets_new must be a data.frame")
+  }
+  if (sum(nchar(names(pipeline_run$datasets_new)) == 0) > 0) {
+    return("pipeline_run datasets_new must all be named")
+  }
+
+
+  # now check inside the function that the data should be overwritten
+  user_input <- readline(prompt = "Data pipeline step 2 checks passed, are you sure you wish to finalise the update? Type 'Yes' to proceed: ")
+  if (user_input != "Yes") {
+    return(paste0("Pipeline step 2 aborted.  Dashboard datasets not overwritten.  You entered '", user_input, "', to proceed you are required to enter (case-sensitive) 'Yes'."))
+  }
+
+  # this step is the final step to overwrite the data!!!
+  for (dataset_name in names(pipeline_run$datasets_new)) {
+    # write out to the console what is happening
+    print(paste(dataset_name, " ---copied to---> ", paste0("./data/", dataset_name, ".rds")))
+    # write the dataset out to rds file
+    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
+  }
+
+  # now check that the data in the rds files matches the data we have generated ??
+
+  # now log the pipeline_run in the history, getting the sequentially next ID
+  print("* Saving pipeline run to history")
+  pipeline_history <- readRDS("./data/pipeline/data_pipeline_run_history.rds")
+  last_pipeline_id <- if (length(pipeline_history) == 0) {
+    0
+  } else {
+    # loop through the list to get the maximum_id (ie. the latest run)
+    max(sapply(pipeline_history, function(x) x$pipeline_run_id))
+  }
+
+  # append this run to the pipeline_run_history list
+  pipeline_history[[length(pipeline_history) + 1]] <- list(
+    "pipeline_run_id" = last_pipeline_id + 1,
+    "parameters" = pipeline_run_parameters,
+    "pipeline_comparison" = pipeline_run$pipeline_comparison
+  )
+  # now save the updated history
+  saveRDS(pipeline_history, "./data/pipeline/data_pipeline_run_history.rds")
+
+  print("* Saving pipeline run to history")
+
+  return("Step 2 successful: applicaion datasets updated.")
 }
 
 
 # Supporting functions for running the data pipeline ----
 
 
-pipeline_generate_datasets <- function(clear_environment = FALSE) {
+pipeline_generate_datasets <- function() {
   # we need to clear everything from the environment first so that when the function completes we only have
   # the curated datasets in the environment
-  if (clear_environment == FALSE) {
-    return()
-  } else {
-    rm(list = ls())
-  }
+  # browser()
+  # if (environment_is_clean == FALSE) {
+  #   return()
+  # } else {
+  #   rm(list = ls())
+  # }
 
   # Library calls ---------------------------------------------------------------------------------
   shhh <- suppressPackageStartupMessages # It's a library, so shhh!
@@ -80,7 +186,7 @@ pipeline_generate_datasets <- function(clear_environment = FALSE) {
   shhh(library(data.table))
 
   # source supporting functions to prepare data
-  source("R/data_pipeline.R")
+  # source("R/data_pipeline.R")
   source("R/read_data.R")
   source("R/stats_neighbours.R")
 
