@@ -4931,6 +4931,9 @@
     "data/outcomes_ks4.rds": {
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
+    "data/pipeline/data_pipeline_run_history.rds": {
+      "checksum": "b50967e17da022458e6d91e7066d55ac"
+    },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
     },
@@ -5007,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "c3e9a8b1571bf8be2cdd52b2dab9996a"
+      "checksum": "a5c07ab6d6f061c37ac64d32f121aebd"
     },
     "R/data_sources.R": {
       "checksum": "679588eab11f1e36bf6203b3e7ca5670"
