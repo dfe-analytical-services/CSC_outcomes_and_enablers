@@ -189,11 +189,11 @@ pipeline_generate_datasets <- function() {
   stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
   ## Read in CLA placements data first as this is used in GET_location called in the next section
-  cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
+  .GlobalEnv$cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
 
   ## Read in the workforce data ----
   workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
-  workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures)
+  workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
   location_data <- GET_location(cla_placements) # fact table linking LA to its region
   location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 

@@ -114,9 +114,11 @@ GET_location <- function(dataset = NULL) {
   FACT_location <- dataset %>%
     filter(geographic_level == "Local authority") %>%
     select(region_name, geo_breakdown, new_la_code, old_la_code) %>%
+    rename(la_name = geo_breakdown) %>%
     unique() %>%
     data.table()
 }
+
 # Need a fact table for the LA's and their Regions
 # GET_location <- function(file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv") {
 #   FACT_location <- read.csv(file)
@@ -129,10 +131,12 @@ GET_location <- function(dataset = NULL) {
 
 # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
 GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_indicators_2017_to_2024.csv"
+
   if (is.null(dataset)) stop()
-  dataset <- dataset %>%
+  FACT_Location_workforce <- dataset %>%
     filter(geographic_level == "Local authority") %>%
     select(region_name, geo_breakdown, new_la_code, old_la_code) %>%
+    rename(la_name = geo_breakdown) %>%
     unique() %>%
     data.table()
 }
@@ -1423,8 +1427,8 @@ read_placement_order_match_data <- function(file = "./data-raw/national_cla_adop
 
 read_workforce_headline_measures <- function() {
   raw_file <- "data-raw/csww_headline_measures_2017_to_2022.csv"
-  dataset <- fread(raw_file)
-  #
+  dataset <- fread(raw_file) %>%
+    insert_geo_breakdown()
 }
 
 read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
