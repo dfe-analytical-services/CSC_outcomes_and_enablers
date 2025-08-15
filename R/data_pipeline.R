@@ -132,7 +132,7 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
     # write out to the console what is happening
     print(paste(dataset_name, " ---copied to---> ", paste0("./data/", dataset_name, ".rds")))
     # write the dataset out to rds file
-    saveRDS(object = dfs[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
+    saveRDS(object = pipeline_run$datasets_new[[dataset_name]], file = paste0("./data/", print(dataset_name), ".rds"))
   }
 
   # now check that the data in the rds files matches the data we have generated ??
