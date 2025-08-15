@@ -109,25 +109,15 @@ redacted_to_na <- function(dataset, col_old, col_new) {
 }
 
 # Need a fact table for the LA's and their Regions
+# cla_placements replaces raw file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv" as a default
 GET_location <- function(dataset = NULL) {
   if (is.null(dataset)) dataset <- copy(cla_placements)
   FACT_location <- dataset %>%
     filter(geographic_level == "Local authority") %>%
     select(region_name, geo_breakdown, new_la_code, old_la_code) %>%
     rename(la_name = geo_breakdown) %>%
-    unique() %>%
-    data.table()
+    unique()
 }
-
-# Need a fact table for the LA's and their Regions
-# GET_location <- function(file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv") {
-#   FACT_location <- read.csv(file)
-#   FACT_location <- FACT_location %>%
-#     select(region_name, la_name, new_la_code, old_la_code) %>%
-#     filter((la_name != "")) %>%
-#     unique()
-# }
-
 
 # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
 GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_indicators_2017_to_2024.csv"
@@ -135,10 +125,10 @@ GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_i
   if (is.null(dataset)) stop()
   FACT_Location_workforce <- dataset %>%
     filter(geographic_level == "Local authority") %>%
-    select(region_name, geo_breakdown, new_la_code, old_la_code) %>%
+    select(region_name, geo_breakdown) %>%
     rename(la_name = geo_breakdown) %>%
     unique() %>%
-    data.table()
+    setDF()
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
