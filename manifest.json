@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "d95fa8e7d00855d2e83b2f5e46fca11c"
+      "checksum": "02837609b241cce4319bc1e1274ba1c2"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4982,6 +4982,9 @@
     "data/workforce_eth_seniority.rds": {
       "checksum": "3586d5957331d6002b9670993c891a64"
     },
+    "data/workforce_headline_measures.rds": {
+      "checksum": "35e37d10fc397399c915c0d1cc5ad3db"
+    },
     "data_dictionary.R": {
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
@@ -5010,7 +5013,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "3d54575a2b86a7d2c214815bc8244575"
+      "checksum": "090b07af39f3296a9f1b75ae8009fdb0"
     },
     "R/data_sources.R": {
       "checksum": "679588eab11f1e36bf6203b3e7ca5670"
@@ -5103,13 +5106,13 @@
       "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "4aec4126d86eef1fd24a21bae3539aeb"
+      "checksum": "0ee55bef25c7d64d8baf087804bfa1f8"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "83988ab19a4f91b6155c87524e425557"
+      "checksum": "f9342220a6aa4b31b74dd3d727e3385c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "2fe667eb4d300864468d98636d06edc2"
+      "checksum": "9b1e4e882c71976d90f99f177a674a3f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
       "checksum": "88ecdc72cd844cb0288456b9e196244f"
@@ -5130,7 +5133,7 @@
       "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "522527452f5053e8e22243342e71b2e6"
+      "checksum": "3221f4b9851f4a16e21f50df57bea4d0"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
       "checksum": "6fc43d16e639fd21d4a43105f143b106"

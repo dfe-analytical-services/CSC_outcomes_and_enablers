@@ -1,0 +1,9 @@
+./data-raw/
+.Rproj.user
+.Rhistory
+.RData
+.RData*
+.Ruserdata
+*unpublished*
+data/definitions.csv
+data/pipeline/data_pipeline_run_history.rds
