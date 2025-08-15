@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "02837609b241cce4319bc1e1274ba1c2"
+      "checksum": "373aa318f04a0c40e50c78149f4b39d5"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4911,10 +4911,10 @@
       "checksum": "de1755d2e52cf438e8896d69a7fa0582"
     },
     "data/location_data.rds": {
-      "checksum": "253b77ebb1190fd2634c0da8e9cb25b6"
+      "checksum": "d1fe7628759d05818545674487c0a11b"
     },
     "data/location_data_workforce.rds": {
-      "checksum": "09f94c35b13cc5016f3e7671584d5ddc"
+      "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
       "checksum": "0a1e6d3b84c8b25a8eabbaa9b01ac2ee"
@@ -4932,7 +4932,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "b50967e17da022458e6d91e7066d55ac"
+      "checksum": "4d491a00723dddc1119b2bf54543f3aa"
     },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
@@ -4965,7 +4965,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "f9c5262646b132db6534201842d089f1"
+      "checksum": "da2c357d35709b2045847643c14f9692"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "f2de11165f0862b8b05494bf0dd7d17b"
@@ -5013,7 +5013,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "090b07af39f3296a9f1b75ae8009fdb0"
+      "checksum": "f8ff431bc5f26bfd8e29cae9af3cb396"
     },
     "R/data_sources.R": {
       "checksum": "679588eab11f1e36bf6203b3e7ca5670"
