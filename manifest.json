@@ -4754,14 +4754,11 @@
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
     },
-    ".RData": {
-      "checksum": "1474174bd0036ecde388785c2690e5b9"
-    },
     ".RDataTmp": {
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "145b65434915e83f5aecaad5f6721689"
+      "checksum": "ded097fccf02c368c9dedd66701de314"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4971,7 +4968,7 @@
       "checksum": "f9c5262646b132db6534201842d089f1"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "ac726414a5a6d42d0a5c413bf9ec79df"
+      "checksum": "c613c168d313431d638ab0378f607b07"
     },
     "data/wellbeing_sdq_data.rds": {
       "checksum": "b491acae45bb6ed2570a77804f6909ae"
@@ -5091,7 +5088,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "06ce6898ec8c31634330d5481b0e7461"
+      "checksum": "291fcab449096e13208c456d0e1f56f6"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
