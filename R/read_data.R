@@ -109,23 +109,26 @@ redacted_to_na <- function(dataset, col_old, col_new) {
 }
 
 # Need a fact table for the LA's and their Regions
-GET_location <- function(file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv") {
-  FACT_location <- read.csv(file)
-  FACT_location <- FACT_location %>%
-    select(region_name, la_name, new_la_code, old_la_code) %>%
-    filter((la_name != "")) %>%
+# cla_placements replaces raw file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv" as a default
+GET_location <- function(dataset = NULL) {
+  if (is.null(dataset)) dataset <- copy(cla_placements)
+  FACT_location <- dataset %>%
+    filter(geographic_level == "Local authority") %>%
+    select(region_name, geo_breakdown, new_la_code, old_la_code) %>%
+    rename(la_name = geo_breakdown) %>%
     unique()
 }
 
-
 # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
-GET_location_workforce <- function(file = "./data-raw/csww_indicators_2017_to_2024.csv") {
-  workforce_location <- read.csv(file)
-  workforce_location <- read.csv(file)
-  workforce_location <- workforce_location %>%
-    select(region_name, la_name) %>%
-    filter((la_name != "")) %>%
-    unique()
+GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_indicators_2017_to_2024.csv"
+
+  if (is.null(dataset)) stop()
+  FACT_Location_workforce <- dataset %>%
+    filter(geographic_level == "Local authority") %>%
+    select(region_name, geo_breakdown) %>%
+    rename(la_name = geo_breakdown) %>%
+    unique() %>%
+    setDF()
 }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1409,6 +1412,15 @@ read_placement_order_match_data <- function(file = "./data-raw/national_cla_adop
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
 
+# firstly make a basic dataset to be usedfor the purposes of the GET_location calls
+# the raw data file is not used anywhere else in read_data.R so we assume it's not in the pipeline
+
+read_workforce_headline_measures <- function() {
+  raw_file <- "data-raw/csww_headline_measures_2017_to_2022.csv"
+  dataset <- fread(raw_file) %>%
+    insert_geo_breakdown()
+}
+
 read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%
@@ -1802,7 +1814,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
       TRUE ~ as.numeric(cs_share)
     ))
 
-  merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
+  merged_data <- merge(GET_location(cla_placements), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
   merged_data$time_period <- "2023/24"
@@ -2015,7 +2027,7 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
       TRUE ~ as.numeric(minus_cla_share)
     ))
 
-  merged_data <- merge(GET_location(), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
+  merged_data <- merge(GET_location(cla_placements), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
   merged_data$time_period <- "2023/24"

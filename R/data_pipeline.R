@@ -64,7 +64,7 @@ run_data_pipeline_step_1 <- function() {
   meta_rds <- pipeline_dataset_metadata(datasets_rds)
   meta_new <- pipeline_dataset_metadata(datasets_new)
 
-  pipeline_comparison <- pipeline_compare_datasets(meta_rds, meta_new)
+  pipeline_comparison <- pipeline_compare_datasets(meta_rds, meta_new, datasets_rds, datasets_new)
 
   return(list(datasets_new = datasets_new, pipeline_comparison = pipeline_comparison))
 }
@@ -79,7 +79,7 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
   print("* Checking input parameters")
   # do some checks on the pipeline_parameters
   if (class(pipeline_run_parameters) != "list") {
-    return("pipeline_parameters is not a list")
+    return("pipeline_run_parameters is not a list")
   }
   # expect elements with specific names
   if (!identical(names(pipeline_run_parameters), c("username", "run_datetime", "reason_for_pipeline_run", "comparison_checked"))) {
@@ -164,17 +164,7 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
 
 # Supporting functions for running the data pipeline ----
 
-
 pipeline_generate_datasets <- function() {
-  # we need to clear everything from the environment first so that when the function completes we only have
-  # the curated datasets in the environment
-  # browser()
-  # if (environment_is_clean == FALSE) {
-  #   return()
-  # } else {
-  #   rm(list = ls())
-  # }
-
   # Library calls ---------------------------------------------------------------------------------
   shhh <- suppressPackageStartupMessages # It's a library, so shhh!
   shhh(library(dplyr))
@@ -198,10 +188,15 @@ pipeline_generate_datasets <- function() {
   stats_neighbours <- get_statistical_neighbours() # head(statistical_neighbours(), 152)
   stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
 
+  ## Read in CLA placements data first as this is used in GET_location called in the next section
+  cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
+  .GlobalEnv$cla_placements <- cla_placements
+
   ## Read in the workforce data ----
   workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
-  location_data <- GET_location() # fact table linking LA to its region
-  location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
+  workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
+  location_data <- GET_location(cla_placements) # fact table linking LA to its region
+  location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
@@ -218,7 +213,6 @@ pipeline_generate_datasets <- function() {
 
   ## Read in the CLA data (outcome 1) ----
   cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
-  cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
   combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
   combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
@@ -258,7 +252,7 @@ pipeline_generate_datasets <- function() {
 }
 
 # Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output text generated
-pipeline_compare_datasets <- function(meta_rds, meta_new) {
+pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets_new) {
   user_feedback <- glue::glue("CSC Public Dashboard: Data pipeline diagnostics
   Run date: { Sys.Date() }")
 
@@ -286,11 +280,47 @@ pipeline_compare_datasets <- function(meta_rds, meta_new) {
     data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ","))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
 
+  # build the summary of dataset comparisons for easy reference
+  dataset_comparison_summary <- merge(
+    dataset_name_comparison[, .(dataset_name, match_dataset_name)],
+    dataset_class_comparison[, .(dataset_name, match_dataset_class)],
+    all.x = TRUE
+  )
+
+  dataset_comparison_summary <- merge(
+    dataset_comparison_summary,
+    dataset_nrow_comparison[, .(dataset_name, match_dataset_num_rows)],
+    all.x = TRUE
+  )
+
+  dataset_comparison_summary <- merge(
+    dataset_comparison_summary,
+    dataset_columns_comparison[, .(dataset_name, match_dataset_columns)],
+    all.x = TRUE
+  )
+
+  dataset_comparison_summary[, match_summary := ((match_dataset_name + match_dataset_class + match_dataset_num_rows + match_dataset_columns) == 4)]
+
+  # objects in both
+  equal_datasets <- dataset_comparison_summary[match_summary == TRUE]$dataset_name
+
+  # add in a data comparison (setdiffs)
+  df_setdiffs <- lapply(equal_datasets, function(df_name) {
+    list(
+      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]]),
+      new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+    )
+  })
+  names(df_setdiffs) <- equal_datasets
+
+
   return(list(
+    "dataset_comparison_summary" = dataset_comparison_summary,
     "dataset_name_comparison" = dataset_name_comparison,
     "dataset_class_comparison" = dataset_class_comparison,
     "dataset_nrow_comparison" = dataset_nrow_comparison,
-    "dataset_columns_comparison" = dataset_columns_comparison
+    "dataset_columns_comparison" = dataset_columns_comparison,
+    "dataset_setdiffs" = df_setdiffs
   ))
 }
 

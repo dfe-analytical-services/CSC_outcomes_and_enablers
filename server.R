@@ -6031,7 +6031,6 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      # browser()
       stat <- ofsted_ratings_data()
       stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
       paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
