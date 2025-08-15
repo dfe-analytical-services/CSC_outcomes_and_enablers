@@ -4749,7 +4749,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "071239561eaa59a19bb6007854bc122d"
+      "checksum": "7b880b546ae9dba1d863f7a9fe06cf88"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "cc8572e64efb2223ee71258d7479a02f"
+      "checksum": "d8b646d1939156fea991355444723712"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5010,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "f7b9b6dd893595b8b5c310ce8659c4dc"
+      "checksum": "b1917d41dfa8f3831af985229a7a1f8f"
     },
     "R/data_sources.R": {
       "checksum": "679588eab11f1e36bf6203b3e7ca5670"
@@ -5088,7 +5088,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "0ea625cedd661382b491c9c9fa339c01"
+      "checksum": "a6046a925cba8775b2cd842e06b66254"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
