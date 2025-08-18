@@ -98,7 +98,7 @@ summary_page_tab <- function() {
                   gov_row(
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome3"),
-                    sp_domain_ui(id = "Child safety – general"),
+                    sp_domain_ui(id = "Child safety - general"),
                     sp_domain_ui(id = "Child abuse / neglect"),
                     sp_domain_ui(id = "Harms outside the home"),
                   )

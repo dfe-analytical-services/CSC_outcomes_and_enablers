@@ -187,7 +187,7 @@ server <- function(input, output, session) {
 
   # outcome 3 domains on summary page
   sp_accordion_cols_server(id = "outcome3", rv_summary_page)
-  sp_domain_server(id = "Child safety – general", rv_summary_page)
+  sp_domain_server(id = "Child safety - general", rv_summary_page)
   sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
   sp_domain_server(id = "Harms outside the home", rv_summary_page)
 
