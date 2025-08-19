@@ -6,12 +6,12 @@ enabler3_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler: The workforce is equipped and effective")
+          h2("Enabler: The workforce is equipped and effective"),
         )
       ),
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -80,9 +80,7 @@ enabler3_tab <- function() {
           ),
         )
       ),
-      br(),
       gov_row(
-        br(),
         p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames / Richmond upon Thames')",
@@ -92,16 +90,12 @@ enabler3_tab <- function() {
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire / West Northamptonshire')",
           p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
         ),
-        br(),
         div(
           tabsetPanel(
             id = "enabler3_panels",
             type = "tabs",
             tabPanel(
               "Workforce stability",
-              fluidRow(
-                br(),
-              ),
               fluidRow(
                 column(
                   width = 4,
@@ -418,9 +412,6 @@ enabler3_tab <- function() {
             tabPanel(
               "Quality of support for children and families",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
                   width = 4,
                   value_box(
@@ -527,11 +518,8 @@ enabler3_tab <- function() {
             tabPanel(
               "Social worker ethnicity",
               fluidRow(
-                br(),
-              ),
-              fluidRow(
                 column(
-                  width = 6,
+                  width = 4,
                   value_box(
                     title = "Social workers from ethnic minority backgrounds",
                     value = htmlOutput("non_white_txt")

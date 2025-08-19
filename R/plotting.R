@@ -39,7 +39,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         text = element_text(size = 12),
         axis.title.x = element_text(margin = margin(t = 12)),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_y_continuous(
         limits = c(0, ylim_upper)
@@ -75,7 +75,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
         text = element_text(size = 12),
         axis.title.x = element_text(margin = margin(t = 12)),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_y_continuous(
         limits = c(0, ylim_upper)
@@ -207,7 +207,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_fill_manual(
         "LA Selection",
@@ -241,7 +241,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_y_continuous(limits = c(0, 100)) +
       scale_fill_manual(
@@ -313,7 +313,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         # axis.text.x = element_text(angle = 90),
         axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_y_continuous(limits = c(0, yupperlim)) +
       scale_fill_manual(
@@ -356,7 +356,7 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
           # axis.text.x = element_text(angle = 90),
           axis.title.x = element_blank(),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0)
+          axis.line = element_line(linewidth = 1.0)
         ) +
         scale_y_continuous(limits = c(0, yupperlim)) +
         scale_fill_manual(
@@ -404,7 +404,7 @@ plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, 100)) +
     scale_fill_manual(
@@ -458,7 +458,7 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, 100)) +
     scale_fill_manual(
@@ -501,7 +501,7 @@ plot_seniority_eth <- function(geo_breakdown, geographic_level) {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, 100)) +
     scale_fill_manual(
@@ -557,7 +557,7 @@ plot_uasc <- function(geo_break, geo_lvl) {
       axis.text.x = element_text(angle = 0),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_x_continuous(breaks = seq(min(uasc_data$time_period), max(uasc_data$time_period), by = 1)) +
     scale_y_continuous(
@@ -610,7 +610,7 @@ plot_uasc_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -620,7 +620,7 @@ plot_uasc_reg <- function() {
 }
 
 plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location(workforce_headline_measures)
 
 
   colors <- setNames(
@@ -725,7 +725,7 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -786,7 +786,7 @@ plot_uasc_31_march <- function(geo_break, geo_lvl) {
       axis.text.x = element_text(angle = 0),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_x_continuous(breaks = seq(min(uasc_31_mar_data$time_period), max(uasc_31_mar_data$time_period), by = 1)) +
     scale_y_continuous(
@@ -839,7 +839,7 @@ plot_uasc_31_march_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -849,7 +849,7 @@ plot_uasc_31_march_reg <- function() {
 }
 
 plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location(workforce_headline_measures)
 
 
   colors <- setNames(
@@ -952,7 +952,7 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1010,7 +1010,7 @@ plot_cla_rate_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1020,7 +1020,7 @@ plot_cla_rate_reg <- function() {
 }
 
 plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
@@ -1084,7 +1084,7 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1136,7 +1136,7 @@ plot_cla_march_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1146,7 +1146,7 @@ plot_cla_march_reg <- function() {
 }
 
 plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
@@ -1211,7 +1211,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1263,7 +1263,7 @@ plot_cin_rate_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1275,7 +1275,7 @@ plot_cin_rate_reg <- function() {
 
 # cin rate chart by la
 plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/b1_children_in_need_2013_to_2024.csv")
+  location_data <- GET_location(cin_rates)
 
   if (selected_geo_lvl == "Local authority") {
     cin_data <- cin_rates %>%
@@ -1342,7 +1342,7 @@ plot_cin_rates_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1394,7 +1394,7 @@ plot_cin_referral_reg <- function() {
       # axis.text.x = element_text(angle = 300),
       axis.title.x = element_blank(),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1406,7 +1406,7 @@ plot_cin_referral_reg <- function() {
 
 # bar chart by LA
 plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL) {
-  location_data <- GET_location("data/csww_headline_measures_2017_to_2022.csv")
+  location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
     LA_referral_data <- cin_referrals %>%
@@ -1470,7 +1470,7 @@ plot_cin_referral_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0)
+      axis.line = element_line(linewidth = 1.0)
     ) +
     scale_y_continuous(limits = c(0, max_rate)) +
     scale_fill_manual(
@@ -1627,7 +1627,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_fill_manual(
         "LA Selection",
@@ -1661,7 +1661,7 @@ factors_by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selec
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0)
+        axis.line = element_line(linewidth = 1.0)
       ) +
       scale_y_continuous(limits = c(0, 100)) +
       scale_fill_manual(
@@ -1801,7 +1801,7 @@ plot_ofsted_reg <- function() {
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0) # ,
+      axis.line = element_line(linewidth = 1.0) # ,
       # axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_fill_manual(
@@ -1864,7 +1864,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0),
+        axis.line = element_line(linewidth = 1.0),
         axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
@@ -1907,7 +1907,7 @@ statistical_neighbours_plot <- function(dataset, selected_geo_breakdown = NULL, 
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0),
+          axis.line = element_line(linewidth = 1.0),
           axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
         scale_y_continuous(limits = c(0, ylim_upper)) +
@@ -1966,7 +1966,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(size = 1.0),
+        axis.line = element_line(linewidth = 1.0),
         axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
@@ -2010,7 +2010,7 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(size = 1.0),
+          axis.line = element_line(linewidth = 1.0),
           axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
         scale_y_continuous(limits = c(0, ylim_upper)) +
@@ -2098,7 +2098,7 @@ statistical_neighbours_plot_uasc <- function(dataset, selected_geo_breakdown = N
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
+      axis.line = element_line(linewidth = 1.0),
       axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_y_continuous(limits = c(0, ylim_upper)) +
@@ -2174,7 +2174,7 @@ statistical_neighbours_plot_uasc_31_march <- function(dataset, selected_geo_brea
     theme(
       text = element_text(size = 12),
       axis.title.y = element_text(margin = margin(r = 12)),
-      axis.line = element_line(size = 1.0),
+      axis.line = element_line(linewidth = 1.0),
       axis.text.x = element_text(angle = 45, hjust = 1)
     ) +
     scale_y_continuous(limits = c(0, ylim_upper)) +

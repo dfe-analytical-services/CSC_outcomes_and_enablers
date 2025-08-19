@@ -6,12 +6,12 @@ enabler2_tab <- function() {
       gov_row(
         column(
           width = 12,
-          h1("Enabler: Leaders drive conditions for effective practice")
+          h2("Enabler: Leaders drive conditions for effective practice"),
         )
       ),
       gov_row(
         div(
-          class = "input_box",
+          class = "geo_input_box",
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
@@ -41,11 +41,8 @@ enabler2_tab <- function() {
           )
         )
       ),
-      br(),
       gov_row(
-        br(),
         p(htmlOutput("enabler2_choice_text1"), htmlOutput("enabler2_choice_text2")),
-        br(),
       ),
       gov_row(
         div(
@@ -55,9 +52,6 @@ enabler2_tab <- function() {
             ## Spending ----------------
             tabPanel(
               "Spending",
-              fluidRow(
-                br(),
-              ),
               fluidRow(
                 column(
                   width = 4,
@@ -203,9 +197,6 @@ enabler2_tab <- function() {
             ## Ofsted ---------------------
             tabPanel(
               "Culture focused on outcomes from children and families and continually improving services",
-              fluidRow(
-                br()
-              ),
               fluidRow(
                 conditionalPanel(
                   condition = "input.select_geography_e2 == 'Local authority'",

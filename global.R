@@ -38,11 +38,11 @@ shhh(library(readxl))
 shhh(library(janitor))
 shhh(library(scales))
 shhh(library(data.table))
+shhh(library(htmltools))
 
 # shhh(library(shinya11y)) # used to test the accessibility of the dashboard
 
-shhh(library(htmltools))
-
+# source the ui files
 lapply(list.files("R/ui_panels/", full.names = TRUE, recursive = TRUE), source)
 
 # Functions ---------------------------------------------------------------------------------
@@ -94,54 +94,19 @@ google_analytics_key <- "Q13T4ENF6C"
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Prepare all datasets ----
+# Read all RDS datasets into the Global environment ----
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-## Stats Neighbours ----
-## Read in the stats_neighbours and generate a long table for all stats neighbour aggregations
-stats_neighbours <- get_statistical_neighbours() # head(statistical_neighbours(), 152)
-stats_neighbours_long <- get_stats_neighbours_long(stats_neighbours)
+# get the names of the RDS files in the ./data directory
+rds_files_to_read <- dir("./data/", pattern = "rds")
 
-## Read in the workforce data ----
-workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
-location_data <- GET_location() # fact table linking LA to its region
-location_data_workforce <- GET_location_workforce() # fact table linking LA to its region
+for (rds_file in rds_files_to_read) {
+  object_name <- gsub(pattern = ".rds", "", rds_file)
+  rds_file <- paste0("./data/", rds_file)
+  assign(object_name, readRDS(rds_file), envir = .GlobalEnv)
+}
 
-## Read in the workforce characteristics data (Enabler 2) ----
-workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
-workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
-population_eth <- suppressWarnings(read_ethnic_population_data())
-combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes(sn_long = stats_neighbours_long))
 
-## Read in ofsted leadership data (Enabler 3) ----
-spending_data <- suppressWarnings(read_spending_data(sn_long = stats_neighbours_long))
-spending_data_no_cla <- suppressWarnings(read_spending_data2(sn_long = stats_neighbours_long))
-spending_per_capita <- suppressWarnings(read_per_capita_spending(sn_long = stats_neighbours_long))
-ofsted_leadership_data <- suppressWarnings(read_ofsted_leadership_data(sn_long = stats_neighbours_long))
-ofsted_leadership_data_long <- suppressWarnings(pivot_ofsted_data(ofsted_leadership_data))
-
-## Read in the CLA data (outcome 1) ----
-cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
-cla_placements <- suppressWarnings(read_cla_placement_data(sn_long = stats_neighbours_long))
-combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
-combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
-
-## Read in the CIN  data (outcome 1) ----
-cin_rates <- suppressWarnings(read_cin_rate_data(sn_long = stats_neighbours_long))
-cin_referrals <- suppressWarnings(read_cin_referral_data(sn_long = stats_neighbours_long))
-
-## Read in the outcomes data (outcome 1) ----
-outcomes_absence <- suppressWarnings(read_outcomes_absence_data(sn_long = stats_neighbours_long))
-outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data(sn_long = stats_neighbours_long))
-outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data(sn_long = stats_neighbours_long))
-
-## Read in outcome 2 data ----
-ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
-
-## Read in outcome 3 data ----
-repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
-duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
-assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
-
+# create some lookup lists from various tables to populate dropdowns
 af_child_abuse_extra_filter <- assessment_factors %>%
   filter(str_detect(assessment_factor, "Abuse|abuse|Neglect|neglect")) %>%
   select(assessment_factor) %>%
@@ -155,11 +120,6 @@ extra_familial_harm_af <- c(
   "Child criminal exploitation"
 )
 # "Alcohol Misuse child", "Drug Misuse child", "Missing", "Child sexual exploitation", "Trafficking", "Gangs", "Child criminal exploitation"
-
-hospital_admissions <- suppressWarnings(read_a_and_e_data(sn_long = stats_neighbours_long))
-
-## Read in outcome 4 data ----
-placement_data <- suppressWarnings(read_placement_info_data(sn_long = stats_neighbours_long))
 
 # Define the custom order
 custom_order <- c(
@@ -180,19 +140,6 @@ placement_type_filter <- placement_data %>%
   factor(levels = custom_order) %>%
   sort()
 
-placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long = stats_neighbours_long))
-
-care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(sn_long = stats_neighbours_long))
-care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
-
-wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(sn_long = stats_neighbours_long))
-
-placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
-
-
-## Summary Data ----
-summary_data <- collect_summary_data_all()
-
 
 # Download button --------------------
 # Function to create a download button for reactable
@@ -200,10 +147,12 @@ csvDownloadButton <- function(
     id,
     filename = "data.csv",
     label = "Download as CSV") {
-  tags$button(
-    tagList(icon("download"), label),
-    onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
-    class = "btn btn-default"
+  gov_row(
+    tags$button(
+      tagList(icon("download"), label),
+      onclick = sprintf("customDownloadDataCSV('%s', '%s')", id, filename),
+      class = "govuk-button"
+    )
   )
 }
 
@@ -222,3 +171,7 @@ expandable <- function(inputId, label, contents) {
     shiny::tags$div(contents)
   )
 }
+
+
+# Reactable global settings ---------------
+options(reactable.language = reactableLang(searchPlaceholder = "Search within table"))

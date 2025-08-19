@@ -146,7 +146,6 @@ transform_summary_data <- function(filtered_summary_data, select_geographic_leve
     table_col_names <- names(transformed_data)
     setnames(dt_temp, new = table_col_names)
     dt_temp <- rbindlist(list(dt_temp, as.list(table_col_names)))
-    # browser()
     return(dt_temp)
   }
   # transformed_data <- transformed_data[order(sort_order)]

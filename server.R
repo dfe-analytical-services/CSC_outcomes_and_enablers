@@ -167,7 +167,10 @@ server <- function(input, output, session) {
       paste("summary_page_data_", Sys.Date(), ".csv", sep = "")
     },
     content = function(file) {
-      write.csv(download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)], file, row.names = FALSE)
+      dt_out <- download_summary_data(rv_summary_page$summary_data_filtered, rv_summary_page$select_geographic_level)[order(-tab_name, sort_order)]
+      setnames(dt_out, 1:4, c("Outcome/Enabler", "Category", "Domain", "Metric"))
+      setcolorder(dt_out, "sort_order")
+      write.csv(dt_out, file, row.names = FALSE, fileEncoding = "UTF-8")
     }
   )
 
@@ -184,7 +187,7 @@ server <- function(input, output, session) {
 
   # outcome 3 domains on summary page
   sp_accordion_cols_server(id = "outcome3", rv_summary_page)
-  sp_domain_server(id = "Child safety – general", rv_summary_page)
+  sp_domain_server(id = "Child safety - general", rv_summary_page)
   sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
   sp_domain_server(id = "Harms outside the home", rv_summary_page)
 
@@ -6028,7 +6031,6 @@ server <- function(input, output, session) {
     if (input$geographic_breakdown_e2 == "") {
       paste0("NA")
     } else {
-      # browser()
       stat <- ofsted_ratings_data()
       stat_final <- stat$Count[which(stat$Rating == "Outstanding")]
       paste0(stat_final, "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(stat$time_period), ")", "</p>")
