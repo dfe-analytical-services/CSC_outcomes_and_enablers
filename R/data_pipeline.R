@@ -173,7 +173,7 @@ pipeline_generate_datasets <- function() {
   shhh(library(readODS))
   shhh(library(readxl))
   shhh(library(janitor))
-  shhh(library(data.table))
+  shhh(library(data.table, pos = 1))
 
   # source supporting functions to prepare data
   # source("R/data_pipeline.R")
@@ -257,7 +257,7 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   Run date: { Sys.Date() }")
 
   # compare datasets
-  dataset_name_comparison <- dcast(
+  dataset_name_comparison <- dcast.data.table(
     rbindlist(list(
       data.table(rds_or_new = "CURRENT", check_type = "dataset_name", dataset_name = meta_rds$dataset_names),
       data.table(rds_or_new = "NEW", check_type = "dataset_name", dataset_name = meta_new$dataset_names)
@@ -265,35 +265,35 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     dataset_name ~ check_type + rds_or_new
   )[, match_dataset_name := dataset_name_NEW == dataset_name_CURRENT]
 
-  dataset_class_comparison <- dcast(rbindlist(list(
+  dataset_class_comparison <- dcast.data.table(rbindlist(list(
     data.table(rds_or_new = "CURRENT", check_type = "dataset_class", dataset_name = names(meta_rds$dataset_class), dataset_class = sapply(meta_rds$dataset_class, paste, collapse = ",")),
     data.table(rds_or_new = "NEW", check_type = "dataset_class", dataset_name = names(meta_new$dataset_class), dataset_class = sapply(meta_new$dataset_class, paste, collapse = ","))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_class := dataset_class_NEW == dataset_class_CURRENT]
 
-  dataset_nrow_comparison <- dcast(rbindlist(list(
+  dataset_nrow_comparison <- dcast.data.table(rbindlist(list(
     data.table(rds_or_new = "CURRENT", check_type = "num_rows", dataset_name = names(meta_rds$dataset_nrow), dataset_nrow = sapply(meta_rds$dataset_nrow, paste, collapse = ",")),
     data.table(rds_or_new = "NEW", check_type = "num_rows", dataset_name = names(meta_new$dataset_class), dataset_nrow = sapply(meta_new$dataset_nrow, paste, collapse = ","))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_num_rows := num_rows_NEW == num_rows_CURRENT]
 
-  dataset_columns_comparison <- dcast(rbindlist(list(
+  dataset_columns_comparison <- dcast.data.table(rbindlist(list(
     data.table(rds_or_new = "CURRENT", check_type = "dataset_columns", dataset_name = names(meta_rds$dataset_columns), dataset_columns = sapply(meta_rds$dataset_columns, paste, collapse = ",")),
     data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ","))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
 
   # build the summary of dataset comparisons for easy reference
-  dataset_comparison_summary <- merge(
+  dataset_comparison_summary <- merge.data.table(
     dataset_name_comparison[, .(dataset_name, match_dataset_name)],
     dataset_class_comparison[, .(dataset_name, match_dataset_class)],
     all.x = TRUE
   )
 
-  dataset_comparison_summary <- merge(
+  dataset_comparison_summary <- merge.data.table(
     dataset_comparison_summary,
     dataset_nrow_comparison[, .(dataset_name, match_dataset_num_rows)],
     all.x = TRUE
   )
 
-  dataset_comparison_summary <- merge(
+  dataset_comparison_summary <- merge.data.table(
     dataset_comparison_summary,
     dataset_columns_comparison[, .(dataset_name, match_dataset_columns)],
     all.x = TRUE
