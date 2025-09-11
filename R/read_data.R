@@ -673,7 +673,7 @@ read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_h
   outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact")
+  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact", , "pt_pupils_pa_50_exact")
   time_periods_to_update <- c(201920)
   outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 
@@ -683,14 +683,17 @@ read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_h
       geographic_level, geo_breakdown, geo_breakdown_sn, country_code, region_code, new_la_code, old_la_code, time_period,
       "time_period", "geographic_level", "region_name", social_care_group,
       school_type, t_pupils, t_sess_possible, t_sess_overall, pt_overall, t_sess_authorised,
-      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact
+      pt_sess_authorised, t_sess_unauthorised, pt_sess_unauthorised, t_pupils_pa_10_exact, pt_pupils_pa_10_exact,
+      t_pupils_pa_50_exact, pt_pupils_pa_50_exact
     ) %>%
     mutate(pt_overall = sapply(pt_overall, decimal_rounding, 1)) %>%
     mutate(pt_pupils_pa_10_exact = sapply(pt_pupils_pa_10_exact, decimal_rounding, 1)) %>%
+    mutate(pt_pupils_pa_50_exact = sapply(pt_pupils_pa_50_exact, decimal_rounding, 1)) %>%
     mutate(pt_sess_authorised = sapply(pt_sess_authorised, decimal_rounding, 1)) %>%
     mutate(pt_sess_unauthorised = sapply(pt_sess_unauthorised, decimal_rounding, 1)) %>%
     redacted_to_negative(col_old = "pt_overall", col_new = "Overall absence (%)") %>%
     redacted_to_negative(col_old = "pt_pupils_pa_10_exact", col_new = "Persistent absentees (%)") %>%
+    redacted_to_negative(col_old = "pt_pupils_pa_50_exact", col_new = "Severe absentees (%)") %>%
     redacted_to_negative(col_old = "pt_sess_authorised", col_new = "Authorised absence (%)") %>%
     redacted_to_negative(col_old = "pt_sess_unauthorised", col_new = "Unauthorised absence (%)") %>%
     redacted_to_negative(col_old = "t_pupils", col_new = "Total pupils")
