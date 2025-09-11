@@ -2082,6 +2082,7 @@ server <- function(input, output, session) {
     max_rate = calculate_max_rate(outcomes_absence, "Severe absentees (%)"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Social care group" = "social_care_group", "School type" = "school_type", "Total number of pupils" = "Total pupils", "Severe absentees (%)" = "Severe absentees (%)"),
     rt_col_defs = list(
+      "Total number of pupils" = colDef(cell = cellfunc),
       "Severe absentees (%)" = colDef(cell = cellfunc)
     ),
     decimal_percentage = TRUE
