@@ -666,14 +666,14 @@ read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_h
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
     dataset = outcomes_absence_data,
-    median_cols = c("pt_overall", "pt_pupils_pa_10_exact"), # "pt_sess_authorised", "pt_sess_unauthorised"),
+    median_cols = c("pt_overall", "pt_pupils_pa_10_exact", "pt_pupils_pa_50_exact"), # "pt_sess_authorised", "pt_sess_unauthorised"),
     sum_cols = c("t_pupils"),
     group_cols = c("LA.number", "time_period", "school_type", "social_care_group"),
   )
   outcomes_absence_data <- rbindlist(l = list(outcomes_absence_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   # manual step to ensure COVID years are redacted to X
-  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact", , "pt_pupils_pa_50_exact")
+  cols_to_update <- c("pt_overall", "t_pupils", "pt_pupils_pa_10_exact", "pt_pupils_pa_50_exact")
   time_periods_to_update <- c(201920)
   outcomes_absence_data[time_period %in% time_periods_to_update, (cols_to_update) := lapply(.SD, function(x) "x"), .SDcols = cols_to_update]
 

@@ -827,6 +827,30 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
+              fluidRow(
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Severe absentees for CINO at 31 March (overall absence 50% or more)",
+                    value = htmlOutput("severe_CIN_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Severe absentees for CPPO at 31 March (overall absence 50% or more)",
+                    value = htmlOutput("severe_CPP_headline_txt")
+                  )
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Severe absentees for CLA 12 months on 31 March (overall absence 50% or more)",
+                    value = htmlOutput("severe_CLA_headline_txt")
+                  )
+                ),
+                br(),
+              ),
               gov_row(
                 div(
                   class = "input_box",

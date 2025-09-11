@@ -490,6 +490,43 @@ server <- function(input, output, session) {
     paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
   })
 
+  # severe absentees headline stats
+  # Severe absence for CIN
+  output$severe_CIN_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # Severe absence for CPPO
+  output$severe_CPP_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
+  # Severe absence for CLA
+  output$severe_CLA_headline_txt <- renderText({
+    stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+
+    if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", formatted_time_period_wellbeing$time_period_new, ")", "</p>")
+  })
+
   ## CLA rates ----------------
   # CLA rate Plot
   output$plot_cla_rate <- plotly::renderPlotly({
