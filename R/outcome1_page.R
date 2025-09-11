@@ -1155,6 +1155,116 @@ outcome1_tab <- function() {
                         uiOutput("SN_persistent_abs"),
                       ),
                     ),
+                    ### Severe absence accordion ----
+                    accordion_panel(
+                      "Severe absence",
+                      gov_row(
+                        h2("Educational engagement: severe absence"),
+                        p("Engaging in education is a key component of long-term development and wellbeing for children and young people,
+                      which affects their outcomes. Barriers to engagement can be prevalent amongst children in need,
+                      and children’s social care has an important role in helping to overcome those barriers."),
+                        insert_text(inputId = "Severe_absence_definition", text = paste(
+                          "<b>", "Severe absentees", "</b><br>",
+                          htmlOutput("outcome1_choice_social_care_group_text_severe")
+                        )),
+                        timeseries_section_ui("severe_absence"),
+                        details(
+                          inputId = "Severe_info",
+                          label = "Additional information:",
+                          help_text = (
+                            tags$ul(
+                              tags$li(
+                                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
+                              ),
+                              tags$li(
+                                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                              ),
+                              tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+                              tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
+                              tags$br(),
+                              p(
+                                "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                                tags$br(),
+                                "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                              )
+                            )
+                          )
+                        ),
+                      ),
+                      # ## persistent absence by region
+                      # gov_row(
+                      #   h2("Severe absence by region"),
+                      #   p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
+                      #   br(),
+                      #   insert_text(inputId = "severe_absence_definition", text = paste(
+                      #     "<b>", "Severe absentees", "</b><br>",
+                      #     htmlOutput("outcome1_choice_social_care_group_by_region_text_severe")
+                      #   )),
+                      #   plotlyOutput("plot_severe_reg"),
+                      #   br(),
+                      #   details(
+                      #     inputId = "tbl_severe_reg",
+                      #     label = "View chart as a table",
+                      #     help_text = (
+                      #       HTML(paste0(
+                      #         csvDownloadButton("table_severe_reg", filename = "severe_absence_rates_regions.csv"),
+                      #         reactableOutput("table_severe_reg")
+                      #       ))
+                      #     )
+                      #   ),
+                      #   details(
+                      #     inputId = "Severe_reg_info",
+                      #     label = "Additional information:",
+                      #     help_text = (
+                      #       tags$ul(
+                      #         tags$li(
+                      #           "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                      #           a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
+                      #         ),
+                      #         tags$li(
+                      #           "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                      #             Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+                      #           a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+                      #         ),
+                      #         tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+                      #         tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+                      #         tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
+                      #         tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
+                      #         tags$br(),
+                      #         p(
+                      #           "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+                      #           tags$br(),
+                      #           "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+                      #         )
+                      #       )
+                      #     )
+                      #   ),
+                      # ),
+                      # gov_row(
+                      #   h2("Severe absence rate by local authority"),
+                      #   # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
+                      #   # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
+                      #   htmlOutput("outcome1_time_period_text_2"),  ############## DANGER
+                      #   br(),
+                      #   insert_text(inputId = "Severe_absence_definition", text = paste(
+                      #     "<b>", "Severe absentees", "</b><br>",
+                      #     htmlOutput("outcome1_choice_social_care_group_by_la_text_severe")
+                      #   )),
+                      #   radioGroupButtons(
+                      #     "severe_abs_stats_toggle",
+                      #     label = NULL,
+                      #     choices = c("All local authorities", "10 statistical neighbours"),
+                      #     selected = "All local authorities",
+                      #     justified = TRUE
+                      #   ),
+                      #   uiOutput("SN_severe_abs"),
+                      # ),
+                    ),
                     open = FALSE
                   )
                 ),

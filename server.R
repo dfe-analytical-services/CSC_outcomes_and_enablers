@@ -274,6 +274,18 @@ server <- function(input, output, session) {
     paste0("Percentage of persistent absentees, pupils with overall absence at 10% or more by local authority, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
   })
 
+  output$outcome1_choice_social_care_group_text_severe <- renderText({
+    paste0("Percentage of severe absentees, pupils with overall absence at 10% or more, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
+  })
+
+  output$outcome1_choice_social_care_group_by_region_text_severe <- renderText({
+    paste0("Percentage of severe absentees, pupils with overall absence at 10% or more by region, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
+  })
+
+  output$outcome1_choice_social_care_group_by_la_text_severe <- renderText({
+    paste0("Percentage of severe absentees, pupils with overall absence at 10% or more by local authority, for ", tags$b(input$wellbeing_extra_breakdown), " and ", tags$b(input$wellbeing_school_breakdown), " school type.")
+  })
+
   output$outcome1_choice_social_care_group_text_2 <- renderText({
     paste0("Percentage of pupils achieving expected standard in reading, writing and maths combined for ", tags$b(input$attainment_extra_breakdown), ".")
   })
@@ -494,7 +506,7 @@ server <- function(input, output, session) {
   # Severe absence for CIN
   output$severe_CIN_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -506,7 +518,7 @@ server <- function(input, output, session) {
   # Severe absence for CPPO
   output$severe_CPP_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -518,7 +530,7 @@ server <- function(input, output, session) {
   # Severe absence for CLA
   output$severe_CLA_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -1828,6 +1840,7 @@ server <- function(input, output, session) {
   })
 
   ## Persistent absence ------------
+
   ### Persistent absence timeseries chart ----
   output$persistence_time_series <- plotly::renderPlotly({
     shiny::validate(
@@ -2034,6 +2047,46 @@ server <- function(input, output, session) {
     )
   })
 
+  ## Severe absence ----
+  ### Severe absence timeseries chart + table : module
+
+  # reactive values and a way to update them
+  rv_severe_absence <- reactiveValues(
+    select_geographic_level = NULL, select_geo_breakdown = NULL,
+    check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL,
+    dimensional_filters = list()
+  )
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_o1, input$geographic_breakdown_o1,
+    input$national_comparison_checkbox_o1, input$region_comparison_checkbox_o1, input$sn_comparison_checkbox_o1,
+    input$wellbeing_extra_breakdown, input$wellbeing_school_breakdown
+  ), {
+    req(input$select_geography_o1, input$geographic_breakdown_o3)
+    rv_severe_absence$select_geographic_level <- input$select_geography_o1
+    rv_severe_absence$select_geo_breakdown <- input$geographic_breakdown_o1
+    rv_severe_absence$check_compare_national <- input$national_comparison_checkbox_o1
+    rv_severe_absence$check_compare_regional <- input$region_comparison_checkbox_o1
+    rv_severe_absence$check_compare_sn <- input$sn_comparison_checkbox_o1
+    rv_severe_absence$dimensional_filters <- list("social_care_group" = input$wellbeing_extra_breakdown, "school_type" = input$wellbeing_school_breakdown)
+  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
+
+
+  timeseries_section_server("severe_absence",
+    rv = rv_severe_absence,
+    dataset = copy(outcomes_absence),
+    # dimensional_filters = list("social_care_group" = input$wellbeing_extra_breakdown, "school_type" = input$wellbeing_school_breakdown),
+    chart_title = "Severe absence???",
+    yvalue = "Severe absentees (%)",
+    yaxis_title = "Percentage???",
+    max_rate = calculate_max_rate(outcomes_absence, "Severe absentees (%)"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Social care group" = "social_care_group", "School type" = "school_type", "Total number of pupils" = "Total pupils", "Severe absentees (%)" = "Severe absentees (%)"),
+    rt_col_defs = list(
+      "Severe absentees (%)" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+  #  rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
   # Education attainment
 

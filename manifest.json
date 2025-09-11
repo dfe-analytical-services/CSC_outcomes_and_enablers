@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "a7928efa841f487373006e8f6c4b8436"
+      "checksum": "567e6ce18f5d47e8cc2f20929fdae548"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5040,13 +5040,13 @@
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "64b842fde9e2a3ec57ba8f029dfd353a"
+      "checksum": "3e369bc2faba113fb665c750d66ea7fe"
     },
     "R/omitted_data.R": {
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "58fd498573f945188dbe6ca4aba83e5e"
+      "checksum": "4803da6cab1867acb589485ebb6e1372"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
@@ -5091,7 +5091,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "2c0e7280ec9ce0c2b66598e5b3759fbc"
+      "checksum": "c5b2bed5985c5dbb4d549322cf65e721"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
