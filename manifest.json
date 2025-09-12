@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "928c2b90a6c000e914bedb07dd0b0f1b"
+      "checksum": "0868bc75fb805b284c5148a2f55588b5"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4932,7 +4932,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "6bbbb57ebaf1e6484989a3e4803c2521"
+      "checksum": "b45ea33b0872541a956b22fe581f98f2"
     },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
@@ -4965,10 +4965,10 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "da2c357d35709b2045847643c14f9692"
+      "checksum": "32f5af173f83e76656d97ea6cad9b1a6"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "f2de11165f0862b8b05494bf0dd7d17b"
+      "checksum": "1699108848d4caba7ffe7dedd3bef900"
     },
     "data/wellbeing_sdq_data.rds": {
       "checksum": "b491acae45bb6ed2570a77804f6909ae"
@@ -5013,7 +5013,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "249517914fe4a94dc9b2346f1db1e46c"
+      "checksum": "7e2953b6dde586d495ae184ddc0311d4"
     },
     "R/data_sources.R": {
       "checksum": "679588eab11f1e36bf6203b3e7ca5670"
@@ -5046,7 +5046,7 @@
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "4803da6cab1867acb589485ebb6e1372"
+      "checksum": "b7ca987190b3ce57c3a35170528c9b69"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
@@ -5091,7 +5091,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "7fc5a41ff41b691145e4c9fe27986be2"
+      "checksum": "dcaf07ae38b4230440914c8aaced7ada"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5178,7 +5178,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "450fe6075bea07c6e04702ba71fb73e8"
+      "checksum": "34bf59eef8ccb852ba5d36f959194a17"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
