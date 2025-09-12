@@ -1175,7 +1175,7 @@ outcome1_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li(
-                                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                                "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
                                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
                               ),
                               tags$li(
@@ -1197,7 +1197,7 @@ outcome1_tab <- function() {
                           )
                         ),
                       ),
-                      ## persistent absence by region
+                      ## severe absence by region
                       gov_row(
                         h2("Severe absence by region"),
                         p("This chart will react to social care group selection but it will not react to geographical level and location selected in the filters at the top."),
@@ -1224,7 +1224,7 @@ outcome1_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li(
-                                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                                "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
                                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
                               ),
                               tags$li(
@@ -1250,7 +1250,7 @@ outcome1_tab <- function() {
                         h2("Severe absence rate by local authority"),
                         # p("This chart is reactive to the Local Authority and Regional filters at the top, aswell as the social care group filter, and will not react to the National filter. The chart will display all Local Authorities overall or every Local Authority in the selected Region."),
                         # p(sprintf("The charts below represent data from %s.", max(outcomes_absence$time_period))),
-                        htmlOutput("outcome1_time_period_text_2"),
+                        htmlOutput("outcome1_time_period_text_severe"),
                         br(),
                         insert_text(inputId = "Severe_absence_definition", text = paste(
                           "<b>", "Severe absentees", "</b><br>",

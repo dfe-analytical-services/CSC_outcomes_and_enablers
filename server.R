@@ -326,6 +326,11 @@ server <- function(input, output, session) {
     paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
   })
 
+  output$outcome1_time_period_text_severe <- renderText({
+    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
+  })
+
+
   output$outcome1_time_period_text_3 <- renderText({
     paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$attainment_extra_breakdown, ".")
   })
@@ -506,7 +511,7 @@ server <- function(input, output, session) {
   # Severe absence for CIN
   output$severe_CIN_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CINO at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -518,7 +523,7 @@ server <- function(input, output, session) {
   # Severe absence for CPPO
   output$severe_CPP_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CPPO at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -530,7 +535,7 @@ server <- function(input, output, session) {
   # Severe absence for CLA
   output$severe_CLA_headline_txt <- renderText({
     stat <- format(outcomes_absence %>% filter(time_period == max(outcomes_absence$time_period), geo_breakdown %in% input$geographic_breakdown_o1, social_care_group == "CLA 12 months at 31 March", school_type == "Total")
-      %>% select(pt_pupils_pa_10_exact), nsmall = 1)
+      %>% select(pt_pupils_pa_50_exact), nsmall = 1)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -8513,7 +8518,7 @@ server <- function(input, output, session) {
   ### Severe Absence --------
 
   output$SN_severe_abs <- renderUI({
-    if (input$persis_abs_stats_toggle == "All local authorities") {
+    if (input$severe_abs_stats_toggle == "All local authorities") {
       tagList(
         plotlyOutput("plot_severe_absence_la"),
         br(),
@@ -8631,7 +8636,7 @@ server <- function(input, output, session) {
 
 
     reactable(
-      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
+      stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Severe absentees (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
         `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Severe Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
