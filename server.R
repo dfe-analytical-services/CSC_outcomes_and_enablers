@@ -132,7 +132,7 @@ server <- function(input, output, session) {
       choices = choices,
     )
   })
-  ## outcome 1 confirmation text ----
+  ## summary page confirmation text ----
   region_for_la_sp <- reactive({
     selected_la <- input$geographic_breakdown_sp
     location_data %>%
