@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "017d1aecb3f889ecaaddfa8df73346fc"
+      "checksum": "541dc28be2a32b1c89300b4c7f107c9f"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5034,7 +5034,7 @@
       "checksum": "275209f9cb13770d305d2d81f0acd782"
     },
     "R/intro_panel.R": {
-      "checksum": "2c8f19635ac38008242c5fc3cfc7eca1"
+      "checksum": "ea2ee944b9d491e8dd27429bf49c8fbd"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
