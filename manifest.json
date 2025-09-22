@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "541dc28be2a32b1c89300b4c7f107c9f"
+      "checksum": "49c34358311bf036c292a18fdc979cba"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5034,7 +5034,7 @@
       "checksum": "275209f9cb13770d305d2d81f0acd782"
     },
     "R/intro_panel.R": {
-      "checksum": "ea2ee944b9d491e8dd27429bf49c8fbd"
+      "checksum": "a5fc5ca5875fde1b400e84fc5e99df9d"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
@@ -5197,6 +5197,9 @@
     },
     "www/images/DfE_logo_primary.png": {
       "checksum": "42c6b3327616fdfa9ea05bbb65ae60b2"
+    },
+    "www/images/national_framework_visual_guide.jpg": {
+      "checksum": "33652bbcb26a5f0fd15440b4b52151f8"
     },
     "www/images/screener_favicon.png": {
       "checksum": "8935e4350f4d30ef001b029de943cf6d"
