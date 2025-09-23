@@ -24,7 +24,7 @@ introductionPanel <- function() {
             type = "tabs",
             tabPanel(
               "Visual Guide",
-              tags$img(src = "images/national_framework_visual_guide.jpg", alt = "National Framework Visual Guide")
+              tags$img(src = "images/national_framework_visual_guide.jpg", alt = "National Framework Visual Guide", style = "width:100%;")
             ),
             tabPanel(
               "Text-only Version",
