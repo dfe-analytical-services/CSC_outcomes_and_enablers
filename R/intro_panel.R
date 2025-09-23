@@ -7,7 +7,7 @@ introductionPanel <- function() {
       gov_row(
         column(
           width = 12,
-          h2("Introduction", size = "l"),
+          h2("Introduction"),
           p(
             "This dashboard displays data indicators to help both local and central government understand progress towards the outcomes and enablers set out in the",
             a(href = "https://www.gov.uk/government/publications/childrens-social-care-national-framework", "Children’s Social Care National Framework (opens in a new tab).", target = "_blank", style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"),
@@ -35,14 +35,14 @@ introductionPanel <- function() {
                   p("The outcomes included in the dashboard are what children’s social care should achieve for the children, young people and families they support.
           They reflect the core purpose of children’s social care."),
                   # outcome 1
-                  h3("Children, young people and families stay together and get the help they need"),
-                  h4("Access to support and getting help"),
+                  h4("Children, young people and families stay together and get the help they need"),
+                  h5("Access to support and getting help"),
                   tags$ul(
                     tags$li("Rate of children in need per 10k"),
                     tags$li("Repeat referrals (within 12 months)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Family stability"),
+                  h5("Family stability"),
                   tags$ul(
                     tags$li("Rate of children starting to be looked after per 10k"),
                     tags$li("Rate of children looked after who were UASC per 10k"),
@@ -50,48 +50,48 @@ introductionPanel <- function() {
                     tags$li("Rate of children looked after on 31 March per 10k"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Child wellbeing and development"),
+                  h5("Child wellbeing and development"),
                   tags$ul(
                     tags$li("Overall Absence for CINO, CPPO and CLA on 31 March by school type"),
                     tags$li("Persistent absentees for CINO, CPPO and CLA at 31 March (overall absence 10% or more) by school type"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Educational attainment"),
+                  h5("Educational attainment"),
                   tags$ul(
                     tags$li("Pupils (CINO, CPPO, CLA) achieving expected standard in reading, writing and maths combined (KS2)"),
                     tags$li("Average attainment 8 (CINO, CPPO, CLA) at 31 March (KS4)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   # outcome 2
-                  h3("Children and young people are supported by their network"),
-                  h4("Families engaging and receiving support from their family network"),
+                  h4("Children and young people are supported by their network"),
+                  h5("Families engaging and receiving support from their family network"),
                   tags$ul(
                     tags$li("% children who cease to be looked after due to special guardianship order"),
                     tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   # outcome 3
-                  h3("Children and young people are safe in and outside of their home"),
-                  h4("Child safety - general"),
+                  h4("Children and young people are safe in and outside of their home"),
+                  h5("Child safety - general"),
                   tags$ul(
                     tags$li("% of child protection plans starting during year which were a second or subsequent plan"),
                     tags$li("% of child protection plans longer than 2 years"),
                     tags$li("Hospital admissions caused by unintentional and deliberate injuries to children and young people per 10K (0-14 years)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Child abuse / neglect"),
+                  h5("Child abuse / neglect"),
                   tags$ul(
                     tags$li("Factors identified at the end of assessment in the year to 31 March related to child abuse or neglect per 10k by factor"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Harms outside the home"),
+                  h5("Harms outside the home"),
                   tags$ul(
                     tags$li("Factors identified at the end of assessment in the year to 31 March related to specific types of harms outside the home per 10k by factor"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   # outcome 4
-                  h3("Children in care and care leavers have stable, loving homes"),
-                  h4("Stability and quality of where a child lives"),
+                  h4("Children in care and care leavers have stable, loving homes"),
+                  h5("Stability and quality of where a child lives"),
                   tags$ul(
                     tags$li("% children looked after with 3 or more placements during the year"),
                     tags$li("% children looked after placed more than 20 miles from home"),
@@ -101,12 +101,12 @@ introductionPanel <- function() {
                     tags$li("% children looked after living in independent and semi-independent living arrangements / supported accommodation"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Child wellbeing"),
+                  h5("Child wellbeing"),
                   tags$ul(
                     tags$li("Average SDQ score"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Quality of life for care experienced people"),
+                  h5("Quality of life for care experienced people"),
                   tags$ul(
                     tags$li("% care leavers in education, employment or training (17 to 18 years)"),
                     tags$li("% care leavers in accommodation considered suitable (17 to 18 years)"),
@@ -122,37 +122,37 @@ introductionPanel <- function() {
                   width = 12,
                   h2("Enablers"),
                   p("The enablers included in the dashboard refer to aspects of the children's social care system that facilitate effective support for children, young people and families. The enablers are foundational to good practice."),
-                  h3("Multi-agency working is prioritised and effective"),
+                  h4("Multi-agency working is prioritised and effective"),
                   p("We will work with the sector and other experts to develop indicators"),
                   # enabler 2
-                  h3("Leaders drive conditions for effective practice"),
-                  h4("Spending"),
+                  h4("Leaders drive conditions for effective practice"),
+                  h5("Spending"),
                   tags$ul(
                     tags$li("Share of total local authority spend on children's services"),
                     tags$li("Average per capita (of all children in a local authority) spend on children's services"),
                     tags$li("Share of children's services spend not on CLA"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Culture focused on outcomes from children and families and continually improving services"),
+                  h5("Culture focused on outcomes from children and families and continually improving services"),
                   tags$ul(
                     tags$li("Ofsted leadership rating"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   # enabler 3
-                  h3("The workforce is equipped and effective"),
-                  h4("Workforce stability"),
+                  h4("The workforce is equipped and effective"),
+                  h5("Workforce stability"),
                   tags$ul(
                     tags$li("Turnover rate (FTE)"),
                     tags$li("Agency worker rate (FTE)"),
                     tags$li("Vacancy rate (FTE)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Quality of support for children and families"),
+                  h5("Quality of support for children and families"),
                   tags$ul(
                     tags$li("Average caseload"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-                  h4("Social worker ethnicity"),
+                  h5("Social worker ethnicity"),
                   tags$ul(
                     tags$li("Ethnicity (headcount)"),
                     tags$li("Ethnicity (headcount) vs general population ethnicity"),
