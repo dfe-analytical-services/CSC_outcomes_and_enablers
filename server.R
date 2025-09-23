@@ -327,7 +327,9 @@ server <- function(input, output, session) {
   })
 
   output$outcome1_time_period_text_severe <- renderText({
-    paste0("The charts below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
+    # if statement  to only report tables for primary
+    charts_or_tables <- if (input$wellbeing_school_breakdown != "State-funded primary") "charts" else "tables"
+    paste0("The ", charts_or_tables, " below represent data from ", outcomes_time_period_max, ", for ", input$wellbeing_extra_breakdown, " and ", input$wellbeing_school_breakdown, " school type.")
   })
 
 
@@ -8541,7 +8543,7 @@ server <- function(input, output, session) {
           condition = "input.wellbeing_school_breakdown == 'State-funded primary'",
           # plotlyOutput("plot_severe_absence_la"),
           # br(),
-          p("This table is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+          p("This table is reactive to the local authority and regional filters at the top and will not react to the national filter. The table will display all local authorities overall or every local authority in the selected region."),
           br(),
           tagAppendAttributes(
             details(
@@ -8591,16 +8593,37 @@ server <- function(input, output, session) {
         need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
       tagList(
-        plotlyOutput("severe_absence_SN_plot"),
-        br(),
-        details(
-          inputId = "tbl_sn_severe_abs",
-          label = "View chart as a table",
-          help_text = (
-            HTML(paste0(
-              csvDownloadButton("SN_severe_absence_tbl", filename = paste0("severe_absence_SN_", input$geographic_breakdown_o1, ".csv")),
-              reactableOutput("SN_severe_absence_tbl")
-            ))
+        conditionalPanel(
+          condition = "input.wellbeing_school_breakdown != 'State-funded primary'",
+          plotlyOutput("severe_absence_SN_plot"),
+          br(),
+          details(
+            inputId = "tbl_sn_severe_abs",
+            label = "View chart as a table",
+            help_text = (
+              HTML(paste0(
+                csvDownloadButton("SN_severe_absence_tbl", filename = paste0("severe_absence_SN_", input$geographic_breakdown_o1, ".csv")),
+                reactableOutput("SN_severe_absence_tbl")
+              ))
+            )
+          ),
+        ),
+        conditionalPanel(
+          condition = "input.wellbeing_school_breakdown == 'State-funded primary'",
+          # plotlyOutput("severe_absence_SN_plot"),
+          # br(),
+          tagAppendAttributes(
+            details(
+              inputId = "tbl_sn_severe_abs_2",
+              label = "View table",
+              help_text = (
+                HTML(paste0(
+                  csvDownloadButton("SN_severe_absence_tbl", filename = paste0("severe_absence_SN_", input$geographic_breakdown_o1, ".csv")),
+                  reactableOutput("SN_severe_absence_tbl")
+                ))
+              )
+            ),
+            open = ""
           )
         ),
         details(
