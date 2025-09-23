@@ -8520,18 +8520,41 @@ server <- function(input, output, session) {
   output$SN_severe_abs <- renderUI({
     if (input$severe_abs_stats_toggle == "All local authorities") {
       tagList(
-        plotlyOutput("plot_severe_absence_la"),
-        br(),
-        p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
-        br(),
-        details(
-          inputId = "tbl_severe_absence_la",
-          label = "View chart as a table",
-          help_text = (
-            HTML(paste0(
-              csvDownloadButton("table_severe_absence_la", filename = "severe_absence_all_LAs.csv"),
-              reactableOutput("table_severe_absence_la")
-            ))
+        conditionalPanel(
+          condition = "input.wellbeing_school_breakdown != 'State-funded primary'",
+          plotlyOutput("plot_severe_absence_la"),
+          br(),
+          p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+          br(),
+          details(
+            inputId = "tbl_severe_absence_la",
+            label = "View chart as a table",
+            help_text = (
+              HTML(paste0(
+                csvDownloadButton("table_severe_absence_la", filename = "severe_absence_all_LAs.csv"),
+                reactableOutput("table_severe_absence_la")
+              ))
+            )
+          ),
+        ),
+        conditionalPanel(
+          condition = "input.wellbeing_school_breakdown == 'State-funded primary'",
+          # plotlyOutput("plot_severe_absence_la"),
+          # br(),
+          p("This table is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+          br(),
+          tagAppendAttributes(
+            details(
+              inputId = "tbl_severe_absence_la_2",
+              label = "View table",
+              help_text = (
+                HTML(paste0(
+                  csvDownloadButton("table_severe_absence_la", filename = "severe_absence_all_LAs.csv"),
+                  reactableOutput("table_severe_absence_la")
+                ))
+              )
+            ),
+            open = ""
           )
         ),
         details(
@@ -8540,7 +8563,7 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li(
-                "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
+                "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
               ),
               tags$li(
