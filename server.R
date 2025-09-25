@@ -2214,7 +2214,6 @@ server <- function(input, output, session) {
 
     data2 <- data %>%
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Severe absentees (%)` = `Severe absentees (%)`)
-
     reactable(
       data2,
       defaultColDef = colDef(align = "center"),
@@ -8521,9 +8520,41 @@ server <- function(input, output, session) {
 
   output$SN_severe_abs <- renderUI({
     if (input$severe_abs_stats_toggle == "All local authorities") {
-      tagList(
-        conditionalPanel(
-          condition = "input.wellbeing_school_breakdown != 'State-funded primary'",
+      validate(
+        need(input$wellbeing_school_breakdown != "", "Select a school type"),
+        need(input$geographic_breakdown_o1 != "", "Select a location."),
+      )
+      # define this once here and reuse it on both sections
+      details_severe_abs_la_add_info <- details(
+        inputId = "Severe_la_info",
+        label = "Additional information:",
+        help_text = (
+          tags$ul(
+            tags$li(
+              "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
+              a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
+            ),
+            tags$li(
+              "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
+                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
+              a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
+            ),
+            tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+            tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
+            tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
+            tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
+            tags$br(),
+            p(
+              "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
+              tags$br(),
+              "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
+            )
+          )
+        )
+      )
+
+      if (input$wellbeing_school_breakdown != "State-funded primary") {
+        tagList(
           plotlyOutput("plot_severe_absence_la"),
           br(),
           p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
@@ -8538,16 +8569,16 @@ server <- function(input, output, session) {
               ))
             )
           ),
-        ),
-        conditionalPanel(
-          condition = "input.wellbeing_school_breakdown == 'State-funded primary'",
-          # plotlyOutput("plot_severe_absence_la"),
-          # br(),
+          details_severe_abs_la_add_info,
+        )
+      } else {
+        tagList(
+          br(),
           p("This table is reactive to the local authority and regional filters at the top and will not react to the national filter. The table will display all local authorities overall or every local authority in the selected region."),
           br(),
           tagAppendAttributes(
             details(
-              inputId = "tbl_severe_absence_la_2",
+              inputId = "tbl_severe_absence_la",
               label = "View table",
               help_text = (
                 HTML(paste0(
@@ -8557,44 +8588,34 @@ server <- function(input, output, session) {
               )
             ),
             open = ""
-          )
-        ),
-        details(
-          inputId = "Severe_la_info",
-          label = "Additional information:",
-          help_text = (
-            tags$ul(
-              tags$li(
-                "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
-                a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
-              ),
-              tags$li(
-                "No absence data relating to the full 2019/20 academic year is available due to COVID-19.
-                                  Due to the disruption during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. For more detailed information on this see ",
-                a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/pupil-absence-in-schools-in-england", "Pupil absence in schools in England.", target = "_blank"),
-              ),
-              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
-              tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
-              tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-              tags$li("Children in need data is not available for Hackney local authority for both the 2020 to 2021 and 2021 to 2022 collection years and Hampshire local authority for the 2023 to 2024 collection year. Hackney was unable to provide a return for both the 2021 and 2022 children in need census collections, due to a cyberattack which had a significant impact on their management information systems. Hampshire provided a CIN return for the 2024 collection, however, due to a transition to a new case management and reporting system, there were significant data quality issues affecting the coverage of Hampshire's 2024 return. Refer to the methodology section for more information."),
-              tags$br(),
-              p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
-                tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england-methodology", "Outcomes for children in need, including children looked after methodology.", target = "_blank")
-              )
-            )
-          )
-        ),
-      )
-    } else {
+          ),
+          details_severe_abs_la_add_info
+        )
+      }
+    } else { # this is the SN plot/table
       validate(
         need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
         need(input$geographic_breakdown_o1 != "", "Select a location."),
       )
-      tagList(
-        conditionalPanel(
-          condition = "input.wellbeing_school_breakdown != 'State-funded primary'",
+      details_severe_abs_SN_add_info <- details(
+        inputId = "sn_severe_abs_info",
+        label = "Additional information:",
+        help_text = (
+          tags$ul(
+            tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
+            tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
+            br(),
+            p(
+              "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
+              tags$br(),
+              "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
+            ),
+          )
+        )
+      )
+
+      if (input$wellbeing_school_breakdown != "State-funded primary") { # table and chart
+        tagList(
           plotlyOutput("severe_absence_SN_plot"),
           br(),
           details(
@@ -8607,15 +8628,15 @@ server <- function(input, output, session) {
               ))
             )
           ),
-        ),
-        conditionalPanel(
-          condition = "input.wellbeing_school_breakdown == 'State-funded primary'",
-          # plotlyOutput("severe_absence_SN_plot"),
-          # br(),
+          details_severe_abs_SN_add_info
+        )
+      } else { # table only
+        tagList(
+          br(),
           tagAppendAttributes(
             details(
-              inputId = "tbl_sn_severe_abs_2",
-              label = "View table",
+              inputId = "tbl_sn_severe_abs",
+              label = "View chart as a table",
               help_text = (
                 HTML(paste0(
                   csvDownloadButton("SN_severe_absence_tbl", filename = paste0("severe_absence_SN_", input$geographic_breakdown_o1, ".csv")),
@@ -8624,27 +8645,13 @@ server <- function(input, output, session) {
               )
             ),
             open = ""
-          )
-        ),
-        details(
-          inputId = "sn_severe_abs_info",
-          label = "Additional information:",
-          help_text = (
-            tags$ul(
-              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-              br(),
-              p(
-                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                tags$br(),
-                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-              ),
-            )
-          )
+          ),
+          details_severe_abs_SN_add_info
         )
-      )
+      }
     }
   })
+
 
   # Severe absence stats neighbours chart
   output$severe_absence_SN_plot <- plotly::renderPlotly({
