@@ -23,7 +23,7 @@ timeseries_section_ui <- function(id) {
 
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
-timeseries_section_server <- function(id, rv, dataset, dimensional_filters = list(),
+timeseries_section_server <- function(id, rv, dataset,
                                       chart_title = "", yvalue, yaxis_title, max_rate,
                                       rt_columns, rt_col_defs, decimal_percentage) {
   moduleServer(id, function(input, output, session) {
@@ -37,7 +37,7 @@ timeseries_section_server <- function(id, rv, dataset, dimensional_filters = lis
         check_compare_national = rv$check_compare_national,
         check_compare_regional = rv$check_compare_regional,
         check_compare_sn = rv$check_compare_sn,
-        dimensional_filters = dimensional_filters
+        dimensional_filters = rv$dimensional_filters
       )
     })
 
