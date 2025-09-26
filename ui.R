@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "We now include severe absence indicators for CINO, CPPO and CLA published on 10th Apr 2025."
+        "LA Outturn data has been updated as of 18th September 2025 and used Mid 2024 ONS population estimates"
       )
     ),
     bslib::navset_pill_list(
