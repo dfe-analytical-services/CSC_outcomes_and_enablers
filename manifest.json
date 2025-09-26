@@ -5091,7 +5091,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "f665efaf15c127434d25de453c34c94b"
+      "checksum": "3377aac686efc16ff808003ff47ae4ed"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5169,7 +5169,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "055b3d216dd0d7aed1b1d0aa7cb5363c"
+      "checksum": "bb328c83009eab7fd9df993bba9386e8"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Hospital Admissions for 0-14 years has been updated as of 04 February 2025."
+        "We now include severe absence indicators for CINO, CPPO and CLA published on 10th Apr 2025."
       )
     ),
     bslib::navset_pill_list(
