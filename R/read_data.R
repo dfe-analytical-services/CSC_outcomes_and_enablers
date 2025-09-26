@@ -908,7 +908,7 @@ read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31ma
 # LA data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/pat/15/par/E92000001/ati/502/are/E09000002/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
-read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissions_2324.csv", region_file = "./data-raw/region_hospital_admissions_22324.csv") {
+read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissions_2324.csv", region_file = "./data-raw/region_hospital_admissions_2324.csv") {
   # read the raw data from 2 csv files
   la_admissions <- read.csv("./data-raw/la_hospital_admissions_2324.csv") # la_file)
   region_admissions <- read.csv("./data-raw/region_hospital_admissions_2324.csv") # region_file)
@@ -1786,13 +1786,13 @@ merge_eth_dataframes <- function(sn_long) {
 # Enabler 3 -------------------
 # Spending
 
-read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_LA.ods") {
-  data <- read_ods(file, sheet = "RSX_LA_Data_2023-24", range = "A11:CW423")
-  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)")
+read_spending_data <- function(sn_long, file = "./data-raw/RSX_LA_Data_2024-25_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RSX_LA_Data_202425", range = "A7:DA430")
+  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certification", "Children Social Care - Total Expenditure (C3 = C1 + C2)", "Total Service Expenditure - Total Expenditure (C3 = C1 + C2)")
 
   data3 <- data2 %>%
     filter(data2$Class %in% c("UA", "MD", "LB", "SC", "Eng")) %>%
-    rename(`CS Expenditure` = "Children Social Care -  Total Expenditure\n (C3 = C1 + C2)", `Total Expenditure` = "Total Service Expenditure - Total Expenditure\n (C3 = C1 + C2)") %>%
+    rename(`CS Expenditure` = "Children Social Care - Total Expenditure (C3 = C1 + C2)", `Total Expenditure` = "Total Service Expenditure - Total Expenditure (C3 = C1 + C2)") %>%
     # replace "[x]" values with x
     mutate_all(~ gsub("\\[x\\]", "x", .)) %>%
     # replace & in local authority names with "and"
@@ -1820,7 +1820,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
   merged_data <- merge(GET_location(cla_placements), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2023/24"
+  merged_data$time_period <- "2024/25"
   merged_data <- merged_data %>%
     remove_cumbria_data() %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CS Expenditure", "Total Expenditure", exp, total_exp, cs_share) %>%
@@ -1831,7 +1831,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2023/24"
+  national_data$time_period <- "2024/25"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -1843,7 +1843,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
     rename("geo_breakdown" = "region_name")
   # regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2023/24"
+  regional_spending$time_period <- "2024/25"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -1851,7 +1851,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
     filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
     summarise(exp = sum(exp), total_exp = sum(total_exp), cs_share = ((exp / total_exp) * 100)) %>%
     mutate(
-      "time_period" = "2023/24",
+      "time_period" = "2024/25",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = "",
@@ -1911,8 +1911,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_2023-24_data_by_L
   return(final_dataset)
 }
 
-# read_per_capita_spending <- function(file = "./data-raw/mye22final.xlsx") {
-read_per_capita_spending <- function(sn_long, file = "./data-raw/mye23tablesew.xlsx") {
+read_per_capita_spending <- function(sn_long, file = "./data-raw/mye24tablesew.xlsx") {
   population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
   test_df <- population_estimates
   test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
@@ -2000,13 +1999,13 @@ read_per_capita_spending <- function(sn_long, file = "./data-raw/mye23tablesew.x
     return(final_dataset)
 }
 
-read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_LA.ods") {
-  data <- read_ods(file, sheet = "RO3_LA_Data_2023-24", range = "A12:CP424")
-  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certified", "Total Expenditure\n (C3 = C1 + C2)4", "Total Expenditure\n (C3 = C1 + C2)53")
+read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_LA_DATA_2024-25_data_by_LA.ods") {
+  data <- read_ods(file, sheet = "RO3_LA_Data_202425", range = "A7:SC418")
+  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certification", "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)", "Children's social care - Children Looked After [note 3] - Total Expenditure (C3 = C1 + C2)")
 
   data3 <- data2 %>%
     filter(data2$Class %in% c("UA", "MD", "LB", "SC", "Eng")) %>%
-    rename(`CLA Expenditure` = "Total Expenditure\n (C3 = C1 + C2)4", `Total Expenditure` = "Total Expenditure\n (C3 = C1 + C2)53") %>%
+    rename(`CLA Expenditure` = "Children's social care - Children Looked After [note 3] - Total Expenditure (C3 = C1 + C2)", `Total Expenditure` = "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)") %>%
     # replace "[x]" values with x
     mutate_all(~ gsub("\\[x\\]", "x", .)) %>%
     # replace & in local authority names with "and"
@@ -2033,7 +2032,7 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
   merged_data <- merge(GET_location(cla_placements), data3, by.x = "new_la_code", by.y = "ONS Code", all = FALSE)
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2023/24"
+  merged_data$time_period <- "2024/25"
   merged_data <- merged_data %>%
     select(time_period, geographic_level, geo_breakdown, region_name, new_la_code, old_la_code, "CLA Expenditure", "Total Expenditure", cla_exp, total_exp, minus_cla_share)
 
@@ -2041,7 +2040,7 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2023/24"
+  national_data$time_period <- "2024/25"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -2053,7 +2052,7 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
     rename("geo_breakdown" = "region_name")
   # regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2023/24"
+  regional_spending$time_period <- "2024/25"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -2061,7 +2060,7 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
     filter(geo_breakdown == "Inner London" | geo_breakdown == "Outer London") %>%
     summarise(cla_exp = sum(cla_exp), total_exp = sum(total_exp), minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)) %>%
     mutate(
-      "time_period" = "2023/24",
+      "time_period" = "2024/25",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = as.character(""),
@@ -2117,7 +2116,6 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_2023-24_data_by_
 read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
   file <- "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods"
-  # ofsted_leadership_data <- read_ods(file, sheet = "LA_level_at_31_Mar_2023", skip = 3)
   ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
 
   # Remove authorities that aren't yet inspected
