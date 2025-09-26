@@ -36,9 +36,8 @@ data-raw/la_hospital_admissions_2324.csv,published
 data-raw/region_hospital_admissions_2324.csv,published
 data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv,published
 data-raw/Childrens_social_care_in_England_2023_underlying_data.ods,published
-data-raw/RO3_2022-23_data_by_LA.ods,published
-data-raw/RSX_2022-23_data_by_LA.ods,published
-data-raw/mye22final.xlsx,published
+data-raw/RO3_LA_DATA_2024-25_data_by_LA.ods,published
+data-raw/RSX_LA_Data_2024-25_data_by_LA.ods,published
 data-raw/mye23tablesew.xlsx,published
 data/summary_page_metadata.xlsx,reference
 data-raw/ofsted_region_mapping_corrections.csv,reference

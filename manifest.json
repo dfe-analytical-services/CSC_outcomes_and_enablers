@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "3f75e3a776820227bfb536e7990aa34a"
+      "checksum": "02b89b404831e1a2a851fdc1e16a716c"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4835,11 +4835,8 @@
     "data-raw/LTLA-UTLA_Apr23_Lookup_England-Wales.csv": {
       "checksum": "e4ff60cc85cbbe55b2970ec8cf6c1533"
     },
-    "data-raw/mye22final.xlsx": {
-      "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
-    },
-    "data-raw/mye23tablesew.xlsx": {
-      "checksum": "4d63ea6362f3db62374ff6d0d206fdd6"
+    "data-raw/mye24tablesew.xlsx": {
+      "checksum": "8bdf3edfcf11be3ee0b79aca91a28dd9"
     },
     "data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
       "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
@@ -4862,11 +4859,11 @@
     "data-raw/region_hospital_admissions_2324.csv": {
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
-    "data-raw/RO3_2023-24_data_by_LA.ods": {
-      "checksum": "0c2c67cd45568a7e9d442c5204eac0aa"
+    "data-raw/RO3_LA_Data_2024-25_data_by_LA.ods": {
+      "checksum": "b1abda1b71693e9df2791abb32f28c8b"
     },
-    "data-raw/RSX_2023-24_data_by_LA.ods": {
-      "checksum": "2903e55712c2c92a393e8c75a904fcf9"
+    "data-raw/RSX_LA_Data_2024-25_data_by_LA.ods": {
+      "checksum": "61222a569512e12322bd8756a746c4c3"
     },
     "data-raw/sn_model_2025_wide.csv": {
       "checksum": "699c7be40307dae53c65fce3c43e8ef0"
@@ -4989,7 +4986,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "b9b30c50196bee7b272a374054cbdb1f"
+      "checksum": "f805b758fcfbd27767ee40af1a640870"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5061,7 +5058,7 @@
       "checksum": "cfbf87675ea3f09ebd321e1108ea69e0"
     },
     "R/read_data.R": {
-      "checksum": "5b459ca288fbb6910ba819cc694e2c98"
+      "checksum": "2e87e8c77183fd8d455698ab2a7aa321"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
