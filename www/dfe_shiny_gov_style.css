@@ -1191,8 +1191,8 @@ div .panel.card.mb-3.panel-default.border-default {
 
 /* New National Framework Page image scaling */
 #national_framework_image {
-  width: 80%;
-  max-width: 1920px;
+  width: 100%;
+  max-width: 1200px;
   display: block;
   margin: auto;
 }
