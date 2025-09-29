@@ -1189,6 +1189,15 @@ div .panel.card.mb-3.panel-default.border-default {
     
 }
 
+/* New National Framework Page image scaling */
+#national_framework_image {
+  width: 80%;
+  max-width: 1920px;
+  display: block;
+  margin: auto;
+}
+
+
 /* sort out the download as csv button above the reactable to be on the right with the search box on the left in line */
 .rt-search {
   align-self: baseline;

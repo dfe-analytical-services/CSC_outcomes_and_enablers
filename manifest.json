@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "aca89f4321c96292da0016b4280eb9cf"
+      "checksum": "758b8b636271f9c9c10c31885992ee1f"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5034,7 +5034,7 @@
       "checksum": "275209f9cb13770d305d2d81f0acd782"
     },
     "R/intro_panel.R": {
-      "checksum": "cc98a1c52a83b0ddc2c58e3e88b7d367"
+      "checksum": "1572271fd9e7bcad09ba12e56049947e"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
@@ -5178,7 +5178,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "450fe6075bea07c6e04702ba71fb73e8"
+      "checksum": "266431bc21cbd8437d31fcf2a93cc27e"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
