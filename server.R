@@ -5921,7 +5921,7 @@ server <- function(input, output, session) {
   ##### Headline stats
   # Share of total spend on CS
   output$total_spending_txt <- renderText({
-    stat <- format(spending_data %>% filter(time_period == "2023/24" &
+    stat <- format(spending_data %>% filter(time_period == "2024/25" &
       geo_breakdown %in% input$geographic_breakdown_e2) %>%
       select(`CS Share`), nsmall = 2)
 
@@ -5947,7 +5947,7 @@ server <- function(input, output, session) {
 
   # Share of total spend on children's services minus CLA
   output$spend_minus_cla_txt <- renderText({
-    stat <- format(spending_data_no_cla %>% filter(time_period == "2023/24" &
+    stat <- format(spending_data_no_cla %>% filter(time_period == "2024/25" &
       geo_breakdown %in% input$geographic_breakdown_e2) %>%
       select(`Excluding CLA Share`), nsmall = 2)
 
