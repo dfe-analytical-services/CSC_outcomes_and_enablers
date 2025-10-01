@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "474a99c19f057f0a1df20ee5366f3729"
+      "checksum": "72f754d76943a29254ad81f3d242a921"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4835,11 +4835,8 @@
     "data-raw/LTLA-UTLA_Apr23_Lookup_England-Wales.csv": {
       "checksum": "e4ff60cc85cbbe55b2970ec8cf6c1533"
     },
-    "data-raw/mye22final.xlsx": {
-      "checksum": "c3f5a1b49de3f211067f4a98dc794dc0"
-    },
-    "data-raw/mye23tablesew.xlsx": {
-      "checksum": "4d63ea6362f3db62374ff6d0d206fdd6"
+    "data-raw/mye24tablesew.xlsx": {
+      "checksum": "8bdf3edfcf11be3ee0b79aca91a28dd9"
     },
     "data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
       "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
@@ -4862,11 +4859,11 @@
     "data-raw/region_hospital_admissions_2324.csv": {
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
-    "data-raw/RO3_2023-24_data_by_LA.ods": {
-      "checksum": "0c2c67cd45568a7e9d442c5204eac0aa"
+    "data-raw/RO3_LA_Data_2024-25_data_by_LA.ods": {
+      "checksum": "b1abda1b71693e9df2791abb32f28c8b"
     },
-    "data-raw/RSX_2023-24_data_by_LA.ods": {
-      "checksum": "2903e55712c2c92a393e8c75a904fcf9"
+    "data-raw/RSX_LA_Data_2024-25_data_by_LA.ods": {
+      "checksum": "61222a569512e12322bd8756a746c4c3"
     },
     "data-raw/sn_model_2025_wide.csv": {
       "checksum": "699c7be40307dae53c65fce3c43e8ef0"
@@ -4932,7 +4929,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "b45ea33b0872541a956b22fe581f98f2"
+      "checksum": "c4dce1da5e9687f6babb0a0683863124"
     },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
@@ -4950,13 +4947,13 @@
       "checksum": "1ae858095bc72adfc58d40d8548709d8"
     },
     "data/spending_data.rds": {
-      "checksum": "ffad25b0a8d429b60eaafe8a8a24013a"
+      "checksum": "f8653f4eb70f28a324fe20c850cc95ed"
     },
     "data/spending_data_no_cla.rds": {
-      "checksum": "6463ec886941c76465d73b2c2fe40c2b"
+      "checksum": "ac454fa05ef0c04f5b251679fd181b0d"
     },
     "data/spending_per_capita.rds": {
-      "checksum": "68577fb42fdbb29ab27d642f1ae63ee0"
+      "checksum": "1dd663f2edd40a35540b9f1ea8941a80"
     },
     "data/stats_neighbours.rds": {
       "checksum": "a2a9abe5893c10f69328bfea309e1628"
@@ -4965,7 +4962,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "32f5af173f83e76656d97ea6cad9b1a6"
+      "checksum": "a6a91c43909b6bfec563fa216d6bccb3"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "1699108848d4caba7ffe7dedd3bef900"
@@ -4989,7 +4986,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "b9b30c50196bee7b272a374054cbdb1f"
+      "checksum": "f805b758fcfbd27767ee40af1a640870"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5013,10 +5010,10 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "da6141a5f38818ada75fb242438ca17e"
+      "checksum": "b7e4f6207e5bfef8bc0050009fabe467"
     },
     "R/data_sources.R": {
-      "checksum": "679588eab11f1e36bf6203b3e7ca5670"
+      "checksum": "50595730cd2da6af9160a8c124ba7b34"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5028,13 +5025,13 @@
       "checksum": "61919cb7b64775b3f1483682dfa8071c"
     },
     "R/enabler2_page.R": {
-      "checksum": "890f5ab1a5da9bc564cbd591695b1a59"
+      "checksum": "fd032cb1c1c22c25e6274b0c5e448486"
     },
     "R/enabler3_page.R": {
       "checksum": "275209f9cb13770d305d2d81f0acd782"
     },
     "R/intro_panel.R": {
-      "checksum": "1572271fd9e7bcad09ba12e56049947e"
+      "checksum": "48548244416fb53442c42e0406be8761"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
@@ -5061,7 +5058,7 @@
       "checksum": "cfbf87675ea3f09ebd321e1108ea69e0"
     },
     "R/read_data.R": {
-      "checksum": "5b459ca288fbb6910ba819cc694e2c98"
+      "checksum": "2e87e8c77183fd8d455698ab2a7aa321"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -5091,7 +5088,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "3377aac686efc16ff808003ff47ae4ed"
+      "checksum": "21f64fc3e627ae0e8d7bea8eeb8b0aaa"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5169,7 +5166,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "bb328c83009eab7fd9df993bba9386e8"
+      "checksum": "e15f8781f3d603f00394cf0f8b9e6a1b"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
@@ -5178,7 +5175,7 @@
       "checksum": "c23764dae2d73a45a55815d0327be6cb"
     },
     "www/dfe_shiny_gov_style.css": {
-      "checksum": "43c7f6e7c8291994ed6597b3f61821eb"
+      "checksum": "ca427d85952fac9c9629c8b6f98efe8e"
     },
     "www/dfefavicon.png": {
       "checksum": "179db108199253ed0617024df291473b"
@@ -5198,8 +5195,8 @@
     "www/images/DfE_logo_primary.png": {
       "checksum": "42c6b3327616fdfa9ea05bbb65ae60b2"
     },
-    "www/images/national_framework_visual_guide.jpg": {
-      "checksum": "33652bbcb26a5f0fd15440b4b52151f8"
+    "www/images/national_framework_visual_guide.png": {
+      "checksum": "ad50a8bfb5941b66334dce6c93e98740"
     },
     "www/images/screener_favicon.png": {
       "checksum": "8935e4350f4d30ef001b029de943cf6d"

@@ -173,7 +173,7 @@ pipeline_generate_datasets <- function() {
   shhh(library(readODS))
   shhh(library(readxl))
   shhh(library(janitor))
-  shhh(library(data.table, pos = 1))
+  shhh(library(data.table, pos = 3))
 
   # source supporting functions to prepare data
   # source("R/data_pipeline.R")
@@ -307,7 +307,7 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   # add in a data comparison (setdiffs)
   df_setdiffs <- lapply(equal_datasets, function(df_name) {
     list(
-      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]]),
+      old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
       new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
   })
