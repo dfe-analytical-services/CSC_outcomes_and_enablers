@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "2d5945ec4ba4bd1d93fc4517820096ef"
+      "checksum": "0e90977d79efbce81df62c5ac1abaeec"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5064,7 +5064,7 @@
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
     },
     "R/standard_panels.R": {
-      "checksum": "350451c32b80f7eb20b7308f83759d1b"
+      "checksum": "0c6b8eff6b3cebdf3a5ca9ffd9827598"
     },
     "R/stats_neighbours.R": {
       "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
