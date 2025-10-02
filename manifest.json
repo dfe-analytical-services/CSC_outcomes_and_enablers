@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "0e90977d79efbce81df62c5ac1abaeec"
+      "checksum": "37e9e939b0368c6f1f0668aa82cb2c25"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4828,6 +4828,9 @@
     },
     "data-raw/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
+    },
+    "data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods": {
+      "checksum": "825d91a2d6a203c6be9dddd86cc7f264"
     },
     "data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods": {
       "checksum": "e875d8bc283581687b442ee8d56c0145"
