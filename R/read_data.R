@@ -2113,10 +2113,10 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_LA_DATA_2024-25_
 }
 
 # Ofsted leadership data
-read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods") {
+read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
-  file <- "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods"
-  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
+  file <- "./data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods"
+  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_as_at_31_March", skip = 2)
 
   # Remove authorities that aren't yet inspected
   ofsted_leadership_data <- ofsted_leadership_data %>%
@@ -2131,9 +2131,9 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
     select(-c(
       `Web link`,
       `Overall effectiveness`,
-      `Experiences and progress of children who need help and protection`,
-      `Experiences and progress of children in care`,
-      `Experiences and progress of care leavers`
+      `The experiences and progress of children who need help and protection`,
+      `The experiences and progress of children in care`,
+      `The experiences and progress of care leavers`
     ))
 
   # Tidy column names
@@ -2142,7 +2142,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
       "geo_breakdown" = `Local authority name`,
       "region" = `Ofsted region`,
       "inspection_date" = `Inspection date`,
-      "impact_of_leaders" = `Impact of leaders`
+      "impact_of_leaders" = `The impact of leaders on social work practice with children and families`
     ) %>%
     mutate(geo_breakdown = case_when(
       geo_breakdown == "Bristol" ~ "Bristol, City of",
