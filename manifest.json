@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "7f80226500d8e08a48d648944cddf7e6"
+      "checksum": "6aa8e72d84d3480106b5e90d629f3f83"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5088,7 +5088,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "21f64fc3e627ae0e8d7bea8eeb8b0aaa"
+      "checksum": "6825ff6a9c525130c249a1a4a7ab85ee"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5166,7 +5166,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "e15f8781f3d603f00394cf0f8b9e6a1b"
+      "checksum": "958a4cc648af29666b8e2644fb90d7f6"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
