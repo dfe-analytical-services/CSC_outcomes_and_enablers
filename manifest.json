@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "6aa8e72d84d3480106b5e90d629f3f83"
+      "checksum": "1904d60159bd45d633c2927d23182180"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5013,7 +5013,7 @@
       "checksum": "505eae2b0317ed8eb541a12187582aef"
     },
     "R/data_sources.R": {
-      "checksum": "db69b22548da12633de98320216c1863"
+      "checksum": "b1da87f1347aca5df306d87a30495536"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5022,10 +5022,10 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "ea45c8142c782231c52f1740cead4765"
+      "checksum": "e073e7462805219fb762b5f97316a0c4"
     },
     "R/enabler2_page.R": {
-      "checksum": "fd032cb1c1c22c25e6274b0c5e448486"
+      "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
     },
     "R/enabler3_page.R": {
       "checksum": "275209f9cb13770d305d2d81f0acd782"
@@ -5058,7 +5058,7 @@
       "checksum": "cfbf87675ea3f09ebd321e1108ea69e0"
     },
     "R/read_data.R": {
-      "checksum": "e925d2ba9f11fd1ad90d4f490ce3379b"
+      "checksum": "1c500db769189abb405ce787a76386ff"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -5088,7 +5088,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "6825ff6a9c525130c249a1a4a7ab85ee"
+      "checksum": "ba67226f720b0ef3cb14edd65338fc98"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5166,7 +5166,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "958a4cc648af29666b8e2644fb90d7f6"
+      "checksum": "e63a4c9e182e99c87ee2a4c200907c5a"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
