@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "d02d16d4cd772fe67f19f93fa1b10970"
+      "checksum": "7f80226500d8e08a48d648944cddf7e6"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4914,10 +4914,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "0a1e6d3b84c8b25a8eabbaa9b01ac2ee"
+      "checksum": "44b80b125299f6743db82ac84d387fa3"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "d3524b9f38931404dcfdbd75598c6e7d"
+      "checksum": "c6da9122587b55b7e2946ec21e0052b5"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4929,7 +4929,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "c4dce1da5e9687f6babb0a0683863124"
+      "checksum": "803df19b45d85d032ff92f7bb3d4bfb6"
     },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
@@ -4962,7 +4962,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "a6a91c43909b6bfec563fa216d6bccb3"
+      "checksum": "0e55fb0b504ab63c470525c1cc860023"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "1699108848d4caba7ffe7dedd3bef900"
@@ -5010,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "b7e4f6207e5bfef8bc0050009fabe467"
+      "checksum": "505eae2b0317ed8eb541a12187582aef"
     },
     "R/data_sources.R": {
       "checksum": "db69b22548da12633de98320216c1863"
@@ -5058,7 +5058,7 @@
       "checksum": "cfbf87675ea3f09ebd321e1108ea69e0"
     },
     "R/read_data.R": {
-      "checksum": "9f959cbbeebdd1c1198428e9f90d74c8"
+      "checksum": "e925d2ba9f11fd1ad90d4f490ce3379b"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"

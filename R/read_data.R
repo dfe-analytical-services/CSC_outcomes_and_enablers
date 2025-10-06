@@ -2150,7 +2150,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
       geo_breakdown == "Bournemouth, Christchurch & Poole" ~ "Bournemouth, Christchurch and Poole",
       geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
       geo_breakdown == "Hammersmith & Fulham" ~ "Hammersmith and Fulham",
-      geo_breakdown == "Kingston Upon Hull" ~ "Kingston upon Hull, City of",
+      geo_breakdown %in% c("Kingston Upon Hull", "Kingston upon Hull") ~ "Kingston upon Hull, City of",
       geo_breakdown == "Telford & Wrekin" ~ "Telford and Wrekin",
       geo_breakdown == "Richmond Upon Thames" ~ "Richmond upon Thames",
       geo_breakdown == "St Helens" ~ "St. Helens",
@@ -2243,6 +2243,9 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
 
   # Flip the data so the geographic_levels are in order for the dropdown
   ofsted_leadership_data <- ofsted_leadership_data[nrow(ofsted_leadership_data):1, ]
+
+  # trim off any extra columns
+  ofsted_leadership_data <- ofsted_leadership_data[, .(geo_breakdown, region, inspection_date, impact_of_leaders, inspection_year, time_period, geographic_level, old_la_code, inadequate_count, requires_improvement_count, good_count, outstanding_count, geo_breakdown_sn)]
 
   return(ofsted_leadership_data)
 }
