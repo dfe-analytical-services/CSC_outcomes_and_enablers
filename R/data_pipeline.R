@@ -302,7 +302,7 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   dataset_comparison_summary[, match_summary := ((match_dataset_name + match_dataset_class + match_dataset_num_rows + match_dataset_columns) == 4)]
 
   # objects in both
-  diff_datasets <- dataset_comparison_summary[match_dataset_name + match_dataset_class == 2]$dataset_name
+  diff_datasets <- dataset_comparison_summary[match_dataset_name + match_dataset_class + match_dataset_columns == 3]$dataset_name
 
   # add in a data comparison (setdiffs)
   df_setdiffs <- lapply(diff_datasets, function(df_name) {
