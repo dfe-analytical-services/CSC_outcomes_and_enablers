@@ -2246,7 +2246,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
   ofsted_leadership_data <- ofsted_leadership_data[nrow(ofsted_leadership_data):1, ]
 
   # trim off any extra columns
-  ofsted_leadership_data <- ofsted_leadership_data[, .(geo_breakdown, region, inspection_date, impact_of_leaders, inspection_year, published_year, time_period, geographic_level, old_la_code, inadequate_count, requires_improvement_count, good_count, outstanding_count, geo_breakdown_sn, publication_year)]
+  ofsted_leadership_data <- ofsted_leadership_data[, .(geo_breakdown, region, inspection_date, impact_of_leaders, inspection_year, published_year, time_period, geographic_level, old_la_code, inadequate_count, requires_improvement_count, good_count, outstanding_count, geo_breakdown_sn)]
 
   return(ofsted_leadership_data)
 }
