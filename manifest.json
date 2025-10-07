@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "48efc26c27bc525a9963b8100f91c567"
+      "checksum": "52c50f057513b65c032ba57bfcc22df6"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4914,10 +4914,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "44b80b125299f6743db82ac84d387fa3"
+      "checksum": "ed570ad3c6a146d8d1e2804f24db57fa"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "c6da9122587b55b7e2946ec21e0052b5"
+      "checksum": "264318d1f7952eff2d3486110e7a76aa"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4929,7 +4929,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "803df19b45d85d032ff92f7bb3d4bfb6"
+      "checksum": "f0088b2a28e77c80eb9abc5af50260a5"
     },
     "data/placement_changes_data.rds": {
       "checksum": "3296915a4d50eb921ad3435abb211d14"
@@ -5010,7 +5010,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "ccef5a78a1bde426799c048e969a5240"
+      "checksum": "8c89d628bd56933904f09ee77fa4bc00"
     },
     "R/data_sources.R": {
       "checksum": "b1da87f1347aca5df306d87a30495536"
@@ -5055,10 +5055,10 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "cfbf87675ea3f09ebd321e1108ea69e0"
+      "checksum": "f4fc35434ecaf9ae9a8bbc5f1c1204c8"
     },
     "R/read_data.R": {
-      "checksum": "5474e5d7c0ec95ff8f5ae83a95cc1e0b"
+      "checksum": "75cd3416e9483d4750f802113751bbe0"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"

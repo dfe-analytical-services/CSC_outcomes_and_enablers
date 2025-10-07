@@ -2125,7 +2125,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
   # Convert "Inspection date" column to date format and copy the year into new "time_period" column
   ofsted_leadership_data$`Inspection date` <- as.Date(ofsted_leadership_data$`Inspection date`, format = "%d/%m/%Y")
   ofsted_leadership_data$inspection_year <- format(ofsted_leadership_data$`Inspection date`, "%Y")
-  ofsted_leadership_data$published_year <- format(as.Date(ofsted_leadership_data$`Publication date`), "%Y")
+  ofsted_leadership_data$published_year <- year(as.Date(ofsted_leadership_data$`Publication date`, format = "%d/%m/%Y"))
   ofsted_leadership_data$time_period <- max(format(ofsted_leadership_data$`Inspection date`, "%Y"))
 
   ofsted_leadership_data <- ofsted_leadership_data %>%
