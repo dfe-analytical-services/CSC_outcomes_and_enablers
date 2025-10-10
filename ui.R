@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "LA Outturn data has been updated as of 18th September 2025 and used Mid 2024 ONS population estimates"
+        "LA Ofsted inspection outcomes as at 31 March 2025 have been updated (using the recent 25 September 2025 publication)"
       )
     ),
     bslib::navset_pill_list(
