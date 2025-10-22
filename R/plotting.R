@@ -2213,7 +2213,7 @@ statistical_neighbours_plot_ofsted <- function(dataset, selected_geo_breakdown) 
     )) %>%
     filter(geographic_level == "Local authority") %>%
     group_by(geo_breakdown) %>%
-    mutate(latest_rating = max(time_period)) %>%
+    mutate(latest_rating = published_year) %>%
     ungroup() %>%
     select(geo_breakdown, Rating, latest_rating)
 

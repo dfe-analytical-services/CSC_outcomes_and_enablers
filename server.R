@@ -6388,9 +6388,9 @@ server <- function(input, output, session) {
   output$ofsted_latest_ratings_tbl <- renderReactable({
     filtered_data <- ofsted_leadership_data %>%
       filter(is.na(region) == FALSE) %>%
-      select(geo_breakdown, time_period) %>%
+      select(geo_breakdown, published_year) %>%
       arrange(`geo_breakdown`) %>%
-      rename(`Latest Rating` = `time_period`, `Location` = `geo_breakdown`)
+      rename(`Latest Rating` = `published_year`, `Location` = `geo_breakdown`)
 
     reactable(
       filtered_data,
@@ -11040,7 +11040,7 @@ server <- function(input, output, session) {
         "outstanding_count" = "Outstanding"
       )) %>%
       group_by(geo_breakdown) %>%
-      mutate(latest_rating = max(time_period)) %>%
+      mutate(latest_rating = max(published_year)) %>%
       ungroup()
     reactable(
       stats_neighbours_table_ofsted(data, input$geographic_breakdown_e2, input$select_geography_e2, yvalue = "Rating"),

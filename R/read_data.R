@@ -2113,10 +2113,10 @@ read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_LA_DATA_2024-25_
 }
 
 # Ofsted leadership data
-read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods") {
+read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods") {
   # Import data and drop top 3 rows to ensure headers are correct
-  file <- "./data-raw/LA_Inspection_Outcomes_as_at_March_2024.ods"
-  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_31_March_2024", skip = 2)
+  file <- "./data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods"
+  ofsted_leadership_data <- read_ods(file, sheet = "Inspections_as_at_31_March", skip = 2)
 
   # Remove authorities that aren't yet inspected
   ofsted_leadership_data <- ofsted_leadership_data %>%
@@ -2125,15 +2125,16 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
   # Convert "Inspection date" column to date format and copy the year into new "time_period" column
   ofsted_leadership_data$`Inspection date` <- as.Date(ofsted_leadership_data$`Inspection date`, format = "%d/%m/%Y")
   ofsted_leadership_data$inspection_year <- format(ofsted_leadership_data$`Inspection date`, "%Y")
+  ofsted_leadership_data$published_year <- year(as.Date(ofsted_leadership_data$`Publication date`, format = "%d/%m/%Y"))
   ofsted_leadership_data$time_period <- max(format(ofsted_leadership_data$`Inspection date`, "%Y"))
 
   ofsted_leadership_data <- ofsted_leadership_data %>%
     select(-c(
       `Web link`,
       `Overall effectiveness`,
-      `Experiences and progress of children who need help and protection`,
-      `Experiences and progress of children in care`,
-      `Experiences and progress of care leavers`
+      `The experiences and progress of children who need help and protection`,
+      `The experiences and progress of children in care`,
+      `The experiences and progress of care leavers`
     ))
 
   # Tidy column names
@@ -2142,7 +2143,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
       "geo_breakdown" = `Local authority name`,
       "region" = `Ofsted region`,
       "inspection_date" = `Inspection date`,
-      "impact_of_leaders" = `Impact of leaders`
+      "impact_of_leaders" = `The impact of leaders on social work practice with children and families`
     ) %>%
     mutate(geo_breakdown = case_when(
       geo_breakdown == "Bristol" ~ "Bristol, City of",
@@ -2150,7 +2151,7 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
       geo_breakdown == "Bournemouth, Christchurch & Poole" ~ "Bournemouth, Christchurch and Poole",
       geo_breakdown == "Herefordshire" ~ "Herefordshire, County of",
       geo_breakdown == "Hammersmith & Fulham" ~ "Hammersmith and Fulham",
-      geo_breakdown == "Kingston Upon Hull" ~ "Kingston upon Hull, City of",
+      geo_breakdown %in% c("Kingston Upon Hull", "Kingston upon Hull") ~ "Kingston upon Hull, City of",
       geo_breakdown == "Telford & Wrekin" ~ "Telford and Wrekin",
       geo_breakdown == "Richmond Upon Thames" ~ "Richmond upon Thames",
       geo_breakdown == "St Helens" ~ "St. Helens",
@@ -2243,6 +2244,9 @@ read_ofsted_leadership_data <- function(sn_long, file = "./data-raw/LA_Inspectio
 
   # Flip the data so the geographic_levels are in order for the dropdown
   ofsted_leadership_data <- ofsted_leadership_data[nrow(ofsted_leadership_data):1, ]
+
+  # trim off any extra columns
+  ofsted_leadership_data <- ofsted_leadership_data[, .(geo_breakdown, region, inspection_date, impact_of_leaders, inspection_year, published_year, time_period, geographic_level, old_la_code, inadequate_count, requires_improvement_count, good_count, outstanding_count, geo_breakdown_sn)]
 
   return(ofsted_leadership_data)
 }
