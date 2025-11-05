@@ -13,8 +13,8 @@ data-raw/ons-ethnic-population-nat.csv,published
 data-raw/la_cla_during_year_new_placements.csv,published
 data-raw/cla_number_and_rate_per_10k_children.csv,published
 data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv,published
-data-raw/b1_children_in_need_2013_to_2024.csv,published
-data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv,published
+data-raw/b1_children_in_need_2013_to_2025.csv,published
+data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2025.csv,published
 data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv,published
 data-raw/csww_indicators_2017_to_2024.csv,published
 data-raw/la_children_who_ceased_during_the_year.csv,published
@@ -24,9 +24,9 @@ data-raw/ks4_la.csv,published
 data-raw/LTLA-UTLA_Apr23_Lookup_England-Wales.csv,reference
 data-raw/sn_model_2025_wide.csv,published
 data-raw/New_Statistical_Neighbour_Groupings_April_2021.csv,reference
-data-raw/d3_cpps_subsequent_plan_2013_to_2024.csv,published
-data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv,published
-data-raw/d5_cpps_at31march_by_duration_2013_to_2024.csv,published
+data-raw/d3_cpps_subsequent_plan_2013_to_2025.csv,published
+data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv,published
+data-raw/d5_cpps_at31march_by_duration_2013_to_2025.csv,published
 data-raw/la_cla_placement_stability.csv,published
 data-raw/la_cla_on_31_march_by_characteristics.csv,published
 data-raw/la_care_leavers_accommodation_suitability.csv,published
@@ -42,3 +42,4 @@ data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods,published
 data-raw/mye24tablesew.xlsx,published
 data/summary_page_metadata.xlsx,reference
 data-raw/ofsted_region_mapping_corrections.csv,reference
+data-raw/ons_mid-year_population_estimates_2012_to_2024.csv,reference

@@ -571,7 +571,7 @@ merge_cla_31_march_dataframes <- function(sn_long) {
 # a <- merge_cla_31_march_dataframes()
 
 # CIN rate per 10k children data
-read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2013_to_2024.csv") {
+read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2013_to_2025.csv") {
   cin_rate_data <- fread(file)
 
   # initial cleansing steps
@@ -579,6 +579,23 @@ read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2
     colClean() %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data()
+
+  # additional step to use the population data to calculate rates
+  ons_population_data <- data.table::fread(file = "./data-raw/ons_mid-year_population_estimates_2012_to_2024.csv")
+  ons_population_data <- ons_population_data[, .(time_period, country_code, region_code, old_la_code, population_estimate)]
+  ons_population_data[, population_estimate := as.integer(population_estimate)]
+
+  # step to align the calendars
+  ons_population_data[, time_period := time_period + 1]
+
+  # merge in the population data and perform the calculation, formatting to 1 dp
+  cin_rate_data <- merge(cin_rate_data, ons_population_data, all.x = TRUE) %>%
+    mutate(At31_episodes_rate = as.character((as.numeric(At31_episodes) / as.numeric(population_estimate)) * 10000)) %>%
+    mutate(At31_episodes_rate = sapply(as.character(At31_episodes_rate), decimal_rounding, 0))
+
+  # copy through the redacted values with their reason codes
+  cin_rate_data[is.na(At31_episodes_rate) & !(is.na(population_estimate)), At31_episodes_rate := At31_episodes]
+  cin_rate_data[is.na(At31_episodes_rate), At31_episodes_rate := "z"]
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -607,7 +624,7 @@ read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2
 }
 
 # CIN referrals data
-read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2024.csv") {
+read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2025.csv") {
   cin_referral_data <- fread(file)
 
   # initial cleansing steps
@@ -615,6 +632,14 @@ read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_ne
     colClean() %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data()
+
+  # additional steps due to column renaming in the file (easier to put this in than refactor all references to the new field)
+  cin_referral_data <- cin_referral_data %>%
+    mutate(
+      Re_referrals_percent = rereferral_percent,
+      Referrals = referral_count,
+      Re_referrals = rereferral_count
+    )
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -841,7 +866,7 @@ read_outcome2 <- function(sn_long, file = "./data-raw/la_children_who_ceased_dur
 # Outcome 3 ----
 ### Outcome 3 Child Safety General ----
 ##### Child Protection Plans starting during year, which were second or subsequent plans (accordion 1) ----
-read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent_plan_2013_to_2024.csv") {
+read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent_plan_2013_to_2025.csv") {
   cpp_in_year_data <- fread(file)
 
   # add geo_breakdown
@@ -873,7 +898,7 @@ read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent
 }
 
 ### CPP by duration (accordion 2)
-read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31march_by_duration_2013_to_2024.csv") {
+read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31march_by_duration_2013_to_2025.csv") {
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
@@ -1091,7 +1116,7 @@ read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissi
 
 ## Child abuse/Neglect / Harms outside the home ----
 ### Assessment Factors ------
-read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2024.csv") {
+read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv") {
   ass_fac_data_raw <- fread(file)
   ass_fac_data_raw <- ass_fac_data_raw %>%
     insert_geo_breakdown() %>%
@@ -1130,18 +1155,20 @@ read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_ident
     mutate(assessment_factor = gsub("_", " ", assessment_factor)) %>%
     filter(assessment_factor %in% af_to_keep)
 
-  # Using the population data from CLA rates data, because Data needs to be rates per 10,000
-  if (exists(x = "cla_rates")) {
-    populations <- copy(cla_rates)
-  } else {
-    populations <- suppressWarnings(read_cla_rate_data(sn_long = sn_long))
-  }
-  populations <- populations %>%
-    filter(geo_breakdown != "Statistical neighbours (median)") %>%
-    select(time_period, geo_breakdown, new_la_code, old_la_code, population_estimate) %>%
-    distinct()
-  ass_fac_data <- left_join(ass_fac_data, populations, by = c("time_period", "geo_breakdown", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
+  # additional step to use the population data to calculate rates (these population estimates came with the CIN publication)
+  ons_population_data <- data.table::fread(file = "./data-raw/ons_mid-year_population_estimates_2012_to_2024.csv") %>%
+    insert_geo_breakdown()
+  ons_population_data <- ons_population_data[, .(time_period, geo_breakdown, country_code, region_code, new_la_code, old_la_code, population_estimate)]
+  # ons_population_data[, population_estimate := as.integer(population_estimate)]
+
+  # step to align the calendars
+  ons_population_data[, time_period := time_period + 1]
+
+  # # merge in the population data and perform the calculation, formatting to 1 dp
+
+  ass_fac_data <- left_join(ass_fac_data, ons_population_data, by = c("time_period", "geo_breakdown", "country_code", "region_code", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
     mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
+    mutate(`rate_per_10000` = sapply(as.character(rate_per_10000), decimal_rounding, 0)) %>%
     filter(time_period != 2018)
 
   # now we need to tidy up, creating the character column and populating it appropriately
@@ -1911,7 +1938,7 @@ read_spending_data <- function(sn_long, file = "./data-raw/RSX_LA_Data_2024-25_d
   return(final_dataset)
 }
 
-read_per_capita_spending <- function(sn_long, file = "./data-raw/mye24tablesew.xlsx") {
+read_population_estimates <- function(file = "./data-raw/mye24tablesew.xlsx") {
   population_estimates <- read_excel(file, sheet = "MYE2 - Persons", range = "A8:V412")
   test_df <- population_estimates
   test_df$under18 <- rowSums(test_df[, c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12", "13", "14", "15", "16", "17")])
@@ -1961,8 +1988,13 @@ read_per_capita_spending <- function(sn_long, file = "./data-raw/mye24tablesew.x
     rbind(outer_row) %>%
     select(-c(new_la_code))
 
+  return(population4)
+}
+
+read_per_capita_spending <- function(sn_long) {
+  population_estimates <- suppressWarnings(read_population_estimates())
   spending_data <- suppressWarnings(read_spending_data(sn_long = sn_long))
-  joined_data <- left_join(spending_data[geographic_level != "Statistical neighbours (median)"], population4, by = c("geographic_level", "geo_breakdown"))
+  joined_data <- left_join(spending_data[geographic_level != "Statistical neighbours (median)"], population_estimates, by = c("geographic_level", "geo_breakdown"))
   joined_data$`Cost per child` <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
   joined_data$cost_per_capita <- format((joined_data$exp / joined_data$under18) * 1000, digits = 1)
 
