@@ -16,6 +16,14 @@ if (TRUE == FALSE) {
   ## 3. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
 
+  # datasets which have deltas
+  changed_datasets <- names(which(lapply(pipeline_run$pipeline_comparison$dataset_setdiffs, function(x) nrow(x$old_v_new) + nrow(x$new_v_old)) > 0))
+  pipeline_run$pipeline_comparison$dataset_setdiffs[changed_datasets]
+
+  deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$dataset_setdiffs[changed_datasets])
+  names(deltas_to_export) <- paste0(rep(changed_datasets, each = 2), c("_old_v_new", "_new_v_old"))
+
+  writexl::write_xlsx(deltas_to_export, "./pipeline_setdiffs.xlsx")
 
   ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
