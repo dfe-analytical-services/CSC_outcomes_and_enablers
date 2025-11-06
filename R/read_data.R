@@ -1165,7 +1165,6 @@ read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_ident
   ons_population_data[, time_period := time_period + 1]
 
   # # merge in the population data and perform the calculation, formatting to 1 dp
-
   ass_fac_data <- left_join(ass_fac_data, ons_population_data, by = c("time_period", "geo_breakdown", "country_code", "region_code", "new_la_code", "old_la_code"), relationship = "many-to-many") %>%
     mutate(`rate_per_10000` = (as.numeric(value) / as.numeric(population_estimate)) * 10000) %>%
     mutate(`rate_per_10000` = sapply(as.character(rate_per_10000), decimal_rounding, 0)) %>%
