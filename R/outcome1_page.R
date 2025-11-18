@@ -151,10 +151,11 @@ outcome1_tab <- function() {
                             "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
                           ),
                           "for children aged 0 to 17 years. ",
-                          a(href = "",
-                          "Revised population estimates (opens in new tab)", target = "_blank"
+                          a(
+                            href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2024#revisions-to-population-data",
+                            "Revised population estimates (opens in new tab)", target = "_blank"
                           ),
-                          ", for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
+                          " for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
                         ),
                         tags$li(
                           "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
@@ -211,10 +212,11 @@ outcome1_tab <- function() {
                             "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
                           ),
                           "for children aged 0 to 17 years. ",
-                          a(href = "",
+                          a(
+                            href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2024#revisions-to-population-data",
                             "Revised population estimates (opens in new tab)", target = "_blank"
                           ),
-                          ", for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
+                          " for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
                         ),
                         tags$li(
                           "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",

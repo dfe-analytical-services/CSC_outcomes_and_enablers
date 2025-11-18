@@ -8022,10 +8022,11 @@ server <- function(input, output, session) {
                 "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
               ),
               "for children aged 0 to 17 years. ",
-              a(href = "",
+              a(
+                href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/bulletins/populationestimatesforenglandandwales/mid2024#revisions-to-population-data",
                 "Revised population estimates (opens in new tab)", target = "_blank"
               ),
-              ", for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
+              " for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
             ),
             tags$li(
               "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
@@ -9597,7 +9598,6 @@ server <- function(input, output, session) {
               tags$li("Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case."),
               tags$li("These figures are based on assessment factors recorded against individual episodes of need, which begin when a child is referred to children’s social care services and is assessed as being in need of children’s social care services. Each unique factor is counted once against a given episode, irrespective of the number of times the same factor was recorded in that episode. However, as a child can have more than one episode of need during the year (ending 31 March), the same child can be recorded more than once for a given factor."),
               tags$li("The majority of children have more than one unique factor recorded for each episode of need. It should be noted that not all episodes have factors recorded, but this has improved over time. Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with caution and shouldn’t be taken to represent the national, regional or local authority level prevalence of particular issues."),
-              
               tags$li(
                 "Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to",
                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need methodology", target = "_blank"),
@@ -9718,7 +9718,6 @@ server <- function(input, output, session) {
               tags$li("Factors identified at the end of assessment are additional factors that social workers record as being relevant in a case."),
               tags$li("These figures are based on assessment factors recorded against individual episodes of need, which begin when a child is referred to children’s social care services and is assessed as being in need of children’s social care services. Each unique factor is counted once against a given episode, irrespective of the number of times the same factor was recorded in that episode. However, as a child can have more than one episode of need during the year (ending 31 March), the same child can be recorded more than once for a given factor."),
               tags$li("The majority of children have more than one unique factor recorded for each episode of need. It should be noted that not all episodes have factors recorded, but this has improved over time. Nonetheless, there can be differences in the recording practices between local authorities therefore this data should be treated with caution and shouldn’t be taken to represent the national, regional or local authority level prevalence of particular issues."),
-              
               tags$li(
                 "Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to",
                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need methodology", target = "_blank"),
