@@ -1,16 +1,181 @@
 time_period,time_identifier,geographic_level,country_code,country_name,region_code,region_name,old_la_code,new_la_code,la_name,category,CPP_start,CPP_subsequent,CPP_subsequent_percent
-2024,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,62110,15330,24.7
-2024,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4860,1250,25.7
-2024,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9240,2280,24.7
-2024,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,7390,1780,24
-2024,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,4890,1280,26.1
-2024,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7490,1920,25.7
-2024,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4360,960,22.1
-2024,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9170,1940,21.2
-2024,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,9050,2290,25.3
-2024,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5670,1630,28.7
-2024,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3290,750,22.9
-2024,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5890,1190,20.2
+2025,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,61840,15130,24.5
+2025,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4540,1240,27.2
+2025,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,10150,2360,23.3
+2025,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7260,1790,24.7
+2025,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5170,1340,26
+2025,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7030,1880,26.7
+2025,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4280,960,22.5
+2025,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,8500,1630,19.2
+2025,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,9290,2450,26.3
+2025,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5620,1470,26.2
+2025,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,2900,550,19
+2025,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5600,1080,19.3
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,730,155,21.2
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,114,23,20.2
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,294,62,21.1
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,805,E06000001,Hartlepool,Child Protection Plans which are a second or subsequent plan,241,78,32.4
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,806,E06000002,Middlesbrough,Child Protection Plans which are a second or subsequent plan,485,127,26.2
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,391,E08000021,Newcastle upon Tyne,Child Protection Plans which are a second or subsequent plan,501,161,32.1
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,392,E08000022,North Tyneside,Child Protection Plans which are a second or subsequent plan,241,64,26.6
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,929,E06000057,Northumberland,Child Protection Plans which are a second or subsequent plan,464,162,34.9
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,807,E06000003,Redcar and Cleveland,Child Protection Plans which are a second or subsequent plan,294,75,25.5
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,393,E08000023,South Tyneside,Child Protection Plans which are a second or subsequent plan,239,78,32.6
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,808,E06000004,Stockton-on-Tees,Child Protection Plans which are a second or subsequent plan,360,72,20
+2025,Reporting year,Local authority,E92000001,England,E12000001,North East,394,E08000024,Sunderland,Child Protection Plans which are a second or subsequent plan,580,180,31
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,889,E06000008,Blackburn with Darwen,Child Protection Plans which are a second or subsequent plan,428,109,25.5
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,890,E06000009,Blackpool,Child Protection Plans which are a second or subsequent plan,301,86,28.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,350,E08000001,Bolton,Child Protection Plans which are a second or subsequent plan,401,123,30.7
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,351,E08000002,Bury,Child Protection Plans which are a second or subsequent plan,294,81,27.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,895,E06000049,Cheshire East,Child Protection Plans which are a second or subsequent plan,340,84,24.7
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,896,E06000050,Cheshire West and Chester,Child Protection Plans which are a second or subsequent plan,350,93,26.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,942,E06000063,Cumberland,Child Protection Plans which are a second or subsequent plan,366,101,27.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,876,E06000006,Halton,Child Protection Plans which are a second or subsequent plan,183,40,21.9
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,340,E08000011,Knowsley,Child Protection Plans which are a second or subsequent plan,252,70,27.8
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,888,E10000017,Lancashire,Child Protection Plans which are a second or subsequent plan,1203,232,19.3
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,341,E08000012,Liverpool,Child Protection Plans which are a second or subsequent plan,1004,161,16
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,352,E08000003,Manchester,Child Protection Plans which are a second or subsequent plan,816,175,21.4
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,353,E08000004,Oldham,Child Protection Plans which are a second or subsequent plan,489,154,31.5
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,354,E08000005,Rochdale,Child Protection Plans which are a second or subsequent plan,308,62,20.1
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,355,E08000006,Salford,Child Protection Plans which are a second or subsequent plan,375,66,17.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,343,E08000014,Sefton,Child Protection Plans which are a second or subsequent plan,441,112,25.4
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,342,E08000013,St. Helens,Child Protection Plans which are a second or subsequent plan,257,69,26.8
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,356,E08000007,Stockport,Child Protection Plans which are a second or subsequent plan,353,99,28
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,357,E08000008,Tameside,Child Protection Plans which are a second or subsequent plan,552,119,21.6
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,358,E08000009,Trafford,Child Protection Plans which are a second or subsequent plan,193,53,27.5
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,877,E06000007,Warrington,Child Protection Plans which are a second or subsequent plan,229,45,19.7
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,943,E06000064,Westmorland and Furness,Child Protection Plans which are a second or subsequent plan,271,67,24.7
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,359,E08000010,Wigan,Child Protection Plans which are a second or subsequent plan,369,82,22.2
+2025,Reporting year,Local authority,E92000001,England,E12000002,North West,344,E08000015,Wirral,Child Protection Plans which are a second or subsequent plan,376,81,21.5
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,370,E08000016,Barnsley,Child Protection Plans which are a second or subsequent plan,354,100,28.2
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,380,E08000032,Bradford,Child Protection Plans which are a second or subsequent plan,563,153,27.2
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,381,E08000033,Calderdale,Child Protection Plans which are a second or subsequent plan,321,63,19.6
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,371,E08000017,Doncaster,Child Protection Plans which are a second or subsequent plan,533,157,29.5
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,811,E06000011,East Riding of Yorkshire,Child Protection Plans which are a second or subsequent plan,457,103,22.5
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,810,E06000010,"Kingston upon Hull, City of",Child Protection Plans which are a second or subsequent plan,706,176,24.9
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,382,E08000034,Kirklees,Child Protection Plans which are a second or subsequent plan,623,173,27.8
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,383,E08000035,Leeds,Child Protection Plans which are a second or subsequent plan,829,191,23
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,812,E06000012,North East Lincolnshire,Child Protection Plans which are a second or subsequent plan,149,31,20.8
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,813,E06000013,North Lincolnshire,Child Protection Plans which are a second or subsequent plan,200,14,7
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,815,E06000065,North Yorkshire,Child Protection Plans which are a second or subsequent plan,802,201,25.1
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,372,E08000018,Rotherham,Child Protection Plans which are a second or subsequent plan,393,109,27.7
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,373,E08000019,Sheffield,Child Protection Plans which are a second or subsequent plan,502,99,19.7
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,384,E08000036,Wakefield,Child Protection Plans which are a second or subsequent plan,669,152,22.7
+2025,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,816,E06000014,York,Child Protection Plans which are a second or subsequent plan,161,71,44.1
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,831,E06000015,Derby,Child Protection Plans which are a second or subsequent plan,283,73,25.8
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,830,E10000007,Derbyshire,Child Protection Plans which are a second or subsequent plan,926,225,24.3
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,856,E06000016,Leicester,Child Protection Plans which are a second or subsequent plan,521,110,21.1
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,855,E10000018,Leicestershire,Child Protection Plans which are a second or subsequent plan,618,153,24.8
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,925,E10000019,Lincolnshire,Child Protection Plans which are a second or subsequent plan,556,128,23
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,940,E06000061,North Northamptonshire,Child Protection Plans which are a second or subsequent plan,544,145,26.7
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,892,E06000018,Nottingham,Child Protection Plans which are a second or subsequent plan,450,145,32.2
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,891,E10000024,Nottinghamshire,Child Protection Plans which are a second or subsequent plan,727,203,27.9
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,857,E06000017,Rutland,Child Protection Plans which are a second or subsequent plan,38,7,18.4
+2025,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,941,E06000062,West Northamptonshire,Child Protection Plans which are a second or subsequent plan,504,152,30.2
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,330,E08000025,Birmingham,Child Protection Plans which are a second or subsequent plan,1936,501,25.9
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,331,E08000026,Coventry,Child Protection Plans which are a second or subsequent plan,484,132,27.3
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,332,E08000027,Dudley,Child Protection Plans which are a second or subsequent plan,319,88,27.6
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,884,E06000019,"Herefordshire, County of",Child Protection Plans which are a second or subsequent plan,202,66,32.7
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,333,E08000028,Sandwell,Child Protection Plans which are a second or subsequent plan,418,129,30.9
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,893,E06000051,Shropshire,Child Protection Plans which are a second or subsequent plan,305,65,21.3
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,334,E08000029,Solihull,Child Protection Plans which are a second or subsequent plan,260,51,19.6
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,860,E10000028,Staffordshire,Child Protection Plans which are a second or subsequent plan,681,191,28
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,861,E06000021,Stoke-on-Trent,Child Protection Plans which are a second or subsequent plan,436,124,28.4
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,894,E06000020,Telford and Wrekin,Child Protection Plans which are a second or subsequent plan,221,62,28.1
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,335,E08000030,Walsall,Child Protection Plans which are a second or subsequent plan,326,80,24.5
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,937,E10000031,Warwickshire,Child Protection Plans which are a second or subsequent plan,496,114,23
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,336,E08000031,Wolverhampton,Child Protection Plans which are a second or subsequent plan,231,53,22.9
+2025,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,885,E10000034,Worcestershire,Child Protection Plans which are a second or subsequent plan,711,223,31.4
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,822,E06000055,Bedford,Child Protection Plans which are a second or subsequent plan,173,29,16.8
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,873,E10000003,Cambridgeshire,Child Protection Plans which are a second or subsequent plan,613,159,25.9
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,823,E06000056,Central Bedfordshire,Child Protection Plans which are a second or subsequent plan,196,27,13.8
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,881,E10000012,Essex,Child Protection Plans which are a second or subsequent plan,659,161,24.4
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,919,E10000015,Hertfordshire,Child Protection Plans which are a second or subsequent plan,713,167,23.4
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,821,E06000032,Luton,Child Protection Plans which are a second or subsequent plan,305,72,23.6
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,926,E10000020,Norfolk,Child Protection Plans which are a second or subsequent plan,536,101,18.8
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,874,E06000031,Peterborough,Child Protection Plans which are a second or subsequent plan,335,85,25.4
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,882,E06000033,Southend-on-Sea,Child Protection Plans which are a second or subsequent plan,142,14,9.9
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,935,E10000029,Suffolk,Child Protection Plans which are a second or subsequent plan,502,123,24.5
+2025,Reporting year,Local authority,E92000001,England,E12000006,East of England,883,E06000034,Thurrock,Child Protection Plans which are a second or subsequent plan,108,25,23.1
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,867,E06000036,Bracknell Forest,Child Protection Plans which are a second or subsequent plan,186,49,26.3
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,846,E06000043,Brighton and Hove,Child Protection Plans which are a second or subsequent plan,346,107,30.9
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,825,E06000060,Buckinghamshire,Child Protection Plans which are a second or subsequent plan,601,146,24.3
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,845,E10000011,East Sussex,Child Protection Plans which are a second or subsequent plan,625,202,32.3
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,850,E10000014,Hampshire,Child Protection Plans which are a second or subsequent plan,1361,351,25.8
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,921,E06000046,Isle of Wight,Child Protection Plans which are a second or subsequent plan,250,66,26.4
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,886,E10000016,Kent,Child Protection Plans which are a second or subsequent plan,1274,310,24.3
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,887,E06000035,Medway,Child Protection Plans which are a second or subsequent plan,404,104,25.7
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,826,E06000042,Milton Keynes,Child Protection Plans which are a second or subsequent plan,468,104,22.2
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,931,E10000025,Oxfordshire,Child Protection Plans which are a second or subsequent plan,563,168,29.8
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,851,E06000044,Portsmouth,Child Protection Plans which are a second or subsequent plan,295,63,21.4
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,870,E06000038,Reading,Child Protection Plans which are a second or subsequent plan,311,78,25.1
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,871,E06000039,Slough,Child Protection Plans which are a second or subsequent plan,205,43,21
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,852,E06000045,Southampton,Child Protection Plans which are a second or subsequent plan,280,87,31.1
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,936,E10000030,Surrey,Child Protection Plans which are a second or subsequent plan,771,187,24.3
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,869,E06000037,West Berkshire,Child Protection Plans which are a second or subsequent plan,235,82,34.9
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,938,E10000032,West Sussex,Child Protection Plans which are a second or subsequent plan,764,223,29.2
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,868,E06000040,Windsor and Maidenhead,Child Protection Plans which are a second or subsequent plan,142,33,23.2
+2025,Reporting year,Local authority,E92000001,England,E12000008,South East,872,E06000041,Wokingham,Child Protection Plans which are a second or subsequent plan,204,42,20.6
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,800,E06000022,Bath and North East Somerset,Child Protection Plans which are a second or subsequent plan,152,23,15.1
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,839,E06000058,"Bournemouth, Christchurch and Poole",Child Protection Plans which are a second or subsequent plan,652,155,23.8
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,801,E06000023,"Bristol, City of",Child Protection Plans which are a second or subsequent plan,518,136,26.3
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,908,E06000052,Cornwall,Child Protection Plans which are a second or subsequent plan,447,123,27.5
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,878,E10000008,Devon,Child Protection Plans which are a second or subsequent plan,806,243,30.1
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,838,E06000059,Dorset,Child Protection Plans which are a second or subsequent plan,335,92,27.5
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,916,E10000013,Gloucestershire,Child Protection Plans which are a second or subsequent plan,522,163,31.2
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,420,E06000053,Isles of Scilly,Child Protection Plans which are a second or subsequent plan,c,0,0
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,802,E06000024,North Somerset,Child Protection Plans which are a second or subsequent plan,205,58,28.3
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,879,E06000026,Plymouth,Child Protection Plans which are a second or subsequent plan,411,81,19.7
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,933,E06000066,Somerset,Child Protection Plans which are a second or subsequent plan,426,83,19.5
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,803,E06000025,South Gloucestershire,Child Protection Plans which are a second or subsequent plan,298,79,26.5
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,866,E06000030,Swindon,Child Protection Plans which are a second or subsequent plan,221,63,28.5
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,880,E06000027,Torbay,Child Protection Plans which are a second or subsequent plan,210,70,33.3
+2025,Reporting year,Local authority,E92000001,England,E12000009,South West,865,E06000054,Wiltshire,Child Protection Plans which are a second or subsequent plan,416,104,25
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,202,E09000007,Camden,Child Protection Plans which are a second or subsequent plan,237,52,21.9
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,201,E09000001,City of London,Child Protection Plans which are a second or subsequent plan,c,0,0
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,204,E09000012,Hackney,Child Protection Plans which are a second or subsequent plan,272,50,18.4
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,205,E09000013,Hammersmith and Fulham,Child Protection Plans which are a second or subsequent plan,126,14,11.1
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,309,E09000014,Haringey,Child Protection Plans which are a second or subsequent plan,229,57,24.9
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,206,E09000019,Islington,Child Protection Plans which are a second or subsequent plan,121,15,12.4
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,207,E09000020,Kensington and Chelsea,Child Protection Plans which are a second or subsequent plan,110,15,13.6
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,208,E09000022,Lambeth,Child Protection Plans which are a second or subsequent plan,312,50,16
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,209,E09000023,Lewisham,Child Protection Plans which are a second or subsequent plan,303,57,18.8
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,316,E09000025,Newham,Child Protection Plans which are a second or subsequent plan,339,60,17.7
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,210,E09000028,Southwark,Child Protection Plans which are a second or subsequent plan,344,95,27.6
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,211,E09000030,Tower Hamlets,Child Protection Plans which are a second or subsequent plan,295,57,19.3
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,212,E09000032,Wandsworth,Child Protection Plans which are a second or subsequent plan,92,19,20.7
+2025,Reporting year,Local authority,E92000001,England,E13000001,Inner London,213,E09000033,Westminster,Child Protection Plans which are a second or subsequent plan,119,9,7.6
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,301,E09000002,Barking and Dagenham,Child Protection Plans which are a second or subsequent plan,389,66,17
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,302,E09000003,Barnet,Child Protection Plans which are a second or subsequent plan,228,27,11.8
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,303,E09000004,Bexley,Child Protection Plans which are a second or subsequent plan,256,51,19.9
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,304,E09000005,Brent,Child Protection Plans which are a second or subsequent plan,358,53,14.8
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,305,E09000006,Bromley,Child Protection Plans which are a second or subsequent plan,368,78,21.2
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,306,E09000008,Croydon,Child Protection Plans which are a second or subsequent plan,594,119,20
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,307,E09000009,Ealing,Child Protection Plans which are a second or subsequent plan,378,57,15.1
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,308,E09000010,Enfield,Child Protection Plans which are a second or subsequent plan,313,57,18.2
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,203,E09000011,Greenwich,Child Protection Plans which are a second or subsequent plan,268,53,19.8
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,310,E09000015,Harrow,Child Protection Plans which are a second or subsequent plan,296,51,17.2
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,311,E09000016,Havering,Child Protection Plans which are a second or subsequent plan,454,105,23.1
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,312,E09000017,Hillingdon,Child Protection Plans which are a second or subsequent plan,259,39,15.1
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,313,E09000018,Hounslow,Child Protection Plans which are a second or subsequent plan,195,40,20.5
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,314,E09000021,Kingston upon Thames,Child Protection Plans which are a second or subsequent plan,139,24,17.3
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,315,E09000024,Merton,Child Protection Plans which are a second or subsequent plan,171,52,30.4
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,317,E09000026,Redbridge,Child Protection Plans which are a second or subsequent plan,272,41,15.1
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,173,36,20.8
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,235,51,21.7
+2025,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,257,81,31.5
+2024,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,62110,15330,24.7
+2024,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4860,1250,25.7
+2024,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9240,2280,24.7
+2024,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7390,1780,24
+2024,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,4890,1280,26.1
+2024,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7490,1920,25.7
+2024,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4360,960,22.1
+2024,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9170,1940,21.2
+2024,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,9050,2290,25.3
+2024,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5670,1630,28.7
+2024,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3290,750,22.9
+2024,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5890,1190,20.2
 2024,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,790,167,21.1
 2024,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,196,35,17.9
 2024,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,330,68,20.6
@@ -164,18 +329,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,143,32,22.4
 2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,255,78,30.6
 2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,253,49,19.4
-2023,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,63870,15050,23.6
-2023,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4640,1140,24.6
-2023,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9320,2210,23.8
-2023,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,7450,1740,23.3
-2023,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5230,1300,24.8
-2023,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7670,1860,24.3
-2023,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4440,1020,22.9
-2023,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9240,1830,19.8
-2023,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10280,2590,25.1
-2023,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5600,1360,24.3
-2023,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3220,680,21.1
-2023,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,6020,1150,19
+2023,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,63870,15050,23.6
+2023,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4640,1140,24.6
+2023,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9320,2210,23.8
+2023,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7450,1740,23.3
+2023,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5230,1300,24.8
+2023,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7670,1860,24.3
+2023,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4440,1020,22.9
+2023,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9240,1830,19.8
+2023,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10280,2590,25.1
+2023,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5600,1360,24.3
+2023,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3220,680,21.1
+2023,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,6020,1150,19
 2023,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,763,163,21.4
 2023,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,131,25,19.1
 2023,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,299,62,20.7
@@ -328,18 +493,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2023,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,148,29,19.6
 2023,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,235,76,32.3
 2023,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,270,41,15.2
-2022,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,64390,14990,23.3
-2022,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4640,980,21.2
-2022,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9260,2190,23.7
-2022,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,7490,2100,28
-2022,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5290,1420,26.9
-2022,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7330,1710,23.3
-2022,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4660,910,19.4
-2022,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9620,1770,18.4
-2022,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10420,2470,23.7
-2022,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5690,1440,25.3
-2022,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3700,690,18.6
-2022,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5920,1080,18.2
+2022,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,64390,14550,22.7
+2022,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4640,980,21.2
+2022,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9260,2190,23.7
+2022,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7490,1660,23.6
+2022,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5290,1420,26.9
+2022,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7330,1710,23.3
+2022,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4660,910,19.4
+2022,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9620,1770,18.4
+2022,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10420,2470,23.7
+2022,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5690,1440,25.3
+2022,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3700,690,18.6
+2022,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5920,1080,18.2
 2022,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,666,104,15.6
 2022,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,154,28,18.2
 2022,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,341,90,26.4
@@ -378,7 +543,7 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,370,E08000016,Barnsley,Child Protection Plans which are a second or subsequent plan,340,63,18.5
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,380,E08000032,Bradford,Child Protection Plans which are a second or subsequent plan,1099,248,22.6
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,381,E08000033,Calderdale,Child Protection Plans which are a second or subsequent plan,265,56,21.1
-2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,371,E08000017,Doncaster,Child Protection Plans which are a second or subsequent plan,437,437,100
+2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,371,E08000017,Doncaster,Child Protection Plans which are a second or subsequent plan,437,u,u
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,811,E06000011,East Riding of Yorkshire,Child Protection Plans which are a second or subsequent plan,304,57,18.8
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,810,E06000010,"Kingston upon Hull, City of",Child Protection Plans which are a second or subsequent plan,752,166,22.1
 2022,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,382,E08000034,Kirklees,Child Protection Plans which are a second or subsequent plan,390,86,22.1
@@ -492,18 +657,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2022,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,138,29,21
 2022,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,251,55,21.9
 2022,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,316,43,13.6
-2021,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,63830,14090,22.1
-2021,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4830,1010,20.8
-2021,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9240,2090,22.6
-2021,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,7270,1560,21.5
-2021,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5810,1390,24
-2021,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7530,1710,22.7
-2021,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4500,930,20.8
-2021,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9160,1690,18.4
-2021,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10250,2410,23.5
-2021,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5240,1310,25
-2021,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3600,640,17.9
-2021,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5570,1040,18.7
+2021,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,63830,14090,22.1
+2021,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4830,1010,20.8
+2021,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9240,2090,22.6
+2021,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7270,1560,21.5
+2021,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5810,1390,24
+2021,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7530,1710,22.7
+2021,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4500,930,20.8
+2021,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9160,1690,18.4
+2021,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10250,2410,23.5
+2021,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5240,1310,25
+2021,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3600,640,17.9
+2021,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5570,1040,18.7
 2021,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,117,25,21.4
 2021,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,675,131,19.4
 2021,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,286,60,21
@@ -655,18 +820,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2021,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,152,24,15.8
 2021,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,339,71,20.9
 2021,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,310,64,20.6
-2020,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,66380,14540,21.9
-2020,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,5020,1100,21.9
-2020,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9710,2220,22.8
-2020,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,8360,1690,20.2
-2020,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,6180,1470,23.8
-2020,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7770,1770,22.7
-2020,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4780,980,20.6
-2020,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,8970,1610,18
-2020,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10280,2410,23.4
-2020,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5330,1300,24.4
-2020,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3460,640,18.5
-2020,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5510,970,17.6
+2020,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,66380,14540,21.9
+2020,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,5020,1100,21.9
+2020,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9710,2220,22.8
+2020,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,8360,1690,20.2
+2020,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,6180,1470,23.8
+2020,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7770,1770,22.7
+2020,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4780,980,20.6
+2020,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,8970,1610,18
+2020,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10280,2410,23.4
+2020,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5330,1300,24.4
+2020,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3460,640,18.5
+2020,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5510,970,17.6
 2020,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,156,23,14.7
 2020,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,673,143,21.2
 2020,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,316,74,23.4
@@ -818,18 +983,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2020,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,169,39,23.1
 2020,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,255,61,23.9
 2020,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,221,39,17.6
-2019,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,66680,13860,20.8
-2019,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4620,1010,21.8
-2019,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,10940,2400,22
-2019,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,7460,1460,19.6
-2019,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5470,1190,21.8
-2019,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,8100,1670,20.6
-2019,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4930,1030,20.9
-2019,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9210,1620,17.5
-2019,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10010,2110,21.1
-2019,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5950,1370,23.1
-2019,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3430,610,17.8
-2019,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5780,1000,17.4
+2019,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,66680,13860,20.8
+2019,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4620,1010,21.8
+2019,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,10940,2400,22
+2019,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,7460,1460,19.6
+2019,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5470,1190,21.8
+2019,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,8100,1670,20.6
+2019,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4930,1030,20.9
+2019,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9210,1620,17.5
+2019,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10010,2110,21.1
+2019,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5950,1370,23.1
+2019,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3430,610,17.8
+2019,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5780,1000,17.4
 2019,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,180,22,12.2
 2019,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,678,118,17.4
 2019,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,307,69,22.5
@@ -982,18 +1147,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2019,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,126,20,15.9
 2019,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,267,78,29.2
 2019,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,262,41,15.6
-2018,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,68770,13900,20.2
-2018,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4630,940,20.3
-2018,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,10740,2220,20.7
-2018,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,6700,1320,19.7
-2018,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,6110,1250,20.5
-2018,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,8750,1860,21.3
-2018,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,5180,1070,20.7
-2018,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,10100,1510,14.9
-2018,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,10490,2370,22.6
-2018,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,6080,1360,22.4
-2018,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3930,530,13.5
-2018,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,6170,980,15.8
+2018,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,68770,13900,20.2
+2018,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4630,940,20.3
+2018,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,10740,2220,20.7
+2018,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,6700,1320,19.7
+2018,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,6110,1250,20.5
+2018,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,8750,1860,21.3
+2018,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,5180,1070,20.7
+2018,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,10100,1510,14.9
+2018,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,10490,2370,22.6
+2018,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,6080,1360,22.4
+2018,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3930,530,13.5
+2018,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,6170,980,15.8
 2018,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,139,29,20.9
 2018,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,785,158,20.1
 2018,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,354,65,18.4
@@ -1146,18 +1311,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2018,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,142,22,15.5
 2018,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,393,75,19.1
 2018,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,199,48,24.1
-2017,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,66410,12420,18.7
-2017,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,4180,590,14.2
-2017,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,11170,2050,18.4
-2017,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,6420,1080,16.8
-2017,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,6040,1290,21.3
-2017,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7920,1480,18.7
-2017,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,5270,1010,19.1
-2017,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9910,1470,14.8
-2017,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,9760,2170,22.2
-2017,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5750,1290,22.4
-2017,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3910,590,15.1
-2017,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,6010,880,14.6
+2017,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,66410,12420,18.7
+2017,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,4180,590,14.2
+2017,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,11170,2050,18.4
+2017,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,6420,1080,16.8
+2017,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,6040,1290,21.3
+2017,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7920,1480,18.7
+2017,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,5270,1010,19.1
+2017,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9910,1470,14.8
+2017,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,9760,2170,22.2
+2017,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5750,1290,22.4
+2017,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3910,590,15.1
+2017,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,6010,880,14.6
 2017,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,103,9,8.7
 2017,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,681,100,14.7
 2017,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,397,65,16.4
@@ -1310,18 +1475,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2017,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,138,22,15.9
 2017,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,283,44,15.5
 2017,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,318,51,16
-2016,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,63310,11350,17.9
-2016,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,3790,540,14.2
-2016,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,10600,1930,18.2
-2016,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,5970,970,16.3
-2016,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5640,1010,18
-2016,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7260,1350,18.5
-2016,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,5130,990,19.2
-2016,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,8940,1250,14
-2016,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,9770,2020,20.7
-2016,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,6210,1300,20.9
-2016,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3410,490,14.5
-2016,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5520,760,13.7
+2016,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,63310,11350,17.9
+2016,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,3790,540,14.2
+2016,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,10600,1930,18.2
+2016,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,5970,970,16.3
+2016,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5640,1010,18
+2016,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7260,1350,18.5
+2016,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,5130,990,19.2
+2016,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,8940,1250,14
+2016,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,9770,2020,20.7
+2016,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,6210,1300,20.9
+2016,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3410,490,14.5
+2016,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5520,760,13.7
 2016,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,168,21,12.5
 2016,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,466,79,17
 2016,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,338,40,11.8
@@ -1474,18 +1639,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2016,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,130,8,6.2
 2016,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,215,22,10.2
 2016,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,333,42,12.6
-2015,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,62210,10310,16.6
-2015,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,3540,500,14
-2015,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9780,1750,17.8
-2015,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,6140,940,15.4
-2015,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5700,940,16.5
-2015,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,7280,1260,17.3
-2015,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,5020,860,17.1
-2015,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,9110,1250,13.8
-2015,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,9810,1670,17.1
-2015,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5840,1130,19.4
-2015,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3550,490,13.8
-2015,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,5560,760,13.7
+2015,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,62210,10310,16.6
+2015,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,3540,500,14
+2015,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9780,1750,17.8
+2015,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,6140,940,15.4
+2015,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5700,940,16.5
+2015,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,7280,1260,17.3
+2015,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,5020,860,17.1
+2015,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,9110,1250,13.8
+2015,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,9810,1670,17.1
+2015,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5840,1130,19.4
+2015,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3550,490,13.8
+2015,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,5560,760,13.7
 2015,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,124,c,c
 2015,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,505,98,19.4
 2015,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,300,34,11.3
@@ -1638,18 +1803,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2015,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,140,18,12.9
 2015,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,288,39,13.5
 2015,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,252,36,14.3
-2014,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,59780,9450,15.8
-2014,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,3830,480,12.6
-2014,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,9620,1500,15.6
-2014,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,5880,880,14.9
-2014,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,5540,850,15.4
-2014,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,6860,1120,16.4
-2014,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,5640,980,17.3
-2014,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,8110,1060,13
-2014,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,8580,1610,18.7
-2014,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5730,970,17
-2014,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,3130,430,13.8
-2014,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,4970,620,12.5
+2014,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,59780,9450,15.8
+2014,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,3830,480,12.6
+2014,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,9620,1500,15.6
+2014,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,5880,880,14.9
+2014,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,5540,850,15.4
+2014,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,6860,1120,16.4
+2014,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,5640,980,17.3
+2014,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,8110,1060,13
+2014,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,8580,1610,18.7
+2014,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5730,970,17
+2014,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,3130,430,13.8
+2014,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,4970,620,12.5
 2014,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,178,18,10.1
 2014,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,656,97,14.8
 2014,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,323,35,10.8
@@ -1802,18 +1967,18 @@ time_period,time_identifier,geographic_level,country_code,country_name,region_co
 2014,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,E09000027,Richmond upon Thames,Child Protection Plans which are a second or subsequent plan,96,7,7.3
 2014,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,E09000029,Sutton,Child Protection Plans which are a second or subsequent plan,272,49,18
 2014,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,E09000031,Waltham Forest,Child Protection Plans which are a second or subsequent plan,241,29,12
-2013,Reporting year,National,E92000001,England,,,,,,Child Protection Plans which are a second or subsequent plan,52680,7870,14.9
-2013,Reporting year,Regional,E92000001,England,E12000001,North East,,,,Child Protection Plans which are a second or subsequent plan,3400,510,15
-2013,Reporting year,Regional,E92000001,England,E12000002,North West,,,,Child Protection Plans which are a second or subsequent plan,7980,1190,14.9
-2013,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,Child Protection Plans which are a second or subsequent plan,6030,800,13.2
-2013,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,Child Protection Plans which are a second or subsequent plan,4760,750,15.8
-2013,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,Child Protection Plans which are a second or subsequent plan,6680,1050,15.8
-2013,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,Child Protection Plans which are a second or subsequent plan,4380,700,16.1
-2013,Reporting year,Regional,E92000001,England,E12000007,London,,,,Child Protection Plans which are a second or subsequent plan,7330,950,13
-2013,Reporting year,Regional,E92000001,England,E12000008,South East,,,,Child Protection Plans which are a second or subsequent plan,7090,1150,16.3
-2013,Reporting year,Regional,E92000001,England,E12000009,South West,,,,Child Protection Plans which are a second or subsequent plan,5050,760,15.1
-2013,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,Child Protection Plans which are a second or subsequent plan,2990,400,13.3
-2013,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,Child Protection Plans which are a second or subsequent plan,4340,550,12.8
+2013,Reporting year,National,E92000001,England,"","",,"","",Child Protection Plans which are a second or subsequent plan,52680,7870,14.9
+2013,Reporting year,Regional,E92000001,England,E12000001,North East,,"","",Child Protection Plans which are a second or subsequent plan,3400,510,15
+2013,Reporting year,Regional,E92000001,England,E12000002,North West,,"","",Child Protection Plans which are a second or subsequent plan,7980,1190,14.9
+2013,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,"","",Child Protection Plans which are a second or subsequent plan,6030,800,13.2
+2013,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,"","",Child Protection Plans which are a second or subsequent plan,4760,750,15.8
+2013,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,"","",Child Protection Plans which are a second or subsequent plan,6680,1050,15.8
+2013,Reporting year,Regional,E92000001,England,E12000006,East of England,,"","",Child Protection Plans which are a second or subsequent plan,4380,700,16.1
+2013,Reporting year,Regional,E92000001,England,E12000007,London,,"","",Child Protection Plans which are a second or subsequent plan,7330,950,13
+2013,Reporting year,Regional,E92000001,England,E12000008,South East,,"","",Child Protection Plans which are a second or subsequent plan,7090,1150,16.3
+2013,Reporting year,Regional,E92000001,England,E12000009,South West,,"","",Child Protection Plans which are a second or subsequent plan,5050,760,15.1
+2013,Reporting year,Regional,E92000001,England,E13000001,Inner London,,"","",Child Protection Plans which are a second or subsequent plan,2990,400,13.3
+2013,Reporting year,Regional,E92000001,England,E13000002,Outer London,,"","",Child Protection Plans which are a second or subsequent plan,4340,550,12.8
 2013,Reporting year,Local authority,E92000001,England,E12000001,North East,841,E06000005,Darlington,Child Protection Plans which are a second or subsequent plan,125,c,c
 2013,Reporting year,Local authority,E92000001,England,E12000001,North East,840,E06000047,County Durham,Child Protection Plans which are a second or subsequent plan,569,97,17
 2013,Reporting year,Local authority,E92000001,England,E12000001,North East,390,E08000037,Gateshead,Child Protection Plans which are a second or subsequent plan,227,21,9.3
