@@ -143,27 +143,27 @@ outcome1_tab <- function() {
                       inputId = "CIN_info",
                       label = "Additional information:",
                       help_text = tags$ul(
-                        tags$li("Rate of children as at 31 March 2024 assessed as needing help and protection as a result of risks to their development or health."),
+                        tags$li("Rate of children as at 31 March 2025 assessed as needing help and protection as a result of risks to their development or health."),
                         tags$li(
-                          "Rates per 10,000 children are calculated based on ONS",
+                          "Rates per 10,000 children are calculated based on ",
                           a(
                             href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland",
                             "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
                           ),
-                          "for children aged 0 to 17 years. Revised/new population estimates for 2012 to 2022, based on 2021 Census data, were used to calculate revised rates for 2013 to 2023 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2023 were used to calculate 2024 rates."
+                          "for children aged 0 to 17 years. ",
+                          a(href = "",
+                          "Revised population estimates (opens in new tab)", target = "_blank"
+                          ),
+                          ", for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
                         ),
                         tags$li(
                           "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
                           tags$ul(
-                            tags$li("For children in need, a decrease of 3.6 in 2023 (from 342.7 to 339.1) to an increase of 8.4 in 2021 (from 321.2 to 329.6)."),
-                            tags$li("For children on protection plans, a decrease of 0.5 in 2023 (from 43.2 to 42.7) to an increase of 1.0 in 2021 (from 41.4 to 42.4).")
+                            tags$li("For children in need, a decrease of 0.4 in 2023 (339.1 to 338.7) and a decrease of 1.7 in 2024 (from 332.9 to 331.2)."),
+                            tags$li("For children on protection plans, no change in 2023 (42.7) and a decrease of 0.2 in 2024 (from 41.6 to 41.4).")
                           )
                         ),
-                        tags$li("The rates in the 2023 release for the 2023 year were calculated based on 2021 population estimates as estimates for 2022 were not available at the time of publication; this should be considered alongside the impact of the revisions."),
-                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals."),
-                        tags$li("Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals."),
-                        tags$li("Hampshire local authority moved to a new case management and reporting system and their return in 2024 had significant data quality issues and was assessed to not be sufficiently reliable to use. Therefore, their data for 2024 is presented as ‘u’ to indicate low reliability and 2023 figures for Hampshire are included in the 2024 totals for the South East region and England"),
-                        tags$li("Hackney had a cyberattack in December 2020, which had a significant impact on their information management systems. As a result, 2020 figures for Hackney have been included in the 2021 and 2022 national and regional totals, but data for Hackney has been presented as ‘x’ to indicate not available"),
+                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to the methodology page for more information."),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, please refer to the",
@@ -203,27 +203,27 @@ outcome1_tab <- function() {
                       inputId = "CIN_reg_info",
                       label = "Additional information:",
                       help_text = tags$ul(
-                        tags$li("Rate of children as at 31 March 2024 assessed as needing help and protection as a result of risks to their development or health."),
+                        tags$li("Rate of children as at 31 March 2025 assessed as needing help and protection as a result of risks to their development or health."),
                         tags$li(
-                          "Rates per 10,000 children are calculated based on ONS",
+                          "Rates per 10,000 children are calculated based on ",
                           a(
                             href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/populationestimatesforukenglandandwalesscotlandandnorthernireland",
                             "ONS mid-year population estimates (opens in a new tab)", target = "_blank"
                           ),
-                          "for children aged 0 to 17 years. Revised/new population estimates for 2012 to 2022, based on 2021 Census data, were used to calculate revised rates for 2013 to 2023 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2023 were used to calculate 2024 rates."
+                          "for children aged 0 to 17 years. ",
+                          a(href = "",
+                            "Revised population estimates (opens in new tab)", target = "_blank"
+                          ),
+                          ", for 2022 and 2023, to incorporate improved international and internal migration data, were used to calculate revised rates for 2023 and 2024 in this publication. The rates for each year were calculated based on population estimates for the preceding year. For example, population estimates for 2024 were used to calculate 2025 rates."
                         ),
                         tags$li(
                           "The impact of these revisions at a national level has resulted in changes to the following rates, per 10,000 children, ranging from:",
                           tags$ul(
-                            tags$li("For children in need, a decrease of 3.6 in 2023 (from 342.7 to 339.1) to an increase of 8.4 in 2021 (from 321.2 to 329.6)."),
-                            tags$li("For children on protection plans, a decrease of 0.5 in 2023 (from 43.2 to 42.7) to an increase of 1.0 in 2021 (from 41.4 to 42.4).")
+                            tags$li("For children in need, a decrease of 0.4 in 2023 (339.1 to 338.7) and a decrease of 1.7 in 2024 (from 332.9 to 331.2)."),
+                            tags$li("For children on protection plans, no change in 2023 (42.7) and a decrease of 0.2 in 2024 (from 41.6 to 41.4).")
                           )
                         ),
-                        tags$li("The rates in the 2023 release for the 2023 year were calculated based on 2021 population estimates as estimates for 2022 were not available at the time of publication; this should be considered alongside the impact of the revisions."),
-                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals."),
-                        tags$li("Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals."),
-                        tags$li("Hampshire local authority moved to a new case management and reporting system and their return in 2024 had significant data quality issues and was assessed to not be sufficiently reliable to use. Therefore, their data for 2024 is presented as ‘u’ to indicate low reliability and 2023 figures for Hampshire are included in the 2024 totals for the South East region and England"),
-                        tags$li("Hackney had a cyberattack in December 2020, which had a significant impact on their information management systems. As a result, 2020 figures for Hackney have been included in the 2021 and 2022 national and regional totals, but data for Hackney has been presented as ‘x’ to indicate not available"),
+                        tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to the methodology page for more information."),
                         tags$br(),
                         p(
                           "For more information on the data and definitions, please refer to the",
@@ -285,10 +285,7 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need data methodology", target = "_blank"), "for more information"),
-                          tags$li("Herefordshire local authority considerably underreported their data on referrals, and therefore re-referrals, in 2024. Impacted data is shown as ‘u’ to indicate low reliability but are included in the national totals and regional totals."),
-                          tags$li("For Herefordshire, it was determined at the end of the 2024 collection that the re-referrals data initially reported for 2023 was unreliable, so data on re-referrals for Herefordshire for 2023 was replaced with ‘u’ to indicate low reliability within the 2024 statistics release."),
-                          tags$li("Re-referrals for the year ending 31 March 2020 exclude Dorset and exclude Bournemouth, Christchurch and Poole local authorities due to the reorganisation of these areas on 1 April 2019."),
+                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to the methodology page for more information."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
@@ -322,10 +319,7 @@ outcome1_tab <- function() {
                       label = "Additional information:",
                       help_text = (
                         tags$ul(
-                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need data methodology", target = "_blank"), "for more information"),
-                          tags$li("Herefordshire local authority considerably underreported their data on referrals, and therefore re-referrals, in 2024. Impacted data is shown as ‘u’ to indicate low reliability but are included in the national totals and regional totals."),
-                          tags$li("For Herefordshire, it was determined at the end of the 2024 collection that the re-referrals data initially reported for 2023 was unreliable, so data on re-referrals for Herefordshire for 2023 was replaced with ‘u’ to indicate low reliability within the 2024 statistics release."),
-                          tags$li("Re-referrals for the year ending 31 March 2020 exclude Dorset and exclude Bournemouth, Christchurch and Poole local authorities due to the reorganisation of these areas on 1 April 2019."),
+                          tags$li("Data for the years ending 31 March 2021 and 2022 is not available for Hackney local authority, therefore 2020 data for Hackney has been included in the 2021 and 2022 national totals and regional totals. Data for the year ending 31 March 2024 is not available for Hampshire local authority, therefore 2023 data for Hampshire has been included in the 2024 national and regional totals. Refer to the methodology page for more information."),
                           tags$br(),
                           p(
                             "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
