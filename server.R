@@ -773,7 +773,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
@@ -824,7 +824,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       )) %>%
       select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
@@ -886,7 +886,7 @@ server <- function(input, output, session) {
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
           TRUE ~ as.character(characteristic)
         )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
@@ -900,7 +900,7 @@ server <- function(input, output, session) {
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
           TRUE ~ as.character(characteristic)
         )) %>%
         select(time_period, geo_breakdown, characteristic, placements_number, `Placement Rate Per 10000`) %>%
@@ -953,7 +953,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       )) %>%
       select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
@@ -1004,7 +1004,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       )) %>%
       select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
@@ -1066,7 +1066,7 @@ server <- function(input, output, session) {
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
           TRUE ~ as.character(characteristic)
         )) %>%
         select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
@@ -1080,7 +1080,7 @@ server <- function(input, output, session) {
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-          characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+          characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
           TRUE ~ as.character(characteristic)
         )) %>%
         select(time_period, geo_breakdown, characteristic, cla_31_march_number, `Placement Rate Per 10000`) %>%
@@ -2752,7 +2752,7 @@ server <- function(input, output, session) {
       filter(time_period == max(ceased_cla_data$time_period) &
         geo_breakdown %in% input$geographic_breakdown_o2 &
         cla_group == "Reason episode ceased" &
-        characteristic == "Special guardianship orders") %>%
+        characteristic == "Special guardianship order") %>%
       select(percentage)
 
     if (input$geographic_breakdown_o2 == "" || nrow(stat) == 0) {
@@ -2795,11 +2795,11 @@ server <- function(input, output, session) {
       check_compare_national = input$national_comparison_checkbox_o2,
       check_compare_regional = input$region_comparison_checkbox_o2,
       check_compare_sn = input$sn_comparison_checkbox_o2,
-      dimensional_filters = list("characteristic" = "Special guardianship orders")
+      dimensional_filters = list("characteristic" = "Special guardianship order")
     )
 
     # Set the max y-axis scale
-    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+    max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$characteristic == "Special guardianship order"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 20) * 20
 
     p <- plotly_time_series_custom_scale(filtered_data, input$select_geography_o2, input$geographic_breakdown_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
@@ -2830,7 +2830,7 @@ server <- function(input, output, session) {
       check_compare_national = input$national_comparison_checkbox_o2,
       check_compare_regional = input$region_comparison_checkbox_o2,
       check_compare_sn = input$sn_comparison_checkbox_o2,
-      dimensional_filters = list("characteristic" = "Special guardianship orders")
+      dimensional_filters = list("characteristic" = "Special guardianship order")
     ) %>%
       select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
       rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
@@ -2855,11 +2855,11 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 != "", "Select a geography level."),
       # need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship order")
 
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
       ceased_cla_data$geographic_level == "Regional" &
-      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+      ceased_cla_data$characteristic == "Special guardianship order"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- by_region_bar_plot(data, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
@@ -2885,7 +2885,7 @@ server <- function(input, output, session) {
 
     data <- ceased_cla_data %>%
       filter(geographic_level == "Regional", time_period == max(ceased_cla_data$time_period)) %>%
-      filter(characteristic == "Special guardianship orders") %>%
+      filter(characteristic == "Special guardianship order") %>%
       select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
       arrange(desc(`Ceased (%)`)) %>%
       rename("Time period" = "time_period", "Region" = "geo_breakdown", "Reason ceased" = "characteristic", "Total ceased" = "Total_num")
@@ -2909,11 +2909,11 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
-    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    data <- ceased_cla_data %>% filter(characteristic == "Special guardianship order")
 
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
       ceased_cla_data$geographic_level == "Local authority" &
-      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+      ceased_cla_data$characteristic == "Special guardianship order"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- by_la_bar_plot(data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
@@ -2930,7 +2930,7 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  # Special Guardianship orders by LA table
+  # Special guardianship order by LA table
   output$table_sgo_la <- renderReactable({
     shiny::validate(
       need(input$select_geography_o2 != "", "Select a geography level."),
@@ -2951,13 +2951,13 @@ server <- function(input, output, session) {
 
       data <- ceased_cla_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
-        filter(characteristic == "Special guardianship orders") %>%
+        filter(characteristic == "Special guardianship order") %>%
         select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
         arrange(desc(`Ceased (%)`))
     } else if (input$select_geography_o2 %in% c("Local authority", "National")) {
       data <- ceased_cla_data %>%
         filter(geographic_level == "Local authority", time_period == max(ceased_cla_data$time_period)) %>%
-        filter(characteristic == "Special guardianship orders") %>%
+        filter(characteristic == "Special guardianship order") %>%
         select(time_period, geo_breakdown, characteristic, `Number ceased`, Total_num, `Ceased (%)`) %>%
         arrange(desc(`Ceased (%)`))
     }
@@ -7731,7 +7731,7 @@ server <- function(input, output, session) {
       filter(population_count == "Children starting to be looked after each year", characteristic %in% c("UASC", "Non-UASC")) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       ))
     reactable(
@@ -7860,7 +7860,7 @@ server <- function(input, output, session) {
       filter(population_count == "Children looked after at 31 March each year", characteristic %in% c("UASC", "Non-UASC")) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
-        characteristic == "Non-UASC" ~ "Non-unaccompanied asylum-seeking children",
+        characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
         TRUE ~ as.character(characteristic)
       ))
     reactable(
@@ -9037,11 +9037,11 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
       need(input$geographic_breakdown_o2 != "", "Select a location."),
     )
-    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship orders")
+    filtered_data <- ceased_cla_data %>% filter(characteristic == "Special guardianship order")
 
     max_rate <- max(ceased_cla_data$`Ceased (%)`[ceased_cla_data$time_period == max(ceased_cla_data$time_period) &
       ceased_cla_data$geographic_level == "Local authority" &
-      ceased_cla_data$characteristic == "Special guardianship orders"], na.rm = TRUE)
+      ceased_cla_data$characteristic == "Special guardianship order"], na.rm = TRUE)
     max_rate <- ceiling(max_rate / 10) * 10
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o2, input$select_geography_o2, "Ceased (%)", "Ceased due to SGO (%)", max_rate, decimal_percentage = FALSE) %>%
@@ -9059,7 +9059,7 @@ server <- function(input, output, session) {
 
   output$SN_sgo_tbl <- renderReactable({
     filtered_data <- ceased_cla_data %>%
-      filter(characteristic == "Special guardianship orders") %>%
+      filter(characteristic == "Special guardianship order") %>%
       rename(`Reason ceased` = `characteristic`, `Total ceased` = `Total_num`)
 
     reactable(

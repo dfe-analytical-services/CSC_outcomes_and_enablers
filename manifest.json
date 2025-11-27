@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "41328ad9fdf08970ac05e6f1cdda0321"
+      "checksum": "4023f7c1b3f7a121115208dc033946c0"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4779,7 +4779,7 @@
       "checksum": "c0cdf640933cc06093d91a171f55e847"
     },
     "data-raw/cla_number_and_rate_per_10k_children.csv": {
-      "checksum": "613226ed96ed1f1c89f88e3f60e873ff"
+      "checksum": "c74034ed89d635a5b9f26c682e62c3f1"
     },
     "data-raw/csww_headline_measures_2017_to_2022.csv": {
       "checksum": "b493dfa60f69f20a7e918fd361822677"
@@ -4803,28 +4803,28 @@
       "checksum": "0cc6471e8caf67ac56f1de59dd0f4acc"
     },
     "data-raw/la_care_leavers_accommodation_suitability.csv": {
-      "checksum": "fefa6aad9d456b9218840d70327c3275"
+      "checksum": "13f686f4fa1a268eb6225d3e2fe618a7"
     },
     "data-raw/la_care_leavers_activity.csv": {
-      "checksum": "a0652efd55bc8ecef47687330d804748"
+      "checksum": "434ab6b83b523d628e56888e890260fe"
     },
     "data-raw/la_children_who_ceased_during_the_year.csv": {
-      "checksum": "b7389482ada1ea7c34ee1600e6737de5"
+      "checksum": "989a59685169e5b2eeca85768d7299d3"
     },
     "data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv": {
-      "checksum": "8405b927024dae79e1cab008f0a635bb"
+      "checksum": "fd4a49a749b797a101966947048313b6"
     },
     "data-raw/la_cla_during_year_new_placements.csv": {
-      "checksum": "2bbfbe06b995baaec34d6f500d9827b3"
+      "checksum": "80605ece239bef776ae8c01043163218"
     },
     "data-raw/la_cla_on_31_march_by_characteristics.csv": {
-      "checksum": "185a26d57da8505d938d0fcaf0e648cb"
+      "checksum": "f0e12219c73f8f2b8fa185f85588cd52"
     },
     "data-raw/la_cla_placement_stability.csv": {
-      "checksum": "758ba33c2a57e026df3b488d813289ee"
+      "checksum": "07bf270046fec7e7e0a80eae4f725546"
     },
     "data-raw/la_conviction_health_outcome_cla.csv": {
-      "checksum": "b6740af3363f43e6d99029a9086bddbc"
+      "checksum": "929f491ae30207da8e34b8edaee210f5"
     },
     "data-raw/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
@@ -4839,7 +4839,7 @@
       "checksum": "8bdf3edfcf11be3ee0b79aca91a28dd9"
     },
     "data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
-      "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
+      "checksum": "37484d6e241f2db05c3cf6f385382cd7"
     },
     "data-raw/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
@@ -4968,7 +4968,7 @@
       "checksum": "6410eb4e7e6a49d0c0594532f0742cf7"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "1699108848d4caba7ffe7dedd3bef900"
+      "checksum": "2359ce9319de065d9476e19d61916cfc"
     },
     "data/wellbeing_sdq_data.rds": {
       "checksum": "b491acae45bb6ed2570a77804f6909ae"
@@ -5013,7 +5013,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "130eac9042682518126509ee3b846e2c"
+      "checksum": "1be6a1286f256f8752184f5e4848bea9"
     },
     "R/data_sources.R": {
       "checksum": "55e49b967531aa9f1eceb390596ea714"
@@ -5061,7 +5061,7 @@
       "checksum": "f4fc35434ecaf9ae9a8bbc5f1c1204c8"
     },
     "R/read_data.R": {
-      "checksum": "435df2a4c3e8a21cbe8548fc9429c669"
+      "checksum": "49e6d915a8d2fee7e1c62ed2e9498390"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
@@ -5091,13 +5091,13 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "44d3f7fc71987a9c62248b1787ae6de4"
+      "checksum": "79deec16a4e35ebe5e21978865e64f51"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
     },
     "tests/stats_neighbours_testing.R": {
-      "checksum": "369c3afa089051891bab92b6531c66c4"
+      "checksum": "0a975ee76642d9a1b155fa536a5467d4"
     },
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
@@ -5133,7 +5133,7 @@
       "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "05b7c7762d8f5761c44771996dcc25ab"
+      "checksum": "859c7ec8278bd208849b1e1b3826e4c4"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
       "checksum": "6fc43d16e639fd21d4a43105f143b106"
@@ -5205,7 +5205,7 @@
       "checksum": "8935e4350f4d30ef001b029de943cf6d"
     },
     "Y_AXIS_DOCUMENTATION.md": {
-      "checksum": "b601af76d452124fee4b4d8587489881"
+      "checksum": "398a157d4ad0d11f9e44dadb30a42a4f"
     }
   },
   "users": null
