@@ -386,7 +386,7 @@ server <- function(input, output, session) {
   output$uasc_31_march_rate_headline_txt <- renderText({
     stat <- format(combined_cla_31_march_data %>% filter(time_period == max(combined_cla_31_march_data$time_period) &
       geo_breakdown %in% input$geographic_breakdown_o1 &
-      population_count == "Children looked after at 31 March each year" &
+      population_count == "Children looked after on 31 March each year" &
       characteristic == "UASC") %>% select(placement_per_10000), nsmall = 0)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
@@ -400,7 +400,7 @@ server <- function(input, output, session) {
   output$cla_march_rate_headline_txt <- renderText({
     stat <- format(cla_rates %>% filter(time_period == max(cla_rates$time_period) &
       geo_breakdown %in% input$geographic_breakdown_o1 &
-      population_count == "Children looked after at 31 March each year") %>% select(rate_per_10000), nsmall = 0)
+      population_count == "Children looked after on 31 March each year") %>% select(rate_per_10000), nsmall = 0)
 
     if (input$geographic_breakdown_o1 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -949,7 +949,7 @@ server <- function(input, output, session) {
       filter(
         geo_breakdown %in% input$geographic_breakdown_o1,
         characteristic %in% c("UASC", "Non-UASC"),
-        population_count == "Children looked after at 31 March each year"
+        population_count == "Children looked after on 31 March each year"
       ) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
@@ -999,7 +999,7 @@ server <- function(input, output, session) {
     data <- combined_cla_31_march_data %>%
       filter(
         geographic_level == "Regional", characteristic %in% c("UASC", "Non-UASC"),
-        population_count == "Children looked after at 31 March each year",
+        population_count == "Children looked after on 31 March each year",
         time_period == max(time_period)
       ) %>%
       mutate(characteristic = case_when(
@@ -1062,7 +1062,7 @@ server <- function(input, output, session) {
       data <- combined_cla_31_march_data %>%
         filter(
           geo_breakdown %in% location, time_period == max(combined_cla_31_march_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
-          population_count == "Children looked after at 31 March each year",
+          population_count == "Children looked after on 31 March each year",
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
@@ -1076,7 +1076,7 @@ server <- function(input, output, session) {
       data <- combined_cla_31_march_data %>%
         filter(
           geographic_level == "Local authority", time_period == max(combined_cla_31_march_data$time_period), characteristic %in% c("UASC", "Non-UASC"),
-          population_count == "Children looked after at 31 March each year",
+          population_count == "Children looked after on 31 March each year",
         ) %>%
         mutate(characteristic = case_when(
           characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
@@ -1115,15 +1115,15 @@ server <- function(input, output, session) {
       check_compare_national = input$national_comparison_checkbox_o1,
       check_compare_regional = input$region_comparison_checkbox_o1,
       check_compare_sn = input$sn_comparison_checkbox_o1,
-      dimensional_filters = list("population_count" = "Children looked after at 31 March each year")
+      dimensional_filters = list("population_count" = "Children looked after on 31 March each year")
     )
 
     filtered_data <- filtered_data %>%
-      filter(population_count == "Children looked after at 31 March each year") %>%
+      filter(population_count == "Children looked after on 31 March each year") %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year"], na.rm = TRUE)
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after on 31 March each year"], na.rm = TRUE)
 
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 50) * 50
@@ -1153,7 +1153,7 @@ server <- function(input, output, session) {
       check_compare_national = input$national_comparison_checkbox_o1,
       check_compare_regional = input$region_comparison_checkbox_o1,
       check_compare_sn = input$sn_comparison_checkbox_o1,
-      dimensional_filters = list("population_count" = "Children looked after at 31 March each year")
+      dimensional_filters = list("population_count" = "Children looked after on 31 March each year")
     )
 
     filtered_data <- filtered_data %>%
@@ -1200,7 +1200,7 @@ server <- function(input, output, session) {
     )
 
     data <- cla_rates %>%
-      filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
+      filter(geographic_level == "Regional", time_period == max(cla_rates$time_period), population_count == "Children looked after on 31 March each year") %>%
       select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
 
@@ -1254,13 +1254,13 @@ server <- function(input, output, session) {
       }
 
       data <- cla_rates %>%
-        filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after on 31 March each year") %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
         arrange(desc(`Rate Per 10000`)) %>%
         rename(`Time period` = `time_period`, `Location` = `geo_breakdown`, `Number of children looked after on 31 March` = `number`, `Rate per 10,000 children` = `Rate Per 10000`)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- cla_rates %>%
-        filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after at 31 March each year") %>%
+        filter(geographic_level == "Local authority", time_period == max(cla_rates$time_period), population_count == "Children looked after on 31 March each year") %>%
         select(
           time_period, geo_breakdown,
           number, `Rate Per 10000`
@@ -7830,7 +7830,7 @@ server <- function(input, output, session) {
 
     # Set the max y-axis scale
     max_rate <- max(
-      combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
+      combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
         combined_cla_31_march_data$characteristic %in% c("UASC", "Non-UASC") &
         combined_cla_31_march_data$time_period == max(combined_cla_31_march_data$time_period) &
         combined_cla_31_march_data$geographic_level == "Local authority"],
@@ -7857,7 +7857,7 @@ server <- function(input, output, session) {
   # cla UASC 31st March stats neighbour tables
   output$SN_uasc_31_march_tbl <- renderReactable({
     filtered_data <- combined_cla_31_march_data %>%
-      filter(population_count == "Children looked after at 31 March each year", characteristic %in% c("UASC", "Non-UASC")) %>%
+      filter(population_count == "Children looked after on 31 March each year", characteristic %in% c("UASC", "Non-UASC")) %>%
       mutate(characteristic = case_when(
         characteristic == "UASC" ~ "Unaccompanied asylum-seeking children",
         characteristic == "Non-UASC" ~ "Children excluding unaccompanied asylum-seeking children",
@@ -7952,7 +7952,7 @@ server <- function(input, output, session) {
     validate(need(input$select_geography_o1 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."))
 
     # Set the max y-axis scale
-    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+    max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after on 31 March each year" &
       cla_rates$time_period == max(cla_rates$time_period) &
       cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
@@ -7960,7 +7960,7 @@ server <- function(input, output, session) {
     max_rate <- ceiling(max_rate / 10) * 10
 
     filtered_data <- cla_rates %>%
-      filter(population_count == "Children looked after at 31 March each year") %>%
+      filter(population_count == "Children looked after on 31 March each year") %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
     p <- statistical_neighbours_plot(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, "Rate per 10,000", "Rate per 10,000 children", max_rate) %>%
@@ -7979,7 +7979,7 @@ server <- function(input, output, session) {
 
   # # cla March stats neighbour tables
   output$SN_cla_march_tbl <- renderReactable({
-    filtered_data <- cla_rates %>% filter(population_count == "Children looked after at 31 March each year")
+    filtered_data <- cla_rates %>% filter(population_count == "Children looked after on 31 March each year")
 
     reactable(
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = "number", yvalue = "rate_per_10000"),

@@ -753,13 +753,13 @@ plot_uasc_31_march <- function(geo_break, geo_lvl) {
   uasc_31_mar_data <- combined_cla_31_march_data %>%
     filter(geographic_level %in% geo_lvl & geo_breakdown %in% geo_break &
       characteristic %in% c("UASC", "Non-UASC") &
-      population_count == "Children looked after at 31 March each year") %>%
+      population_count == "Children looked after on 31 March each year") %>%
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic)
 
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
+    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
       combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
@@ -804,13 +804,13 @@ plot_uasc_31_march_reg <- function() {
   uasc_31_mar_data <- combined_cla_31_march_data %>%
     filter(geographic_level == "Regional" &
       characteristic %in% c("UASC", "Non-UASC") &
-      population_count == "Children looked after at 31 March each year" & time_period == max(time_period)) %>%
+      population_count == "Children looked after on 31 March each year" & time_period == max(time_period)) %>%
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Placement Rate Per 10000`))
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
+    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
       combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
@@ -869,7 +869,7 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
   if (selected_geo_lvl == "Local authority") {
     cla_data <- combined_cla_31_march_data %>%
       filter(
-        geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year",
+        geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after on 31 March each year",
         characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
@@ -881,7 +881,7 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
   } else if (selected_geo_lvl == "National") {
     cla_data <- combined_cla_31_march_data %>%
       filter(
-        geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year",
+        geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after on 31 March each year",
         characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
@@ -906,7 +906,7 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
 
     cla_data <- combined_cla_31_march_data %>%
       filter(
-        geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year", rate_per_10000 != "NA",
+        geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after on 31 March each year", rate_per_10000 != "NA",
         characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic) %>%
@@ -919,7 +919,7 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after at 31 March each year" &
+    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
       combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
     na.rm = TRUE
   )
@@ -1106,12 +1106,12 @@ plot_cla_rate_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = N
 # bar chart by region
 plot_cla_march_reg <- function() {
   cla_reg_data <- cla_rates %>%
-    filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
+    filter(geographic_level == "Regional", time_period == max(time_period), population_count == "Children looked after on 31 March each year") %>%
     select(time_period, geo_breakdown, `Rate Per 10000`) %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`)) # Order by cla rate
 
   # Set the max y-axis scale based on the data
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after on 31 March each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Regional"], na.rm = TRUE)
 
@@ -1150,7 +1150,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
 
   if (selected_geo_lvl == "Local authority") {
     cla_data <- cla_rates %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after on 31 March each year") %>%
       select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
@@ -1158,7 +1158,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
       )
   } else if (selected_geo_lvl == "National") {
     cla_data <- cla_rates %>%
-      filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after at 31 March each year") %>%
+      filter(geographic_level == "Local authority", time_period == max(time_period), population_count == "Children looked after on 31 March each year") %>%
       select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
@@ -1179,7 +1179,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
     }
 
     cla_data <- cla_rates %>%
-      filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after at 31 March each year", rate_per_10000 != "NA") %>%
+      filter(geo_breakdown %in% location, time_period == max(time_period), population_count == "Children looked after on 31 March each year", rate_per_10000 != "NA") %>%
       select(time_period, geo_breakdown, `Rate Per 10000`) %>%
       mutate(
         geo_breakdown = reorder(geo_breakdown, -`Rate Per 10000`), # Order by rate_per_10000
@@ -1188,7 +1188,7 @@ plot_cla_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = 
   }
 
   # Set the max y-axis scale based on the data
-  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after at 31 March each year" &
+  max_rate <- max(cla_rates$`Rate Per 10000`[cla_rates$population_count == "Children looked after on 31 March each year" &
     cla_rates$time_period == max(cla_rates$time_period) &
     cla_rates$geographic_level == "Local authority"], na.rm = TRUE)
 
@@ -2136,7 +2136,7 @@ statistical_neighbours_plot_uasc_31_march <- function(dataset, selected_geo_brea
   filtered_data <- dataset %>%
     filter(geographic_level == "Local authority", time_period == max(time_period), geo_breakdown %in% c(selected_geo_breakdown, sn_names)) %>%
     filter(
-      population_count == "Children looked after at 31 March each year",
+      population_count == "Children looked after on 31 March each year",
       characteristic %in% c("UASC", "Non-UASC")
     ) %>%
     select(geo_breakdown, `yvalue`, characteristic) %>%
