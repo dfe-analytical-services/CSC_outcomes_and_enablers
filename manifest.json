@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "9be2725944a2144ad97212ffcd2f6c62"
+      "checksum": "d1129834a20237de45fddcfbc5274231"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5006,6 +5006,15 @@
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
     },
+    "inst/pipeline_prelim.html": {
+      "checksum": "f5d37d4a6d1f6e1c675627d8ace7d8d7"
+    },
+    "inst/pipeline_prelim.Rmd": {
+      "checksum": "09d0f304afc0ae73012bec2c6f523d72"
+    },
+    "inst/report_styling.css": {
+      "checksum": "dae3b31ce84448c5a24c51b641fc3ab3"
+    },
     "LICENSE": {
       "checksum": "4ff1ab40947c9cebe66adef6c76f9ba7"
     },
@@ -5013,7 +5022,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "36c740f41bc397045ffc520c32b7c208"
+      "checksum": "7c3d8bbefda0b34ca4446b46dfcd92bb"
     },
     "R/data_sources.R": {
       "checksum": "55e49b967531aa9f1eceb390596ea714"
@@ -5129,8 +5138,14 @@
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
       "checksum": "180284f3e983e4379483761e2ddc0e61"
     },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.new.json": {
+      "checksum": "9f6b243dcf68665144b26837508cc36f"
+    },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
       "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
+    },
+    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.new.json": {
+      "checksum": "c7ce6268566e8f0c8b8ef9e01edfbb67"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
       "checksum": "859c7ec8278bd208849b1e1b3826e4c4"

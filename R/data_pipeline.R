@@ -24,8 +24,15 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   path_new <- "~/CSC Private dashboard/data-comparisons/2025/"
   path_old <- "~/CSC Private dashboard/data-comparisons/2024/"
   pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
+
+
   print(pipeline_prelim)
-  # time_period,time_identifier,geographic_level,country_code,country_name,region_code,region_name,old_la_code,la_name,new_la_code, population_count, population_estimate, age, accomo
+
+
+  rmarkdown::render("./inst/pipeline_prelim.Rmd", params = list(
+    dataset_comparison = pipeline_prelim$dataset_comparison
+  ))
+
 
   ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
@@ -297,7 +304,7 @@ pipeline_generate_datasets <- function() {
   return(datasets_new)
 }
 
-# Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output text generated
+# Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output list generated
 pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets_new, Geography_column = NULL) {
   user_feedback <- glue::glue("CSC Public Dashboard: Data pipeline diagnostics
   Run date: { Sys.Date() }")
@@ -312,18 +319,18 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   )[, match_dataset_name := dataset_name_NEW == dataset_name_CURRENT]
 
   dataset_class_comparison <- dcast.data.table(rbindlist(list(
-    data.table(rds_or_new = "CURRENT", check_type = "dataset_class", dataset_name = names(meta_rds$dataset_class), dataset_class = sapply(meta_rds$dataset_class, paste, collapse = ",")),
-    data.table(rds_or_new = "NEW", check_type = "dataset_class", dataset_name = names(meta_new$dataset_class), dataset_class = sapply(meta_new$dataset_class, paste, collapse = ","))
+    data.table(rds_or_new = "CURRENT", check_type = "dataset_class", dataset_name = names(meta_rds$dataset_class), dataset_class = sapply(meta_rds$dataset_class, paste, collapse = ", ")),
+    data.table(rds_or_new = "NEW", check_type = "dataset_class", dataset_name = names(meta_new$dataset_class), dataset_class = sapply(meta_new$dataset_class, paste, collapse = ", "))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_class := dataset_class_NEW == dataset_class_CURRENT]
 
   dataset_nrow_comparison <- dcast.data.table(rbindlist(list(
-    data.table(rds_or_new = "CURRENT", check_type = "num_rows", dataset_name = names(meta_rds$dataset_nrow), dataset_nrow = sapply(meta_rds$dataset_nrow, paste, collapse = ",")),
-    data.table(rds_or_new = "NEW", check_type = "num_rows", dataset_name = names(meta_new$dataset_class), dataset_nrow = sapply(meta_new$dataset_nrow, paste, collapse = ","))
+    data.table(rds_or_new = "CURRENT", check_type = "num_rows", dataset_name = names(meta_rds$dataset_nrow), dataset_nrow = sapply(meta_rds$dataset_nrow, paste, collapse = ", ")),
+    data.table(rds_or_new = "NEW", check_type = "num_rows", dataset_name = names(meta_new$dataset_class), dataset_nrow = sapply(meta_new$dataset_nrow, paste, collapse = ", "))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_num_rows := num_rows_NEW == num_rows_CURRENT]
 
   dataset_columns_comparison <- dcast.data.table(rbindlist(list(
-    data.table(rds_or_new = "CURRENT", check_type = "dataset_columns", dataset_name = names(meta_rds$dataset_columns), dataset_columns = sapply(meta_rds$dataset_columns, paste, collapse = ",")),
-    data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ","))
+    data.table(rds_or_new = "CURRENT", check_type = "dataset_columns", dataset_name = names(meta_rds$dataset_columns), dataset_columns = sapply(meta_rds$dataset_columns, paste, collapse = ", ")),
+    data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ", "))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
 
   dataset_geographies_comparison <- rbindlist(
@@ -340,21 +347,38 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     }, datasets_new, datasets_rds)
   )
 
-  # dataset_columns_comparison[, colums_added := setdiff(dataset_columns_CURRENT, dataset_columns_comparison$dataset_columns_NEW)]
+  # Function to find common elements between two delimited strings
+  compare_elements <- function(str1, str2, delimiter = ",", common = TRUE) {
+    # Validate inputs
+    if (!is.character(str1) || !is.character(str2)) {
+      stop("Both inputs must be character strings.")
+    }
 
-  compare_cols <- function(old_cols, new_cols) {
-    # Split by comma, trim whitespace, and make lowercase for case-insensitive match
-    v1 <- trimws(tolower(unlist(strsplit(old_cols, ","))))
-    v2 <- trimws(tolower(unlist(strsplit(new_cols, ","))))
+    # Split strings into vectors
+    vec1 <- trimws(unlist(strsplit(str1, delimiter, fixed = TRUE)))
+    vec2 <- trimws(unlist(strsplit(str2, delimiter, fixed = TRUE)))
 
-    # Check if any element matches
-    return(v1[which(!(v1 %in% v2))])
+    # Find common elements
+    if (common == TRUE) ret_val <- paste(intersect(vec1, vec2), collapse = ", ")
+    if (common == FALSE) ret_val <- paste(setdiff(vec1, vec2), collapse = ", ")
+
+    return(ret_val)
   }
-  # browser()
-  dataset_columns_comparison[, columns_removed := mapply(compare_cols, dataset_columns_CURRENT, dataset_columns_NEW, SIMPLIFY = TRUE)]
-  dataset_columns_comparison[, columns_added := mapply(compare_cols, dataset_columns_NEW, dataset_columns_CURRENT, SIMPLIFY = TRUE)]
 
-  #
+  dataset_columns_comparison[, columns_retained := mapply(compare_elements, dataset_columns_CURRENT, dataset_columns_NEW, common = TRUE)]
+  dataset_columns_comparison[, columns_added := mapply(compare_elements, dataset_columns_CURRENT, dataset_columns_NEW, common = FALSE)]
+  dataset_columns_comparison[, columns_removed := mapply(compare_elements, dataset_columns_NEW, dataset_columns_CURRENT, common = FALSE)]
+
+
+
+
+
+  collapse_function <- function(x) {
+    if (length(x) == 0) {
+      return("")
+    } # handle empty lists
+    paste(x, collapse = ", ")
+  }
 
   # build the summary of dataset comparisons for easy reference
   dataset_comparison_summary <- merge.data.table(
@@ -377,27 +401,26 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
 
   dataset_comparison_summary[, match_summary := ((match_dataset_name + match_dataset_class + match_dataset_num_rows + match_dataset_columns) == 4)]
 
-  # objects in both
+  # objects consistent in both (i.e. setdiff will not fail)
   diff_datasets <- dataset_comparison_summary[match_dataset_name + match_dataset_class + match_dataset_columns == 3]$dataset_name
 
   # add in a data comparison (setdiffs)
-  df_setdiffs <- lapply(diff_datasets, function(df_name) {
+  df_setdiffs <- lapply(diff_datasets, function(df_name, datasets_new, datasets_rds) {
     print(df_name)
     list(
       old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
       new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
-  })
+  }, datasets_new, datasets_rds)
   names(df_setdiffs) <- diff_datasets
 
-  # browser()
   # datasets which have deltas
   changed_datasets <- names(which(lapply(df_setdiffs, function(x) nrow(x$old_v_new) + nrow(x$new_v_old)) > 0))
 
   # add in the column comparison of values
   dataset_column_values_comparison <- list(
-    new = summarise_columns_over_datasets(datasets_new[changed_datasets[changed_datasets != "summary_data"]]),
-    old = summarise_columns_over_datasets(datasets_rds[changed_datasets[changed_datasets != "summary_data"]])
+    new = summarise_columns_over_datasets(datasets_new), # [changed_datasets[changed_datasets != "summary_data"]]
+    old = summarise_columns_over_datasets(datasets_rds) # [changed_datasets[changed_datasets != "summary_data"]]
   )
 
   candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
@@ -457,14 +480,6 @@ summarise_columns_over_datasets <- function(dataset_list, label = "my_datasets")
   column_summary[, occurences_per_value := as.integer(row_count / unique_value_count)]
 
   return(column_summary)
-  # dt_new <- new$cla_number_and_rate_per_10k_children.csv
-  # dt_old <- old$cla_number_and_rate_per_10k_children.csv
-  #
-  # names(dt_new) %in% names(dt_old)
-  # columns_non_key <- c("population_estimate", "number", "percentage", "rate_per_10000")
-  #
-  # column_names_old[column_name == "population_estimate"]
-  # unique(old$cla_number_and_rate_per_10k_children.csv$population_estimate)
 }
 
 # Helper function to get all of the datasets currently in data folder into a list comparable with the new datasets
