@@ -1,5 +1,5 @@
 ---
-title: "Pipeline preliminary diagnostic report"
+title: "Pipeline Step 1 diagnostic report"
 output:
   html_document:
     css: "report_styling.css"
@@ -14,8 +14,7 @@ params:
 </style>
 
 
-```{r echo=F}
-
+```{r}
 library(knitr)
 library(reactable)
 library(tidyr)
@@ -67,13 +66,11 @@ my_reactable <- function(dt, ...) {
 }
 
 
-
-if (is.null(params$dataset_comparison)) {
-  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim.rds")
+if (is.null(params$pipeline_comparison)) {
+  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1.rds")
 } else {
- pc <- params$pipeline_comparison
+  pc <- params$pipeline_comparison
 }
-
 
 ```
 
@@ -85,7 +82,7 @@ This report will help the analyst to understand the differences between the data
 ## Summary of changes
 
 ```{r results='asis'}
-  
+
   pc$dataset_comparison_summary %>%
     my_reactable(
       width = 1000,
@@ -100,13 +97,12 @@ This report will help the analyst to understand the differences between the data
 
 ```{r results='asis'}
   
-  
   pc$dataset_nrow_comparison %>%
     my_reactable(
       width = 1000,
       defaultColDef = colDef(minWidth = 60, cell = tick_or_cross), 
       columns =  list(`Dataset Name` = colDef(minWidth = 300)))
-   
+  
 
 ```
 
@@ -126,7 +122,6 @@ This report will help the analyst to understand the differences between the data
 
 
 
-
 ```
 
 ## Analyse column contents
@@ -140,7 +135,6 @@ This report will help the analyst to understand the differences between the data
               defaultColDef = colDef(minWidth = 100),
               columns = list(`Column Name` = colDef(minWidth = 200),
                              `Number Percentage` = colDef(format = colFormat(percent = TRUE, digits = 1))))
-
 
 ```
 
@@ -170,8 +164,6 @@ This table show which geographies have been added to the publication datasets an
 
 
 ```
-
-
 
 
 

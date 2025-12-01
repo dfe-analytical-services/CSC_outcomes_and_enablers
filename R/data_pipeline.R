@@ -25,27 +25,31 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   path_old <- "~/CSC Private dashboard/data-comparisons/2024/"
   pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
 
-
+  saveRDS(pipeline_prelim$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim.rds")
   print(pipeline_prelim)
 
 
   rmarkdown::render("./inst/pipeline_prelim.Rmd", params = list(
-    dataset_comparison = pipeline_prelim$dataset_comparison
+    pipeline_comparison = pipeline_prelim$dataset_comparison
   ))
 
 
   ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1.rds")
+
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   ## 3. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
 
+  rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
+    pipeline_comparison = pipeline_run$dataset_comparison
+  ))
+
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   writexl::write_xlsx(deltas_to_export, "./pipeline_consolidated_setdiffs.xlsx")
-
-  # geo_breakdown,time_period	geographic_level	region_code	region_name	new_la_code	old_la_code	la_name	geo_breakdown_sn	population_count
 
 
   ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
@@ -111,7 +115,7 @@ get_pipeline_prelim <- function(path_new, path_old) {
     datasets_new = new
   )
 
-  return(datasets = list(old = old, new = new, dataset_comparison = pc1))
+  return(datasets = list(old = old, new = new, pipeline_comparison = pc1))
 }
 
 
@@ -335,9 +339,16 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
 
   dataset_geographies_comparison <- rbindlist(
     lapply(1:length(datasets_new), function(x, datasets_new, datasets_rds) {
-      if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
-        las_added <- paste0(setdiff(unique(datasets_new[[x]]$la_name), unique(datasets_rds[[x]]$la_name)), collapse = ", ")
-        las_removed <- paste0(setdiff(unique(datasets_rds[[x]]$la_name), unique(datasets_new[[x]]$la_name)), collapse = ", ")
+      if ("geo_breakdown" %in% names(datasets_new[[x]]) & "geo_breakdown" %in% names(datasets_rds[[x]])) {
+        geo_column <- "geo_breakdown"
+      } else if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
+        geo_column <- "la_name"
+      } else {
+        geo_column <- NULL
+      }
+      if (!is.null(geo_column)) {
+        las_added <- paste0(setdiff(unique(datasets_new[[x]][[geo_column]]), unique(datasets_rds[[x]][[geo_column]])), collapse = ", ")
+        las_removed <- paste0(setdiff(unique(datasets_rds[[x]][[geo_column]]), unique(datasets_new[[x]][[geo_column]])), collapse = ", ")
         data.table(
           dataset_name = names(datasets_new)[x],
           las_added = las_added,
@@ -419,8 +430,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
 
   # add in the column comparison of values
   dataset_column_values_comparison <- list(
-    new = summarise_columns_over_datasets(datasets_new), # [changed_datasets[changed_datasets != "summary_data"]]
-    old = summarise_columns_over_datasets(datasets_rds) # [changed_datasets[changed_datasets != "summary_data"]]
+    new = summarise_columns_over_datasets(datasets_new[changed_datasets]), # [changed_datasets[changed_datasets != "summary_data"]]
+    old = summarise_columns_over_datasets(datasets_rds[changed_datasets]) # [changed_datasets[changed_datasets != "summary_data"]]
   )
 
   candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
