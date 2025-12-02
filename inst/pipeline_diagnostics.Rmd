@@ -1,0 +1,169 @@
+---
+title: "Pipeline Step 1 diagnostic report"
+output:
+  html_document:
+    css: "report_styling.css"
+params:
+  pipeline_comparison: !r NULL
+---
+
+<style>
+.reactable table {
+  table-layout: auto !important;
+}
+</style>
+
+
+```{r}
+library(knitr)
+library(reactable)
+library(tidyr)
+library(data.table)
+
+opts_chunk$set(echo=FALSE, warning=FALSE)
+options(reactable.compact = T,
+        reactable.searchable = T,
+        reactable.bordered = T,
+        reactable.striped = T,
+        reactable.highlight = T)
+
+prepare_rt <- function(dt) {
+  print(rt)
+    col_names <- gsub("_", " ", names(dt))
+    names(dt) <- stringi::stri_trans_totitle(col_names)
+    dt
+  } 
+
+
+tick_or_cross = function(value) {
+  if (value == TRUE) {
+    # Green tick
+    htmltools::tags$span("\u2714", style = "color: green; font-weight: bold;")
+  } else if (value == FALSE) {
+    # Red cross
+    htmltools::tags$span("\u2718", style = "color: red; font-weight: bold;")
+  } else {
+    htmltools::tags$span(value)
+  }
+    
+}
+
+
+my_reactable <- function(dt, ...) {
+  data_react <- dt %>%
+    prepare_rt() %>%
+    reactable(
+    bordered = getOption("reactable.bordered"),
+    compact = getOption("reactable.compact"),
+    searchable = getOption("reactable.searchable"),
+    striped = getOption("reactable.striped"),
+    highlight = getOption("reactable.highlight"),
+    ...
+  )
+  
+  return(data_react)
+  
+}
+
+
+if (is.null(params$pipeline_comparison)) {
+  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1.rds")
+} else {
+  pc <- params$pipeline_comparison
+}
+
+```
+
+This report will help the analyst to understand the differences between the datasets in the new publication against the previous year's datasets.  The raw datasets are the individual csv files in the publication.  The differences between the datasets are presented in the tables below and include:
+
+- Summary of changes
+- 
+
+## Summary of changes
+
+```{r results='asis'}
+
+  pc$dataset_comparison_summary %>%
+    my_reactable(
+      width = 1000,
+      defaultColDef = colDef(minWidth = 60, cell = tick_or_cross), 
+      columns =  list(
+        `Dataset Name` = colDef(minWidth = 300))
+      )
+
+```
+
+## Comparison of row counts
+
+```{r results='asis'}
+  
+  pc$dataset_nrow_comparison %>%
+    my_reactable(
+      width = 1000,
+      defaultColDef = colDef(minWidth = 60, cell = tick_or_cross), 
+      columns =  list(`Dataset Name` = colDef(minWidth = 300)))
+  
+
+```
+
+
+
+
+## Columns added, removed and retained
+
+```{r results='asis'}
+  
+  pc$dataset_columns_comparison[, c(1,4:7), with = F] %>%
+    my_reactable(
+      width = 1500,
+      defaultColDef = colDef(minWidth = 150, cell = tick_or_cross),
+      columns = list(`Dataset Name` = colDef(minWidth = 300),
+                             `Columns Retained` = colDef(minWidth = 250)))
+
+
+
+```
+
+## Analyse column contents
+
+### Reference Datasets (exiting publication)
+
+```{r results='asis'}
+  pc$dataset_column_values_comparison$old %>%
+      prepare_rt() %>%
+      reactable(width = 1000,
+              defaultColDef = colDef(minWidth = 100),
+              columns = list(`Column Name` = colDef(minWidth = 200),
+                             `Number Percentage` = colDef(format = colFormat(percent = TRUE, digits = 1))))
+
+```
+
+### New datasets (latest publication)
+
+```{r results='asis'}
+  pc$dataset_column_values_comparison$new %>%
+    prepare_rt() %>%
+    reactable(width = 1000,
+              defaultColDef = colDef(minWidth = 100),
+              columns = list(`Column Name` = colDef(minWidth = 200),
+                             `Number Percentage` = colDef(format = colFormat(percent = TRUE, digits = 1))))
+
+```
+
+
+## Comparison of geographies
+
+This table show which geographies have been added to the publication datasets and which have been removed.  The analysis does not specify in which files the geographies have changed but it provides an overview.
+
+```{r results='asis'}
+  pc$dataset_geographies_comparison %>%
+    prepare_rt() %>%
+    reactable(width = 1000,
+              defaultColDef = colDef(minWidth = 100),
+              columns = list(`Dataset Name` = colDef(minWidth = 400)))
+
+
+```
+
+
+

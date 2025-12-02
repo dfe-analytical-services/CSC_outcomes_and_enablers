@@ -109,7 +109,6 @@ redacted_to_na <- function(dataset, col_old, col_new) {
 }
 
 # Need a fact table for the LA's and their Regions
-# cla_placements replaces raw file = "./data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv" as a default
 GET_location <- function(dataset = NULL) {
   if (is.null(dataset)) dataset <- copy(cla_placements)
   FACT_location <- dataset %>%
@@ -302,6 +301,10 @@ read_cla_rate_data <- function(sn_long, file = "./data-raw/cla_number_and_rate_p
 
   cla_rate_data <- cla_rate_data %>%
     colClean() %>%
+    rename(
+      number = children_count,
+      population_count = population_type
+    ) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(!(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))) %>%
     insert_geo_breakdown()
@@ -333,6 +336,12 @@ read_cla_placement_data <- function(sn_long, file = "./data-raw/la_children_who_
   cla_placement_data <- read.csv(file)
   cla_placement_data <- colClean(cla_placement_data) %>%
     insert_geo_breakdown() %>%
+    rename(
+      characteristic = breakdown,
+      cla_group = characteristic,
+      percentage = children_percent,
+      number = children_count
+    ) %>%
     mutate(Percentage = case_when(
       percentage == "c" ~ -100,
       percentage == "low" ~ -200,
@@ -356,6 +365,12 @@ read_cla_placement_data <- function(sn_long, file = "./data-raw/la_children_who_
 read_cla_31_march_data <- function(file = "./data-raw/la_cla_on_31_march_by_characteristics.csv") {
   cla_31_march_data <- read.csv(file)
   cla_31_march_data <- colClean(cla_31_march_data) %>%
+    rename(
+      percentage = children_percent,
+      number = children_count,
+      cla_group = characteristic,
+      characteristic = breakdown
+    ) %>%
     insert_geo_breakdown() %>%
     mutate(Percentage = case_when(
       percentage == "c" ~ -100,
@@ -459,7 +474,7 @@ merge_cla_dataframes <- function(sn_long) {
     )) %>%
     mutate(characteristic = case_when(
       characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
-      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      characteristic == "Children excluding unaccompanied asylum-seeking children" ~ "Non-UASC",
       TRUE ~ as.character(characteristic)
     ))
 
@@ -547,7 +562,7 @@ merge_cla_31_march_dataframes <- function(sn_long) {
     )) %>%
     mutate(characteristic = case_when(
       characteristic == "Unaccompanied asylum-seeking children" ~ "UASC",
-      characteristic == "Non-unaccompanied asylum-seeking children" ~ "Non-UASC",
+      characteristic == "Children excluding unaccompanied asylum-seeking children" ~ "Non-UASC",
       TRUE ~ as.character(characteristic)
     ))
 
@@ -828,6 +843,12 @@ read_outcome2 <- function(sn_long, file = "./data-raw/la_children_who_ceased_dur
   ceased_cla_data <- ceased_cla_data %>%
     filter(!(new_la_code %in% dropList), !la_name %in% las_to_remove) %>%
     insert_geo_breakdown() %>%
+    rename(
+      percentage = children_percent,
+      number = children_count,
+      cla_group = characteristic,
+      characteristic = breakdown
+    ) %>%
     remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
@@ -1212,6 +1233,10 @@ read_number_placements_data <- function(sn_long, file = "./data-raw/la_cla_place
   placement_chg_data <- placement_chg_data %>%
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%
+    rename(
+      number = children_count,
+      percentage = children_percent
+    ) %>%
     remove_cumbria_data() %>%
     select(time_period, geographic_level, geo_breakdown, new_la_code, old_la_code, cla_group, placement_stability, number, percentage)
 
@@ -1238,6 +1263,12 @@ read_placement_info_data <- function(sn_long, file = "./data-raw/la_cla_on_31_ma
   placement_info_data <- fread(file)
 
   placement_info_data <- placement_info_data %>%
+    rename(
+      percentage = children_percent,
+      number = children_count,
+      cla_group = characteristic,
+      characteristic = breakdown
+    ) %>%
     filter(!(new_la_code %in% dropList)) %>%
     # custom filter to reduce dataset :-)
     filter(cla_group %in% c("Placement", "Distance between home and placement")) %>%
@@ -1270,6 +1301,12 @@ read_care_leavers_activity_data <- function(sn_long, file = "./data-raw/la_care_
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%
+    rename(
+      percentage = care_leaver_percent,
+      number = care_leaver_count,
+      age = care_leaver_age,
+      activity = breakdown
+    ) %>%
     remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
@@ -1301,6 +1338,12 @@ read_care_leavers_accommodation_suitability <- function(sn_long, file = "./data-
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%
+    rename(
+      percentage = care_leaver_percent,
+      number = care_leaver_count,
+      age = care_leaver_age,
+      accommodation_suitability = breakdown
+    ) %>%
     remove_cumbria_data()
 
   # now calculate SN metrics and append to the bottom of the dataset
@@ -1335,6 +1378,12 @@ read_wellbeing_child_data <- function(sn_long, file = "./data-raw/la_conviction_
   data2 <- data %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data() %>%
+    rename(
+      number = children_count,
+      percentage = children_percent,
+      cla_group = characteristic,
+      characteristic = breakdown
+    ) %>%
     filter(cla_group == "Ages 5 to 16 years with SDQ score") %>%
     filter(!(new_la_code %in% dropList)) %>%
     mutate(percentage = ifelse(!is.na(as.numeric(percentage)),
