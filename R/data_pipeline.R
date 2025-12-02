@@ -49,6 +49,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ))
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
+  names(deltas_to_export)
   writexl::write_xlsx(deltas_to_export, "./pipeline_consolidated_setdiffs.xlsx")
 
 
@@ -438,8 +439,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
 
 
   consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
-    added <- df_setdiffs[[dataset_name]]$old_v_new
-    removed <- df_setdiffs[[dataset_name]]$new_v_old
+    added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
+    removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
 
     join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
 

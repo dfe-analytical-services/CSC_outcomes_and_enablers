@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "68a86fda9b250497a4d33ae1ccd5a1bf"
+      "checksum": "964c9575125a6c1d15f22a800e310b0c"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4875,13 +4875,13 @@
       "checksum": "b85c43584ae9e8a7b4f3eafd49cfce68"
     },
     "data/care_leavers_accommodation_data.rds": {
-      "checksum": "08e5b686b71e5e56248c3741cf98bbc0"
+      "checksum": "dbdec20a6ee2a16d3dfa249e926395bf"
     },
     "data/care_leavers_activity_data.rds": {
-      "checksum": "3ab34974cf3327d4b6dc45497c39b800"
+      "checksum": "8cac234a24a8bf2db13943aac0738d59"
     },
     "data/ceased_cla_data.rds": {
-      "checksum": "8ab8764aee79459b4728dab946af0a4c"
+      "checksum": "1729a00a3d885b9003ab974025e2a757"
     },
     "data/cin_rates.rds": {
       "checksum": "9937b977db3ec731883c25e276d221a0"
@@ -4890,16 +4890,16 @@
       "checksum": "ddaaf05105fedd58f86ef13aaf2f9579"
     },
     "data/cla_placements.rds": {
-      "checksum": "98d6443e2ad8a73870cf9b3e391acc5d"
+      "checksum": "35c4c0ed49de592050276dff5257595e"
     },
     "data/cla_rates.rds": {
-      "checksum": "9896a253fbaf428266e168d3fff2c490"
+      "checksum": "6a12fda6aecf871a8207ec84765e7bbf"
     },
     "data/combined_cla_31_march_data.rds": {
-      "checksum": "a45067c70738c5a602d101e2a773f496"
+      "checksum": "d59b0dad3cf32432b9a20395bfc6d27f"
     },
     "data/combined_cla_data.rds": {
-      "checksum": "610f3a77f0fa2fa0d902642fb593567a"
+      "checksum": "50c6926d7fcf38edb347d7278652dda0"
     },
     "data/combined_ethnicity_data.rds": {
       "checksum": "777454f525597784c44a402d8c8c6960"
@@ -4932,16 +4932,16 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "03c8fcdf2a8e39c52d422fa085824c90"
+      "checksum": "fdf66826fd2e23ede306e1c3370625f0"
     },
     "data/placement_changes_data.rds": {
-      "checksum": "3296915a4d50eb921ad3435abb211d14"
+      "checksum": "6e3aa3f1a03658420af6f658cb9167e5"
     },
     "data/placement_data.rds": {
-      "checksum": "783d1a24ada43a767a72574d27e2c893"
+      "checksum": "cc3c83b3ef4a9c6edd8da4a6a1f27905"
     },
     "data/placement_order_match_data.rds": {
-      "checksum": "35045f088ec0025824fa6647570929b6"
+      "checksum": "cc407486ddea831e3ac4dc0551d5824e"
     },
     "data/population_eth.rds": {
       "checksum": "34cd08ee2a8470d48482b54fd463d06d"
@@ -4965,13 +4965,13 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "6410eb4e7e6a49d0c0594532f0742cf7"
+      "checksum": "c6b73fd7150850c1577d2e1923d33035"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "7b82e909dcd2def1c48203685a9b9efd"
     },
     "data/wellbeing_sdq_data.rds": {
-      "checksum": "b491acae45bb6ed2570a77804f6909ae"
+      "checksum": "0cf79eb7e6fe1df72aed3ade753a8997"
     },
     "data/workforce_data.rds": {
       "checksum": "a10bbfd2af7b94be4af95d2d9ce67ed7"
@@ -5007,13 +5007,13 @@
       "checksum": "71098590292f48586de15459779ac8f0"
     },
     "inst/pipeline_diagnostics.html": {
-      "checksum": "448ea5c5750e680a6ee824fd26c2d043"
+      "checksum": "cfce18d7fc17378cc20727a4d65c49e3"
     },
     "inst/pipeline_diagnostics.Rmd": {
       "checksum": "74ccbf0f16742b1d51f909fbde83e460"
     },
     "inst/pipeline_prelim.html": {
-      "checksum": "3eae2f9172558e13ab05d0fb24aa73e1"
+      "checksum": "05622faa528d87cc59d46a94c1c78e8b"
     },
     "inst/pipeline_prelim.Rmd": {
       "checksum": "75a8744f7d93d4b1415d413ce8fe1595"
@@ -5028,7 +5028,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "03782c5980de1cc4d74f22cea870171d"
+      "checksum": "9239dc126c6adc877301d5225e08ae39"
     },
     "R/data_sources.R": {
       "checksum": "55e49b967531aa9f1eceb390596ea714"
@@ -5121,13 +5121,13 @@
       "checksum": "8189dd220774f0b75864744a986f9d36"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "0ee55bef25c7d64d8baf087804bfa1f8"
+      "checksum": "4aec4126d86eef1fd24a21bae3539aeb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "f9342220a6aa4b31b74dd3d727e3385c"
+      "checksum": "83988ab19a4f91b6155c87524e425557"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "9b1e4e882c71976d90f99f177a674a3f"
+      "checksum": "2fe667eb4d300864468d98636d06edc2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
       "checksum": "88ecdc72cd844cb0288456b9e196244f"
@@ -5142,19 +5142,13 @@
       "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "180284f3e983e4379483761e2ddc0e61"
-    },
-    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.new.json": {
-      "checksum": "9f6b243dcf68665144b26837508cc36f"
+      "checksum": "2710014192ae8774f88ef260409427d0"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
-    },
-    "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.new.json": {
-      "checksum": "c7ce6268566e8f0c8b8ef9e01edfbb67"
+      "checksum": "a8fc9b12dfbc79c9a2316b72f2b96c73"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
-      "checksum": "859c7ec8278bd208849b1e1b3826e4c4"
+      "checksum": "05b7c7762d8f5761c44771996dcc25ab"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-011.json": {
       "checksum": "6fc43d16e639fd21d4a43105f143b106"
@@ -5226,7 +5220,7 @@
       "checksum": "8935e4350f4d30ef001b029de943cf6d"
     },
     "Y_AXIS_DOCUMENTATION.md": {
-      "checksum": "398a157d4ad0d11f9e44dadb30a42a4f"
+      "checksum": "b601af76d452124fee4b4d8587489881"
     }
   },
   "users": null
