@@ -23,9 +23,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 2. Preliminary diagnostics: before running the pipeline and triggering errors do some comparisons between the csv files for consistency year on year
   path_new <- "~/CSC Private dashboard/data-comparisons/2025/"
   path_old <- "~/CSC Private dashboard/data-comparisons/2024/"
+
+  path_old <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2025/"
+  path_new <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2025_v2/"
+
   pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
 
-  saveRDS(pipeline_prelim$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim.rds")
+  saveRDS(pipeline_prelim$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim_v2.rds")
   print(pipeline_prelim)
 
 
@@ -37,7 +41,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1_v2.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
@@ -56,7 +60,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "CLA 2025 Data update.  Many changes caused by this update due to column names, dimension names, dimensional values, restated populations and counts" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Revision to CLA 2025 Data update.  Relates to revision of percentage figures in la_cla_on_31_march_by_characteristics.csv" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

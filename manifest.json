@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "964c9575125a6c1d15f22a800e310b0c"
+      "checksum": "b660bda58095df0523cbe5492f3d204f"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4803,28 +4803,28 @@
       "checksum": "0cc6471e8caf67ac56f1de59dd0f4acc"
     },
     "data-raw/la_care_leavers_accommodation_suitability.csv": {
-      "checksum": "13f686f4fa1a268eb6225d3e2fe618a7"
+      "checksum": "c83e0ca801423179608cd8be0f3e9269"
     },
     "data-raw/la_care_leavers_activity.csv": {
       "checksum": "434ab6b83b523d628e56888e890260fe"
     },
     "data-raw/la_children_who_ceased_during_the_year.csv": {
-      "checksum": "989a59685169e5b2eeca85768d7299d3"
+      "checksum": "a14b26b7d0873c3612aca4c484aada65"
     },
     "data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv": {
-      "checksum": "fd4a49a749b797a101966947048313b6"
+      "checksum": "6b2a410ccc1a4283208df6ae8a2352d1"
     },
     "data-raw/la_cla_during_year_new_placements.csv": {
       "checksum": "80605ece239bef776ae8c01043163218"
     },
     "data-raw/la_cla_on_31_march_by_characteristics.csv": {
-      "checksum": "f0e12219c73f8f2b8fa185f85588cd52"
+      "checksum": "062bc6777fc203f75ca14f11baf83746"
     },
     "data-raw/la_cla_placement_stability.csv": {
       "checksum": "07bf270046fec7e7e0a80eae4f725546"
     },
     "data-raw/la_conviction_health_outcome_cla.csv": {
-      "checksum": "929f491ae30207da8e34b8edaee210f5"
+      "checksum": "e7f11100716b7372bea7ead590e67031"
     },
     "data-raw/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
@@ -4896,7 +4896,7 @@
       "checksum": "6a12fda6aecf871a8207ec84765e7bbf"
     },
     "data/combined_cla_31_march_data.rds": {
-      "checksum": "d59b0dad3cf32432b9a20395bfc6d27f"
+      "checksum": "ce093a160bce12e7a7fb692f50c65758"
     },
     "data/combined_cla_data.rds": {
       "checksum": "50c6926d7fcf38edb347d7278652dda0"
@@ -4932,13 +4932,13 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "fdf66826fd2e23ede306e1c3370625f0"
+      "checksum": "4a5e653224e7dff4b928b4d69241a7c4"
     },
     "data/placement_changes_data.rds": {
       "checksum": "6e3aa3f1a03658420af6f658cb9167e5"
     },
     "data/placement_data.rds": {
-      "checksum": "cc3c83b3ef4a9c6edd8da4a6a1f27905"
+      "checksum": "7284836e4a5f06fdc949025e89f1e033"
     },
     "data/placement_order_match_data.rds": {
       "checksum": "cc407486ddea831e3ac4dc0551d5824e"
@@ -4965,7 +4965,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "c6b73fd7150850c1577d2e1923d33035"
+      "checksum": "ab718d662d1b8f109094abad3d3070df"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "7b82e909dcd2def1c48203685a9b9efd"
@@ -5013,10 +5013,10 @@
       "checksum": "74ccbf0f16742b1d51f909fbde83e460"
     },
     "inst/pipeline_prelim.html": {
-      "checksum": "05622faa528d87cc59d46a94c1c78e8b"
+      "checksum": "d12f1f749d836adeb4b3156ae32b8b37"
     },
     "inst/pipeline_prelim.Rmd": {
-      "checksum": "75a8744f7d93d4b1415d413ce8fe1595"
+      "checksum": "0649e4739db92568a4ceefde95cf135c"
     },
     "inst/report_styling.css": {
       "checksum": "dae3b31ce84448c5a24c51b641fc3ab3"
@@ -5028,7 +5028,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "9239dc126c6adc877301d5225e08ae39"
+      "checksum": "96a5c8a892c8c467b490e0224a7ca4e3"
     },
     "R/data_sources.R": {
       "checksum": "55e49b967531aa9f1eceb390596ea714"
@@ -5142,10 +5142,10 @@
       "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "2710014192ae8774f88ef260409427d0"
+      "checksum": "061ce1084dc283d26c095d7c025653b8"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "a8fc9b12dfbc79c9a2316b72f2b96c73"
+      "checksum": "a1949614309ddd47cd14a9c9aae5a96f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
       "checksum": "05b7c7762d8f5761c44771996dcc25ab"
