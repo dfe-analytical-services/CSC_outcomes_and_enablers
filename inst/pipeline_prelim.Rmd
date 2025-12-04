@@ -68,8 +68,8 @@ my_reactable <- function(dt, ...) {
 
 
 
-if (is.null(params$dataset_comparison)) {
-  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim.rds")
+if (is.null(params$pipeline_comparison)) {
+  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim_v2.rds")
 } else {
  pc <- params$pipeline_comparison
 }
