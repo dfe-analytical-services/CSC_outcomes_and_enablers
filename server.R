@@ -7699,12 +7699,14 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
 
-    # Set the max y-axis scale
+
+    # Set the max y-axis scale based on the data
     max_rate <- max(
-      combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-        combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
-        combined_cla_data$time_period == max(combined_cla_data$time_period) &
-        combined_cla_data$geographic_level == "Local authority"],
+      combined_cla_data[
+        i = population_count == "Children starting to be looked after each year" & characteristic %in% c("UASC", "Non-UASC") & time_period == max(combined_cla_data$time_period),
+        j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+        by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+      ]$total_rate,
       na.rm = TRUE
     )
 
@@ -7828,15 +7830,15 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_o1 != "", "Select a location."),
     )
 
-    # Set the max y-axis scale
+    # Set the max y-axis scale based on the data
     max_rate <- max(
-      combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
-        combined_cla_31_march_data$characteristic %in% c("UASC", "Non-UASC") &
-        combined_cla_31_march_data$time_period == max(combined_cla_31_march_data$time_period) &
-        combined_cla_31_march_data$geographic_level == "Local authority"],
+      combined_cla_31_march_data[
+        i = population_count == "Children looked after on 31 March each year" & characteristic %in% c("UASC", "Non-UASC") & time_period == max(combined_cla_31_march_data$time_period),
+        j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+        by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+      ]$total_rate,
       na.rm = TRUE
     )
-
     # Round the max_rate to the nearest 50
     max_rate <- ceiling(max_rate / 10) * 10
 

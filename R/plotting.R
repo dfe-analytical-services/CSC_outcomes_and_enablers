@@ -530,8 +530,11 @@ plot_uasc <- function(geo_break, geo_lvl) {
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
+    combined_cla_data[
+      i = population_count == "Children starting to be looked after each year" & characteristic %in% c("UASC", "Non-UASC"),
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
 
@@ -581,15 +584,16 @@ plot_uasc_reg <- function() {
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
-      combined_cla_data$time_period == max(combined_cla_data$time_period) &
-      combined_cla_data$geographic_level == "Regional"],
+    combined_cla_data[
+      i = population_count == "Children starting to be looked after each year" & characteristic %in% c("UASC", "Non-UASC") & geographic_level == "Regional",
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
 
   # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
-  max_rate <- ceiling(max_rate / 10) * 10
+  max_rate <- ceiling(max_rate / 10) * 10 + (max_rate * 0.05)
 
   ggplot(uasc_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("UASC", "Non-UASC")),
@@ -690,15 +694,16 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_data$`Placement Rate Per 10000`[combined_cla_data$population_count == "Children starting to be looked after each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC") &
-      combined_cla_data$time_period == max(combined_cla_data$time_period) &
-      combined_cla_data$geographic_level == "Local authority"],
+    combined_cla_data[
+      i = population_count == "Children starting to be looked after each year" & characteristic %in% c("UASC", "Non-UASC") & geographic_level == "Local authority",
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
 
   # Round the max_rate to the nearest 10 (this will be used for the upper y-axis limit)
-  max_rate <- ceiling(max_rate / 10) * 10
+  max_rate <- ceiling(max_rate / 10) * 10 + (max_rate * 0.05)
 
   # Use the new variable in the plot
   p <- ggplot(cla_data, aes(
@@ -756,11 +761,13 @@ plot_uasc_31_march <- function(geo_break, geo_lvl) {
       population_count == "Children looked after on 31 March each year") %>%
     select(time_period, geo_breakdown, `Placement Rate Per 10000`, characteristic)
 
-
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
+    combined_cla_31_march_data[
+      i = population_count == "Children looked after on 31 March each year" & characteristic %in% c("UASC", "Non-UASC"),
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
 
@@ -810,15 +817,15 @@ plot_uasc_31_march_reg <- function() {
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
+    combined_cla_31_march_data[
+      i = population_count == "Children looked after on 31 March each year" & characteristic %in% c("UASC", "Non-UASC") & geographic_level == "Regional",
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
-
   # Round the max_rate to the nearest 20 then multiply by 1.05 (this will be used for the upper y-axis limit)
   max_rate <- (ceiling(max_rate / 20) * 20) + (max_rate * 0.05)
-
-  max_rate
 
   ggplot(uasc_31_mar_data, aes(`geo_breakdown`, `Placement Rate Per 10000`,
     fill = factor(characteristic, levels = c("UASC", "Non-UASC")),
@@ -919,8 +926,11 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
 
   # Set the max y-axis scale based on the data
   max_rate <- max(
-    combined_cla_31_march_data$`Placement Rate Per 10000`[combined_cla_31_march_data$population_count == "Children looked after on 31 March each year" &
-      combined_cla_data$characteristic %in% c("UASC", "Non-UASC")],
+    combined_cla_31_march_data[
+      i = population_count == "Children looked after on 31 March each year" & characteristic %in% c("UASC", "Non-UASC"),
+      j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
+      by = .(geo_breakdown, geo_breakdown_sn, time_period, population_count)
+    ]$total_rate,
     na.rm = TRUE
   )
 
