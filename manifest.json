@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "87bc1ed3af581fd02009975675f060bb"
+      "checksum": "73f8b7124b2ac99118ef1ef7a34bd6c1"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5031,7 +5031,7 @@
       "checksum": "96a5c8a892c8c467b490e0224a7ca4e3"
     },
     "R/data_sources.R": {
-      "checksum": "55e49b967531aa9f1eceb390596ea714"
+      "checksum": "8a144322d299b931a2195250576c8b23"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5040,7 +5040,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "5d20f65c6dd59c7a6a25671ba1d0302c"
+      "checksum": "fe878cc0a72b2aab53801a00f7de74b2"
     },
     "R/enabler2_page.R": {
       "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
@@ -5061,7 +5061,7 @@
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "3fabbac27cb56c04d9be87b4775b7edd"
+      "checksum": "c11471446fba56f37a477bd4913737fe"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
@@ -5082,7 +5082,7 @@
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
     },
     "R/standard_panels.R": {
-      "checksum": "ad567a56f558f35e22f5519d61b410e0"
+      "checksum": "d711e6594bd9a7b85ad8110ad75ec8e3"
     },
     "R/stats_neighbours.R": {
       "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
@@ -5106,7 +5106,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "168c0c231abebd7aba2b641b902400d7"
+      "checksum": "55c05850a466ad5dac4503aadbe09fc3"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5184,7 +5184,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "9f3a2b4617bb4cdf54f1217e68ee3bf0"
+      "checksum": "f7ba93b27de461ce4aec980e737113e1"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
