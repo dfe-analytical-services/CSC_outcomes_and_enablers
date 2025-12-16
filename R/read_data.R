@@ -1499,6 +1499,40 @@ read_workforce_headline_measures <- function() {
     insert_geo_breakdown()
 }
 
+
+#### Social worker stability (new indicator) ----
+read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla_swcount.csv") {
+  
+  # load the file into a data.table
+  sw_stability_data <- fread(file)
+  
+  # preliminary cleaning
+  sw_stability_data <- sw_stability_data %>%
+    colClean() %>%
+    insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
+    filter(sw_stability == "3 or more social workers during the year")
+  
+  sw_stability_data[, old_la_code := as.integer(old_la_code)]
+  
+  # calculate stat neighbours
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = sw_stability_data,
+    median_cols = c("percentage"),
+    sum_cols = c("number"),
+    group_cols = c("LA.number", "time_period", "cla_group", "sw_stability")
+  )
+  
+  sw_stability_data <- rbindlist(l = list(sw_stability_data, sn_metrics), fill = TRUE, use.names = TRUE)  %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+  
+  return(sw_stability_data)
+}
+
+
+#### Workforce data ----
 read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%

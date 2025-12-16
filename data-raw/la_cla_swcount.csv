@@ -1,0 +1,331 @@
+﻿time_period,time_identifier,geographic_level,country_code,country_name,region_code,region_name,old_la_code,la_name,new_la_code,cla_group,sw_stability,number,percentage
+2024,Reporting year,National,E92000001,England,,,,,,CLA on 31 March,Total children,83300,100
+2024,Reporting year,National,E92000001,England,,,,,,CLA on 31 March,3 or more social workers during the year,22140,27
+2024,Reporting year,Regional,E92000001,England,E12000001,North East,,,,CLA on 31 March,Total children,6110,100
+2024,Reporting year,Regional,E92000001,England,E12000001,North East,,,,CLA on 31 March,3 or more social workers during the year,1550,25
+2024,Reporting year,Regional,E92000001,England,E12000002,North West,,,,CLA on 31 March,Total children,15090,100
+2024,Reporting year,Regional,E92000001,England,E12000002,North West,,,,CLA on 31 March,3 or more social workers during the year,4220,28
+2024,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,CLA on 31 March,Total children,9270,100
+2024,Reporting year,Regional,E92000001,England,E12000003,Yorkshire and The Humber,,,,CLA on 31 March,3 or more social workers during the year,2550,28
+2024,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,CLA on 31 March,Total children,6570,100
+2024,Reporting year,Regional,E92000001,England,E12000004,East Midlands,,,,CLA on 31 March,3 or more social workers during the year,1810,28
+2024,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,CLA on 31 March,Total children,11920,100
+2024,Reporting year,Regional,E92000001,England,E12000005,West Midlands,,,,CLA on 31 March,3 or more social workers during the year,3260,27
+2024,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,CLA on 31 March,Total children,6870,100
+2024,Reporting year,Regional,E92000001,England,E12000006,East of England,,,,CLA on 31 March,3 or more social workers during the year,1670,24
+2024,Reporting year,Regional,E92000001,England,E12000007,London,,,,CLA on 31 March,Total children,9310,100
+2024,Reporting year,Regional,E92000001,England,E12000007,London,,,,CLA on 31 March,3 or more social workers during the year,2300,25
+2024,Reporting year,Regional,E92000001,England,E12000008,South East,,,,CLA on 31 March,Total children,11180,100
+2024,Reporting year,Regional,E92000001,England,E12000008,South East,,,,CLA on 31 March,3 or more social workers during the year,2770,25
+2024,Reporting year,Regional,E92000001,England,E12000009,South West,,,,CLA on 31 March,Total children,6980,100
+2024,Reporting year,Regional,E92000001,England,E12000009,South West,,,,CLA on 31 March,3 or more social workers during the year,2020,29
+2024,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,CLA on 31 March,Total children,3980,100
+2024,Reporting year,Regional,E92000001,England,E13000001,Inner London,,,,CLA on 31 March,3 or more social workers during the year,870,22
+2024,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,CLA on 31 March,Total children,5330,100
+2024,Reporting year,Regional,E92000001,England,E13000002,Outer London,,,,CLA on 31 March,3 or more social workers during the year,1430,27
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,805,Hartlepool,E06000001,CLA on 31 March,Total children,334,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,805,Hartlepool,E06000001,CLA on 31 March,3 or more social workers during the year,52,16
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,806,Middlesbrough,E06000002,CLA on 31 March,Total children,513,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,806,Middlesbrough,E06000002,CLA on 31 March,3 or more social workers during the year,329,64
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,807,Redcar and Cleveland,E06000003,CLA on 31 March,Total children,419,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,807,Redcar and Cleveland,E06000003,CLA on 31 March,3 or more social workers during the year,85,20
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,808,Stockton-on-Tees,E06000004,CLA on 31 March,Total children,581,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,808,Stockton-on-Tees,E06000004,CLA on 31 March,3 or more social workers during the year,195,34
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,841,Darlington,E06000005,CLA on 31 March,Total children,298,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,841,Darlington,E06000005,CLA on 31 March,3 or more social workers during the year,94,32
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,840,County Durham,E06000047,CLA on 31 March,Total children,1213,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,840,County Durham,E06000047,CLA on 31 March,3 or more social workers during the year,354,29
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,929,Northumberland,E06000057,CLA on 31 March,Total children,436,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,929,Northumberland,E06000057,CLA on 31 March,3 or more social workers during the year,86,20
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,391,Newcastle upon Tyne,E08000021,CLA on 31 March,Total children,600,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,391,Newcastle upon Tyne,E08000021,CLA on 31 March,3 or more social workers during the year,98,16
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,392,North Tyneside,E08000022,CLA on 31 March,Total children,351,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,392,North Tyneside,E08000022,CLA on 31 March,3 or more social workers during the year,82,23
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,393,South Tyneside,E08000023,CLA on 31 March,Total children,307,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,393,South Tyneside,E08000023,CLA on 31 March,3 or more social workers during the year,64,21
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,394,Sunderland,E08000024,CLA on 31 March,Total children,525,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,394,Sunderland,E08000024,CLA on 31 March,3 or more social workers during the year,49,9
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,390,Gateshead,E08000037,CLA on 31 March,Total children,528,100
+2024,Reporting year,Local authority,E92000001,England,E12000001,North East,390,Gateshead,E08000037,CLA on 31 March,3 or more social workers during the year,57,11
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,876,Halton,E06000006,CLA on 31 March,Total children,381,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,876,Halton,E06000006,CLA on 31 March,3 or more social workers during the year,148,39
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,877,Warrington,E06000007,CLA on 31 March,Total children,354,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,877,Warrington,E06000007,CLA on 31 March,3 or more social workers during the year,119,34
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,889,Blackburn with Darwen,E06000008,CLA on 31 March,Total children,349,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,889,Blackburn with Darwen,E06000008,CLA on 31 March,3 or more social workers during the year,134,38
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,890,Blackpool,E06000009,CLA on 31 March,Total children,520,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,890,Blackpool,E06000009,CLA on 31 March,3 or more social workers during the year,132,25
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,895,Cheshire East,E06000049,CLA on 31 March,Total children,542,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,895,Cheshire East,E06000049,CLA on 31 March,3 or more social workers during the year,209,39
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,896,Cheshire West and Chester,E06000050,CLA on 31 March,Total children,570,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,896,Cheshire West and Chester,E06000050,CLA on 31 March,3 or more social workers during the year,161,28
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,942,Cumberland,E06000063,CLA on 31 March,Total children,482,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,942,Cumberland,E06000063,CLA on 31 March,3 or more social workers during the year,156,32
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,943,Westmorland and Furness,E06000064,CLA on 31 March,Total children,246,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,943,Westmorland and Furness,E06000064,CLA on 31 March,3 or more social workers during the year,50,20
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,350,Bolton,E08000001,CLA on 31 March,Total children,571,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,350,Bolton,E08000001,CLA on 31 March,3 or more social workers during the year,180,32
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,351,Bury,E08000002,CLA on 31 March,Total children,344,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,351,Bury,E08000002,CLA on 31 March,3 or more social workers during the year,130,38
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,352,Manchester,E08000003,CLA on 31 March,Total children,1303,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,352,Manchester,E08000003,CLA on 31 March,3 or more social workers during the year,349,27
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,353,Oldham,E08000004,CLA on 31 March,Total children,590,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,353,Oldham,E08000004,CLA on 31 March,3 or more social workers during the year,186,32
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,354,Rochdale,E08000005,CLA on 31 March,Total children,605,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,354,Rochdale,E08000005,CLA on 31 March,3 or more social workers during the year,221,37
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,355,Salford,E08000006,CLA on 31 March,Total children,561,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,355,Salford,E08000006,CLA on 31 March,3 or more social workers during the year,139,25
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,356,Stockport,E08000007,CLA on 31 March,Total children,495,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,356,Stockport,E08000007,CLA on 31 March,3 or more social workers during the year,71,14
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,357,Tameside,E08000008,CLA on 31 March,Total children,645,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,357,Tameside,E08000008,CLA on 31 March,3 or more social workers during the year,180,28
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,358,Trafford,E08000009,CLA on 31 March,Total children,377,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,358,Trafford,E08000009,CLA on 31 March,3 or more social workers during the year,78,21
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,359,Wigan,E08000010,CLA on 31 March,Total children,741,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,359,Wigan,E08000010,CLA on 31 March,3 or more social workers during the year,299,40
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,340,Knowsley,E08000011,CLA on 31 March,Total children,337,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,340,Knowsley,E08000011,CLA on 31 March,3 or more social workers during the year,106,31
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,341,Liverpool,E08000012,CLA on 31 March,Total children,1490,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,341,Liverpool,E08000012,CLA on 31 March,3 or more social workers during the year,450,30
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,342,St. Helens,E08000013,CLA on 31 March,Total children,488,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,342,St. Helens,E08000013,CLA on 31 March,3 or more social workers during the year,96,20
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,343,Sefton,E08000014,CLA on 31 March,Total children,581,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,343,Sefton,E08000014,CLA on 31 March,3 or more social workers during the year,167,29
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,344,Wirral,E08000015,CLA on 31 March,Total children,767,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,344,Wirral,E08000015,CLA on 31 March,3 or more social workers during the year,127,17
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,888,Lancashire,E10000017,CLA on 31 March,Total children,1754,100
+2024,Reporting year,Local authority,E92000001,England,E12000002,North West,888,Lancashire,E10000017,CLA on 31 March,3 or more social workers during the year,329,19
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,810,"Kingston upon Hull, City of",E06000010,CLA on 31 March,Total children,747,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,810,"Kingston upon Hull, City of",E06000010,CLA on 31 March,3 or more social workers during the year,141,19
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,811,East Riding of Yorkshire,E06000011,CLA on 31 March,Total children,351,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,811,East Riding of Yorkshire,E06000011,CLA on 31 March,3 or more social workers during the year,91,26
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,812,North East Lincolnshire,E06000012,CLA on 31 March,Total children,469,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,812,North East Lincolnshire,E06000012,CLA on 31 March,3 or more social workers during the year,187,40
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,813,North Lincolnshire,E06000013,CLA on 31 March,Total children,205,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,813,North Lincolnshire,E06000013,CLA on 31 March,3 or more social workers during the year,27,13
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,816,York,E06000014,CLA on 31 March,Total children,243,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,816,York,E06000014,CLA on 31 March,3 or more social workers during the year,56,23
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,815,North Yorkshire,E06000065,CLA on 31 March,Total children,501,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,815,North Yorkshire,E06000065,CLA on 31 March,3 or more social workers during the year,171,34
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,370,Barnsley,E08000016,CLA on 31 March,Total children,405,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,370,Barnsley,E08000016,CLA on 31 March,3 or more social workers during the year,123,30
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,371,Doncaster,E08000017,CLA on 31 March,Total children,523,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,371,Doncaster,E08000017,CLA on 31 March,3 or more social workers during the year,145,28
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,372,Rotherham,E08000018,CLA on 31 March,Total children,502,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,372,Rotherham,E08000018,CLA on 31 March,3 or more social workers during the year,123,25
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,373,Sheffield,E08000019,CLA on 31 March,Total children,646,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,373,Sheffield,E08000019,CLA on 31 March,3 or more social workers during the year,155,24
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,380,Bradford,E08000032,CLA on 31 March,Total children,1483,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,380,Bradford,E08000032,CLA on 31 March,3 or more social workers during the year,636,43
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,381,Calderdale,E08000033,CLA on 31 March,Total children,363,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,381,Calderdale,E08000033,CLA on 31 March,3 or more social workers during the year,62,17
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,382,Kirklees,E08000034,CLA on 31 March,Total children,603,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,382,Kirklees,E08000034,CLA on 31 March,3 or more social workers during the year,138,23
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,383,Leeds,E08000035,CLA on 31 March,Total children,1549,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,383,Leeds,E08000035,CLA on 31 March,3 or more social workers during the year,319,21
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,384,Wakefield,E08000036,CLA on 31 March,Total children,684,100
+2024,Reporting year,Local authority,E92000001,England,E12000003,Yorkshire and The Humber,384,Wakefield,E08000036,CLA on 31 March,3 or more social workers during the year,179,26
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,831,Derby,E06000015,CLA on 31 March,Total children,598,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,831,Derby,E06000015,CLA on 31 March,3 or more social workers during the year,82,14
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,856,Leicester,E06000016,CLA on 31 March,Total children,599,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,856,Leicester,E06000016,CLA on 31 March,3 or more social workers during the year,191,32
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,857,Rutland,E06000017,CLA on 31 March,Total children,27,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,857,Rutland,E06000017,CLA on 31 March,3 or more social workers during the year,18,67
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,892,Nottingham,E06000018,CLA on 31 March,Total children,674,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,892,Nottingham,E06000018,CLA on 31 March,3 or more social workers during the year,273,41
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,940,North Northamptonshire,E06000061,CLA on 31 March,Total children,533,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,940,North Northamptonshire,E06000061,CLA on 31 March,3 or more social workers during the year,153,29
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,941,West Northamptonshire,E06000062,CLA on 31 March,Total children,648,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,941,West Northamptonshire,E06000062,CLA on 31 March,3 or more social workers during the year,177,27
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,830,Derbyshire,E10000007,CLA on 31 March,Total children,1057,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,830,Derbyshire,E10000007,CLA on 31 March,3 or more social workers during the year,233,22
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,855,Leicestershire,E10000018,CLA on 31 March,Total children,726,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,855,Leicestershire,E10000018,CLA on 31 March,3 or more social workers during the year,253,35
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,925,Lincolnshire,E10000019,CLA on 31 March,Total children,754,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,925,Lincolnshire,E10000019,CLA on 31 March,3 or more social workers during the year,147,19
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,891,Nottinghamshire,E10000024,CLA on 31 March,Total children,957,100
+2024,Reporting year,Local authority,E92000001,England,E12000004,East Midlands,891,Nottinghamshire,E10000024,CLA on 31 March,3 or more social workers during the year,284,30
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,884,"Herefordshire, County of",E06000019,CLA on 31 March,Total children,387,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,884,"Herefordshire, County of",E06000019,CLA on 31 March,3 or more social workers during the year,170,44
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,894,Telford and Wrekin,E06000020,CLA on 31 March,Total children,412,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,894,Telford and Wrekin,E06000020,CLA on 31 March,3 or more social workers during the year,86,21
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,861,Stoke-on-Trent,E06000021,CLA on 31 March,Total children,1151,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,861,Stoke-on-Trent,E06000021,CLA on 31 March,3 or more social workers during the year,407,35
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,893,Shropshire,E06000051,CLA on 31 March,Total children,717,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,893,Shropshire,E06000051,CLA on 31 March,3 or more social workers during the year,228,32
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,330,Birmingham,E08000025,CLA on 31 March,Total children,2300,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,330,Birmingham,E08000025,CLA on 31 March,3 or more social workers during the year,550,24
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,331,Coventry,E08000026,CLA on 31 March,Total children,674,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,331,Coventry,E08000026,CLA on 31 March,3 or more social workers during the year,139,21
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,332,Dudley,E08000027,CLA on 31 March,Total children,574,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,332,Dudley,E08000027,CLA on 31 March,3 or more social workers during the year,131,23
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,333,Sandwell,E08000028,CLA on 31 March,Total children,812,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,333,Sandwell,E08000028,CLA on 31 March,3 or more social workers during the year,118,15
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,334,Solihull,E08000029,CLA on 31 March,Total children,554,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,334,Solihull,E08000029,CLA on 31 March,3 or more social workers during the year,231,42
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,335,Walsall,E08000030,CLA on 31 March,Total children,665,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,335,Walsall,E08000030,CLA on 31 March,3 or more social workers during the year,136,20
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,336,Wolverhampton,E08000031,CLA on 31 March,Total children,522,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,336,Wolverhampton,E08000031,CLA on 31 March,3 or more social workers during the year,166,32
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,860,Staffordshire,E10000028,CLA on 31 March,Total children,1307,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,860,Staffordshire,E10000028,CLA on 31 March,3 or more social workers during the year,348,27
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,937,Warwickshire,E10000031,CLA on 31 March,Total children,805,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,937,Warwickshire,E10000031,CLA on 31 March,3 or more social workers during the year,245,30
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,885,Worcestershire,E10000034,CLA on 31 March,Total children,1044,100
+2024,Reporting year,Local authority,E92000001,England,E12000005,West Midlands,885,Worcestershire,E10000034,CLA on 31 March,3 or more social workers during the year,302,29
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,874,Peterborough,E06000031,CLA on 31 March,Total children,422,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,874,Peterborough,E06000031,CLA on 31 March,3 or more social workers during the year,102,24
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,821,Luton,E06000032,CLA on 31 March,Total children,374,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,821,Luton,E06000032,CLA on 31 March,3 or more social workers during the year,111,30
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,882,Southend-on-Sea,E06000033,CLA on 31 March,Total children,307,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,882,Southend-on-Sea,E06000033,CLA on 31 March,3 or more social workers during the year,92,30
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,883,Thurrock,E06000034,CLA on 31 March,Total children,290,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,883,Thurrock,E06000034,CLA on 31 March,3 or more social workers during the year,78,27
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,822,Bedford,E06000055,CLA on 31 March,Total children,262,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,822,Bedford,E06000055,CLA on 31 March,3 or more social workers during the year,99,38
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,823,Central Bedfordshire,E06000056,CLA on 31 March,Total children,365,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,823,Central Bedfordshire,E06000056,CLA on 31 March,3 or more social workers during the year,115,32
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,873,Cambridgeshire,E10000003,CLA on 31 March,Total children,649,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,873,Cambridgeshire,E10000003,CLA on 31 March,3 or more social workers during the year,226,35
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,881,Essex,E10000012,CLA on 31 March,Total children,1149,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,881,Essex,E10000012,CLA on 31 March,3 or more social workers during the year,224,19
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,919,Hertfordshire,E10000015,CLA on 31 March,Total children,971,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,919,Hertfordshire,E10000015,CLA on 31 March,3 or more social workers during the year,208,21
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,926,Norfolk,E10000020,CLA on 31 March,Total children,1152,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,926,Norfolk,E10000020,CLA on 31 March,3 or more social workers during the year,300,26
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,935,Suffolk,E10000029,CLA on 31 March,Total children,930,100
+2024,Reporting year,Local authority,E92000001,England,E12000006,East of England,935,Suffolk,E10000029,CLA on 31 March,3 or more social workers during the year,115,12
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,887,Medway,E06000035,CLA on 31 March,Total children,476,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,887,Medway,E06000035,CLA on 31 March,3 or more social workers during the year,124,26
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,867,Bracknell Forest,E06000036,CLA on 31 March,Total children,140,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,867,Bracknell Forest,E06000036,CLA on 31 March,3 or more social workers during the year,27,19
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,869,West Berkshire,E06000037,CLA on 31 March,Total children,187,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,869,West Berkshire,E06000037,CLA on 31 March,3 or more social workers during the year,69,37
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,870,Reading,E06000038,CLA on 31 March,Total children,266,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,870,Reading,E06000038,CLA on 31 March,3 or more social workers during the year,88,33
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,871,Slough,E06000039,CLA on 31 March,Total children,201,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,871,Slough,E06000039,CLA on 31 March,3 or more social workers during the year,81,40
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,868,Windsor and Maidenhead,E06000040,CLA on 31 March,Total children,140,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,868,Windsor and Maidenhead,E06000040,CLA on 31 March,3 or more social workers during the year,20,14
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,872,Wokingham,E06000041,CLA on 31 March,Total children,137,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,872,Wokingham,E06000041,CLA on 31 March,3 or more social workers during the year,14,10
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,826,Milton Keynes,E06000042,CLA on 31 March,Total children,410,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,826,Milton Keynes,E06000042,CLA on 31 March,3 or more social workers during the year,140,34
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,846,Brighton and Hove,E06000043,CLA on 31 March,Total children,354,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,846,Brighton and Hove,E06000043,CLA on 31 March,3 or more social workers during the year,48,14
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,851,Portsmouth,E06000044,CLA on 31 March,Total children,402,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,851,Portsmouth,E06000044,CLA on 31 March,3 or more social workers during the year,119,30
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,852,Southampton,E06000045,CLA on 31 March,Total children,488,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,852,Southampton,E06000045,CLA on 31 March,3 or more social workers during the year,72,15
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,921,Isle of Wight,E06000046,CLA on 31 March,Total children,279,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,921,Isle of Wight,E06000046,CLA on 31 March,3 or more social workers during the year,95,34
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,825,Buckinghamshire,E06000060,CLA on 31 March,Total children,523,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,825,Buckinghamshire,E06000060,CLA on 31 March,3 or more social workers during the year,152,29
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,845,East Sussex,E10000011,CLA on 31 March,Total children,657,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,845,East Sussex,E10000011,CLA on 31 March,3 or more social workers during the year,66,10
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,850,Hampshire,E10000014,CLA on 31 March,Total children,1917,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,850,Hampshire,E10000014,CLA on 31 March,3 or more social workers during the year,478,25
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,886,Kent,E10000016,CLA on 31 March,Total children,1960,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,886,Kent,E10000016,CLA on 31 March,3 or more social workers during the year,565,29
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,931,Oxfordshire,E10000025,CLA on 31 March,Total children,770,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,931,Oxfordshire,E10000025,CLA on 31 March,3 or more social workers during the year,206,27
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,936,Surrey,E10000030,CLA on 31 March,Total children,963,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,936,Surrey,E10000030,CLA on 31 March,3 or more social workers during the year,219,23
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,938,West Sussex,E10000032,CLA on 31 March,Total children,906,100
+2024,Reporting year,Local authority,E92000001,England,E12000008,South East,938,West Sussex,E10000032,CLA on 31 March,3 or more social workers during the year,185,20
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,800,Bath and North East Somerset,E06000022,CLA on 31 March,Total children,218,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,800,Bath and North East Somerset,E06000022,CLA on 31 March,3 or more social workers during the year,47,22
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,801,"Bristol, City of",E06000023,CLA on 31 March,Total children,768,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,801,"Bristol, City of",E06000023,CLA on 31 March,3 or more social workers during the year,223,29
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,802,North Somerset,E06000024,CLA on 31 March,Total children,254,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,802,North Somerset,E06000024,CLA on 31 March,3 or more social workers during the year,97,38
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,803,South Gloucestershire,E06000025,CLA on 31 March,Total children,214,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,803,South Gloucestershire,E06000025,CLA on 31 March,3 or more social workers during the year,86,40
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,879,Plymouth,E06000026,CLA on 31 March,Total children,513,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,879,Plymouth,E06000026,CLA on 31 March,3 or more social workers during the year,192,37
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,880,Torbay,E06000027,CLA on 31 March,Total children,300,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,880,Torbay,E06000027,CLA on 31 March,3 or more social workers during the year,105,35
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,866,Swindon,E06000030,CLA on 31 March,Total children,320,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,866,Swindon,E06000030,CLA on 31 March,3 or more social workers during the year,111,35
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,908,Cornwall,E06000052,CLA on 31 March,Total children,619,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,908,Cornwall,E06000052,CLA on 31 March,3 or more social workers during the year,171,28
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,420,Isles of Scilly,E06000053,CLA on 31 March,Total children,0,z
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,420,Isles of Scilly,E06000053,CLA on 31 March,3 or more social workers during the year,z,z
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,865,Wiltshire,E06000054,CLA on 31 March,Total children,476,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,865,Wiltshire,E06000054,CLA on 31 March,3 or more social workers during the year,94,20
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,839,"Bournemouth, Christchurch and Poole",E06000058,CLA on 31 March,Total children,546,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,839,"Bournemouth, Christchurch and Poole",E06000058,CLA on 31 March,3 or more social workers during the year,73,13
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,838,Dorset,E06000059,CLA on 31 March,Total children,446,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,838,Dorset,E06000059,CLA on 31 March,3 or more social workers during the year,94,21
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,933,Somerset,E06000066,CLA on 31 March,Total children,586,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,933,Somerset,E06000066,CLA on 31 March,3 or more social workers during the year,137,23
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,878,Devon,E10000008,CLA on 31 March,Total children,873,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,878,Devon,E10000008,CLA on 31 March,3 or more social workers during the year,316,36
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,916,Gloucestershire,E10000013,CLA on 31 March,Total children,842,100
+2024,Reporting year,Local authority,E92000001,England,E12000009,South West,916,Gloucestershire,E10000013,CLA on 31 March,3 or more social workers during the year,277,33
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,201,City of London,E09000001,CLA on 31 March,Total children,7,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,201,City of London,E09000001,CLA on 31 March,3 or more social workers during the year,0,0
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,202,Camden,E09000007,CLA on 31 March,Total children,214,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,202,Camden,E09000007,CLA on 31 March,3 or more social workers during the year,44,21
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,204,Hackney,E09000012,CLA on 31 March,Total children,382,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,204,Hackney,E09000012,CLA on 31 March,3 or more social workers during the year,67,18
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,205,Hammersmith and Fulham,E09000013,CLA on 31 March,Total children,206,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,205,Hammersmith and Fulham,E09000013,CLA on 31 March,3 or more social workers during the year,51,25
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,309,Haringey,E09000014,CLA on 31 March,Total children,334,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,309,Haringey,E09000014,CLA on 31 March,3 or more social workers during the year,79,24
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,206,Islington,E09000019,CLA on 31 March,Total children,298,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,206,Islington,E09000019,CLA on 31 March,3 or more social workers during the year,46,15
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,207,Kensington and Chelsea,E09000020,CLA on 31 March,Total children,122,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,207,Kensington and Chelsea,E09000020,CLA on 31 March,3 or more social workers during the year,14,11
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,208,Lambeth,E09000022,CLA on 31 March,Total children,464,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,208,Lambeth,E09000022,CLA on 31 March,3 or more social workers during the year,220,47
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,209,Lewisham,E09000023,CLA on 31 March,Total children,461,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,209,Lewisham,E09000023,CLA on 31 March,3 or more social workers during the year,76,16
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,316,Newham,E09000025,CLA on 31 March,Total children,425,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,316,Newham,E09000025,CLA on 31 March,3 or more social workers during the year,97,23
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,210,Southwark,E09000028,CLA on 31 March,Total children,397,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,210,Southwark,E09000028,CLA on 31 March,3 or more social workers during the year,90,23
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,211,Tower Hamlets,E09000030,CLA on 31 March,Total children,277,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,211,Tower Hamlets,E09000030,CLA on 31 March,3 or more social workers during the year,44,16
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,212,Wandsworth,E09000032,CLA on 31 March,Total children,218,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,212,Wandsworth,E09000032,CLA on 31 March,3 or more social workers during the year,25,11
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,213,Westminster,E09000033,CLA on 31 March,Total children,175,100
+2024,Reporting year,Local authority,E92000001,England,E13000001,Inner London,213,Westminster,E09000033,CLA on 31 March,3 or more social workers during the year,20,11
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,301,Barking and Dagenham,E09000002,CLA on 31 March,Total children,436,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,301,Barking and Dagenham,E09000002,CLA on 31 March,3 or more social workers during the year,108,25
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,302,Barnet,E09000003,CLA on 31 March,Total children,x,x
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,302,Barnet,E09000003,CLA on 31 March,3 or more social workers during the year,x,x
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,303,Bexley,E09000004,CLA on 31 March,Total children,292,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,303,Bexley,E09000004,CLA on 31 March,3 or more social workers during the year,101,35
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,304,Brent,E09000005,CLA on 31 March,Total children,307,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,304,Brent,E09000005,CLA on 31 March,3 or more social workers during the year,78,25
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,305,Bromley,E09000006,CLA on 31 March,Total children,350,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,305,Bromley,E09000006,CLA on 31 March,3 or more social workers during the year,89,25
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,306,Croydon,E09000008,CLA on 31 March,Total children,509,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,306,Croydon,E09000008,CLA on 31 March,3 or more social workers during the year,144,28
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,307,Ealing,E09000009,CLA on 31 March,Total children,301,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,307,Ealing,E09000009,CLA on 31 March,3 or more social workers during the year,86,29
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,308,Enfield,E09000010,CLA on 31 March,Total children,414,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,308,Enfield,E09000010,CLA on 31 March,3 or more social workers during the year,115,28
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,203,Greenwich,E09000011,CLA on 31 March,Total children,420,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,203,Greenwich,E09000011,CLA on 31 March,3 or more social workers during the year,100,24
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,310,Harrow,E09000015,CLA on 31 March,Total children,176,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,310,Harrow,E09000015,CLA on 31 March,3 or more social workers during the year,44,25
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,311,Havering,E09000016,CLA on 31 March,Total children,284,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,311,Havering,E09000016,CLA on 31 March,3 or more social workers during the year,81,29
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,312,Hillingdon,E09000017,CLA on 31 March,Total children,317,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,312,Hillingdon,E09000017,CLA on 31 March,3 or more social workers during the year,68,21
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,313,Hounslow,E09000018,CLA on 31 March,Total children,285,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,313,Hounslow,E09000018,CLA on 31 March,3 or more social workers during the year,58,20
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,314,Kingston upon Thames,E09000021,CLA on 31 March,Total children,130,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,314,Kingston upon Thames,E09000021,CLA on 31 March,3 or more social workers during the year,36,28
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,315,Merton,E09000024,CLA on 31 March,Total children,147,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,315,Merton,E09000024,CLA on 31 March,3 or more social workers during the year,45,31
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,317,Redbridge,E09000026,CLA on 31 March,Total children,310,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,317,Redbridge,E09000026,CLA on 31 March,3 or more social workers during the year,94,30
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,Richmond upon Thames,E09000027,CLA on 31 March,Total children,110,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,318,Richmond upon Thames,E09000027,CLA on 31 March,3 or more social workers during the year,33,30
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,Sutton,E09000029,CLA on 31 March,Total children,234,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,319,Sutton,E09000029,CLA on 31 March,3 or more social workers during the year,54,23
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,Waltham Forest,E09000031,CLA on 31 March,Total children,308,100
+2024,Reporting year,Local authority,E92000001,England,E13000002,Outer London,320,Waltham Forest,E09000031,CLA on 31 March,3 or more social workers during the year,92,30
