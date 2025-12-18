@@ -7334,6 +7334,47 @@ server <- function(input, output, session) {
     )
   })
 
+  ### Social Worker stability (new indicator) ----
+  ### Stability timeseries chart + table : module
+
+  # reactive values and a way to update them
+  rv_sw_stability <- reactiveValues(
+    select_geographic_level = NULL, select_geo_breakdown = NULL,
+    check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL,
+    dimensional_filters = list("cla_group" = "CLA on 31 March", "sw_stability" = "3 or more social workers during the year")
+  )
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_e3, input$geographic_breakdown_e3,
+    input$national_comparison_checkbox_e3, input$region_comparison_checkbox_e3, input$sn_comparison_checkbox_e3
+  ), {
+    req(input$select_geography_e3, input$geographic_breakdown_e3)
+    rv_sw_stability$select_geographic_level <- input$select_geography_e3
+    rv_sw_stability$select_geo_breakdown <- input$geographic_breakdown_e3
+    rv_sw_stability$check_compare_national <- input$national_comparison_checkbox_e3
+    rv_sw_stability$check_compare_regional <- input$region_comparison_checkbox_e3
+    rv_sw_stability$check_compare_sn <- input$sn_comparison_checkbox_e3
+  })
+
+
+  timeseries_section_server("sw_stability",
+    rv = rv_sw_stability,
+    dataset = copy(sw_stability_data),
+    chart_title = "CLA with 3 or more placements in 12 months to 31 March (%)",
+    yvalue = "percent",
+    yaxis_title = "CLA with 3 or more placements (%)",
+    max_rate = calculate_max_rate(sw_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc_decimal_percent)
+    ),
+    decimal_percentage = TRUE
+  )
+
+  #
+
+
+
   ## Ethnicity and Diversity Domain-----
   output$non_white_txt <- renderText({
     non_white_stat <- workforce_eth %>%

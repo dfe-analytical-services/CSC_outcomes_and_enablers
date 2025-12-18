@@ -408,7 +408,7 @@ enabler3_tab <- function() {
               )
             ),
             # Second Domain - "quality of support for children and families" -------------
-            ## caseload -------------
+
             tabPanel(
               "Quality of support for children and families",
               fluidRow(
@@ -418,9 +418,17 @@ enabler3_tab <- function() {
                     title = "Average caseload (FTE)",
                     value = htmlOutput("caseload_txt")
                   ),
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Percentage of children with 3 or more case workers in past 12 months",
+                    value = "99.9%" # htmlOutput("caseload_txt")
+                  ),
                 )
               ),
               accordion(
+                ## caseload -------------
                 accordion_panel(
                   "Social worker caseloads",
                   gov_row(
@@ -446,6 +454,85 @@ enabler3_tab <- function() {
                         ))
                       )
                     ),
+                    details(
+                      inputId = "caseload_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+                          tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Social worker caseloads by region"),
+                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+                    br(),
+                    plotlyOutput("plot_caseload_reg"),
+                    br(),
+                    br(),
+                    details(
+                      inputId = "tbl_caseload_reg",
+                      label = "View chart as a table",
+                      help_text = (
+                        HTML(paste0(
+                          csvDownloadButton("table_caseload_reg", filename = "avg_caseload_regions.csv"),
+                          reactableOutput("table_caseload_reg")
+                        ))
+                      )
+                    ),
+                    details(
+                      inputId = "caseload_reg_info",
+                      label = "Additional information:",
+                      help_text = (
+                        tags$ul(
+                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+                          tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
+                          tags$br(),
+                          p(
+                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+                            tags$br(),
+                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+                          )
+                        )
+                      )
+                    )
+                  ),
+                  gov_row(
+                    h2("Social worker caseloads by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    radioGroupButtons(
+                      "caseload_stats_toggle",
+                      label = NULL,
+                      choices = c("All local authorities", "10 statistical neighbours"),
+                      selected = "All local authorities",
+                      justified = TRUE
+                    ),
+                    uiOutput("SN_caseload"),
+                  )
+                ),
+                accordion_panel(
+                  ## social worker stability (new indicator) ----
+                  "Social worker stability",
+                  gov_row(
+                    h2("Social worker stability"),
+                    p("Ensuring that practitioners have an appropriate caseload supports recruitment and
+                         retention and allows practitioners to deliver impactful services."),
+                    insert_text(inputId = "caseload_definition", text = paste(
+                      "A", "<b>", " case ", "</b>", " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role.", "<br>", "<br>",
+                      "<b>", "Average caseload", "</b>", "at 30 September is calculated as the total number of cases held by FTE (Full-time Equivalent) social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases.", "<br><br>",
+                      "The number of cases held doesn’t account for the complexity of the cases held and this should also be taken into consideration when interpreting the caseload figures."
+                    )),
+                    br(),
+                    # here is the call to the module to display timeseries chart, table and download button
+                    timeseries_section_ui("sw_stability"),
                     details(
                       inputId = "caseload_info",
                       label = "Additional information:",

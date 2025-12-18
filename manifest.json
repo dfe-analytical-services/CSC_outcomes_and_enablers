@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "c8facbbc9900cf254ea073bc18ccca6a"
+      "checksum": "9e1c9872f086434a0f36d266d02e9922"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5013,10 +5013,10 @@
       "checksum": "71098590292f48586de15459779ac8f0"
     },
     "inst/pipeline_diagnostics.html": {
-      "checksum": "b4cec3f383b8a7b5ce75982692debc71"
+      "checksum": "921ad32647e6d38c8e4e1904f2addc9d"
     },
     "inst/pipeline_diagnostics.Rmd": {
-      "checksum": "36c2e34e722e3bda3a6567d984845c81"
+      "checksum": "f7ebb6eafd5702c2548ba6ddb77412f0"
     },
     "inst/pipeline_prelim.html": {
       "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
@@ -5061,7 +5061,7 @@
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
     },
     "R/mod_regional_barchart_section.R": {
-      "checksum": "c816d5455eee828ea57b324ad193946f"
+      "checksum": "d06850114b22209a8b27aa7dd2b1b225"
     },
     "R/mod_stat_neighbour_barchart_section.R": {
       "checksum": "d41d8cd98f00b204e9800998ecf8427e"
@@ -5070,7 +5070,7 @@
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "3e369bc2faba113fb665c750d66ea7fe"
+      "checksum": "2c248f33f93f6e7011b7176d3f69cb01"
     },
     "R/omitted_data.R": {
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
@@ -5121,7 +5121,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "6ac1234196ba0e8331d495f35cd8fe14"
+      "checksum": "6a14b09bcb6e6261a0f71ac33f4751e8"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
