@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "41328ad9fdf08970ac05e6f1cdda0321"
+      "checksum": "9aade2ba225d887920ffa27863cdd936"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4779,7 +4779,7 @@
       "checksum": "c0cdf640933cc06093d91a171f55e847"
     },
     "data-raw/cla_number_and_rate_per_10k_children.csv": {
-      "checksum": "613226ed96ed1f1c89f88e3f60e873ff"
+      "checksum": "c74034ed89d635a5b9f26c682e62c3f1"
     },
     "data-raw/csww_headline_measures_2017_to_2022.csv": {
       "checksum": "b493dfa60f69f20a7e918fd361822677"
@@ -4803,28 +4803,28 @@
       "checksum": "0cc6471e8caf67ac56f1de59dd0f4acc"
     },
     "data-raw/la_care_leavers_accommodation_suitability.csv": {
-      "checksum": "fefa6aad9d456b9218840d70327c3275"
+      "checksum": "c83e0ca801423179608cd8be0f3e9269"
     },
     "data-raw/la_care_leavers_activity.csv": {
-      "checksum": "a0652efd55bc8ecef47687330d804748"
+      "checksum": "434ab6b83b523d628e56888e890260fe"
     },
     "data-raw/la_children_who_ceased_during_the_year.csv": {
-      "checksum": "b7389482ada1ea7c34ee1600e6737de5"
+      "checksum": "a14b26b7d0873c3612aca4c484aada65"
     },
     "data-raw/la_children_who_started_to_be_looked_after_during_the_year.csv": {
-      "checksum": "8405b927024dae79e1cab008f0a635bb"
+      "checksum": "6b2a410ccc1a4283208df6ae8a2352d1"
     },
     "data-raw/la_cla_during_year_new_placements.csv": {
-      "checksum": "2bbfbe06b995baaec34d6f500d9827b3"
+      "checksum": "80605ece239bef776ae8c01043163218"
     },
     "data-raw/la_cla_on_31_march_by_characteristics.csv": {
-      "checksum": "185a26d57da8505d938d0fcaf0e648cb"
+      "checksum": "062bc6777fc203f75ca14f11baf83746"
     },
     "data-raw/la_cla_placement_stability.csv": {
-      "checksum": "758ba33c2a57e026df3b488d813289ee"
+      "checksum": "07bf270046fec7e7e0a80eae4f725546"
     },
     "data-raw/la_conviction_health_outcome_cla.csv": {
-      "checksum": "b6740af3363f43e6d99029a9086bddbc"
+      "checksum": "e7f11100716b7372bea7ead590e67031"
     },
     "data-raw/la_hospital_admissions_2324.csv": {
       "checksum": "14a5815a802671978d89db4bf66d2b2b"
@@ -4839,7 +4839,7 @@
       "checksum": "8bdf3edfcf11be3ee0b79aca91a28dd9"
     },
     "data-raw/national_cla_adopted_average_time_between_adoption_process_stages.csv": {
-      "checksum": "3bb322e31cb4e0be2d1db7d0eacefdd2"
+      "checksum": "37484d6e241f2db05c3cf6f385382cd7"
     },
     "data-raw/New_Statistical_Neighbour_Groupings_April_2021.csv": {
       "checksum": "2ab2aee01bbb2a08c08e46238ccb6be4"
@@ -4875,13 +4875,13 @@
       "checksum": "b85c43584ae9e8a7b4f3eafd49cfce68"
     },
     "data/care_leavers_accommodation_data.rds": {
-      "checksum": "08e5b686b71e5e56248c3741cf98bbc0"
+      "checksum": "5b0d1869c85559111476f6eb1f8322ce"
     },
     "data/care_leavers_activity_data.rds": {
-      "checksum": "3ab34974cf3327d4b6dc45497c39b800"
+      "checksum": "c20503e3e995399195608af4885bcd48"
     },
     "data/ceased_cla_data.rds": {
-      "checksum": "8ab8764aee79459b4728dab946af0a4c"
+      "checksum": "59570241af76c8a8f874270e2aaa957f"
     },
     "data/cin_rates.rds": {
       "checksum": "9937b977db3ec731883c25e276d221a0"
@@ -4890,16 +4890,16 @@
       "checksum": "ddaaf05105fedd58f86ef13aaf2f9579"
     },
     "data/cla_placements.rds": {
-      "checksum": "98d6443e2ad8a73870cf9b3e391acc5d"
+      "checksum": "35c4c0ed49de592050276dff5257595e"
     },
     "data/cla_rates.rds": {
-      "checksum": "9896a253fbaf428266e168d3fff2c490"
+      "checksum": "bb2457cd5545bb9162bd538c6f3d3c6f"
     },
     "data/combined_cla_31_march_data.rds": {
-      "checksum": "a45067c70738c5a602d101e2a773f496"
+      "checksum": "06aa3216e014df1a73a71ace0821bbb6"
     },
     "data/combined_cla_data.rds": {
-      "checksum": "610f3a77f0fa2fa0d902642fb593567a"
+      "checksum": "5e7c8e49e52e3afbd70b4786ebbe52ae"
     },
     "data/combined_ethnicity_data.rds": {
       "checksum": "777454f525597784c44a402d8c8c6960"
@@ -4917,10 +4917,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "ed570ad3c6a146d8d1e2804f24db57fa"
+      "checksum": "6c2f2d63d5eeec3d1dbe0a784bbd3d07"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "264318d1f7952eff2d3486110e7a76aa"
+      "checksum": "dc4649114ab133244ca284b60e5ce743"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4932,16 +4932,16 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "03c8fcdf2a8e39c52d422fa085824c90"
+      "checksum": "b1bae4d681456d565230ca0573ee27d5"
     },
     "data/placement_changes_data.rds": {
-      "checksum": "3296915a4d50eb921ad3435abb211d14"
+      "checksum": "60584d61282b6ddd1ec655065e0e7c9e"
     },
     "data/placement_data.rds": {
-      "checksum": "783d1a24ada43a767a72574d27e2c893"
+      "checksum": "d85dec62730adfb322480068ffd13305"
     },
     "data/placement_order_match_data.rds": {
-      "checksum": "35045f088ec0025824fa6647570929b6"
+      "checksum": "cc407486ddea831e3ac4dc0551d5824e"
     },
     "data/population_eth.rds": {
       "checksum": "34cd08ee2a8470d48482b54fd463d06d"
@@ -4965,19 +4965,19 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "6410eb4e7e6a49d0c0594532f0742cf7"
+      "checksum": "9d73cf7330377e8a2520e65863667664"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "1699108848d4caba7ffe7dedd3bef900"
+      "checksum": "9529a9e0456007eb5c48caad2fe668b6"
     },
     "data/wellbeing_sdq_data.rds": {
-      "checksum": "b491acae45bb6ed2570a77804f6909ae"
+      "checksum": "69b97aa867e1c20a309525d8bf9891bd"
     },
     "data/workforce_data.rds": {
-      "checksum": "a10bbfd2af7b94be4af95d2d9ce67ed7"
+      "checksum": "732f32c5d85ab2af5f18d18ee7eb81cd"
     },
     "data/workforce_eth.rds": {
-      "checksum": "c478649c38c650fd94578a4f5bbc307b"
+      "checksum": "153b968f3e0bfd878e1c650fc67a6eb1"
     },
     "data/workforce_eth_seniority.rds": {
       "checksum": "3586d5957331d6002b9670993c891a64"
@@ -5006,6 +5006,21 @@
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
     },
+    "inst/pipeline_diagnostics.html": {
+      "checksum": "b4cec3f383b8a7b5ce75982692debc71"
+    },
+    "inst/pipeline_diagnostics.Rmd": {
+      "checksum": "82a678e8b20e37e34d4810d40374aec2"
+    },
+    "inst/pipeline_prelim.html": {
+      "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
+    },
+    "inst/pipeline_prelim.Rmd": {
+      "checksum": "0649e4739db92568a4ceefde95cf135c"
+    },
+    "inst/report_styling.css": {
+      "checksum": "dae3b31ce84448c5a24c51b641fc3ab3"
+    },
     "LICENSE": {
       "checksum": "4ff1ab40947c9cebe66adef6c76f9ba7"
     },
@@ -5013,10 +5028,10 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/data_pipeline.R": {
-      "checksum": "130eac9042682518126509ee3b846e2c"
+      "checksum": "c9f29139370ce942cacf58af1c363c5e"
     },
     "R/data_sources.R": {
-      "checksum": "55e49b967531aa9f1eceb390596ea714"
+      "checksum": "8a144322d299b931a2195250576c8b23"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5025,7 +5040,7 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "5d20f65c6dd59c7a6a25671ba1d0302c"
+      "checksum": "fe878cc0a72b2aab53801a00f7de74b2"
     },
     "R/enabler2_page.R": {
       "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
@@ -5046,7 +5061,7 @@
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "3fabbac27cb56c04d9be87b4775b7edd"
+      "checksum": "c11471446fba56f37a477bd4913737fe"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
@@ -5058,19 +5073,19 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "f4fc35434ecaf9ae9a8bbc5f1c1204c8"
+      "checksum": "2ad4a2e3798e1c7016f4279be7e1c3ad"
     },
     "R/read_data.R": {
-      "checksum": "435df2a4c3e8a21cbe8548fc9429c669"
+      "checksum": "49e6d915a8d2fee7e1c62ed2e9498390"
     },
     "R/rendering_functions.R": {
       "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
     },
     "R/standard_panels.R": {
-      "checksum": "ad567a56f558f35e22f5519d61b410e0"
+      "checksum": "d711e6594bd9a7b85ad8110ad75ec8e3"
     },
     "R/stats_neighbours.R": {
-      "checksum": "9fcc8fdd27ff31e174a48b4f2ed1d639"
+      "checksum": "f3444e177a94eca88c5e5e68d2000a17"
     },
     "R/summary_page.R": {
       "checksum": "c2d2287ff9f9e704532add766b981c80"
@@ -5091,13 +5106,13 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "44d3f7fc71987a9c62248b1787ae6de4"
+      "checksum": "55c05850a466ad5dac4503aadbe09fc3"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
     },
     "tests/stats_neighbours_testing.R": {
-      "checksum": "369c3afa089051891bab92b6531c66c4"
+      "checksum": "0a975ee76642d9a1b155fa536a5467d4"
     },
     "tests/testthat.R": {
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
@@ -5106,13 +5121,13 @@
       "checksum": "8189dd220774f0b75864744a986f9d36"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
-      "checksum": "0ee55bef25c7d64d8baf087804bfa1f8"
+      "checksum": "4aec4126d86eef1fd24a21bae3539aeb"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-002.json": {
-      "checksum": "f9342220a6aa4b31b74dd3d727e3385c"
+      "checksum": "83988ab19a4f91b6155c87524e425557"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-003.json": {
-      "checksum": "9b1e4e882c71976d90f99f177a674a3f"
+      "checksum": "2fe667eb4d300864468d98636d06edc2"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-004.json": {
       "checksum": "88ecdc72cd844cb0288456b9e196244f"
@@ -5127,10 +5142,10 @@
       "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "180284f3e983e4379483761e2ddc0e61"
+      "checksum": "061ce1084dc283d26c095d7c025653b8"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "d34d7c2fe3301be4e6152e0387a886f2"
+      "checksum": "a1949614309ddd47cd14a9c9aae5a96f"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
       "checksum": "05b7c7762d8f5761c44771996dcc25ab"
@@ -5169,7 +5184,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "9f3a2b4617bb4cdf54f1217e68ee3bf0"
+      "checksum": "f7ba93b27de461ce4aec980e737113e1"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

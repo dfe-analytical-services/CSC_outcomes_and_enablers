@@ -113,7 +113,7 @@ if (TRUE == FALSE) {
 
 
   # 9,10 test for ceased_cla_data ----
-  dimensional_filters <- list("characteristic" = "Special guardianship orders")
+  dimensional_filters <- list("characteristic" = "Special guardianship order")
   dimensional_filters <- list("characteristic" = "Residence order or child arrangement order granted")
   x <- {
     test_sn(stats_neighbours_long,
@@ -354,7 +354,7 @@ if (TRUE == FALSE) {
   # aggregated_calc,
   # calc_name)
   if (calc_name != "") sn_metrics[, eval(quote(calc_name)) := round(eval(aggregated_calc))]
-  sn_metrics[characteristic == "Special guardianship orders"]
+  sn_metrics[characteristic == "Special guardianship order"]
   sn_metrics[characteristic == "Residence order or child arrangement order granted"]
 
 
@@ -365,7 +365,7 @@ if (TRUE == FALSE) {
   # default values for testing
   select_geographic_level <- "Local authority"
   select_geo_breakdown <- "Merton"
-  dimensional_filters <- list("characteristic" = "Special guardianship orders")
+  dimensional_filters <- list("characteristic" = "Special guardianship order")
 
   ### CLA rates ----
 
@@ -397,7 +397,7 @@ if (TRUE == FALSE) {
     check_compare_national = TRUE,
     check_compare_regional = TRUE,
     check_compare_sn = TRUE,
-    dimensional_filters = list(characteristic = "Special guardianship orders")
+    dimensional_filters = list(characteristic = "Special guardianship order")
   )
 
 

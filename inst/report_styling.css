@@ -1,0 +1,70 @@
+/* ===== General Document Styling ===== */
+body {
+  font-family: "Segoe UI", Arial, sans-serif;
+  line-height: 1.6;
+  max-width: 1800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fafafa;
+  color: #333;
+}
+
+/* ===== Headings ===== */
+h1, h2, h3, h4 {
+  font-weight: 600;
+  color: #2c3e50;
+}
+
+/* ===== Figure Styling ===== */
+figure {
+  text-align: center;
+  margin: 1.5em auto;
+}
+
+figcaption {
+  font-size: 0.9em;
+  color: #555;
+  font-style: italic;
+  margin-top: 0.5em;
+}
+
+/* ===== Table Styling ===== */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 1.5em 0;
+  font-size: 0.95em;
+}
+
+table, th, td {
+  border: 1px solid #ccc;
+}
+
+th {
+  background-color: #f2f2f2;
+  font-weight: bold;
+  text-align: center;
+}
+
+td {
+  padding: 8px;
+  text-align: left;
+}
+
+/* ===== Table Caption Styling ===== */
+caption {
+  caption-side: bottom; /* or top */
+  font-size: 0.9em;
+  color: #555;
+  font-style: italic;
+  margin-top: 0.5em;
+}
+
+/* ===== Code Blocks ===== */
+pre code {
+  background-color: #f8f8f8;
+  padding: 8px;
+  display: block;
+  border-radius: 4px;
+  overflow-x: auto;
+}

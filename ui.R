@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Children in Need data has been updated as of 30th October 2025"
+        "Children Looked After data has been updated as of 26th November 2025"
       )
     ),
     bslib::navset_pill_list(
