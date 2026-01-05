@@ -7334,10 +7334,11 @@ server <- function(input, output, session) {
     )
   })
 
-  ### Social Worker stability (new indicator) ----
+  ### Social Worker stability domain (new indicator) ----
+
   ### Stability timeseries chart + table : module
 
-  # reactive values and a way to update them
+  # reactive values definition and update
   rv_sw_stability <- reactiveValues(
     select_geographic_level = NULL, select_geo_breakdown = NULL,
     check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL,
@@ -7357,12 +7358,13 @@ server <- function(input, output, session) {
   })
 
 
-  timeseries_section_server("sw_stability",
+  timeseries_section_server(
+    id = "sw_stability",
     rv = rv_sw_stability,
     dataset = copy(sw_stability_data),
-    chart_title = "CLA with 3 or more placements in 12 months to 31 March (%)",
+    chart_title = "CLA with 3 or more social workers in 12 months to 31 March (%)",
     yvalue = "percent",
-    yaxis_title = "CLA with 3 or more placements (%)",
+    yaxis_title = "CLA with 3 or more social workers (%)",
     max_rate = calculate_max_rate(sw_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
@@ -7371,7 +7373,22 @@ server <- function(input, output, session) {
     decimal_percentage = TRUE
   )
 
-  #
+  # Regional barchart for social worker stability
+  regional_barchart_section_server(
+    id = "sw_stability",
+    rv = rv_sw_stability,
+    dataset = copy(sw_stability_data),
+    chart_title = "CLA with 3 or more social workers in 12 months to 31 March (%)",
+    yvalue = "percent",
+    yaxis_title = "CLA with 3 or more social workers (%)",
+    max_rate = calculate_max_rate(sw_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc_decimal_percent)
+    ),
+    decimal_percentage = TRUE
+  )
+
 
 
 

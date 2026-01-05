@@ -41,3 +41,60 @@ generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_co
   }
   return(choice_text2)
 }
+#
+#
+# output$caseload_txt <- renderText({
+#   if (input$geographic_breakdown_e3 == "") {
+#     stat <- "NA"
+#     paste0(stat, "<br>")
+#   } else {
+#     previous_year_value <- workforce_data %>%
+#       filter(time_period == (max(workforce_data$time_period) - 1) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+#       select(caseload_fte)
+#
+#     current_year_value <- workforce_data %>%
+#       filter(time_period == (max(workforce_data$time_period)) & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+#       select(caseload_fte)
+#
+#     if (nrow(previous_year_value) < 1) {
+#       context <- ""
+#     } else if ((current_year_value < previous_year_value)) {
+#       context <- paste0(" down from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
+#     } else if ((current_year_value > previous_year_value)) {
+#       context <- paste0(" up from ", previous_year_value, " ", (max(workforce_data$time_period) - 1))
+#     } else {
+#       context <- "No change"
+#     }
+#     stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
+#     paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, "</p>")
+#   }
+# })
+
+
+generate_headline_box_text <- function(dataset, column_name, geo_breakdown, nsmall, format_style) {
+  # check for a dataset, column name, geo_breakdown
+
+  # get the max period
+  max_period <- max(dataset[[column_name]])
+  prior_period <- max_period - 1
+
+  # get the stat for CY
+
+  if (geo_breakdown == "" || nrow(stat) == 0) {
+    stat <- "NA"
+  }
+
+  # get the stat for PY
+
+  # generate a formatted text output to be rendered - percentage here, any other extra text?
+
+  stat <- format(
+    dataset %>%
+      filter(time_period == max_period & geo_breakdown %in% geo_breakdown) %>%
+      select(column_name),
+    nsmall = nsmall
+  )
+
+  paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max_period, context, "</p>")
+  headline_text <- paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>")
+}

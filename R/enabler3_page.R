@@ -551,22 +551,8 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Social worker caseloads by region"),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
-                    br(),
-                    plotlyOutput("plot_caseload_reg"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_caseload_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_caseload_reg", filename = "avg_caseload_regions.csv"),
-                          reactableOutput("table_caseload_reg")
-                        ))
-                      )
-                    ),
+                    h2("Social worker stability by region"),
+                    regional_barchart_section_ui("sw_stability"),
                     details(
                       inputId = "caseload_reg_info",
                       label = "Additional information:",
@@ -585,8 +571,8 @@ enabler3_tab <- function() {
                     )
                   ),
                   gov_row(
-                    h2("Social worker caseloads by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(workforce_data$time_period))),
+                    h2("Social worker stability by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(sw_stability_data$time_period))),
                     radioGroupButtons(
                       "caseload_stats_toggle",
                       label = NULL,
