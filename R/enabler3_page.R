@@ -573,14 +573,7 @@ enabler3_tab <- function() {
                   gov_row(
                     h2("Social worker stability by local authority"),
                     p(sprintf("The charts below represent data from %s.", max(sw_stability_data$time_period))),
-                    radioGroupButtons(
-                      "caseload_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities",
-                      justified = TRUE
-                    ),
-                    uiOutput("SN_caseload"),
+                    la_and_sn_toggle_section_ui("sw_stability")
                   )
                 ),
                 open = FALSE

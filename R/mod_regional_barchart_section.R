@@ -28,19 +28,30 @@ regional_barchart_section_ui <- function(id) {
 
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
-regional_barchart_section_server <- function(id, rv, dataset,
-                                             chart_title = "", yvalue, yaxis_title, max_rate = NULL,
-                                             rt_columns, rt_col_defs, decimal_percentage) {
+regional_barchart_section_server <- function(id,
+                                             rv_geo_filters,
+                                             rv_dimensional_filters,
+                                             dataset,
+                                             chart_title = "",
+                                             yvalue,
+                                             yaxis_title,
+                                             max_rate = NULL,
+                                             rt_columns,
+                                             rt_col_defs,
+                                             decimal_percentage) {
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)
     filtered_data <- reactive({
+      # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
+      if (length(rv_dimensional_filters$dimensional_filters) > 0) {
+        dataset <- dataset[eval(AndEQUAL(rv_dimensional_filters$dimensional_filters))]
+      }
       dataset[geographic_level == "Regional" & time_period == max(dataset$time_period)]
     })
 
     # prepare a chart and then render it
     output$regional_barchart_plot <- plotly::renderPlotly({
       req(filtered_data())
-      # browser()
       max_rate <- max(filtered_data()[[yvalue]], na.rm = TRUE)
       max_rate <- ceiling(max_rate / 10) * 10
 
@@ -52,6 +63,8 @@ regional_barchart_section_server <- function(id, rv, dataset,
         decimal_percentage = TRUE
       ) %>%
         config(displayModeBar = F)
+
+      # we need to construct the chart title
 
       # title <- paste0("Social worker turnover rate (FTE) % by region (", max(p$data$time_period), ")")
       p <- p + ggtitle(chart_title)

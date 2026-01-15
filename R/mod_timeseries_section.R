@@ -23,21 +23,29 @@ timeseries_section_ui <- function(id) {
 
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
-timeseries_section_server <- function(id, rv, dataset,
-                                      chart_title = "", yvalue, yaxis_title, max_rate,
-                                      rt_columns, rt_col_defs, decimal_percentage) {
+timeseries_section_server <- function(id,
+                                      rv_geo_filters,
+                                      rv_dimensional_filters,
+                                      dataset,
+                                      chart_title = "",
+                                      yvalue,
+                                      yaxis_title,
+                                      max_rate,
+                                      rt_columns,
+                                      rt_col_defs,
+                                      decimal_percentage) {
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)
     filtered_data <- reactive({
-      req(rv$select_geographic_level)
+      req(rv_geo_filters$select_geographic_level)
       filter_time_series_data(
         dataset_in = dataset,
-        select_geographic_level = rv$select_geographic_level,
-        select_geo_breakdown = rv$select_geo_breakdown,
-        check_compare_national = rv$check_compare_national,
-        check_compare_regional = rv$check_compare_regional,
-        check_compare_sn = rv$check_compare_sn,
-        dimensional_filters = rv$dimensional_filters
+        select_geographic_level = rv_geo_filters$select_geographic_level,
+        select_geo_breakdown = rv_geo_filters$select_geo_breakdown,
+        check_compare_national = rv_geo_filters$check_compare_national,
+        check_compare_regional = rv_geo_filters$check_compare_regional,
+        check_compare_sn = rv_geo_filters$check_compare_sn,
+        dimensional_filters = rv_dimensional_filters$dimensional_filters
       )
     })
 
@@ -46,8 +54,8 @@ timeseries_section_server <- function(id, rv, dataset,
       req(filtered_data())
       p <- plotly_time_series_custom_scale(
         dataset = filtered_data(),
-        level = rv$select_geography,
-        breakdown = rv$select_geo_breakdown,
+        level = rv_geo_filters$select_geography,
+        breakdown = rv_dimensional_filters$select_geo_breakdown,
         yvalue = yvalue,
         yaxis_title = yaxis_title,
         ylim_upper = max_rate,
