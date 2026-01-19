@@ -25,35 +25,24 @@ la_and_sn_toggle_section_server <- function(id,
                                             rt_col_defs,
                                             decimal_percentage,
                                             selectedcolumn = NULL) {
+  # this is he definition of the module server which contains reactive datasets and render functions
   moduleServer(id, function(input, output, session) {
+    # this is constant for the dataset driving the specific instance of the module
+    max_time_period <- max(dataset$time_period, na.rm = TRUE)
+
     # we start with the data reactives which are filtering the datasets for chosen geographies (and additional dimensions tbc)
     filtered_data_la <- reactive({
       req(isolate(rv_geo_filters$select_geographic_level))
       req(rv_geo_filters$select_geo_breakdown)
 
-      if (length(rv_dimensional_filters$dimensional_filters) > 0) {
-        dataset <- dataset[eval(AndEQUAL(rv_dimensional_filters$dimensional_filters))]
-      }
-
-      # need logic for the 3 selections National, Regional, LA here
-      if (rv_geo_filters$select_geographic_level %in% c("National", "Local authority")) {
-        dataset[geographic_level == "Local authority" & time_period == max(dataset$time_period)]
-      } else if (rv_geo_filters$select_geographic_level == "Regional") {
-        # Check if the selected region is London
-        if (rv_geo_filters$select_geo_breakdown == "London") {
-          # Include both Inner London and Outer London
-          # get the location data
-          location <- location_data %>%
-            filter(region_name %in% c("Inner London", "Outer London")) %>%
-            pull(la_name)
-        } else {
-          # Get the la_name values within the selected region_name
-          location <- location_data %>%
-            filter(region_name == rv_geo_filters$select_geo_breakdown) %>%
-            pull(la_name)
-        }
-        dataset[geographic_level == "Local authority" & geo_breakdown %in% location & time_period == max(dataset$time_period)]
-      }
+      filter_la_toggle_dataset(
+        dataset_in = dataset,
+        select_geographic_level = rv_geo_filters$select_geographic_level,
+        select_geo_breakdown = rv_geo_filters$select_geo_breakdown,
+        select_time_period = max_time_period,
+        dimensional_filters = rv_dimensional_filters$dimensional_filters
+      ) %>%
+        arrange(desc(!!sym(`yvalue`)))
     })
 
 
@@ -185,7 +174,6 @@ la_and_sn_toggle_section_server <- function(id,
       # build the dataset for the table
 
       filtered_data_la() %>%
-        mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>%
         select(any_of(as.character(rt_columns))) %>%
         setnames(names(rt_columns)) %>%
         reactable(

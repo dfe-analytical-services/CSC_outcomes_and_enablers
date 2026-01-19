@@ -39,6 +39,7 @@ regional_barchart_section_server <- function(id,
                                              rt_columns,
                                              rt_col_defs,
                                              decimal_percentage) {
+  # this is the moduleServer function which holds all of the logic: reactive data and rendering plots/tables
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)
     filtered_data <- reactive({
@@ -46,7 +47,8 @@ regional_barchart_section_server <- function(id,
       if (length(rv_dimensional_filters$dimensional_filters) > 0) {
         dataset <- dataset[eval(AndEQUAL(rv_dimensional_filters$dimensional_filters))]
       }
-      dataset[geographic_level == "Regional" & time_period == max(dataset$time_period)]
+      dataset[geographic_level == "Regional" & time_period == max(dataset$time_period)] %>%
+        arrange(desc(!!sym(yvalue)))
     })
 
     # prepare a chart and then render it
@@ -92,12 +94,12 @@ regional_barchart_section_server <- function(id,
     })
   })
 }
-
-# function to calculate the max rate for the y-axis
-calculate_max_rate <- function(dataset, column_name) {
-  max_rate <- max(dataset[[column_name]], na.rm = TRUE)
-  max_rate <- ceiling(max_rate / 20) * 20
-}
+#
+# # function to calculate the max rate for the y-axis
+# calculate_max_rate <- function(dataset, column_name) {
+#   max_rate <- max(dataset[[column_name]], na.rm = TRUE)
+#   max_rate <- ceiling(max_rate / 20) * 20
+# }
 
 
 #

@@ -422,8 +422,8 @@ enabler3_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Percentage of children with 3 or more case workers in past 12 months",
-                    value = "99.9%" # htmlOutput("caseload_txt")
+                    title = "Percentage of children with 3 or more social workers in past 12 months",
+                    value = htmlOutput("sw_stability_txt")
                   ),
                 )
               ),

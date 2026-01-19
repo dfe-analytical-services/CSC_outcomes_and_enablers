@@ -49,6 +49,8 @@ timeseries_section_server <- function(id,
       )
     })
 
+    max_yvalue <- calculate_max_rate(dataset, column_name = yvalue)
+
     # prepare a chart and then render it
     output$timeseries_plot <- renderPlotly({
       req(filtered_data())
@@ -58,7 +60,7 @@ timeseries_section_server <- function(id,
         breakdown = rv_dimensional_filters$select_geo_breakdown,
         yvalue = yvalue,
         yaxis_title = yaxis_title,
-        ylim_upper = max_rate,
+        ylim_upper = max_yvalue,
         decimal_percentage = TRUE
       ) %>%
         config(displayModeBar = F)

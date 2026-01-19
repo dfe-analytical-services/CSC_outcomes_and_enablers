@@ -1524,7 +1524,7 @@ read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla
   )
 
   sw_stability_data <- rbindlist(l = list(sw_stability_data, sn_metrics), fill = TRUE, use.names = TRUE) %>%
-    mutate(percentage = sapply(percentage, decimal_rounding, 1)) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
     redacted_to_negative(col_old = "percentage", col_new = "percent")
 
   return(sw_stability_data)

@@ -6662,6 +6662,22 @@ server <- function(input, output, session) {
     }
   })
 
+  ## Social worker stability headline stat
+  output$sw_stability_txt <- renderText({
+    max_period <- max(sw_stability_data$time_period)
+    stat <- format(sw_stability_data %>%
+      filter(time_period == max_period & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(percent), nsmall = 0)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>"
+    )
+  })
+
   ### Social worker turnover rate ------------
   #### Social worker turnover rate time series plot ----
   output$plot_s_w_turnover <- plotly::renderPlotly({
@@ -7438,7 +7454,7 @@ server <- function(input, output, session) {
     max_rate = calculate_max_rate(sw_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc_decimal_percent)
+      "Percent" = colDef(cell = cellfunc)
     ),
     decimal_percentage = TRUE
   )
@@ -7455,7 +7471,7 @@ server <- function(input, output, session) {
     max_rate = calculate_max_rate(sw_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc_decimal_percent)
+      "Percent" = colDef(cell = cellfunc)
     ),
     decimal_percentage = TRUE
   )
@@ -7472,7 +7488,7 @@ server <- function(input, output, session) {
     max_rate = calculate_max_rate(sw_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc_decimal_percent)
+      "Percent" = colDef(cell = cellfunc)
     ),
     decimal_percentage = TRUE
   )
