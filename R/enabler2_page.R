@@ -122,6 +122,7 @@ enabler2_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li("Share of spend is calculated by taking total children’s services expenditure divided by total local authority expenditure"),
+                              tags$li("Share of spend at a national level includes lower tier local authorities. Share of spend at a regional level aggregates the spend of the local authorities in the dashboard and therefore does not include lower tier local authorities."),
                               tags$li("Average per capita (of all children in a local authority) spend on children’s services is calculated based on", a(href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales", "ONS published mid-2024 population estimates", target = "_blank"), "for children aged 0 to 17 years and total children’s services expenditure."),
                               tags$li("Average per capita (of all children in a local authority) spend on children’s services has been rounded to the nearest whole number."),
                               tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2024-to-2025-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2024 to 2025 individual local authority data – outturn", target = "_blank")),
@@ -171,6 +172,7 @@ enabler2_tab <- function() {
                       help_text = (
                         tags$ul(
                           tags$li("Share of spend is calculated by taking total children’s services expenditure minus total CLA expenditure, divided by total children’s services expenditure."),
+                          tags$li("Share of spend at a national level includes lower tier local authorities. Share of spend at a regional level aggregates the spend of the local authorities in the dashboard and therefore does not include lower tier local authorities."),
                           tags$li("Spending data is based on the RO3 and RSX data files from the", a(href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2024-to-2025-individual-local-authority-data-outturn", "Local authority revenue expenditure and financing England: 2024 to 2025 individual local authority data – outturn", target = "_blank")),
                           tags$br(),
                           p(
