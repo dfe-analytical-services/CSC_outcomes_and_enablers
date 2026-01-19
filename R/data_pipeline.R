@@ -60,7 +60,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Bugfix in CLA 2025 Data update.  Remove stat neighbours for Cumberland and Westmorland and Furness prior to 2023" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Revision to spending data" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
