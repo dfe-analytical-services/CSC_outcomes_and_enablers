@@ -523,10 +523,9 @@ enabler3_tab <- function() {
                   "Social worker stability",
                   gov_row(
                     h2("Social worker stability"),
-                    p("Top level text to be added here."),
+                    p("Ensuring children have minimal changes to their assigned social worker through the year so that they receive consistent support"),
                     insert_text(inputId = "sw_stability_definition", text = paste(
-                      "The definition goes here.", "<br>", "<br>",
-                      ".....and here."
+                      "High social worker instability is defined as a looked after child experiencing 3 or more social workers during the year ending 31 March."
                     )),
                     br(),
                     # here is the call to the module to display timeseries chart, table and download button

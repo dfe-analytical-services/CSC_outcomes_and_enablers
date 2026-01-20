@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "b3711371cf77dca67629b454c48fcec2"
+      "checksum": "e67f098873e56d20e144bcff6b490904"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4971,7 +4971,7 @@
       "checksum": "1a8a9378d9e5d4aab7cfdb2f28040762"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "755c1f475ca2bcb5ea6264ee14926f4b"
+      "checksum": "402c1bf40889e1dd746a3fd62e6b20f4"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5058,7 +5058,7 @@
       "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
     },
     "R/enabler3_page.R": {
-      "checksum": "e12f9889fd22f8a5a6faf9eb6e889612"
+      "checksum": "d95590f8f6b6e45d64768d2571a21a81"
     },
     "R/intro_panel.R": {
       "checksum": "48548244416fb53442c42e0406be8761"
