@@ -523,12 +523,10 @@ enabler3_tab <- function() {
                   "Social worker stability",
                   gov_row(
                     h2("Social worker stability"),
-                    p("Ensuring that practitioners have an appropriate caseload supports recruitment and
-                         retention and allows practitioners to deliver impactful services."),
-                    insert_text(inputId = "caseload_definition", text = paste(
-                      "A", "<b>", " case ", "</b>", " is defined as any person allocated to a named social worker, where the work involves child and family social work. Cases may be held by social workers regardless of their role in the organisation and not just those specifically in a ‘case holder’ role.", "<br>", "<br>",
-                      "<b>", "Average caseload", "</b>", "at 30 September is calculated as the total number of cases held by FTE (Full-time Equivalent) social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases.", "<br><br>",
-                      "The number of cases held doesn’t account for the complexity of the cases held and this should also be taken into consideration when interpreting the caseload figures."
+                    p("Top level text to be added here."),
+                    insert_text(inputId = "sw_stability_definition", text = paste(
+                      "The definition goes here.", "<br>", "<br>",
+                      ".....and here."
                     )),
                     br(),
                     # here is the call to the module to display timeseries chart, table and download button

@@ -77,7 +77,7 @@ additional_info_help_text <- list(
     ),
   "sw_stability" =
     tags$ul(
-      tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number. Figures exclude children looked after under a series of short-term placements."),
+      tags$li("Percentages rounded to the nearest whole number. Figures exclude children looked after under a series of short-term placements."),
       tags$li("Social workers are only counted once for each child during the year. For example, if a child had a social worker, moved to a different social worker, then back to the original social worker during the course of the year, then this would count as 2 social workers during the year."),
       tags$br()
     )
