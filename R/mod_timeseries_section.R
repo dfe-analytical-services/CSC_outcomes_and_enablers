@@ -17,6 +17,11 @@ timeseries_section_ui <- function(id) {
           reactableOutput(ns("timeseries_table"))
         ))
       )
+    ),
+    details(
+      inputId = paste0(id, "_ts_info"),
+      label = "Additional information:",
+      help_text = get_additional_info(id)
     )
   )
 }
@@ -34,6 +39,7 @@ timeseries_section_server <- function(id,
                                       rt_columns,
                                       rt_col_defs,
                                       decimal_percentage) {
+  # the module server contains all of the backend logic for this module
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)
     filtered_data <- reactive({

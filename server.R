@@ -2084,13 +2084,12 @@ server <- function(input, output, session) {
   ## Severe absence ----
 
 
-
-
-
-
   # severe absence reactive breakdowns and their update
   rv_severe_absence <- reactiveValues(
-    dimensional_filters = list()
+    "dimensional_filters" = list(
+      "social_care_group" = "CINO at 31 March",
+      "school_type" = "Total"
+    )
   )
 
   observeEvent(

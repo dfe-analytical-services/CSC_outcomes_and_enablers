@@ -22,6 +22,11 @@ regional_barchart_section_ui <- function(id) {
           reactableOutput(ns("regional_barchart_table"))
         ))
       )
+    ),
+    details(
+      inputId = paste0(id, "_reg_info"),
+      label = "Additional information:",
+      help_text = (get_additional_info(id))
     )
   )
 }

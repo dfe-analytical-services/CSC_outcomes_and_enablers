@@ -41,6 +41,10 @@ generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_co
   }
   return(choice_text2)
 }
+
+
+
+
 #
 #
 # output$caseload_txt <- renderText({

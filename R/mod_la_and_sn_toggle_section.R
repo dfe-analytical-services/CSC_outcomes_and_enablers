@@ -78,20 +78,9 @@ la_and_sn_toggle_section_server <- function(id,
             )
           ),
           details(
-            inputId = "la_info",
+            inputId = paste0(id, "_la_info"),
             label = "Additional information:",
-            help_text = ( # this needs to be moved from here into either the server function or a metadata list somewhere
-              tags$ul(
-                tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
-                tags$br(),
-                p(
-                  "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                  tags$br(),
-                  "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                )
-              )
-            )
+            help_text = get_additional_info(id)
           )
         )
       } else { # UI for the stats neighbours plot and table
@@ -113,7 +102,7 @@ la_and_sn_toggle_section_server <- function(id,
             )
           ),
           details(
-            inputId = "sn_caseload_info",
+            inputId = paste0(id, "_sn_info"),
             label = "Additional information:",
             help_text = (
               tags$ul(
