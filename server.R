@@ -6520,7 +6520,6 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
-    # browser()
     choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
 
     updateSelectizeInput(

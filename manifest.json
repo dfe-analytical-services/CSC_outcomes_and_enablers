@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "c4d0f1951f9004ad24a831c07ffe7946"
+      "checksum": "f560e4bd87725f48c5c34b65dee86f99"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5019,7 +5019,7 @@
       "checksum": "7b587961c7da29917d4f8314cf24e1d4"
     },
     "inst/pipeline_diagnostics.Rmd": {
-      "checksum": "1e02ec71141b21d0438e5417a6593a9b"
+      "checksum": "ac74c0370352a5dded5988d22f031c39"
     },
     "inst/pipeline_prelim.html": {
       "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
@@ -5127,7 +5127,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "7166951d877c9e1ad4e499cdfe9c8d53"
+      "checksum": "b534562f5012d45b7acb0a23d451e059"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
