@@ -20,16 +20,17 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-  ## 2. Preliminary diagnostics: before running the pipeline and triggering errors do some comparisons between the csv files for consistency year on year
-  path_old <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2025/" # <--- REPLACE WITH YOUR FOLDERS
-  path_new <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2024/" # <--- REPLACE WITH YOUR FOLDERS
+  ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year
 
+  PRELIM_PATH <- "YOUR FOLDER HERE" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data
+  path_old <- paste0(PRELIM_PATH, "/data-comparisons/2025/")
+  path_new <- paste0(PRELIM_PATH, "/data-comparisons/2024/")
 
   pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
   print(pipeline_prelim)
 
-  # if you wish to save artifacts from the pipeline run then execute these steps
-  saveRDS(pipeline_prelim$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim_v2.rds")
+  # if you wish to save artifacts from the preliminary pipeline run then execute these steps
+  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")) # <--- REPLACE FILENAME AS REQUIRED
 
   # produce a diagnostic report of the differences in the files.
   rmarkdown::render(
@@ -38,47 +39,47 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
     output_file = "",
     params = list(
       pipeline_comparison = pipeline_prelim$dataset_comparison,
-      pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/pipeline_comparison_prelim_v2.rds"
+      pipeline_comparison_file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")
     )
   )
 
 
-  ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
+  ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_adjust_metadata_step_1_v1.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_merge_conflicts_v1.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/sw_stability/Consolidated SetDiff Summary v2.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/sw_stability/Consolidated SetDiff Summary merge conflicts v1.xlsx")
 
 
-  ## 3. Investigate the output from above to compare the current and old data using the diagnostics provided ----
+  ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
 
   rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
     pipeline_comparison = pr$dataset_comparison,
-    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1_v3_with_summary.rds"
+    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_merge_conflicts_v1.rds"
   ))
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_consolidated_setdiffs.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_consolidated_setdiffs_merge_conflicts_v1.xlsx")
 
 
-  ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
+  ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Adding in the summary page indicator for social worker stability and correctin to 0dp" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Resolving any issues in the summary data due to conflicts between branches in an RDS file" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
 
 
 
-  ## 5. verify the update parameters ----
+  ## 6. verify the update parameters ----
   pipeline_run_parameters <- list(
     "username" = Sys.getenv("USERNAME"),
     "run_datetime" = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
@@ -91,8 +92,10 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## FINAL STEP - proceed with caution having completed steps 1-6 above
 
+  ## 7. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
+  # note that you will be prompted in the Console window
+  # upon completion refer to the guide regarding the git-related steps which follow
 
-  ## 6. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
   print(run_data_pipeline_step_2(pipeline_run, pipeline_run_parameters))
 
   # END PIPELINE ----

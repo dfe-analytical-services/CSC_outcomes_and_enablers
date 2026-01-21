@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "e67f098873e56d20e144bcff6b490904"
+      "checksum": "3198ed3e91d0c96af6e3d4f563b7c924"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4866,10 +4866,10 @@
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
     "data-raw/RO3_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "b1abda1b71693e9df2791abb32f28c8b"
+      "checksum": "f0937a1f8b6d513f333121bc0f3c0e12"
     },
     "data-raw/RSX_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "61222a569512e12322bd8756a746c4c3"
+      "checksum": "8610e62d9a2141f0aa69ec5be6b3489f"
     },
     "data-raw/sn_model_2025_wide.csv": {
       "checksum": "699c7be40307dae53c65fce3c43e8ef0"
@@ -4920,10 +4920,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "6c2f2d63d5eeec3d1dbe0a784bbd3d07"
+      "checksum": "ed570ad3c6a146d8d1e2804f24db57fa"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "dc4649114ab133244ca284b60e5ce743"
+      "checksum": "264318d1f7952eff2d3486110e7a76aa"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4935,6 +4935,9 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
+      "checksum": "2b90062fae53dbf3c730e1f38a27a9b9"
+    },
+    "data/pipeline/data_pipeline_run_history_dirty.rds": {
       "checksum": "24be225e93886d46bcad6f7de2f2da23"
     },
     "data/placement_changes_data.rds": {
@@ -4953,13 +4956,13 @@
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
     "data/spending_data.rds": {
-      "checksum": "f8653f4eb70f28a324fe20c850cc95ed"
+      "checksum": "75650c5c33ba2e7961051ec95656e346"
     },
     "data/spending_data_no_cla.rds": {
-      "checksum": "ac454fa05ef0c04f5b251679fd181b0d"
+      "checksum": "4ceaa19a2b5df57d23d814e7732f1cd1"
     },
     "data/spending_per_capita.rds": {
-      "checksum": "1dd663f2edd40a35540b9f1ea8941a80"
+      "checksum": "13f10c0d1c95049f8e91311f5908af1a"
     },
     "data/stats_neighbours.rds": {
       "checksum": "a2a9abe5893c10f69328bfea309e1628"
@@ -4968,7 +4971,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "1a8a9378d9e5d4aab7cfdb2f28040762"
+      "checksum": "0986067d4c4384f07cc603567bab1b76"
     },
     "data/summary_page_metadata.xlsx": {
       "checksum": "402c1bf40889e1dd746a3fd62e6b20f4"
@@ -5040,10 +5043,10 @@
       "checksum": "d6defc34b313301132483fb5e662eb33"
     },
     "R/data_pipeline.R": {
-      "checksum": "f835664d93e3b6532e62835f4cf9486b"
+      "checksum": "29a5fcfff0730f66bc5d6a8ea55b65ad"
     },
     "R/data_sources.R": {
-      "checksum": "8a144322d299b931a2195250576c8b23"
+      "checksum": "67852cc1917077c96b645463a99f5862"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5052,10 +5055,10 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "fe878cc0a72b2aab53801a00f7de74b2"
+      "checksum": "a0fc57ef530fb14757f8a0f3c8ec2b27"
     },
     "R/enabler2_page.R": {
-      "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
+      "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
       "checksum": "d95590f8f6b6e45d64768d2571a21a81"
@@ -5094,13 +5097,13 @@
       "checksum": "ab44f1ad38f118489fcd8e1216d28194"
     },
     "R/read_data.R": {
-      "checksum": "d6b4f5343b188fca73cd50c09eac22f2"
+      "checksum": "5cb39c9e92c14e3e6b1e542cb41c66fa"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
     },
     "R/standard_panels.R": {
-      "checksum": "d711e6594bd9a7b85ad8110ad75ec8e3"
+      "checksum": "a8801ee92162e7ee6308f177a30cc331"
     },
     "R/stats_neighbours.R": {
       "checksum": "82f707a8e1d156a9bdb49de9759ae796"
