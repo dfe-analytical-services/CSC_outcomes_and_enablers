@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "9aade2ba225d887920ffa27863cdd936"
+      "checksum": "c4d0f1951f9004ad24a831c07ffe7946"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4823,6 +4823,9 @@
     "data-raw/la_cla_placement_stability.csv": {
       "checksum": "07bf270046fec7e7e0a80eae4f725546"
     },
+    "data-raw/la_cla_swcount.csv": {
+      "checksum": "e59b2ee516fc8e78f85cf6912c5fa8cc"
+    },
     "data-raw/la_conviction_health_outcome_cla.csv": {
       "checksum": "e7f11100716b7372bea7ead590e67031"
     },
@@ -4863,10 +4866,10 @@
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
     "data-raw/RO3_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "b1abda1b71693e9df2791abb32f28c8b"
+      "checksum": "f0937a1f8b6d513f333121bc0f3c0e12"
     },
     "data-raw/RSX_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "61222a569512e12322bd8756a746c4c3"
+      "checksum": "8610e62d9a2141f0aa69ec5be6b3489f"
     },
     "data-raw/sn_model_2025_wide.csv": {
       "checksum": "699c7be40307dae53c65fce3c43e8ef0"
@@ -4917,10 +4920,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "6c2f2d63d5eeec3d1dbe0a784bbd3d07"
+      "checksum": "ed570ad3c6a146d8d1e2804f24db57fa"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "dc4649114ab133244ca284b60e5ce743"
+      "checksum": "264318d1f7952eff2d3486110e7a76aa"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4932,7 +4935,10 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "b1bae4d681456d565230ca0573ee27d5"
+      "checksum": "2b90062fae53dbf3c730e1f38a27a9b9"
+    },
+    "data/pipeline/data_pipeline_run_history_dirty.rds": {
+      "checksum": "24be225e93886d46bcad6f7de2f2da23"
     },
     "data/placement_changes_data.rds": {
       "checksum": "60584d61282b6ddd1ec655065e0e7c9e"
@@ -4950,13 +4956,13 @@
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
     "data/spending_data.rds": {
-      "checksum": "f8653f4eb70f28a324fe20c850cc95ed"
+      "checksum": "75650c5c33ba2e7961051ec95656e346"
     },
     "data/spending_data_no_cla.rds": {
-      "checksum": "ac454fa05ef0c04f5b251679fd181b0d"
+      "checksum": "4ceaa19a2b5df57d23d814e7732f1cd1"
     },
     "data/spending_per_capita.rds": {
-      "checksum": "1dd663f2edd40a35540b9f1ea8941a80"
+      "checksum": "13f10c0d1c95049f8e91311f5908af1a"
     },
     "data/stats_neighbours.rds": {
       "checksum": "a2a9abe5893c10f69328bfea309e1628"
@@ -4965,10 +4971,13 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "9d73cf7330377e8a2520e65863667664"
+      "checksum": "0986067d4c4384f07cc603567bab1b76"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "9529a9e0456007eb5c48caad2fe668b6"
+      "checksum": "402c1bf40889e1dd746a3fd62e6b20f4"
+    },
+    "data/sw_stability_data.rds": {
+      "checksum": "45de448f11e30602ece6bba702087cfb"
     },
     "data/wellbeing_sdq_data.rds": {
       "checksum": "69b97aa867e1c20a309525d8bf9891bd"
@@ -4989,7 +4998,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "b63c017783e7f3d26a4136fb9413e1cb"
+      "checksum": "429c17c0d38e35a7b21048f8d94569a5"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5007,16 +5016,16 @@
       "checksum": "71098590292f48586de15459779ac8f0"
     },
     "inst/pipeline_diagnostics.html": {
-      "checksum": "b4cec3f383b8a7b5ce75982692debc71"
+      "checksum": "7b587961c7da29917d4f8314cf24e1d4"
     },
     "inst/pipeline_diagnostics.Rmd": {
-      "checksum": "82a678e8b20e37e34d4810d40374aec2"
+      "checksum": "1e02ec71141b21d0438e5417a6593a9b"
     },
     "inst/pipeline_prelim.html": {
       "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
     },
     "inst/pipeline_prelim.Rmd": {
-      "checksum": "0649e4739db92568a4ceefde95cf135c"
+      "checksum": "99895a2ee3e34b6d3f87e6a27e293d20"
     },
     "inst/report_styling.css": {
       "checksum": "dae3b31ce84448c5a24c51b641fc3ab3"
@@ -5027,11 +5036,17 @@
     "PULL_REQUEST_TEMPLATE.md": {
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
+    "R/additional_info_code.R": {
+      "checksum": "46a8313e6d1a3f418341bcdfeb97a702"
+    },
+    "R/data_filtering.R": {
+      "checksum": "d6defc34b313301132483fb5e662eb33"
+    },
     "R/data_pipeline.R": {
-      "checksum": "c9f29139370ce942cacf58af1c363c5e"
+      "checksum": "29a5fcfff0730f66bc5d6a8ea55b65ad"
     },
     "R/data_sources.R": {
-      "checksum": "8a144322d299b931a2195250576c8b23"
+      "checksum": "67852cc1917077c96b645463a99f5862"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5040,52 +5055,58 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "fe878cc0a72b2aab53801a00f7de74b2"
+      "checksum": "a0fc57ef530fb14757f8a0f3c8ec2b27"
     },
     "R/enabler2_page.R": {
-      "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
+      "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
-      "checksum": "275209f9cb13770d305d2d81f0acd782"
+      "checksum": "d95590f8f6b6e45d64768d2571a21a81"
     },
     "R/intro_panel.R": {
       "checksum": "48548244416fb53442c42e0406be8761"
+    },
+    "R/mod_la_and_sn_toggle_section.R": {
+      "checksum": "07c40e5651f7808ae3568deab04a9f46"
+    },
+    "R/mod_regional_barchart_section.R": {
+      "checksum": "f93b91bd8641478ae9333e15a0a813d9"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "3e369bc2faba113fb665c750d66ea7fe"
+      "checksum": "9f74dc6937cba5c920219682581d1230"
     },
     "R/omitted_data.R": {
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "c11471446fba56f37a477bd4913737fe"
+      "checksum": "9a3e612c4bc95fbe2395e9f1d0492f3a"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
     },
     "R/outcome3_page.R": {
-      "checksum": "c3c1a9dae573c4951c5fd7f629d7b8ea"
+      "checksum": "00d05981d443847f8741be68b4526ece"
     },
     "R/outcome4_page.R": {
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "2ad4a2e3798e1c7016f4279be7e1c3ad"
+      "checksum": "ab44f1ad38f118489fcd8e1216d28194"
     },
     "R/read_data.R": {
-      "checksum": "49e6d915a8d2fee7e1c62ed2e9498390"
+      "checksum": "5cb39c9e92c14e3e6b1e542cb41c66fa"
     },
     "R/rendering_functions.R": {
-      "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
+      "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
     },
     "R/standard_panels.R": {
-      "checksum": "d711e6594bd9a7b85ad8110ad75ec8e3"
+      "checksum": "a8801ee92162e7ee6308f177a30cc331"
     },
     "R/stats_neighbours.R": {
-      "checksum": "f3444e177a94eca88c5e5e68d2000a17"
+      "checksum": "82f707a8e1d156a9bdb49de9759ae796"
     },
     "R/summary_page.R": {
       "checksum": "c2d2287ff9f9e704532add766b981c80"
@@ -5106,7 +5127,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "55c05850a466ad5dac4503aadbe09fc3"
+      "checksum": "7166951d877c9e1ad4e499cdfe9c8d53"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5184,7 +5205,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "f7ba93b27de461ce4aec980e737113e1"
+      "checksum": "aca9f5a78bb247d9e72a627ee0b7a33f"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

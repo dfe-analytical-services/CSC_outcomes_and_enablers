@@ -1,10 +1,13 @@
 ---
+
 title: "Pipeline Step 1 diagnostic report"
 output:
   html_document:
     css: "report_styling.css"
 params:
   pipeline_comparison: !r NULL
+  pipeline_comparison_file: "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_adjust_metadata_step_1_v1.rds"
+  
 ---
 
 <style>
@@ -66,11 +69,29 @@ my_reactable <- function(dt, ...) {
 }
 
 
-if (is.null(params$pipeline_comparison)) {
-  pc <- readRDS("~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1_v3.rds")
-} else {
+if (!(is.null(params$pipeline_comparison))) {
+  browser()
   pc <- params$pipeline_comparison
+} else {
+  browser()
+  pc <- readRDS(file = params$pipeline_comparison_file)
+  browser()
 }
+# 
+# csd <- pc$consolidated_setdiffs$cla_rates
+# 
+# csd[, .N, by = .(old,new)]
+# 
+# # now get the actual value counts by dataset and column
+#   all_data <- rbindlist(dataset_list, fill = TRUE)
+#   column_values <- rbindlist(lapply(names(all_data), function(column_name, all_data) data.table(column_name = column_name, column_value = unique(all_data[[column_name]])), all_data))
+#   column_values$numeric_value <- sapply(column_values$column_value, function(x) !is.na(as.numeric(x)))
+# 
+# # now get the actual value counts by dataset and column
+#   all_data <- rbindlist(dataset_list, fill = TRUE)
+#   column_values <- rbindlist(lapply(names(all_data), function(column_name, all_data) data.table(column_name = column_name, column_value = unique(all_data[[column_name]])), all_data))
+#   column_values$numeric_value <- sapply(column_values$column_value, function(x) !is.na(as.numeric(x)))
+
 
 ```
 

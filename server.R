@@ -211,11 +211,37 @@ server <- function(input, output, session) {
 
 
   # Outcome 1 -----
-  # Geographic breakdown o1 (list of either LA names or Region names)
+
+  ## ==== Geographic reactive values and a way to update them =====
+  rv_outcome_1 <- reactiveValues(
+    select_geographic_level = NULL,
+    select_geo_breakdown = NULL,
+    check_compare_national = NULL,
+    check_compare_regional = NULL,
+    check_compare_sn = NULL
+  )
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_o1,
+    input$geographic_breakdown_o1,
+    input$national_comparison_checkbox_o1,
+    input$region_comparison_checkbox_o1,
+    input$sn_comparison_checkbox_o1
+  ), {
+    req(input$select_geography_o1, input$geographic_breakdown_o3)
+    rv_outcome_1$select_geographic_level <- input$select_geography_o1
+    rv_outcome_1$select_geo_breakdown <- input$geographic_breakdown_o1
+    rv_outcome_1$check_compare_national <- input$national_comparison_checkbox_o1
+    rv_outcome_1$check_compare_regional <- input$region_comparison_checkbox_o1
+    rv_outcome_1$check_compare_sn <- input$sn_comparison_checkbox_o1
+  })
+  # =============================================================================
+
+  ## Geographic breakdown o1 (list of either LA names or Region names)
   observeEvent(eventExpr = {
     input$select_geography_o1
   }, {
-    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE)
+    choices <- sort(unique(cla_rates[(cla_rates$geographic_level == input$select_geography_o1 & cla_rates$time_period == 2023)]$geo_breakdown), decreasing = FALSE) # fix hardcode
 
     updateSelectizeInput(
       session = session,
@@ -2054,35 +2080,39 @@ server <- function(input, output, session) {
     )
   })
 
-  ## Severe absence ----
-  ### Severe absence timeseries chart + table : module
 
-  # reactive values and a way to update them
+  ## Severe absence ----
+
+
+  # severe absence reactive breakdowns and their update
   rv_severe_absence <- reactiveValues(
-    select_geographic_level = NULL, select_geo_breakdown = NULL,
-    check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL,
-    dimensional_filters = list()
+    "dimensional_filters" = list(
+      "social_care_group" = "CINO at 31 March",
+      "school_type" = "Total"
+    )
   )
 
-  observeEvent(ignoreInit = TRUE, list(
-    input$select_geography_o1, input$geographic_breakdown_o1,
-    input$national_comparison_checkbox_o1, input$region_comparison_checkbox_o1, input$sn_comparison_checkbox_o1,
-    input$wellbeing_extra_breakdown, input$wellbeing_school_breakdown
-  ), {
-    req(input$select_geography_o1, input$geographic_breakdown_o3)
-    rv_severe_absence$select_geographic_level <- input$select_geography_o1
-    rv_severe_absence$select_geo_breakdown <- input$geographic_breakdown_o1
-    rv_severe_absence$check_compare_national <- input$national_comparison_checkbox_o1
-    rv_severe_absence$check_compare_regional <- input$region_comparison_checkbox_o1
-    rv_severe_absence$check_compare_sn <- input$sn_comparison_checkbox_o1
-    rv_severe_absence$dimensional_filters <- list("social_care_group" = input$wellbeing_extra_breakdown, "school_type" = input$wellbeing_school_breakdown)
-  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
+  observeEvent(
+    ignoreInit = TRUE,
+    list(
+      input$wellbeing_extra_breakdown,
+      input$wellbeing_school_breakdown
+    ),
+    {
+      rv_severe_absence$dimensional_filters <- list(
+        "social_care_group" = input$wellbeing_extra_breakdown,
+        "school_type" = input$wellbeing_school_breakdown
+      )
+    }
+  )
 
 
-  timeseries_section_server("severe_absence",
-    rv = rv_severe_absence,
+  ### Severe absence timeseries chart + table : module
+  timeseries_section_server(
+    id = "severe_absence",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = rv_severe_absence, # dimensional_filters = list("social_care_group" = input$wellbeing_extra_breakdown, "school_type" = input$wellbeing_school_breakdown),
     dataset = copy(outcomes_absence),
-    # dimensional_filters = list("social_care_group" = input$wellbeing_extra_breakdown, "school_type" = input$wellbeing_school_breakdown),
     chart_title = "Severe absentees (%)",
     yvalue = "Severe absentees (%)",
     yaxis_title = "Severe absentees (%)",
@@ -2096,6 +2126,7 @@ server <- function(input, output, session) {
   )
 
   ### Severe absence other charts and tables
+
   # Severe absence regional plot
   output$plot_severe_reg <- plotly::renderPlotly({
     data <- outcomes_absence %>%
@@ -3178,6 +3209,7 @@ server <- function(input, output, session) {
 
 
   # Outcome 3 -----
+
   # Geographic breakdown o3 (list of either LA names or Region names)
   observeEvent(eventExpr = {
     input$select_geography_o3
@@ -3191,6 +3223,28 @@ server <- function(input, output, session) {
       choices = choices,
     )
   })
+
+  # reactive values object to hold the geo selections for Outcome 3 page
+  rv_outcome_3 <- reactiveValues(
+    select_geographic_level = NULL,
+    select_geo_breakdown = NULL,
+    check_compare_national = NULL,
+    check_compare_regional = NULL,
+    check_compare_sn = NULL
+  )
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_o3, input$geographic_breakdown_o3, input$national_comparison_checkbox_o3, input$region_comparison_checkbox_o3, input$sn_comparison_checkbox_o3
+  ), {
+    req(input$select_geography_o3, input$geographic_breakdown_o3)
+    rv_outcome_3$select_geographic_level <- input$select_geography_o3
+    rv_outcome_3$select_geo_breakdown <- input$geographic_breakdown_o3
+    rv_outcome_3$check_compare_national <- input$national_comparison_checkbox_o3
+    rv_outcome_3$check_compare_regional <- input$region_comparison_checkbox_o3
+    rv_outcome_3$check_compare_sn <- input$sn_comparison_checkbox_o3
+  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
+
+
 
   # outcome 3 confirmation text
 
@@ -3640,21 +3694,12 @@ server <- function(input, output, session) {
   ### Hospital admissions -----
   # hospital admission is a recently added chart/table and uses a reactiveValues() and moduleServer set up.
 
-  rv_hosp_admissions <- reactiveValues(select_geographic_level = NULL, select_geo_breakdown = NULL, check_compare_national = NULL, check_compare_regional = NULL, check_compare_sn = NULL)
+  rv_hosp_admissions <- reactiveValues(dimensional_filters = list())
 
-  observeEvent(ignoreInit = TRUE, list(
-    input$select_geography_o3, input$geographic_breakdown_o3, input$national_comparison_checkbox_o3, input$region_comparison_checkbox_o3, input$sn_comparison_checkbox_o3
-  ), {
-    req(input$select_geography_o3, input$geographic_breakdown_o3)
-    rv_hosp_admissions$select_geographic_level <- input$select_geography_o3
-    rv_hosp_admissions$select_geo_breakdown <- input$geographic_breakdown_o3
-    rv_hosp_admissions$check_compare_national <- input$national_comparison_checkbox_o3
-    rv_hosp_admissions$check_compare_regional <- input$region_comparison_checkbox_o3
-    rv_hosp_admissions$check_compare_sn <- input$sn_comparison_checkbox_o3
-  }) # bindEvent(list(input$geographic_breakdown_o3,input$select_geography_o3))
-
-  timeseries_section_server("hospital_admissions",
-    rv = rv_hosp_admissions,
+  timeseries_section_server(
+    id = "hospital_admissions",
+    rv_geo_filters = rv_outcome_3,
+    rv_dimensional_filters = rv_hosp_admissions,
     dataset = copy(hospital_admissions),
     chart_title = "Hospital admissions rate per 10,000 children",
     yvalue = "Value",
@@ -3667,6 +3712,7 @@ server <- function(input, output, session) {
     decimal_percentage = TRUE
   )
 
+  # TECHDEBT to function and clean up section to a simple reactive object......
   output$hosp_admissions_txt <- renderText({
     stat <- format(hospital_admissions %>%
       filter(time_period == max(hospital_admissions$time_period) &
@@ -3679,7 +3725,7 @@ server <- function(input, output, session) {
     paste0(format(stat, nsmall = 0), "<br>", "<p style='font-size:16px; font-weight:500;'>", "per 10,000 (", max(hospital_admissions$time_period), ")", "</p>")
   })
 
-
+  # TECHDEBT to clean up and move to a modular object.....
   output$admissions_region_plot <- renderPlotly({
     shiny::validate(
       need(input$select_geography_o3 != "", "Select a geography level."),
@@ -6469,10 +6515,12 @@ server <- function(input, output, session) {
   })
 
   # Enabler 3 ----
+
   # Geographic breakdown e3 (list of either LA names or Region names)
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
+    # browser()
     choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
 
     updateSelectizeInput(
@@ -6493,6 +6541,36 @@ server <- function(input, output, session) {
       updateCheckboxInput(session, "Yes_region_e3", value = FALSE)
     }
   })
+
+
+  # reactive values definition and update
+  rv_enabler_3 <- reactiveValues(
+    select_geographic_level = NULL,
+    select_geo_breakdown = NULL,
+    check_compare_national = NULL,
+    check_compare_regional = NULL,
+    check_compare_sn = NULL,
+  )
+
+  observeEvent(ignoreInit = TRUE, list(
+    input$select_geography_e3,
+    input$geographic_breakdown_e3,
+    input$national_comparison_checkbox_e3,
+    input$region_comparison_checkbox_e3,
+    input$sn_comparison_checkbox_e3
+  ), {
+    req(input$select_geography_e3, input$geographic_breakdown_e3)
+    rv_enabler_3$select_geographic_level <- input$select_geography_e3
+    rv_enabler_3$select_geo_breakdown <- input$geographic_breakdown_e3
+    rv_enabler_3$check_compare_national <- input$national_comparison_checkbox_e3
+    rv_enabler_3$check_compare_regional <- input$region_comparison_checkbox_e3
+    rv_enabler_3$check_compare_sn <- input$sn_comparison_checkbox_e3
+  })
+
+
+
+
+
 
   ###### Confirmation sentence E3
   # This function gets the selected region to put into the confirmation text below
@@ -6581,6 +6659,22 @@ server <- function(input, output, session) {
       stat <- format(workforce_data %>% filter(time_period == max(workforce_data$time_period) & geo_breakdown %in% input$geographic_breakdown_e3) %>% select(caseload_fte), nsmall = 1)
       paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max(workforce_data$time_period), context, "</p>")
     }
+  })
+
+  ## Social worker stability headline stat
+  output$sw_stability_txt <- renderText({
+    max_period <- max(sw_stability_data$time_period)
+    stat <- format(sw_stability_data %>%
+      filter(time_period == max_period & geo_breakdown %in% input$geographic_breakdown_e3) %>%
+      select(percent), nsmall = 0)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>"
+    )
   })
 
   ### Social worker turnover rate ------------
@@ -7333,6 +7427,72 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
+  ### Social Worker stability domain (new indicator) ----
+
+
+
+
+  # Additional filters for this indicator - this is actually not reactive so could perhaps be implemented differently.  Sometimes dimensional filters are reactive and sometimes not
+  rv_sw_stability <- reactiveValues(
+    dimensional_filters = list(
+      "cla_group" = "CLA on 31 March",
+      "sw_stability" = "3 or more social workers during the year"
+    )
+  )
+
+  ### Stability timeseries chart + table : module
+  timeseries_section_server(
+    id = "sw_stability",
+    rv_geo_filters = rv_enabler_3,
+    rv_dimensional_filters = rv_sw_stability,
+    dataset = copy(sw_stability_data),
+    chart_title = "CLA with 3 or more social workers in 12 months to 31 March (%)",
+    yvalue = "percent",
+    yaxis_title = "CLA with 3 or more social workers (%)",
+    max_rate = calculate_max_rate(sw_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+  # Regional barchart for social worker stability
+  regional_barchart_section_server(
+    id = "sw_stability",
+    rv_geo_filters = rv_enabler_3,
+    rv_dimensional_filters = rv_sw_stability,
+    dataset = copy(sw_stability_data),
+    chart_title = "CLA with 3 or more social workers in 12 months to 31 March (%)",
+    yvalue = "percent",
+    yaxis_title = "CLA with 3 or more social workers (%)",
+    max_rate = calculate_max_rate(sw_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+
+  la_and_sn_toggle_section_server(
+    id = "sw_stability",
+    rv_geo_filters = rv_enabler_3,
+    rv_dimensional_filters = rv_sw_stability,
+    dataset = copy(sw_stability_data),
+    chart_title = "CLA with 3 or more social workers in 12 months to 31 March (%)",
+    yvalue = "percent",
+    yaxis_title = "CLA with 3 or more social workers (%)",
+    max_rate = calculate_max_rate(sw_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+
 
   ## Ethnicity and Diversity Domain-----
   output$non_white_txt <- renderText({
@@ -10931,7 +11091,7 @@ server <- function(input, output, session) {
       )
     }
   })
-  # turnover SN plot and table alternative
+  # caseload SN plot and table alternative
   output$caseload_SN_plot <- plotly::renderPlotly({
     validate(
       need(input$select_geography_e3 == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
