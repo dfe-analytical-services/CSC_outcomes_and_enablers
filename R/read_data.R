@@ -2114,11 +2114,11 @@ read_per_capita_spending <- function(sn_long) {
 
 read_spending_data2 <- function(sn_long, file = "./data-raw/RO3_LA_DATA_2024-25_data_by_LA.ods") {
   data <- read_ods(file, sheet = "RO3_LA_Data_202425", range = "A7:SC418")
-  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certification", "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)", "Children's social care - Children Looked After [note 3] - Total Expenditure (C3 = C1 + C2)")
+  data2 <- data %>% select("ONS Code", "Local authority", "Notes", "Class", "Detailed Class", "Certification", "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)", "Children's social care - Children Looked After - Total Expenditure (C3 = C1 + C2)")
 
   data3 <- data2 %>%
     filter(data2$Class %in% c("UA", "MD", "LB", "SC", "Eng")) %>%
-    rename(`CLA Expenditure` = "Children's social care - Children Looked After [note 3] - Total Expenditure (C3 = C1 + C2)", `Total Expenditure` = "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)") %>%
+    rename(`CLA Expenditure` = "Children's social care - Children Looked After - Total Expenditure (C3 = C1 + C2)", `Total Expenditure` = "TOTAL CHILDREN SOCIAL CARE - Total Expenditure (C3 = C1 + C2)") %>%
     # replace "[x]" values with x
     mutate_all(~ gsub("\\[x\\]", "x", .)) %>%
     # replace & in local authority names with "and"
