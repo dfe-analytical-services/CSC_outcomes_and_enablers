@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "f560e4bd87725f48c5c34b65dee86f99"
+      "checksum": "de2987025a24a4cdcd61d3d74b82809d"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4955,6 +4955,9 @@
     "data/repeat_cpp.rds": {
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
+    "data/school_stability_data.rds": {
+      "checksum": "bec99b8d69e4cf491a9e682051fa324b"
+    },
     "data/spending_data.rds": {
       "checksum": "75650c5c33ba2e7961051ec95656e346"
     },
@@ -5040,7 +5043,7 @@
       "checksum": "46a8313e6d1a3f418341bcdfeb97a702"
     },
     "R/data_filtering.R": {
-      "checksum": "d6defc34b313301132483fb5e662eb33"
+      "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline.R": {
       "checksum": "29a5fcfff0730f66bc5d6a8ea55b65ad"
