@@ -304,6 +304,8 @@ pipeline_generate_datasets <- function() {
   outcomes_ks2 <- suppressWarnings(read_outcomes_ks2_data(sn_long = stats_neighbours_long))
   outcomes_ks4 <- suppressWarnings(read_outcomes_ks4_data(sn_long = stats_neighbours_long))
 
+  school_stability_data <- suppressWarnings(read_school_stability_data(sn_long = stats_neighbours_long))
+
   ## Read in outcome 2 data ----
   ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 

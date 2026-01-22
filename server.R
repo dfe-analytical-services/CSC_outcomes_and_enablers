@@ -2734,6 +2734,77 @@ server <- function(input, output, session) {
     )
   })
 
+  ## Domain 5: School stability ----
+
+  ### School stability headline stat ----
+  output$school_stability_txt <- renderText({
+    max_period <- max(school_stability_data$time_period)
+    stat <- format(school_stability_data %>%
+      filter(time_period == max_period & geo_breakdown %in% input$geographic_breakdown_o1) %>%
+      select(percent), nsmall = 0)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>"
+    )
+  })
+
+
+  ### Stability timeseries chart + table : module
+  timeseries_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "Chart Tile",
+    yvalue = "percent",
+    yaxis_title = "Yaxis title",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+  # Regional barchart for social worker stability
+  regional_barchart_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "Chart Tile",
+    yvalue = "percent",
+    yaxis_title = "Yaxis title",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+
+  la_and_sn_toggle_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "Chart Tile",
+    yvalue = "percent",
+    yaxis_title = "Yaxis title",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = TRUE
+  )
+
+
 
 
   # Outcome 2 -----

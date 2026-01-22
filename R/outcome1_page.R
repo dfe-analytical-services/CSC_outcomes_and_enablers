@@ -85,17 +85,13 @@ outcome1_tab <- function() {
       gov_row(
         # Confirmation of user selection
         p(htmlOutput("outcome1_choice_text1"), htmlOutput("outcome1_choice_text2")),
-        # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_o1 == 'Cumbria')",
-        #   p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
-        # ),
       ),
       gov_row(
         div(
           tabsetPanel(
             id = "outcome1_panels",
             type = "tabs",
-            # Domain 1 --------------
+            # Domain 1: Access to support and getting help --------------
             tabPanel(
               "Access to support and getting help",
               fluidRow(
@@ -349,7 +345,7 @@ outcome1_tab <- function() {
                 open = FALSE
               ),
             ),
-            # Domain 2 --------------
+            # Domain 2: Family stability --------------
             tabPanel(
               "Family stability",
               # Headline stats boxes
@@ -764,7 +760,7 @@ outcome1_tab <- function() {
                 open = FALSE
               )
             ),
-            # Domain 3 --------------
+            # Domain 3: Child wellbeing and development --------------
             tabPanel(
               "Child wellbeing and development",
               fluidRow(
@@ -1233,7 +1229,7 @@ outcome1_tab <- function() {
                 br(),
               ),
             ),
-            # Domain 4 ----
+            # Domain 4: Educational attainment ----
             tabPanel(
               "Educational attainment",
               fluidRow(
@@ -1549,7 +1545,63 @@ outcome1_tab <- function() {
                 ),
                 br(),
               ),
-            )
+            ),
+            # Domain 5: School Stability (new domain) ----
+            tabPanel(
+              "School stability",
+              fluidRow(
+                column(
+                  width = 4,
+                  value_box(
+                    title = "School stability indicator short text",
+                    value = htmlOutput("school_stability_txt")
+                  )
+                ),
+                br(),
+              ),
+              gov_row(
+                ### School Stability -----
+                accordion(
+                  accordion_panel(
+                    "School stability",
+                    gov_row(
+                      h2("School stability"),
+                      p("School stability Text"),
+                      insert_text(
+                        inputId = "school_stability_definition",
+                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
+                      ),
+                      # here is the call to the module to display timeseries chart, table and download button
+                      timeseries_section_ui("school_stability")
+                    ),
+                    gov_row(
+                      h2("School stability by region"),
+                      p("-- check text for consistency: This chart will not react to geographical level and location selected in the filters at the top."),
+                      br(),
+                      insert_text(
+                        inputId = "school_stability_definition",
+                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
+                      ),
+                      # here is the call the  regional barchart ui
+                      regional_barchart_section_ui("school_stability")
+                    ),
+                    gov_row(
+                      h2("School stability by local authority"),
+                      p(sprintf("The charts below represent data from %s.", max(school_stability_data$time_period))),
+                      br(),
+                      insert_text(
+                        inputId = "school_stability_definition",
+                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
+                      ),
+                      # this is th code to display the ui module for LA/SN section
+                      la_and_sn_toggle_section_ui("school_stability"),
+                      br()
+                    ),
+                    open = FALSE
+                  )
+                )
+              )
+            ) # end of tab panel School stability
           )
         )
       )

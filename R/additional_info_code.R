@@ -53,6 +53,11 @@ additional_info_help_text <- list(
         "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
       )
     ),
+  "school_stability" = tags$ul(
+    tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number."),
+    tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table which can be found in earlier releases of the publication 'Children Looked After in England including Adoptions'. Figures exclude children looked after under a series of short-term placements"),
+    tags$br()
+  ),
   "severe_absence" =
     tags$ul(
       tags$li(
