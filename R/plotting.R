@@ -1965,7 +1965,10 @@ statistical_neighbours_plot <- function(dataset,
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
-  sn_names <- stats_neighbours_for_la(selected_geo_breakdown)
+  sn_names <- stats_neighbours %>%
+    filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
+    select("SN1", "SN2", "SN3", "SN4", "SN5", "SN6", "SN7", "SN8", "SN9", "SN10") %>%
+    as.character()
 
   if (add_rect == FALSE) {
     filtered_data <- dataset %>%
