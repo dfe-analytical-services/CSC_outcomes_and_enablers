@@ -5073,16 +5073,16 @@
       "checksum": "48548244416fb53442c42e0406be8761"
     },
     "R/mod_la_and_sn_toggle_section.R": {
-      "checksum": "07c40e5651f7808ae3568deab04a9f46"
+      "checksum": "41fdeb9f6581da87afafb86bacc058ce"
     },
     "R/mod_regional_barchart_section.R": {
-      "checksum": "f93b91bd8641478ae9333e15a0a813d9"
+      "checksum": "67098eb54f15bdf97fc67356dd90d800"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "9f74dc6937cba5c920219682581d1230"
+      "checksum": "7b3f4ace73ecd513be3aba5efa7db362"
     },
     "R/omitted_data.R": {
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
@@ -5100,7 +5100,7 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "ab44f1ad38f118489fcd8e1216d28194"
+      "checksum": "a8f2592e8b076704cac6a327459b2cee"
     },
     "R/read_data.R": {
       "checksum": "4e6c4fbef22570b2de2b4e62322a1669"
@@ -5122,6 +5122,9 @@
     },
     "R/user_guide.R": {
       "checksum": "f7f88e85b119124e5f966f9972b7a702"
+    },
+    "R/utility_functions.R": {
+      "checksum": "6f099bde15748f7942d024c3ce3cf9a1"
     },
     "README.html": {
       "checksum": "35bfef78ab5877bd3f03bde575ecda29"
