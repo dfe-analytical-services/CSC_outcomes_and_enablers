@@ -77,7 +77,7 @@ filter_la_toggle_dataset <- function(dataset_in,
   } else if (select_geographic_level == "Regional") {
     # get the location data
     # Check if the selected region is London
-    if (selected_geo_breakdown == "London") {
+    if (select_geo_breakdown == "London") {
       # Include both Inner London and Outer London
       location <- location_data %>%
         filter(region_name %in% c("Inner London", "Outer London")) %>%
@@ -85,7 +85,7 @@ filter_la_toggle_dataset <- function(dataset_in,
     } else {
       # Get the la_name values within the selected region_name
       location <- location_data %>%
-        filter(region_name == selected_geo_breakdown) %>%
+        filter(region_name == select_geo_breakdown) %>%
         pull(la_name)
     }
     dataset[geographic_level == "Local authority" & geo_breakdown %in% location & time_period == select_time_period]

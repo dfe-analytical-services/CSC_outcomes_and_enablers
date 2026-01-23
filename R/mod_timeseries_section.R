@@ -67,7 +67,7 @@ timeseries_section_server <- function(id,
         yvalue = yvalue,
         yaxis_title = yaxis_title,
         ylim_upper = max_yvalue,
-        decimal_percentage = TRUE
+        decimal_percentage = decimal_percentage
       ) %>%
         config(displayModeBar = F)
 

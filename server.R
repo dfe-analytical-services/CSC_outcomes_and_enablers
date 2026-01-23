@@ -6665,7 +6665,7 @@ server <- function(input, output, session) {
     max_period <- max(sw_stability_data$time_period)
     stat <- format(sw_stability_data %>%
       filter(time_period == max_period & geo_breakdown %in% input$geographic_breakdown_e3) %>%
-      select(percent), nsmall = 0)
+      select(percentage), nsmall = 0)
 
     if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
       stat <- "NA"
@@ -7454,7 +7454,7 @@ server <- function(input, output, session) {
     rt_col_defs = list(
       "Percent" = colDef(cell = cellfunc)
     ),
-    decimal_percentage = TRUE
+    decimal_percentage = FALSE
   )
 
   # Regional barchart for social worker stability
@@ -7471,7 +7471,7 @@ server <- function(input, output, session) {
     rt_col_defs = list(
       "Percent" = colDef(cell = cellfunc)
     ),
-    decimal_percentage = TRUE
+    decimal_percentage = FALSE
   )
 
 
@@ -7488,7 +7488,7 @@ server <- function(input, output, session) {
     rt_col_defs = list(
       "Percent" = colDef(cell = cellfunc)
     ),
-    decimal_percentage = TRUE
+    decimal_percentage = FALSE
   )
 
 

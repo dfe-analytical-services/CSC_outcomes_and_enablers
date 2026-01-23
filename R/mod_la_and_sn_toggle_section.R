@@ -42,7 +42,7 @@ la_and_sn_toggle_section_server <- function(id,
         select_time_period = max_time_period,
         dimensional_filters = rv_dimensional_filters$dimensional_filters
       ) %>%
-        arrange(desc(!!sym(`yvalue`)))
+        arrange(desc(!!sym(yvalue)), geo_breakdown)
     })
 
 
@@ -54,7 +54,8 @@ la_and_sn_toggle_section_server <- function(id,
         select_geo_breakdown = rv_geo_filters$select_geo_breakdown,
         select_time_period = max(dataset$time_period),
         dimensional_filters = rv_dimensional_filters$dimensional_filters
-      )
+      ) %>%
+        arrange(desc(!!sym(yvalue)), geo_breakdown)
     })
 
 
@@ -131,14 +132,12 @@ la_and_sn_toggle_section_server <- function(id,
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
 
+      # this may not be suitable here
       max_rate <- max(filtered_data_la()[[yvalue]], na.rm = TRUE)
       max_rate <- ceiling(max_rate / 10) * 10
 
-      # max_rate <- max(workforce_data$`Caseload Fte`[workforce_data$time_period == max(workforce_data$time_period) &
-      #                                                 workforce_data$geographic_level == "Local authority"], na.rm = TRUE)
-      # max_rate <- ceiling(max_rate / 10) * 10
 
-      p <- by_la_bar_plot_revised(filtered_data_la(), rv_geo_filters$select_geographic_level, rv_geo_filters$select_geo_breakdown, yvalue, yaxis_title, max_rate, decimal_percentage = TRUE) %>%
+      p <- by_la_bar_plot_revised(filtered_data_la(), rv_geo_filters$select_geographic_level, rv_geo_filters$select_geo_breakdown, yvalue, yaxis_title, max_rate, decimal_percentage = decimal_percentage) %>%
         config(displayModeBar = F)
 
       # p <- p + ggtitle("Average caseload (FTE) by local authority")
@@ -191,7 +190,7 @@ la_and_sn_toggle_section_server <- function(id,
         yvalue = yvalue,
         yaxis_title = yaxis_title,
         ylim_upper = max_rate,
-        decimal_percentage = TRUE
+        decimal_percentage = decimal_percentage
       ) %>%
         config(displayModeBar = F)
       # p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
