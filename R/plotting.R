@@ -2112,12 +2112,12 @@ statistical_neighbours_plot_revised <- function(dataset,
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0),
-        axis.text.x = element_text(angle = 45, hjust = 1)
+        axis.text.x = element_text()
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
