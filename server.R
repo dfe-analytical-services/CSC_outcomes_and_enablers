@@ -6520,7 +6520,7 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
-    if (input$select_geography_e3 == "Local_authority") {
+    if (input$select_geography_e3 == "Local authority") {
       choices <- sort(
         c(
           "Kingston upon Thames", "Richmond upon Thames", "North Northamptonshire", "West Northamptonshire",

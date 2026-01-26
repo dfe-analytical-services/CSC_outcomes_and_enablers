@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "24f9303d44c2f863b9ea91c4583acb10"
+      "checksum": "bd55142a1a50ccecc3d4aeb2f2afa023"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5040,7 +5040,7 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/additional_info_code.R": {
-      "checksum": "46a8313e6d1a3f418341bcdfeb97a702"
+      "checksum": "6713b4eeb50d864d82aab0cd4506325e"
     },
     "R/data_filtering.R": {
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
@@ -5133,7 +5133,7 @@
       "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
     },
     "server.R": {
-      "checksum": "f45800f8fe1fde2ec0cb2a400329b42d"
+      "checksum": "d8a770623645e26eeae5bb4e28b46a6d"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
