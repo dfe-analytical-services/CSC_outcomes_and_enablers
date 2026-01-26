@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "3bc21f8f7aa70a804469a3eae3ddcea3"
+      "checksum": "05f8ec4632b4ac244fe41d51201715e8"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4938,7 +4938,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "2b90062fae53dbf3c730e1f38a27a9b9"
+      "checksum": "934f4471e52d3ac22e3536f547a1f2e1"
     },
     "data/pipeline/data_pipeline_run_history_dirty.rds": {
       "checksum": "24be225e93886d46bcad6f7de2f2da23"
@@ -4977,10 +4977,10 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "0986067d4c4384f07cc603567bab1b76"
+      "checksum": "c8aeb69a7e65609c6032b2a3cfaf1113"
     },
-    "data/summary_page_metadata.xlsx": {
-      "checksum": "402c1bf40889e1dd746a3fd62e6b20f4"
+    "data/summary_page_metadata.csv": {
+      "checksum": "68bd4f4e4a9ce9f9d9dee3e5cf0befc2"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5004,7 +5004,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "432fd54880dd4cf20b8a9e9b1ea475e2"
+      "checksum": "baf85bffb607f5ef4fe92cbb090e74de"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5049,7 +5049,7 @@
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline.R": {
-      "checksum": "e9368ccc574fea86776e6a68c2fd7a00"
+      "checksum": "0d6daf33b019c4129997a366e76e5815"
     },
     "R/data_sources.R": {
       "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
@@ -5088,7 +5088,7 @@
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "a7ee464f42b5de426fa40b221d625d00"
+      "checksum": "bbc89e6023b5226490f6189c74966959"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
@@ -5103,7 +5103,7 @@
       "checksum": "dfe473a02f77c4b85df35901faa28088"
     },
     "R/read_data.R": {
-      "checksum": "4e6c4fbef22570b2de2b4e62322a1669"
+      "checksum": "dcce169f08cf0c825c1644a94f333eb8"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"

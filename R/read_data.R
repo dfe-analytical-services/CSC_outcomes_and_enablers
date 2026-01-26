@@ -240,7 +240,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 # this function is the controller of summary_data build.  It takes the input metadata from Excel and processes each indicator (i.e. row of the metadata table)
 # data for all indicators is combined into a single data.table for use in the summary page
 collect_summary_data_all <- function() {
-  metric_parameters <- data.table(read_excel(path = "./data/summary_page_metadata.xlsx", sheet = 1))
+  metric_parameters <- fread(file = "./data/summary_page_metadata.csv")
 
   summary_data <- rbindlist(
     lapply(
