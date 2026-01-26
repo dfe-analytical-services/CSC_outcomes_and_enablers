@@ -6520,7 +6520,18 @@ server <- function(input, output, session) {
   observeEvent(eventExpr = {
     input$select_geography_e3
   }, {
-    choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+    if (input$select_geography_e3 == "Local_authority") {
+      choices <- sort(
+        c(
+          "Kingston upon Thames", "Richmond upon Thames", "North Northamptonshire", "West Northamptonshire",
+          unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown)
+        ),
+        decreasing = FALSE
+      )
+    } else {
+      choices <- sort(unique(workforce_data[geographic_level == input$select_geography_e3 & time_period == max(workforce_data$time_period)]$geo_breakdown), decreasing = FALSE)
+    }
+
 
     updateSelectizeInput(
       session = session,

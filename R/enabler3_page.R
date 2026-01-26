@@ -84,11 +84,23 @@ enabler3_tab <- function() {
         p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames / Richmond upon Thames')",
-          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together.")
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see Social Worker Stability data, please select either Kingston upon Thames or Richmond upon Thames from the dropdown.")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames' | input.geographic_breakdown_e3 == 'Richmond upon Thames')",
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see the workforce indicators for the combined return, please select Kingston upon Thames / Richmond upon Thames from the dropdown.")
         ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire / West Northamptonshire')",
-          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
+          p("North Northamptonshire and West Northamptonshire submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see Social Worker Stability data, please select either North Northamptonshire or West Northamptonshire from the dropdown.")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire' | input.geographic_breakdown_e3 == 'West Northamptonshire')",
+          p("North Northamptonshire and West Northamptonshire submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see the workforce indicators for the combined return, please select North Northamptonshire / West Northamptonshire from the dropdown.")
         ),
         div(
           tabsetPanel(
