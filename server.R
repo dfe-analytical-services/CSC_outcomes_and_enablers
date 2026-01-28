@@ -2734,7 +2734,7 @@ server <- function(input, output, session) {
     )
   })
 
-  ## Domain 5: School stability ----
+  ## Domain 3: School stability ----
 
   ### School stability headline stat ----
   output$school_stability_txt <- renderText({
@@ -2759,9 +2759,9 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "Chart Tile",
+    chart_title = "CLA with one or more mid-year moves in the year to 31 March (%)",
     yvalue = "percent",
-    yaxis_title = "Yaxis title",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
@@ -2776,9 +2776,9 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "Chart Tile",
+    chart_title = "CLA with one or more mid-year moves in the year to 31 March (%)",
     yvalue = "percent",
-    yaxis_title = "Yaxis title",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(
@@ -2793,9 +2793,9 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "Chart Tile",
+    chart_title = "CLA with one or more mid-year moves in the year to 31 March (%)",
     yvalue = "percent",
-    yaxis_title = "Yaxis title",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(

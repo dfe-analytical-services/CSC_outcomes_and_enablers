@@ -72,8 +72,7 @@ regional_barchart_section_server <- function(id,
         config(displayModeBar = F)
 
       # we need to construct the chart title
-
-      # title <- paste0("Social worker turnover rate (FTE) % by region (", max(p$data$time_period), ")")
+      chart_title <- paste0(chart_title, " (", max(p$data$time_period), ")")
       p <- p + ggtitle(chart_title)
 
       ggplotly(

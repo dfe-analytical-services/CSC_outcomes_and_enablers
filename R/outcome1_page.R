@@ -780,7 +780,7 @@ outcome1_tab <- function() {
                     "School stability",
                     gov_row(
                       h2("School stability"),
-                      p("School stability Text"),
+                      p("Children and young people should remain at their school as long as possible, or if this is not possible school changes should be minimised to support their long term development and wellbeing."),
                       insert_text(
                         inputId = "school_stability_definition",
                         text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
@@ -790,29 +790,19 @@ outcome1_tab <- function() {
                     ),
                     gov_row(
                       h2("School stability by region"),
-                      p("-- check text for consistency: This chart will not react to geographical level and location selected in the filters at the top."),
                       br(),
-                      insert_text(
-                        inputId = "school_stability_definition",
-                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
-                      ),
                       # here is the call the  regional barchart ui
                       regional_barchart_section_ui("school_stability")
                     ),
                     gov_row(
                       h2("School stability by local authority"),
-                      p(sprintf("The charts below represent data from %s.", max(school_stability_data$time_period))),
                       br(),
-                      insert_text(
-                        inputId = "school_stability_definition",
-                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
-                      ),
                       # this is th code to display the ui module for LA/SN section
                       la_and_sn_toggle_section_ui("school_stability"),
                       br()
-                    ),
-                    open = FALSE
-                  )
+                    )
+                  ),
+                  open = FALSE
                 )
               )
             ), # end of tab panel School stability

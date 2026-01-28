@@ -66,13 +66,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_consolidated_setdiffs_merge_conflicts_v1.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/school_stability/pipeline_consolidated_setdiffs_school_stability_v1.xlsx")
 
 
   ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Resolving any issues in the summary data due to conflicts between branches in an RDS file" # <---- EDIT HERE
+  reason_for_pipeline_run <- "New indicator, school stability" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
