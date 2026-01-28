@@ -134,16 +134,11 @@ la_and_sn_toggle_section_server <- function(id,
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
 
-      # this may not be suitable here
-      # max_rate <- max(filtered_data_la()[[yvalue]], na.rm = TRUE)
-      # max_rate <- ceiling(max_rate / 10) * 10
-
-
       p <- by_la_bar_plot_revised(filtered_data_la(), rv_geo_filters$select_geographic_level, rv_geo_filters$select_geo_breakdown, yvalue, yaxis_title, max_yvalue, decimal_percentage = decimal_percentage) %>%
         config(displayModeBar = F)
 
-      # p <- p + ggtitle("Average caseload (FTE) by local authority")
-      # title <- paste0("Average caseload (FTE) by local authority (", max(p$data$time_period), ")")
+      # we need to construct the chart title
+      chart_title <- paste0(chart_title, " (", max(p$data$time_period), ")")
       p <- p + ggtitle(chart_title)
 
       ggplotly(
@@ -154,7 +149,8 @@ la_and_sn_toggle_section_server <- function(id,
         config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
     })
 
-    # LA table
+
+    # LA table rendering
     output$table_la_toggle <- renderReactable({
       req(filtered_data_la())
       shiny::validate(
@@ -162,7 +158,6 @@ la_and_sn_toggle_section_server <- function(id,
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
       # build the dataset for the table
-
       filtered_data_la() %>%
         select(any_of(as.character(rt_columns))) %>%
         setnames(names(rt_columns)) %>%
