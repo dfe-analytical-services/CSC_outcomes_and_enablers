@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "bd55142a1a50ccecc3d4aeb2f2afa023"
+      "checksum": "ffbaa95038862f4ae031b4061a6a2464"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4955,9 +4955,6 @@
     "data/repeat_cpp.rds": {
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
-    "data/school_stability_data.rds": {
-      "checksum": "bec99b8d69e4cf491a9e682051fa324b"
-    },
     "data/spending_data.rds": {
       "checksum": "75650c5c33ba2e7961051ec95656e346"
     },
@@ -5070,10 +5067,10 @@
       "checksum": "48548244416fb53442c42e0406be8761"
     },
     "R/mod_la_and_sn_toggle_section.R": {
-      "checksum": "41fdeb9f6581da87afafb86bacc058ce"
+      "checksum": "a336aeeab6b0d236409142ac0aa7be44"
     },
     "R/mod_regional_barchart_section.R": {
-      "checksum": "67098eb54f15bdf97fc67356dd90d800"
+      "checksum": "077d7cbf24e32129eca22bd5d4bae2d4"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
