@@ -56,7 +56,6 @@ sn_aggregations <- function(sn_long,
 
 
 
-
 ## Examples need to move to testing
 # TESTS: putting it all together
 test_sn <- function(sn_long,
@@ -94,82 +93,5 @@ test_sn <- function(sn_long,
     check_compare_regional = check_compare_regional,
     check_compare_sn = check_compare_sn,
     dimensional_filters = dimensional_filters
-  )
-}
-
-## Filtering logic for the dataset to aid time series plotting (and tables)
-filter_time_series_data <- function(dataset_in,
-                                    select_geographic_level,
-                                    select_geo_breakdown,
-                                    check_compare_national,
-                                    check_compare_regional,
-                                    check_compare_sn,
-                                    dimensional_filters = list()) {
-  # default values for testing
-  # select_geographic_level <- "Local authority"
-  # select_geo_breakdown <- "Merton"
-  # dimensional_filters <- list("characteristic" = "Special guardianship orders")
-
-  # make the dataset into a data.table and take a copy so we don't tamper with underlying data
-  setDT(dataset_in)
-  dataset <- copy(dataset_in)
-
-  # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
-  if (length(dimensional_filters) > 0) {
-    dataset <- dataset[eval(AndEQUAL(dimensional_filters))]
-  }
-
-  # now filter using the selects geo_breakdown and level - these dropdowns are the primary filtering geography, others may be added later
-  filtered_data <- dataset[geographic_level == select_geographic_level & geo_breakdown == select_geo_breakdown]
-
-  # now add in the rows for national, regional, SN comparisons
-  if (!is.null(check_compare_national)) {
-    filtered_data <- rbindlist(l = list(filtered_data, dataset[geographic_level == "National"]))
-  }
-  if (!is.null(check_compare_regional)) {
-    # get the region from the LA and apply additional filtering
-    location <- location_data %>%
-      filter(la_name %in% select_geo_breakdown) %>%
-      pull(region_name)
-    if (length(location == 1)) {
-      filtered_data <- rbindlist(l = list(filtered_data, dataset[geographic_level == "Regional" & geo_breakdown == location]))
-    }
-  }
-  if (!is.null(check_compare_sn)) {
-    filtered_data <- rbindlist(
-      l = list(
-        filtered_data,
-        dataset[geographic_level == "Statistical neighbours (median)" & geo_breakdown_sn == select_geo_breakdown]
-      )
-    )
-  }
-
-  filtered_data[geographic_level == "Statistical neighbours (median)", geo_breakdown := "Statistical neighbours (median)"]
-  filtered_data <- filtered_data[order(-time_period, factor(geographic_level, levels = c("National", "Regional", "Local authority", "Statistical neighbours (median)")))]
-
-  return(filtered_data)
-}
-
-
-
-
-AndIN <- function(cond) {
-  Reduce(
-    function(x, y) call("&", call("(", x), call("(", y)),
-    lapply(names(cond), function(var) call("%in%", as.name(var), cond[[var]]))
-  )
-}
-AndEQUAL <- function(cond) {
-  Reduce(
-    function(x, y) call("&", call("(", x), call("(", y)),
-    lapply(names(cond), function(var) call("==", as.name(var), cond[[var]]))
-  )
-}
-
-
-AndISNA <- function(cond) {
-  Reduce(
-    function(x, y) call("&", call("(", x), call("(", y)),
-    lapply(names(cond), function(var) call("is.na", as.name(var), cond[[var]]))
   )
 }
