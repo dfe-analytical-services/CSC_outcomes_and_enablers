@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "26e084985e467807e4cd7c82f60db94f"
+      "checksum": "1658f1b873fa2ec515d7cc63a3513daf"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4957,6 +4957,9 @@
     },
     "data/repeat_cpp.rds": {
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
+    },
+    "data/school_stability_data.rds": {
+      "checksum": "bec99b8d69e4cf491a9e682051fa324b"
     },
     "data/spending_data.rds": {
       "checksum": "75650c5c33ba2e7961051ec95656e346"
@@ -5211,7 +5214,7 @@
       "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
     },
     "ui.R": {
-      "checksum": "6da0249b7824fe2e1f8a3f1b4959a4f0"
+      "checksum": "905f9eeefa32289ba883d3adbdc10d91"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
