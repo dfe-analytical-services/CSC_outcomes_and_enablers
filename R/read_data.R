@@ -240,7 +240,7 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 # this function is the controller of summary_data build.  It takes the input metadata from Excel and processes each indicator (i.e. row of the metadata table)
 # data for all indicators is combined into a single data.table for use in the summary page
 collect_summary_data_all <- function() {
-  metric_parameters <- data.table(read_excel(path = "./data/summary_page_metadata.xlsx", sheet = 1))
+  metric_parameters <- fread(file = "./data/summary_page_metadata.csv")
 
   summary_data <- rbindlist(
     lapply(
@@ -829,6 +829,37 @@ read_outcomes_ks4_data <- function(sn_long, file = "./data-raw/ks4_la.csv") {
 
   return(outcomes_ks4_data)
 }
+
+
+# School stability (new indicator)
+read_school_stability_data <- function(sn_long, file = "./data-raw/la_cla_school_moves.csv") {
+  # load the file into a data.table
+  sch_stability_data <- fread(file)
+
+  # preliminary cleaning
+  sch_stability_data <- sch_stability_data %>%
+    colClean() %>%
+    insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
+    filter(cla_group == "CLA on 31 March" & move_measure == "Mid-year moves" & school_stability == "With one or more mid-year moves during the year")
+
+  # calculate stat neighbours
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = sch_stability_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period", "cla_group", "move_measure", "school_stability")
+  )
+
+  sch_stability_data <- rbindlist(l = list(sch_stability_data, sn_metrics), fill = TRUE, use.names = TRUE) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+
+  return(sch_stability_data)
+}
+
+
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
