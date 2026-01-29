@@ -305,41 +305,7 @@ outcome3_tab <- function() {
                       "<b>", "Hospital admissions", "</b><br>",
                       "Unintentional and deliberate injuries to children and young people (0 to 14 years)"
                     )),
-                    timeseries_section_ui("hospital_admissions"), ### this is where the module is invoked to build the chart/table
-                    details(
-                      inputId = "admissions_timeseries_add_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("All sub national counts are rounded to the nearest 5. Rates are calculated using unrounded counts."),
-                          tags$li("For time points prior to 2012, all values between 1 and 5 have been suppressed and, where necessary, other LAs and comparators have also been suppressed in order to prevent possible disclosure and disclosure by differencing."),
-                          tags$li("For time points from 2012, all sub national counts are rounded to the nearest 5, and counts of 1 to 7 are suppressed. Rates and confidence intervals are calculated using unrounded counts."),
-                          tags$li("Values relating to City of London and Isles of Scilly have been combined with Hackney and Cornwall respectively."),
-                          tags$li(
-                            "In 2023, NHS England announced a ",
-                            a(
-                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2ffind-data-and-publications%2fstatement-of-administrative-sources%2fmethodological-changes%2fimpact-of-changes-to-recording-of-same-day-emergency-care-activity-to-hospital-episode-statistics-hes-data&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742842317%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=Ic0fzE6wEChYvL5zD4LnrOnvsXvYJ%2Bwkql7DoTnjRY4%3D&reserved=0",
-                              "methodological change", target = "_blank"
-                            ),
-                            " to require Trusts to report Same Day Emergency Care (SDEC) to the Emergency Care Data Set (ECDS) by July 2024. Early adopter sites began to report SDEC to ECDS from 2021/22, with other Trusts changing their reporting in 2022/23 or 2023/24. Some Trusts had previously reported this activity as part of the Admitted Patient Care data set, and moving to report to ECDS may reduce the number of admissions reported for this indicator. NHSE have advised it is not possible accurately to identify SDEC in current data flows, but the impact of the change is expected to vary by diagnosis, with indicators related to injuries and external causes potentially most affected."
-                          ),
-                          tags$li(
-                            "When considering if SDEC recording practice has reduced the number of admissions reported for this indicator at local level, please refer to the ",
-                            a(
-                              href = "https://eur03.safelinks.protection.outlook.com/?url=https:%2f%2fdigital.nhs.uk%2fdata-and-information%2fdata-collections-and-data-sets%2fdata-sets%2femergency-care-data-set-ecds%2fsame-day-emergency-care&data=05%7c02%7cLaura.Powell%40dhsc.gov.uk%7c22feb52393f04a2270bc08dc587f7b14%7c61278c3091a84c318c1fef4de8973a1c%7c1%7c0%7c638482551742856428%7cUnknown%7cTWFpbGZsb3d8eyJWIjoiMC4wLjAwMDAiLCJQIjoiV2luMzIiLCJBTiI6Ik1haWwiLCJXVCI6Mn0%3D%7c0%7c%7c%7c&sdata=qiwVNfRx2vQW6ZLF0CKyGJL2mqmLgt%2fZWKiqa8ufy18%3D&reserved=0",
-                              "published list", target = "_blank"
-                            ),
-                            " of sites who have reported when they began to report SDEC to ECDS."
-                          ),
-                          tags$br(),
-                          p(
-                            "For more information on the data, please refer to the", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0", "Public health data explorer.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the definitions and methodology, please refer to the ", a(href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/6/gid/1938133230/pat/159/par/K02000001/ati/15/are/E92000001/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1", "Indicator definitions and supporting information page.", target = "_blank")
-                          )
-                        )
-                      )
-                    )
+                    timeseries_section_ui("hospital_admissions") ### this is where the module is invoked to build the chart/table
                   ),
                   gov_row(
                     h2("Hospital admissions caused by unintentional and deliberate injuries to children and young people (0 to 14 years), by region"),

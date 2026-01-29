@@ -20,54 +20,66 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-  ## 2. Preliminary diagnostics: before running the pipeline and triggering errors do some comparisons between the csv files for consistency year on year
-  path_new <- "~/CSC Private dashboard/data-comparisons/2025/"
-  path_old <- "~/CSC Private dashboard/data-comparisons/2024/"
+  ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year
 
-  path_old <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2025/"
-  path_new <- "~/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/2025_v2/"
+  PRELIM_PATH <- "YOUR FOLDER HERE" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data
+  path_old <- paste0(PRELIM_PATH, "/data-comparisons/2025/")
+  path_new <- paste0(PRELIM_PATH, "/data-comparisons/2024/")
 
   pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
-
-  saveRDS(pipeline_prelim$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim_v2.rds")
   print(pipeline_prelim)
 
+  # if you wish to save artifacts from the preliminary pipeline run then execute these steps
+  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")) # <--- REPLACE FILENAME AS REQUIRED
 
-  rmarkdown::render("./inst/pipeline_prelim.Rmd", params = list(
-    pipeline_comparison = pipeline_prelim$dataset_comparison
-  ))
+  # produce a diagnostic report of the differences in the files.
+  rmarkdown::render(
+    input = "./inst/pipeline_prelim.Rmd",
+    output_dir = "",
+    output_file = "",
+    params = list(
+      pipeline_comparison = pipeline_prelim$dataset_comparison,
+      pipeline_comparison_file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")
+    )
+  )
 
 
-  ## 2. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
+  ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_step_1_v3.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_merge_conflicts_v1.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
-  ## 3. Investigate the output from above to compare the current and old data using the diagnostics provided ----
+  # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
+  # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/sw_stability/Consolidated SetDiff Summary merge conflicts v1.xlsx")
+
+
+  ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
 
   rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
-    pipeline_comparison = pipeline_run$dataset_comparison
+    pipeline_comparison = pr$dataset_comparison,
+    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_merge_conflicts_v1.rds"
   ))
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "./pipeline_consolidated_setdiffs.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_consolidated_setdiffs_merge_conflicts_v1.xlsx")
 
 
-  ## 4. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
+  ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Bugfix in CLA 2025 Data update.  Remove stat neighbours for Cumberland and Westmorland and Furness prior to 2023" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Resolving any issues in the summary data due to conflicts between branches in an RDS file" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
 
 
 
-  ## 5. verify the update parameters ----
+  ## 6. verify the update parameters ----
   pipeline_run_parameters <- list(
     "username" = Sys.getenv("USERNAME"),
     "run_datetime" = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
@@ -80,8 +92,10 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## FINAL STEP - proceed with caution having completed steps 1-6 above
 
+  ## 7. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
+  # note that you will be prompted in the Console window
+  # upon completion refer to the guide regarding the git-related steps which follow
 
-  ## 6. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
   print(run_data_pipeline_step_2(pipeline_run, pipeline_run_parameters))
 
   # END PIPELINE ----
@@ -130,9 +144,9 @@ get_pipeline_prelim <- function(path_new, path_old) {
 # The resulting datasets are returned in a list at this point along with the parameters used to generate them.
 # Additional validation takes place to provide feedback on what has been generated and what differs to the rds datasets in the ./data/ folder of the repo
 # This is the first stage of the pipeline, to build the data in a temporary fashion with nothing in the main application being changed yet, that follows in step 2
-run_data_pipeline_step_1 <- function(datasets_new = NULL) {
+run_data_pipeline_step_1 <- function(datasets_new = NULL, datasets_rds = NULL) {
   if (is.null(datasets_new)) datasets_new <- pipeline_generate_datasets()
-  datasets_rds <- pipeline_read_rds()
+  if (is.null(datasets_rds)) datasets_rds <- pipeline_read_rds()
 
   meta_rds <- pipeline_dataset_metadata(datasets_rds)
   meta_new <- pipeline_dataset_metadata(datasets_new)
@@ -242,6 +256,7 @@ pipeline_generate_datasets <- function() {
   # source("R/data_pipeline.R")
   source("R/read_data.R")
   source("R/stats_neighbours.R")
+  source("R/data_filtering.R")
 
   # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   # Prepare all datasets ----
@@ -268,6 +283,7 @@ pipeline_generate_datasets <- function() {
   combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes(sn_long = stats_neighbours_long))
 
   ## Read in ofsted leadership data (Enabler 3) ----
+  sw_stability_data <- read_social_worker_stability_data(sn_long = stats_neighbours_long) # new metric
   spending_data <- suppressWarnings(read_spending_data(sn_long = stats_neighbours_long))
   spending_data_no_cla <- suppressWarnings(read_spending_data2(sn_long = stats_neighbours_long))
   spending_per_capita <- suppressWarnings(read_per_capita_spending(sn_long = stats_neighbours_long))
@@ -315,8 +331,10 @@ pipeline_generate_datasets <- function() {
 
 # Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output list generated
 pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets_new, Geography_column = NULL) {
-  user_feedback <- glue::glue("CSC Public Dashboard: Data pipeline diagnostics
-  Run date: { Sys.Date() }")
+  user_feedback <- glue::glue(
+    "CSC Public Dashboard: Data pipeline diagnostics
+    Run date: { Sys.Date() }"
+  )
 
   # compare datasets
   dataset_name_comparison <- dcast.data.table(
@@ -342,25 +360,29 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     data.table(rds_or_new = "NEW", check_type = "dataset_columns", dataset_name = names(meta_new$dataset_columns), dataset_columns = sapply(meta_new$dataset_columns, paste, collapse = ", "))
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
 
+
   dataset_geographies_comparison <- rbindlist(
-    lapply(1:length(datasets_new), function(x, datasets_new, datasets_rds) {
-      if ("geo_breakdown" %in% names(datasets_new[[x]]) & "geo_breakdown" %in% names(datasets_rds[[x]])) {
-        geo_column <- "geo_breakdown"
-      } else if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
-        geo_column <- "la_name"
-      } else {
-        geo_column <- NULL
-      }
-      if (!is.null(geo_column)) {
-        las_added <- paste0(setdiff(unique(datasets_new[[x]][[geo_column]]), unique(datasets_rds[[x]][[geo_column]])), collapse = ", ")
-        las_removed <- paste0(setdiff(unique(datasets_rds[[x]][[geo_column]]), unique(datasets_new[[x]][[geo_column]])), collapse = ", ")
-        data.table(
-          dataset_name = names(datasets_new)[x],
-          las_added = las_added,
-          las_removed = las_removed
-        )
-      }
-    }, datasets_new, datasets_rds)
+    lapply(
+      dataset_name_comparison[match_dataset_name == TRUE]$dataset_name,
+      function(x, datasets_new, datasets_rds) {
+        if ("geo_breakdown" %in% names(datasets_new[[x]]) & "geo_breakdown" %in% names(datasets_rds[[x]])) {
+          geo_column <- "geo_breakdown"
+        } else if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
+          geo_column <- "la_name"
+        } else {
+          geo_column <- NULL
+        }
+        if (!is.null(geo_column)) {
+          las_added <- paste0(setdiff(unique(datasets_new[[x]][[geo_column]]), unique(datasets_rds[[x]][[geo_column]])), collapse = ", ")
+          las_removed <- paste0(setdiff(unique(datasets_rds[[x]][[geo_column]]), unique(datasets_new[[x]][[geo_column]])), collapse = ", ")
+          data.table(
+            dataset_name = x,
+            las_added = las_added,
+            las_removed = las_removed
+          )
+        }
+      }, datasets_new, datasets_rds
+    )
   )
 
   # Function to find common elements between two delimited strings
@@ -384,17 +406,6 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   dataset_columns_comparison[, columns_retained := mapply(compare_elements, dataset_columns_CURRENT, dataset_columns_NEW, common = TRUE)]
   dataset_columns_comparison[, columns_added := mapply(compare_elements, dataset_columns_CURRENT, dataset_columns_NEW, common = FALSE)]
   dataset_columns_comparison[, columns_removed := mapply(compare_elements, dataset_columns_NEW, dataset_columns_CURRENT, common = FALSE)]
-
-
-
-
-
-  collapse_function <- function(x) {
-    if (length(x) == 0) {
-      return("")
-    } # handle empty lists
-    paste(x, collapse = ", ")
-  }
 
   # build the summary of dataset comparisons for easy reference
   dataset_comparison_summary <- merge.data.table(
@@ -433,31 +444,68 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   # datasets which have deltas
   changed_datasets <- names(which(lapply(df_setdiffs, function(x) nrow(x$old_v_new) + nrow(x$new_v_old)) > 0))
 
-  # add in the column comparison of values
-  dataset_column_values_comparison <- list(
-    new = summarise_columns_over_datasets(datasets_new[changed_datasets]), # [changed_datasets[changed_datasets != "summary_data"]]
-    old = summarise_columns_over_datasets(datasets_rds[changed_datasets]) # [changed_datasets[changed_datasets != "summary_data"]]
-  )
+  # now depending on whether we have datasets with deltas, we need to do some further investigation
 
-  candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
+  # add in the column comparison of values and consolidated setdiffs
+  if (length(changed_datasets) > 0) {
+    dataset_column_values_comparison <- list(
+      new = summarise_columns_over_datasets(datasets_new[changed_datasets]), # [changed_datasets[changed_datasets != "summary_data"]]
+      old = summarise_columns_over_datasets(datasets_rds[changed_datasets]) # [changed_datasets[changed_datasets != "summary_data"]]
+    )
+    candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
+    consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
+      added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
+      removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
+      join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
+      dataset_compare <- merge(added, removed, by = join_cols, all = TRUE, suffixes = c("_newval", "_oldval"))
+      new_order <- c(join_cols, sort(setdiff(names(dataset_compare), join_cols)))
+      setcolorder(dataset_compare, neworder = new_order)
+      dataset_compare
+    }, df_setdiffs, candidate_key_cols)
+
+    names(consolidated_setdiffs) <- changed_datasets
+
+    # we can now perform some further digging into the consolidated setdiffs
+
+    csd_value_counts <- rbindlist(lapply(names(consolidated_setdiffs), function(this_dataset_name, consolidated_setdiffs) {
+      csd <- consolidated_setdiffs[[this_dataset_name]]
+      rbindlist(lapply(names(csd), function(column_name, csd, this_dataset_name) {
+        print(this_dataset_name)
+        print(column_name)
+        csd[is.na(new), new_or_old := "OLD"]
+        csd[is.na(old), new_or_old := "NEW"]
+        csd[old == "OLD" & new == "NEW", new_or_old := "BOTH"]
+        value_counts <- csd[, .N, by = c(eval(column_name), "new_or_old")]
+        setnames(value_counts, new = c("value", "new_or_old", "count"))
+
+        data.table(
+          dataset_name = this_dataset_name,
+          column_name = column_name,
+          value_counts
+        )
+      }, csd, this_dataset_name))
+    }, consolidated_setdiffs))
+
+    # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
+
+    summary_csd <- dcast.data.table(csd_value_counts, dataset_name + column_name + value ~ new_or_old, value.var = "count")
+    # summary_csd <- summary_csd[is.na(BOTH) & (is.na(OLD) | is.na(NEW))][!grep(pattern = "_newval|_oldval", column_name)][!(column_name %in% c("new", "old"))]
+  } else {
+    dataset_column_values_comparison <- list()
+    consolidated_setdiffs <- list()
+    summary_csd <- list()
+  }
 
 
-  consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
-    added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
-    removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
 
-    join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
 
-    dataset_compare <- merge(added, removed, by = join_cols, all = TRUE, suffixes = c("_newval", "_oldval"))
 
-    new_order <- c(join_cols, sort(setdiff(names(dataset_compare), join_cols)))
-    setcolorder(dataset_compare, neworder = new_order)
-    dataset_compare
-  }, df_setdiffs, candidate_key_cols)
 
-  names(consolidated_setdiffs) <- changed_datasets
 
-  dataset_column_values_comparison$new[number_count > 0]
+
+
+
+  # dataset_column_values_comparison$new[number_count > 0]
   return(list(
     "dataset_comparison_summary" = dataset_comparison_summary,
     "dataset_name_comparison" = dataset_name_comparison,
@@ -468,6 +516,7 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     "dataset_setdiffs" = df_setdiffs,
     "dataset_column_values_comparison" = dataset_column_values_comparison,
     "consolidated_setdiffs" = consolidated_setdiffs,
+    "consolidated_setdiffs_summary" = summary_csd,
     "changed_datasets" = changed_datasets
   ))
 }
@@ -498,14 +547,14 @@ summarise_columns_over_datasets <- function(dataset_list, label = "my_datasets")
   return(column_summary)
 }
 
-# Helper function to get all of the datasets currently in data folder into a list comparable with the new datasets
-pipeline_read_rds <- function() {
+# Helper function to get all of the datasets currently in a folder into a list comparable with the new datasets
+pipeline_read_rds <- function(rds_file_path = "./data/") {
   # first get the names of the RDS files in the ./data directory
-  rds_files_to_read <- dir("./data/", pattern = "rds")
+  rds_files_to_read <- dir(rds_file_path, pattern = "rds")
 
   # Read all RDS datasets into a list
   datasets_rds <- lapply(rds_files_to_read, function(rds_file) {
-    rds_file <- paste0("./data/", rds_file)
+    rds_file <- paste0(rds_file_path, rds_file)
     readRDS(rds_file)
   })
 
@@ -516,6 +565,7 @@ pipeline_read_rds <- function() {
 
   return(datasets_rds)
 }
+
 
 # helper function to get metadata for the datasets in a list (works for current/rds and new)
 pipeline_dataset_metadata <- function(datasets_list) {
