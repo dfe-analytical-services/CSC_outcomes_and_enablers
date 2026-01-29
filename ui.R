@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Social worker stability indicator added XX January"
+        "New social worker stability indicator added. Data published 12 June 2025."
       )
     ),
     bslib::navset_pill_list(
