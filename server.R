@@ -178,6 +178,7 @@ server <- function(input, output, session) {
   sp_accordion_cols_server(id = "outcome1", rv_summary_page)
   sp_domain_server(id = "Access to support and getting help", rv_summary_page)
   sp_domain_server(id = "Family stability", rv_summary_page)
+  sp_domain_server(id = "School stability", rv_summary_page)
   sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
   sp_domain_server(id = "Educational attainment", rv_summary_page)
 
