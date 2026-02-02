@@ -767,7 +767,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "School stability indicator short text",
+                    title = "Children with at least one mid-year school move",
                     value = htmlOutput("school_stability_txt")
                   )
                 ),
@@ -783,7 +783,7 @@ outcome1_tab <- function() {
                       p("Children and young people should remain at their school as long as possible, or if this is not possible school changes should be minimised to support their long term development and wellbeing."),
                       insert_text(
                         inputId = "school_stability_definition",
-                        text = "High school instability is defined as a looked-after child experiencing at least one mid-year school move (a move occurring outside the standard, expected transition times of 1 August to 30 September)."
+                        text = "High school instability is defined as a looked after child experiencing at least one mid-year school move during the year ending 31 March - a move at any point in the year excluding the period 1 August to 30 September."
                       ),
                       # here is the call to the module to display timeseries chart, table and download button
                       timeseries_section_ui("school_stability")

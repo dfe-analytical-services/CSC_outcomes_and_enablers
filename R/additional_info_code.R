@@ -58,8 +58,9 @@ additional_info_help_text <- list(
       )
     ),
   "school_stability" = tags$ul(
-    tags$li("Numbers have been rounded to the nearest 10. Percentages rounded to the nearest whole number."),
+    tags$li("Percentages rounded to the nearest whole number."),
     tags$li("Historical data may differ from older publications which is mainly due to amendments made by local authorities after the previous publication. However, users looking for a longer time series may wish to check for the equivalent table which can be found in earlier releases of the publication 'Children Looked After in England including Adoptions'. Figures exclude children looked after under a series of short-term placements"),
+    tags$li("The summer census in 2020 was not carried out due to the coronavirus pandemic. Therefore it has not been possible to produce data for 2020, and 2021 data excludes children aged 15 at the beginning of the 2019/20 academic year."),
     tags$br()
   ),
   "severe_absence" =

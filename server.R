@@ -2759,7 +2759,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA with one or more mid-year moves in the year to 31 March (%)",
+    chart_title = "CLA on 31 March with one or more mid-year move during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
