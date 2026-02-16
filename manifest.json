@@ -4758,7 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "7eda3dbc2067b4731b3957f42b4fecca"
+      "checksum": "180bc80400ea961b0ca461d9ce917580"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5094,7 +5094,7 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "70645e33c1a1f2f3a7a09094f0396379"
+      "checksum": "32a7ea8018f7bb953d8a83a760ebe99d"
     },
     "R/read_data.R": {
       "checksum": "5cb39c9e92c14e3e6b1e542cb41c66fa"

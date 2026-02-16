@@ -103,6 +103,10 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 # By LA bar chart repeat function (legacy version) ----
 
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
+  
+  # prepare the yaxis title so it wraps at 25 chars
+  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == FALSE) {
       la_data <- dataset %>%
@@ -203,10 +207,10 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       }
     )) +
       ylab(yaxis_title) +
-      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
+        axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0)
       ) +
@@ -238,10 +242,10 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
       )
     )) +
       ylab(yaxis_title) +
-      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
+        axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0)
       ) +
@@ -263,14 +267,16 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         geom_col(position = position_dodge())
     )
   }
-
+  
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p2 <- p1 + theme(axis.text.x = element_text(angle = 300, hjust = 1))
+    p2 <- p1 + 
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + # diagonal the labels
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) # Wrap the labels
   } else {
-    p2 <- p1 + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+    p2 <- p1 + 
+      theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) # no labels
   }
-
   return(p2)
 }
 
@@ -303,6 +309,9 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
     rename(`Breakdown` = `geo_breakdown`, `Selection` = `is_selected`) %>%
     rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
 
+  # prepare the yaxis title so it wraps at 25 chars
+  yaxis_title <- str_wrap(yaxis_title, width = 25)
+
   # now generate the plot
 
   if (add_rect == FALSE) {
@@ -325,10 +334,10 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
       }
     )) +
       ylab(yaxis_title) +
-      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
+        axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0)
       ) +
@@ -360,10 +369,10 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
       )
     )) +
       ylab(yaxis_title) +
-      xlab("Local Authority") +
       theme_classic() +
       theme(
         text = element_text(size = 12),
+        axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0)
       ) +
@@ -388,9 +397,12 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
 
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p2 <- p1 + theme(axis.text.x = element_text(angle = 300, hjust = 1))
+    p2 <- p1 + 
+      theme(axis.text.x = element_text(angle = 45, hjust = 1)) + # diagonal the labels
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) # Wrap the labels
   } else {
-    p2 <- p1 + theme(axis.text.x = element_blank(), axis.ticks.x = element_blank())
+    p2 <- p1 + 
+      theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) # no labels
   }
 
   return(p2)
@@ -436,7 +448,6 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
       scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
-        # axis.text.x = element_text(angle = 90),
         axis.title.x = element_blank(),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0)
@@ -479,7 +490,6 @@ by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect
         scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
         theme(
           text = element_text(size = 12),
-          # axis.text.x = element_text(angle = 90),
           axis.title.x = element_blank(),
           axis.title.y = element_text(margin = margin(r = 12)),
           axis.line = element_line(linewidth = 1.0)
@@ -1964,6 +1974,9 @@ statistical_neighbours_plot <- function(dataset,
                                         decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
+  
+  # prepare the yaxis title so it wraps at 25 chars
+  yaxis_title <- str_wrap(yaxis_title, width = 25)
 
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
@@ -2003,7 +2016,7 @@ statistical_neighbours_plot <- function(dataset,
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      # scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
@@ -2053,6 +2066,7 @@ statistical_neighbours_plot <- function(dataset,
           axis.line = element_line(linewidth = 1.0),
           axis.text.x = element_text(angle = 45, hjust = 1)
         ) +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) + # Wrap the labels
         scale_y_continuous(limits = c(0, ylim_upper)) +
         scale_fill_manual(
           "LA Selection",
@@ -2088,6 +2102,9 @@ statistical_neighbours_plot_revised <- function(dataset,
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
+  # prepare the y-axis title so it is wrapped at 25 characters
+  yaxis_title <- str_wrap(yaxis_title, width = 25)
+
   if (add_rect == FALSE) {
     # default version of the plot (i.e. not with the SDQ thresholds plotted)
     ggplot(plot_data, aes(
@@ -2112,12 +2129,12 @@ statistical_neighbours_plot_revised <- function(dataset,
       ylab(yaxis_title) +
       xlab("") +
       theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) + # Wrap the labels
       theme(
         text = element_text(size = 12),
         axis.title.y = element_text(margin = margin(r = 12)),
         axis.line = element_line(linewidth = 1.0),
-        axis.text.x = element_text()
+        axis.text.x = element_text(angle = 45, hjust = 1)
       ) +
       scale_y_continuous(limits = c(0, ylim_upper)) +
       scale_fill_manual(
@@ -2147,6 +2164,7 @@ statistical_neighbours_plot_revised <- function(dataset,
         ylab(yaxis_title) +
         xlab("") +
         theme_classic() +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) + # Wrap the labels
         theme(
           text = element_text(size = 12),
           axis.title.y = element_text(margin = margin(r = 12)),
