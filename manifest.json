@@ -4758,11 +4758,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-<<<<<<< HEAD
-      "checksum": "a04d5bb14086dc45626c6cb1c995e410"
-=======
-      "checksum": "8a8ba209ef460ccca9531774e33ef157"
->>>>>>> development
+      "checksum": "2af59d6c153ed8209456fb74e394b76e"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4983,13 +4979,8 @@
     "data/summary_data.rds": {
       "checksum": "0294f674e0e36c5e89b2a86b5eaab784"
     },
-<<<<<<< HEAD
     "data/summary_page_metadata.csv": {
-      "checksum": "78e8a86d2e799e84302fe6ceaa2ef891"
-=======
-    "data/summary_page_metadata.xlsx": {
-      "checksum": "6ed5ff81a2529df7a6f4292104b1b5be"
->>>>>>> development
+      "checksum": "fccf274e3c950ce7a55880f515ef4e89"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5108,8 +5099,11 @@
     "R/outcome4_page.R": {
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
-    "R/plotting.R": {
-      "checksum": "32a7ea8018f7bb953d8a83a760ebe99d"
+    "R/plotting_generic_functions.R": {
+      "checksum": "473704532245c7ad4a8afef5bdf5a0b1"
+    },
+    "R/plotting_specific_indicators.R": {
+      "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
     },
     "R/read_data.R": {
       "checksum": "dcce169f08cf0c825c1644a94f333eb8"
@@ -5125,6 +5119,9 @@
     },
     "R/summary_page.R": {
       "checksum": "74d3f4d65c79296f935d212f46d922ec"
+    },
+    "R/tabulation_functions.R": {
+      "checksum": "50d262aa4bb0129efc689bbe22339ba6"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "27edbec916f88586657935644d2d55df"
