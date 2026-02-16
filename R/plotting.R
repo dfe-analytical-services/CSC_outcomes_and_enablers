@@ -103,10 +103,9 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 # By LA bar chart repeat function (legacy version) ----
 
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
-  
   # prepare the yaxis title so it wraps at 25 chars
   yaxis_title <- str_wrap(yaxis_title, width = 25)
-  
+
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == FALSE) {
       la_data <- dataset %>%
@@ -267,14 +266,14 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
         geom_col(position = position_dodge())
     )
   }
-  
+
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p2 <- p1 + 
+    p2 <- p1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) + # diagonal the labels
       scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) # Wrap the labels
   } else {
-    p2 <- p1 + 
+    p2 <- p1 +
       theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) # no labels
   }
   return(p2)
@@ -397,11 +396,11 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
 
   # Conditionally set the x-axis labels and ticks
   if (selected_geo_lvl == "Regional") {
-    p2 <- p1 + 
+    p2 <- p1 +
       theme(axis.text.x = element_text(angle = 45, hjust = 1)) + # diagonal the labels
       scale_x_discrete(labels = function(x) str_wrap(x, width = 25)) # Wrap the labels
   } else {
-    p2 <- p1 + 
+    p2 <- p1 +
       theme(axis.text.x = element_blank(), axis.ticks.x = element_blank()) # no labels
   }
 
@@ -1974,7 +1973,7 @@ statistical_neighbours_plot <- function(dataset,
                                         decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
-  
+
   # prepare the yaxis title so it wraps at 25 chars
   yaxis_title <- str_wrap(yaxis_title, width = 25)
 
