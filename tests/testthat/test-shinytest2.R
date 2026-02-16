@@ -425,7 +425,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "enabler3_choice_text2",
       "s_w_headline_txt",
       "agency_rate_txt",
-      "vacancy_rate_txt"
+      "vacancy_rate_txt",
+      "sw_stability_txt"
     )
   )
 
