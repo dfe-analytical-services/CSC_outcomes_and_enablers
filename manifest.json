@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "9992875f6113b6d26ae8b7d0570b086c"
+      "checksum": "f5d2384eac620cfaf2bada90f4c715e7"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4984,7 +4984,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "79fdbe6c4b0eb95a906980a8d5b43c2a"
+      "checksum": "e4763e5c91cae467ab8e32a9667bed0e"
     },
     "data/pipeline/data_pipeline_run_history_dirty.rds": {
       "checksum": "24be225e93886d46bcad6f7de2f2da23"
@@ -5023,10 +5023,10 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "0294f674e0e36c5e89b2a86b5eaab784"
+      "checksum": "1297ccb4fb382a87d938684403e2e146"
     },
     "data/summary_page_metadata.csv": {
-      "checksum": "fccf274e3c950ce7a55880f515ef4e89"
+      "checksum": "74105cea0d89c7280614a7d7f0b5413d"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5095,7 +5095,7 @@
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline.R": {
-      "checksum": "be4634fd5da93b134714982ab077cf21"
+      "checksum": "29bc79f692a8b8bad09491aea3955d60"
     },
     "R/data_sources.R": {
       "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
@@ -5146,7 +5146,7 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting_generic_functions.R": {
-      "checksum": "473704532245c7ad4a8afef5bdf5a0b1"
+      "checksum": "3e575a80f13def5cdf8739cd52b75ad5"
     },
     "R/plotting_specific_indicators.R": {
       "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
@@ -5188,7 +5188,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "263a9025a5486b60ab3faeb0971ee036"
+      "checksum": "1de093c1392ec27498499cbd281d4fac"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5260,7 +5260,7 @@
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
+      "checksum": "a7c80bcf9b6ec11a0696dacf514f48ed"
     },
     "tests/testthat/test-shinytest2.R": {
       "checksum": "9ee4f7686a02e2d5689886340fcc0d0d"
