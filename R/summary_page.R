@@ -79,6 +79,7 @@ summary_page_tab <- function() {
                     sp_accordion_cols_ui("outcome1"),
                     sp_domain_ui(id = "Access to support and getting help"),
                     sp_domain_ui(id = "Family stability"),
+                    sp_domain_ui(id = "School stability"),
                     sp_domain_ui(id = "Child wellbeing and development"),
                     sp_domain_ui(id = "Educational attainment"),
                   )
