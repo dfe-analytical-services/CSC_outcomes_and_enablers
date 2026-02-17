@@ -1166,13 +1166,13 @@
       "description": {
         "Package": "dfeshiny",
         "Title": "DfE R Shiny Standards",
-        "Version": "0.5.3.9000",
+        "Version": "0.6.0",
         "Authors@R": "c(\n    person(\"Rich\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0001-9070-9969\")),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"aut\"),\n    person(\"Cam\", \"Race\", , \"cameron.race@education.gov.uk\", role = \"aut\")\n  )",
         "Description": "R package containing preferred methods for creating official\n    DfE R-Shiny dashboards.",
         "License": "GPL (>= 3)",
         "URL": "https://dfe-analytical-services.github.io/dfeshiny/\nhttps://www.github.com/dfe-analytical-services/dfeshiny/",
-        "Depends": "R (>= 2.10)",
-        "Imports": "dplyr,\ncheckmate,\nglue,\nhtmltools,\nlubridate,\nmagrittr,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler,\nxfun,\nreactable,\nreadr",
+        "Depends": "R (>= 4.1.0)",
+        "Imports": "dplyr,\ncheckmate,\nchromote,\nglue,\nhtmltools,\nlifecycle,\nlubridate,\nmagrittr,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler,\nxfun,\nreadr",
         "Suggests": "devtools,\ndiffviewer,\nknitr,\nrmarkdown,\nshinytest2,\nspelling,\ntestthat (>= 3.0.0)",
         "VignetteBuilder": "knitr",
         "Config/testthat/edition": "3",
@@ -1180,21 +1180,22 @@
         "Language": "en-US",
         "LazyData": "true",
         "Roxygen": "list(markdown = TRUE)",
-        "RoxygenNote": "7.3.2",
+        "RoxygenNote": "7.3.3",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.3; ; 2025-05-13 14:49:07 UTC; windows",
+        "Built": "R 4.4.3; ; 2026-02-17 10:29:56 UTC; windows",
         "RemoteType": "github",
         "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a",
+        "RemoteSha": "8393337050c184f7f59d5698b68aea4d88083160",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a"
+        "GithubSHA1": "8393337050c184f7f59d5698b68aea4d88083160",
+        "Remotes": "dfe-analytical-services/shinyGovstyle"
       }
     },
     "diffobj": {
@@ -3680,29 +3681,39 @@
       }
     },
     "shinyGovstyle": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
+      "Source": "github",
+      "Repository": null,
       "description": {
         "Package": "shinyGovstyle",
-        "Title": "Custom Gov Style Inputs for Shiny",
-        "Version": "0.1.0",
-        "Authors@R": "c(\n    person(\"Ross\", \"Wyatt\", , \"ross.wyatt@justice.gov.uk\", role = c(\"aut\", \"cre\")),\n    person(\"Cameron\", \"Race\", , \"cameron.race@education.gov.uk\", role = \"ctb\"),\n    person(\"Sarah\", \"Wong\", role = \"ctb\"),\n    person(\"Richard\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = \"ctb\"),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"ctb\"),\n    person(\"Jeni\", \"Martin\", role = \"ctb\")\n  )",
-        "Description": "Collection of 'shiny' application styling that are the based\n    on the GOV.UK Design System.  See\n    <https://design-system.service.gov.uk/components/> for details.",
-        "License": "GPL-3",
-        "URL": "https://github.com/moj-analytical-services/shinyGovstyle",
-        "BugReports": "https://github.com/moj-analytical-services/shinyGovstyle/issues",
-        "Depends": "R (>= 3.1.0)",
-        "Imports": "htmltools, jsonlite, magrittr, purrr, shiny (>= 0.14),\nshinyjs, stringr",
-        "Suggests": "testthat",
+        "Title": "Custom GOV.UK Style Inputs for Shiny",
+        "Version": "0.1.0.9000",
+        "Authors@R": "c(\n    person(\"Ross\", \"Wyatt\", , \"ross.wyatt@justice.gov.uk\", role = \"aut\"),\n    person(\"Cam\", \"Race\", , \"cameron.race@education.gov.uk\", role = c(\"aut\", \"cre\")),\n    person(\"Sarah\", \"Wong\", role = \"aut\"),\n    person(\"Richard\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = \"ctb\"),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"ctb\"),\n    person(\"Jeni\", \"Martin\", role = \"ctb\"),\n    person(\"Andrew\", \"Baker\", , \"andrew.baker1@dhsc.gov.uk\", role = \"ctb\")\n  )",
+        "Description": "Collection of 'shiny' application styling that are based\n    on the GOV.UK Design System. See\n    <https://design-system.service.gov.uk/components/> for details.",
+        "License": "GPL (>= 3)",
+        "URL": "https://github.com/dfe-analytical-services/shinyGovstyle",
+        "BugReports": "https://github.com/dfe-analytical-services/shinyGovstyle/issues/new/choose",
+        "Depends": "R (>= 4.1.0)",
+        "Imports": "htmltools,\njsonlite,\npurrr,\nreactable,\nreadr,\nreadODS,\nshiny (>= 0.14),\nshinyjs,\nstringr,\nwritexl",
+        "Suggests": "testthat,\nshinytest2",
         "Encoding": "UTF-8",
-        "RoxygenNote": "7.3.2",
-        "NeedsCompilation": "no",
-        "Packaged": "2024-09-10 15:59:19 UTC; rosswyatt",
-        "Author": "Ross Wyatt [aut, cre],\n  Cameron Race [ctb],\n  Sarah Wong [ctb],\n  Richard Bielby [ctb],\n  Charlotte Foster [ctb],\n  Jeni Martin [ctb]",
-        "Maintainer": "Ross Wyatt <ross.wyatt@justice.gov.uk>",
-        "Repository": "CRAN",
-        "Date/Publication": "2024-09-12 14:40:02 UTC",
-        "Built": "R 4.4.3; ; 2025-03-09 03:32:47 UTC; windows"
+        "RoxygenNote": "7.3.3",
+        "LazyData": "true",
+        "Config/testthat/edition": "3",
+        "Roxygen": "list(markdown = TRUE)",
+        "Author": "Ross Wyatt [aut],\n  Cam Race [aut, cre],\n  Sarah Wong [aut],\n  Richard Bielby [ctb],\n  Charlotte Foster [ctb],\n  Jeni Martin [ctb],\n  Andrew Baker [ctb]",
+        "Maintainer": "Cam Race <cameron.race@education.gov.uk>",
+        "Built": "R 4.4.3; ; 2026-02-17 10:29:40 UTC; windows",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteUsername": "dfe-analytical-services",
+        "RemoteRepo": "shinyGovstyle",
+        "RemoteRef": "main",
+        "RemoteSha": "54fbe26c92ffb4890749a7afb648ff828b551d22",
+        "GithubHost": "api.github.com",
+        "GithubRepo": "shinyGovstyle",
+        "GithubUsername": "dfe-analytical-services",
+        "GithubRef": "main",
+        "GithubSHA1": "54fbe26c92ffb4890749a7afb648ff828b551d22"
       }
     },
     "shinyWidgets": {
@@ -4579,6 +4590,41 @@
         "Built": "R 4.4.3; ; 2025-03-09 01:40:07 UTC; windows"
       }
     },
+    "writexl": {
+      "Source": "CRAN",
+      "Repository": "http://cran.rstudio.com",
+      "description": {
+        "Package": "writexl",
+        "Type": "Package",
+        "Title": "Export Data Frames to Excel 'xlsx' Format",
+        "Version": "1.5.3",
+        "Authors@R": "c(\n    person(\"Jeroen\", \"Ooms\", ,\"jeroenooms@gmail.com\", role = c(\"aut\", \"cre\"),\n      comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"John McNamara\", role = \"cph\",\n      comment = \"Author of libxlsxwriter (see AUTHORS and COPYRIGHT files for details)\"))",
+        "Description": "Zero-dependency data frame to xlsx exporter based on 'libxlsxwriter'\n    <https://libxlsxwriter.github.io>. Fast and no Java or Excel required.",
+        "License": "BSD_2_clause + file LICENSE",
+        "Encoding": "UTF-8",
+        "URL": "https://ropensci.r-universe.dev/writexl\nhttps://docs.ropensci.org/writexl/",
+        "BugReports": "https://github.com/ropensci/writexl/issues",
+        "RoxygenNote": "7.0.2",
+        "Suggests": "spelling, readxl, nycflights13, testthat, bit64",
+        "Language": "en-US",
+        "SystemRequirements": "zlib",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-04-06 19:27:24 UTC; jeroen",
+        "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  John McNamara [cph] (Author of libxlsxwriter (see AUTHORS and COPYRIGHT\n    files for details))",
+        "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2025-04-06 20:00:02 UTC",
+        "Built": "R 4.4.3; x86_64-w64-mingw32; 2025-04-06 23:50:57 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "writexl",
+        "RemoteRef": "writexl",
+        "RemoteRepos": "http://cran.rstudio.com",
+        "RemoteReposName": "CRAN",
+        "RemotePkgPlatform": "x86_64-w64-mingw32",
+        "RemoteSha": "1.5.3"
+      }
+    },
     "xfun": {
       "Source": "CRAN",
       "Repository": "http://cran.rstudio.com",
@@ -4758,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "9aade2ba225d887920ffa27863cdd936"
+      "checksum": "9992875f6113b6d26ae8b7d0570b086c"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4823,6 +4869,9 @@
     "data-raw/la_cla_placement_stability.csv": {
       "checksum": "07bf270046fec7e7e0a80eae4f725546"
     },
+    "data-raw/la_cla_swcount.csv": {
+      "checksum": "e59b2ee516fc8e78f85cf6912c5fa8cc"
+    },
     "data-raw/la_conviction_health_outcome_cla.csv": {
       "checksum": "e7f11100716b7372bea7ead590e67031"
     },
@@ -4863,10 +4912,10 @@
       "checksum": "c3b09b491e9358242e5bdfbe2c5895ea"
     },
     "data-raw/RO3_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "b1abda1b71693e9df2791abb32f28c8b"
+      "checksum": "f0937a1f8b6d513f333121bc0f3c0e12"
     },
     "data-raw/RSX_LA_Data_2024-25_data_by_LA.ods": {
-      "checksum": "61222a569512e12322bd8756a746c4c3"
+      "checksum": "8610e62d9a2141f0aa69ec5be6b3489f"
     },
     "data-raw/sn_model_2025_wide.csv": {
       "checksum": "699c7be40307dae53c65fce3c43e8ef0"
@@ -4917,10 +4966,10 @@
       "checksum": "f4b16e4a31776987879f6a1d8aaedef3"
     },
     "data/ofsted_leadership_data.rds": {
-      "checksum": "6c2f2d63d5eeec3d1dbe0a784bbd3d07"
+      "checksum": "ed570ad3c6a146d8d1e2804f24db57fa"
     },
     "data/ofsted_leadership_data_long.rds": {
-      "checksum": "dc4649114ab133244ca284b60e5ce743"
+      "checksum": "264318d1f7952eff2d3486110e7a76aa"
     },
     "data/outcomes_absence.rds": {
       "checksum": "7a1b0b9e2acc2295de48c6cf4c118ff5"
@@ -4932,7 +4981,10 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "b1bae4d681456d565230ca0573ee27d5"
+      "checksum": "2b90062fae53dbf3c730e1f38a27a9b9"
+    },
+    "data/pipeline/data_pipeline_run_history_dirty.rds": {
+      "checksum": "24be225e93886d46bcad6f7de2f2da23"
     },
     "data/placement_changes_data.rds": {
       "checksum": "60584d61282b6ddd1ec655065e0e7c9e"
@@ -4950,13 +5002,13 @@
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
     "data/spending_data.rds": {
-      "checksum": "f8653f4eb70f28a324fe20c850cc95ed"
+      "checksum": "75650c5c33ba2e7961051ec95656e346"
     },
     "data/spending_data_no_cla.rds": {
-      "checksum": "ac454fa05ef0c04f5b251679fd181b0d"
+      "checksum": "4ceaa19a2b5df57d23d814e7732f1cd1"
     },
     "data/spending_per_capita.rds": {
-      "checksum": "1dd663f2edd40a35540b9f1ea8941a80"
+      "checksum": "13f10c0d1c95049f8e91311f5908af1a"
     },
     "data/stats_neighbours.rds": {
       "checksum": "a2a9abe5893c10f69328bfea309e1628"
@@ -4965,10 +5017,13 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "9d73cf7330377e8a2520e65863667664"
+      "checksum": "0986067d4c4384f07cc603567bab1b76"
     },
     "data/summary_page_metadata.xlsx": {
-      "checksum": "9529a9e0456007eb5c48caad2fe668b6"
+      "checksum": "6ed5ff81a2529df7a6f4292104b1b5be"
+    },
+    "data/sw_stability_data.rds": {
+      "checksum": "45de448f11e30602ece6bba702087cfb"
     },
     "data/wellbeing_sdq_data.rds": {
       "checksum": "69b97aa867e1c20a309525d8bf9891bd"
@@ -4989,7 +5044,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "b63c017783e7f3d26a4136fb9413e1cb"
+      "checksum": "429c17c0d38e35a7b21048f8d94569a5"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5007,16 +5062,16 @@
       "checksum": "71098590292f48586de15459779ac8f0"
     },
     "inst/pipeline_diagnostics.html": {
-      "checksum": "b4cec3f383b8a7b5ce75982692debc71"
+      "checksum": "7b587961c7da29917d4f8314cf24e1d4"
     },
     "inst/pipeline_diagnostics.Rmd": {
-      "checksum": "82a678e8b20e37e34d4810d40374aec2"
+      "checksum": "ac74c0370352a5dded5988d22f031c39"
     },
     "inst/pipeline_prelim.html": {
       "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
     },
     "inst/pipeline_prelim.Rmd": {
-      "checksum": "0649e4739db92568a4ceefde95cf135c"
+      "checksum": "99895a2ee3e34b6d3f87e6a27e293d20"
     },
     "inst/report_styling.css": {
       "checksum": "dae3b31ce84448c5a24c51b641fc3ab3"
@@ -5027,11 +5082,17 @@
     "PULL_REQUEST_TEMPLATE.md": {
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
+    "R/additional_info_code.R": {
+      "checksum": "6713b4eeb50d864d82aab0cd4506325e"
+    },
+    "R/data_filtering.R": {
+      "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
+    },
     "R/data_pipeline.R": {
-      "checksum": "c9f29139370ce942cacf58af1c363c5e"
+      "checksum": "29a5fcfff0730f66bc5d6a8ea55b65ad"
     },
     "R/data_sources.R": {
-      "checksum": "8a144322d299b931a2195250576c8b23"
+      "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5040,52 +5101,58 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "fe878cc0a72b2aab53801a00f7de74b2"
+      "checksum": "9ab2cd37d71d0cf2d57cc0119880532a"
     },
     "R/enabler2_page.R": {
-      "checksum": "b478b7679c59b9857529f81cb6fa8a1a"
+      "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
-      "checksum": "275209f9cb13770d305d2d81f0acd782"
+      "checksum": "3a54b867ed9696982d8066cf2d11b782"
     },
     "R/intro_panel.R": {
       "checksum": "48548244416fb53442c42e0406be8761"
+    },
+    "R/mod_la_and_sn_toggle_section.R": {
+      "checksum": "a336aeeab6b0d236409142ac0aa7be44"
+    },
+    "R/mod_regional_barchart_section.R": {
+      "checksum": "077d7cbf24e32129eca22bd5d4bae2d4"
     },
     "R/mod_summary_page.R": {
       "checksum": "0b45bbef135e3b5bb452e2d60b02a611"
     },
     "R/mod_timeseries_section.R": {
-      "checksum": "3e369bc2faba113fb665c750d66ea7fe"
+      "checksum": "7b3f4ace73ecd513be3aba5efa7db362"
     },
     "R/omitted_data.R": {
       "checksum": "c448820c2b28827e985bdc3e1110ed32"
     },
     "R/outcome1_page.R": {
-      "checksum": "c11471446fba56f37a477bd4913737fe"
+      "checksum": "9a3e612c4bc95fbe2395e9f1d0492f3a"
     },
     "R/outcome2_page.R": {
       "checksum": "d057023765d4625b92275ccdd2e8b55a"
     },
     "R/outcome3_page.R": {
-      "checksum": "c3c1a9dae573c4951c5fd7f629d7b8ea"
+      "checksum": "00d05981d443847f8741be68b4526ece"
     },
     "R/outcome4_page.R": {
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "2ad4a2e3798e1c7016f4279be7e1c3ad"
+      "checksum": "c79bc8e98f6d9abd23758674b592e1c8"
     },
     "R/read_data.R": {
-      "checksum": "49e6d915a8d2fee7e1c62ed2e9498390"
+      "checksum": "5cb39c9e92c14e3e6b1e542cb41c66fa"
     },
     "R/rendering_functions.R": {
-      "checksum": "5b9f8de148f5e3499e1102c9dc2f39d8"
+      "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
     },
     "R/standard_panels.R": {
-      "checksum": "d711e6594bd9a7b85ad8110ad75ec8e3"
+      "checksum": "ba70da060d6dabeccbd9872650fc44d9"
     },
     "R/stats_neighbours.R": {
-      "checksum": "f3444e177a94eca88c5e5e68d2000a17"
+      "checksum": "82f707a8e1d156a9bdb49de9759ae796"
     },
     "R/summary_page.R": {
       "checksum": "c2d2287ff9f9e704532add766b981c80"
@@ -5096,6 +5163,9 @@
     "R/user_guide.R": {
       "checksum": "f7f88e85b119124e5f966f9972b7a702"
     },
+    "R/utility_functions.R": {
+      "checksum": "6f099bde15748f7942d024c3ce3cf9a1"
+    },
     "README.html": {
       "checksum": "35bfef78ab5877bd3f03bde575ecda29"
     },
@@ -5103,10 +5173,10 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
+      "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "55c05850a466ad5dac4503aadbe09fc3"
+      "checksum": "263a9025a5486b60ab3faeb0971ee036"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5118,7 +5188,7 @@
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/CSC_outcomes_and_enablers_initial_load-001.json": {
-      "checksum": "8189dd220774f0b75864744a986f9d36"
+      "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
       "checksum": "4aec4126d86eef1fd24a21bae3539aeb"
@@ -5142,10 +5212,10 @@
       "checksum": "39eb1624d678f1026af039747e80059c"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-008.json": {
-      "checksum": "061ce1084dc283d26c095d7c025653b8"
+      "checksum": "2710014192ae8774f88ef260409427d0"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-009.json": {
-      "checksum": "a1949614309ddd47cd14a9c9aae5a96f"
+      "checksum": "a8fc9b12dfbc79c9a2316b72f2b96c73"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-010.json": {
       "checksum": "05b7c7762d8f5761c44771996dcc25ab"
@@ -5181,10 +5251,10 @@
       "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
     },
     "tests/testthat/test-shinytest2.R": {
-      "checksum": "8d06031e63d79a0a28d5e1f3fa1bf2d3"
+      "checksum": "9ee4f7686a02e2d5689886340fcc0d0d"
     },
     "ui.R": {
-      "checksum": "f7ba93b27de461ce4aec980e737113e1"
+      "checksum": "6da0249b7824fe2e1f8a3f1b4959a4f0"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"

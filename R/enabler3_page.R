@@ -84,11 +84,23 @@ enabler3_tab <- function() {
         p(htmlOutput("enabler3_choice_text1"), htmlOutput("enabler3_choice_text2")),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames / Richmond upon Thames')",
-          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together.")
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see Social Worker Stability data, please select either Kingston upon Thames or Richmond upon Thames from the dropdown.")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames' | input.geographic_breakdown_e3 == 'Richmond upon Thames')",
+          p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see the workforce indicators for the combined return, please select Kingston upon Thames / Richmond upon Thames from the dropdown.")
         ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire / West Northamptonshire')",
-          p("North Northamptonshire and West Northamptonshire submitted a joint workforce return in 2021 and onwards, and their data is reported together")
+          p("North Northamptonshire and West Northamptonshire submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see Social Worker Stability data, please select either North Northamptonshire or West Northamptonshire from the dropdown.")
+        ),
+        conditionalPanel(
+          condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire' | input.geographic_breakdown_e3 == 'West Northamptonshire')",
+          p("North Northamptonshire and West Northamptonshire submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
+            To see the workforce indicators for the combined return, please select North Northamptonshire / West Northamptonshire from the dropdown.")
         ),
         div(
           tabsetPanel(
@@ -408,7 +420,7 @@ enabler3_tab <- function() {
               )
             ),
             # Second Domain - "quality of support for children and families" -------------
-            ## caseload -------------
+
             tabPanel(
               "Quality of support for children and families",
               fluidRow(
@@ -418,9 +430,17 @@ enabler3_tab <- function() {
                     title = "Average caseload (FTE)",
                     value = htmlOutput("caseload_txt")
                   ),
+                ),
+                column(
+                  width = 4,
+                  value_box(
+                    title = "Percentage of CLA with 3 or more social workers in past 12 months",
+                    value = htmlOutput("sw_stability_txt")
+                  ),
                 )
               ),
               accordion(
+                ## caseload -------------
                 accordion_panel(
                   "Social worker caseloads",
                   gov_row(
@@ -508,6 +528,29 @@ enabler3_tab <- function() {
                       justified = TRUE
                     ),
                     uiOutput("SN_caseload"),
+                  )
+                ),
+                accordion_panel(
+                  ## social worker stability (new indicator) ----
+                  "Social worker stability",
+                  gov_row(
+                    h2("Social worker stability"),
+                    p("Ensuring children have minimal changes to their assigned social worker through the year so that they receive consistent support."),
+                    insert_text(inputId = "sw_stability_definition", text = paste(
+                      "High social worker instability is defined as a looked after child experiencing 3 or more social workers during the year ending 31 March."
+                    )),
+                    br(),
+                    # here is the call to the module to display timeseries chart, table and download button
+                    timeseries_section_ui("sw_stability")
+                  ),
+                  gov_row(
+                    h2("Social worker stability by region"),
+                    regional_barchart_section_ui("sw_stability")
+                  ),
+                  gov_row(
+                    h2("Social worker stability by local authority"),
+                    p(sprintf("The charts below represent data from %s.", max(sw_stability_data$time_period))),
+                    la_and_sn_toggle_section_ui("sw_stability")
                   )
                 ),
                 open = FALSE
