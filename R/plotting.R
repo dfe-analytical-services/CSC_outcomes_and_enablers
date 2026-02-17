@@ -104,7 +104,7 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
 
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == FALSE) {
@@ -309,7 +309,7 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
     rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
 
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   # now generate the plot
 
@@ -1975,7 +1975,7 @@ statistical_neighbours_plot <- function(dataset,
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
@@ -2102,7 +2102,7 @@ statistical_neighbours_plot_revised <- function(dataset,
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
   # prepare the y-axis title so it is wrapped at 25 characters
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   if (add_rect == FALSE) {
     # default version of the plot (i.e. not with the SDQ thresholds plotted)
