@@ -100,108 +100,11 @@ plotly_time_series_custom_scale <- function(dataset, level, breakdown, yvalue, y
   return(p)
 }
 
-# By Region bar chart Plot -----
-by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE, decimal_percentage = FALSE) {
-  if (add_rect == FALSE) {
-    reg_data <- dataset %>%
-      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, `yvalue`) %>%
-      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by yvalue rate
-      rename(`Breakdown` = `geo_breakdown`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
-
-    p <- ggplot(reg_data, aes(
-      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-      text = if (decimal_percentage) {
-        paste0(
-          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
-          "Region: ", `Breakdown`, "<br>",
-          "Time period: ", `time_period`
-        )
-      } else {
-        paste0(
-          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
-          "Region: ", `Breakdown`, "<br>",
-          "Time period: ", `time_period`
-        )
-      }
-    ))
-
-    # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
-    yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
-
-    p2 <- p +
-      geom_col(position = position_dodge()) +
-      ylab(yaxis_title) +
-      xlab("Region") +
-      theme_classic() +
-      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
-      theme(
-        text = element_text(size = 12),
-        axis.title.x = element_blank(),
-        axis.title.y = element_text(margin = margin(r = 12)),
-        axis.line = element_line(linewidth = 1.0)
-      ) +
-      scale_y_continuous(limits = c(0, yupperlim)) +
-      scale_fill_manual(
-        "Time Period",
-        values = "#12436D" # gss_colour_pallette
-      )
-  } else {
-    reg_data <- dataset %>%
-      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
-      select(time_period, geo_breakdown, `yvalue`, score_label) %>%
-      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>%
-      rename(`Breakdown` = `geo_breakdown`) %>%
-      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
-
-    p <- ggplot(reg_data, aes(
-      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
-      text = paste0(
-        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
-        "SDQ score: ", `score_label`, "<br>",
-        "Region: ", `Breakdown`, "<br>",
-        "Time period: ", `time_period`
-      )
-    ))
-
-    max_xaxis <- length(unique(reg_data$`Breakdown`)) + 1
-
-    suppressWarnings(
-      p2 <- p +
-        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
-        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
-        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
-        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
-        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
-        ylab(yaxis_title) +
-        xlab("Region") +
-        theme_classic() +
-        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
-        theme(
-          text = element_text(size = 12),
-          axis.title.x = element_blank(),
-          axis.title.y = element_text(margin = margin(r = 12)),
-          axis.line = element_line(linewidth = 1.0)
-        ) +
-        scale_y_continuous(limits = c(0, yupperlim)) +
-        scale_fill_manual(
-          "Time Period",
-          values = "#12436D" # gss_colour_pallette
-        ) +
-        geom_col(position = position_dodge(), alpha = 1, fill = "#12436D")
-    )
-  }
-}
-
-
-
-
-# By LA bar chart Plot (legacy version) ----
+# By LA bar chart repeat function (legacy version) ----
 
 by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, yupperlim = NULL, add_rect = FALSE, decimal_percentage = FALSE) {
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == FALSE) {
@@ -378,7 +281,7 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 
 
 
-# By LA bar chart Plot (Revised version) ----
+# By LA bar chart repeat function (Revised version) ----
 # This revised version will replace the legacy version of the function which is widely in use.  This version supports the modular implementation
 # of the LA Bar Chart, with distinction being the data filtering (the reactive dataset is pre-filtered to year and geographies)
 # in order to feed both the chart and the table.  Hence less data manipulation is done here than the original function
@@ -406,7 +309,7 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
     rename_at(yvalue, ~ str_to_sentence(str_replace_all(., "_", " ")))
 
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   # now generate the plot
 
@@ -505,7 +408,103 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
 }
 
 
-# Statistical Neighbours Plot (Legacy version) ----
+
+# By Region bar chart repeat function -----
+by_region_bar_plot <- function(dataset, yvalue, yaxis_title, yupperlim, add_rect = FALSE, decimal_percentage = FALSE) {
+  if (add_rect == FALSE) {
+    reg_data <- dataset %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, `yvalue`) %>%
+      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>% # Order by yvalue rate
+      rename(`Breakdown` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+    p <- ggplot(reg_data, aes(
+      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+      text = if (decimal_percentage) {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+          "Region: ", `Breakdown`, "<br>",
+          "Time period: ", `time_period`
+        )
+      } else {
+        paste0(
+          str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), "<br>",
+          "Region: ", `Breakdown`, "<br>",
+          "Time period: ", `time_period`
+        )
+      }
+    ))
+
+    # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
+    yupperlim <- (ceiling(yupperlim / 10) * 10) + (yupperlim * 0.05)
+
+    p2 <- p +
+      geom_col(position = position_dodge()) +
+      ylab(yaxis_title) +
+      xlab("Region") +
+      theme_classic() +
+      scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+      theme(
+        text = element_text(size = 12),
+        axis.title.x = element_blank(),
+        axis.title.y = element_text(margin = margin(r = 12)),
+        axis.line = element_line(linewidth = 1.0)
+      ) +
+      scale_y_continuous(limits = c(0, yupperlim)) +
+      scale_fill_manual(
+        "Time Period",
+        values = "#12436D" # gss_colour_pallette
+      )
+  } else {
+    reg_data <- dataset %>%
+      filter(geographic_level == "Regional", time_period == max(time_period)) %>%
+      select(time_period, geo_breakdown, `yvalue`, score_label) %>%
+      mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`)))) %>%
+      rename(`Breakdown` = `geo_breakdown`) %>%
+      rename_at(yvalue, ~ str_to_title(str_replace_all(., "_", " ")))
+
+    p <- ggplot(reg_data, aes(
+      x = `Breakdown`, y = !!sym(str_to_title(str_replace_all(yvalue, "_", " "))), fill = factor(time_period),
+      text = paste0(
+        str_to_sentence(str_replace_all(yvalue, "_", " ")), ": ", format(!!sym(str_to_title(str_replace_all(yvalue, "_", " "))), nsmall = 1), "<br>",
+        "SDQ score: ", `score_label`, "<br>",
+        "Region: ", `Breakdown`, "<br>",
+        "Time period: ", `time_period`
+      )
+    ))
+
+    max_xaxis <- length(unique(reg_data$`Breakdown`)) + 1
+
+    suppressWarnings(
+      p2 <- p +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 0, ymax = 14, text = paste("Normal SDQ score: 0-13"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 14, ymax = 17, text = paste("Borderline SDQ score: 14-16"))) +
+        geom_rect(colour = NA, fill = NA, alpha = 0.1, aes(xmin = 0, xmax = max_xaxis, ymin = 17, ymax = yupperlim, text = paste("Cause for concern SDQ score: 17-40"))) +
+        geom_hline(linetype = "dashed", colour = "#F46A25", aes(yintercept = 14, text = paste("Borderline", "<br>", "Score: 14"))) +
+        geom_hline(linetype = "dot", colour = "red", aes(yintercept = 17, text = paste("Cause for concern", "<br>", "Score: 17"))) +
+        ylab(yaxis_title) +
+        xlab("Region") +
+        theme_classic() +
+        scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + # Wrap the labels
+        theme(
+          text = element_text(size = 12),
+          axis.title.x = element_blank(),
+          axis.title.y = element_text(margin = margin(r = 12)),
+          axis.line = element_line(linewidth = 1.0)
+        ) +
+        scale_y_continuous(limits = c(0, yupperlim)) +
+        scale_fill_manual(
+          "Time Period",
+          values = "#12436D" # gss_colour_pallette
+        ) +
+        geom_col(position = position_dodge(), alpha = 1, fill = "#12436D")
+    )
+  }
+}
+
+
+# Statistical Neighbours function (Legacy version) ----
 statistical_neighbours_plot <- function(dataset,
                                         selected_geo_breakdown = NULL,
                                         selected_geo_lvl = NULL,
@@ -518,7 +517,7 @@ statistical_neighbours_plot <- function(dataset,
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
   # prepare the yaxis title so it wraps at 25 chars
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
@@ -620,7 +619,7 @@ statistical_neighbours_plot <- function(dataset,
 
 
 
-# Statistical Neighbours Plot (Revised version) ----
+# Statistical Neighbours function (Revised version) ----
 statistical_neighbours_plot_revised <- function(dataset,
                                                 selected_geo_lvl = NULL,
                                                 selected_geo_breakdown = NULL,
@@ -645,7 +644,7 @@ statistical_neighbours_plot_revised <- function(dataset,
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
   # prepare the y-axis title so it is wrapped at 25 characters
-  yaxis_title <- str_wrap(yaxis_title, width = 25)
+  yaxis_title <- str_wrap(yaxis_title, width = 27)
 
   if (add_rect == FALSE) {
     # default version of the plot (i.e. not with the SDQ thresholds plotted)

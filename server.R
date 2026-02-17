@@ -6307,7 +6307,7 @@ server <- function(input, output, session) {
 
     p <- by_la_bar_plot(
       dataset = data, selected_geo_breakdown = input$geographic_breakdown_e2, selected_geo_lvl = input$select_geography_e2, yvalue = "Share minus CLA (%)",
-      yaxis_title = "Share of Children’s Services spend not on CLA (%)", decimal_percentage = TRUE
+      yaxis_title = "Share spent on children's services excluding CLA (%)", decimal_percentage = TRUE
     ) %>%
       config(displayModeBar = F)
     title <- paste0("Share of Children’s Services spend not on CLA (%) by local authority (", max(p$data$time_period), ")")
@@ -11522,7 +11522,7 @@ server <- function(input, output, session) {
     data <- spending_data_no_cla
     max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
 
-    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share of Children’s Services spend\n not on CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
+    p <- statistical_neighbours_plot(data, input$geographic_breakdown_e2, input$select_geography_e2, "minus_cla_share", "Share spent on children's services excluding CLA (%)", max_y_lim, decimal_percentage = TRUE) %>%
       config(displayModeBar = F)
     title <- paste0("Share of Children’s Services spend not on CLA (%) by statistical neighbours (", max(data$time_period), ")")
     p <- p + ggtitle(title)
