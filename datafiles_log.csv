@@ -40,7 +40,8 @@ data-raw/RO3_LA_DATA_2024-25_data_by_LA.ods,published
 data-raw/RSX_LA_Data_2024-25_data_by_LA.ods,published
 data-raw/LA_Inspection_Outcomes_as_at_31_March_2025.ods,published
 data-raw/mye24tablesew.xlsx,published
-data/summary_page_metadata.xlsx,reference
+data/summary_page_metadata.csv,reference
 data-raw/ofsted_region_mapping_corrections.csv,reference
 data-raw/ons_mid-year_population_estimates_2012_to_2024.csv,reference
 data-raw/la_cla_swcount.csv,published
+data-raw/la_cla_school_moves.csv,published
