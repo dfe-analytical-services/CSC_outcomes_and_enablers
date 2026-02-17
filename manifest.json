@@ -1166,13 +1166,13 @@
       "description": {
         "Package": "dfeshiny",
         "Title": "DfE R Shiny Standards",
-        "Version": "0.5.3.9000",
+        "Version": "0.6.0",
         "Authors@R": "c(\n    person(\"Rich\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = c(\"aut\", \"cre\"),\n           comment = c(ORCID = \"0000-0001-9070-9969\")),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"aut\"),\n    person(\"Cam\", \"Race\", , \"cameron.race@education.gov.uk\", role = \"aut\")\n  )",
         "Description": "R package containing preferred methods for creating official\n    DfE R-Shiny dashboards.",
         "License": "GPL (>= 3)",
         "URL": "https://dfe-analytical-services.github.io/dfeshiny/\nhttps://www.github.com/dfe-analytical-services/dfeshiny/",
-        "Depends": "R (>= 2.10)",
-        "Imports": "dplyr,\ncheckmate,\nglue,\nhtmltools,\nlubridate,\nmagrittr,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler,\nxfun,\nreactable,\nreadr",
+        "Depends": "R (>= 4.1.0)",
+        "Imports": "dplyr,\ncheckmate,\nchromote,\nglue,\nhtmltools,\nlifecycle,\nlubridate,\nmagrittr,\nshiny,\nshinyGovstyle,\nshinyjs,\nstringr,\nstyler,\nxfun,\nreadr",
         "Suggests": "devtools,\ndiffviewer,\nknitr,\nrmarkdown,\nshinytest2,\nspelling,\ntestthat (>= 3.0.0)",
         "VignetteBuilder": "knitr",
         "Config/testthat/edition": "3",
@@ -1180,21 +1180,22 @@
         "Language": "en-US",
         "LazyData": "true",
         "Roxygen": "list(markdown = TRUE)",
-        "RoxygenNote": "7.3.2",
+        "RoxygenNote": "7.3.3",
         "Author": "Rich Bielby [aut, cre] (<https://orcid.org/0000-0001-9070-9969>),\n  Charlotte Foster [aut],\n  Cam Race [aut]",
         "Maintainer": "Rich Bielby <richard.bielby@education.gov.uk>",
-        "Built": "R 4.4.3; ; 2025-05-13 14:49:07 UTC; windows",
+        "Built": "R 4.4.3; ; 2026-02-17 10:29:56 UTC; windows",
         "RemoteType": "github",
         "RemoteHost": "api.github.com",
         "RemoteUsername": "dfe-analytical-services",
         "RemoteRepo": "dfeshiny",
         "RemoteRef": "main",
-        "RemoteSha": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a",
+        "RemoteSha": "8393337050c184f7f59d5698b68aea4d88083160",
         "GithubHost": "api.github.com",
         "GithubRepo": "dfeshiny",
         "GithubUsername": "dfe-analytical-services",
         "GithubRef": "main",
-        "GithubSHA1": "c96310734f2c85bc8dcfeb1ffa1dc9ff609f894a"
+        "GithubSHA1": "8393337050c184f7f59d5698b68aea4d88083160",
+        "Remotes": "dfe-analytical-services/shinyGovstyle"
       }
     },
     "diffobj": {
@@ -3680,29 +3681,39 @@
       }
     },
     "shinyGovstyle": {
-      "Source": "CRAN",
-      "Repository": "http://cran.rstudio.com",
+      "Source": "github",
+      "Repository": null,
       "description": {
         "Package": "shinyGovstyle",
-        "Title": "Custom Gov Style Inputs for Shiny",
-        "Version": "0.1.0",
-        "Authors@R": "c(\n    person(\"Ross\", \"Wyatt\", , \"ross.wyatt@justice.gov.uk\", role = c(\"aut\", \"cre\")),\n    person(\"Cameron\", \"Race\", , \"cameron.race@education.gov.uk\", role = \"ctb\"),\n    person(\"Sarah\", \"Wong\", role = \"ctb\"),\n    person(\"Richard\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = \"ctb\"),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"ctb\"),\n    person(\"Jeni\", \"Martin\", role = \"ctb\")\n  )",
-        "Description": "Collection of 'shiny' application styling that are the based\n    on the GOV.UK Design System.  See\n    <https://design-system.service.gov.uk/components/> for details.",
-        "License": "GPL-3",
-        "URL": "https://github.com/moj-analytical-services/shinyGovstyle",
-        "BugReports": "https://github.com/moj-analytical-services/shinyGovstyle/issues",
-        "Depends": "R (>= 3.1.0)",
-        "Imports": "htmltools, jsonlite, magrittr, purrr, shiny (>= 0.14),\nshinyjs, stringr",
-        "Suggests": "testthat",
+        "Title": "Custom GOV.UK Style Inputs for Shiny",
+        "Version": "0.1.0.9000",
+        "Authors@R": "c(\n    person(\"Ross\", \"Wyatt\", , \"ross.wyatt@justice.gov.uk\", role = \"aut\"),\n    person(\"Cam\", \"Race\", , \"cameron.race@education.gov.uk\", role = c(\"aut\", \"cre\")),\n    person(\"Sarah\", \"Wong\", role = \"aut\"),\n    person(\"Richard\", \"Bielby\", , \"richard.bielby@education.gov.uk\", role = \"ctb\"),\n    person(\"Charlotte\", \"Foster\", , \"charlotte.foster@education.gov.uk\", role = \"ctb\"),\n    person(\"Jeni\", \"Martin\", role = \"ctb\"),\n    person(\"Andrew\", \"Baker\", , \"andrew.baker1@dhsc.gov.uk\", role = \"ctb\")\n  )",
+        "Description": "Collection of 'shiny' application styling that are based\n    on the GOV.UK Design System. See\n    <https://design-system.service.gov.uk/components/> for details.",
+        "License": "GPL (>= 3)",
+        "URL": "https://github.com/dfe-analytical-services/shinyGovstyle",
+        "BugReports": "https://github.com/dfe-analytical-services/shinyGovstyle/issues/new/choose",
+        "Depends": "R (>= 4.1.0)",
+        "Imports": "htmltools,\njsonlite,\npurrr,\nreactable,\nreadr,\nreadODS,\nshiny (>= 0.14),\nshinyjs,\nstringr,\nwritexl",
+        "Suggests": "testthat,\nshinytest2",
         "Encoding": "UTF-8",
-        "RoxygenNote": "7.3.2",
-        "NeedsCompilation": "no",
-        "Packaged": "2024-09-10 15:59:19 UTC; rosswyatt",
-        "Author": "Ross Wyatt [aut, cre],\n  Cameron Race [ctb],\n  Sarah Wong [ctb],\n  Richard Bielby [ctb],\n  Charlotte Foster [ctb],\n  Jeni Martin [ctb]",
-        "Maintainer": "Ross Wyatt <ross.wyatt@justice.gov.uk>",
-        "Repository": "CRAN",
-        "Date/Publication": "2024-09-12 14:40:02 UTC",
-        "Built": "R 4.4.3; ; 2025-03-09 03:32:47 UTC; windows"
+        "RoxygenNote": "7.3.3",
+        "LazyData": "true",
+        "Config/testthat/edition": "3",
+        "Roxygen": "list(markdown = TRUE)",
+        "Author": "Ross Wyatt [aut],\n  Cam Race [aut, cre],\n  Sarah Wong [aut],\n  Richard Bielby [ctb],\n  Charlotte Foster [ctb],\n  Jeni Martin [ctb],\n  Andrew Baker [ctb]",
+        "Maintainer": "Cam Race <cameron.race@education.gov.uk>",
+        "Built": "R 4.4.3; ; 2026-02-17 10:29:40 UTC; windows",
+        "RemoteType": "github",
+        "RemoteHost": "api.github.com",
+        "RemoteUsername": "dfe-analytical-services",
+        "RemoteRepo": "shinyGovstyle",
+        "RemoteRef": "main",
+        "RemoteSha": "54fbe26c92ffb4890749a7afb648ff828b551d22",
+        "GithubHost": "api.github.com",
+        "GithubRepo": "shinyGovstyle",
+        "GithubUsername": "dfe-analytical-services",
+        "GithubRef": "main",
+        "GithubSHA1": "54fbe26c92ffb4890749a7afb648ff828b551d22"
       }
     },
     "shinyWidgets": {
@@ -4579,6 +4590,41 @@
         "Built": "R 4.4.3; ; 2025-03-09 01:40:07 UTC; windows"
       }
     },
+    "writexl": {
+      "Source": "CRAN",
+      "Repository": "http://cran.rstudio.com",
+      "description": {
+        "Package": "writexl",
+        "Type": "Package",
+        "Title": "Export Data Frames to Excel 'xlsx' Format",
+        "Version": "1.5.3",
+        "Authors@R": "c(\n    person(\"Jeroen\", \"Ooms\", ,\"jeroenooms@gmail.com\", role = c(\"aut\", \"cre\"),\n      comment = c(ORCID = \"0000-0002-4035-0289\")),\n    person(\"John McNamara\", role = \"cph\",\n      comment = \"Author of libxlsxwriter (see AUTHORS and COPYRIGHT files for details)\"))",
+        "Description": "Zero-dependency data frame to xlsx exporter based on 'libxlsxwriter'\n    <https://libxlsxwriter.github.io>. Fast and no Java or Excel required.",
+        "License": "BSD_2_clause + file LICENSE",
+        "Encoding": "UTF-8",
+        "URL": "https://ropensci.r-universe.dev/writexl\nhttps://docs.ropensci.org/writexl/",
+        "BugReports": "https://github.com/ropensci/writexl/issues",
+        "RoxygenNote": "7.0.2",
+        "Suggests": "spelling, readxl, nycflights13, testthat, bit64",
+        "Language": "en-US",
+        "SystemRequirements": "zlib",
+        "NeedsCompilation": "yes",
+        "Packaged": "2025-04-06 19:27:24 UTC; jeroen",
+        "Author": "Jeroen Ooms [aut, cre] (<https://orcid.org/0000-0002-4035-0289>),\n  John McNamara [cph] (Author of libxlsxwriter (see AUTHORS and COPYRIGHT\n    files for details))",
+        "Maintainer": "Jeroen Ooms <jeroenooms@gmail.com>",
+        "Repository": "CRAN",
+        "Date/Publication": "2025-04-06 20:00:02 UTC",
+        "Built": "R 4.4.3; x86_64-w64-mingw32; 2025-04-06 23:50:57 UTC; windows",
+        "Archs": "x64",
+        "RemoteType": "standard",
+        "RemotePkgRef": "writexl",
+        "RemoteRef": "writexl",
+        "RemoteRepos": "http://cran.rstudio.com",
+        "RemoteReposName": "CRAN",
+        "RemotePkgPlatform": "x86_64-w64-mingw32",
+        "RemoteSha": "1.5.3"
+      }
+    },
     "xfun": {
       "Source": "CRAN",
       "Repository": "http://cran.rstudio.com",
@@ -4758,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "8a8ba209ef460ccca9531774e33ef157"
+      "checksum": "9992875f6113b6d26ae8b7d0570b086c"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5094,7 +5140,7 @@
       "checksum": "ac39ff78faa1442da2a278fa922a3204"
     },
     "R/plotting.R": {
-      "checksum": "32a7ea8018f7bb953d8a83a760ebe99d"
+      "checksum": "c79bc8e98f6d9abd23758674b592e1c8"
     },
     "R/read_data.R": {
       "checksum": "5cb39c9e92c14e3e6b1e542cb41c66fa"
@@ -5127,10 +5173,10 @@
       "checksum": "0855ac3bdb3afbc31d6cab5e6c00b85d"
     },
     "renv.lock": {
-      "checksum": "9a40ac6636b69e6cd293b85e5ecdb0e8"
+      "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "d8a770623645e26eeae5bb4e28b46a6d"
+      "checksum": "263a9025a5486b60ab3faeb0971ee036"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5142,7 +5188,7 @@
       "checksum": "12e9b09de5275bdc13bde6ae5a82f8b1"
     },
     "tests/testthat/_snaps/initial_load/CSC_outcomes_and_enablers_initial_load-001.json": {
-      "checksum": "8189dd220774f0b75864744a986f9d36"
+      "checksum": "91a8cbeb759abd7df2cd348fd233b9fe"
     },
     "tests/testthat/_snaps/shinytest2/CSC_outcomes_and_enablers_error_test-001.json": {
       "checksum": "4aec4126d86eef1fd24a21bae3539aeb"
