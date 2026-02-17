@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "ed8de799db8e97c423408e66b12727b4"
+      "checksum": "f5d2384eac620cfaf2bada90f4c715e7"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5095,7 +5095,7 @@
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline.R": {
-      "checksum": "be4634fd5da93b134714982ab077cf21"
+      "checksum": "29bc79f692a8b8bad09491aea3955d60"
     },
     "R/data_sources.R": {
       "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
@@ -5260,7 +5260,7 @@
       "checksum": "d3e71278de0398bd2acaa6e00ad59114"
     },
     "tests/testthat/test-initial_load.R": {
-      "checksum": "0ec3f1ba70ec6fc0ea0e0bc4becb9ac6"
+      "checksum": "a7c80bcf9b6ec11a0696dacf514f48ed"
     },
     "tests/testthat/test-shinytest2.R": {
       "checksum": "9ee4f7686a02e2d5689886340fcc0d0d"

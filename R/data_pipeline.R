@@ -47,13 +47,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/school_stability/pipeline_comparison_school_stability_v2.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/school_stability/pipeline_comparison_school_stability_v3.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/school_stability/Consolidated SetDiff school stability v2.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/school_stability/Consolidated SetDiff school stability v3.xlsx")
 
 
   ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
@@ -66,13 +66,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/school_stability/pipeline_consolidated_setdiffs_school_stability_v1.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/school_stability/pipeline_consolidated_setdiffs_school_stability_v2.xlsx")
 
 
   ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Summary data correction for school stability" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Summary data correction for school stability....again!" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
