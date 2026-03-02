@@ -2423,7 +2423,7 @@ read_s47_to_ICPC_data <- function(sn_long, file = "./data-raw/c4_children_in_nee
   #calculate percetnage
   
   s47_to_ICPC_data <- s47_to_ICPC_data %>%
-    mutate(percentage = (as.numeric(ICPC) / as.numeric(Section47) * 100)) %>%
+    mutate(percentage = (as.numeric(ICPC) / as.numeric(Section47) * 100)) 
     
     # calculate stat neighbours
     sn_metrics <- sn_aggregations(
