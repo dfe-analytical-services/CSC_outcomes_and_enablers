@@ -50,6 +50,11 @@ introductionPanel <- function() {
                     tags$li("Rate of children looked after on 31 March per 10k"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
+                  h5("School stability"),
+                  tags$ul(
+                    tags$li("% children looked after with at least one mid-year school move"),
+                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+                  ),
                   h5("Child wellbeing and development"),
                   tags$ul(
                     tags$li("Overall Absence for CINO, CPPO and CLA on 31 March by school type"),
@@ -151,6 +156,7 @@ introductionPanel <- function() {
                   h5("Quality of support for children and families"),
                   tags$ul(
                     tags$li("Average caseload"),
+                    tags$li("% children looked after with 3 or more social workers in past 12 months"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   h5("Social worker ethnicity"),
