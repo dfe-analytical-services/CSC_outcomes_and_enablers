@@ -61,16 +61,8 @@ introductionPanel <- function() {
                     tags$li("Pupils (CINO, CPPO, CLA) achieving expected standard in reading, writing and maths combined (KS2)"),
                     tags$li("Average attainment 8 (CINO, CPPO, CLA) at 31 March (KS4)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
-                  ),
+                  ),      
                   # outcome 2
-                  h4("Children and young people are supported by their network"),
-                  h5("Families engaging and receiving support from their family network"),
-                  tags$ul(
-                    tags$li("% children who cease to be looked after due to special guardianship order"),
-                    tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
-                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
-                  ),
-                  # outcome 3
                   h4("Children and young people are safe in and outside of their home"),
                   h5("Child safety - general"),
                   tags$ul(
@@ -89,6 +81,15 @@ introductionPanel <- function() {
                     tags$li("Factors identified at the end of assessment in the year to 31 March related to specific types of harms outside the home per 10k by factor"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
+                  # outcome 3
+                  h4("Children and young people are supported by their network"),
+                  h5("Families engaging and receiving support from their family network"),
+                  tags$ul(
+                    tags$li("% children who cease to be looked after due to special guardianship order"),
+                    tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
+                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+                  ),
+      
                   # outcome 4
                   h4("Children in care and care leavers have stable, loving homes"),
                   h5("Stability and quality of where a child lives"),
