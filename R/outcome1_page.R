@@ -767,7 +767,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Children with at least one mid-year school move",
+                    title = "Percentage of CLA with at least one mid-year school move",
                     value = htmlOutput("school_stability_txt")
                   )
                 ),
