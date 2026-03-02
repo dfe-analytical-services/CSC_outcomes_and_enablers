@@ -2428,13 +2428,13 @@ read_s47_to_ICPC_data <- function(sn_long, file = "./data-raw/c4_children_in_nee
     # calculate stat neighbours
     sn_metrics <- sn_aggregations(
       sn_long = sn_long,
-      dataset = sch_stability_data,
+      dataset =  s47_to_ICPC_data,
       median_cols = c("percentage"),
       sum_cols = c(),
       group_cols = c("LA.number", "time_period", "ICPC", "Section47", "percentage")
     )
   
-  s47_to_ICPC_data  <- rbindlist(l = list( s47_to_ICPC_data , sn_metrics), fill = TRUE, use.names = TRUE) %>%
+  s47_to_ICPC_data  <- rbindlist(l = list(s47_to_ICPC_data,sn_metrics), fill = TRUE, use.names = TRUE) %>%
     mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
     redacted_to_negative(col_old = "percentage", col_new = "percent")
   
