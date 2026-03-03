@@ -47,13 +47,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/school_stability/pipeline_comparison_school_stability_v3.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/pipeline_comparison_school_stability_v3.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/school_stability/Consolidated SetDiff school stability v3.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/Consolidated SetDiff school stability v3.xlsx")
 
 
   ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
@@ -72,7 +72,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Summary data correction for school stability....again!" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Add s47 data " # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
@@ -310,6 +310,7 @@ pipeline_generate_datasets <- function() {
   ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 
   ## Read in outcome 3 data ----
+  s47_to_ICPC_data <- suppressWarnings(read_s47_to_ICPC_data(sn_long = stats_neighbours_long)) # new metric
   repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
   duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
   assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
@@ -325,7 +326,7 @@ pipeline_generate_datasets <- function() {
   ## Summary Data ----
   list2env(Filter(function(x) is(x, "data.frame"), mget(ls())), envir = .GlobalEnv)
   summary_data <- collect_summary_data_all()
-
+  
   datasets_new <- Filter(function(x) is(x, "data.frame"), mget(ls()))
 
   return(datasets_new)
