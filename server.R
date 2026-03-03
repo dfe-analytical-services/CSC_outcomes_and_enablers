@@ -11615,7 +11615,7 @@ server <- function(input, output, session) {
     dataset = copy(s47_to_ICPC_data),
     chart_title = "Proportion of ICPCs to Section 47s",
     yvalue = "percent",
-    yaxis_title = "ICPCs to Section 47s (%))",
+    yaxis_title = "ICPCs to Section 47s (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
     rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
     rt_col_defs = list(

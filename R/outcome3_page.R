@@ -104,7 +104,7 @@ outcome3_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)",
+                    title = "Percentage of section 47 enquiries converted to intial child protection conferences (ICPC)",
                     value = htmlOutput("s47_ICPC_txt")
                   )
                 ),
@@ -139,10 +139,10 @@ outcome3_tab <- function() {
               ### s47 to ICPC------------------------
                accordion(
                 accordion_panel(
-                  "Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)",
+                  "Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC)",
                   gov_row(
-                    h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)"),
-                    p("Children"),
+                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC)"),
+                    p("This measure looks at the proportion of ICPCs to section 47 enquiries."),
                     insert_text(
                       inputId = "s47_ICPC_definition",
                       text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child. If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days."
@@ -151,13 +151,13 @@ outcome3_tab <- function() {
                     timeseries_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC) by region"),
+                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC) by region"),
                     br(),
                     # here is the call the  regional barchart ui
                     regional_barchart_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC) by local authority"),
+                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC) by local authority"),
                     br(),
                     # this is th code to display the ui module for LA/SN section
                     la_and_sn_toggle_section_ui("s47_to_ICPC"),
