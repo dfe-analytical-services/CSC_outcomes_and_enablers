@@ -2415,27 +2415,27 @@ read_s47_to_ICPC_data <- function(sn_long, file = "./data-raw/c4_children_in_nee
   s47_to_ICPC_data <- fread(file)
   
   # preliminary cleaning
-  s47_to_ICPC_data <- s47_to_ICPC_data %>%
-    colClean() %>%
+ s47_to_ICPC_data <- s47_to_ICPC_data %>%
+   colClean() %>%
    insert_geo_breakdown() %>%
    remove_cumbria_data() 
   
   #calculate percentage
   
  s47_to_ICPC_data <- s47_to_ICPC_data %>%
-  mutate(percentage = (as.numeric(ICPC) / as.numeric(Section47) * 100)) 
+ mutate(percentage = (as.numeric(ICPC) / as.numeric(Section47) * 100)) 
     
     # calculate stat neighbours
-   sn_metrics <- sn_aggregations(
+  sn_metrics <- sn_aggregations(
      sn_long = sn_long,
-     dataset =  s47_to_ICPC_data,
-     median_cols = c("percentage"),
-     sum_cols = c(),
-     group_cols = c("LA.number", "time_period")
+    dataset =  s47_to_ICPC_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period")
   )
   
 s47_to_ICPC_data  <- rbindlist(l = list(s47_to_ICPC_data,sn_metrics), fill = TRUE, use.names = TRUE) %>%
-   mutate(percentage = sapply(percentage, decimal_rounding, 0)) %>%
+  mutate(percentage = sapply(percentage, decimal_rounding, 1)) %>%
    redacted_to_negative(col_old = "percentage", col_new = "percent")
   
   return(s47_to_ICPC_data)
