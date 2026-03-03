@@ -11557,6 +11557,81 @@ server <- function(input, output, session) {
     )
   })
 
+  
+  # s47 headline box
+  output$s47_ICPC_txt <- renderText({
+    stat <- format(s47_to_ICPC_data %>%
+                     filter(time_period == max(s47_to_ICPC_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o3) %>%
+                     select(percentage), nsmall = 1)
+    
+    if (input$geographic_breakdown_o3 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+    
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
+    )
+  })
+  
+  ### S47 chart + table : module
+  timeseries_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_3,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to Section 47s",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to Section 47s (%)",
+    max_rate = calculate_max_rate(s47_to_ICPC_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+  
+  # Regional barchart for social worker stability
+  regional_barchart_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_3,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to Section 47s",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to Section 47s (%)",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+  
+  
+  la_and_sn_toggle_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_3,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to Section 47s",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to Section 47s (%))",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+  
+  
+  
+  
+  
+  
+
+  
+  
 
   # Don't touch the code below -----------------------
 

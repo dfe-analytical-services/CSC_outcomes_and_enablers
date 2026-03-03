@@ -136,87 +136,32 @@ outcome3_tab <- function() {
                   repeat plans, suggests that children and families are not
                   receiving the help that they need to address their issues.")
               ),
-              ### Rs47 to ICPC------------------------
-              accordion(
+              ### s47 to ICPC------------------------
+               accordion(
                 accordion_panel(
                   "Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)",
-                  h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)"),
-                  insert_text(inputId = "s47_ICPC_definition", text = paste(
-                    "<b>", "Section 47 enquires and initial child protection conferences (ICPC)", "</b><br>",
-                    "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child. If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days.."
-                  )),
-                 plotlyOutput("s47_ICPC_time_series"),
-                  br(),
-                  # Expandable for the table alternative
-                  details(
-                    inputId = "tbl_s47_ICPC",
-                    label = "View chart as a table",
-                    help_text = (
-                      HTML(paste0(
-                        csvDownloadButton("s47_ICPC", filename = "s47_ICPC"),
-                        reactableOutput("s47_ICPCp")
-                      ))
-                    )
-                  ),
-                  details(
-                    inputId = "s47_ICPC_info",
-                    label = "Additional information:",
-                    help_text = (
-                      tags$ul(
-                        tags$li("The metric shown in the graph refers to the proportion of ICPCs to Section 47s."),
-                        tags$br(),
-                        p(
-                          "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                          tags$br(),
-                          "For more information about child protection plans, refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.", target = "_blank")
-                        )
-                      )
-                    )
+                  gov_row(
+                    h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC)"),
+                    p("Children"),
+                    insert_text(
+                      inputId = "s47_ICPC_definition",
+                      text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child. If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days."
+                    ),
+                    # here is the call to the module to display timeseries chart, table and download button
+                    timeseries_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
                     h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC) by region"),
-                    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
                     br(),
-                    plotlyOutput("plot_s47_ICPC_reg"),
-                    br(),
-                    br(),
-                    details(
-                      inputId = "tbl_s47_ICPC_reg",
-                      label = "View chart as a table",
-                      help_text = (
-                        HTML(paste0(
-                          csvDownloadButton("table_s47_ICPC_reg", filename = "Repeat_s47_ICPC_regions.csv"),
-                          reactableOutput("table_s47_ICPC_reg")
-                        ))
-                      )
-                    ),
-                    details(
-                      inputId = "s47_ICPC_reg_info",
-                      label = "Additional information:",
-                      help_text = (
-                        tags$ul(
-                          tags$li("The metric shown in the graph refers to the proportion of ICPCs to Section 47s."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/characteristics-of-children-in-need/data-guidance", "Children in need data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information about child protection plans, refer to", a(href = "https://assets.publishing.service.gov.uk/media/65cb4349a7ded0000c79e4e1/Working_together_to_safeguard_children_2023_-_statutory_guidance.pdf", "Working together to safeguard children - statutory guidance.", target = "_blank")
-                          )
-                        )
-                      )
-                    ),
+                    # here is the call the  regional barchart ui
+                    regional_barchart_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
                     h2("Percentage of section 47s which were converted to Intial Child Protection Conferences (ICPC) by local authority"),
-                    p(sprintf("The charts below represent data from %s.", max(repeat_cpp$time_period))),
-                    radioGroupButtons(
-                      "CPP_stats_toggle",
-                      label = NULL,
-                      choices = c("All local authorities", "10 statistical neighbours"),
-                      selected = "All local authorities",
-                      justified = TRUE
-                    ),
-                    uiOutput("SN_s47_ICPC"),
+                    br(),
+                    # this is th code to display the ui module for LA/SN section
+                    la_and_sn_toggle_section_ui("s47_to_ICPC"),
+                    br()
                   )
                 ),
                 ### Repeat CPP ------------------------
