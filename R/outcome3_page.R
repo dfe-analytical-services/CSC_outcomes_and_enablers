@@ -104,7 +104,7 @@ outcome3_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Percentage of section 47 enquiries converted to intial child protection conferences (ICPC)",
+                    title = "Percentage of section 47 enquiries which progressed to intial child protection conferences (ICPC)",
                     value = htmlOutput("s47_ICPC_txt")
                   )
                 ),
@@ -139,9 +139,9 @@ outcome3_tab <- function() {
               ### s47 to ICPC------------------------
                accordion(
                 accordion_panel(
-                  "Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC)",
+                  "Percentage of section 47 enquiries which progressed to intial child protection conferences (ICPC)",
                   gov_row(
-                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC)"),
+                    h2("Percentage of section 47 enquiries which progressed to intial child protection conferences (ICPC)"),
                     p("This measure looks at the proportion of ICPCs to section 47 enquiries."),
                     insert_text(
                       inputId = "s47_ICPC_definition",
@@ -151,13 +151,13 @@ outcome3_tab <- function() {
                     timeseries_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC) by region"),
+                    h2("Percentage of section 47 enquiries which progressed to intial child protection conferences (ICPC) by region"),
                     br(),
                     # here is the call the  regional barchart ui
                     regional_barchart_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Percentage of section 47 enquiries which were converted to intial child protection conferences (ICPC) by local authority"),
+                    h2("Percentage of section 47 enquiries which progressed to intial child protection conferences (ICPC) by local authority"),
                     br(),
                     # this is th code to display the ui module for LA/SN section
                     la_and_sn_toggle_section_ui("s47_to_ICPC"),
