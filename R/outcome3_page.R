@@ -130,12 +130,7 @@ outcome3_tab <- function() {
                   )
                 ),
                 br(),
-                p("Child protection is focused on investigating and addressing
-                  significant harm that children might experience. Remaining
-                  on a CPP for a longer period of time or having multiple
-                  repeat plans, suggests that children and families are not
-                  receiving the help that they need to address their issues.")
-              ),
+                        ),
               ### s47 to ICPC------------------------
                accordion(
                 accordion_panel(
@@ -169,8 +164,11 @@ outcome3_tab <- function() {
                   "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
                   h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
-                    "<b>", "Child protection plan (CPP)", "</b><br>",
-                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference. Child protection is focused on investigating and addressing
+                    significant harm that children might experience. Remaining
+                    on a CPP for a longer period of time or having multiple
+                    repeat plans, suggests that children and families are not
+                    receiving the help that they need to address their issues."
                   )),
                   plotlyOutput("repeat_cpp_time_series"),
                   br(),
@@ -251,8 +249,11 @@ outcome3_tab <- function() {
                   "Percentage of child protection plans (CPP) longer than 2 years",
                   h2("Percentage of child protection plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
-                    "<b>", "Child protection plan (CPP)", "</b><br>",
-                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference. Child protection is focused on investigating and addressing
+                    significant harm that children might experience. Remaining
+                    on a CPP for a longer period of time or having multiple
+                    repeat plans, suggests that children and families are not
+                    receiving the help that they need to address their issues."
                   )),
                   plotlyOutput("duration_cpp_time_series"),
                   br(),
