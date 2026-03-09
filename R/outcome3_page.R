@@ -140,7 +140,9 @@ outcome3_tab <- function() {
                     p("This measure looks at the proportion of ICPCs to section 47 enquiries."),
                     insert_text(
                       inputId = "s47_ICPC_definition",
-                      text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child. If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days."
+                      text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child. 
+                      If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days. <br><br>
+                      Conversion from a section 47 to an initial child protection conference can show that enquiries are needed and are being used proportionately and to good effect, identifying where significant harm is occurring so robust action can be taken to protect children."
                     ),
                     # here is the call to the module to display timeseries chart, table and download button
                     timeseries_section_ui("s47_to_ICPC")
