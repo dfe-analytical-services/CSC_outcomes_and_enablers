@@ -2824,7 +2824,7 @@ server <- function(input, output, session) {
     )
   })
 
-  region_for_la_o2 <- reactive({
+  region_for_la_outcome_three <- reactive({
     selected_la <- input$geographic_breakdown_outcome_three
     location_data %>%
       filter(la_name == selected_la) %>%
@@ -2832,7 +2832,7 @@ server <- function(input, output, session) {
   })
 
   output$outcome_three_choice_text1 <- renderText({
-    generate_choice_text1(input$select_geography_outcome_three, input$geographic_breakdown_outcome_three, region_for_la_o2())
+    generate_choice_text1(input$select_geography_outcome_three, input$geographic_breakdown_outcome_three, region_for_la_outcome_three())
   })
 
   output$outcome_three_choice_text2 <- renderText({
@@ -3320,7 +3320,7 @@ server <- function(input, output, session) {
 
   # outcome 3 confirmation text
 
-  region_for_la_o3 <- reactive({
+  region_for_la_outcome_two <- reactive({
     selected_la <- input$geographic_breakdown_outcome_two
     location_data %>%
       filter(la_name == selected_la) %>%
@@ -3328,7 +3328,7 @@ server <- function(input, output, session) {
   })
 
   output$outcome_two_choice_text1 <- renderText({
-    generate_choice_text1(input$select_geography_outcome_two, input$geographic_breakdown_outcome_two, region_for_la_o3())
+    generate_choice_text1(input$select_geography_outcome_two, input$geographic_breakdown_outcome_two, region_for_la_outcome_two())
   })
 
   output$outcome_two_choice_text2 <- renderText({
