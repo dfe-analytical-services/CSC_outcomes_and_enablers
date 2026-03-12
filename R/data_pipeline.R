@@ -326,7 +326,7 @@ pipeline_generate_datasets <- function() {
   ## Summary Data ----
   list2env(Filter(function(x) is(x, "data.frame"), mget(ls())), envir = .GlobalEnv)
   summary_data <- collect_summary_data_all()
-  
+
   datasets_new <- Filter(function(x) is(x, "data.frame"), mget(ls()))
 
   return(datasets_new)

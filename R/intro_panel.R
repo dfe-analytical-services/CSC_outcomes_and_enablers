@@ -53,7 +53,7 @@ introductionPanel <- function() {
                   h5("School stability"),
                   tags$ul(
                     tags$li("% Children Looked After with at least one mid-year move"),
-                         style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   h5("Child wellbeing and development"),
                   tags$ul(
