@@ -178,6 +178,7 @@ server <- function(input, output, session) {
   sp_accordion_cols_server(id = "outcome1", rv_summary_page)
   sp_domain_server(id = "Access to support and getting help", rv_summary_page)
   sp_domain_server(id = "Family stability", rv_summary_page)
+  sp_domain_server(id = "School stability", rv_summary_page)
   sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
   sp_domain_server(id = "Educational attainment", rv_summary_page)
 
@@ -2733,6 +2734,77 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
+  ## Domain 3: School stability ----
+
+  ### School stability headline stat ----
+  output$school_stability_txt <- renderText({
+    max_period <- max(school_stability_data$time_period)
+    stat <- format(school_stability_data %>%
+      filter(time_period == max_period & geo_breakdown %in% input$geographic_breakdown_o1) %>%
+      select(percentage), nsmall = 0)
+
+    if (input$geographic_breakdown_e3 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>"
+    )
+  })
+
+
+  ### Stability timeseries chart + table : module
+  timeseries_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    yvalue = "percent",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+
+  # Regional barchart for social worker stability
+  regional_barchart_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    yvalue = "percent",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+
+
+  la_and_sn_toggle_section_server(
+    id = "school_stability",
+    rv_geo_filters = rv_outcome_1,
+    rv_dimensional_filters = list(),
+    dataset = copy(school_stability_data),
+    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    yvalue = "percent",
+    yaxis_title = "CLA with one or more mid-year moves (%)",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+
 
 
 
