@@ -94,8 +94,8 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "sn_comparison_checkbox_o1"
     ),
     output = c(
-      "outcome_three_choice_text1",
-      "outcome_three_choice_text2",
+      "outcome1_choice_text1",
+      "outcome1_choice_text2",
       "cla_rate_headline_txt",
       "uasc_rate_headline_txt",
       "cla_march_rate_headline_txt"
@@ -168,7 +168,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
 
   # Demo of using input and output flags to limit the range of shiny elements being
   # captured by a test.
-  # Test 2: Switch to Outcomes page 2, select regional and check the national
+  # Test 2: Switch to Outcomes page 3, select regional and check the national
   # comparison checkbox
   app$set_inputs(
     navlistPanel = "outcome3_page",
@@ -183,7 +183,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "select_geography_outcome_three",
       "outcome3_panels",
       "national_comparison_checkbox_outcome_three",
-      "regional_comparison_checkbox_o2",
+      "region_comparison_checkbox_outcome_three",
       "sn_comparison_checkbox_outcome_three"
     ),
     output = c(
@@ -249,11 +249,11 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
 
   # outcome 2 - second domain tab
   app$set_inputs(
-    navlistPanel = "outcome3_page",
+    navlistPanel = "outcome2_page",
     select_geography_outcome_two = "Regional",
     geographic_breakdown_outcome_two = "North East",
     national_comparison_checkbox_outcome_two = TRUE,
-    outcome3_panels = "Child abuse / neglect"
+    outcome2_panels = "Child abuse / neglect"
   )
   Sys.sleep(2)
   app$expect_values(
@@ -261,7 +261,7 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
       "navlistPanel",
       "select_geography_outcome_two",
       "geographic_breakdown_outcome_two",
-      "outcome3_panels",
+      "outcome2_panels",
       "national_comparison_checkbox_outcome_two"
     ),
     output = c(
@@ -273,10 +273,10 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # outcome 2 - third domain tab
   app$set_inputs(
     navlistPanel = "outcome2_page",
-    select_geography_outcome_three = "Regional",
-    geographic_breakdown_outcome_three = "North West",
-    national_comparison_checkbox_outcome_three = FALSE,
-    outcome3_panels = "Harms outside the home"
+    select_geography_outcome_two = "Regional",
+    geographic_breakdown_outcome_two = "North West",
+    national_comparison_checkbox_outcome_two = FALSE,
+    outcome2_panels = "Harms outside the home"
   )
   Sys.sleep(2)
   app$expect_values(
