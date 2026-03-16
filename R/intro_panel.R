@@ -66,7 +66,7 @@ introductionPanel <- function() {
                     tags$li("Pupils (CINO, CPPO, CLA) achieving expected standard in reading, writing and maths combined (KS2)"),
                     tags$li("Average attainment 8 (CINO, CPPO, CLA) at 31 March (KS4)"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
-                  ),      
+                  ),
                   # outcome 2
                   h4("Children and young people are safe in and outside of their home"),
                   h5("Child safety - general"),
@@ -94,7 +94,7 @@ introductionPanel <- function() {
                     tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
-      
+
                   # outcome 4
                   h4("Children in care and care leavers have stable, loving homes"),
                   h5("Stability and quality of where a child lives"),
