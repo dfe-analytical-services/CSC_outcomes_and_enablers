@@ -172,19 +172,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # comparison checkbox
   app$set_inputs(
     navlistPanel = "outcome3_page",
-    select_geography_outcome_three = "Regional",
-    national_comparison_checkbox_outcome_three = TRUE,
+    select_geography_o3 = "Regional",
+    national_comparison_checkbox_o3 = TRUE,
     outcome3_panels = "Families engaging and receiving support from their family network"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_outcome_three",
+      "select_geography_o3",
       "outcome3_panels",
-      "national_comparison_checkbox_outcome_three",
-      "region_comparison_checkbox_outcome_three",
-      "sn_comparison_checkbox_outcome_three"
+      "national_comparison_checkbox_o3",
+      "region_comparison_checkbox_o3",
+      "sn_comparison_checkbox_o3"
     ),
     output = c(
       "outcome_three_choice_text1",
@@ -197,14 +197,14 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # Outcome three - domain three
   app$set_inputs(
     navlistPanel = "outcome3_page",
-    select_geography_outcome_three = "National",
+    select_geography_o3 = "National",
     outcome3_panels = "  Percentage of children who cease being looked after due to Special Guardianship Order (SGO)"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_outcome_three",
+      "select_geography_o3",
       "outcome3_panels"
     ),
     output = c(
@@ -220,23 +220,23 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # Outcome 2 - looking at local authority level and no checkboxes
   app$set_inputs(
     navlistPanel = "outcome2_page",
-    select_geography_outcome_two = "Local authority",
-    geographic_breakdown_outcome_two = "Barking and Dagenham",
-    national_comparison_checkbox_outcome_two = FALSE,
-    region_comparison_checkbox_outcome_two = FALSE,
-    sn_comparison_checkbox_outcome_two = FALSE,
+    select_geography_o2 = "Local authority",
+    geographic_breakdown_o2 = "Barking and Dagenham",
+    national_comparison_checkbox_o2 = FALSE,
+    region_comparison_checkbox_o2 = FALSE,
+    sn_comparison_checkbox_o2 = FALSE,
     outcome2_panels = "Child safety - general"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_outcome_two",
-      "geographic_breakdown_outcome_two",
+      "select_geography_o2",
+      "geographic_breakdown_o2",
       "outcome2_panels",
-      "national_comparison_checkbox_outcome_two",
-      "region_comparison_checkbox_outcome_two",
-      "sn_comparison_checkbox_outcome_two"
+      "national_comparison_checkbox_o2",
+      "region_comparison_checkbox_o2",
+      "sn_comparison_checkbox_o2"
     ),
     output = c(
       "outcome_two_choice_text1",
@@ -250,19 +250,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # outcome 2 - second domain tab
   app$set_inputs(
     navlistPanel = "outcome2_page",
-    select_geography_outcome_two = "Regional",
-    geographic_breakdown_outcome_two = "North East",
-    national_comparison_checkbox_outcome_two = TRUE,
+    select_geography_o2 = "Regional",
+    geographic_breakdown_o2 = "North East",
+    national_comparison_checkbox_o2 = TRUE,
     outcome2_panels = "Child abuse / neglect"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_outcome_two",
-      "geographic_breakdown_outcome_two",
+      "select_geography_o2",
+      "geographic_breakdown_o2",
       "outcome2_panels",
-      "national_comparison_checkbox_outcome_two"
+      "national_comparison_checkbox_o2"
     ),
     output = c(
       "outcome_two_choice_text1",
@@ -273,19 +273,19 @@ test_that("{shinytest2} recording: CSC_outcomes_and_enablers_error_test", {
   # outcome 2 - third domain tab
   app$set_inputs(
     navlistPanel = "outcome2_page",
-    select_geography_outcome_two = "Regional",
-    geographic_breakdown_outcome_two = "North West",
-    national_comparison_checkbox_outcome_two = FALSE,
+    select_geography_o2 = "Regional",
+    geographic_breakdown_o2 = "North West",
+    national_comparison_checkbox_o2 = FALSE,
     outcome2_panels = "Harms outside the home"
   )
   Sys.sleep(2)
   app$expect_values(
     input = c(
       "navlistPanel",
-      "select_geography_outcome_two",
-      "geographic_breakdown_outcome_two",
+      "select_geography_o2",
+      "geographic_breakdown_o2",
       "outcome2_panels",
-      "national_comparison_checkbox_outcome_two"
+      "national_comparison_checkbox_o2"
     ),
     output = c(
       "outcome_two_choice_text1",

@@ -1,12 +1,12 @@
 {
   "input": {
-    "geographic_breakdown_outcome_two": "Barking and Dagenham",
-    "national_comparison_checkbox_outcome_two": null,
+    "geographic_breakdown_o2": "Barking and Dagenham",
+    "national_comparison_checkbox_o2": null,
     "navlistPanel": "outcome2_page",
     "outcome2_panels": "Child safety – general",
-    "region_comparison_checkbox_outcome_two": null,
-    "select_geography_outcome_two": "Local authority",
-    "sn_comparison_checkbox_outcome_two": null
+    "region_comparison_checkbox_o2": null,
+    "select_geography_o2": "Local authority",
+    "sn_comparison_checkbox_o2": null
   },
   "output": {
     "cpp_duration_txt": "4.0%<br><p style='font-size:16px; font-weight:500;'>(2025)<\/p>",

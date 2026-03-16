@@ -1,11 +1,11 @@
 {
   "input": {
-    "national_comparison_checkbox_outcome_three": null,
+    "national_comparison_checkbox_o3": null,
     "navlistPanel": "outcome3_page",
     "outcome3_panels": "Families engaging and receiving support from their family network",
-    "region_comparison_checkbox_outcome_three": null,
-    "select_geography_outcome_three": "Regional",
-    "sn_comparison_checkbox_outcome_three": null
+    "region_comparison_checkbox_o3": null,
+    "select_geography_o3": "Regional",
+    "sn_comparison_checkbox_o3": null
   },
   "output": {
     "CAO_headline_txt": "3%<br><p style='font-size:16px; font-weight:500;'>(2025)<\/p>",
