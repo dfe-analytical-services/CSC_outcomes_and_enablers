@@ -16,7 +16,7 @@ outcome3_tab <- function() {
           style = "min-height:100%; height = 100%; overflow-y: visible",
           layout_columns(
             selectizeInput(
-              inputId = "select_geography_outcome_three",
+              inputId = "select_geography_o3",
               label = "Select a geographical level:",
               choices = unique(ceased_cla_data %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
               selected = NULL,
@@ -24,9 +24,9 @@ outcome3_tab <- function() {
               options = NULL
             ),
             conditionalPanel(
-              condition = "input.select_geography_outcome_three != 'National'",
+              condition = "input.select_geography_o3 != 'National'",
               selectizeInput(
-                inputId = "geographic_breakdown_outcome_three",
+                inputId = "geographic_breakdown_o3",
                 label = "Select a location: ",
                 choices = NULL,
                 selected = NULL,
@@ -40,13 +40,13 @@ outcome3_tab <- function() {
           # checkboxes for comparisons
           layout_columns(
             conditionalPanel(
-              condition = "input.select_geography_outcome_three != 'National'",
+              condition = "input.select_geography_o3 != 'National'",
               column(
                 width = 12,
                 checkbox_Input(
-                  inputId = "national_comparison_checkbox_outcome_three",
+                  inputId = "national_comparison_checkbox_o3",
                   cb_labels = "Compare with national",
-                  checkboxIds = "Yes_national_outcome_three",
+                  checkboxIds = "Yes_national_o3",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -54,13 +54,13 @@ outcome3_tab <- function() {
               )
             ),
             conditionalPanel(
-              condition = "(input.select_geography_outcome_three == 'Local authority')",
+              condition = "(input.select_geography_o3 == 'Local authority')",
               column(
                 width = 12,
                 checkbox_Input(
-                  inputId = "region_comparison_checkbox_outcome_three",
+                  inputId = "region_comparison_checkbox_o3",
                   cb_labels = "Compare with region",
-                  checkboxIds = "Yes_region_outcome_three",
+                  checkboxIds = "Yes_region_o3",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -68,13 +68,13 @@ outcome3_tab <- function() {
               )
             ),
             conditionalPanel(
-              condition = "(input.select_geography_outcome_three == 'Local authority')",
+              condition = "(input.select_geography_o3 == 'Local authority')",
               column(
                 width = 12,
                 checkbox_Input(
-                  inputId = "sn_comparison_checkbox_outcome_three",
+                  inputId = "sn_comparison_checkbox_o3",
                   cb_labels = "Compare with statistical neighbours",
-                  checkboxIds = "Yes_sn_outcome_three",
+                  checkboxIds = "Yes_sn_o3",
                   label = "",
                   hint_label = NULL,
                   small = TRUE
@@ -89,7 +89,7 @@ outcome3_tab <- function() {
       gov_row(
         p(htmlOutput("outcome_three_choice_text1"), htmlOutput("outcome_three_choice_text2")),
         # conditionalPanel(
-        #   condition = "(input.geographic_breakdown_outcome_three == 'Cumbria')",
+        #   condition = "(input.geographic_breakdown_o3 == 'Cumbria')",
         #   p("Cumbria are included in the latest statistics because there is historic data available to review before Cumbria local authority was replaced with two new unitary authorities, Cumberland and Westmorland and Furness, in April 2023.")
         # ),
       ),
