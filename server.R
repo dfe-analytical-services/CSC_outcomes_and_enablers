@@ -229,7 +229,7 @@ server <- function(input, output, session) {
     input$region_comparison_checkbox_o1,
     input$sn_comparison_checkbox_o1
   ), {
-    req(input$select_geography_o1, input$geographic_breakdown_o2)
+    req(input$select_geography_o1, input$geographic_breakdown_o1)
     rv_outcome_1$select_geographic_level <- input$select_geography_o1
     rv_outcome_1$select_geo_breakdown <- input$geographic_breakdown_o1
     rv_outcome_1$check_compare_national <- input$national_comparison_checkbox_o1
