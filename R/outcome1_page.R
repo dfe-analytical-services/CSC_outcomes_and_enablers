@@ -780,7 +780,7 @@ outcome1_tab <- function() {
                     "School stability",
                     gov_row(
                       h2("School stability"),
-                      p("Children and young people should remain at their school as long as possible, or if this is not possible school changes should be minimised to support their long term development and wellbeing."),
+                      p("Stable school arrangements help children maintain supportive relationships, sustain their learning, and promote their wellbeing, with any necessary school moves carefully planned and in their best interests."),
                       insert_text(
                         inputId = "school_stability_definition",
                         text = "High school instability is defined as a looked after child experiencing at least one mid-year school move during the year ending 31 March - a move at any point in the year excluding the period 1 August to 30 September."

@@ -306,10 +306,11 @@ pipeline_generate_datasets <- function() {
 
   school_stability_data <- suppressWarnings(read_school_stability_data(sn_long = stats_neighbours_long))
 
-  ## Read in outcome 2 data ----
+  ## Read in outcome 3 data ----
   ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 
-  ## Read in outcome 3 data ----
+
+  ## Read in outcome 2 data ----
   s47_to_ICPC_data <- suppressWarnings(read_s47_to_ICPC_data(sn_long = stats_neighbours_long)) # new metric
   repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
   duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
