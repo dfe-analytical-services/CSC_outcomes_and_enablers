@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Outcome 2 and 3 have switched so ‘Outcome 2' is now 'Children and young people are safe in and outside of their home’ and ‘Outcome 3' is 'Children and young people are supported by their family network’ "
+        "Outcome 2 and 3 have switched so 'Outcome 2' is now 'Children and young people are safe in and outside of their home' and 'Outcome 3' is 'Children and young people are supported by their family network' "
       )
     ),
     bslib::navset_pill_list(
