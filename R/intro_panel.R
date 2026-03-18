@@ -50,6 +50,11 @@ introductionPanel <- function() {
                     tags$li("Rate of children looked after on 31 March per 10k"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
+                  h5("School stability"),
+                  tags$ul(
+                    tags$li("% children looked after with at least one mid-year school move"),
+                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+                  ),
                   h5("Child wellbeing and development"),
                   tags$ul(
                     tags$li("Overall Absence for CINO, CPPO and CLA on 31 March by school type"),
@@ -63,14 +68,6 @@ introductionPanel <- function() {
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   # outcome 2
-                  h4("Children and young people are supported by their network"),
-                  h5("Families engaging and receiving support from their family network"),
-                  tags$ul(
-                    tags$li("% children who cease to be looked after due to special guardianship order"),
-                    tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
-                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
-                  ),
-                  # outcome 3
                   h4("Children and young people are safe in and outside of their home"),
                   h5("Child safety - general"),
                   tags$ul(
@@ -89,6 +86,15 @@ introductionPanel <- function() {
                     tags$li("Factors identified at the end of assessment in the year to 31 March related to specific types of harms outside the home per 10k by factor"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
+                  # outcome 3
+                  h4("Children and young people are supported by their network"),
+                  h5("Families engaging and receiving support from their family network"),
+                  tags$ul(
+                    tags$li("% children who cease to be looked after due to special guardianship order"),
+                    tags$li("% children who cease to be looked after due to residence order or child arrangement order"),
+                    style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
+                  ),
+
                   # outcome 4
                   h4("Children in care and care leavers have stable, loving homes"),
                   h5("Stability and quality of where a child lives"),
@@ -150,6 +156,7 @@ introductionPanel <- function() {
                   h5("Quality of support for children and families"),
                   tags$ul(
                     tags$li("Average caseload"),
+                    tags$li("% children looked after with 3 or more social workers in past 12 months"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   h5("Social worker ethnicity"),

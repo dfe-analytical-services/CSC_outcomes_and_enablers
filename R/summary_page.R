@@ -85,23 +85,23 @@ summary_page_tab <- function() {
                   )
                 ),
                 accordion_panel(
-                  "Outcome 2: Children and young people are supported by their family network",
+                  "Outcome 2: Children and young people are safe in and outside of their home",
                   # add the header row here (generate on the fly based on the user selections )
                   gov_row(
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome2"),
-                    sp_domain_ui(id = "Families engaging and receiving support from their family network"),
+                    sp_domain_ui(id = "Child safety - general"),
+                    sp_domain_ui(id = "Child abuse / neglect"),
+                    sp_domain_ui(id = "Harms outside the home"),
                   )
                 ),
                 accordion_panel(
-                  "Outcome 3: Children and young people are safe in and outside of their home",
+                  "Outcome 3: Children and young people are supported by their family network",
                   # add the header row here (generate on the fly based on the user selections )
                   gov_row(
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome3"),
-                    sp_domain_ui(id = "Child safety - general"),
-                    sp_domain_ui(id = "Child abuse / neglect"),
-                    sp_domain_ui(id = "Harms outside the home"),
+                    sp_domain_ui(id = "Families engaging and receiving support from their family network"),
                   )
                 ),
                 accordion_panel(
