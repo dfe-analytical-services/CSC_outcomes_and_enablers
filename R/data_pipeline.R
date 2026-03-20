@@ -22,7 +22,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year
 
-  PRELIM_PATH <- "YOUR FOLDER HERE" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data
+  PRELIM_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
   path_old <- paste0(PRELIM_PATH, "/data-comparisons/2025/")
   path_new <- paste0(PRELIM_PATH, "/data-comparisons/2024/")
 
@@ -47,13 +47,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/school_stability/pipeline_comparison_school_stability_v3.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v1.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/school_stability/Consolidated SetDiff school stability v3.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce v1.xlsx")
 
 
   ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
@@ -61,12 +61,19 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
     pipeline_comparison = pr$dataset_comparison,
-    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_merge_conflicts_v1.rds"
+    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_v1.rds"
   ))
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/school_stability/pipeline_consolidated_setdiffs_school_stability_v2.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_v1.xlsx")
+
+  deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_field_diffs)
+  names(deltas_to_export)
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_v1.xlsx")
+
+
+
 
 
   ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
@@ -253,7 +260,6 @@ run_data_pipeline_step_2 <- function(pipeline_run, pipeline_run_parameters) {
 
 pipeline_generate_datasets <- function() {
   # source supporting functions to prepare data
-  # source("R/data_pipeline.R")
   source("R/read_data.R")
   source("R/stats_neighbours.R")
   source("R/data_filtering.R")
@@ -491,15 +497,18 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
 
     summary_csd <- dcast.data.table(csd_value_counts, dataset_name + column_name + value ~ new_or_old, value.var = "count")
+
+    # final step will provide the individual field differences between old and new datasets
+    csd_field_diffs <- lapply(consolidated_setdiffs, field_diffs)
+    names(csd_field_diffs) <- names(consolidated_setdiffs)
+
     # summary_csd <- summary_csd[is.na(BOTH) & (is.na(OLD) | is.na(NEW))][!grep(pattern = "_newval|_oldval", column_name)][!(column_name %in% c("new", "old"))]
   } else {
     dataset_column_values_comparison <- list()
     consolidated_setdiffs <- list()
+    csd_field_diffs <- list()
     summary_csd <- list()
   }
-
-
-
 
 
 
@@ -519,6 +528,7 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     "dataset_column_values_comparison" = dataset_column_values_comparison,
     "consolidated_setdiffs" = consolidated_setdiffs,
     "consolidated_setdiffs_summary" = summary_csd,
+    "consolidated_field_diffs" = csd_field_diffs,
     "changed_datasets" = changed_datasets
   ))
 }
@@ -548,6 +558,26 @@ summarise_columns_over_datasets <- function(dataset_list, label = "my_datasets")
 
   return(column_summary)
 }
+
+# very handy function to take the consolidated setdiffs which are a bit tricky to work with and make it very easy to work with
+field_diffs <- function(csd) {
+  # take the column names and work out which are id_vars and measure_vars (i.e. those without and with the suffix _oldval or _newval)
+  column_names <- names(csd)
+  measure_vars <- grep("_newval|_oldval", column_names, value = TRUE)
+  id_vars <- grep("_newval|_oldval", column_names, value = TRUE, invert = TRUE)
+  # now melt the wide data into long format, adding a column to identify the old and new entires
+  csd_melt <- melt(csd, id.vars = id_vars, measure.vars = measure_vars)
+  csd_melt[grep("_oldval", variable), old_or_new := "OLD"]
+  csd_melt[grep("_newval", variable), old_or_new := "NEW"]
+  csd_melt[grep("_oldval", variable), variable_clean := gsub("_oldval", "", variable)]
+  csd_melt[grep("_newval", variable), variable_clean := gsub("_newval", "", variable)]
+  csd_melt[, variable := NULL]
+  # now build a formula to put the old and new values side by side, casting the data back into an easy-to-use wider format
+  this_formula <- as.formula(paste0(paste(c(id_vars, "variable_clean"), collapse = " + "), "~ ", "old_or_new"))
+  dt_field_diffs <- dcast(csd_melt, this_formula)
+  dt_field_diffs[new_or_old == "BOTH"]
+}
+
 
 # Helper function to get all of the datasets currently in a folder into a list comparable with the new datasets
 pipeline_read_rds <- function(rds_file_path = "./data/") {
