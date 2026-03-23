@@ -11583,9 +11583,9 @@ server <- function(input, output, session) {
     yvalue = "percent",
     yaxis_title = "Section 47s to ICPCs (%)",
     max_rate = calculate_max_rate(s47_to_ICPC_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num" , "Number of ICPCs" = 'ICPC num', "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
     ),
     decimal_percentage = FALSE
   )
@@ -11600,9 +11600,9 @@ server <- function(input, output, session) {
     yvalue = "percent",
     yaxis_title = "Section 47s to ICPCs (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num" , "Number of ICPCs" = 'ICPC num', "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
     ),
     decimal_percentage = FALSE
   )
@@ -11617,9 +11617,9 @@ server <- function(input, output, session) {
     yvalue = "percent",
     yaxis_title = "Section 47s to ICPCs (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num" , "Number of ICPCs" = 'ICPC num', "Percent" = "percent"),
     rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
     ),
     decimal_percentage = FALSE
   )
