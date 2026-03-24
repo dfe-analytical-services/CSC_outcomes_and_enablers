@@ -1590,7 +1590,7 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
     group_cols = c("LA.number", "time_period")
   )
   workforce_data <- rbindlist(l = list(workforce_data, sn_metrics), fill = TRUE, use.names = TRUE)
-  workforce_data[, old_la_code := (original_old_la_code)]
+  # workforce_data[, old_la_code := (original_old_la_code)]
 
   workforce_data <- workforce_data %>%
     # removing old Dorset
