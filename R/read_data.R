@@ -283,6 +283,8 @@ collect_summary_data_all <- function() {
   date_per_heading <- merge(date_frequency, date_frequency[, .(N = max(N)), by = .(tab_name, accordion_text, heading_text)])
   setnames(date_per_heading, "time_period", "header_time_period")
   date_per_heading[, N := NULL]
+  # this line acts as a tie-breaker because we can have two dates which are equal in frequency and this breaks the logic previously implemented.
+  date_per_heading <- date_per_heading[, .(header_time_period = max(header_time_period)), by = .(tab_name, accordion_text, heading_text)]
   # there may be discrepancies on dates within a heading so individual exceptions to the norm are corrected by adding the date in brackets within the indicator text.....
   summary_data <- merge(summary_data, date_per_heading)
   summary_data[header_time_period != time_period, metric_text := paste0(metric_text, " (", time_period, ")")]
@@ -1563,7 +1565,7 @@ read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla
 
 
 #### Workforce data ----
-read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
+read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2025.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%
     colClean() %>%
@@ -1620,7 +1622,7 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
-read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
   workforce_ethnicity_data <- fread(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
