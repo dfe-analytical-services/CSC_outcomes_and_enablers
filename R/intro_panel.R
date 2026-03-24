@@ -59,7 +59,6 @@ introductionPanel <- function() {
                   tags$ul(
                     tags$li("Overall Absence for CINO, CPPO and CLA on 31 March by school type"),
                     tags$li("Persistent absentees for CINO, CPPO and CLA at 31 March (overall absence 10% or more) by school type"),
-                    tags$li("Severe absentees for CINO, CPPO and CLA at 31 March (overall absence 50% or more) by school type"),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
                   h5("Educational attainment"),
@@ -72,7 +71,6 @@ introductionPanel <- function() {
                   h4("Children and young people are safe in and outside of their home"),
                   h5("Child safety - general"),
                   tags$ul(
-                    tags$li("% S47 progression to ICPC"),
                     tags$li("% of child protection plans starting during year which were a second or subsequent plan"),
                     tags$li("% of child protection plans longer than 2 years"),
                     tags$li("Hospital admissions caused by unintentional and deliberate injuries to children and young people per 10K (0-14 years)"),
