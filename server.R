@@ -3296,8 +3296,8 @@ server <- function(input, output, session) {
     )
   })
 
-  # reactive values object to hold the geo selections for Outcome 2 page
-  rv_outcome_2 <- reactiveValues(
+  # reactive values object to hold the geo selections for Outcome 3 page
+  rv_outcome_3 <- reactiveValues(
     select_geographic_level = NULL,
     select_geo_breakdown = NULL,
     check_compare_national = NULL,
@@ -3309,11 +3309,11 @@ server <- function(input, output, session) {
     input$select_geography_o2, input$geographic_breakdown_o2, input$national_comparison_checkbox_o2, input$region_comparison_checkbox_o2, input$sn_comparison_checkbox_o2
   ), {
     req(input$select_geography_o2, input$geographic_breakdown_o2)
-    rv_outcome_2$select_geographic_level <- input$select_geography_o2
-    rv_outcome_2$select_geo_breakdown <- input$geographic_breakdown_o2
-    rv_outcome_2$check_compare_national <- input$national_comparison_checkbox_o2
-    rv_outcome_2$check_compare_regional <- input$region_comparison_checkbox_o2
-    rv_outcome_2$check_compare_sn <- input$sn_comparison_checkbox_o2
+    rv_outcome_3$select_geographic_level <- input$select_geography_o2
+    rv_outcome_3$select_geo_breakdown <- input$geographic_breakdown_o2
+    rv_outcome_3$check_compare_national <- input$national_comparison_checkbox_o2
+    rv_outcome_3$check_compare_regional <- input$region_comparison_checkbox_o2
+    rv_outcome_3$check_compare_sn <- input$sn_comparison_checkbox_o2
   }) # bindEvent(list(input$geographic_breakdown_o2,input$select_geography_o2))
 
 
@@ -3770,7 +3770,7 @@ server <- function(input, output, session) {
 
   timeseries_section_server(
     id = "hospital_admissions",
-    rv_geo_filters = rv_outcome_2,
+    rv_geo_filters = rv_outcome_3,
     rv_dimensional_filters = rv_hosp_admissions,
     dataset = copy(hospital_admissions),
     chart_title = "Hospital admissions rate per 10,000 children",
@@ -11556,81 +11556,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
-
-  # s47 headline box
-  output$s47_ICPC_txt <- renderText({
-    stat <- format(s47_to_ICPC_data %>%
-      filter(time_period == max(s47_to_ICPC_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o2) %>%
-      select(percentage), nsmall = 1)
-
-    if (input$geographic_breakdown_o2 == "" || nrow(stat) == 0) {
-      stat <- "NA"
-    }
-
-    paste0(
-      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
-    )
-  })
-
-  ### S47 chart + table : module
-  timeseries_section_server(
-    id = "s47_to_ICPC",
-    rv_geo_filters = rv_outcome_2,
-    rv_dimensional_filters = list(),
-    dataset = copy(s47_to_ICPC_data),
-    chart_title = "Section 47 enquiries which progressed to ICPCs (%)",
-    yvalue = "percent",
-    yaxis_title = "Section 47s to ICPCs (%)",
-    max_rate = calculate_max_rate(s47_to_ICPC_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
-    rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
-    ),
-    decimal_percentage = FALSE
-  )
-
-  # Regional barchart for S47
-  regional_barchart_section_server(
-    id = "s47_to_ICPC",
-    rv_geo_filters = rv_outcome_2,
-    rv_dimensional_filters = list(),
-    dataset = copy(s47_to_ICPC_data),
-    chart_title = "Section 47 enquiries which progressed to ICPCs (%)",
-    yvalue = "percent",
-    yaxis_title = "Section 47s to ICPCs (%)",
-    max_rate = calculate_max_rate(school_stability_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
-    rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
-    ),
-    decimal_percentage = FALSE
-  )
-
-
-  la_and_sn_toggle_section_server(
-    id = "s47_to_ICPC",
-    rv_geo_filters = rv_outcome_2,
-    rv_dimensional_filters = list(),
-    dataset = copy(s47_to_ICPC_data),
-    chart_title = "Section 47 enquiries which progressed to ICPCs (%)",
-    yvalue = "percent",
-    yaxis_title = "Section 47s to ICPCs (%)",
-    max_rate = calculate_max_rate(school_stability_data, "percent"),
-    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Percent" = "percent"),
-    rt_col_defs = list(
-      "Percent" = colDef(cell = cellfunc)
-    ),
-    decimal_percentage = FALSE
-  )
-
-
-
-
-
-
-
-
 
 
   # Don't touch the code below -----------------------
