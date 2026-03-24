@@ -1590,7 +1590,7 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
     group_cols = c("LA.number", "time_period")
   )
   workforce_data <- rbindlist(l = list(workforce_data, sn_metrics), fill = TRUE, use.names = TRUE)
-  # workforce_data[, old_la_code := (original_old_la_code)]
+  workforce_data[, old_la_code := (original_old_la_code)]
 
   workforce_data <- workforce_data %>%
     # removing old Dorset
@@ -1680,7 +1680,7 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
-read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     insert_geo_breakdown() %>%

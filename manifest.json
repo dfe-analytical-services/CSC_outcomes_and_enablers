@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "47e6344326469adc06fcf4de423c5dd0"
+      "checksum": "fc9727c98dfb7da85b120baa1439cd93"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4954,13 +4954,13 @@
       "checksum": "5e7c8e49e52e3afbd70b4786ebbe52ae"
     },
     "data/combined_ethnicity_data.rds": {
-      "checksum": "f2abdabe5aa3276f62ab6033433f3eb8"
+      "checksum": "777454f525597784c44a402d8c8c6960"
     },
     "data/duration_cpp.rds": {
       "checksum": "7f1b8506ac22506b4100815e79d7f963"
     },
     "data/hospital_admissions.rds": {
-      "checksum": "8b32aacac448680f7f86891aec6c5a88"
+      "checksum": "de1755d2e52cf438e8896d69a7fa0582"
     },
     "data/location_data.rds": {
       "checksum": "d1fe7628759d05818545674487c0a11b"
@@ -4984,7 +4984,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "9bb7b38e1f63888909762ef900b2047b"
+      "checksum": "e4763e5c91cae467ab8e32a9667bed0e"
     },
     "data/pipeline/data_pipeline_run_history_dirty.rds": {
       "checksum": "24be225e93886d46bcad6f7de2f2da23"
@@ -5023,7 +5023,7 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "41c8812e45ae6b00192a2eb377d00ca2"
+      "checksum": "1297ccb4fb382a87d938684403e2e146"
     },
     "data/summary_page_metadata.csv": {
       "checksum": "91c275de2db333e677355a829670a669"
@@ -5035,10 +5035,10 @@
       "checksum": "69b97aa867e1c20a309525d8bf9891bd"
     },
     "data/workforce_data.rds": {
-      "checksum": "d4d97c5f91b325b86d21dd97af6f5685"
+      "checksum": "732f32c5d85ab2af5f18d18ee7eb81cd"
     },
     "data/workforce_eth.rds": {
-      "checksum": "a987bbc9305b0293b882582106c00a09"
+      "checksum": "153b968f3e0bfd878e1c650fc67a6eb1"
     },
     "data/workforce_eth_seniority.rds": {
       "checksum": "3586d5957331d6002b9670993c891a64"
@@ -5152,7 +5152,7 @@
       "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
     },
     "R/read_data.R": {
-      "checksum": "682a52e982f8b209aa17abd9ea853c49"
+      "checksum": "e7e284df56daca7e26d84e34823cece1"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
