@@ -80,6 +80,8 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
     pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_v1.rds"
   ))
 
+
+  # more indepth analysis of the diffs
   pipeline_run$pipeline_comparison$consolidated_field_diffs$hospital_admissions[!(variable_clean %in% c("Count", "Denominator"))]
   pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
 
@@ -87,7 +89,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-  ## 5. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
+  ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
   reason_for_pipeline_run <- "First attempt at the workforce data update for 2025" # <---- EDIT HERE
@@ -97,7 +99,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-  ## 6. verify the update parameters ----
+  ## 7. verify the update parameters ----
   pipeline_run_parameters <- list(
     "username" = Sys.getenv("USERNAME"),
     "run_datetime" = format(Sys.time(), "%Y-%m-%d %H:%M:%S"),
@@ -110,7 +112,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## FINAL STEP - proceed with caution having completed steps 1-6 above
 
-  ## 7. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
+  ## 8. Finally run the update to bring the new data through the pipeline into the app (i.e. copy to RDS files in ./data/ folder) ----
   # note that you will be prompted in the Console window
   # upon completion refer to the guide regarding the git-related steps which follow
 

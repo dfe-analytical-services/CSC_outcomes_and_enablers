@@ -332,8 +332,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   df_setdiffs <- lapply(diff_datasets, function(df_name, datasets_new, datasets_rds) {
     print(df_name)
     list(
-      old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
-      new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+      new_v_old = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
+      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
   }, datasets_new, datasets_rds)
   names(df_setdiffs) <- diff_datasets
