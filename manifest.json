@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "06fff7ed52b29cb9592b4cd1b4424d1d"
+      "checksum": "28ebf41c157761485045586be388669b"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4984,7 +4984,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "9bb7b38e1f63888909762ef900b2047b"
+      "checksum": "7df14bebb6b5060600b3b3e05d65b110"
     },
     "data/pipeline/data_pipeline_run_history_dirty.rds": {
       "checksum": "24be225e93886d46bcad6f7de2f2da23"
@@ -5035,13 +5035,13 @@
       "checksum": "69b97aa867e1c20a309525d8bf9891bd"
     },
     "data/workforce_data.rds": {
-      "checksum": "d4d97c5f91b325b86d21dd97af6f5685"
+      "checksum": "dbb3f5119cfbf696ea18fd00acade766"
     },
     "data/workforce_eth.rds": {
       "checksum": "a987bbc9305b0293b882582106c00a09"
     },
     "data/workforce_eth_seniority.rds": {
-      "checksum": "3586d5957331d6002b9670993c891a64"
+      "checksum": "003116d7e37fd7d891de58ab5c31db14"
     },
     "data/workforce_headline_measures.rds": {
       "checksum": "35e37d10fc397399c915c0d1cc5ad3db"
@@ -5094,11 +5094,14 @@
     "R/data_filtering.R": {
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
-    "R/data_pipeline.R": {
-      "checksum": "c8344a6f811a5be67e8a2caf649b3e81"
+    "R/data_pipeline_functions.R": {
+      "checksum": "0915eae1e3db58964bed1cfb5b18d524"
+    },
+    "R/data_pipeline_run.R": {
+      "checksum": "bd32b0a8754b5e1f06dc99ac96ce2079"
     },
     "R/data_sources.R": {
-      "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
+      "checksum": "164cd1251dda8d6f7be3a38e28ee54ec"
     },
     "R/dfe_resources.R": {
       "checksum": "6e1160a461a938b4748535a001292f70"
@@ -5107,13 +5110,16 @@
       "checksum": "7f256ea8e2a2cebb9bc3d1712500a2a8"
     },
     "R/disclaimer.R": {
-      "checksum": "9ab2cd37d71d0cf2d57cc0119880532a"
+      "checksum": "c2a59be5aed0b668d7e97f9218e620e7"
     },
     "R/enabler2_page.R": {
       "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
       "checksum": "3a54b867ed9696982d8066cf2d11b782"
+    },
+    "R/generate_qa_files.R": {
+      "checksum": "5ed962b3221722d1d1fefb588e92b46c"
     },
     "R/intro_panel.R": {
       "checksum": "05112157420ad6225117721246636bf1"
@@ -5152,13 +5158,13 @@
       "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
     },
     "R/read_data.R": {
-      "checksum": "492799c503f5fa20055162793f96de7e"
+      "checksum": "63dc86319937b3ea551366e69f25cc28"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
     },
     "R/standard_panels.R": {
-      "checksum": "17aabe721d9b2fc21797839910c23c42"
+      "checksum": "4bc33c3f2579f31e74c1adcab5f3e4a6"
     },
     "R/stats_neighbours.R": {
       "checksum": "82f707a8e1d156a9bdb49de9759ae796"
@@ -5266,7 +5272,7 @@
       "checksum": "54729b72548afe97abe55810167ac7bb"
     },
     "ui.R": {
-      "checksum": "02500a09bd3d74f690265947303a93a3"
+      "checksum": "85cb8b7aed33967d13002d129b3344b5"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
