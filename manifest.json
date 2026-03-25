@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "fc9727c98dfb7da85b120baa1439cd93"
+      "checksum": "0296d9e6b36b2ecac756bda97cedd4d9"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5038,7 +5038,7 @@
       "checksum": "732f32c5d85ab2af5f18d18ee7eb81cd"
     },
     "data/workforce_eth.rds": {
-      "checksum": "153b968f3e0bfd878e1c650fc67a6eb1"
+      "checksum": "c478649c38c650fd94578a4f5bbc307b"
     },
     "data/workforce_eth_seniority.rds": {
       "checksum": "3586d5957331d6002b9670993c891a64"
@@ -5095,7 +5095,7 @@
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline.R": {
-      "checksum": "c8344a6f811a5be67e8a2caf649b3e81"
+      "checksum": "c51e83c65e380acfe8f11364873309e3"
     },
     "R/data_sources.R": {
       "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
@@ -5114,6 +5114,9 @@
     },
     "R/enabler3_page.R": {
       "checksum": "3a54b867ed9696982d8066cf2d11b782"
+    },
+    "R/generate_qa_files.R": {
+      "checksum": "5ed962b3221722d1d1fefb588e92b46c"
     },
     "R/intro_panel.R": {
       "checksum": "05112157420ad6225117721246636bf1"
@@ -5152,7 +5155,7 @@
       "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
     },
     "R/read_data.R": {
-      "checksum": "e7e284df56daca7e26d84e34823cece1"
+      "checksum": "63dc86319937b3ea551366e69f25cc28"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"

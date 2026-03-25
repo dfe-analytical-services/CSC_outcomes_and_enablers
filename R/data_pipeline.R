@@ -20,7 +20,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-  ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year
+  ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
 
   PRELIM_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
   path_old <- paste0(PRELIM_PATH, "/data-comparisons/2025/")
@@ -47,14 +47,16 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v1.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v2.rds")
 
   pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
 
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce v1.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce v2.xlsx")
 
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$hospital_admissions[!(variable_clean %in% c("Count", "Denominator"))]
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
 
   ## 4. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
@@ -66,11 +68,11 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_v1.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_v2.xlsx")
 
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_field_diffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_v1.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_v2.xlsx")
 
 
 
@@ -462,8 +464,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     )
     candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
     consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
-      added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
-      removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
+      added <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, new := "NEW"]
+      removed <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, old := "OLD"]
       join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
       dataset_compare <- merge(added, removed, by = join_cols, all = TRUE, suffixes = c("_newval", "_oldval"))
       new_order <- c(join_cols, sort(setdiff(names(dataset_compare), join_cols)))
