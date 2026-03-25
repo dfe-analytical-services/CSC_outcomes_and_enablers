@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "0296d9e6b36b2ecac756bda97cedd4d9"
+      "checksum": "098ea1c8269d06ee7a68640505d3faf3"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5094,8 +5094,11 @@
     "R/data_filtering.R": {
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
-    "R/data_pipeline.R": {
-      "checksum": "c51e83c65e380acfe8f11364873309e3"
+    "R/data_pipeline_functions.R": {
+      "checksum": "440066eaaa913ed97559834473769bd5"
+    },
+    "R/data_pipeline_run.R": {
+      "checksum": "478fe27afd155727b1b89a9d834ec198"
     },
     "R/data_sources.R": {
       "checksum": "bb9d32e6ed4417f5d8c95354074efdc2"
