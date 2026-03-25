@@ -92,7 +92,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "First attempt at the workforce data update for 2025" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Second attempt at the workforce data update for 2025" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
