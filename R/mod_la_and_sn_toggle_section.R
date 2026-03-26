@@ -108,16 +108,7 @@ la_and_sn_toggle_section_server <- function(id,
             inputId = paste0(id, "_sn_info"),
             label = "Additional information:",
             help_text = (
-              tags$ul(
-                tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-                tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-                br(),
-                p(
-                  "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                  tags$br(),
-                  "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-                )
-              )
+              get_additional_info("stat_neighbours_generic")
             )
           )
         )
