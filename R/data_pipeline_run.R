@@ -47,7 +47,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
   pipeline_run <- run_data_pipeline_step_1()
 
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v2.rds")
+  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_after_unrevert.rds")
 
 
   # this is a useful way of doing a comparison between two batches of datasets to identify the differences
@@ -58,17 +58,17 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
   ## 4. Export the files as required
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce v2.xlsx")
+  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce after unrevert.xlsx")
 
   # detailed setdiffs
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_v2.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_after_unrevert.xlsx")
 
   # setdiffs -> field_diffs
   deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_field_diffs)
   names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_v2.xlsx")
+  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_after_unrevert.xlsx")
 
 
 
@@ -92,7 +92,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Second attempt at the workforce data update for 2025" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Re-run pipeline for summary data after re-revert caused rds file conflicts on summary_data" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

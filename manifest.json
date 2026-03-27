@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "8a462ec52f4a80a989c67716f5dd1e71"
+      "checksum": "9a83a52fd94335be19862584b98cd6ae"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4987,7 +4987,7 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "7df14bebb6b5060600b3b3e05d65b110"
+      "checksum": "ae239b3a95021035997d03e0236f778f"
     },
     "data/placement_changes_data.rds": {
       "checksum": "60584d61282b6ddd1ec655065e0e7c9e"
@@ -5026,10 +5026,10 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "41c8812e45ae6b00192a2eb377d00ca2"
+      "checksum": "a8dc3f28a5ca6ea40980847d164684c4"
     },
     "data/summary_page_metadata.csv": {
-      "checksum": "3487596c87e975b164ce7a2bffd3f032"
+      "checksum": "459c067286427d0bea016162c44bb0da"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5104,7 +5104,7 @@
       "checksum": "16e3c22456fdc1066142ab0ba63a95be"
     },
     "R/data_pipeline_run.R": {
-      "checksum": "bd32b0a8754b5e1f06dc99ac96ce2079"
+      "checksum": "f9674c1e9f22b9e7d84eae6d52b38ddc"
     },
     "R/data_sources.R": {
       "checksum": "164cd1251dda8d6f7be3a38e28ee54ec"
