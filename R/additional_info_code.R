@@ -200,5 +200,13 @@ additional_info_help_text <- list(
         tags$br(),
         "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
       )
+    ),
+  "s47_to_ICPC" =
+    tags$ul(
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-in-need/2025/data-guidance", "Children in need data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-in-need", "Children in need methodology.", target = "_blank")
+      )
     )
 )

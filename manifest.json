@@ -4795,7 +4795,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "65567b79e2b570d0dd74c93103ef5625"
+      "checksum": "9d3368ea61280ca47405b1119a3ffa58"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "ece2b56129d36a4714d08b4e582a000e"
+      "checksum": "8a462ec52f4a80a989c67716f5dd1e71"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4820,6 +4820,9 @@
     },
     "data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv": {
       "checksum": "0ab8ddd8c086c8326b2edcbc6adeea59"
+    },
+    "data-raw/c4_children_in_need_section_47s_and_icpcs_2013_to_2025.csv": {
+      "checksum": "c40274a8772fd0d77ea429020bd6c0b3"
     },
     "data-raw/Childrens_social_care_in_England_2023_underlying_data.ods": {
       "checksum": "c0cdf640933cc06093d91a171f55e847"
@@ -5001,6 +5004,9 @@
     "data/repeat_cpp.rds": {
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
     },
+    "data/s47_to_ICPC_data.rds": {
+      "checksum": "a163349f3c3f41cc935bf9a11f6171ae"
+    },
     "data/school_stability_data.rds": {
       "checksum": "bec99b8d69e4cf491a9e682051fa324b"
     },
@@ -5023,7 +5029,7 @@
       "checksum": "41c8812e45ae6b00192a2eb377d00ca2"
     },
     "data/summary_page_metadata.csv": {
-      "checksum": "91c275de2db333e677355a829670a669"
+      "checksum": "3487596c87e975b164ce7a2bffd3f032"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5047,7 +5053,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "e07f618243de1744ff635abdbff3972c"
+      "checksum": "76f3b30f7f610e7e4d3da35502792f42"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5089,13 +5095,13 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/additional_info_code.R": {
-      "checksum": "b7ef4128940a917ebd37bf0d4ee2e367"
+      "checksum": "f7bed25db84004fc5d48d15c870ba603"
     },
     "R/data_filtering.R": {
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline_functions.R": {
-      "checksum": "41f67f89c833e979b821050f68e1db70"
+      "checksum": "16e3c22456fdc1066142ab0ba63a95be"
     },
     "R/data_pipeline_run.R": {
       "checksum": "bd32b0a8754b5e1f06dc99ac96ce2079"
@@ -5122,7 +5128,7 @@
       "checksum": "5ed962b3221722d1d1fefb588e92b46c"
     },
     "R/intro_panel.R": {
-      "checksum": "05112157420ad6225117721246636bf1"
+      "checksum": "dd611cb032d36e9c48a22db72411d360"
     },
     "R/mod_la_and_sn_toggle_section.R": {
       "checksum": "4cb351e8c15618348a7548a966d1cd13"
@@ -5143,7 +5149,7 @@
       "checksum": "61ce5cf1eb3f34046b47b516b2dc80d7"
     },
     "R/outcome2_page.R": {
-      "checksum": "d913ea174b98867714b1d63c64fccd80"
+      "checksum": "4b97526dd70414406c13e4545728ceb1"
     },
     "R/outcome3_page.R": {
       "checksum": "61d36960582700a2dea4696f3bd0b841"
@@ -5158,7 +5164,7 @@
       "checksum": "37da151f9f651a90c1aaa0a6b6bcccfb"
     },
     "R/read_data.R": {
-      "checksum": "63dc86319937b3ea551366e69f25cc28"
+      "checksum": "0ff37835a8d37ee1f67b582f96e5dd4f"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
@@ -5194,7 +5200,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "aa0afe0491a1d240396ceaed52bd5d41"
+      "checksum": "2171528b27e37edc7a4a4698d51d1f24"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5272,7 +5278,7 @@
       "checksum": "54729b72548afe97abe55810167ac7bb"
     },
     "ui.R": {
-      "checksum": "85cb8b7aed33967d13002d129b3344b5"
+      "checksum": "cf5d87fb4f54ed281dfa7da008808da9"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
@@ -5302,7 +5308,7 @@
       "checksum": "42c6b3327616fdfa9ea05bbb65ae60b2"
     },
     "www/images/national_framework_visual_guide.png": {
-      "checksum": "93cb119a86ff5821bf9abc925f9dc233"
+      "checksum": "8995a985460fb9524a5b13af2448f7e9"
     },
     "www/images/screener_favicon.png": {
       "checksum": "8935e4350f4d30ef001b029de943cf6d"

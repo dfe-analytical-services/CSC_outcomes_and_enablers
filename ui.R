@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Workforce data for 2025 publised on 19th March 2026"
+        "New section 47 progression to ICPC indicator added. Data published October 2025."
       )
     ),
     bslib::navset_pill_list(

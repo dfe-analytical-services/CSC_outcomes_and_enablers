@@ -102,41 +102,82 @@ outcome2_tab <- function() {
               "Child safety – general",
               fluidRow(
                 column(
-                  width = 4,
+                  width = 6,
+                  value_box(
+                    title = "Section 47 enquiries which progressed to intial child protection conferences (ICPC)",
+                    value = htmlOutput("s47_ICPC_txt")
+                  )
+                ),
+                column(
+                  width = 6,
                   value_box(
                     title = "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
                     value = htmlOutput("cpp_in_year_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
                     title = "Percentage of child protection plans (CPP) longer than 2 years",
                     value = htmlOutput("cpp_duration_txt")
                   )
                 ),
                 column(
-                  width = 4,
+                  width = 6,
                   value_box(
                     title = HTML("Hospital admissions caused by unintentional and deliberate injuries to children and young people <br> (0 to 14 years)"),
                     value = htmlOutput("hosp_admissions_txt")
                   )
                 ),
-                br(),
-                p("Child protection is focused on investigating and addressing
-                  significant harm that children might experience. Remaining
-                  on a CPP for a longer period of time or having multiple
-                  repeat plans, suggests that children and families are not
-                  receiving the help that they need to address their issues.")
+                # Move this down into the accordion
+
+                # br(),
+                # p("Child protection is focused on investigating and addressing
+                #   significant harm that children might experience. Remaining
+                #   on a CPP for a longer period of time or having multiple
+                #   repeat plans, suggests that children and families are not
+                #   receiving the help that they need to address their issues.")
               ),
-              ### Repeat CPP ------------------------
+              ### S47 to ICPC ------------------------
               accordion(
+                accordion_panel(
+                  "Section 47 enquiries which progressed to intial child protection conferences (ICPC)",
+                  gov_row(
+                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC)"),
+                    p("This measure looks at the proportion of ICPCs to section 47 enquiries."),
+                    insert_text(
+                      inputId = "s47_ICPC_definition",
+                      text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child.
+                      If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days. <br><br>
+                      Conversion from a section 47 to an initial child protection conference can show that enquiries are needed and are being used proportionately and to good effect, identifying where significant harm is occurring so robust action can be taken to protect children."
+                    ),
+                    # here is the call to the module to display timeseries chart, table and download button
+                    timeseries_section_ui("s47_to_ICPC")
+                  ),
+                  gov_row(
+                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC) by region"),
+                    br(),
+                    # here is the call the  regional barchart ui
+                    regional_barchart_section_ui("s47_to_ICPC")
+                  ),
+                  gov_row(
+                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC) by local authority"),
+                    br(),
+                    # this is th code to display the ui module for LA/SN section
+                    la_and_sn_toggle_section_ui("s47_to_ICPC"),
+                    br()
+                  )
+                ),
+                ### Repeat CPP ------------------------
                 accordion_panel(
                   "Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan",
                   h2("Percentage of child protection plans (CPP) starting during year, which were a second or subsequent plan"),
                   insert_text(inputId = "CIN_CPP_definition", text = paste(
-                    "<b>", "Child protection plan (CPP)", "</b><br>",
-                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference. Child protection is focused on investigating and addressing
+                    significant harm that children might experience. Remaining
+                    on a CPP for a longer period of time or having multiple
+                    repeat plans, suggests that children and families are not
+                    receiving the help that they need to address their issues."
                   )),
                   plotlyOutput("repeat_cpp_time_series"),
                   br(),
@@ -217,8 +258,11 @@ outcome2_tab <- function() {
                   "Percentage of child protection plans (CPP) longer than 2 years",
                   h2("Percentage of child protection plans (CPP) longer than 2 years"),
                   insert_text(inputId = "CIN_CPP__longdefinition", text = paste(
-                    "<b>", "Child protection plan (CPP)", "</b><br>",
-                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference."
+                    "A child becomes the subject of a child protection plan if they are assessed as being at risk of harm, at an initial child protection conference. Child protection is focused on investigating and addressing
+                    significant harm that children might experience. Remaining
+                    on a CPP for a longer period of time or having multiple
+                    repeat plans, suggests that children and families are not
+                    receiving the help that they need to address their issues."
                   )),
                   plotlyOutput("duration_cpp_time_series"),
                   br(),
@@ -373,7 +417,8 @@ outcome2_tab <- function() {
                 ),
                 open = FALSE
               ),
-            ),
+            ), # end tabPanel child safety general
+
             # Child abuse / neglect -----
             tabPanel(
               "Child abuse / neglect",
@@ -533,7 +578,7 @@ outcome2_tab <- function() {
                 ),
                 br(),
               ),
-            ),
+            ), # end child abuse/neglect
 
             # Harms outside the home ----
             tabPanel(
@@ -698,9 +743,9 @@ outcome2_tab <- function() {
                 ),
                 br(),
               ),
-            )
+            ) # end tab panel Harms outside
           )
-        )
+        ) # end accordion panel
       )
     )
   )

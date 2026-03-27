@@ -168,6 +168,7 @@ pipeline_generate_datasets <- function() {
   workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
   workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
   location_data <- GET_location(cla_placements) # fact table linking LA to its region
+  location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
@@ -202,7 +203,9 @@ pipeline_generate_datasets <- function() {
   ## Read in outcome 3 data ----
   ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 
+
   ## Read in outcome 2 data ----
+  s47_to_ICPC_data <- suppressWarnings(read_s47_to_ICPC_data(sn_long = stats_neighbours_long)) # new metric
   repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
   duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
   assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
@@ -310,8 +313,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   df_setdiffs <- lapply(diff_datasets, function(df_name, datasets_new, datasets_rds) {
     print(df_name)
     list(
-      new_v_old = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
-      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+      old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
+      new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
   }, datasets_new, datasets_rds)
   names(df_setdiffs) <- diff_datasets
@@ -329,8 +332,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     )
     candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
     consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
-      added <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, new := "NEW"]
-      removed <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, old := "OLD"]
+      added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
+      removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
       join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
       dataset_compare <- merge(added, removed, by = join_cols, all = TRUE, suffixes = c("_newval", "_oldval"))
       new_order <- c(join_cols, sort(setdiff(names(dataset_compare), join_cols)))
@@ -376,6 +379,9 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     csd_field_diffs <- list()
     summary_csd <- list()
   }
+
+
+
 
 
 
