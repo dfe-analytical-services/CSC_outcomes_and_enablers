@@ -283,6 +283,8 @@ collect_summary_data_all <- function() {
   date_per_heading <- merge(date_frequency, date_frequency[, .(N = max(N)), by = .(tab_name, accordion_text, heading_text)])
   setnames(date_per_heading, "time_period", "header_time_period")
   date_per_heading[, N := NULL]
+  # this line acts as a tie-breaker because we can have two dates which are equal in frequency and this breaks the logic previously implemented.
+  date_per_heading <- date_per_heading[, .(header_time_period = max(header_time_period)), by = .(tab_name, accordion_text, heading_text)]
   # there may be discrepancies on dates within a heading so individual exceptions to the norm are corrected by adding the date in brackets within the indicator text.....
   summary_data <- merge(summary_data, date_per_heading)
   summary_data[header_time_period != time_period, metric_text := paste0(metric_text, " (", time_period, ")")]
@@ -1024,10 +1026,11 @@ read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissi
 
   admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
 
+  # TODO: revise this code to use a central table
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
   la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
     filter(geographic_level == "Local authority", time_period == max(time_period)) %>%
-    select(old_la_code, new_la_code) %>%
+    select(old_la_code = original_old_la_code, new_la_code) %>%
     distinct() %>%
     separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
 
@@ -1563,7 +1566,7 @@ read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla
 
 
 #### Workforce data ----
-read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2024.csv") {
+read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2025.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%
     colClean() %>%
@@ -1577,7 +1580,7 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
 
   # old_la_code is a critical field and it's stored as a character in this dataset (with some exceptions e.g. 314 / 318 and 240 / 941)
   workforce_data[, original_old_la_code := old_la_code]
-  workforce_data[, old_la_code := as.numeric(old_la_code)]
+  workforce_data[, old_la_code := as.integer(old_la_code)]
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -1588,7 +1591,8 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
     group_cols = c("LA.number", "time_period")
   )
   workforce_data <- rbindlist(l = list(workforce_data, sn_metrics), fill = TRUE, use.names = TRUE)
-  workforce_data[, old_la_code := (original_old_la_code)]
+  workforce_data[, old_la_code := as.character(old_la_code)]
+  workforce_data[geographic_level == "Local authority", old_la_code := (original_old_la_code)]
 
   workforce_data <- workforce_data %>%
     # removing old Dorset
@@ -1620,7 +1624,7 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
-read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
   workforce_ethnicity_data <- fread(file)
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
@@ -1678,7 +1682,7 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
-read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2024.csv") {
+read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
   workforce_ethnicity_seniority_data <- read.csv(file)
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     insert_geo_breakdown() %>%
