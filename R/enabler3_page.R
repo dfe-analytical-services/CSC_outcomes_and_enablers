@@ -160,7 +160,7 @@ enabler3_tab <- function() {
                       inputId = "turnover_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_turnover")
                       )
                     ),
                   ),
@@ -185,7 +185,7 @@ enabler3_tab <- function() {
                       inputId = "turnover_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_turnover")
                       )
                     ),
                   ),
@@ -231,7 +231,7 @@ enabler3_tab <- function() {
                       inputId = "agency_worker_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_agency_rate")
                       )
                     )
                   ),
@@ -256,7 +256,7 @@ enabler3_tab <- function() {
                       inputId = "agency_worker_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_agency_rate")
                       )
                     )
                   ),
@@ -302,7 +302,7 @@ enabler3_tab <- function() {
                       inputId = "vacancy_rate_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_vacancy_rate")
                       )
                     ),
                   ),
@@ -327,7 +327,7 @@ enabler3_tab <- function() {
                       inputId = "vacancy_rate_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_vacancy_rate")
                       )
                     ),
                   ),
@@ -398,7 +398,7 @@ enabler3_tab <- function() {
                       inputId = "caseload_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_caseload")
                       )
                     )
                   ),
@@ -423,7 +423,7 @@ enabler3_tab <- function() {
                       inputId = "caseload_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_rates_and_caseload")
+                        get_additional_info("workforce_caseload")
                       )
                     )
                   ),
@@ -537,7 +537,7 @@ enabler3_tab <- function() {
                       inputId = "population_ethnicity_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_eth")
+                        get_additional_info("workforce_eth_population")
                       )
                     )
                   )
@@ -568,7 +568,7 @@ enabler3_tab <- function() {
                       inputId = "seniority_ethnicity_info",
                       label = "Additional information:",
                       help_text = (
-                        get_additional_info("workforce_eth")
+                        get_additional_info("workforce_eth_seniority")
                       )
                     )
                   )

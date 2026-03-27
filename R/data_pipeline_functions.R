@@ -1,8 +1,6 @@
-# ===========================================================================================================
 # Careful when running these functions directly, especially step 2 ----
-# ===========================================================================================================
-
 # preliminary comparisons of the two sets of csv files (old and new)
+
 
 get_pipeline_prelim <- function(path_new, path_old) {
   # the two sets of files in the publication for the new and old/current year can be placed in a location to allow them to be compared.
@@ -258,29 +256,9 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   )), dataset_name ~ check_type + rds_or_new)[, match_dataset_columns := dataset_columns_NEW == dataset_columns_CURRENT]
 
 
-  dataset_geographies_comparison <- rbindlist(
-    lapply(
-      dataset_name_comparison[match_dataset_name == TRUE]$dataset_name,
-      function(x, datasets_new, datasets_rds) {
-        if ("geo_breakdown" %in% names(datasets_new[[x]]) & "geo_breakdown" %in% names(datasets_rds[[x]])) {
-          geo_column <- "geo_breakdown"
-        } else if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
-          geo_column <- "la_name"
-        } else {
-          geo_column <- NULL
-        }
-        if (!is.null(geo_column)) {
-          las_added <- paste0(setdiff(unique(datasets_new[[x]][[geo_column]]), unique(datasets_rds[[x]][[geo_column]])), collapse = ", ")
-          las_removed <- paste0(setdiff(unique(datasets_rds[[x]][[geo_column]]), unique(datasets_new[[x]][[geo_column]])), collapse = ", ")
-          data.table(
-            dataset_name = x,
-            las_added = las_added,
-            las_removed = las_removed
-          )
-        }
-      }, datasets_new, datasets_rds
-    )
-  )
+  datasets_to_compare <- dataset_name_comparison[match_dataset_name == TRUE]$dataset_name
+  dataset_geographies_comparison <- compare_dataset_geographies(datasets_to_compare, datasets_new, datasets_rds)
+
 
   # Function to find common elements between two delimited strings
   compare_elements <- function(str1, str2, delimiter = ",", common = TRUE) {
@@ -421,6 +399,33 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     "changed_datasets" = changed_datasets
   ))
 }
+
+compare_dataset_geographies <- function(comparison_datasets, datasets_new, datasets_rds) {
+  rbindlist(
+    lapply(
+      comparison_datasets,
+      function(x, datasets_new, datasets_rds) {
+        if ("geo_breakdown" %in% names(datasets_new[[x]]) & "geo_breakdown" %in% names(datasets_rds[[x]])) {
+          geo_column <- "geo_breakdown"
+        } else if ("la_name" %in% names(datasets_new[[x]]) & "la_name" %in% names(datasets_rds[[x]])) {
+          geo_column <- "la_name"
+        } else {
+          geo_column <- NULL
+        }
+        if (!is.null(geo_column)) {
+          las_added <- paste0(setdiff(unique(datasets_new[[x]][[geo_column]]), unique(datasets_rds[[x]][[geo_column]])), collapse = ", ")
+          las_removed <- paste0(setdiff(unique(datasets_rds[[x]][[geo_column]]), unique(datasets_new[[x]][[geo_column]])), collapse = ", ")
+          data.table(
+            dataset_name = x,
+            las_added = las_added,
+            las_removed = las_removed
+          )
+        }
+      }, datasets_new, datasets_rds
+    )
+  )
+}
+
 
 summarise_columns_over_datasets <- function(dataset_list, label = "my_datasets") {
   # get a summary of column names by table and the number of unique values within the column in the dataset

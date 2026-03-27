@@ -10788,7 +10788,7 @@ server <- function(input, output, session) {
           inputId = "turnover_la_info",
           label = "Additional information:",
           help_text = (
-            get_additional_info("workforce_rates_and_caseload")
+            get_additional_info("workforce_turnover")
           )
         ),
       )
@@ -10879,7 +10879,7 @@ server <- function(input, output, session) {
           inputId = "agency_worker_la_info",
           label = "Additional information:",
           help_text = (
-            get_additional_info("workforce_rates_and_caseload")
+            get_additional_info("workforce_agency_rate")
           )
         )
       )
@@ -10971,7 +10971,7 @@ server <- function(input, output, session) {
           inputId = "vacancy_rate_la_info",
           label = "Additional information:",
           help_text = (
-            get_additional_info("workforce_rates_and_caseload")
+            get_additional_info("workforce_vacancy_rate")
           )
         ),
       )
@@ -11061,7 +11061,7 @@ server <- function(input, output, session) {
           inputId = "caseload_la_info",
           label = "Additional information:",
           help_text = (
-            get_additional_info("workforce_rates_and_caseload")
+            get_additional_info("workforce_caseload")
           )
         )
       )

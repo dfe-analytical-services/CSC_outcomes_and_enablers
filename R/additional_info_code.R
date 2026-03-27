@@ -91,11 +91,46 @@ additional_info_help_text <- list(
       tags$li("Social workers are only counted once for each child during the year. For example, if a child had a social worker, moved to a different social worker, then back to the original social worker during the course of the year, then this would count as 2 social workers during the year."),
       tags$br()
     ),
-  "workforce_rates_and_caseload" =
+  "workforce_turnover" =
     tags$ul(
       tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
       tags$li("The turnover rate is calculated as (the number of) children and family social worker leavers in the year to 30 September divided by children and family social workers in post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."),
-      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London"),
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
+      tags$br(),
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+      )
+    ),
+  "workforce_agency_rate" =
+    tags$ul(
+      tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
+      tags$br(),
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+      )
+    ),
+  "workforce_vacancy_rate" =
+    tags$ul(
+      tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+      tags$li("The vacancy rate, as at 30 September per year, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."),
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
+      tags$br(),
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+      )
+    ),
+  "workforce_caseload" =
+    tags$ul(
+      tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
+      tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
       tags$br(),
       p(
         "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
@@ -107,7 +142,50 @@ additional_info_help_text <- list(
     tags$ul(
       tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
       tags$li("The data used is from the latest available collection year in the Workforce diversity dataset (2025)."),
+      tags$li(tags$b("Ethnicity"), " was known for 82% of child and family social workers nationally in 2025. Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
+      tags$li(tags$b("Headcount"), " is a count of all individual children and family social workers, regardless of their working pattern."),
       tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
+      tags$li(tags$b("White"), " comprises white British, white Irish, or any other white background."),
+      tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
+      tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
+      tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
+      tags$br(),
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+      )
+    ),
+  "workforce_eth_population" =
+    tags$ul(
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
+      # tags$li("Population data is taken from the latest available ONS Census data (2021)."),
+      tags$li(
+        "Population data is taken from the latest available ",
+        a(
+          href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3",
+          "ONS Census data (2021)", target = "_blank"
+        ),
+      ),
+      tags$li("The Workforce data comparison uses the latest available collection year in the Workforce diversity dataset (2025)."),
+      tags$li(tags$b("Ethnicity"), " was known for 82% of child and family social workers nationally in 2025. Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
+      tags$li(tags$b("White"), " comprises white British, white Irish, or any other white background."),
+      tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
+      tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
+      tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
+      tags$li("General population ethnicity covers all ages of population living in the geographical area in question."),
+      tags$br(),
+      p(
+        "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
+        tags$br(),
+        "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
+      )
+    ),
+  "workforce_eth_seniority" =
+    tags$ul(
+      tags$li("Kensington and Chelsea and Westminster were unable to provide data for 2025 following a cyberattack which had a significant impact on their information management systems. Therefore, figures from the previous year were used as best estimates for these local authorities to calculate 2025 totals for England, London, and Inner London."),
+      tags$li("The data used is from the latest available collection year in the Workforce diversity dataset (2025)."),
+      tags$li(tags$b("Ethnicity"), " was known for 82% of child and family social workers nationally in 2025. Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
       tags$li("Seniority level relates to social worker role. Manager roles have been grouped and include first line managers, middle managers and senior managers."),
       tags$li("A Senior Practitioner works in a local authority in a children’s services department as a team leader, supervising social worker or senior social worker."),
       tags$li("A case holder is a children and family social worker that manages cases, but is not in a manager or senior practitioner role (however, cases can be hold by those not in case holder roles)."),
