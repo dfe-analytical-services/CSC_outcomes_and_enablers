@@ -1618,6 +1618,10 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
       .names = "{str_to_title(str_replace_all(.col, '_', ' '))}"
     )))
 
+  workforce_data <- workforce_data %>%
+    as_tibble() %>%
+    as.data.table()
+
   return(workforce_data)
 }
 
@@ -1670,10 +1674,9 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
   final_dataset <- rbindlist(l = list(workforce_ethnicity_data, sn_metrics), fill = TRUE, use.names = TRUE)
 
   final_dataset <- final_dataset %>%
-    mutate(`inpost_headcount_percentage` = sapply(`inpost_headcount_percentage`, decimal_rounding, 1))
-
-  # this line has been removed from near the top
-  # mutate(inpost_headcount_percentage = as.numeric(inpost_headcount_percentage)) %>%
+    mutate(`inpost_headcount_percentage` = sapply(`inpost_headcount_percentage`, decimal_rounding, 1)) %>%
+    as_tibble() %>%
+    as.data.table()
 
   return(final_dataset)
 }
