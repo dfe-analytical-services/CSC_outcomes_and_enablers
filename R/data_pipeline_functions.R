@@ -39,14 +39,33 @@ get_pipeline_prelim <- function(path_new, path_old) {
 # The resulting datasets are returned in a list at this point along with the parameters used to generate them.
 # Additional validation takes place to provide feedback on what has been generated and what differs to the rds datasets in the ./data/ folder of the repo
 # This is the first stage of the pipeline, to build the data in a temporary fashion with nothing in the main application being changed yet, that follows in step 2
-run_data_pipeline_step_1 <- function(datasets_new = NULL, datasets_rds = NULL) {
+run_data_pipeline_step_1 <- function(datasets_new = NULL, datasets_rds = NULL, save_datasets = FALSE, save_comparison = FALSE, YOUR_LOCAL_PATH = NULL, TASK_NAME = NULL, PIPELINE_RUN_VERSION = NULL) {
+  # if we don't have new datasets passed in we need to generate them, which takes time
   if (is.null(datasets_new)) datasets_new <- pipeline_generate_datasets()
+  # simply read the contents of the data folder to get the RDS files (also known as the old or current files.)
   if (is.null(datasets_rds)) datasets_rds <- pipeline_read_rds()
 
   meta_rds <- pipeline_dataset_metadata(datasets_rds)
   meta_new <- pipeline_dataset_metadata(datasets_new)
 
   pipeline_comparison <- pipeline_compare_datasets(meta_rds, meta_new, datasets_rds, datasets_new)
+
+  if (save_comparison == TRUE) {
+    saveRDS(pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/pipeline_comparison_", TASK_NAME, "_", PIPELINE_RUN_VERSION, ".rds"))
+
+    ##  Export the Excel files
+    writexl::write_xlsx(x = pipeline_comparison$consolidated_setdiffs_summary, path = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/consolidated_set_diffs_summary_", TASK_NAME, "_", PIPELINE_RUN_VERSION, ".xlsx"))
+
+    # detailed setdiffs
+    deltas_to_export <- rlang::flatten(pipeline_comparison$consolidated_setdiffs)
+    names(deltas_to_export)
+    writexl::write_xlsx(deltas_to_export, path = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/consolidated_set_diffs_", TASK_NAME, "_", PIPELINE_RUN_VERSION, ".xlsx"))
+
+    # setdiffs -> field_diffs
+    deltas_to_export <- rlang::flatten(pipeline_comparison$consolidated_field_diffs)
+    names(deltas_to_export)
+    writexl::write_xlsx(deltas_to_export, path = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/consolidated_field_diffs_", TASK_NAME, "_", PIPELINE_RUN_VERSION, ".xlsx"))
+  }
 
   return(list(datasets_new = datasets_new, pipeline_comparison = pipeline_comparison))
 }
@@ -492,6 +511,10 @@ pipeline_read_rds <- function(rds_file_path = "./data/") {
   return(datasets_rds)
 }
 
+read_environment_datasets <- function() {
+  datasets_list <- as.list(Filter(function(x) is(x, "data.frame"), mget(ls(envir = .GlobalEnv), envir = .GlobalEnv)))
+  return(datasets_list)
+}
 
 # helper function to get metadata for the datasets in a list (works for current/rds and new)
 pipeline_dataset_metadata <- function(datasets_list) {
