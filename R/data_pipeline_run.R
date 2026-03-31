@@ -18,15 +18,20 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   shhh(library(janitor))
   shhh(library(data.table, pos = 3))
 
+  ## 2. Set Common parameters ----
+  YOUR_LOCAL_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
+  TASK_NAME <- "workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
 
 
-  ## 2. Preliminary diagnostics: before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
 
-  PRELIM_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
-  path_old <- paste0(PRELIM_PATH, "/data-comparisons/2025/")
-  path_new <- paste0(PRELIM_PATH, "/data-comparisons/2024/")
 
-  pipeline_prelim <- get_pipeline_prelim(path_new, path_old)
+
+  ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
+  pipeline_prelim <- get_pipeline_prelim(
+    path_new = paste0(YOUR_LOCAL_PATH, , TASK_NAME, "/data-comparisons/2024/"),
+    path_old = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2025/")
+  )
+
   print(pipeline_prelim)
 
   # if you wish to save artifacts from the preliminary pipeline run then execute these steps
@@ -43,32 +48,24 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
     )
   )
 
+  ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
+  PIPELINE_RUN_VERSION <- "v4a"
+  pipeline_run <- run_data_pipeline_step_1(
+    datasets_new = NULL, datasets_rds = NULL,
+    save_datasets = FALSE, save_comparison = TRUE,
+    YOUR_LOCAL_PATH, TASK_NAME, PIPELINE_RUN_VERSION
+  )
 
-  ## 3. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
-  pipeline_run <- run_data_pipeline_step_1()
-
-  saveRDS(pipeline_run$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_after_unrevert.rds")
 
 
-  # this is a useful way of doing a comparison between two batches of datasets to identify the differences
-  pipeline_run <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new)
+
+  # this is a useful way of doing a comparison between two batches of datasets, or the current datasets in memory to identify the differences
+  # pipeline_run <- run_data_pipeline_step_1(datasets_new = read_environment_datasets(), save_comparison = TRUE, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION)
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
+
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
 
 
-
-  ## 4. Export the files as required
-  writexl::write_xlsx(x = pipeline_run$pipeline_comparison$consolidated_setdiffs_summary, "~/CSC shiny dashboard/Data QA/workforce_2025/Consolidated SetDiff workforce after unrevert.xlsx")
-
-  # detailed setdiffs
-  deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_setdiffs)
-  names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_setdiffs_workforce_after_unrevert.xlsx")
-
-  # setdiffs -> field_diffs
-  deltas_to_export <- rlang::flatten(pipeline_run$pipeline_comparison$consolidated_field_diffs)
-  names(deltas_to_export)
-  writexl::write_xlsx(deltas_to_export, "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_consolidated_field_diffs_workforce_after_unrevert.xlsx")
 
 
 
@@ -76,8 +73,8 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   print(pipeline_run$pipeline_comparison)
 
   rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
-    pipeline_comparison = pr$dataset_comparison,
-    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_v1.rds"
+    pipeline_comparison = pipeline_run$dataset_comparison,
+    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v2.rds"
   ))
 
 
@@ -92,7 +89,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Re-run pipeline for summary data after re-revert caused rds file conflicts on summary_data" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Fix on the workforce data update for 2025, data.table key corruption" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
