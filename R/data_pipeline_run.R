@@ -1,4 +1,5 @@
 # **** Run the data pipeline ****
+
 # Please refer to the pipeline documentation found at www.XXXXXXX.tbc
 # The section below within the IF statement should be run step by step
 
@@ -21,6 +22,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 2. Set Common parameters ----
   YOUR_LOCAL_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
   TASK_NAME <- "S47_ICPC" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
+
 
 
 
