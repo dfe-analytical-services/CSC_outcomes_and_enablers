@@ -52,23 +52,20 @@ plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
 }
 
 
-plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
+plot_population_ethnicity_rate <- function(selected_geo_breakdown, geographic_level.x) {
   # Filter the data based on 'geo_breakdown', 'geographic_level'
-  combined_ethnicity_data <- combined_ethnicity_data[
-    combined_ethnicity_data$geo_breakdown %in% geo_breakdown & combined_ethnicity_data$breakdown != "Non-white",
-    c(
-      "time_period", "geo_breakdown", "geographic_level.x", "breakdown",
-      "inpost_headcount_percentage", "Percentage"
-    )
+  plot_data <- combined_ethnicity_data[
+    geo_breakdown == selected_geo_breakdown & breakdown != "Non-white",
+    .(time_period, geo_breakdown, geographic_level.x, breakdown, inpost_headcount_percentage, Percentage)
   ] %>%
     rename(Ethnicity = breakdown, Workforce = inpost_headcount_percentage, Population = Percentage)
 
 
   # Ensure 'percentage' is numeric
-  combined_ethnicity_data$Workforce <- as.numeric(combined_ethnicity_data$Workforce)
+  plot_data$Workforce <- as.numeric(plot_data$Workforce)
 
   # Reshape the dataframe to a long format
-  combined_ethnicity_data_long <- reshape2::melt(combined_ethnicity_data,
+  plot_data_long <- reshape2::melt(plot_data,
     id.vars = c("geo_breakdown", "geographic_level.x", "time_period", "Ethnicity"),
     measure.vars = c("Workforce", "Population"),
     variable.name = "Data",
@@ -77,7 +74,7 @@ plot_population_ethnicity_rate <- function(geo_breakdown, geographic_level.x) {
 
   custom_x_order <- c("White", "Black", "Asian", "Mixed", "Other")
 
-  p <- ggplot(combined_ethnicity_data_long, aes(x = Ethnicity, y = Percentage, fill = Data)) +
+  p <- ggplot(plot_data_long, aes(x = Ethnicity, y = Percentage, fill = Data)) +
     geom_bar(stat = "identity", position = "dodge") +
     ylab("Percentage") +
     xlab("Ethnicity") +

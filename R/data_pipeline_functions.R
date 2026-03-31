@@ -332,8 +332,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   df_setdiffs <- lapply(diff_datasets, function(df_name, datasets_new, datasets_rds) {
     print(df_name)
     list(
-      old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
-      new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+      new_v_old = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
+      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
   }, datasets_new, datasets_rds)
   names(df_setdiffs) <- diff_datasets
@@ -351,8 +351,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     )
     candidate_key_cols <- c("time_period", "old_la_code", dataset_column_values_comparison$new[number_count == 0]$column_name)
     consolidated_setdiffs <- lapply(changed_datasets, function(dataset_name, df_setdiffs, candidate_key_cols) {
-      added <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, new := "NEW"]
-      removed <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, old := "OLD"]
+      added <- setDT(df_setdiffs[[dataset_name]]$new_v_old)[, new := "NEW"]
+      removed <- setDT(df_setdiffs[[dataset_name]]$old_v_new)[, old := "OLD"]
       join_cols <- intersect(intersect(names(added), names(removed)), candidate_key_cols)
       dataset_compare <- merge(added, removed, by = join_cols, all = TRUE, suffixes = c("_newval", "_oldval"))
       new_order <- c(join_cols, sort(setdiff(names(dataset_compare), join_cols)))
@@ -531,4 +531,32 @@ pipeline_dataset_metadata <- function(datasets_list) {
     "dataset_nrow" = dataset_nrow,
     "dataset_columns" = dataset_columns
   ))
+}
+
+# helper function to get a table of the pipeline_history.rds key fields
+get_pipeline_history <- function(history_file = "./data/pipeline/data_pipeline_run_history.rds") {
+  history_list <- readRDS(file = history_file)
+  data.table::rbindlist(
+    lapply(
+      1:length(history_list),
+      function(x, history_list) {
+        # browser()
+        list(
+          "pipeline_run_id" = history_list[[x]]$pipeline_run_id,
+          "username" = history_list[[x]]$parameters$username,
+          "run_datetime" = history_list[[x]]$parameters$run_datetime,
+          "reason_for_pipeline_run" = history_list[[x]]$parameters$reason_for_pipeline_run,
+          "comparison_checked" = history_list[[x]]$parameters$comparison_checked
+        )
+      },
+      history_list = history_list
+    )
+  )
+}
+
+consolidate_pipeline_history <- function() {
+  # https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/347feaf738945a460b1585fa3fbada457262733b/data/pipeline/data_pipeline_run_history.rds
+  this_proj <- get_pipeline_history()
+  other_history_path <- paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data_pipeline_run_history.rds")
+  other_commit <- get_pipeline_history(other_history_path)
 }

@@ -20,7 +20,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## 2. Set Common parameters ----
   YOUR_LOCAL_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
-  TASK_NAME <- "workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
+  TASK_NAME <- "S47_ICPC" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
 
 
 
@@ -49,7 +49,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
   ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
-  PIPELINE_RUN_VERSION <- "v4a"
+  PIPELINE_RUN_VERSION <- "v2MW"
   pipeline_run <- run_data_pipeline_step_1(
     datasets_new = NULL, datasets_rds = NULL,
     save_datasets = FALSE, save_comparison = TRUE,
@@ -62,7 +62,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   # this is a useful way of doing a comparison between two batches of datasets, or the current datasets in memory to identify the differences
   # pipeline_run <- run_data_pipeline_step_1(datasets_new = read_environment_datasets(), save_comparison = TRUE, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION)
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
-
+  # pr <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION )
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
 
 
@@ -79,17 +79,18 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
   # more indepth analysis of the diffs
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$hospital_admissions[!(variable_clean %in% c("Count", "Denominator"))]
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$s47_to_ICPC_data[] # !(variable_clean %in% c("Count", "Denominator"))]
   pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
-
-
+  names(pipeline_run$pipeline_comparison$consolidated_setdiffs)
+  pipeline_run$pipeline_comparison$consolidated_setdiffs$s47_to_ICPC_data
+  pipeline_run$pipeline_comparison$dataset_setdiffs$s47_to_ICPC_data
 
 
 
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Fix on the workforce data update for 2025, data.table key corruption" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Truncate s47 dataset to 2014 onwards i.e. drop 2013" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
