@@ -2421,6 +2421,7 @@ read_s47_to_ICPC_data <- function(sn_long, file = "./data-raw/c4_children_in_nee
   # preliminary cleaning
   s47_to_ICPC_data <- s47_to_ICPC_data %>%
     colClean() %>%
+    filter(time_period >= 2014) %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data() %>%
     redacted_to_negative(col_old = "ICPC", col_new = "ICPC num") %>%
