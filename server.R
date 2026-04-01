@@ -7587,7 +7587,7 @@ server <- function(input, output, session) {
       select(inpost_headcount_percentage)
 
     if (input$geographic_breakdown_e3 == "") {
-      non_white_stat <- "NA"
+      non_white_stat <- "z"
     } else {
       non_white_stat <- format(as.numeric(non_white_stat), nsmall = 1)
     }
