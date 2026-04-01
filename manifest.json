@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "1894177ea4465ed08e0fb71f492a6b84"
+      "checksum": "29b6b3c2d6830c6b737c2969757d75e6"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5173,7 +5173,7 @@
       "checksum": "bdc12dcf0d1b5bd1a4bd6f7c67a11366"
     },
     "R/tabulation_functions.R": {
-      "checksum": "50d262aa4bb0129efc689bbe22339ba6"
+      "checksum": "53964295f66ab59da6c09f67686da125"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "27edbec916f88586657935644d2d55df"
@@ -5194,7 +5194,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "ed2aa426d4588cabe8dbf6b8874f39f2"
+      "checksum": "05db0ef2f93af95cce4af8d6e088856b"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
