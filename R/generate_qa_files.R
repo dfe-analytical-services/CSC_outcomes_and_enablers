@@ -57,7 +57,6 @@ create_qa_dataset_sn <- function(output_identifier, dataset_calc, sn_long, csv_f
     }
   }
   if (class(dataset_calc$old_la_code) != "integer") dataset_calc[, old_la_code := as.integer(old_la_code)]
-  browser()
   setkeyv(dataset_calc, id.vars_calc)
   dataset_calc <- dataset_calc[geographic_level %in% c("Local authority", "Statistical neighbours (median)")]
   dataset_calc[geographic_level == "Statistical neighbours (median)", geo_breakdown := geo_breakdown_sn]

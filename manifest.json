@@ -4795,7 +4795,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "0b85d9841ebcd74ae9eea0ce937e2419"
+      "checksum": "ec485467fcbe8e0c1195c6041dc79460"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "33b9941a7723a15c0c7333d8fb02476d"
+      "checksum": "298f5a1170ead530d6066a9f045c8ee7"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5116,10 +5116,10 @@
       "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
-      "checksum": "ddad69e6ffe8c1110b0806db420d5cfe"
+      "checksum": "8d731b19a6524198a7c03c4cb8053e1e"
     },
     "R/generate_qa_files.R": {
-      "checksum": "5ed962b3221722d1d1fefb588e92b46c"
+      "checksum": "a8a2e2c1f97cdc12c3840e961846617c"
     },
     "R/intro_panel.R": {
       "checksum": "05112157420ad6225117721246636bf1"
@@ -5155,7 +5155,7 @@
       "checksum": "3e575a80f13def5cdf8739cd52b75ad5"
     },
     "R/plotting_specific_indicators.R": {
-      "checksum": "0d63f5495cd15dfbd904f94f0fbeea7f"
+      "checksum": "61f850454154fb7e9e3981e332568dc3"
     },
     "R/read_data.R": {
       "checksum": "dcd2accc69d1fbe60c91f025a761b374"
@@ -5173,7 +5173,7 @@
       "checksum": "bdc12dcf0d1b5bd1a4bd6f7c67a11366"
     },
     "R/tabulation_functions.R": {
-      "checksum": "50d262aa4bb0129efc689bbe22339ba6"
+      "checksum": "53964295f66ab59da6c09f67686da125"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "27edbec916f88586657935644d2d55df"
@@ -5194,7 +5194,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "aa0afe0491a1d240396ceaed52bd5d41"
+      "checksum": "675638ca7b560231e98a326d775cfd4d"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

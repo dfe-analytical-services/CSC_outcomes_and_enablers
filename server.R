@@ -6827,7 +6827,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6926,7 +6926,7 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`)) %>%
+        arrange(desc(`Turnover Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
@@ -6935,7 +6935,7 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           `Turnover Rate Fte`
         ) %>%
-        arrange(desc(`Turnover Rate Fte`)) %>%
+        arrange(desc(`Turnover Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     }
 
@@ -7118,13 +7118,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Agency Rate Fte") %>%
-        arrange(desc(`Agency Rate Fte`)) %>%
+        arrange(desc(`Agency Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, "Agency Rate Fte") %>%
-        arrange(desc(`Agency Rate Fte`)) %>%
+        arrange(desc(`Agency Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     }
 
@@ -7307,13 +7307,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
-        arrange(desc(vacancy_rate_fte)) %>%
+        arrange(desc(`Vacancy Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
-        arrange(desc(`Vacancy Rate Fte`)) %>%
+        arrange(desc(`Vacancy Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     }
 
@@ -7491,13 +7491,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`)) %>%
+        arrange(desc(`Caseload Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`)) %>%
+        arrange(desc(`Caseload Fte`, geo_breakdown)) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     }
     reactable(
@@ -7584,10 +7584,14 @@ server <- function(input, output, session) {
         geo_breakdown %in% input$geographic_breakdown_e3 &
         role == "Total" &
         breakdown == "Non-white") %>%
-      select(inpost_headcount_percentage)
+      pull(inpost_headcount_percentage)
 
     if (input$geographic_breakdown_e3 == "") {
-      non_white_stat <- "NA"
+      non_white_stat <- "z"
+    } else if (length(non_white_stat) == 0) {
+      non_white_stat <- "z"
+    } else if (is.na(non_white_stat)) {
+      non_white_stat <- "z"
     } else {
       non_white_stat <- format(as.numeric(non_white_stat), nsmall = 1)
     }
