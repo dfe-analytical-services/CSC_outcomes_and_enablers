@@ -96,6 +96,9 @@ plot_population_ethnicity_rate <- function(selected_geo_breakdown, geographic_le
       limits = custom_x_order,
       labels = c("White" = "White", "Mixed" = "Mixed", "Asian" = "Asian", "Black" = "Black", "Other" = "Other")
     )
+  if (sum(!is.na(plot_data$Workforce)) == 0) {
+    p <- p + annotate(x = 3, y = 50, geom = "text", label = "There is no available data due to zero social workers with known ethnicity", color = "red")
+  }
 
   return(p)
 }
