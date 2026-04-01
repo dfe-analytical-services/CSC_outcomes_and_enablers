@@ -51,7 +51,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
   ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
-  PIPELINE_RUN_VERSION <- "v2MW"
+  PIPELINE_RUN_VERSION <- "v3MW"
   pipeline_run <- run_data_pipeline_step_1(
     datasets_new = NULL, datasets_rds = NULL,
     save_datasets = FALSE, save_comparison = TRUE,
