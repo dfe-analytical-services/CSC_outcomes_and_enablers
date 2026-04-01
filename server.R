@@ -7307,7 +7307,7 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
-        arrange(desc(vacancy_rate_fte)) %>%
+        arrange(desc(`Vacancy Rate Fte`)) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
