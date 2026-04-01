@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "d65a983c5d4bef1f2f7cbffd55bb2bf4"
+      "checksum": "38919756055dd77cdee17c8c23e75744"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5194,7 +5194,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "6e63326c725704916a04e80a38d58c38"
+      "checksum": "f4c9e8f0f0417cd4ccdef753a995de14"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
