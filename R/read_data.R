@@ -118,22 +118,23 @@ GET_location <- function(dataset = NULL) {
     unique()
 }
 
-# Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
-GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_indicators_2017_to_2024.csv"
-
-  if (is.null(dataset)) stop()
-  FACT_Location_workforce <- dataset %>%
-    filter(geographic_level == "Local authority") %>%
-    select(region_name, geo_breakdown) %>%
-    rename(la_name = geo_breakdown) %>%
-    unique() %>%
-    setDF()
-}
+# # Need a fact table for the LA's and their Regions for workforce data as they have LAs combined
+# GET_location_workforce <- function(dataset = NULL) { # file = "./data-raw/csww_indicators_2017_to_2024.csv"
+#
+#   if (is.null(dataset)) stop()
+#   FACT_Location_workforce <- dataset %>%
+#     filter(geographic_level == "Local authority") %>%
+#     select(region_name, geo_breakdown) %>%
+#     rename(la_name = geo_breakdown) %>%
+#     unique() %>%
+#     setDF()
+# }
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # #### Statistical Neighbours read and convert to long format ------------
 
 get_statistical_neighbours <- function(file = "./data-raw/sn_model_2025_wide.csv") {
+  print("- running get_statistical_neighbours")
   stats_neighbours_raw <- fread(file)
 
   # one-off hack to correct St Helens
@@ -240,6 +241,8 @@ collect_summary_data_metric <- function(sort_order, dataset_name, dimensional_fi
 # this function is the controller of summary_data build.  It takes the input metadata from Excel and processes each indicator (i.e. row of the metadata table)
 # data for all indicators is combined into a single data.table for use in the summary page
 collect_summary_data_all <- function() {
+  print("-running collect_summary_data")
+
   metric_parameters <- fread(file = "./data/summary_page_metadata.csv")
 
   summary_data <- rbindlist(
@@ -299,6 +302,7 @@ collect_summary_data_all <- function() {
 # Outcome 1 -------------------
 # CLA rate per 10k children data
 read_cla_rate_data <- function(sn_long, file = "./data-raw/cla_number_and_rate_per_10k_children.csv") {
+  print("- running read_cla_rate_data")
   cla_rate_data <- fread(file)
 
   cla_rate_data <- cla_rate_data %>%
@@ -363,8 +367,11 @@ read_cla_placement_data <- function(sn_long, file = "./data-raw/la_children_who_
   return(cla_placement_data)
 }
 
-
+# TODO: make this function use data.table but be careful to QA the impacts, especially on filtering.
+#  This approach would yield benefits with any of the stored rds files which are a tibble, DF but not data.table.
 read_cla_31_march_data <- function(file = "./data-raw/la_cla_on_31_march_by_characteristics.csv") {
+  print("- running read_cla_31_march_data")
+
   cla_31_march_data <- read.csv(file)
   cla_31_march_data <- colClean(cla_31_march_data) %>%
     rename(
@@ -396,6 +403,7 @@ read_cla_31_march_data <- function(file = "./data-raw/la_cla_on_31_march_by_char
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 merge_cla_dataframes <- function(sn_long) {
+  print("- running merge_cla_dataframes ----")
   # Read the data of just get it from the global environment if it already exists
   if (exists(x = "cla_rates")) {
     cla_rates_local <- copy(cla_rates)
@@ -496,6 +504,7 @@ merge_cla_dataframes <- function(sn_long) {
 }
 
 merge_cla_31_march_dataframes <- function(sn_long) {
+  print("- merge_cla_31_march_dataframes")
   # Read the data
   cla_rates_local <- read_cla_rate_data(sn_long)
   cla_31_march_data <- read_cla_31_march_data()
@@ -589,6 +598,8 @@ merge_cla_31_march_dataframes <- function(sn_long) {
 
 # CIN rate per 10k children data
 read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2013_to_2025.csv") {
+  print("- running read_cin_data")
+
   cin_rate_data <- fread(file)
 
   # initial cleansing steps
@@ -642,6 +653,8 @@ read_cin_rate_data <- function(sn_long, file = "./data-raw/b1_children_in_need_2
 
 # CIN referrals data
 read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_need_referrals_and_rereferrals_2013_to_2025.csv") {
+  print("- running read_cin_referral_data")
+
   cin_referral_data <- fread(file)
 
   # initial cleansing steps
@@ -692,6 +705,8 @@ read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_ne
 
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_half_terms_la.csv") {
+  print("- running read_outcomes_absence_data")
+
   # Notes: there is no removal of old LAs here
   outcomes_absence_data <- fread(file)
 
@@ -746,6 +761,8 @@ read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_h
 
 # Outcome 1 Outcomes KS2 data for education attainment
 read_outcomes_ks2_data <- function(sn_long, file = "./data-raw/ks2_la.csv") {
+  print("- running read_outcomes_ks2_data")
+
   outcomes_ks2_data <- fread(file)
 
   outcomes_ks2_data <- outcomes_ks2_data %>%
@@ -798,6 +815,7 @@ read_outcomes_ks2_data <- function(sn_long, file = "./data-raw/ks2_la.csv") {
 
 # Outcome 1 Outcomes KS4 data for education attainment
 read_outcomes_ks4_data <- function(sn_long, file = "./data-raw/ks4_la.csv") {
+  print("- running read_outcomes_ks4_data")
   outcomes_ks4_data <- fread(file)
 
   # Select only columns we want
@@ -835,6 +853,8 @@ read_outcomes_ks4_data <- function(sn_long, file = "./data-raw/ks4_la.csv") {
 
 # School stability (new indicator)
 read_school_stability_data <- function(sn_long, file = "./data-raw/la_cla_school_moves.csv") {
+  print("- running read_school_stability_data")
+
   # load the file into a data.table
   sch_stability_data <- fread(file)
 
@@ -868,9 +888,11 @@ read_school_stability_data <- function(sn_long, file = "./data-raw/la_cla_school
 # Outcome 2 ----
 # read outcome 2 function but without manual calculation of the percentages.
 read_outcome2 <- function(sn_long, file = "./data-raw/la_children_who_ceased_during_the_year.csv") {
-  # drop old LA's
+  print("- running read_outcome_2")
+
   ceased_cla_data <- fread(file)
 
+  # drop old LA's
   # TODO: remove make this logic a function as we have various implementations of it
   las_to_remove <- c("Poole", "Bournemouth", "Northamptonshire")
   ceased_cla_data <- ceased_cla_data %>%
@@ -921,6 +943,8 @@ read_outcome2 <- function(sn_long, file = "./data-raw/la_children_who_ceased_dur
 ### Outcome 3 Child Safety General ----
 ##### Child Protection Plans starting during year, which were second or subsequent plans (accordion 1) ----
 read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent_plan_2013_to_2025.csv") {
+  print("- running read_cpp_in_year_data")
+
   cpp_in_year_data <- fread(file)
 
   # add geo_breakdown
@@ -953,6 +977,8 @@ read_cpp_in_year_data <- function(sn_long, file = "./data-raw/d3_cpps_subsequent
 
 ### CPP by duration (accordion 2)
 read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31march_by_duration_2013_to_2025.csv") {
+  print("- running read_cpp_by_duration_data")
+
   cpp_by_duration_data <- read.csv(file) %>% data.table()
 
   cpp_by_duration_data <- cpp_by_duration_data %>%
@@ -988,6 +1014,8 @@ read_cpp_by_duration_data <- function(sn_long, file = "./data-raw/d5_cpps_at31ma
 # Region level data from here: https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/6/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/tre-ao-0_car-do-0
 
 read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissions_2324.csv", region_file = "./data-raw/region_hospital_admissions_2324.csv") {
+  print("- running read_a_and_e_data")
+
   # read the raw data from 2 csv files
   la_admissions <- read.csv("./data-raw/la_hospital_admissions_2324.csv") # la_file)
   region_admissions <- read.csv("./data-raw/region_hospital_admissions_2324.csv") # region_file)
@@ -1172,6 +1200,8 @@ read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissi
 ## Child abuse/Neglect / Harms outside the home ----
 ### Assessment Factors ------
 read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv") {
+  print("- running read_assessment_factors")
+
   ass_fac_data_raw <- fread(file)
   ass_fac_data_raw <- ass_fac_data_raw %>%
     insert_geo_breakdown() %>%
@@ -1521,20 +1551,16 @@ read_placement_order_match_data <- function(file = "./data-raw/national_cla_adop
 
 
 # Enabler 2 -----------------
+
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
 # and level breakdown (region names and la names)
 
 # firstly make a basic dataset to be usedfor the purposes of the GET_location calls
 # the raw data file is not used anywhere else in read_data.R so we assume it's not in the pipeline
 
-read_workforce_headline_measures <- function() {
-  raw_file <- "data-raw/csww_headline_measures_2017_to_2022.csv"
-  dataset <- fread(raw_file) %>%
-    insert_geo_breakdown()
-}
-
 
 #### Social worker stability (new indicator) ----
+
 read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla_swcount.csv") {
   # load the file into a data.table
   sw_stability_data <- fread(file)
@@ -1566,6 +1592,12 @@ read_social_worker_stability_data <- function(sn_long, file = "./data-raw/la_cla
 
 
 #### Workforce data ----
+read_workforce_headline_measures <- function() {
+  raw_file <- "data-raw/csww_headline_measures_2017_to_2022.csv"
+  dataset <- fread(raw_file) %>%
+    insert_geo_breakdown()
+}
+
 read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017_to_2025.csv") {
   workforce_data <- fread(file)
   workforce_data <- workforce_data %>%
@@ -1629,7 +1661,10 @@ read_workforce_data <- function(sn_long, file = "./data-raw/csww_indicators_2017
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity data
 read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
-  workforce_ethnicity_data <- fread(file)
+  print("- running read_workforce_eth_data")
+
+  workforce_ethnicity_data <- fread(file)[breakdown_topic == "Ethnicity major"]
+
   # Select only columns we want
   workforce_ethnicity_data <- workforce_ethnicity_data %>%
     insert_geo_breakdown() %>%
@@ -1919,22 +1954,29 @@ read_ethnic_population_data <- function(file1 = "./data-raw/ons-ethnic-populatio
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 merge_eth_dataframes <- function(sn_long) {
-  # Read the data
-  workforce_eth <- read_workforce_eth_data(sn_long = sn_long)[geographic_level != "Statistical neighbours (median)"]
+  print("- running merge_eth_dataframes")
+
+  # Read the data, reusing where it exists
+  if (!exists("workforce_eth")) {
+    workforce_eth_local <- copy(workforce_eth)
+  } else {
+    workforce_eth_local <- read_workforce_eth_data(sn_long = sn_long)[geographic_level != "Statistical neighbours (median)"]
+  }
+
   population_eth <- read_ethnic_population_data()
 
 
   # Filter to include only the latest year of data
-  latest_year <- max(workforce_eth$time_period)
-  workforce_eth <- subset(workforce_eth, time_period == latest_year)
+  latest_year <- max(workforce_eth_local$time_period)
+  workforce_eth <- subset(workforce_eth_local, time_period == latest_year)
 
   # Filter to only include the ethnicity groups for all social workers
-  workforce_eth <- workforce_eth %>%
+  workforce_eth_local <- workforce_eth_local %>%
     filter(breakdown_topic == "Ethnicity major", role == "Total") %>%
     filter(!(breakdown %in% c("Total", "Not known", "Known")))
 
   # Amend names of ethnic groups to match ONS data
-  workforce_eth <- workforce_eth %>%
+  workforce_eth_local <- workforce_eth_local %>%
     mutate(breakdown = case_when(
       breakdown == "Mixed / Multiple ethnic groups" ~ "Mixed",
       breakdown == "Asian / Asian British" ~ "Asian",
@@ -1944,7 +1986,7 @@ merge_eth_dataframes <- function(sn_long) {
     ))
 
   # Merge the two data frames
-  merged_data <- left_join(workforce_eth, population_eth, by = c("code" = "Code", "breakdown" = "EthnicGroupShort"))
+  merged_data <- left_join(workforce_eth_local, population_eth, by = c("code" = "Code", "breakdown" = "EthnicGroupShort"))
 
   return(merged_data)
 }
