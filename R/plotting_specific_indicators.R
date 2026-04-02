@@ -104,9 +104,10 @@ plot_population_ethnicity_rate <- function(selected_geo_breakdown, geographic_le
 }
 
 plot_seniority_eth <- function(geo_breakdown, geographic_level) {
+  geo_breakdown_ <- geo_breakdown
   ethnicity_data_sen <- workforce_eth_seniority[
-    workforce_eth_seniority$geo_breakdown %in% geo_breakdown & workforce_eth_seniority$seniority != "Total",
-    c("time_period", "geo_breakdown", "breakdown", "Percentage", "seniority")
+    i = geo_breakdown %in% geo_breakdown_ & seniority != "Total",
+    j = .(time_period, geo_breakdown, breakdown, Percentage, seniority)
   ]
 
   custom_x_order <- c("White", "Mixed / Multiple ethnic groups", "Asian / Asian British", "Black / African / Caribbean / Black British", "Other ethnic group")

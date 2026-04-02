@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "298f5a1170ead530d6066a9f045c8ee7"
+      "checksum": "aa802347079f5c92706e9fa2f643f007"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5038,7 +5038,7 @@
       "checksum": "cd0c43964c3ffc4617867a375fc2cfa8"
     },
     "data/workforce_eth_seniority.rds": {
-      "checksum": "003116d7e37fd7d891de58ab5c31db14"
+      "checksum": "bf467fc12a82d7b090b589ae618b4593"
     },
     "data/workforce_headline_measures.rds": {
       "checksum": "35e37d10fc397399c915c0d1cc5ad3db"
@@ -5155,10 +5155,10 @@
       "checksum": "3e575a80f13def5cdf8739cd52b75ad5"
     },
     "R/plotting_specific_indicators.R": {
-      "checksum": "61f850454154fb7e9e3981e332568dc3"
+      "checksum": "6f7b48e13125b2071eff10b403e673ab"
     },
     "R/read_data.R": {
-      "checksum": "dcd2accc69d1fbe60c91f025a761b374"
+      "checksum": "4363c28dab5825adb5c2b647e169ea26"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
@@ -5194,7 +5194,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "675638ca7b560231e98a326d775cfd4d"
+      "checksum": "90ac28d3ac72ad82e4023973cee1a15d"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

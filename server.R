@@ -7700,14 +7700,13 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
 
   output$table_seniority_eth <- renderReactable({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
       need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
-    data <- workforce_eth_seniority[, cols] %>%
+    data <- workforce_eth_seniority[, .(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage)] %>%
       filter(geo_breakdown %in% input$geographic_breakdown_e3, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
       select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Seniority level" = "seniority", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "Percentage")
