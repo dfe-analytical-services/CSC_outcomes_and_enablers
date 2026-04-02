@@ -156,7 +156,7 @@ cellfunc_decimal_percent <- function(value) {
 # Ordering tables with suppression
 cellfunc_social_ethnicity <- function(value) {
   if (is.na(value)) {
-    return("NA")
+    return("z")
   } else if (value == -100) {
     return("c")
   } else if (value == -200) {

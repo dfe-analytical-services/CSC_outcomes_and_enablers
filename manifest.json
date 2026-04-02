@@ -4795,7 +4795,7 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "0b85d9841ebcd74ae9eea0ce937e2419"
+      "checksum": "e3df68cc53a072ad5e0338cfbca4e16b"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4804,7 +4804,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "6815f6a196479a17c7b4445aa1499408"
+      "checksum": "577aac0b77a768901931d580469b9ea9"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -5044,7 +5044,7 @@
       "checksum": "cd0c43964c3ffc4617867a375fc2cfa8"
     },
     "data/workforce_eth_seniority.rds": {
-      "checksum": "003116d7e37fd7d891de58ab5c31db14"
+      "checksum": "bf467fc12a82d7b090b589ae618b4593"
     },
     "data/workforce_headline_measures.rds": {
       "checksum": "35e37d10fc397399c915c0d1cc5ad3db"
@@ -5116,10 +5116,10 @@
       "checksum": "d68af10a387480a8bd9e8de169519262"
     },
     "R/enabler3_page.R": {
-      "checksum": "ddad69e6ffe8c1110b0806db420d5cfe"
+      "checksum": "8d731b19a6524198a7c03c4cb8053e1e"
     },
     "R/generate_qa_files.R": {
-      "checksum": "5ed962b3221722d1d1fefb588e92b46c"
+      "checksum": "a8a2e2c1f97cdc12c3840e961846617c"
     },
     "R/intro_panel.R": {
       "checksum": "7cea07b99e9e40ee496867976485dead"
@@ -5155,10 +5155,10 @@
       "checksum": "3e575a80f13def5cdf8739cd52b75ad5"
     },
     "R/plotting_specific_indicators.R": {
-      "checksum": "0d63f5495cd15dfbd904f94f0fbeea7f"
+      "checksum": "6f7b48e13125b2071eff10b403e673ab"
     },
     "R/read_data.R": {
-      "checksum": "38c1b4bda4105a8ade3c2696812fbb94"
+      "checksum": "552f3aa2073d980025d599e77c84e1de"
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
@@ -5173,7 +5173,7 @@
       "checksum": "bdc12dcf0d1b5bd1a4bd6f7c67a11366"
     },
     "R/tabulation_functions.R": {
-      "checksum": "50d262aa4bb0129efc689bbe22339ba6"
+      "checksum": "53964295f66ab59da6c09f67686da125"
     },
     "R/ui_panels/accessibility_statement.R": {
       "checksum": "27edbec916f88586657935644d2d55df"
@@ -5194,7 +5194,7 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "db2e025536aa983d4206eab42c7fb9c1"
+      "checksum": "d8eac03eddc026da544d0f90c00c4e57"
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"

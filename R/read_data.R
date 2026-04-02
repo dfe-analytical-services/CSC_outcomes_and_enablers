@@ -1686,7 +1686,13 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Workforce ethnicity by seniority data
 read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_characteristics_inpost_2019_to_2025.csv") {
-  workforce_ethnicity_seniority_data <- read.csv(file)
+  workforce_ethnicity_seniority_data <- fread(file)
+
+  # Filter to include only the latest year of data
+  latest_year <- max(workforce_ethnicity_seniority_data$time_period)
+  workforce_ethnicity_seniority_data <- subset(workforce_ethnicity_seniority_data, time_period == latest_year)
+
+
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data() %>%
@@ -1696,8 +1702,10 @@ read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_ch
       inpost_FTE, inpost_FTE_percentage, inpost_headcount, inpost_headcount_percentage
     ) %>%
     filter(breakdown_topic == "Ethnicity major") %>%
+    filter(!(breakdown %in% c("Total", "Not known", "Known"))) %>%
     # removing old Dorset
     filter(!(new_la_code %in% dropList))
+
 
   workforce_ethnicity_seniority_data$new_la_code[workforce_ethnicity_seniority_data$new_la_code == ""] <- NA
   workforce_ethnicity_seniority_data$region_code[workforce_ethnicity_seniority_data$region_code == ""] <- NA
@@ -1713,19 +1721,34 @@ read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_ch
     ))
 
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
+    mutate(inpost_headcount_original = inpost_headcount) %>%
     mutate(inpost_headcount = case_when(
-      inpost_headcount == "Z" ~ 0,
-      inpost_headcount == "x" ~ 0,
+      inpost_headcount == "z" ~ NA, #### why the big Z ????
+      inpost_headcount == "x" ~ NA,
       TRUE ~ as.numeric(inpost_headcount)
     ))
 
+  max_redacted <- function(y) {
+    # y = c("1.1", "x", "z", NA)
+    # y = c(NA, NA)
+    y <- y[!(is.na(y))]
+    if (length(y) == 0) {
+      return(NA)
+    }
+    if (sum(sapply(y, function(x) is.na(as.numeric(x)))) != length(y)) {
+      return(NA)
+    }
+    max(y[sapply(y, function(x) is.na(as.numeric(x)))])
+  }
 
   # #sum ethnicity counts to create grouped manager percents
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
     group_by(geographic_level, geo_breakdown, time_period, region_name, code, seniority, breakdown) %>%
-    summarise_at(c("inpost_headcount"), sum) %>%
-    filter(!(breakdown %in% c("Total", "Not known", "Known")))
-
+    summarise(
+      across("inpost_headcount", sum),
+      across("inpost_headcount_original", max_redacted)
+    ) %>%
+    data.table()
 
   # sum ethnicity headcount to create total
   total_observation <- workforce_ethnicity_seniority_data %>%
@@ -1739,11 +1762,9 @@ read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_ch
 
   # Create ethnicity percentages
   workforce_ethnicity_seniority_data <- workforce_ethnicity_seniority_data %>%
-    mutate(Percentage = round(inpost_headcount / Observation * 100, 1))
+    mutate(Percentage = inpost_headcount / Observation * 100) %>%
+    mutate(Percentage = true_round(Percentage, 1))
 
-  # Filter to include only the latest year of data
-  latest_year <- max(workforce_ethnicity_seniority_data$time_period)
-  workforce_ethnicity_seniority_data <- subset(workforce_ethnicity_seniority_data, time_period == latest_year)
 
   return(workforce_ethnicity_seniority_data)
 }
