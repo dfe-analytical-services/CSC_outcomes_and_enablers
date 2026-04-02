@@ -7497,7 +7497,7 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`, geo_breakdown)) %>%
+        arrange(desc(`Caseload Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     }
     reactable(
