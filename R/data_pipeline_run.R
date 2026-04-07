@@ -50,7 +50,9 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
   ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
-  PIPELINE_RUN_VERSION <- "v4a"
+  PIPELINE_RUN_VERSION <- "v5a"
+
+
   pipeline_run <- run_data_pipeline_step_1(
     datasets_new = NULL, datasets_rds = NULL,
     save_datasets = FALSE, save_comparison = TRUE,
@@ -59,7 +61,8 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
 
-
+  # Note that it is possible to rerun the pipeline WITHOUT generating the new datasets by running all of the read data functions.
+  # This requires an existing set of datasets to be fed in for datasets_new
   # this is a useful way of doing a comparison between two batches of datasets, or the current datasets in memory to identify the differences
   # pipeline_run <- run_data_pipeline_step_1(datasets_new = read_environment_datasets(), save_comparison = TRUE, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION)
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
@@ -80,17 +83,19 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
   # more indepth analysis of the diffs
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$hospital_admissions[!(variable_clean %in% c("Count", "Denominator"))]
+  names(pipeline_run$pipeline_comparison$consolidated_field_diffs)
+
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_eth_seniority[!(variable_clean %in% c("Percentage", "inpost_headcount"))]
   pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
 
-
+  pipeline_run$pipeline_comparison$consolidated_field_diffs
 
 
 
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Fix on the workforce data update for 2025, data.table key corruption" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Final fix on workforce data to bring in the rounding for eth seniority" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

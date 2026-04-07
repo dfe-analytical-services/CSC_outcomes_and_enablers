@@ -190,6 +190,8 @@ pipeline_generate_datasets <- function() {
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
+  .GlobalEnv$workforce_eth <- workforce_eth
+
   workforce_eth_seniority <- suppressWarnings(read_workforce_eth_seniority_data())
   population_eth <- suppressWarnings(read_ethnic_population_data())
   combined_ethnicity_data <- suppressWarnings(merge_eth_dataframes(sn_long = stats_neighbours_long))
@@ -204,8 +206,6 @@ pipeline_generate_datasets <- function() {
 
   ## Read in the CLA data (outcome 1) ----
   cla_rates <- suppressWarnings(read_cla_rate_data(sn_long = stats_neighbours_long))
-  combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
-  combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
   ## Read in the CIN  data (outcome 1) ----
   cin_rates <- suppressWarnings(read_cin_rate_data(sn_long = stats_neighbours_long))
@@ -226,6 +226,7 @@ pipeline_generate_datasets <- function() {
   duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
   assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
   hospital_admissions <- suppressWarnings(read_a_and_e_data(sn_long = stats_neighbours_long))
+
   ## Read in outcome 4 data ----
   placement_data <- suppressWarnings(read_placement_info_data(sn_long = stats_neighbours_long))
   placement_changes_data <- suppressWarnings(read_number_placements_data(sn_long = stats_neighbours_long))
@@ -233,6 +234,12 @@ pipeline_generate_datasets <- function() {
   care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(sn_long = stats_neighbours_long))
   wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(sn_long = stats_neighbours_long))
   placement_order_match_data <- suppressWarnings(read_placement_order_match_data())
+
+  ## combined dataframes (move to the end to avoid a double read)
+  combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
+  combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
+
+
 
   ## Summary Data ----
   list2env(Filter(function(x) is(x, "data.frame"), mget(ls())), envir = .GlobalEnv)
@@ -329,8 +336,8 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   df_setdiffs <- lapply(diff_datasets, function(df_name, datasets_new, datasets_rds) {
     print(df_name)
     list(
-      new_v_old = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
-      old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+      old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
+      new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
     )
   }, datasets_new, datasets_rds)
   names(df_setdiffs) <- diff_datasets
