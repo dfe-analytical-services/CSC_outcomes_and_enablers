@@ -20,8 +20,8 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   shhh(library(data.table, pos = 3))
 
   ## 2. Set Common parameters ----
-  YOUR_LOCAL_PATH <- "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
-  TASK_NAME <- "workforce_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
+  YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
+  TASK_NAME <- "outcomes_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
 
 
 
@@ -29,7 +29,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
   pipeline_prelim <- get_pipeline_prelim(
-    path_new = paste0(YOUR_LOCAL_PATH, , TASK_NAME, "/data-comparisons/2024/"),
+    path_new = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2024/"),
     path_old = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2025/")
   )
 

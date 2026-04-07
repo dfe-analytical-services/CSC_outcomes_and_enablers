@@ -78,7 +78,7 @@ output_data <- create_qa_dataset_sn(output_identifier, dataset_calc, sn_long, cs
 sn_long <- copy(stats_neighbours_long)
 output_identifier <- "outcomes_absence_test_automation"
 dataset_calc <- copy(outcomes_absence)
-csv_file <- "./data-raw/absence_six_half_terms_la.csv"
+csv_file <- "./data-raw/absence_la.csv"
 id.vars_raw <- c("time_period", "old_la_code", "la_name", "social_care_group", "school_type")
 measure.vars_raw <- c("t_pupils", "pt_overall", "pt_pupils_pa_10_exact", "pt_pupils_pa_50_exact")
 raw_melt_cols <- c("time_period", "old_la_code", "social_care_group", "school_type", "variable", "value")
