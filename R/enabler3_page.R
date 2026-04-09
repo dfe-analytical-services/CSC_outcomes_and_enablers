@@ -85,7 +85,8 @@ enabler3_tab <- function() {
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames / Richmond upon Thames')",
           p("Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
-            To see Social Worker Stability data, please select either Kingston upon Thames or Richmond upon Thames from the dropdown.")
+            To see Social Worker Stability data, please select either Kingston upon Thames or Richmond upon Thames from the dropdown.
+            As this is a combined workforce return no statistical neighbour information is available.")
         ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'Kingston upon Thames' | input.geographic_breakdown_e3 == 'Richmond upon Thames')",
@@ -95,7 +96,8 @@ enabler3_tab <- function() {
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire / West Northamptonshire')",
           p("North Northamptonshire and West Northamptonshire submit a joint workforce return each year, and their data is reported together for all indicators on this page except Social Worker Stability.
-            To see Social Worker Stability data, please select either North Northamptonshire or West Northamptonshire from the dropdown.")
+            To see Social Worker Stability data, please select either North Northamptonshire or West Northamptonshire from the dropdown.
+            As this is a combined workforce return no statistical neighbour information is available.")
         ),
         conditionalPanel(
           condition = "(input.geographic_breakdown_e3 == 'North Northamptonshire' | input.geographic_breakdown_e3 == 'West Northamptonshire')",
@@ -160,17 +162,7 @@ enabler3_tab <- function() {
                       inputId = "turnover_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("The turnover rate is calculated as (the number of) children and family social worker leavers in the year to 30 September divided by children and family social workers in post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
-
+                        get_additional_info("workforce_turnover")
                       )
                     ),
                   ),
@@ -195,17 +187,7 @@ enabler3_tab <- function() {
                       inputId = "turnover_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("The turnover rate is calculated as (the number of) children and family social worker leavers in the year to 30 September divided by children and family social workers in post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
-
+                        get_additional_info("workforce_turnover")
                       )
                     ),
                   ),
@@ -251,24 +233,7 @@ enabler3_tab <- function() {
                       inputId = "agency_worker_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li(
-                            "After the 2024 collection had closed, Birmingham local authority informed the Department that there were data quality issues with the figures they reported in the collection. This affects their data on agency workers, caseload and absence. To reflect these issues:",
-                            tags$ul(
-                              tags$li("For the national and regional figures, 2024 data for Birmingham has been included in the caseload figures/rates and agency worker counts but excluded from the sickness absence figures/rates and agency worker rates."),
-                              tags$li("2024 data for Birmingham has been provided as ‘u’ in the underlying data for these measures to indicate low reliability.
-")
-                            )
-                          ),
-                          tags$li("The decision to include or exclude Birmingham's figures from the regional and national figures is based on assessments of under and over reporting in these statistics, with included figures not being deemed to have a considerable impact on national/regional trends and excluded figures deemed to have a greater impact. The Department will further investigate these data quality issues with the local authority and revise the data in this statistical release if necessary in due course."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_agency_rate")
                       )
                     )
                   ),
@@ -293,24 +258,7 @@ enabler3_tab <- function() {
                       inputId = "agency_worker_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li(
-                            "After the 2024 collection had closed, Birmingham local authority informed the Department that there were data quality issues with the figures they reported in the collection. This affects their data on agency workers, caseload and absence. To reflect these issues:",
-                            tags$ul(
-                              tags$li("For the national and regional figures, 2024 data for Birmingham has been included in the caseload figures/rates and agency worker counts but excluded from the sickness absence figures/rates and agency worker rates."),
-                              tags$li("2024 data for Birmingham has been provided as ‘u’ in the underlying data for these measures to indicate low reliability.
-")
-                            )
-                          ),
-                          tags$li("The decision to include or exclude Birmingham's figures from the regional and national figures is based on assessments of under and over reporting in these statistics, with included figures not being deemed to have a considerable impact on national/regional trends and excluded figures deemed to have a greater impact. The Department will further investigate these data quality issues with the local authority and revise the data in this statistical release if necessary in due course."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_agency_rate")
                       )
                     )
                   ),
@@ -356,16 +304,7 @@ enabler3_tab <- function() {
                       inputId = "vacancy_rate_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("The vacancy rate, as at 30 September per year, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_vacancy_rate")
                       )
                     ),
                   ),
@@ -390,16 +329,7 @@ enabler3_tab <- function() {
                       inputId = "vacancy_rate_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("The vacancy rate, as at 30 September per year, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_vacancy_rate")
                       )
                     ),
                   ),
@@ -470,16 +400,7 @@ enabler3_tab <- function() {
                       inputId = "caseload_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_caseload")
                       )
                     )
                   ),
@@ -504,16 +425,7 @@ enabler3_tab <- function() {
                       inputId = "caseload_reg_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-                          tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_caseload")
                       )
                     )
                   ),
@@ -596,22 +508,7 @@ enabler3_tab <- function() {
                       inputId = "ethnicity_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li(tags$b("Ethnicity groups"), " are based on ethnic origin and are provided on a headcount basis."),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
-                          tags$li(tags$b("Headcount"), "is a count of all individual children and family social workers, regardless of their working pattern."),
-                          tags$li(tags$b("Ethnic minority backgrounds"), " exclude white British, white Irish, or any other white background."),
-                          tags$li(tags$b("White"), " comprises white British, white Irish, or any other white background."),
-                          tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
-                          tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
-                          tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_eth")
                       )
                     )
                   )
@@ -642,22 +539,7 @@ enabler3_tab <- function() {
                       inputId = "population_ethnicity_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li("Population data is taken from the latest available", a(href = "https://www.ons.gov.uk/datasets/TS021/editions/2021/versions/3", "ONS Census data (2021).", target = "_blank")),
-                          tags$li(sprintf("The Workforce data comparison uses the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group calculated using the headcount of social workers with known ethnicity as the denominator."),
-                          tags$li(tags$b("White"), " comprises white British, white Irish, or any other white background."),
-                          tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
-                          tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
-                          tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
-                          tags$li("General population ethnicity covers all ages of population living in the geographical area in question."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_eth_population")
                       )
                     )
                   )
@@ -688,24 +570,7 @@ enabler3_tab <- function() {
                       inputId = "seniority_ethnicity_info",
                       label = "Additional information:",
                       help_text = (
-                        tags$ul(
-                          tags$li(sprintf("The data used is from the latest available collection year in the Workforce diversity dataset (%s).", max(workforce_eth$time_period))),
-                          tags$li(tags$b("Ethnicity"), sprintf(" was known for 81%% of child and family social workers nationally in %s.", max(workforce_eth$time_period)), "Headcount percentage by ethnicity group are calculated using the headcount of social workers with known ethnicity as the denominator."),
-                          tags$li("Seniority level relates to social worker role. Manager roles have been grouped and include first line managers, middle managers and senior managers."),
-                          tags$li("A Senior Practitioner works in a local authority in a children’s services department as a team leader, supervising social worker or senior social worker."),
-                          tags$li("A case holder is a children and family social worker that manages cases, but is not in a manager or senior practitioner role (however, cases can be hold by those not in case holder roles)."),
-                          tags$li("Qualified without cases includes all other qualified and registered social workers, including those without cases (for example Independent Reviewing Officer (IRO), Chairs of Child Protection Conferences, Youth Custody worker, Family Support) and those not currently practicing (for example, those in learning and development or quality assurance roles)."),
-                          tags$li(tags$b("White"), " comprises white British, white Irish, or any other white background."),
-                          tags$li(tags$b("Black or Black British"), " comprises black Caribbean, black African or any other black background."),
-                          tags$li(tags$b("Asian or Asian British"), " comprises Indian, Pakistani, Bangladeshi, Chinese or any other Asian background."),
-                          tags$li(tags$b("Mixed"), " comprises white and black Caribbean, white and black African, white and Asian, or any other mixed background."),
-                          tags$br(),
-                          p(
-                            "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                            tags$br(),
-                            "For more information on the methodology, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-                          )
-                        )
+                        get_additional_info("workforce_eth_seniority")
                       )
                     )
                   )

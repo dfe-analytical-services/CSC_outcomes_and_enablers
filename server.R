@@ -182,15 +182,16 @@ server <- function(input, output, session) {
   sp_domain_server(id = "Child wellbeing and development", rv_summary_page)
   sp_domain_server(id = "Educational attainment", rv_summary_page)
 
-  # Outcome 3 domain on summary page
-  sp_accordion_cols_server(id = "outcome3", rv_summary_page)
-  sp_domain_server(id = "Families engaging and receiving support from their family network", rv_summary_page)
-
   # outcome 2 domains on summary page
   sp_accordion_cols_server(id = "outcome2", rv_summary_page)
   sp_domain_server(id = "Child safety - general", rv_summary_page)
   sp_domain_server(id = "Child abuse / neglect", rv_summary_page)
   sp_domain_server(id = "Harms outside the home", rv_summary_page)
+
+  # Outcome 3 domain on summary page
+  sp_accordion_cols_server(id = "outcome3", rv_summary_page)
+  sp_domain_server(id = "Families engaging and receiving support from their family network", rv_summary_page)
+
 
   # outcome 4 domains on summary page
   sp_accordion_cols_server(id = "outcome4", rv_summary_page)
@@ -6826,7 +6827,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Turnover Rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+        `Turnover rate (FTE) %` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 10,
       searchable = TRUE,
@@ -6925,7 +6926,7 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, `Turnover Rate Fte`) %>%
-        arrange(desc(`Turnover Rate Fte`)) %>%
+        arrange(desc(`Turnover Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
@@ -6934,7 +6935,7 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           `Turnover Rate Fte`
         ) %>%
-        arrange(desc(`Turnover Rate Fte`)) %>%
+        arrange(desc(`Turnover Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Turnover rate (FTE) %" = "Turnover Rate Fte")
     }
 
@@ -7117,13 +7118,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Agency Rate Fte") %>%
-        arrange(desc(`Agency Rate Fte`)) %>%
+        arrange(desc(`Agency Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, "Agency Rate Fte") %>%
-        arrange(desc(`Agency Rate Fte`)) %>%
+        arrange(desc(`Agency Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Agency worker rate (FTE) %" = "Agency Rate Fte")
     }
 
@@ -7306,13 +7307,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Vacancy Rate Fte") %>%
-        arrange(desc(vacancy_rate_fte)) %>%
+        arrange(desc(`Vacancy Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, `Vacancy Rate Fte`) %>%
-        arrange(desc(`Vacancy Rate Fte`)) %>%
+        arrange(desc(`Vacancy Rate Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Vacancy rate (FTE) %" = "Vacancy Rate Fte")
     }
 
@@ -7490,13 +7491,13 @@ server <- function(input, output, session) {
       data <- workforce_data %>%
         filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`)) %>%
+        arrange(desc(`Caseload Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     } else if (input$select_geography_e3 %in% c("Local authority", "National")) {
       data <- workforce_data %>%
         filter(geographic_level == "Local authority", time_period == max(workforce_data$time_period)) %>%
         select(time_period, geo_breakdown, "Caseload Fte") %>%
-        arrange(desc(`Caseload Fte`)) %>%
+        arrange(desc(`Caseload Fte`), geo_breakdown) %>%
         rename("Time period" = "time_period", "Local authority" = "geo_breakdown", "Average caseload (FTE)" = "Caseload Fte")
     }
     reactable(
@@ -7583,10 +7584,14 @@ server <- function(input, output, session) {
         geo_breakdown %in% input$geographic_breakdown_e3 &
         role == "Total" &
         breakdown == "Non-white") %>%
-      select(inpost_headcount_percentage)
+      pull(inpost_headcount_percentage)
 
     if (input$geographic_breakdown_e3 == "") {
-      non_white_stat <- "NA"
+      non_white_stat <- "z"
+    } else if (length(non_white_stat) == 0) {
+      non_white_stat <- "z"
+    } else if (is.na(non_white_stat)) {
+      non_white_stat <- "z"
     } else {
       non_white_stat <- format(as.numeric(non_white_stat), nsmall = 1)
     }
@@ -7695,14 +7700,13 @@ server <- function(input, output, session) {
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
 
-  cols <- c("time_period", "geo_breakdown", "seniority", "breakdown", "inpost_headcount", "Percentage")
 
   output$table_seniority_eth <- renderReactable({
     shiny::validate(
       need(input$select_geography_e3 != "", "Select a geography level."),
       need(input$geographic_breakdown_e3 != "", "Select a location.")
     )
-    data <- workforce_eth_seniority[, cols] %>%
+    data <- workforce_eth_seniority[, .(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage)] %>%
       filter(geo_breakdown %in% input$geographic_breakdown_e3, seniority != "Total", time_period == max(workforce_eth_seniority$time_period)) %>%
       select(time_period, geo_breakdown, seniority, breakdown, inpost_headcount, Percentage) %>%
       rename("Time period" = "time_period", "Location" = "geo_breakdown", "Seniority level" = "seniority", "Ethnicity" = "breakdown", "Headcount" = "inpost_headcount", "Headcount (%)" = "Percentage")
@@ -10787,17 +10791,7 @@ server <- function(input, output, session) {
           inputId = "turnover_la_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-              tags$li("The turnover rate is calculated as (the number of) children and family social worker leavers in the year to 30 September divided by children and family social workers in post at 30 September. The turnover rate is a measure of churn in the workforce (although it doesn’t capture the movement of social workers to different children and family social work positions within the same local authority)."),
-              tags$br(),
-              p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-              )
-            )
-
+            get_additional_info("workforce_turnover")
           )
         ),
       )
@@ -10823,16 +10817,7 @@ server <- function(input, output, session) {
           inputId = "sn_turnover_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-              br(),
-              p(
-                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                tags$br(),
-                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-              ),
-            )
+            get_additional_info("stat_neighbours_generic")
           )
         )
       )
@@ -10897,24 +10882,7 @@ server <- function(input, output, session) {
           inputId = "agency_worker_la_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-              tags$li(
-                "After the 2024 collection had closed, Birmingham local authority informed the Department that there were data quality issues with the figures they reported in the collection. This affects their data on agency workers, caseload and absence. To reflect these issues:",
-                tags$ul(
-                  tags$li("For the national and regional figures, 2024 data for Birmingham has been included in the caseload figures/rates and agency worker counts but excluded from the sickness absence figures/rates and agency worker rates."),
-                  tags$li("2024 data for Birmingham has been provided as ‘u’ in the underlying data for these measures to indicate low reliability.
-")
-                )
-              ),
-              tags$li("The decision to include or exclude Birmingham's figures from the regional and national figures is based on assessments of under and over reporting in these statistics, with included figures not being deemed to have a considerable impact on national/regional trends and excluded figures deemed to have a greater impact. The Department will further investigate these data quality issues with the local authority and revise the data in this statistical release if necessary in due course."),
-              tags$br(),
-              p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-              )
-            )
+            get_additional_info("workforce_agency_rate")
           )
         )
       )
@@ -10940,16 +10908,7 @@ server <- function(input, output, session) {
           inputId = "sn_agency_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-              br(),
-              p(
-                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                tags$br(),
-                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-              ),
-            )
+            get_additional_info("stat_neighbours_generic")
           )
         )
       )
@@ -11015,16 +10974,7 @@ server <- function(input, output, session) {
           inputId = "vacancy_rate_la_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-              tags$li("The vacancy rate, as at 30 September per year, is calculated as (the number of) FTE (full-time equivalent) vacancies divided by the sum of FTE vacancies and FTE social workers."),
-              tags$br(),
-              p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-              )
-            )
+            get_additional_info("workforce_vacancy_rate")
           )
         ),
       )
@@ -11050,16 +11000,7 @@ server <- function(input, output, session) {
           inputId = "sn_vacancy_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-              br(),
-              p(
-                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                tags$br(),
-                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-              ),
-            )
+            get_additional_info("stat_neighbours_generic")
           )
         )
       )
@@ -11123,16 +11064,7 @@ server <- function(input, output, session) {
           inputId = "caseload_la_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("Full-time Equivalent (FTE) figures are calculated by aggregating the total number of hours that social workers are contracted to work and dividing by the standard hours for their grade. FTE figures exclude social workers for whom FTE information was missing or not known."),
-              tags$li("Average caseload at 30 September per year is calculated as the total number of cases held by FTE social workers, including agency workers, in post divided by the number of FTE social workers, including agency workers, in post that held one or more cases."),
-              tags$br(),
-              p(
-                "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-s-social-work-workforce/data-guidance", "Children's social work workforce data guidance.", target = "_blank"),
-                tags$br(),
-                "For more information on the methodology, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/methodology/children-s-social-work-workforce-methodology", "Children's social work workforce methodology.", target = "_blank")
-              )
-            )
+            get_additional_info("workforce_caseload")
           )
         )
       )
@@ -11158,16 +11090,7 @@ server <- function(input, output, session) {
           inputId = "sn_caseload_info",
           label = "Additional information:",
           help_text = (
-            tags$ul(
-              tags$li("The ‘Children’s services statistical neighbour benchmarking tool’ was used to select each local authority’s ’10 closest statistical neighbours’ (local authorities with similar characteristics)."),
-              tags$li("The 10 closest local authorities are based on a weighted “distance” calculation across a range of local socio-economic/ characteristic/ demographic variables – which are deemed to have strong relationships with the Children’s Services policy indicators (the types of measures in this dashboard)."),
-              br(),
-              p(
-                "For information on the Children’s services statistical neighbour benchmarking tool, please refer to the", a(href = "https://www.gov.uk/government/publications/local-authority-interactive-tool-lait", "Local Authority Interactive Tool (LAIT) publication.", target = "_blank"),
-                tags$br(),
-                "The Children’s services statistical neighbour benchmarking is also available", a(href = "https://assets.publishing.service.gov.uk/media/606458acd3bf7f0c8d06b7e2/Childrens_services_statistical_neighbour_benchmarking_tool_-_LGR_Version__April_2021_.xlsx", "here.", target = "_blank")
-              ),
-            )
+            get_additional_info("stat_neighbours_generic")
           )
         )
       )
