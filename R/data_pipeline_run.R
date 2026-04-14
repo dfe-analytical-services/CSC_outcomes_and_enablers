@@ -20,7 +20,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   shhh(library(data.table, pos = 3))
 
   ## 2. Set Common parameters ----
-  YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/"
+  YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
   TASK_NAME <- "outcomes_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
 
 
@@ -36,16 +36,16 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   print(pipeline_prelim)
 
   # if you wish to save artifacts from the preliminary pipeline run then execute these steps
-  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")) # <--- REPLACE FILENAME AS REQUIRED
+  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds")) 
 
   # produce a diagnostic report of the differences in the files.
   rmarkdown::render(
     input = "./inst/pipeline_prelim.Rmd",
-    output_dir = "",
-    output_file = "",
-    params = list(
+    output_dir  = "inst",
+    output_file = "pipeline_prelim.html",
+        params = list(
       pipeline_comparison = pipeline_prelim$dataset_comparison,
-      pipeline_comparison_file = paste0(PRELIM_PATH, "/data-comparisons/pipeline_comparison_prelim_v1.rds")
+      pipeline_comparison_file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds")
     )
   )
 
@@ -75,10 +75,16 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
+  
+  saveRDS(pipeline_run$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds")) 
 
-  rmarkdown::render("./inst/pipeline_diagnostics.Rmd", params = list(
+  rmarkdown::render(  
+    input = "./inst/pipeline_diagnostics.Rmd", 
+    output_dir  = "inst",
+    output_file = "pipeline_diagnostics.html",
+    params = list(
     pipeline_comparison = pipeline_run$dataset_comparison,
-    pipeline_comparison_file = "~/CSC shiny dashboard/Data QA/workforce_2025/pipeline_comparison_workforce_v2.rds"
+    pipeline_comparison_file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds")
   ))
 
 
@@ -95,7 +101,7 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
-  reason_for_pipeline_run <- "Final fix on workforce data to bring in the rounding for eth seniority" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Update outcomes data" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

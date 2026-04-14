@@ -5,7 +5,7 @@ output:
     css: "report_styling.css"
 params:
   pipeline_comparison: !r NULL
-  pipeline_comparison_file: !r '~/CSC shiny dashboard/Data QA/cla_2025/pipeline_comparison_prelim.rds'
+  pipeline_comparison_file: '~/CSC shiny dashboard/Data QA/pipeline_comparison_prelim.rds'
 ---
 
 <style>
@@ -30,7 +30,7 @@ options(reactable.compact = T,
         reactable.highlight = T)
 
 prepare_rt <- function(dt) {
-  print(rt)
+ # print(rt)
     col_names <- gsub("_", " ", names(dt))
     names(dt) <- stringi::stri_trans_totitle(col_names)
     dt
