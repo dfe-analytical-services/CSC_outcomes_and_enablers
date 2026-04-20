@@ -36,14 +36,14 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   print(pipeline_prelim)
 
   # if you wish to save artifacts from the preliminary pipeline run then execute these steps
-  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds")) 
+  saveRDS(pipeline_prelim$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds"))
 
   # produce a diagnostic report of the differences in the files.
   rmarkdown::render(
     input = "./inst/pipeline_prelim.Rmd",
-    output_dir  = "inst",
+    output_dir = "inst",
     output_file = "pipeline_prelim.html",
-        params = list(
+    params = list(
       pipeline_comparison = pipeline_prelim$dataset_comparison,
       pipeline_comparison_file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds")
     )
@@ -75,24 +75,25 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ----
   print(pipeline_run$pipeline_comparison)
-  
-  saveRDS(pipeline_run$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds")) 
 
-  rmarkdown::render(  
-    input = "./inst/pipeline_diagnostics.Rmd", 
-    output_dir  = "inst",
+  saveRDS(pipeline_run$pipeline_comparison, file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds"))
+
+  rmarkdown::render(
+    input = "./inst/pipeline_diagnostics.Rmd",
+    output_dir = "inst",
     output_file = "pipeline_diagnostics.html",
     params = list(
-    pipeline_comparison = pipeline_run$dataset_comparison,
-    pipeline_comparison_file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds")
-  ))
+      pipeline_comparison = pipeline_run$dataset_comparison,
+      pipeline_comparison_file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison.rds")
+    )
+  )
 
 
   # more indepth analysis of the diffs
   names(pipeline_run$pipeline_comparison$consolidated_field_diffs)
 
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_eth_seniority[!(variable_clean %in% c("Percentage", "inpost_headcount"))]
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la[!(variable_clean %in% c("avg_att8", "t_pupils"))]
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la # [!(variable_clean %in% c("Count", "Denominator"))]
 
   pipeline_run$pipeline_comparison$consolidated_field_diffs
 
