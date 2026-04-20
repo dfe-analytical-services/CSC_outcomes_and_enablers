@@ -1777,7 +1777,7 @@ server <- function(input, output, session) {
       filter(geographic_level == "Regional" & time_period == max(outcomes_absence$time_period) & school_type %in% input$wellbeing_school_breakdown & social_care_group %in% input$wellbeing_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`) %>%
-      arrange(desc(`Overall absence (%)`)) %>%
+      arrange(desc(`Overall absence (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Overall absence (%)` = `Overall absence (%)`)
 
     reactable(
@@ -2162,7 +2162,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Severe absentees (%)`) %>%
-      arrange(desc(`Severe absentees (%)`)) %>%
+      arrange(desc(`Severe absentees (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Severe absentees (%)` = `Severe absentees (%)`)
 
     reactable(
@@ -2170,7 +2170,7 @@ server <- function(input, output, session) {
       defaultColDef = colDef(align = "center"),
       columns = list(
         `Total number of pupils` = colDef(cell = cellfunc),
-        `Severe absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+        `Severe absentees (%)` = colDef(cell = cellfunc_decimal_percent)
       ),
       defaultPageSize = 15,
       searchable = TRUE,
