@@ -1984,7 +1984,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
-      arrange(desc(`Persistent absentees (%)`)) %>%
+      arrange(desc(`Persistent absentees (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
@@ -2445,7 +2445,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
-      arrange(desc(`Expected standard reading writing maths (%)`)) %>%
+      arrange(desc(`Expected standard reading writing maths (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
 
@@ -2645,7 +2645,7 @@ server <- function(input, output, session) {
       filter(geographic_level == "Regional", time_period == max(outcomes_ks4$time_period), social_care_group %in% input$attainment_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
-      arrange(desc(`Average Attainment 8`)) %>%
+      arrange(desc(`Average Attainment 8`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
 
     reactable(
@@ -8949,6 +8949,13 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
+              tags$li(
+                "Figures for 2024/25 are based on provisional data. Figures for other years are based on final data."
+              ),
+              tags$li(
+                "Includes all state-funded, alternative provision, and non-maintained special schools with pupils eligible for assessment at Key Stage 2.
+                             Participation by independent schools is voluntary, therefore includes results from independent schools that chose to submit data and met the requirements for assessment and moderation."
+              ),
               tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
