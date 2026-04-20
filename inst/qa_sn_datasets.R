@@ -101,7 +101,7 @@ output_data <- create_qa_dataset_sn(output_identifier, dataset_calc, sn_long, cs
 #
 output_identifier <- "outcomes_ks2_test_automation"
 dataset_calc <- copy(outcomes_ks2)
-csv_file <- "./data/ks2_la.csv"
+csv_file <- "./data-raw/ks2_la.csv"
 id.vars_raw <- c("time_period", "old_la_code", "la_name", "social_care_group")
 measure.vars_raw <- c("pt_rwm_met_expected_standard", "t_rwm_eligible_pupils")
 raw_melt_cols <- c("time_period", "old_la_code", "social_care_group", "variable", "value")
@@ -122,7 +122,7 @@ output_data <- create_qa_dataset_sn(output_identifier, dataset_calc, sn_long, cs
 
 output_identifier <- "outcomes_ks4_test_automation"
 dataset_calc <- copy(outcomes_ks4)
-csv_file <- "./data/ks4_la.csv"
+csv_file <- "./data-raw/ks4_la.csv"
 id.vars_raw <- c("time_period", "old_la_code", "la_name", "social_care_group")
 measure.vars_raw <- c("avg_att8", "t_pupils")
 raw_melt_cols <- c("time_period", "old_la_code", "social_care_group", "variable", "value")
