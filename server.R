@@ -8949,6 +8949,13 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
+              tags$li(
+                "Figures for 2024/25 are based on provisional data. Figures for other years are based on final data."
+              ),
+              tags$li(
+                "Includes all state-funded, alternative provision, and non-maintained special schools with pupils eligible for assessment at Key Stage 2.
+                             Participation by independent schools is voluntary, therefore includes results from independent schools that chose to submit data and met the requirements for assessment and moderation."
+              ),
               tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
