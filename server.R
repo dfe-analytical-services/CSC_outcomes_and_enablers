@@ -1984,7 +1984,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`) %>%
-      arrange(desc(`Persistent absentees (%)`)) %>%
+      arrange(desc(`Persistent absentees (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `School type` = `school_type`, `Total number of pupils` = `Total pupils`, `Persistent absentees (%)` = `Persistent absentees (%)`)
 
     reactable(
@@ -2445,7 +2445,7 @@ server <- function(input, output, session) {
       ) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`) %>%
-      arrange(desc(`Expected standard reading writing maths (%)`)) %>%
+      arrange(desc(`Expected standard reading writing maths (%)`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
 
 
@@ -2645,7 +2645,7 @@ server <- function(input, output, session) {
       filter(geographic_level == "Regional", time_period == max(outcomes_ks4$time_period), social_care_group %in% input$attainment_extra_breakdown) %>%
       mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
       select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
-      arrange(desc(`Average Attainment 8`)) %>%
+      arrange(desc(`Average Attainment 8`), geo_breakdown) %>%
       rename(`Time period` = `time_period`, `Region` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of pupils` = `Total pupils`, `Average attainment 8 score` = `Average Attainment 8`)
 
     reactable(
