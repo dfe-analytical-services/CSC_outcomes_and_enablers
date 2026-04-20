@@ -8649,7 +8649,7 @@ server <- function(input, output, session) {
                 "Persistent absence is when a pupil enrolment’s overall absence equates to 10% or more of their possible sessions. For further information see ",
                 a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
               ),
-          tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
               tags$br(),
@@ -8764,7 +8764,7 @@ server <- function(input, output, session) {
               "A pupil is identified as severely absent if they miss 50% or more of possible sessions. For further information see ",
               a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
             ),
-                      tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+            tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
             tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
             tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
             tags$br(),
@@ -8952,7 +8952,7 @@ server <- function(input, output, session) {
               tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                tags$br(),
+              tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
                 tags$br(),
@@ -9071,10 +9071,10 @@ server <- function(input, output, session) {
           label = "Additional information:",
           help_text = (
             tags$ul(
-                  tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
+              tags$li("CINO refers to children In need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
               tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
               tags$li("CLA refers to children looked after (excludes children who are in respite care in their most recent episode during the reporting year)."),
-                  tags$br(),
+              tags$br(),
               p(
                 "For more information on the data and definitions, please refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/outcomes-for-children-in-need-including-children-looked-after-by-local-authorities-in-england/data-guidance", "Outcomes for children in need, including children looked after data guidance.", target = "_blank"),
                 tags$br(),

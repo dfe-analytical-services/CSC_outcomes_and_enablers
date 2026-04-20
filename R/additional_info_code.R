@@ -70,7 +70,8 @@ additional_info_help_text <- list(
         a(href = "https://explore-education-statistics.service.gov.uk/methodology/pupil-absence-in-schools-in-england#section3-2", "3.2 Overall absence methodology.", target = "_blank"),
       ),
       tags$li(
-        "Due to the disruption caused by the impact of COVID during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. No absence data relating to the full 2019/20 academic year is available."),
+        "Due to the disruption caused by the impact of COVID during the 2020/21 and 2021/22 academic years, caution should be taken when comparing data to previous years. No absence data relating to the full 2019/20 academic year is available."
+      ),
       tags$li("CINO refers to children in need, excluding children on a child protection plan and children looked after. This includes children on child in need plans as well as other types of plan or arrangements. It also includes children awaiting a referral to be considered, an assessment to start or, for an assessment which has started, for the assessment to be completed."),
       tags$li("CPPO refers to children on a child protection plan, excluding children looked after."),
       tags$li("CLA refers to Children Looked After (excludes children who are in respite care in their most recent episode during the reporting year)."),
