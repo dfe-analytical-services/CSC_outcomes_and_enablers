@@ -704,7 +704,7 @@ read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_ne
 
 
 # Outcome 1 Outcomes absence data for child well being and development
-read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_six_half_terms_la.csv") {
+read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_la.csv") {
   print("- running read_outcomes_absence_data")
 
   # Notes: there is no removal of old LAs here

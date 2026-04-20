@@ -6,7 +6,7 @@ output:
     css: "report_styling.css"
 params:
   pipeline_comparison: !r NULL
-  pipeline_comparison_file: "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_adjust_metadata_step_1_v1.rds"
+  pipeline_comparison_file: "~/CSC shiny dashboard/Data QA/pipeline_comparison.rds"
   
 ---
 
@@ -31,7 +31,7 @@ options(reactable.compact = T,
         reactable.highlight = T)
 
 prepare_rt <- function(dt) {
-  print(rt)
+ # print(rt)
     col_names <- gsub("_", " ", names(dt))
     names(dt) <- stringi::stri_trans_totitle(col_names)
     dt
@@ -39,10 +39,10 @@ prepare_rt <- function(dt) {
 
 
 tick_or_cross = function(value) {
-  if (value == TRUE) {
+  if (isTRUE(value)) {
     # Green tick
     htmltools::tags$span("\u2714", style = "color: green; font-weight: bold;")
-  } else if (value == FALSE) {
+  } else if (isFALSE(value)) {
     # Red cross
     htmltools::tags$span("\u2718", style = "color: red; font-weight: bold;")
   } else {
