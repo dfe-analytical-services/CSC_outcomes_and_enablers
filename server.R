@@ -1847,7 +1847,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`
         ) %>%
-        arrange(desc(`Overall absence (%)`))
+        arrange(desc(`Overall absence (%)`), geo_breakdown)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -1856,7 +1856,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Overall absence (%)`
         ) %>%
-        arrange(desc(`Overall absence (%)`))
+        arrange(desc(`Overall absence (%)`), geo_breakdown)
     }
 
     data2 <- data %>%
@@ -2055,7 +2055,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(`Persistent absentees (%)`))
+        arrange(desc(`Persistent absentees (%)`), geo_breakdown)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -2064,7 +2064,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Persistent absentees (%)`
         ) %>%
-        arrange(desc(`Persistent absentees (%)`))
+        arrange(desc(`Persistent absentees (%)`), geo_breakdown)
     }
 
     data2 <- data %>%
@@ -2233,7 +2233,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Severe absentees (%)`
         ) %>%
-        arrange(desc(`Severe absentees (%)`))
+        arrange(desc(`Severe absentees (%)`), geo_breakdown)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_absence %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -2242,7 +2242,7 @@ server <- function(input, output, session) {
         select(
           time_period, geo_breakdown, social_care_group, school_type, `Total pupils`, `Severe absentees (%)`
         ) %>%
-        arrange(desc(`Severe absentees (%)`))
+        arrange(desc(`Severe absentees (%)`), geo_breakdown)
     }
 
     data2 <- data %>%
@@ -2516,7 +2516,7 @@ server <- function(input, output, session) {
           time_period, geo_breakdown, social_care_group,
           t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(`Expected standard reading writing maths (%)`))
+        arrange(desc(`Expected standard reading writing maths (%)`), geo_breakdown)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks2 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
@@ -2526,7 +2526,7 @@ server <- function(input, output, session) {
           time_period, geo_breakdown,
           social_care_group, t_rwm_eligible_pupils, `Expected standard reading writing maths (%)`
         ) %>%
-        arrange(desc(`Expected standard reading writing maths (%)`))
+        arrange(desc(`Expected standard reading writing maths (%)`), geo_breakdown)
     }
     data2 <- data %>%
       rename(`Time period` = `time_period`, `Local authority` = `geo_breakdown`, `Social care group` = `social_care_group`, `Total number of eligible pupils` = `t_rwm_eligible_pupils`, `Expected standard reading writing maths (%)` = `Expected standard reading writing maths (%)`)
@@ -2711,14 +2711,14 @@ server <- function(input, output, session) {
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
-        arrange(desc(`Average Attainment 8`))
+        arrange(desc(`Average Attainment 8`), geo_breakdown)
     } else if (input$select_geography_o1 %in% c("Local authority", "National")) {
       data <- outcomes_ks4 %>%
         filter(geographic_level == "Local authority", time_period == max(outcomes_absence$time_period)) %>%
         filter(social_care_group %in% input$attainment_extra_breakdown) %>%
         mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
         select(time_period, geo_breakdown, social_care_group, `Total pupils`, `Average Attainment 8`) %>%
-        arrange(desc(`Average Attainment 8`))
+        arrange(desc(`Average Attainment 8`), geo_breakdown)
     }
 
     data2 <- data %>%
