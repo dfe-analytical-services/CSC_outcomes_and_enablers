@@ -104,7 +104,7 @@ outcome2_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Section 47 enquiries which progressed to intial child protection conferences (ICPC)",
+                    title = "Proportion of intial child protection conferences (ICPC) to Section 47 (S47) enquiries",
                     value = htmlOutput("s47_ICPC_txt")
                   )
                 ),
@@ -141,27 +141,26 @@ outcome2_tab <- function() {
               ### S47 to ICPC ------------------------
               accordion(
                 accordion_panel(
-                  "Section 47 enquiries which progressed to intial child protection conferences (ICPC)",
+                  "Proportion of intial child protection conferences (ICPC) to section 47 (S47) enquiries",
                   gov_row(
-                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC)"),
-                    p("This measure looks at the proportion of ICPCs to section 47 enquiries."),
-                    insert_text(
+                    h2("Proportion of ICPCs to S47 enquiries"),
+                     insert_text(
                       inputId = "s47_ICPC_definition",
                       text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child.
                       If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days. <br><br>
-                      Conversion from a section 47 to an initial child protection conference can show that enquiries are needed and are being used proportionately and to good effect, identifying where significant harm is occurring so robust action can be taken to protect children."
+                      A higher proportion of ICPCs to S47 enquiries can show that enquiries are needed and are being used proportionately and to good effect, identifying where significant harm is occurring so robust action can be taken to protect children."
                     ),
                     # here is the call to the module to display timeseries chart, table and download button
                     timeseries_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC) by region"),
+                    h2("Proportion of ICPCs to S47 enquiries by region"),
                     br(),
                     # here is the call the  regional barchart ui
                     regional_barchart_section_ui("s47_to_ICPC")
                   ),
                   gov_row(
-                    h2("Section 47 enquiries which progressed to intial child protection conferences (ICPC) by local authority"),
+                    h2("Proportion of ICPCs to S47 enquiries by local authority"),
                     br(),
                     # this is th code to display the ui module for LA/SN section
                     la_and_sn_toggle_section_ui("s47_to_ICPC"),

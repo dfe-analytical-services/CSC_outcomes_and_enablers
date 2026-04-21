@@ -204,6 +204,7 @@ additional_info_help_text <- list(
   "s47_to_ICPC" =
     tags$ul(
       tags$li("Please note that an ICPC (initial child protection conference) held in a given reporting year may relate to a Section 47 enquiry that began in the previous year. Conversely, a Section 47 enquiry that began in a given reporting year may have an associated ICPC in the following year. Additionally, when children on protection plans transfer between local authorities, an ICPC recorded at the new authority should not have a corresponding Section 47 recorded there (unless a subsequent Section 47 is carried out at the new authority). These points should be considered when interpreting this metric."),
+      tags$br(),
       p(
         "For more information on the data and definitions, refer to the", a(href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-in-need/2025/data-guidance", "Children in need data guidance.", target = "_blank"),
         tags$br(),
