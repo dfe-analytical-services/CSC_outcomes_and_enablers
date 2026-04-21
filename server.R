@@ -8739,7 +8739,9 @@ server <- function(input, output, session) {
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Persistent absentees (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Persistent Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"),
+        `Total pupils` = colDef(name = "Total number of pupils", cell = cellfunc),
+        `Persistent Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -8916,7 +8918,7 @@ server <- function(input, output, session) {
       stats_neighbours_table(filtered_data, input$geographic_breakdown_o1, input$select_geography_o1, selectedcolumn = c("social_care_group", "school_type", "Total pupils"), yvalue = "Severe absentees (%)"),
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils"), `Severe Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
+        `social_care_group` = colDef(name = "Social care group"), `school_type` = colDef(name = "School type"), `Total pupils` = colDef(name = "Total number of pupils", cell = cellfunc), `Severe Absentees (%)` = colDef(cell = cellfunc_decimal_percent, defaultSortOrder = "desc")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
