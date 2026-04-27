@@ -78,7 +78,7 @@ create_qa_dataset_sn <- function(output_identifier, dataset_calc, sn_long, csv_f
 
   # now prepare the output
   output_list <- list("raw_qa_1" = raw_qa_1, "calculated_qa" = dataset_calc_qa, "combined_qa_dataset" = merged)
-  excel_file <- paste0("C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/SN QA Datasets/SN_supporting_data ", output_identifier, ".xlsx")
+  excel_file <- paste0("C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/SN QA Datasets/SN_supporting_data ", output_identifier, ".xlsx")
 
   if (write_data == TRUE) writexl::write_xlsx(output_list, excel_file)
 
