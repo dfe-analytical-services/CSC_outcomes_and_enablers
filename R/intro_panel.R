@@ -72,7 +72,7 @@ introductionPanel <- function() {
                   h4("Children and young people are safe in and outside of their home"),
                   h5("Child safety - general"),
                   tags$ul(
-                    tags$li("Proportion of ICPC to S47"),
+                    tags$li("Proportion of ICPCs to Section 47 enquiries"),
                     tags$li("% of child protection plans starting during year which were a second or subsequent plan"),
                     tags$li("% of child protection plans longer than 2 years"),
                     tags$li("Hospital admissions caused by unintentional and deliberate injuries to children and young people per 10K (0-14 years)"),
