@@ -144,7 +144,7 @@ outcome2_tab <- function() {
                   "Proportion of intial child protection conferences (ICPC) to section 47 (S47) enquiries",
                   gov_row(
                     h2("Proportion of ICPCs to S47 enquiries"),
-                     insert_text(
+                    insert_text(
                       inputId = "s47_ICPC_definition",
                       text = "If a local authority identifies there is reasonable cause to suspect the child is suffering, or is likely to suffer significant harm, it will carry out an assessment under section 47 of the Children Act 1989 to determine if it needs to take steps to safeguard and promote the welfare of the child.
                       If concerns are substantiated and the child is judged to be at continuing risk of harm then an initial child protection conference (ICPC) should be convened within 15 working days. <br><br>

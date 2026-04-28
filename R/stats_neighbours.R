@@ -55,7 +55,6 @@ sn_aggregations <- function(sn_long,
 }
 
 
-
 ## Examples need to move to testing
 # TESTS: putting it all together
 test_sn <- function(sn_long,

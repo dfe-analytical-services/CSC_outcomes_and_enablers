@@ -194,7 +194,6 @@ la_and_sn_toggle_section_server <- function(id,
     })
 
 
-
     output$table_sn_toggle <- renderReactable({
       req(filtered_data_sn(), nrow(filtered_data_sn()) > 0)
 

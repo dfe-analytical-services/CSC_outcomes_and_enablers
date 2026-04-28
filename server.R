@@ -211,7 +211,6 @@ server <- function(input, output, session) {
   sp_domain_server(id = "Social worker ethnicity", rv_summary_page)
 
 
-
   # Outcome 1 -----
 
   ## ==== Geographic reactive values and a way to update them =====
@@ -343,7 +342,6 @@ server <- function(input, output, session) {
     filter(geographic_level == "National", school_type == "Total", social_care_group == "CINO at 31 March") %>%
     mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
     pull(time_period)
-
 
 
   output$outcome1_time_period_text <- renderText({
@@ -2000,7 +1998,6 @@ server <- function(input, output, session) {
   })
 
 
-
   # persistent absence by la
   output$plot_persistent_absence_la <- plotly::renderPlotly({
     shiny::validate(
@@ -2176,7 +2173,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
 
 
   # Severe absence by la
@@ -2807,8 +2803,6 @@ server <- function(input, output, session) {
   )
 
 
-
-
   # Outcome three -----
   # Geographic breakdown outcome three (list of either LA names or Region names)
   observeEvent(eventExpr = {
@@ -3085,7 +3079,6 @@ server <- function(input, output, session) {
   })
 
 
-
   ## CAO ----
   ### CAO time series plot ----
   output$CAO_time_series <- plotly::renderPlotly({
@@ -3316,7 +3309,6 @@ server <- function(input, output, session) {
     rv_outcome_2$check_compare_regional <- input$region_comparison_checkbox_o2
     rv_outcome_2$check_compare_sn <- input$sn_comparison_checkbox_o2
   }) # bindEvent(list(input$geographic_breakdown_o2,input$select_geography_o2))
-
 
 
   # outcome 3 confirmation text
@@ -4801,7 +4793,6 @@ server <- function(input, output, session) {
   })
 
 
-
   ## Placement changes ----
   #### Placement changes Time series chart ----
   output$placement_changes_ts_plot <- renderPlotly({
@@ -5537,8 +5528,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
-
 
 
   ## Care leavers ---------
@@ -6651,10 +6640,6 @@ server <- function(input, output, session) {
   })
 
 
-
-
-
-
   ###### Confirmation sentence E3
   # This function gets the selected region to put into the confirmation text below
   workforce_region_e3 <- reactive({
@@ -7514,8 +7499,6 @@ server <- function(input, output, session) {
   ### Social Worker stability domain (new indicator) ----
 
 
-
-
   # Additional filters for this indicator - this is actually not reactive so could perhaps be implemented differently.  Sometimes dimensional filters are reactive and sometimes not
   rv_sw_stability <- reactiveValues(
     dimensional_filters = list(
@@ -7574,7 +7557,6 @@ server <- function(input, output, session) {
     ),
     decimal_percentage = FALSE
   )
-
 
 
   ## Ethnicity and Diversity Domain-----
@@ -7839,9 +7821,6 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
-
-
-
 
 
   # cla stats neighbour tables
@@ -8924,8 +8903,6 @@ server <- function(input, output, session) {
   })
 
 
-
-
   ### KS2 attainment -------
   output$SN_ks2_attainment <- renderUI({
     if (input$ks2_attainment_stats_toggle == "All local authorities") {
@@ -9786,8 +9763,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
-
 
 
   ### Child abuse/Neglect ------
@@ -11108,7 +11083,6 @@ server <- function(input, output, session) {
   })
 
 
-
   # Enabler 2 ----
   ### Ofsted leadership rating --------
   output$ofsted_rating_SN_ui <- renderUI({
@@ -11145,7 +11119,6 @@ server <- function(input, output, session) {
       )
     )
   })
-
 
 
   output$ofsted_SN_plot <- plotly::renderPlotly({
@@ -11520,14 +11493,6 @@ server <- function(input, output, session) {
     ),
     decimal_percentage = FALSE
   )
-
-
-
-
-
-
-
-
 
 
   # Don't touch the code below -----------------------

@@ -52,7 +52,6 @@ filter_time_series_data <- function(dataset_in,
 }
 
 
-
 # Function designed to produce a filtered dataset for the LA View chart and table
 
 filter_la_toggle_dataset <- function(dataset_in,
@@ -91,7 +90,6 @@ filter_la_toggle_dataset <- function(dataset_in,
     dataset[geographic_level == "Local authority" & geo_breakdown %in% location & time_period == select_time_period]
   }
 }
-
 
 
 filter_sn_toggle_dataset <- function(dataset_in,
@@ -133,7 +131,6 @@ stat_neighbours_for_la <- function(selected_geo_breakdown) {
 }
 
 
-
 AndIN <- function(cond) {
   Reduce(
     function(x, y) call("&", call("(", x), call("(", y)),
@@ -156,12 +153,7 @@ AndISNA <- function(cond) {
 }
 
 
-
-
-
-
 # ===== for the LA table
-
 
 
 #

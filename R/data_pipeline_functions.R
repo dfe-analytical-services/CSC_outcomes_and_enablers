@@ -243,7 +243,6 @@ pipeline_generate_datasets <- function() {
   combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
 
 
-
   ## Summary Data ----
   list2env(Filter(function(x) is(x, "data.frame"), mget(ls())), envir = .GlobalEnv)
   summary_data <- collect_summary_data_all()
@@ -405,11 +404,6 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
     csd_field_diffs <- list()
     summary_csd <- list()
   }
-
-
-
-
-
 
 
   # dataset_column_values_comparison$new[number_count > 0]

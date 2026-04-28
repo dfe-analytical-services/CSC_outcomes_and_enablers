@@ -1,7 +1,6 @@
 # Utility function for getting the additional info help_text from a database.
 
 
-
 # very simple accessor function to get the additional information for a section/indicator
 get_additional_info <- function(id) {
   add_info <- additional_info_help_text[[id]]
@@ -9,10 +8,6 @@ get_additional_info <- function(id) {
 
   return(add_info)
 }
-
-
-
-
 
 
 # this is the database of additional information

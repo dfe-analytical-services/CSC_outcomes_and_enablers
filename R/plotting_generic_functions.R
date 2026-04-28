@@ -280,7 +280,6 @@ by_la_bar_plot <- function(dataset, selected_geo_breakdown = NULL, selected_geo_
 }
 
 
-
 # By LA bar chart repeat function (Revised version) ----
 # This revised version will replace the legacy version of the function which is widely in use.  This version supports the modular implementation
 # of the LA Bar Chart, with distinction being the data filtering (the reactive dataset is pre-filtered to year and geographies)
@@ -406,7 +405,6 @@ by_la_bar_plot_revised <- function(dataset, selected_geo_lvl, selected_geo_break
 
   return(p2)
 }
-
 
 
 # By Region bar chart repeat function -----
@@ -616,7 +614,6 @@ statistical_neighbours_plot <- function(dataset,
     )
   }
 }
-
 
 
 # Statistical Neighbours function (Revised version) ----

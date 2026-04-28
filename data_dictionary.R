@@ -1,7 +1,6 @@
 library(data.table)
 
 
-
 # first step is to identify the data frames
 
 analyse_data_frames <- function(reload_all = FALSE) {
@@ -38,9 +37,6 @@ get_csv_files <- function() {
 get_csv_files()
 
 # load the data dictionary
-
-
-
 
 
 # match input files to data.frames, and the functions which get the data

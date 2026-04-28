@@ -57,7 +57,6 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
 
-
   # Note that it is possible to rerun the pipeline WITHOUT generating the new datasets by running all of the read data functions.
   # This requires an existing set of datasets to be fed in for datasets_new
   # this is a useful way of doing a comparison between two batches of datasets, or the current datasets in memory to identify the differences
@@ -65,9 +64,6 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION )
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-
-
-
 
 
   ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ----
@@ -103,7 +99,6 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
-
 
 
   ## 7. verify the update parameters ----
