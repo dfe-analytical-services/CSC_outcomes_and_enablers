@@ -1410,7 +1410,7 @@ outcome1_tab <- function() {
                           help_text = (
                             tags$ul(
                               tags$li(
-                                "Figures for 2024/25 are based on provisional data. Figures for other years are based on final data."
+                                "Figures for 2024/25 are based on provisional data."
                               ),
                               tags$li(
                                 "Includes all state-funded, alternative provision, and non-maintained special schools with pupils eligible for assessment at Key Stage 2.
