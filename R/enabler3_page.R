@@ -297,7 +297,6 @@ enabler3_tab <- function() {
                           csvDownloadButton("table_vacancy_rate", filename = "vacancy_rates.csv"),
                           reactableOutput("table_vacancy_rate")
                         ))
-
                       )
                     ),
                     details(

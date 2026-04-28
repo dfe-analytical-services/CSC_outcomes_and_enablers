@@ -297,7 +297,6 @@ collect_summary_data_all <- function() {
 }
 
 
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Outcome 1 -------------------
 # CLA rate per 10k children data
@@ -702,7 +701,6 @@ read_cin_referral_data <- function(sn_long, file = "./data-raw/c1_children_in_ne
 }
 
 
-
 # Outcome 1 Outcomes absence data for child well being and development
 read_outcomes_absence_data <- function(sn_long, file = "./data-raw/absence_la.csv") {
   print("- running read_outcomes_absence_data")
@@ -807,10 +805,8 @@ read_outcomes_ks2_data <- function(sn_long, file = "./data-raw/ks2_la.csv") {
   # redacted_to_negative(col_old = "t_rwm_eligible_pupils", col_new = "?")
 
 
-
   return(outcomes_ks2_data)
 }
-
 
 
 # Outcome 1 Outcomes KS4 data for education attainment
@@ -880,8 +876,6 @@ read_school_stability_data <- function(sn_long, file = "./data-raw/la_cla_school
 
   return(sch_stability_data)
 }
-
-
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1196,7 +1190,6 @@ read_a_and_e_data <- function(sn_long, la_file = "./data-raw/la_hospital_admissi
 }
 
 
-
 ## Child abuse/Neglect / Harms outside the home ----
 ### Assessment Factors ------
 read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv") {
@@ -1285,7 +1278,6 @@ read_assessment_factors <- function(sn_long, file = "./data-raw/c3_factors_ident
 
   return(ass_fac_data)
 }
-
 
 
 # Outcome 4 -----
@@ -1542,14 +1534,6 @@ read_placement_order_match_data <- function(file = "./data-raw/national_cla_adop
 }
 
 
-
-
-
-
-
-
-
-
 # Enabler 2 -----------------
 
 # For filters to work nicely, we want to have two levels of grouping: geographic level (national, regional, LA)
@@ -1693,7 +1677,6 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
   workforce_ethnicity_data <- rbindlist(list(workforce_ethnicity_data, non_white_data))
 
 
-
   # add stat neighbours
 
   workforce_ethnicity_data[, old_la_code := as.numeric(old_la_code)]
@@ -1715,7 +1698,6 @@ read_workforce_eth_data <- function(sn_long, file = "./data-raw/csww_role_by_cha
 
   return(final_dataset)
 }
-
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -1803,7 +1785,6 @@ read_workforce_eth_seniority_data <- function(file = "./data-raw/csww_role_by_ch
 
   return(workforce_ethnicity_seniority_data)
 }
-
 
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -2476,4 +2457,59 @@ pivot_ofsted_data <- function(ofsted_leadership_data) {
     )
 
   return(ofsted_leadership_data_long)
+}
+
+
+# S47 conversion to ICPC (new indicator)
+read_s47_to_ICPC_data <- function(sn_long, file = "./data-raw/c4_children_in_need_section_47s_and_icpcs_2013_to_2025.csv") {
+  # load the file into a data.table
+  s47_to_ICPC_data <- fread(file)
+
+  # preliminary cleaning
+  s47_to_ICPC_data <- s47_to_ICPC_data %>%
+    colClean() %>%
+    filter(time_period >= 2014) %>%
+    insert_geo_breakdown() %>%
+    remove_cumbria_data() %>%
+    redacted_to_negative(col_old = "ICPC", col_new = "ICPC num") %>%
+    redacted_to_negative(col_old = "Section47", col_new = "s47 num")
+
+  # calculate percentage
+  s47_to_ICPC_data <- s47_to_ICPC_data %>%
+    mutate(percentage = as.character((as.numeric(ICPC) / as.numeric(Section47) * 100))) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 1))
+
+  # calculate stat neighbours
+  sn_metrics <- sn_aggregations(
+    sn_long = sn_long,
+    dataset = s47_to_ICPC_data,
+    median_cols = c("percentage"),
+    sum_cols = c(),
+    group_cols = c("LA.number", "time_period")
+  )
+
+  s47_to_ICPC_data <- rbindlist(l = list(s47_to_ICPC_data, sn_metrics), fill = TRUE, use.names = TRUE) %>%
+    mutate(percentage = sapply(percentage, decimal_rounding, 1)) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+
+
+  s47_to_ICPC_data <- s47_to_ICPC_data %>%
+    mutate(percentage = case_when(
+      ICPC == "c" ~ "c",
+      ICPC == "low" ~ "low",
+      ICPC == "k" ~ "k",
+      ICPC == "u" ~ "u",
+      ICPC == "x" ~ "x",
+      ICPC == "z" ~ "z",
+      Section47 == "c" ~ "c",
+      Section47 == "low" ~ "low",
+      Section47 == "k" ~ "k",
+      Section47 == "u" ~ "u",
+      Section47 == "x" ~ "x",
+      Section47 == "z" ~ "z",
+      TRUE ~ as.character(percentage)
+    )) %>%
+    redacted_to_negative(col_old = "percentage", col_new = "percent")
+
+  return(s47_to_ICPC_data)
 }

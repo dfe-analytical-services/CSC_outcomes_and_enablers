@@ -187,6 +187,7 @@ pipeline_generate_datasets <- function() {
   workforce_data <- suppressWarnings(read_workforce_data(sn_long = stats_neighbours_long))
   workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
   location_data <- GET_location(cla_placements) # fact table linking LA to its region
+  location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(sn_long = stats_neighbours_long))
@@ -221,7 +222,9 @@ pipeline_generate_datasets <- function() {
   ## Read in outcome 3 data ----
   ceased_cla_data <- suppressWarnings(read_outcome2(sn_long = stats_neighbours_long))
 
+
   ## Read in outcome 2 data ----
+  s47_to_ICPC_data <- suppressWarnings(read_s47_to_ICPC_data(sn_long = stats_neighbours_long)) # new metric
   repeat_cpp <- suppressWarnings(read_cpp_in_year_data(sn_long = stats_neighbours_long))
   duration_cpp <- suppressWarnings(read_cpp_by_duration_data(sn_long = stats_neighbours_long))
   assessment_factors <- suppressWarnings(read_assessment_factors(sn_long = stats_neighbours_long))
@@ -238,7 +241,6 @@ pipeline_generate_datasets <- function() {
   ## combined dataframes (move to the end to avoid a double read)
   combined_cla_data <- suppressWarnings(merge_cla_dataframes(sn_long = stats_neighbours_long))
   combined_cla_31_march_data <- suppressWarnings(merge_cla_31_march_dataframes(sn_long = stats_neighbours_long))
-
 
 
   ## Summary Data ----
@@ -404,11 +406,6 @@ pipeline_compare_datasets <- function(meta_rds, meta_new, datasets_rds, datasets
   }
 
 
-
-
-
-
-
   # dataset_column_values_comparison$new[number_count > 0]
   return(list(
     "dataset_comparison_summary" = dataset_comparison_summary,
@@ -535,4 +532,32 @@ pipeline_dataset_metadata <- function(datasets_list) {
     "dataset_nrow" = dataset_nrow,
     "dataset_columns" = dataset_columns
   ))
+}
+
+# helper function to get a table of the pipeline_history.rds key fields
+get_pipeline_history <- function(history_file = "./data/pipeline/data_pipeline_run_history.rds") {
+  history_list <- readRDS(file = history_file)
+  data.table::rbindlist(
+    lapply(
+      1:length(history_list),
+      function(x, history_list) {
+        # browser()
+        list(
+          "pipeline_run_id" = history_list[[x]]$pipeline_run_id,
+          "username" = history_list[[x]]$parameters$username,
+          "run_datetime" = history_list[[x]]$parameters$run_datetime,
+          "reason_for_pipeline_run" = history_list[[x]]$parameters$reason_for_pipeline_run,
+          "comparison_checked" = history_list[[x]]$parameters$comparison_checked
+        )
+      },
+      history_list = history_list
+    )
+  )
+}
+
+consolidate_pipeline_history <- function() {
+  # https://github.com/dfe-analytical-services/CSC_outcomes_and_enablers/blob/347feaf738945a460b1585fa3fbada457262733b/data/pipeline/data_pipeline_run_history.rds
+  this_proj <- get_pipeline_history()
+  other_history_path <- paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data_pipeline_run_history.rds")
+  other_commit <- get_pipeline_history(other_history_path)
 }
