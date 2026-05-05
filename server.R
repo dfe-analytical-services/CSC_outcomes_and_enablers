@@ -211,7 +211,6 @@ server <- function(input, output, session) {
   sp_domain_server(id = "Social worker ethnicity", rv_summary_page)
 
 
-
   # Outcome 1 -----
 
   ## ==== Geographic reactive values and a way to update them =====
@@ -343,7 +342,6 @@ server <- function(input, output, session) {
     filter(geographic_level == "National", school_type == "Total", social_care_group == "CINO at 31 March") %>%
     mutate(time_period = paste0(substr(time_period, 1, 4), "/", substr(time_period, 5, nchar(time_period)))) %>%
     pull(time_period)
-
 
 
   output$outcome1_time_period_text <- renderText({
@@ -2000,7 +1998,6 @@ server <- function(input, output, session) {
   })
 
 
-
   # persistent absence by la
   output$plot_persistent_absence_la <- plotly::renderPlotly({
     shiny::validate(
@@ -2176,7 +2173,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
 
 
   # Severe absence by la
@@ -2807,8 +2803,6 @@ server <- function(input, output, session) {
   )
 
 
-
-
   # Outcome three -----
   # Geographic breakdown outcome three (list of either LA names or Region names)
   observeEvent(eventExpr = {
@@ -3085,7 +3079,6 @@ server <- function(input, output, session) {
   })
 
 
-
   ## CAO ----
   ### CAO time series plot ----
   output$CAO_time_series <- plotly::renderPlotly({
@@ -3297,8 +3290,8 @@ server <- function(input, output, session) {
     )
   })
 
-  # reactive values object to hold the geo selections for Outcome 3 page
-  rv_outcome_3 <- reactiveValues(
+  # reactive values object to hold the geo selections for Outcome 2 page
+  rv_outcome_2 <- reactiveValues(
     select_geographic_level = NULL,
     select_geo_breakdown = NULL,
     check_compare_national = NULL,
@@ -3310,13 +3303,12 @@ server <- function(input, output, session) {
     input$select_geography_o2, input$geographic_breakdown_o2, input$national_comparison_checkbox_o2, input$region_comparison_checkbox_o2, input$sn_comparison_checkbox_o2
   ), {
     req(input$select_geography_o2, input$geographic_breakdown_o2)
-    rv_outcome_3$select_geographic_level <- input$select_geography_o2
-    rv_outcome_3$select_geo_breakdown <- input$geographic_breakdown_o2
-    rv_outcome_3$check_compare_national <- input$national_comparison_checkbox_o2
-    rv_outcome_3$check_compare_regional <- input$region_comparison_checkbox_o2
-    rv_outcome_3$check_compare_sn <- input$sn_comparison_checkbox_o2
+    rv_outcome_2$select_geographic_level <- input$select_geography_o2
+    rv_outcome_2$select_geo_breakdown <- input$geographic_breakdown_o2
+    rv_outcome_2$check_compare_national <- input$national_comparison_checkbox_o2
+    rv_outcome_2$check_compare_regional <- input$region_comparison_checkbox_o2
+    rv_outcome_2$check_compare_sn <- input$sn_comparison_checkbox_o2
   }) # bindEvent(list(input$geographic_breakdown_o2,input$select_geography_o2))
-
 
 
   # outcome 3 confirmation text
@@ -3771,7 +3763,7 @@ server <- function(input, output, session) {
 
   timeseries_section_server(
     id = "hospital_admissions",
-    rv_geo_filters = rv_outcome_3,
+    rv_geo_filters = rv_outcome_2,
     rv_dimensional_filters = rv_hosp_admissions,
     dataset = copy(hospital_admissions),
     chart_title = "Hospital admissions rate per 10,000 children",
@@ -4801,7 +4793,6 @@ server <- function(input, output, session) {
   })
 
 
-
   ## Placement changes ----
   #### Placement changes Time series chart ----
   output$placement_changes_ts_plot <- renderPlotly({
@@ -5537,8 +5528,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
-
 
 
   ## Care leavers ---------
@@ -6651,10 +6640,6 @@ server <- function(input, output, session) {
   })
 
 
-
-
-
-
   ###### Confirmation sentence E3
   # This function gets the selected region to put into the confirmation text below
   workforce_region_e3 <- reactive({
@@ -7514,8 +7499,6 @@ server <- function(input, output, session) {
   ### Social Worker stability domain (new indicator) ----
 
 
-
-
   # Additional filters for this indicator - this is actually not reactive so could perhaps be implemented differently.  Sometimes dimensional filters are reactive and sometimes not
   rv_sw_stability <- reactiveValues(
     dimensional_filters = list(
@@ -7574,7 +7557,6 @@ server <- function(input, output, session) {
     ),
     decimal_percentage = FALSE
   )
-
 
 
   ## Ethnicity and Diversity Domain-----
@@ -7839,9 +7821,6 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
   })
-
-
-
 
 
   # cla stats neighbour tables
@@ -8926,8 +8905,6 @@ server <- function(input, output, session) {
   })
 
 
-
-
   ### KS2 attainment -------
   output$SN_ks2_attainment <- renderUI({
     if (input$ks2_attainment_stats_toggle == "All local authorities") {
@@ -8952,7 +8929,7 @@ server <- function(input, output, session) {
           help_text = (
             tags$ul(
               tags$li(
-                "Figures for 2024/25 are based on provisional data. Figures for other years are based on final data."
+                "Figures for 2024/25 are based on provisional data."
               ),
               tags$li(
                 "Includes all state-funded, alternative provision, and non-maintained special schools with pupils eligible for assessment at Key Stage 2.
@@ -9788,8 +9765,6 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
-
-
 
 
   ### Child abuse/Neglect ------
@@ -11110,7 +11085,6 @@ server <- function(input, output, session) {
   })
 
 
-
   # Enabler 2 ----
   ### Ofsted leadership rating --------
   output$ofsted_rating_SN_ui <- renderUI({
@@ -11147,7 +11121,6 @@ server <- function(input, output, session) {
       )
     )
   })
-
 
 
   output$ofsted_SN_plot <- plotly::renderPlotly({
@@ -11455,6 +11428,73 @@ server <- function(input, output, session) {
       searchable = TRUE,
     )
   })
+
+
+  # s47 headline box
+  output$s47_ICPC_txt <- renderText({
+    stat <- format(s47_to_ICPC_data %>%
+      filter(time_period == max(s47_to_ICPC_data$time_period) & geo_breakdown %in% input$geographic_breakdown_o2) %>%
+      select(percentage), nsmall = 1)
+
+    if (input$geographic_breakdown_o2 == "" || nrow(stat) == 0) {
+      stat <- "NA"
+    }
+
+    paste0(
+      stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max(repeat_cpp$time_period), ")", "</p>"
+    )
+  })
+
+  ### S47 chart + table : module
+  timeseries_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_2,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to S47 enquiries (%)",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to S47 enquiries (%)",
+    max_rate = calculate_max_rate(s47_to_ICPC_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num", "Number of ICPCs" = "ICPC num", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+
+  # Regional barchart for S47
+  regional_barchart_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_2,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to S47 enquiries (%)",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to S47 enquiries (%)",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num", "Number of ICPCs" = "ICPC num", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
+
+
+  la_and_sn_toggle_section_server(
+    id = "s47_to_ICPC",
+    rv_geo_filters = rv_outcome_2,
+    rv_dimensional_filters = list(),
+    dataset = copy(s47_to_ICPC_data),
+    chart_title = "Proportion of ICPCs to S47 enquiries (%)",
+    yvalue = "percent",
+    yaxis_title = "ICPCs to S47 enquiries (%))",
+    max_rate = calculate_max_rate(school_stability_data, "percent"),
+    rt_columns = list("Time period" = "time_period", "Location" = "geo_breakdown", "Number of Section47s" = "s47 num", "Number of ICPCs" = "ICPC num", "Percent" = "percent"),
+    rt_col_defs = list(
+      "Percent" = colDef(cell = cellfunc), "Number of Section47s" = colDef(cell = cellfunc), "Number of ICPCs" = colDef(cell = cellfunc)
+    ),
+    decimal_percentage = FALSE
+  )
 
 
   # Don't touch the code below -----------------------

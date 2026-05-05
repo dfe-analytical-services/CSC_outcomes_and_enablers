@@ -20,12 +20,9 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   shhh(library(data.table, pos = 3))
 
   ## 2. Set Common parameters ----
+
   YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
   TASK_NAME <- "outcomes_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
-
-
-
-
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
   pipeline_prelim <- get_pipeline_prelim(
@@ -50,8 +47,8 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
   ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
-  PIPELINE_RUN_VERSION <- "v5a"
 
+  PIPELINE_RUN_VERSION <- "v5a"
 
   pipeline_run <- run_data_pipeline_step_1(
     datasets_new = NULL, datasets_rds = NULL,
@@ -60,17 +57,13 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
   )
 
 
-
   # Note that it is possible to rerun the pipeline WITHOUT generating the new datasets by running all of the read data functions.
   # This requires an existing set of datasets to be fed in for datasets_new
   # this is a useful way of doing a comparison between two batches of datasets, or the current datasets in memory to identify the differences
   # pipeline_run <- run_data_pipeline_step_1(datasets_new = read_environment_datasets(), save_comparison = TRUE, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION)
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_read_rds("./data/"), datasets_rds = pipeline_read_rds(rds_file_path = "C:/Users/mweller1/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/cla_2025/data-comparisons/rds_2024/"))
-
+  # pr <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION )
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
-
-
-
 
 
   ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ----
@@ -90,23 +83,22 @@ if (TRUE == FALSE) { # this IF statement is to prevent the following block of co
 
 
   # more indepth analysis of the diffs
-  names(pipeline_run$pipeline_comparison$consolidated_field_diffs)
 
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$s47_to_ICPC_data[] # !(variable_clean %in% c("Count", "Denominator"))]
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
   pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la[!(variable_clean %in% c("avg_att8", "t_pupils"))]
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la # [!(variable_clean %in% c("Count", "Denominator"))]
-
-  pipeline_run$pipeline_comparison$consolidated_field_diffs
-
-
+  names(pipeline_run$pipeline_comparison$consolidated_setdiffs)
+  pipeline_run$pipeline_comparison$consolidated_setdiffs$s47_to_ICPC_data
+  pipeline_run$pipeline_comparison$dataset_setdiffs$s47_to_ICPC_data
 
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
+
   reason_for_pipeline_run <- "Update outcomes data" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
-
 
 
   ## 7. verify the update parameters ----

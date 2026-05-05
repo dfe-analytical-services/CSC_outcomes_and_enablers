@@ -144,9 +144,10 @@ placement_type_filter <- placement_data %>%
 # Download button --------------------
 # Function to create a download button for reactable
 csvDownloadButton <- function(
-    id,
-    filename = "data.csv",
-    label = "Download as CSV") {
+  id,
+  filename = "data.csv",
+  label = "Download as CSV"
+) {
   gov_row(
     tags$button(
       tagList(icon("download"), label),

@@ -4795,7 +4795,8 @@
       "checksum": "74d3a64f52848d5e8db631b1685e58c8"
     },
     ".idea/workspace.xml": {
-      "checksum": "45e94189c183b441695e529eb7262900"
+
+      "checksum": "e3df68cc53a072ad5e0338cfbca4e16b"
     },
     ".Rbuildignore": {
       "checksum": "e0f8a1296c3fc1a66d88d6586b6ba674"
@@ -4804,7 +4805,7 @@
       "checksum": "e0120ecd6121b1fa2e6db868611357d3"
     },
     ".Rprofile": {
-      "checksum": "9f3fd7e5cb57eecc8cf067c254539b05"
+      "checksum": "577aac0b77a768901931d580469b9ea9"
     },
     "CODE_OF_CONDUCT.md": {
       "checksum": "7dcf9b0b5bac78fc7d7fe45f8c5102b1"
@@ -4820,6 +4821,9 @@
     },
     "data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv": {
       "checksum": "0ab8ddd8c086c8326b2edcbc6adeea59"
+    },
+    "data-raw/c4_children_in_need_section_47s_and_icpcs_2013_to_2025.csv": {
+      "checksum": "c40274a8772fd0d77ea429020bd6c0b3"
     },
     "data-raw/Childrens_social_care_in_England_2023_underlying_data.ods": {
       "checksum": "c0cdf640933cc06093d91a171f55e847"
@@ -4984,7 +4988,9 @@
       "checksum": "159d9715e7049d0c148efb4a8af2b40c"
     },
     "data/pipeline/data_pipeline_run_history.rds": {
-      "checksum": "78b6c517031fadcdc20ba214723f0418"
+
+      "checksum": "6f2068201f7659b05817360eae97e6a9"
+
     },
     "data/placement_changes_data.rds": {
       "checksum": "60584d61282b6ddd1ec655065e0e7c9e"
@@ -5000,6 +5006,9 @@
     },
     "data/repeat_cpp.rds": {
       "checksum": "a1e5c58d7bc5e514b5c173f58fc926cb"
+    },
+    "data/s47_to_ICPC_data.rds": {
+      "checksum": "bff174f6d3164b2afb4d422f4e9e3530"
     },
     "data/school_stability_data.rds": {
       "checksum": "bec99b8d69e4cf491a9e682051fa324b"
@@ -5020,10 +5029,10 @@
       "checksum": "d022094fbaa0853caea19c5bd08506bf"
     },
     "data/summary_data.rds": {
-      "checksum": "41c8812e45ae6b00192a2eb377d00ca2"
+      "checksum": "a8dc3f28a5ca6ea40980847d164684c4"
     },
     "data/summary_page_metadata.csv": {
-      "checksum": "91c275de2db333e677355a829670a669"
+      "checksum": "459c067286427d0bea016162c44bb0da"
     },
     "data/sw_stability_data.rds": {
       "checksum": "45de448f11e30602ece6bba702087cfb"
@@ -5038,7 +5047,9 @@
       "checksum": "33e79c86a6c1882842a274133a4bf2be"
     },
     "data/workforce_eth_seniority.rds": {
-      "checksum": "3f4f37510bb0d58fb38ae4c156859016"
+
+      "checksum": "bf467fc12a82d7b090b589ae618b4593"
+
     },
     "data/workforce_headline_measures.rds": {
       "checksum": "35e37d10fc397399c915c0d1cc5ad3db"
@@ -5047,7 +5058,7 @@
       "checksum": "de357eec2091ab2c8fd2ad952a6595fc"
     },
     "datafiles_log.csv": {
-      "checksum": "e07f618243de1744ff635abdbff3972c"
+      "checksum": "76f3b30f7f610e7e4d3da35502792f42"
     },
     "deploy-parameters.yaml": {
       "checksum": "67db32151fac20b5286b6d06bb3e8fc7"
@@ -5064,14 +5075,8 @@
     "google-analytics.html": {
       "checksum": "71098590292f48586de15459779ac8f0"
     },
-    "inst/pipeline_diagnostics.html": {
-      "checksum": "7b587961c7da29917d4f8314cf24e1d4"
-    },
     "inst/pipeline_diagnostics.Rmd": {
       "checksum": "ac74c0370352a5dded5988d22f031c39"
-    },
-    "inst/pipeline_prelim.html": {
-      "checksum": "0756a8382e2d2a6c03887aeddeaa54b2"
     },
     "inst/pipeline_prelim.Rmd": {
       "checksum": "99895a2ee3e34b6d3f87e6a27e293d20"
@@ -5089,16 +5094,18 @@
       "checksum": "33bce00050768810c97392bb0bb418da"
     },
     "R/additional_info_code.R": {
-      "checksum": "b7ef4128940a917ebd37bf0d4ee2e367"
+      "checksum": "eaf1520237a0ce5cf71f7e4ad1cb9840"
     },
     "R/data_filtering.R": {
       "checksum": "e9eac3ce250cb534345ddf4af55b98fe"
     },
     "R/data_pipeline_functions.R": {
-      "checksum": "e6c8699fe853aa574a81a2838fa301a7"
+
+      "checksum": "a792145fc0bfcd0c61e3c3942cbf225c"
     },
     "R/data_pipeline_run.R": {
-      "checksum": "c40daea89d89d85719f8a32d4266bea9"
+      "checksum": "1cc09efa9e4aee09aa7cae288c5cfe8c"
+
     },
     "R/data_sources.R": {
       "checksum": "164cd1251dda8d6f7be3a38e28ee54ec"
@@ -5122,7 +5129,7 @@
       "checksum": "a8a2e2c1f97cdc12c3840e961846617c"
     },
     "R/intro_panel.R": {
-      "checksum": "05112157420ad6225117721246636bf1"
+      "checksum": "7cea07b99e9e40ee496867976485dead"
     },
     "R/mod_la_and_sn_toggle_section.R": {
       "checksum": "4cb351e8c15618348a7548a966d1cd13"
@@ -5143,7 +5150,7 @@
       "checksum": "61ce5cf1eb3f34046b47b516b2dc80d7"
     },
     "R/outcome2_page.R": {
-      "checksum": "d913ea174b98867714b1d63c64fccd80"
+      "checksum": "4b97526dd70414406c13e4545728ceb1"
     },
     "R/outcome3_page.R": {
       "checksum": "61d36960582700a2dea4696f3bd0b841"
@@ -5158,7 +5165,9 @@
       "checksum": "6f7b48e13125b2071eff10b403e673ab"
     },
     "R/read_data.R": {
-      "checksum": "44e72de3ddb6388f6e7fcb48b4b318a3"
+
+      "checksum": "552f3aa2073d980025d599e77c84e1de"
+
     },
     "R/rendering_functions.R": {
       "checksum": "d2f4387b3b0ffb9f53106136d48a10fb"
@@ -5194,7 +5203,9 @@
       "checksum": "a4d515215fb54264ed7d454f32ec0ab1"
     },
     "server.R": {
-      "checksum": "5a62089ccf158ac2555f33245e3feae3"
+
+      "checksum": "d8eac03eddc026da544d0f90c00c4e57"
+
     },
     "tests/profvis/profvis_output_example.Rprofvis": {
       "checksum": "dbdef7689b6abf6badea68c19d5be303"
@@ -5272,7 +5283,7 @@
       "checksum": "54729b72548afe97abe55810167ac7bb"
     },
     "ui.R": {
-      "checksum": "85cb8b7aed33967d13002d129b3344b5"
+      "checksum": "cf5d87fb4f54ed281dfa7da008808da9"
     },
     "www/cookie-consent.js": {
       "checksum": "dd507a9ad0d33b3b3f97546ffc357f23"
@@ -5301,8 +5312,8 @@
     "www/images/DfE_logo_primary.png": {
       "checksum": "42c6b3327616fdfa9ea05bbb65ae60b2"
     },
-    "www/images/national_framework_visual_guide.png": {
-      "checksum": "93cb119a86ff5821bf9abc925f9dc233"
+    "www/images/Revised March 2026 national framework v3 with S47.jpg": {
+      "checksum": "ffa922e70d25facf36f58f6a45cf53ae"
     },
     "www/images/screener_favicon.png": {
       "checksum": "8935e4350f4d30ef001b029de943cf6d"

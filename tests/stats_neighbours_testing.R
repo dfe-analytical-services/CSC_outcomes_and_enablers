@@ -165,7 +165,6 @@ if (TRUE == FALSE) {
   names(x)
 
 
-
   # 13,14 test for assessment_factors ----
   x <- {
     test_sn(stats_neighbours_long,
@@ -307,8 +306,6 @@ if (TRUE == FALSE) {
   names(x)
 
 
-
-
   # ===================================================================================
   # TESTS: sn aggregation function
 
@@ -435,10 +432,7 @@ if (TRUE == FALSE) {
   )
 
 
-
-
   mean(c(1, 2, 3, NA), na.rm = TRUE)
-
 
 
   # write.csv(sn_metrics, file = "c:/Users/mweller1/Documents/projects/CSC_outcomes_and_enablers/sn_metrics.csv")

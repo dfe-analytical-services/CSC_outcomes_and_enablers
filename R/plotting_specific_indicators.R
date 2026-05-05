@@ -269,9 +269,6 @@ plot_uasc_la <- function(selected_geo_breakdown = NULL, selected_geo_lvl = NULL)
   )
 
 
-
-
-
   if (selected_geo_lvl == "Local authority") {
     cla_data <- combined_cla_data %>%
       filter(
@@ -499,9 +496,6 @@ plot_uasc_31_march_la <- function(selected_geo_breakdown = NULL, selected_geo_lv
       "Non-UASC (Not Selected)"
     )
   )
-
-
-
 
 
   if (selected_geo_lvl == "Local authority") {
@@ -1459,8 +1453,6 @@ plot_ofsted_reg <- function() {
 }
 
 
-
-
 statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown = NULL, selected_geo_lvl = NULL, yvalue, yaxis_title, ylim_upper, add_rect = FALSE, decimal_percentage = FALSE) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
@@ -1562,7 +1554,6 @@ statistical_neighbours_plot_factors <- function(dataset, selected_geo_breakdown 
         )
     )
   }
-
 
 
   # label if no cases for selected factor
