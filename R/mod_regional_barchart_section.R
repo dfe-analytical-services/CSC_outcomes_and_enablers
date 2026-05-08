@@ -1,27 +1,28 @@
 ###  DRAFT .....
 
-
 # The regional barchart module consists of a server and a ui along with several supporting functions which relate solely to the module
-
 
 # This component contains a barchart plot, a reactable of the same data and a download button, wrapped in a details section
 # Here is the simple layout of components rendered by the server function of this module
 regional_barchart_section_ui <- function(id) {
   ns <- NS(id)
   tagList(
-    p("This is a static chart and will not react to geographical level and location selected in the filters at the top."),
+    p(
+      "This is a static chart and will not react to geographical level and location selected in the filters at the top."
+    ),
     br(),
     plotlyOutput(ns("regional_barchart_plot")),
     br(),
     details(
       inputId = paste0("tbl_", id),
       label = "View chart as a table",
-      help_text = (
-        HTML(paste0(
-          csvDownloadButton(ns("regional_barchart_table"), filename = paste0("tbl_", id, ".csv")),
-          reactableOutput(ns("regional_barchart_table"))
-        ))
-      )
+      help_text = (HTML(paste0(
+        csvDownloadButton(
+          ns("regional_barchart_table"),
+          filename = paste0("tbl_", id, ".csv")
+        ),
+        reactableOutput(ns("regional_barchart_table"))
+      )))
     ),
     details(
       inputId = paste0(id, "_reg_info"),
@@ -33,26 +34,31 @@ regional_barchart_section_ui <- function(id) {
 
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
-regional_barchart_section_server <- function(id,
-                                             rv_geo_filters,
-                                             rv_dimensional_filters,
-                                             dataset,
-                                             chart_title = "",
-                                             yvalue,
-                                             yaxis_title,
-                                             max_rate = NULL,
-                                             rt_columns,
-                                             rt_col_defs,
-                                             decimal_percentage = FALSE) {
+regional_barchart_section_server <- function(
+    id,
+    rv_geo_filters,
+    rv_dimensional_filters,
+    dataset,
+    chart_title = "",
+    yvalue,
+    yaxis_title,
+    max_rate = NULL,
+    rt_columns,
+    rt_col_defs,
+    decimal_percentage = FALSE) {
   # this is the moduleServer function which holds all of the logic: reactive data and rendering plots/tables
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)
     filtered_data <- reactive({
       # apply any dimensional filters for this dataset (e.g. characteristic, placement type, assessment factor)
       if (length(rv_dimensional_filters$dimensional_filters) > 0) {
-        dataset <- dataset[eval(AndEQUAL(rv_dimensional_filters$dimensional_filters))]
+        dataset <- dataset[eval(AndEQUAL(
+          rv_dimensional_filters$dimensional_filters
+        ))]
       }
-      dataset[geographic_level == "Regional" & time_period == max(dataset$time_period)] %>%
+      dataset[
+        geographic_level == "Regional" & time_period == max(dataset$time_period)
+      ] %>%
         arrange(desc(!!sym(yvalue)), geo_breakdown)
     })
 
@@ -80,7 +86,18 @@ regional_barchart_section_server <- function(id,
         height = 420,
         tooltip = "text"
       ) %>%
-        config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d", "hoverCompareCartesian"))
+        config(
+          displayModeBar = T,
+          modeBarButtonsToRemove = c(
+            "zoom2d",
+            "pan2d",
+            "select2d",
+            "zoomIn2d",
+            "zoomOut2d",
+            "lasso2d",
+            "hoverCompareCartesian"
+          )
+        )
     })
 
     # prepare a table and render it
@@ -98,7 +115,6 @@ regional_barchart_section_server <- function(id,
     })
   })
 }
-
 
 #
 #

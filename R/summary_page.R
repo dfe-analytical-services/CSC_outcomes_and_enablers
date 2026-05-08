@@ -18,19 +18,28 @@ summary_page_tab <- function() {
             selectizeInput(
               inputId = "select_geography_sp",
               label = "Select a geographical level:",
-              choices = unique(cla_rates %>% filter(geographic_level != "Statistical neighbours (median)") %>% pull("geographic_level")),
+              choices = unique(
+                cla_rates %>%
+                  filter(
+                    geographic_level != "Statistical neighbours (median)"
+                  ) %>%
+                  pull("geographic_level")
+              ),
               selected = NULL,
               multiple = FALSE,
               options = NULL
             ),
-            conditionalPanel(condition = "input.select_geography_sp != 'National'", selectizeInput(
-              inputId = "geographic_breakdown_sp",
-              label = "Select a location: ",
-              choices = NULL,
-              selected = NULL,
-              multiple = FALSE,
-              options = NULL
-            )),
+            conditionalPanel(
+              condition = "input.select_geography_sp != 'National'",
+              selectizeInput(
+                inputId = "geographic_breakdown_sp",
+                label = "Select a location: ",
+                choices = NULL,
+                selected = NULL,
+                multiple = FALSE,
+                options = NULL
+              )
+            ),
             panel(),
             col_widths = c(6, 6)
           )
@@ -38,14 +47,21 @@ summary_page_tab <- function() {
       ),
       gov_row(
         # Confirmation of user selection
-        p(htmlOutput("summary_page_choice_text1"), htmlOutput("summary_page_choice_text2")),
+        p(
+          htmlOutput("summary_page_choice_text1"),
+          htmlOutput("summary_page_choice_text2")
+        ),
         conditionalPanel(
           condition = "input.geographic_breakdown_sp == 'Kingston upon Thames' | input.geographic_breakdown_sp == 'Richmond upon Thames'",
-          p("Workforce data is unavailable on the summary page. Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page")
+          p(
+            "Workforce data is unavailable on the summary page. Kingston upon Thames and Richmond upon Thames submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page"
+          )
         ),
         conditionalPanel(
           condition = "input.geographic_breakdown_sp  == 'North Northamptonshire' | input.geographic_breakdown_sp == 'West Northamptonshire'",
-          p("Workforce data is unavailable on the summary page. North Northamptonshire and West Northamptonshire submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page.")
+          p(
+            "Workforce data is unavailable on the summary page. North Northamptonshire and West Northamptonshire submit a joint workforce return each year. The workforce data for the Combined Authorities is reported together on the workforce enabler page."
+          )
         ),
       ),
       # now the main body of the page with 2 tabs containing accordions (4 outcomes, 2 enablers) and domain sections within each.
@@ -101,7 +117,9 @@ summary_page_tab <- function() {
                   gov_row(
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome3"),
-                    sp_domain_ui(id = "Families engaging and receiving support from their family network"),
+                    sp_domain_ui(
+                      id = "Families engaging and receiving support from their family network"
+                    ),
                   )
                 ),
                 accordion_panel(
@@ -110,14 +128,17 @@ summary_page_tab <- function() {
                   gov_row(
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("outcome4"),
-                    sp_domain_ui(id = "Stability and quality of where a child lives"),
+                    sp_domain_ui(
+                      id = "Stability and quality of where a child lives"
+                    ),
                     sp_domain_ui(id = "Child wellbeing"),
-                    sp_domain_ui(id = "Quality of life for care experienced people")
+                    sp_domain_ui(
+                      id = "Quality of life for care experienced people"
+                    )
                   )
                 )
               )
             ),
-
 
             # Domain 2 --------------
             tabPanel(
@@ -134,7 +155,9 @@ summary_page_tab <- function() {
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("enabler1"),
                     sp_domain_ui(id = "Spending"),
-                    sp_domain_ui(id = "Culture focused on outcomes from children and families and continually improving services")
+                    sp_domain_ui(
+                      id = "Culture focused on outcomes from children and families and continually improving services"
+                    )
                   )
                 ),
                 accordion_panel(
@@ -144,7 +167,9 @@ summary_page_tab <- function() {
                     # module for a single heading (i.e. pass the data and the parameters, get a heading and a table
                     sp_accordion_cols_ui("enabler2"),
                     sp_domain_ui(id = "Workforce stability"),
-                    sp_domain_ui(id = "Quality of support for children and families"),
+                    sp_domain_ui(
+                      id = "Quality of support for children and families"
+                    ),
                     sp_domain_ui(id = "Social worker ethnicity")
                   )
                 )
