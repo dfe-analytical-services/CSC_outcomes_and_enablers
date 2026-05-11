@@ -174,4 +174,6 @@ expandable <- function(inputId, label, contents) {
 
 
 # Reactable global settings ---------------
-options(reactable.language = reactableLang(searchPlaceholder = "Search within table"))
+options(
+  reactable.language = reactableLang(searchPlaceholder = "Search within table")
+)

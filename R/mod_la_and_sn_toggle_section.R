@@ -13,18 +13,19 @@ la_and_sn_toggle_section_ui <- function(id) {
 }
 
 
-la_and_sn_toggle_section_server <- function(id,
-                                            rv_geo_filters,
-                                            rv_dimensional_filters,
-                                            dataset,
-                                            chart_title,
-                                            yvalue,
-                                            yaxis_title,
-                                            max_rate,
-                                            rt_columns,
-                                            rt_col_defs,
-                                            decimal_percentage,
-                                            selectedcolumn = NULL) {
+la_and_sn_toggle_section_server <- function(
+    id,
+    rv_geo_filters,
+    rv_dimensional_filters,
+    dataset,
+    chart_title,
+    yvalue,
+    yaxis_title,
+    max_rate,
+    rt_columns,
+    rt_col_defs,
+    decimal_percentage,
+    selectedcolumn = NULL) {
   # this is he definition of the module server which contains reactive datasets and render functions
   moduleServer(id, function(input, output, session) {
     # this is constant for the dataset driving the specific instance of the module
@@ -47,7 +48,6 @@ la_and_sn_toggle_section_server <- function(id,
         arrange(desc(!!sym(yvalue)), geo_breakdown)
     })
 
-
     filtered_data_sn <- reactive({
       # sn_names <- stat_neighbours_for_la(selected_geo_breakdown)
       filter_sn_toggle_dataset(
@@ -60,25 +60,28 @@ la_and_sn_toggle_section_server <- function(id,
         arrange(desc(!!sym(yvalue)), geo_breakdown)
     })
 
-
     ## Rendering out the UI portion
     output$la_sn_toggle_output <- renderUI({
       ns <- session$ns
-      if (input$la_sn_toggle_button == "All local authorities") { # LA Chart and table
+      if (input$la_sn_toggle_button == "All local authorities") {
+        # LA Chart and table
         tagList(
           plotlyOutput(ns("plot_la_toggle")),
           br(),
-          p("This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."),
+          p(
+            "This chart is reactive to the local authority and regional filters at the top and will not react to the national filter. The chart will display all local authorities overall or every local authority in the selected region."
+          ),
           br(),
           details(
             inputId = paste0("tbl_la_", id),
             label = "View chart as a table",
-            help_text = (
-              HTML(paste0(
-                csvDownloadButton(ns("table_la_toggle"), filename = paste0("tbl_la_", id, ".csv")),
-                reactableOutput(ns("table_la_toggle"))
-              ))
-            )
+            help_text = (HTML(paste0(
+              csvDownloadButton(
+                ns("table_la_toggle"),
+                filename = paste0("tbl_la_", id, ".csv")
+              ),
+              reactableOutput(ns("table_la_toggle"))
+            )))
           ),
           details(
             inputId = paste0(id, "_la_info"),
@@ -86,9 +89,13 @@ la_and_sn_toggle_section_server <- function(id,
             help_text = get_additional_info(id)
           )
         )
-      } else { # UI for the stats neighbours plot and table
+      } else {
+        # UI for the stats neighbours plot and table
         validate(
-          need(rv_geo_filters$select_geographic_level == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+          need(
+            rv_geo_filters$select_geographic_level == "Local authority",
+            "To view this chart, you must select \"Local authority\" level and select a local authority."
+          ),
           need(rv_geo_filters$select_geo_breakdown != "", "Select a location."),
         )
         tagList(
@@ -97,35 +104,48 @@ la_and_sn_toggle_section_server <- function(id,
           details(
             inputId = "tbl_sn_toggle",
             label = "View chart as a table",
-            help_text = (
-              HTML(paste0(
-                csvDownloadButton(ns("table_sn_toggle"), filename = paste0("Stat_Neighbours_Plot_", rv_geo_filters$select_geo_breakdown, ".csv")),
-                reactableOutput(ns("table_sn_toggle"))
-              ))
-            )
+            help_text = (HTML(paste0(
+              csvDownloadButton(
+                ns("table_sn_toggle"),
+                filename = paste0(
+                  "Stat_Neighbours_Plot_",
+                  rv_geo_filters$select_geo_breakdown,
+                  ".csv"
+                )
+              ),
+              reactableOutput(ns("table_sn_toggle"))
+            )))
           ),
           details(
             inputId = paste0(id, "_sn_info"),
             label = "Additional information:",
-            help_text = (
-              get_additional_info("stat_neighbours_generic")
-            )
+            help_text = (get_additional_info("stat_neighbours_generic"))
           )
         )
       }
     })
-
 
     ### LA plot toggle
     output$plot_la_toggle <- plotly::renderPlotly({
       req(filtered_data_la(), nrow(filtered_data_la()) > 0)
 
       shiny::validate(
-        need(rv_geo_filters$select_geographic_level != "", "Select a geography level."),
+        need(
+          rv_geo_filters$select_geographic_level != "",
+          "Select a geography level."
+        ),
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
 
-      p <- by_la_bar_plot_revised(filtered_data_la(), rv_geo_filters$select_geographic_level, rv_geo_filters$select_geo_breakdown, yvalue, yaxis_title, max_yvalue, decimal_percentage = decimal_percentage) %>%
+      p <- by_la_bar_plot_revised(
+        filtered_data_la(),
+        rv_geo_filters$select_geographic_level,
+        rv_geo_filters$select_geo_breakdown,
+        yvalue,
+        yaxis_title,
+        max_yvalue,
+        decimal_percentage = decimal_percentage
+      ) %>%
         config(displayModeBar = F)
 
       # we need to construct the chart title
@@ -137,15 +157,27 @@ la_and_sn_toggle_section_server <- function(id,
         height = 420,
         tooltip = "text"
       ) %>%
-        config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+        config(
+          displayModeBar = T,
+          modeBarButtonsToRemove = c(
+            "zoom2d",
+            "pan2d",
+            "select2d",
+            "zoomIn2d",
+            "zoomOut2d",
+            "lasso2d"
+          )
+        )
     })
-
 
     # LA table rendering
     output$table_la_toggle <- renderReactable({
       req(filtered_data_la())
       shiny::validate(
-        need(rv_geo_filters$select_geographic_level != "", "Select a geography level."),
+        need(
+          rv_geo_filters$select_geographic_level != "",
+          "Select a geography level."
+        ),
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
       # build the dataset for the table
@@ -164,7 +196,10 @@ la_and_sn_toggle_section_server <- function(id,
     output$plot_sn_toggle <- plotly::renderPlotly({
       req(filtered_data_sn(), nrow(filtered_data_sn()) > 0)
       validate(
-        need(rv_geo_filters$select_geographic_level == "Local authority", "To view this chart, you must select \"Local authority\" level and select a local authority."),
+        need(
+          rv_geo_filters$select_geographic_level == "Local authority",
+          "To view this chart, you must select \"Local authority\" level and select a local authority."
+        ),
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location."),
       )
 
@@ -182,7 +217,12 @@ la_and_sn_toggle_section_server <- function(id,
       ) %>%
         config(displayModeBar = F)
       # p <- p + ggtitle("Average caseload (FTE) by statistical neighbours")
-      title <- paste0(chart_title, " (", max(filtered_data_sn()$time_period), ")")
+      title <- paste0(
+        chart_title,
+        " (",
+        max(filtered_data_sn()$time_period),
+        ")"
+      )
       p <- p + ggtitle(title)
 
       ggplotly(
@@ -190,20 +230,36 @@ la_and_sn_toggle_section_server <- function(id,
         height = 420,
         tooltip = "text"
       ) %>%
-        config(displayModeBar = T, modeBarButtonsToRemove = c("zoom2d", "pan2d", "select2d", "zoomIn2d", "zoomOut2d", "lasso2d"))
+        config(
+          displayModeBar = T,
+          modeBarButtonsToRemove = c(
+            "zoom2d",
+            "pan2d",
+            "select2d",
+            "zoomIn2d",
+            "zoomOut2d",
+            "lasso2d"
+          )
+        )
     })
-
-
 
     output$table_sn_toggle <- renderReactable({
       req(filtered_data_sn(), nrow(filtered_data_sn()) > 0)
 
       shiny::validate(
-        need(rv_geo_filters$select_geographic_level != "", "Select a geography level."),
+        need(
+          rv_geo_filters$select_geographic_level != "",
+          "Select a geography level."
+        ),
         need(rv_geo_filters$select_geo_breakdown != "", "Select a location.")
       )
 
-      output_data <- stats_neighbours_table(filtered_data_sn(), selected_geo_breakdown = rv_geo_filters$select_geo_breakdown, selected_geo_lvl = rv_geo_filters$select_geographic_level, yvalue = yvalue)
+      output_data <- stats_neighbours_table(
+        filtered_data_sn(),
+        selected_geo_breakdown = rv_geo_filters$select_geo_breakdown,
+        selected_geo_lvl = rv_geo_filters$select_geographic_level,
+        yvalue = yvalue
+      )
 
       reactable(
         output_data,

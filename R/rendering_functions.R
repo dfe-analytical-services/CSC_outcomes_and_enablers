@@ -1,26 +1,66 @@
-generate_choice_text1 <- function(select_geography, geographic_breakdown, region_name) {
+generate_choice_text1 <- function(
+    select_geography,
+    geographic_breakdown,
+    region_name) {
   if (select_geography == "National") {
-    paste0("You have selected ", tags$b(select_geography), " level statistics on ", tags$b("England"), ".")
+    paste0(
+      "You have selected ",
+      tags$b(select_geography),
+      " level statistics on ",
+      tags$b("England"),
+      "."
+    )
   } else if (select_geography == "Regional") {
-    paste0("You have selected ", tags$b(select_geography), " level statistics for ", tags$b(geographic_breakdown), ".")
+    paste0(
+      "You have selected ",
+      tags$b(select_geography),
+      " level statistics for ",
+      tags$b(geographic_breakdown),
+      "."
+    )
   } else if (select_geography == "Local authority") {
-    paste0("You have selected ", tags$b(select_geography), " level statistics for ", tags$b(geographic_breakdown), ", in ", region_name, ".")
+    paste0(
+      "You have selected ",
+      tags$b(select_geography),
+      " level statistics for ",
+      tags$b(geographic_breakdown),
+      ", in ",
+      region_name,
+      "."
+    )
   }
 }
 
-generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_comparison_checkbox = NULL, sn_comparison_checkbox = NULL, summary_page = NULL, select_geography = NULL) {
+generate_choice_text2 <- function(
+    national_comparison_checkbox = NULL,
+    region_comparison_checkbox = NULL,
+    sn_comparison_checkbox = NULL,
+    summary_page = NULL,
+    select_geography = NULL) {
   comparisons <- c()
   choice_text2 <- ""
 
   if (is.null(summary_page)) {
     # Checking to see if they picked national average comparison
-    if (!is.null(national_comparison_checkbox)) comparisons <- c(comparisons, "National average")
-    if (!is.null(region_comparison_checkbox)) comparisons <- c(comparisons, "Regional average")
-    if (!is.null(sn_comparison_checkbox)) comparisons <- c(comparisons, "Statistical neighbours average")
+    if (!is.null(national_comparison_checkbox)) {
+      comparisons <- c(comparisons, "National average")
+    }
+    if (!is.null(region_comparison_checkbox)) {
+      comparisons <- c(comparisons, "Regional average")
+    }
+    if (!is.null(sn_comparison_checkbox)) {
+      comparisons <- c(comparisons, "Statistical neighbours average")
+    }
     comparison_text <- "You have also selected to compare with the "
   } else {
     if (select_geography == "Regional") comparisons <- c("National average")
-    if (select_geography == "Local authority") comparisons <- c("National average", "Regional average", "Statistical neighbours average")
+    if (select_geography == "Local authority") {
+      comparisons <- c(
+        "National average",
+        "Regional average",
+        "Statistical neighbours average"
+      )
+    }
     comparison_text <- "You will also be shown comparisons with the "
   }
 
@@ -32,17 +72,29 @@ generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_co
     return(choice_text2)
   }
   if (length(comparisons) == 2) {
-    choice_text2 <- paste0(comparison_text, tags$b(comparisons[1]), " and the ", tags$b(comparisons[2]), ".")
+    choice_text2 <- paste0(
+      comparison_text,
+      tags$b(comparisons[1]),
+      " and the ",
+      tags$b(comparisons[2]),
+      "."
+    )
     return(choice_text2)
   }
   if (length(comparisons) == 3) {
-    choice_text2 <- paste0(comparison_text, tags$b(comparisons[1]), ", the ", tags$b(comparisons[2]), " and the ", tags$b(comparisons[3]), ".")
+    choice_text2 <- paste0(
+      comparison_text,
+      tags$b(comparisons[1]),
+      ", the ",
+      tags$b(comparisons[2]),
+      " and the ",
+      tags$b(comparisons[3]),
+      "."
+    )
     return(choice_text2)
   }
   return(choice_text2)
 }
-
-
 
 
 #
@@ -74,8 +126,12 @@ generate_choice_text2 <- function(national_comparison_checkbox = NULL, region_co
 #   }
 # })
 
-
-generate_headline_box_text <- function(dataset, column_name, geo_breakdown, nsmall, format_style) {
+generate_headline_box_text <- function(
+    dataset,
+    column_name,
+    geo_breakdown,
+    nsmall,
+    format_style) {
   # check for a dataset, column name, geo_breakdown
 
   # get the max period
@@ -99,6 +155,23 @@ generate_headline_box_text <- function(dataset, column_name, geo_breakdown, nsma
     nsmall = nsmall
   )
 
-  paste0(stat, "<br>", "<p style='font-size:16px; font-weight:500;'>", "in ", max_period, context, "</p>")
-  headline_text <- paste0(stat, "%", "<br>", "<p style='font-size:16px; font-weight:500;'>", "(", max_period, ")", "</p>")
+  paste0(
+    stat,
+    "<br>",
+    "<p style='font-size:16px; font-weight:500;'>",
+    "in ",
+    max_period,
+    context,
+    "</p>"
+  )
+  headline_text <- paste0(
+    stat,
+    "%",
+    "<br>",
+    "<p style='font-size:16px; font-weight:500;'>",
+    "(",
+    max_period,
+    ")",
+    "</p>"
+  )
 }

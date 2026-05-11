@@ -1,12 +1,13 @@
 # Aggregation function for a dataset to calculate median or sum values for various columns based on dynamic groupings
 
-sn_aggregations <- function(sn_long,
-                            dataset,
-                            sum_cols,
-                            median_cols,
-                            group_cols = c("LA.number", "time_period"),
-                            aggregated_calc = "",
-                            calc_name = "") {
+sn_aggregations <- function(
+    sn_long,
+    dataset,
+    sum_cols,
+    median_cols,
+    group_cols = c("LA.number", "time_period"),
+    aggregated_calc = "",
+    calc_name = "") {
   # 1 get the mappings for SN -----
   # merge the datasetwith the SN mappings for LAs to aggregate
   if (class(dataset)[1] != "data.table") setDT(dataset)
@@ -38,7 +39,12 @@ sn_aggregations <- function(sn_long,
   # 4. final step to tidy up the dataset to return with certain key fields
   by.y <- c("old_la_code", group_cols[-1])
   cols_to_keep <- unique(c("geo_breakdown", "time_period", "old_la_code", by.y))
-  sn_finalised <- merge(sn_agg, dataset[, .SD, .SDcols = cols_to_keep], by.x = group_cols, by.y = by.y)
+  sn_finalised <- merge(
+    sn_agg,
+    dataset[, .SD, .SDcols = cols_to_keep],
+    by.x = group_cols,
+    by.y = by.y
+  )
   setnames(sn_finalised, c("LA.number"), "old_la_code")
   sn_finalised[, geo_breakdown_sn := geo_breakdown]
   sn_finalised[, geo_breakdown := "Statistical neighbours (median)"]
@@ -47,43 +53,50 @@ sn_aggregations <- function(sn_long,
   # North Northamptonshire start 2023
   # West Northamptonshire start 2023
   # Cumbria end 2023
-  sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("North Northamptonshire", "West Northamptonshire") & time_period < "2022")]
-  sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("Cumberland", "Westmorland and Furness") & time_period <= "2023")]
+  sn_finalised <- sn_finalised[
+    !(geo_breakdown_sn %in%
+      c("North Northamptonshire", "West Northamptonshire") &
+      time_period < "2022")
+  ]
+  sn_finalised <- sn_finalised[
+    !(geo_breakdown_sn %in%
+      c("Cumberland", "Westmorland and Furness") &
+      time_period <= "2023")
+  ]
   # sn_finalised <- sn_finalised[!(geo_breakdown_sn %in% c("Cumbria") & time_period > "2023")]
 
   return(sn_finalised)
 }
 
 
-
 ## Examples need to move to testing
 # TESTS: putting it all together
-test_sn <- function(sn_long,
-                    dataset,
-                    sum_cols,
-                    median_cols,
-                    group_cols = c("LA.number", "time_period"),
-                    select_geographic_level,
-                    select_geo_breakdown,
-                    check_compare_national = TRUE,
-                    check_compare_regional = TRUE,
-                    check_compare_sn = TRUE,
-                    dimensional_filters = list(),
-                    verbose = TRUE) {
+test_sn <- function(
+    sn_long,
+    dataset,
+    sum_cols,
+    median_cols,
+    group_cols = c("LA.number", "time_period"),
+    select_geographic_level,
+    select_geo_breakdown,
+    check_compare_national = TRUE,
+    check_compare_regional = TRUE,
+    check_compare_sn = TRUE,
+    dimensional_filters = list(),
+    verbose = TRUE) {
   setDT(dataset)
-  sn_metrics <- sn_aggregations(stats_neighbours_long,
+  sn_metrics <- sn_aggregations(
+    stats_neighbours_long,
     dataset = dataset,
     sum_cols = sum_cols,
     median_cols = median_cols,
     group_cols = group_cols
   )
 
-
   if (verbose == TRUE) print(sn_metrics)
 
   # now add the computed metrics to the original dataset
   dataset_with_sn <- rbindlist(l = list(dataset, sn_metrics), fill = TRUE)
-
 
   filter_time_series_data(
     dataset = dataset_with_sn,
