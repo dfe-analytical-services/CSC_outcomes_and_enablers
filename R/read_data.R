@@ -1599,14 +1599,14 @@ read_cpp_by_duration_data <- function(
 
 read_a_and_e_data <- function(
     sn_long,
-    la_file = "./data-raw/la_hospital_admissions_2324.csv",
-    region_file = "./data-raw/region_hospital_admissions_2324.csv") {
+    la_file = "./data-raw/la_hospital_admissions_2425.csv",
+    region_file = "./data-raw/region_hospital_admissions_2425.csv") {
   print("- running read_a_and_e_data")
 
   # read the raw data from 2 csv files
-  la_admissions <- read.csv("./data-raw/la_hospital_admissions_2324.csv") # la_file)
+  la_admissions <- read.csv("./data-raw/la_hospital_admissions_2425.csv") # la_file)
   region_admissions <- read.csv(
-    "./data-raw/region_hospital_admissions_2324.csv"
+    "./data-raw/region_hospital_admissions_2425.csv"
   ) # region_file)
 
   # remove North and West Northamptonshire for pre 2022
@@ -1650,7 +1650,8 @@ read_a_and_e_data <- function(
     region_admissions[
       region_admissions$Parent.Code == "E92000001" &
         region_admissions$Category == "" &
-        region_admissions$Sex == "Persons",
+        region_admissions$Sex == "Persons" &
+      region_admissions$Area.Type == "Regions (statistical)",
       c(1:13, 18, 19)
     ]
   ) %>%
@@ -3017,10 +3018,8 @@ read_ethnic_population_data <- function(
   ethnic_population_data <- ethnic_population_data %>%
     group_by(Code, Name, geographic_level, EthnicGroupShort) %>%
     summarise(
-      Percentage = round(sum(Observation) / TotalObservation * 100, 1),
-      .groups = "drop"
-    ) %>%
-    unique()
+      Percentage = round(sum(Observation) / first(TotalObservation) * 100, 1),
+    .groups = "drop")
 
   return(ethnic_population_data)
 }

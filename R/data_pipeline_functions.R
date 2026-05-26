@@ -35,7 +35,7 @@ get_pipeline_prelim <- function(path_new, path_old) {
     datasets_rds = old,
     datasets_new = new
   )
-
+  
   return(datasets = list(old = old, new = new, pipeline_comparison = pc1))
 }
 
@@ -297,7 +297,7 @@ pipeline_generate_datasets <- function() {
   ))
   workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
   location_data <- GET_location(cla_placements) # fact table linking LA to its region
-  location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
+ # location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(
