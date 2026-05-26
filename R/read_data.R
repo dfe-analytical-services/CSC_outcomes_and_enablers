@@ -1600,7 +1600,8 @@ read_cpp_by_duration_data <- function(
 read_a_and_e_data <- function(
     sn_long,
     la_file = "./data-raw/la_hospital_admissions_2425.csv",
-    region_file = "./data-raw/region_hospital_admissions_2425.csv") {
+    region_file = "./data-raw/region_hospital_admissions_2425.csv")
+  {
   print("- running read_a_and_e_data")
 
   # read the raw data from 2 csv files
