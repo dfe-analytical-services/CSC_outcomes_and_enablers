@@ -1605,9 +1605,7 @@ read_a_and_e_data <- function(
 
   # read the raw data from 2 csv files
   la_admissions <- read.csv("./data-raw/la_hospital_admissions_2425.csv") # la_file)
-  region_admissions <- read.csv(
-    "./data-raw/region_hospital_admissions_2425.csv"
-  ) # region_file)
+  region_admissions <- read.csv("./data-raw/region_hospital_admissions_2425.csv") # region_file)
 
   # remove North and West Northamptonshire for pre 2022
   # remove Cumberland & Westmorland and Furness for pre 2023
