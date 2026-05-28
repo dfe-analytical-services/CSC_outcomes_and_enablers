@@ -26,18 +26,18 @@ if (TRUE == FALSE) {
   TASK_NAME <- "hospital_admissions" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match each other and match the current data file name in data-raw
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
- 
+
   pipeline_prelim <- get_pipeline_prelim(
     path_new = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2024/"),
     path_old = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2025/")
   )
 
- print(pipeline_prelim)
+  print(pipeline_prelim)
 
   # if you wish to save artifacts from the preliminary pipeline run then execute these steps
   saveRDS(
     pipeline_prelim$pipeline_comparison,
-    file = paste0(YOUR_LOCAL_PATH,"pipeline_comparison_prelim.rds")
+    file = paste0(YOUR_LOCAL_PATH, "pipeline_comparison_prelim.rds")
   )
 
   # produce a diagnostic report of the differences in the files.

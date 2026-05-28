@@ -1,13 +1,14 @@
 # Aggregation function for a dataset to calculate median or sum values for various columns based on dynamic groupings
 
 sn_aggregations <- function(
-    sn_long,
-    dataset,
-    sum_cols,
-    median_cols,
-    group_cols = c("LA.number", "time_period"),
-    aggregated_calc = "",
-    calc_name = "") {
+  sn_long,
+  dataset,
+  sum_cols,
+  median_cols,
+  group_cols = c("LA.number", "time_period"),
+  aggregated_calc = "",
+  calc_name = ""
+) {
   # 1 get the mappings for SN -----
   # merge the datasetwith the SN mappings for LAs to aggregate
   if (class(dataset)[1] != "data.table") setDT(dataset)
@@ -72,18 +73,19 @@ sn_aggregations <- function(
 ## Examples need to move to testing
 # TESTS: putting it all together
 test_sn <- function(
-    sn_long,
-    dataset,
-    sum_cols,
-    median_cols,
-    group_cols = c("LA.number", "time_period"),
-    select_geographic_level,
-    select_geo_breakdown,
-    check_compare_national = TRUE,
-    check_compare_regional = TRUE,
-    check_compare_sn = TRUE,
-    dimensional_filters = list(),
-    verbose = TRUE) {
+  sn_long,
+  dataset,
+  sum_cols,
+  median_cols,
+  group_cols = c("LA.number", "time_period"),
+  select_geographic_level,
+  select_geo_breakdown,
+  check_compare_national = TRUE,
+  check_compare_regional = TRUE,
+  check_compare_sn = TRUE,
+  dimensional_filters = list(),
+  verbose = TRUE
+) {
   setDT(dataset)
   sn_metrics <- sn_aggregations(
     stats_neighbours_long,

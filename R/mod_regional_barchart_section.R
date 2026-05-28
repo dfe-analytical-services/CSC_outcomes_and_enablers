@@ -35,17 +35,18 @@ regional_barchart_section_ui <- function(id) {
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
 regional_barchart_section_server <- function(
-    id,
-    rv_geo_filters,
-    rv_dimensional_filters,
-    dataset,
-    chart_title = "",
-    yvalue,
-    yaxis_title,
-    max_rate = NULL,
-    rt_columns,
-    rt_col_defs,
-    decimal_percentage = FALSE) {
+  id,
+  rv_geo_filters,
+  rv_dimensional_filters,
+  dataset,
+  chart_title = "",
+  yvalue,
+  yaxis_title,
+  max_rate = NULL,
+  rt_columns,
+  rt_col_defs,
+  decimal_percentage = FALSE
+) {
   # this is the moduleServer function which holds all of the logic: reactive data and rendering plots/tables
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)

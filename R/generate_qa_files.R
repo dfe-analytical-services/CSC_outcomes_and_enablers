@@ -1,19 +1,20 @@
 create_qa_dataset_sn <- function(
-    output_identifier,
-    dataset_calc,
-    sn_long,
-    csv_file,
-    id.vars_raw,
-    measure.vars_raw,
-    raw_melt_cols,
-    by.x,
-    by.y,
-    calc_qa_formula,
-    raw_qa_formula_1,
-    raw_qa_formula_2,
-    measure.vars_calc = NULL,
-    write_data = FALSE,
-    dataset_raw = NULL) {
+  output_identifier,
+  dataset_calc,
+  sn_long,
+  csv_file,
+  id.vars_raw,
+  measure.vars_raw,
+  raw_melt_cols,
+  by.x,
+  by.y,
+  calc_qa_formula,
+  raw_qa_formula_1,
+  raw_qa_formula_2,
+  measure.vars_calc = NULL,
+  write_data = FALSE,
+  dataset_raw = NULL
+) {
   if (is.null(dataset_raw)) dataset_raw <- fread(csv_file)
 
   # hack for the new outcomes data which has a different column name and likewise

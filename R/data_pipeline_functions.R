@@ -35,7 +35,7 @@ get_pipeline_prelim <- function(path_new, path_old) {
     datasets_rds = old,
     datasets_new = new
   )
-  
+
   return(datasets = list(old = old, new = new, pipeline_comparison = pc1))
 }
 
@@ -47,13 +47,14 @@ get_pipeline_prelim <- function(path_new, path_old) {
 # Additional validation takes place to provide feedback on what has been generated and what differs to the rds datasets in the ./data/ folder of the repo
 # This is the first stage of the pipeline, to build the data in a temporary fashion with nothing in the main application being changed yet, that follows in step 2
 run_data_pipeline_step_1 <- function(
-    datasets_new = NULL,
-    datasets_rds = NULL,
-    save_datasets = FALSE,
-    save_comparison = FALSE,
-    YOUR_LOCAL_PATH = NULL,
-    TASK_NAME = NULL,
-    PIPELINE_RUN_VERSION = NULL) {
+  datasets_new = NULL,
+  datasets_rds = NULL,
+  save_datasets = FALSE,
+  save_comparison = FALSE,
+  YOUR_LOCAL_PATH = NULL,
+  TASK_NAME = NULL,
+  PIPELINE_RUN_VERSION = NULL
+) {
   # if we don't have new datasets passed in we need to generate them, which takes time
   if (is.null(datasets_new)) datasets_new <- pipeline_generate_datasets()
   # simply read the contents of the data folder to get the RDS files (also known as the old or current files.)
@@ -297,7 +298,7 @@ pipeline_generate_datasets <- function() {
   ))
   workforce_headline_measures <- suppressWarnings(read_workforce_headline_measures())
   location_data <- GET_location(cla_placements) # fact table linking LA to its region
- # location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
+  # location_data_workforce <- GET_location_workforce(workforce_headline_measures) # fact table linking LA to its region
 
   ## Read in the workforce characteristics data (Enabler 2) ----
   workforce_eth <- suppressWarnings(read_workforce_eth_data(
@@ -421,11 +422,12 @@ pipeline_generate_datasets <- function() {
 
 # Helper function in the pipeline to compare the datasets (current v new). Various tests are applied and an output list generated
 pipeline_compare_datasets <- function(
-    meta_rds,
-    meta_new,
-    datasets_rds,
-    datasets_new,
-    Geography_column = NULL) {
+  meta_rds,
+  meta_new,
+  datasets_rds,
+  datasets_new,
+  Geography_column = NULL
+) {
   user_feedback <- glue::glue(
     "CSC Public Dashboard: Data pipeline diagnostics
     Run date: { Sys.Date() }"
@@ -537,8 +539,7 @@ pipeline_compare_datasets <- function(
     return(ret_val)
   }
 
-  dataset_columns_comparison[
-    ,
+  dataset_columns_comparison[,
     columns_retained := mapply(
       compare_elements,
       dataset_columns_CURRENT,
@@ -546,8 +547,7 @@ pipeline_compare_datasets <- function(
       common = TRUE
     )
   ]
-  dataset_columns_comparison[
-    ,
+  dataset_columns_comparison[,
     columns_added := mapply(
       compare_elements,
       dataset_columns_CURRENT,
@@ -555,8 +555,7 @@ pipeline_compare_datasets <- function(
       common = FALSE
     )
   ]
-  dataset_columns_comparison[
-    ,
+  dataset_columns_comparison[,
     columns_removed := mapply(
       compare_elements,
       dataset_columns_NEW,
@@ -584,8 +583,7 @@ pipeline_compare_datasets <- function(
     all.x = TRUE
   )
 
-  dataset_comparison_summary[
-    ,
+  dataset_comparison_summary[,
     match_summary := ((match_dataset_name +
       match_dataset_class +
       match_dataset_num_rows +
@@ -728,9 +726,10 @@ pipeline_compare_datasets <- function(
 }
 
 compare_dataset_geographies <- function(
-    comparison_datasets,
-    datasets_new,
-    datasets_rds) {
+  comparison_datasets,
+  datasets_new,
+  datasets_rds
+) {
   rbindlist(
     lapply(
       comparison_datasets,
@@ -780,8 +779,9 @@ compare_dataset_geographies <- function(
 
 
 summarise_columns_over_datasets <- function(
-    dataset_list,
-    label = "my_datasets") {
+  dataset_list,
+  label = "my_datasets"
+) {
   # get a summary of column names by table and the number of unique values within the column in the dataset
   column_names <- rbindlist(lapply(
     names(dataset_list),
@@ -831,8 +831,7 @@ summarise_columns_over_datasets <- function(
     ]
   )[order(-unique_value_count)]
   column_summary[, number_percentage := number_count / unique_value_count]
-  column_summary[
-    ,
+  column_summary[,
     occurences_per_value := as.integer(row_count / unique_value_count)
   ]
 
@@ -912,7 +911,8 @@ pipeline_dataset_metadata <- function(datasets_list) {
 
 # helper function to get a table of the pipeline_history.rds key fields
 get_pipeline_history <- function(
-    history_file = "./data/pipeline/data_pipeline_run_history.rds") {
+  history_file = "./data/pipeline/data_pipeline_run_history.rds"
+) {
   history_list <- readRDS(file = history_file)
   data.table::rbindlist(
     lapply(
