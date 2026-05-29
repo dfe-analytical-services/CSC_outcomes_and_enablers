@@ -15,7 +15,9 @@ create_qa_dataset_sn <- function(
   write_data = FALSE,
   dataset_raw = NULL
 ) {
-  if (is.null(dataset_raw)) dataset_raw <- fread(csv_file)
+  if (is.null(dataset_raw)) {
+    dataset_raw <- fread(csv_file)
+  }
 
   # hack for the new outcomes data which has a different column name and likewise
   setnames(
@@ -140,7 +142,9 @@ create_qa_dataset_sn <- function(
     ".xlsx"
   )
 
-  if (write_data == TRUE) writexl::write_xlsx(output_list, excel_file)
+  if (write_data == TRUE) {
+    writexl::write_xlsx(output_list, excel_file)
+  }
 
   return(output_list)
 }

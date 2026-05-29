@@ -13,7 +13,9 @@ valueBox <- function(
 ) {
   # fontsize: can be small, medium or large
   validateColor(color)
-  if (!is.null(icon)) tagAssert(icon, type = "i")
+  if (!is.null(icon)) {
+    tagAssert(icon, type = "i")
+  }
 
   boxContent <- div(
     class = paste0("small-box bg-", color),

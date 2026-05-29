@@ -505,7 +505,9 @@ by_la_bar_plot_revised <- function(
 ) {
   # prepare the finishing touches to the dataset which is already filtered as we require
   cols_to_keep <- c("time_period", "geo_breakdown", yvalue)
-  if (add_rect == TRUE) cols_to_keep <- c(cols_to_keep, "score_label")
+  if (add_rect == TRUE) {
+    cols_to_keep <- c(cols_to_keep, "score_label")
+  }
 
   plot_data <- copy(dataset[, .SD, .SDcols = cols_to_keep])
   plot_data <- plot_data %>%
@@ -1156,7 +1158,9 @@ statistical_neighbours_plot_revised <- function(
 ) {
   # prepare the finishing touches to the dataset which is already filtered as we require
   cols_to_keep <- c("time_period", "geo_breakdown", yvalue)
-  if (add_rect == TRUE) cols_to_keep <- c(cols_to_keep, "score_label")
+  if (add_rect == TRUE) {
+    cols_to_keep <- c(cols_to_keep, "score_label")
+  }
 
   plot_data <- copy(dataset[, .SD, .SDcols = cols_to_keep])
   plot_data <- plot_data %>%

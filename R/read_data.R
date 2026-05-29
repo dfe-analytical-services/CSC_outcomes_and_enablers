@@ -135,7 +135,9 @@ redacted_to_na <- function(dataset, col_old, col_new) {
 
 # Need a fact table for the LA's and their Regions
 GET_location <- function(dataset = NULL) {
-  if (is.null(dataset)) dataset <- copy(cla_placements)
+  if (is.null(dataset)) {
+    dataset <- copy(cla_placements)
+  }
   FACT_location <- dataset %>%
     filter(geographic_level == "Local authority") %>%
     select(region_name, geo_breakdown, new_la_code, old_la_code) %>%

@@ -55,7 +55,9 @@ generate_choice_text2 <- function(
     }
     comparison_text <- "You have also selected to compare with the "
   } else {
-    if (select_geography == "Regional") comparisons <- c("National average")
+    if (select_geography == "Regional") {
+      comparisons <- c("National average")
+    }
     if (select_geography == "Local authority") {
       comparisons <- c(
         "National average",

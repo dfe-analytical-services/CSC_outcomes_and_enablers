@@ -194,7 +194,9 @@ transform_summary_data <- function(
 
   # code to add na to this indicator as there is no regional or LA data
   cols_to_set_na <- c()
-  if (select_geographic_level == "Regional") cols_to_set_na <- c("Regional")
+  if (select_geographic_level == "Regional") {
+    cols_to_set_na <- c("Regional")
+  }
   if (select_geographic_level == "Local authority") {
     cols_to_set_na <- c(
       "Regional",
@@ -264,7 +266,9 @@ download_summary_data <- function(
       (c("Local authority", "Statistical neighbours (median)")) := NULL
     ]
   }
-  if (select_geographic_level == "National") download_data[, Regional := NULL]
+  if (select_geographic_level == "National") {
+    download_data[, Regional := NULL]
+  }
 
   # add in the accordion text and heading text to the download
   extra_columns <- unique(summary_data_filtered[, .(

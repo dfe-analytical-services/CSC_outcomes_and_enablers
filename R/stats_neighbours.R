@@ -11,7 +11,9 @@ sn_aggregations <- function(
 ) {
   # 1 get the mappings for SN -----
   # merge the datasetwith the SN mappings for LAs to aggregate
-  if (class(dataset)[1] != "data.table") setDT(dataset)
+  if (class(dataset)[1] != "data.table") {
+    setDT(dataset)
+  }
   sn_dataset <- merge(
     sn_long,
     dataset[geographic_level == "Local authority"],
@@ -95,7 +97,9 @@ test_sn <- function(
     group_cols = group_cols
   )
 
-  if (verbose == TRUE) print(sn_metrics)
+  if (verbose == TRUE) {
+    print(sn_metrics)
+  }
 
   # now add the computed metrics to the original dataset
   dataset_with_sn <- rbindlist(l = list(dataset, sn_metrics), fill = TRUE)

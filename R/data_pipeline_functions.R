@@ -56,9 +56,13 @@ run_data_pipeline_step_1 <- function(
   PIPELINE_RUN_VERSION = NULL
 ) {
   # if we don't have new datasets passed in we need to generate them, which takes time
-  if (is.null(datasets_new)) datasets_new <- pipeline_generate_datasets()
+  if (is.null(datasets_new)) {
+    datasets_new <- pipeline_generate_datasets()
+  }
   # simply read the contents of the data folder to get the RDS files (also known as the old or current files.)
-  if (is.null(datasets_rds)) datasets_rds <- pipeline_read_rds()
+  if (is.null(datasets_rds)) {
+    datasets_rds <- pipeline_read_rds()
+  }
 
   meta_rds <- pipeline_dataset_metadata(datasets_rds)
   meta_new <- pipeline_dataset_metadata(datasets_new)
@@ -533,8 +537,12 @@ pipeline_compare_datasets <- function(
     vec2 <- trimws(unlist(strsplit(str2, delimiter, fixed = TRUE)))
 
     # Find common elements
-    if (common == TRUE) ret_val <- paste(intersect(vec1, vec2), collapse = ", ")
-    if (common == FALSE) ret_val <- paste(setdiff(vec1, vec2), collapse = ", ")
+    if (common == TRUE) {
+      ret_val <- paste(intersect(vec1, vec2), collapse = ", ")
+    }
+    if (common == FALSE) {
+      ret_val <- paste(setdiff(vec1, vec2), collapse = ", ")
+    }
 
     return(ret_val)
   }
