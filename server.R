@@ -6651,6 +6651,7 @@ server <- function(input, output, session) {
         geographic_level == "Regional"
       ) %>%
       select(time_period, geo_breakdown, Value) %>%
+      arrange(desc(`Value`), geo_breakdown) %>%
       rename(
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
@@ -6738,7 +6739,8 @@ server <- function(input, output, session) {
         `Local authority` = `geo_breakdown`,
         `Rate per 10,000` = `Value`
       ) %>%
-      arrange(desc(`Rate per 10,000`))
+      arrange(desc(`Rate per 10,000`), `Local authority`)
+
 
     if (input$select_geography_o2 == "Regional") {
       # Check if the selected region is London
