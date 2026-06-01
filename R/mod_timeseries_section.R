@@ -29,17 +29,18 @@ timeseries_section_ui <- function(id) {
 
 # THis is the server part of the module which returns 2 outputs: the plot and the table
 timeseries_section_server <- function(
-    id,
-    rv_geo_filters,
-    rv_dimensional_filters,
-    dataset,
-    chart_title = "",
-    yvalue,
-    yaxis_title,
-    max_rate,
-    rt_columns,
-    rt_col_defs,
-    decimal_percentage) {
+  id,
+  rv_geo_filters,
+  rv_dimensional_filters,
+  dataset,
+  chart_title = "",
+  yvalue,
+  yaxis_title,
+  max_rate,
+  rt_columns,
+  rt_col_defs,
+  decimal_percentage
+) {
   # the module server contains all of the backend logic for this module
   moduleServer(id, function(input, output, session) {
     # we start with a data reactive which is filtering the dataset for chosen geographies (and additional dimensions tbc)

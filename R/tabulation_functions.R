@@ -1,10 +1,11 @@
 # TECHDEBT: this can be somewhat tidied up
 stats_neighbours_table <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    selectedcolumn = NULL,
-    yvalue = NULL) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  selectedcolumn = NULL,
+  yvalue = NULL
+) {
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select(
@@ -97,10 +98,11 @@ stats_neighbours_table <- function(
 # Now a couple of custom tabulation functions for the UASC and Ofsted tables ----
 
 stats_neighbours_table_uasc <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue
+) {
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select(
@@ -151,11 +153,12 @@ stats_neighbours_table_uasc <- function(
 }
 
 stats_neighbours_table_ofsted <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    selectedcolumn = NULL,
-    yvalue = NULL) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  selectedcolumn = NULL,
+  yvalue = NULL
+) {
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%
     select(

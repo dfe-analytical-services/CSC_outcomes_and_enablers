@@ -1,12 +1,13 @@
 ## Filtering logic for the dataset to aid time series plotting (and tables)
 filter_time_series_data <- function(
-    dataset_in,
-    select_geographic_level,
-    select_geo_breakdown,
-    check_compare_national,
-    check_compare_regional,
-    check_compare_sn,
-    dimensional_filters = list()) {
+  dataset_in,
+  select_geographic_level,
+  select_geo_breakdown,
+  check_compare_national,
+  check_compare_regional,
+  check_compare_sn,
+  dimensional_filters = list()
+) {
   # default values for testing
   # select_geographic_level <- "Local authority"
   # select_geo_breakdown <- "Merton"
@@ -83,11 +84,12 @@ filter_time_series_data <- function(
 # Function designed to produce a filtered dataset for the LA View chart and table
 
 filter_la_toggle_dataset <- function(
-    dataset_in,
-    select_geographic_level,
-    select_geo_breakdown,
-    select_time_period = NULL,
-    dimensional_filters = list()) {
+  dataset_in,
+  select_geographic_level,
+  select_geo_breakdown,
+  select_time_period = NULL,
+  dimensional_filters = list()
+) {
   # make the dataset into a data.table and take a copy so we don't tamper with underlying data
   setDT(dataset_in)
   dataset <- copy(dataset_in)
@@ -130,11 +132,12 @@ filter_la_toggle_dataset <- function(
 
 
 filter_sn_toggle_dataset <- function(
-    dataset_in,
-    select_geographic_level,
-    select_geo_breakdown,
-    select_time_period = NULL,
-    dimensional_filters = list()) {
+  dataset_in,
+  select_geographic_level,
+  select_geo_breakdown,
+  select_time_period = NULL,
+  dimensional_filters = list()
+) {
   # test for LA selected
 
   # make the dataset into a data.table and take a copy so we don't tamper with underlying data

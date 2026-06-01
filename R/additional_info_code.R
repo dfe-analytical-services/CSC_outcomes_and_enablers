@@ -3,7 +3,9 @@
 # very simple accessor function to get the additional information for a section/indicator
 get_additional_info <- function(id) {
   add_info <- additional_info_help_text[[id]]
-  if (is.null(add_info)) add_info <- ""
+  if (is.null(add_info)) {
+    add_info <- ""
+  }
 
   return(add_info)
 }

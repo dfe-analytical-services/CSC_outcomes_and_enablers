@@ -3,16 +3,19 @@
 # talk to the DfE Statistics Development team first.
 
 valueBox <- function(
-    value,
-    subtitle,
-    icon = NULL,
-    color = "blue",
-    width = 4,
-    href = NULL,
-    fontsize = "medium") {
+  value,
+  subtitle,
+  icon = NULL,
+  color = "blue",
+  width = 4,
+  href = NULL,
+  fontsize = "medium"
+) {
   # fontsize: can be small, medium or large
   validateColor(color)
-  if (!is.null(icon)) tagAssert(icon, type = "i")
+  if (!is.null(icon)) {
+    tagAssert(icon, type = "i")
+  }
 
   boxContent <- div(
     class = paste0("small-box bg-", color),

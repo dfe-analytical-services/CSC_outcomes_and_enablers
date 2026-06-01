@@ -14,18 +14,19 @@ la_and_sn_toggle_section_ui <- function(id) {
 
 
 la_and_sn_toggle_section_server <- function(
-    id,
-    rv_geo_filters,
-    rv_dimensional_filters,
-    dataset,
-    chart_title,
-    yvalue,
-    yaxis_title,
-    max_rate,
-    rt_columns,
-    rt_col_defs,
-    decimal_percentage,
-    selectedcolumn = NULL) {
+  id,
+  rv_geo_filters,
+  rv_dimensional_filters,
+  dataset,
+  chart_title,
+  yvalue,
+  yaxis_title,
+  max_rate,
+  rt_columns,
+  rt_col_defs,
+  decimal_percentage,
+  selectedcolumn = NULL
+) {
   # this is he definition of the module server which contains reactive datasets and render functions
   moduleServer(id, function(input, output, session) {
     # this is constant for the dataset driving the specific instance of the module

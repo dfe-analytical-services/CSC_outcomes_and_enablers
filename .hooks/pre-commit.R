@@ -95,14 +95,6 @@ if (error_flag) {
   quit(save = "no", status = 1, runLast = FALSE)
 }
 
-if (error_flag) {
-  cat(
-    "Warning: Code did not appear to have been tidied.\nI've run tidy code for you,
-      please check your files and the dashboard still works and then re-stage and try committing again."
-  )
-  quit(save = "no", status = 1, runLast = FALSE)
-}
-
 cat("\n")
 
 # cat("\n2. Rebuilding manifest.json...", fill = TRUE)
