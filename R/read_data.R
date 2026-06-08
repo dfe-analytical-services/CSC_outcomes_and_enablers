@@ -1706,12 +1706,12 @@ read_a_and_e_data <- function(
 
   # TODO: revise this code to use a central table
   # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-  la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
+  la_codes <- suppressWarnings(read_outcomes_absence_data(sn_long = sn_long)) %>%
     filter(
       geographic_level == "Local authority",
       time_period == max(time_period)
     ) %>%
-    select(old_la_code = original_old_la_code, new_la_code) %>%
+    select(old_la_code, new_la_code) %>%
     distinct() %>%
     separate_rows(c("old_la_code", "new_la_code"), sep = " / ")
 
