@@ -135,12 +135,27 @@ This report will help the analyst to understand the differences between the data
 ### Reference Datasets (exiting publication)
 
 ```{r results='asis'}
-  pc$dataset_column_values_comparison$old %>%
-      prepare_rt() %>%
-      reactable(width = 1000,
-              defaultColDef = colDef(minWidth = 100),
-              columns = list(`Column Name` = colDef(minWidth = 200),
-                             `Number Percentage` = colDef(format = colFormat(percent = TRUE, digits = 1))))
+old_data <- pc$dataset_column_values_comparison$old
+
+if (!is.null(old_data) && nrow(old_data) > 0) {
+
+  old_data %>%
+    prepare_rt() %>%
+    reactable(
+      width = 1000,
+      defaultColDef = colDef(minWidth = 100),
+      columns = list(
+        `Column Name` = colDef(minWidth = 200),
+        `Number Percentage` = colDef(
+          format = colFormat(percent = TRUE, digits = 1)
+        )
+      )
+    )
+
+} else {
+    cat("⚠️ Column name changes so unable to compare values")
+}
+
 
 
 ```
@@ -148,12 +163,28 @@ This report will help the analyst to understand the differences between the data
 ### New datasets (latest publication)
 
 ```{r results='asis'}
-  pc$dataset_column_values_comparison$new %>%
+new_data <- pc$dataset_column_values_comparison$new
+
+if (!is.null(new_data) &&
+    is.data.frame(new_data) &&
+    nrow(new_data) > 0) {
+
+  new_data %>%
     prepare_rt() %>%
-    reactable(width = 1000,
-              defaultColDef = colDef(minWidth = 100),
-              columns = list(`Column Name` = colDef(minWidth = 200),
-                             `Number Percentage` = colDef(format = colFormat(percent = TRUE, digits = 1))))
+    reactable(
+      width = 1000,
+      defaultColDef = colDef(minWidth = 100),
+      columns = list(
+        `Column Name` = colDef(minWidth = 200),
+        `Number Percentage` = colDef(
+          format = colFormat(percent = TRUE, digits = 1)
+        )
+      )
+    )
+
+} else {
+  cat("⚠️ Column name changes so unable to compare values")
+}
 
 ```
 
