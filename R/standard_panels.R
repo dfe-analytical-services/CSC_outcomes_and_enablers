@@ -100,8 +100,8 @@ support_links <- function() {
               style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
             )),
             tags$li(a(
-              href = "https://explore-education-statistics.service.gov.uk/find-statistics/stability-measures-for-children-looked-after-in-england/2024#content",
-              "Stability measures for children looked after in England (last updated 21 January 2026) (opens in a new tab).",
+              href = "https://explore-education-statistics.service.gov.uk/find-statistics/stability-measures-for-children-looked-after-in-england",
+              "Stability measures for children looked after in England (last updated April 2026) (opens in a new tab).",
               target = "_blank",
               style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
             ))
