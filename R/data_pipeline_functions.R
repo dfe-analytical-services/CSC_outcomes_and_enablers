@@ -558,16 +558,16 @@ pipeline_compare_datasets <- function(
   dataset_columns_comparison[,
     columns_added := mapply(
       compare_elements,
-      dataset_columns_CURRENT,
       dataset_columns_NEW,
-      common = FALSE
+      dataset_columns_CURRENT,
+          common = FALSE
     )
   ]
   dataset_columns_comparison[,
     columns_removed := mapply(
       compare_elements,
-      dataset_columns_NEW,
       dataset_columns_CURRENT,
+      dataset_columns_NEW,
       common = FALSE
     )
   ]

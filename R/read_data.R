@@ -1346,7 +1346,11 @@ read_school_stability_data <- function(
     colClean() %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data() %>%
-    filter(
+        rename(   
+          number = children_count,
+          percentage = children_percent
+          ) %>%
+        filter(
       cla_group == "CLA on 31 March" &
         move_measure == "Mid-year moves" &
         school_stability == "With one or more mid-year moves during the year"
@@ -2450,7 +2454,12 @@ read_social_worker_stability_data <- function(
     colClean() %>%
     insert_geo_breakdown() %>%
     remove_cumbria_data() %>%
-    filter(sw_stability == "3 or more social workers during the year")
+    rename(   
+      number = children_count,
+      percentage = children_percent
+    ) %>%
+    filter(sw_stability == "3 or more social workers during the year")  %>%
+    filter(cla_group == "CLA on 31 March" )
 
   sw_stability_data[, old_la_code := as.integer(old_la_code)]
 
