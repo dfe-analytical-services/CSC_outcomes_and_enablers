@@ -4,14 +4,15 @@
 # This is a repeat use function for all of the time series plots in this dashboard.
 
 plotly_time_series_custom_scale <- function(
-    dataset,
-    level,
-    breakdown,
-    yvalue,
-    yaxis_title,
-    ylim_upper,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  level,
+  breakdown,
+  yvalue,
+  yaxis_title,
+  ylim_upper,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 20) * 20) + (ylim_upper * 0.05)
 
@@ -191,14 +192,15 @@ plotly_time_series_custom_scale <- function(
 # By LA bar chart repeat function (legacy version) ----
 
 by_la_bar_plot <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    yupperlim = NULL,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  yupperlim = NULL,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # prepare the yaxis title so it wraps at 25 chars
   yaxis_title <- str_wrap(yaxis_title, width = 27)
 
@@ -492,25 +494,27 @@ by_la_bar_plot <- function(
 # in order to feed both the chart and the table.  Hence less data manipulation is done here than the original function
 
 by_la_bar_plot_revised <- function(
-    dataset,
-    selected_geo_lvl,
-    selected_geo_breakdown,
-    yvalue,
-    yaxis_title,
-    yupperlim = NULL,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_lvl,
+  selected_geo_breakdown,
+  yvalue,
+  yaxis_title,
+  yupperlim = NULL,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # prepare the finishing touches to the dataset which is already filtered as we require
   cols_to_keep <- c("time_period", "geo_breakdown", yvalue)
-  if (add_rect == TRUE) cols_to_keep <- c(cols_to_keep, "score_label")
+  if (add_rect == TRUE) {
+    cols_to_keep <- c(cols_to_keep, "score_label")
+  }
 
   plot_data <- copy(dataset[, .SD, .SDcols = cols_to_keep])
   plot_data <- plot_data %>%
     mutate(geo_breakdown = reorder(geo_breakdown, -(!!sym(`yvalue`))))
 
   if (selected_geo_lvl == "Local authority") {
-    plot_data[
-      ,
+    plot_data[,
       is_selected := ifelse(
         geo_breakdown == selected_geo_breakdown,
         selected_geo_breakdown,
@@ -720,12 +724,13 @@ by_la_bar_plot_revised <- function(
 
 # By Region bar chart repeat function -----
 by_region_bar_plot <- function(
-    dataset,
-    yvalue,
-    yaxis_title,
-    yupperlim,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  yvalue,
+  yaxis_title,
+  yupperlim,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   if (add_rect == FALSE) {
     reg_data <- dataset %>%
       filter(
@@ -907,14 +912,15 @@ by_region_bar_plot <- function(
 
 # Statistical Neighbours function (Legacy version) ----
 statistical_neighbours_plot <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    ylim_upper,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  ylim_upper,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -1141,17 +1147,20 @@ statistical_neighbours_plot <- function(
 
 # Statistical Neighbours function (Revised version) ----
 statistical_neighbours_plot_revised <- function(
-    dataset,
-    selected_geo_lvl = NULL,
-    selected_geo_breakdown = NULL,
-    yvalue,
-    yaxis_title,
-    ylim_upper,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_lvl = NULL,
+  selected_geo_breakdown = NULL,
+  yvalue,
+  yaxis_title,
+  ylim_upper,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # prepare the finishing touches to the dataset which is already filtered as we require
   cols_to_keep <- c("time_period", "geo_breakdown", yvalue)
-  if (add_rect == TRUE) cols_to_keep <- c(cols_to_keep, "score_label")
+  if (add_rect == TRUE) {
+    cols_to_keep <- c(cols_to_keep, "score_label")
+  }
 
   plot_data <- copy(dataset[, .SD, .SDcols = cols_to_keep])
   plot_data <- plot_data %>%

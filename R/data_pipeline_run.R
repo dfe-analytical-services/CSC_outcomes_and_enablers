@@ -23,9 +23,10 @@ if (TRUE == FALSE) {
   ## 2. Set Common parameters ----
 
   YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
-  TASK_NAME <- "outcomes_2025" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match up
+  TASK_NAME <- "hospital_admissions" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match each other and match the current data file name in data-raw
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
+
   pipeline_prelim <- get_pipeline_prelim(
     path_new = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2024/"),
     path_old = paste0(YOUR_LOCAL_PATH, TASK_NAME, "/data-comparisons/2025/")
@@ -55,7 +56,7 @@ if (TRUE == FALSE) {
 
   ## 4. Now run the first step of the pipeline to generate the new datasets and comparisons with current dashboard data ----
 
-  PIPELINE_RUN_VERSION <- "v5a"
+  PIPELINE_RUN_VERSION <- "v6"
 
   pipeline_run <- run_data_pipeline_step_1(
     datasets_new = NULL,
@@ -111,7 +112,7 @@ if (TRUE == FALSE) {
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
 
-  reason_for_pipeline_run <- "Update outcomes data" # <---- EDIT HERE
+  reason_for_pipeline_run <- "Update hosportal addmisions data" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

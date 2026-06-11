@@ -1,7 +1,8 @@
 generate_choice_text1 <- function(
-    select_geography,
-    geographic_breakdown,
-    region_name) {
+  select_geography,
+  geographic_breakdown,
+  region_name
+) {
   if (select_geography == "National") {
     paste0(
       "You have selected ",
@@ -32,11 +33,12 @@ generate_choice_text1 <- function(
 }
 
 generate_choice_text2 <- function(
-    national_comparison_checkbox = NULL,
-    region_comparison_checkbox = NULL,
-    sn_comparison_checkbox = NULL,
-    summary_page = NULL,
-    select_geography = NULL) {
+  national_comparison_checkbox = NULL,
+  region_comparison_checkbox = NULL,
+  sn_comparison_checkbox = NULL,
+  summary_page = NULL,
+  select_geography = NULL
+) {
   comparisons <- c()
   choice_text2 <- ""
 
@@ -53,7 +55,9 @@ generate_choice_text2 <- function(
     }
     comparison_text <- "You have also selected to compare with the "
   } else {
-    if (select_geography == "Regional") comparisons <- c("National average")
+    if (select_geography == "Regional") {
+      comparisons <- c("National average")
+    }
     if (select_geography == "Local authority") {
       comparisons <- c(
         "National average",
@@ -127,11 +131,12 @@ generate_choice_text2 <- function(
 # })
 
 generate_headline_box_text <- function(
-    dataset,
-    column_name,
-    geo_breakdown,
-    nsmall,
-    format_style) {
+  dataset,
+  column_name,
+  geo_breakdown,
+  nsmall,
+  format_style
+) {
   # check for a dataset, column name, geo_breakdown
 
   # get the max period

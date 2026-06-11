@@ -53,7 +53,7 @@ support_links <- function() {
             )),
             tags$li(a(
               href = "https://fingertips.phe.org.uk/profile/child-health-profiles/data#page/3/gid/1938133230/ati/502/iid/90284/age/26/sex/4/cat/-1/ctp/-1/yrr/1/cid/4/tbm/1/page-options/car-do-0",
-              "Public health data explorer (last updated: 04 February 2025) (opens in a new tab).",
+              "Public health data explorer (hospital admissions last updated: 06 May 2026) (opens in a new tab).",
               target = "_blank",
               style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
             )),

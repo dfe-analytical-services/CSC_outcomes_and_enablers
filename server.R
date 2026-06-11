@@ -134,7 +134,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_sp
-    }, {
+    },
+    {
       choices <- sort(
         unique(
           cla_rates[
@@ -297,7 +298,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_o1
-    }, {
+    },
+    {
       choices <- sort(
         unique(
           cla_rates[
@@ -4953,7 +4955,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_o3
-    }, {
+    },
+    {
       choices <- sort(
         unique(
           ceased_cla_data[
@@ -5753,7 +5756,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_o2
-    }, {
+    },
+    {
       choices <- sort(
         unique(
           cla_rates[
@@ -6647,6 +6651,7 @@ server <- function(input, output, session) {
         geographic_level == "Regional"
       ) %>%
       select(time_period, geo_breakdown, Value) %>%
+      arrange(desc(`Value`), geo_breakdown) %>%
       rename(
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
@@ -6734,7 +6739,8 @@ server <- function(input, output, session) {
         `Local authority` = `geo_breakdown`,
         `Rate per 10,000` = `Value`
       ) %>%
-      arrange(desc(`Rate per 10,000`))
+      arrange(desc(`Rate per 10,000`), `Local authority`)
+
 
     if (input$select_geography_o2 == "Regional") {
       # Check if the selected region is London
@@ -7509,7 +7515,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_o4
-    }, {
+    },
+    {
       choices <- sort(
         unique(
           placement_data[
@@ -9190,7 +9197,7 @@ server <- function(input, output, session) {
             text = paste("Cause for concern", "<br>", "Score: 17")
           )
         ) %>%
-        config(displayModeBar = F)
+          config(displayModeBar = F)
     )
 
     p <- by_region_bar_plot(
@@ -10192,7 +10199,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_e2
-    }, {
+    },
+    {
       choices <- sort(
         unique(spending_data[
           spending_data$geographic_level == input$select_geography_e2,
@@ -11195,7 +11203,8 @@ server <- function(input, output, session) {
   observeEvent(
     eventExpr = {
       input$select_geography_e3
-    }, {
+    },
+    {
       if (input$select_geography_e3 == "Local authority") {
         choices <- sort(
           c(

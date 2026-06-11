@@ -87,9 +87,10 @@ sp_domain_server <- function(id, rv) {
 
 # take the summary dataset and filter it based on geographic selections
 filter_summary_data <- function(
-    data_in,
-    select_geographic_level,
-    select_geo_breakdown) {
+  data_in,
+  select_geographic_level,
+  select_geo_breakdown
+) {
   # if national display national only
   if (select_geographic_level == "National") {
     filtered_summary_data <- data_in[geographic_level == "National"]
@@ -120,9 +121,10 @@ filter_summary_data <- function(
 
 # the workhorse of the table generation to pivot the filtered summary data wider and then make sure the columns are correctly names/ordered
 transform_summary_data <- function(
-    filtered_summary_data,
-    select_geographic_level = NULL,
-    headers_only = FALSE) {
+  filtered_summary_data,
+  select_geographic_level = NULL,
+  headers_only = FALSE
+) {
   transformed_data <- dcast.data.table(
     filtered_summary_data,
     sort_order + metric_text ~ geographic_level,
@@ -135,8 +137,7 @@ transform_summary_data <- function(
 
   # ensure columns are in the correct order
   if (select_geographic_level == "National") {
-    transformed_data[
-      ,
+    transformed_data[,
       c("Regional", "Local authority", "Statistical neighbours (median)") := ""
     ]
     setcolorder(
@@ -154,8 +155,7 @@ transform_summary_data <- function(
     if (!("Regional" %in% names(transformed_data))) {
       transformed_data[, c("Regional") := ""]
     }
-    transformed_data[
-      ,
+    transformed_data[,
       c("Local authority", "Statistical neighbours (median)") := ""
     ]
     setcolorder(
@@ -194,7 +194,9 @@ transform_summary_data <- function(
 
   # code to add na to this indicator as there is no regional or LA data
   cols_to_set_na <- c()
-  if (select_geographic_level == "Regional") cols_to_set_na <- c("Regional")
+  if (select_geographic_level == "Regional") {
+    cols_to_set_na <- c("Regional")
+  }
   if (select_geographic_level == "Local authority") {
     cols_to_set_na <- c(
       "Regional",
@@ -249,8 +251,9 @@ transform_summary_data <- function(
 
 # the function helps to generate the dataset for download
 download_summary_data <- function(
-    summary_data_filtered,
-    select_geographic_level) {
+  summary_data_filtered,
+  select_geographic_level
+) {
   # take the data and prepare it (crosstab, column order/naming etc)
   download_data <- transform_summary_data(
     summary_data_filtered,
@@ -259,12 +262,13 @@ download_summary_data <- function(
 
   # remove unrequired columns
   if (select_geographic_level != "Local authority") {
-    download_data[
-      ,
+    download_data[,
       (c("Local authority", "Statistical neighbours (median)")) := NULL
     ]
   }
-  if (select_geographic_level == "National") download_data[, Regional := NULL]
+  if (select_geographic_level == "National") {
+    download_data[, Regional := NULL]
+  }
 
   # add in the accordion text and heading text to the download
   extra_columns <- unique(summary_data_filtered[, .(

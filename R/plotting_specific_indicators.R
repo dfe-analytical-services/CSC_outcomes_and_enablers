@@ -90,8 +90,9 @@ plot_ethnicity_rate <- function(select_geo_breakdown, select_geographic_level) {
 
 
 plot_population_ethnicity_rate <- function(
-    selected_geo_breakdown,
-    geographic_level.x) {
+  selected_geo_breakdown,
+  geographic_level.x
+) {
   # Filter the data based on 'geo_breakdown', 'geographic_level'
   plot_data <- combined_ethnicity_data[
     geo_breakdown == selected_geo_breakdown & breakdown != "Non-white",
@@ -405,8 +406,9 @@ plot_uasc_reg <- function() {
 }
 
 plot_uasc_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(workforce_headline_measures)
 
   colors <- setNames(
@@ -736,8 +738,9 @@ plot_uasc_31_march_reg <- function() {
 }
 
 plot_uasc_31_march_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(workforce_headline_measures)
 
   colors <- setNames(
@@ -978,8 +981,9 @@ plot_cla_rate_reg <- function() {
 }
 
 plot_cla_rate_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
@@ -1163,8 +1167,9 @@ plot_cla_march_reg <- function() {
 }
 
 plot_cla_march_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
@@ -1348,8 +1353,9 @@ plot_cin_rate_reg <- function() {
 
 # cin rate chart by la
 plot_cin_rates_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(cin_rates)
 
   if (selected_geo_lvl == "Local authority") {
@@ -1527,8 +1533,9 @@ plot_cin_referral_reg <- function() {
 
 # bar chart by LA
 plot_cin_referral_la <- function(
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL) {
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL
+) {
   location_data <- GET_location(workforce_headline_measures)
 
   if (selected_geo_lvl == "Local authority") {
@@ -1644,9 +1651,10 @@ plot_cin_referral_la <- function(
 # Outcome 3 ----
 
 all_assessment_factors_plot <- function(
-    dataset,
-    factorslist,
-    selected_geo_breakdown = NULL) {
+  dataset,
+  factorslist,
+  selected_geo_breakdown = NULL
+) {
   data <- assessment_factors %>%
     filter(assessment_factor %in% unique(factorslist)) %>%
     filter(
@@ -1699,14 +1707,15 @@ all_assessment_factors_plot <- function(
 
 # TECHDEBT: clean out the add_rect
 factors_by_la_bar_plot <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    yupperlim = NULL,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  yupperlim = NULL,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   if (selected_geo_lvl == "Local authority") {
     if (add_rect == "FALSE") {
       la_data <- dataset %>%
@@ -2155,14 +2164,15 @@ plot_ofsted_reg <- function() {
 
 
 statistical_neighbours_plot_factors <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    ylim_upper,
-    add_rect = FALSE,
-    decimal_percentage = FALSE) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  ylim_upper,
+  add_rect = FALSE,
+  decimal_percentage = FALSE
+) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -2403,12 +2413,13 @@ statistical_neighbours_plot_factors <- function(
 }
 
 statistical_neighbours_plot_uasc <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    ylim_upper) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  ylim_upper
+) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -2523,12 +2534,13 @@ statistical_neighbours_plot_uasc <- function(
 }
 
 statistical_neighbours_plot_uasc_31_march <- function(
-    dataset,
-    selected_geo_breakdown = NULL,
-    selected_geo_lvl = NULL,
-    yvalue,
-    yaxis_title,
-    ylim_upper) {
+  dataset,
+  selected_geo_breakdown = NULL,
+  selected_geo_lvl = NULL,
+  yvalue,
+  yaxis_title,
+  ylim_upper
+) {
   # Set the upper limit of the y-axis, then give it a bit extra on top of that so the max y-axis tick has a better chance of being near the top of the axis
   ylim_upper <- (ceiling(ylim_upper / 10) * 10) + (ylim_upper * 0.05)
 
@@ -2643,8 +2655,9 @@ statistical_neighbours_plot_uasc_31_march <- function(
 }
 
 statistical_neighbours_plot_ofsted <- function(
-    dataset,
-    selected_geo_breakdown) {
+  dataset,
+  selected_geo_breakdown
+) {
   # Find the old_la_code for the selected geo_breakdown
   sn_names <- stats_neighbours %>%
     filter(stats_neighbours$LA.Name == selected_geo_breakdown) %>%

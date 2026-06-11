@@ -1304,8 +1304,8 @@ dataset_raw <- read_a_and_e_data(sn_long = stats_neighbours_long)[
 #========get the raw data - it's long winded!!
 
 # read the raw data from 2 csv files
-la_admissions <- read.csv("data-raw/la_hospital_admissions_2324.csv") # la_file)
-region_admissions <- read.csv("data-raw/region_hospital_admissions_2324.csv") # region_file)
+la_admissions <- read.csv("data-raw/la_hospital_admissions_2425.csv") # la_file)
+region_admissions <- read.csv("data-raw/region_hospital_admissions_2425.csv") # region_file)
 
 # remove North and West Northamptonshire for pre 2022
 # remove Cumberland & Westmorland and Furness for pre 2023
@@ -1387,7 +1387,7 @@ admissions_data_joined["geo_breakdown"][
 admissions_data_joined <- remove_cumbria_data(admissions_data_joined)
 
 # For the stats neighbours charts we need to have old la codes, not available in this data so just get it from another dataset
-la_codes <- suppressWarnings(read_workforce_data(sn_long = sn_long)) %>%
+la_codes <- suppressWarnings(read_outcomes_absence_data(sn_long = stats_neighbours_long)) %>%
   filter(
     geographic_level == "Local authority",
     time_period == max(time_period)
@@ -1511,6 +1511,7 @@ admissions_data2 <- admissions_data2 %>%
       TRUE ~ as.character(Value)
     )
   )
+
 
 
 # add stats neighbours
