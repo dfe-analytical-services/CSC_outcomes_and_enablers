@@ -362,8 +362,8 @@ collect_summary_data_all <- function() {
     )
   )
 
-  # if any NA have crept in we need to display "na"
-  summary_data[is.na(value), value := "na"]
+  # if any NA have crept in we need to display "z"
+  summary_data[is.na(value), value := "z"]
 
   # before the date functions we need to clean the 6-digit dates - this should move into the data loading for one time correction everywhere!
   summary_data[
