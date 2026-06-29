@@ -50,10 +50,11 @@ generate_choice_text2 <- function(
     if (!is.null(region_comparison_checkbox)) {
       comparisons <- c(comparisons, "Regional average")
     }
-    if (!is.null(sn_comparison_checkbox)) {
+    if (isTRUE(sn_comparison_checkbox)&&
+        select_geography == "Local authority") {
       comparisons <- c(comparisons, "Statistical neighbours average")
     }
-    comparison_text <- "You have also selected to compare with the "
+        comparison_text <- "You have also selected to compare with the "
   } else {
     if (select_geography == "Regional") {
       comparisons <- c("National average")
