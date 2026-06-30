@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "Hospital admissions data updated. Data published May 2026."
+        "School and social worker stability measures updated. Data published April 2026."
       )
     ),
     bslib::navset_pill_list(

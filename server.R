@@ -338,7 +338,8 @@ server <- function(input, output, session) {
     generate_choice_text2(
       input$national_comparison_checkbox_o1,
       input$region_comparison_checkbox_o1,
-      input$sn_comparison_checkbox_o1
+      input$Yes_sn_o1,
+      select_geography = input$select_geography_o1
     )
   })
 
@@ -4996,7 +4997,8 @@ server <- function(input, output, session) {
     generate_choice_text2(
       input$national_comparison_checkbox_o3,
       input$region_comparison_checkbox_o3,
-      input$sn_comparison_checkbox_o3
+      input$Yes_sn_o3,
+      select_geography = input$select_geography_o3
     )
   })
 
@@ -5826,7 +5828,8 @@ server <- function(input, output, session) {
     generate_choice_text2(
       input$national_comparison_checkbox_o2,
       input$region_comparison_checkbox_o2,
-      input$sn_comparison_checkbox_o2
+      input$Yes_sn_o2,
+      select_geography = input$select_geography_o2
     )
   })
 
@@ -7555,7 +7558,8 @@ server <- function(input, output, session) {
     generate_choice_text2(
       input$national_comparison_checkbox_o4,
       input$region_comparison_checkbox_o4,
-      input$sn_comparison_checkbox_o4
+      input$Yes_sn_o4,
+      select_geography = input$select_geography_o4
     )
   })
 
@@ -11302,7 +11306,8 @@ server <- function(input, output, session) {
     generate_choice_text2(
       input$national_comparison_checkbox_e3,
       input$region_comparison_checkbox_e3,
-      input$sn_comparison_checkbox_e3
+      input$Yes_sn_e3,
+      select_geography = input$select_geography_e3
     )
   })
 
