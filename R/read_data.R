@@ -3352,7 +3352,7 @@ read_spending_data <- function(
   return(final_dataset)
 }
 
-read_population_estimates <- function(file = "./data-raw/mye24tablesew.xlsx") {
+read_population_estimates <- function(file = "./data-raw/mye25tablesew.xlsx") {
   population_estimates <- read_excel(
     file,
     sheet = "MYE2 - Persons",
