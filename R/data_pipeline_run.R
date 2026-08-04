@@ -22,7 +22,7 @@ if (TRUE == FALSE) {
 
   ## 2. Set Common parameters ----
 
-  YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
+  YOUR_LOCAL_PATH <- "C:/Users/cnjoku/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
   TASK_NAME <- "stability" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match each other and match the current data file name in data-raw
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
