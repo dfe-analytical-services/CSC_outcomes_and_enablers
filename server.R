@@ -6789,15 +6789,19 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
+    latest_time_period <- assessment_factors %>%
+    dplyr::pull(time_period) %>%
+     max(na.rm = TRUE)
     p <- all_assessment_factors_plot(
       assessment_factors,
       af_child_abuse_extra_filter,
       selected_geo_breakdown = input$geographic_breakdown_o2
     ) %>%
       config(displayModeBar = F)
+
     p <- p +
       ggtitle(
-        "Factors identified at the end of assessment in the year to 31 March 2024 related to child abuse or neglect"
+        paste("Factors identified at the end of assessment in the year to 31 March", latest_time_period,"related to child abuse or neglect")
       )
     ggplotly(
       p,
@@ -7162,6 +7166,9 @@ server <- function(input, output, session) {
       need(input$select_geography_o2 != "", "Select a geography level."),
       need(input$geographic_breakdown_o2 != "", "Select a location.")
     )
+    latest_time_period <- assessment_factors %>%
+        dplyr::pull(time_period) %>%
+        max(na.rm = TRUE)
     p <- all_assessment_factors_plot(
       assessment_factors,
       extra_familial_harm_af,
@@ -7170,7 +7177,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
     p <- p +
       ggtitle(
-        "Factors identified at the end of assessment in the year to 31 March 2024 related to specific types of harms\n outside the home"
+        paste("Factors identified at the end of assessment in the year to 31 March", latest_time_period, "related to specific types of harms\n outside the home")
       )
     ggplotly(
       p,
