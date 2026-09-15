@@ -3836,7 +3836,7 @@ read_ofsted_leadership_data <- function(
       -c(
         `Web link`,
         `Overall effectiveness`,
-        `The experiences and progress of children who need help and protection`,
+        `The experiences and progress of children in need of help and protection`,
         `The experiences and progress of children in care`,
         `The experiences and progress of care leavers`
       )
@@ -3848,7 +3848,7 @@ read_ofsted_leadership_data <- function(
       "geo_breakdown" = `Local authority name`,
       "region" = `Ofsted region`,
       "inspection_date" = `Inspection date`,
-      "impact_of_leaders" = `The impact of leaders on social work practice with children and families`
+      "impact_of_leaders" = `The impact of leaders on practice with children and families`
     ) %>%
     mutate(
       geo_breakdown = case_when(

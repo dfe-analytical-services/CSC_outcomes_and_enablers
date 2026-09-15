@@ -62,7 +62,7 @@ if (TRUE == FALSE) {
     datasets_new = NULL,
     datasets_rds = NULL,
     save_datasets = FALSE,
-    save_comparison = TRUE,
+    save_comparison = FALSE,
     YOUR_LOCAL_PATH,
     TASK_NAME,
     PIPELINE_RUN_VERSION
