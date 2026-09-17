@@ -22,8 +22,8 @@ if (TRUE == FALSE) {
 
   ## 2. Set Common parameters ----
 
-  YOUR_LOCAL_PATH <- "C:/Users/npaterson/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
-  TASK_NAME <- "stability" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match each other and match the current data file name in data-raw
+  YOUR_LOCAL_PATH <- "C:/Users/bsalako/OneDrive - Department for Education/Documents/CSC shiny dashboard/Data QA/" # <--- REPLACE WITH YOUR USERNAME and create the folders on your device
+  TASK_NAME <- "stability" # <--- REPLACE WITH YOUR FOLDER and ensure there are data files pasted into two subfolders for the new data and the old data, note that the file names must match each other and match the current data file name in data-ra
 
   ## 3. Preliminary diagnostics (OPTIONAL): before running the pipeline for a modified raw dataset and potentially triggering errors do some comparisons between the csv files for consistency year on year ----
 
@@ -62,7 +62,7 @@ if (TRUE == FALSE) {
     datasets_new = NULL,
     datasets_rds = NULL,
     save_datasets = FALSE,
-    save_comparison = TRUE,
+    save_comparison = FALSE,
     YOUR_LOCAL_PATH,
     TASK_NAME,
     PIPELINE_RUN_VERSION
@@ -112,7 +112,7 @@ if (TRUE == FALSE) {
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
 
-  reason_for_pipeline_run <- "Update hosportal addmisions data" # <---- EDIT HERE
+  reason_for_pipeline_run <- "LA leadership Ofsted ratings" # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE

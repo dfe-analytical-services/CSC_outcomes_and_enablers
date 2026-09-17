@@ -69,7 +69,7 @@ disclaimer_tab <- function() {
           )),
           tags$li(a(
             href = "https://www.gov.uk/government/collections/childrens-social-care-statistics",
-            "Children’s social care data in England 2025 (last updated: 25 September 2025) (opens in a new tab).",
+            "Children’s social care data in England 2026 (last updated: August 2026) (opens in a new tab).",
             target = "_blank",
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
