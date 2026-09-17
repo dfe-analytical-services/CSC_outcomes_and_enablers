@@ -378,8 +378,8 @@ enabler2_tab <- function() {
                         tags$li(
                           "For more information on the data and definitions, see here: ",
                           a(
-                            href = "https://www.gov.uk/government/statistics/local-authority-inspection-outcomes-as-at-31-march-2025",
-                            "Children’s social care data in England 2025.",
+                            href = "https://www.gov.uk/government/statistics/local-authority-inspection-outcomes-as-at-31-march-2026",
+                            "Children’s social care data in England 2026.",
                             target = "_blank"
                           ),
                         ),
@@ -429,8 +429,8 @@ enabler2_tab <- function() {
                         tags$li(
                           "For more information on the data and definitions, see here: ",
                           a(
-                            href = "https://www.gov.uk/government/statistics/local-authority-inspection-outcomes-as-at-31-march-2025",
-                            "Children’s social care data in England 2025.",
+                            href = "https://www.gov.uk/government/statistics/local-authority-inspection-outcomes-as-at-31-march-2026",
+                            "Children’s social care data in England 2026.",
                             target = "_blank"
                           ),
                         ),
