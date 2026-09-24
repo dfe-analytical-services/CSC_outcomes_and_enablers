@@ -79,6 +79,7 @@ output_data <- create_qa_dataset_sn(
   output_identifier,
   dataset_calc = cin_rates,
   sn_long,
+  csv_file = null,
   id.vars_raw,
   measure.vars_raw,
   raw_melt_cols,
@@ -87,7 +88,7 @@ output_data <- create_qa_dataset_sn(
   calc_qa_formula,
   raw_qa_formula_1,
   raw_qa_formula_2,
-  write_data = FALSE,
+  write_data = TRUE,
   dataset_raw = cin_rate_data
 )
 
