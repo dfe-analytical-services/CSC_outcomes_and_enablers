@@ -10317,8 +10317,7 @@ server <- function(input, output, session) {
     stat <- format(
       spending_data %>%
         filter(
-          time_period == "2024/25" &
-            geo_breakdown %in% input$geographic_breakdown_e2
+        geo_breakdown %in% input$geographic_breakdown_e2
         ) %>%
         select(`CS Share`),
       nsmall = 2
@@ -10373,8 +10372,7 @@ server <- function(input, output, session) {
     stat <- format(
       spending_data_no_cla %>%
         filter(
-          time_period == "2024/25" &
-            geo_breakdown %in% input$geographic_breakdown_e2
+        geo_breakdown %in% input$geographic_breakdown_e2
         ) %>%
         select(`Excluding CLA Share`),
       nsmall = 2

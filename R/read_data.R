@@ -3115,9 +3115,9 @@ merge_eth_dataframes <- function(sn_long) {
 
 read_spending_data <- function(
   sn_long,
-  file = "./data-raw/RSX_LA_Data_2024-25_data_by_LA.ods"
+  file = "./data-raw/RSX_LA_Data_2025-26_data_by_LA.ods"
 ) {
-  data <- read_ods(file, sheet = "RSX_LA_Data_202425", range = "A7:DA430")
+  data <- read_ods(file, sheet = "RSX_LA_Data_202526", range = "A7:DO433")
   data2 <- data %>%
     select(
       "ONS Code",
@@ -3174,7 +3174,7 @@ read_spending_data <- function(
   )
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2024/25"
+  merged_data$time_period <- "2025/26"
   merged_data <- merged_data %>%
     remove_cumbria_data() %>%
     select(
@@ -3197,7 +3197,7 @@ read_spending_data <- function(
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2024/25"
+  national_data$time_period <- "2025/26"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -3224,7 +3224,7 @@ read_spending_data <- function(
     rename("geo_breakdown" = "region_name")
   # regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2024/25"
+  regional_spending$time_period <- "2025/26"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -3238,7 +3238,7 @@ read_spending_data <- function(
       cs_share = ((exp / total_exp) * 100)
     ) %>%
     mutate(
-      "time_period" = "2024/25",
+      "time_period" = "2025/26",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = "",
@@ -3352,7 +3352,7 @@ read_spending_data <- function(
   return(final_dataset)
 }
 
-read_population_estimates <- function(file = "./data-raw/mye24tablesew.xlsx") {
+read_population_estimates <- function(file = "./data-raw/mye25tablesew.xlsx") {
   population_estimates <- read_excel(
     file,
     sheet = "MYE2 - Persons",
@@ -3560,9 +3560,10 @@ read_per_capita_spending <- function(sn_long) {
 
 read_spending_data2 <- function(
   sn_long,
-  file = "./data-raw/RO3_LA_DATA_2024-25_data_by_LA.ods"
+  file = "./data-raw/RO3_LA_Data_2025-26_data_by_LA.ods"
+
 ) {
-  data <- read_ods(file, sheet = "RO3_LA_Data_202425", range = "A7:SC418")
+  data <- read_ods(file, sheet = "RO3_LA_Data_202526", range = "A7:UI433")
   data2 <- data %>%
     select(
       "ONS Code",
@@ -3621,7 +3622,7 @@ read_spending_data2 <- function(
   )
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
-  merged_data$time_period <- "2024/25"
+  merged_data$time_period <- "2025/26"
   merged_data <- merged_data %>%
     select(
       time_period,
@@ -3641,7 +3642,7 @@ read_spending_data2 <- function(
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
-  national_data$time_period <- "2024/25"
+  national_data$time_period <- "2025/26"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
   national_data <- national_data %>%
@@ -3668,7 +3669,7 @@ read_spending_data2 <- function(
     rename("geo_breakdown" = "region_name")
   # regional_spending$minus_cla_share <- janitor::round_half_up(regional_spending$minus_cla_share)
   regional_spending$geographic_level <- "Regional"
-  regional_spending$time_period <- "2024/25"
+  regional_spending$time_period <- "2025/26"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
 
@@ -3682,7 +3683,7 @@ read_spending_data2 <- function(
       minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)
     ) %>%
     mutate(
-      "time_period" = "2024/25",
+      "time_period" = "2025/26",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
       "new_la_code" = as.character(""),
