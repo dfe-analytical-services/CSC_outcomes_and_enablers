@@ -93,7 +93,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "LA leadership Ofsted ratings has been updated as of 6th August 2026."
+        "LA revenue expenditure 2025 to 2026 updated as of 17th September 2026."
       )
     ),
     bslib::navset_pill_list(
