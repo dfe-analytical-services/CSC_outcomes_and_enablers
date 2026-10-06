@@ -63,7 +63,7 @@ disclaimer_tab <- function() {
           )),
           tags$li(a(
             href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales",
-            "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: 30 July 2025) (opens in a new tab).",
+            "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: July 2026) (opens in a new tab).",
             target = "_blank",
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
