@@ -3165,8 +3165,17 @@ read_spending_data <- function(
       )
     )
 
+  lalookup <- GET_location(cla_placements)
+  
+  #changes Barnsley and Sheffield to new codes
+  lalookup$new_la_code <- dplyr::recode(
+    lalookup$new_la_code,
+    "E08000016" = "E08000038",
+    "E08000019" = "E08000039"
+  )
+  
   merged_data <- merge(
-    GET_location(cla_placements),
+    lalookup,
     data3,
     by.x = "new_la_code",
     by.y = "ONS Code",
@@ -3174,6 +3183,7 @@ read_spending_data <- function(
   )
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
+  #manually update time_period
   merged_data$time_period <- "2025/26"
   merged_data <- merged_data %>%
     remove_cumbria_data() %>%
@@ -3224,6 +3234,7 @@ read_spending_data <- function(
     rename("geo_breakdown" = "region_name")
   # regional_spending$cs_share <- janitor::round_half_up(regional_spending$cs_share)
   regional_spending$geographic_level <- "Regional"
+  #manually update time_period
   regional_spending$time_period <- "2025/26"
   regional_spending$new_la_code <- as.character("")
   regional_spending$old_la_code <- as.numeric("")
@@ -3238,6 +3249,7 @@ read_spending_data <- function(
       cs_share = ((exp / total_exp) * 100)
     ) %>%
     mutate(
+      #manually update time_period
       "time_period" = "2025/26",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
@@ -3613,8 +3625,17 @@ read_spending_data2 <- function(
       )
     )
 
-  merged_data <- merge(
-    GET_location(cla_placements),
+  lalookup <- GET_location(cla_placements)
+  
+  #changes Barnsley and Sheffield to new codes
+  lalookup$new_la_code <- dplyr::recode(
+    lalookup$new_la_code,
+        "E08000016" = "E08000038",
+        "E08000019" = "E08000039"
+      )
+  
+    merged_data <- merge(
+    lalookup,
     data3,
     by.x = "new_la_code",
     by.y = "ONS Code",
@@ -3622,6 +3643,7 @@ read_spending_data2 <- function(
   )
   merged_data$geographic_level <- "Local authority"
   merged_data$geo_breakdown <- merged_data$la_name
+  #manually update time_period
   merged_data$time_period <- "2025/26"
   merged_data <- merged_data %>%
     select(
@@ -3642,6 +3664,7 @@ read_spending_data2 <- function(
   national_data <- data3 %>% filter(data3$Class == "Eng")
   national_data$geographic_level <- "National"
   national_data$geo_breakdown <- "National"
+  #manually update time_period
   national_data$time_period <- "2025/26"
   national_data$new_la_code <- as.character("")
   national_data$old_la_code <- as.numeric("")
@@ -3683,6 +3706,7 @@ read_spending_data2 <- function(
       minus_cla_share = (((total_exp - cla_exp) / total_exp) * 100)
     ) %>%
     mutate(
+      #manually update time_period
       "time_period" = "2025/26",
       "geographic_level" = "Regional",
       "geo_breakdown" = "London",
