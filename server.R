@@ -10411,12 +10411,13 @@ server <- function(input, output, session) {
           geographic_level == "Regional",
           time_period == max(spending_data$time_period)
         ) %>%
-        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share) %>%
+      rename("Share of spend on children's services" = "cs_share")
 
-      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      max_y_lim <- ceiling(max(data$"Share of spend on children's services") / 10) * 10
       p <- by_region_bar_plot(
         data,
-        "cs_share",
+        "Share of spend on children's services",
         "Share spent on children's services (%)",
         max_y_lim,
         decimal_percentage = TRUE
@@ -10561,14 +10562,15 @@ server <- function(input, output, session) {
           geographic_level == "Local authority",
           time_period == max(spending_data$time_period)
         ) %>%
-        select(time_period, geographic_level, geo_breakdown, cs_share) # %>%
+        select(time_period, geographic_level, geo_breakdown, cs_share)  %>%
+        rename("Share of spend on children's services" = "cs_share")
 
-      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      max_y_lim <- ceiling(max(data$"Share of spend on children's services") / 10) * 10
       p <- by_la_bar_plot(
         dataset = data,
         selected_geo_breakdown = input$geographic_breakdown_e2,
         selected_geo_lvl = input$select_geography_e2,
-        yvalue = "cs_share",
+        yvalue = "Share of spend on children's services",
         yaxis_title = "Share spent on children's services (%)",
         decimal_percentage = TRUE
       ) %>%
@@ -10780,12 +10782,13 @@ server <- function(input, output, session) {
         geographic_level == "Regional",
         time_period == max(spending_data_no_cla$time_period)
       ) %>%
-      select(time_period, geographic_level, geo_breakdown, minus_cla_share) # %>%
+      select(time_period, geographic_level, geo_breakdown, minus_cla_share) %>%
+         rename("Share of CS spend not on CLA" = "minus_cla_share")
 
-    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+    max_y_lim <- ceiling(max(data$"Share of CS spend not on CLA") / 10) * 10
     p <- by_region_bar_plot(
       data,
-      "minus_cla_share",
+      "Share of CS spend not on CLA",
       "Share spent on children's services\n excluding CLA (%)",
       max_y_lim,
       decimal_percentage = TRUE
@@ -10862,15 +10865,15 @@ server <- function(input, output, session) {
         time_period == max(spending_data_no_cla$time_period)
       ) %>%
       select(time_period, geographic_level, geo_breakdown, minus_cla_share) %>%
-      rename("Share minus CLA (%)" = "minus_cla_share")
+      rename("Share of CS spend not on CLA" = "minus_cla_share")
 
-    max_y_lim <- ceiling(max(data$`Share minus CLA (%)`) / 50) * 50
+    max_y_lim <- ceiling(max(data$`Share of CS spend not on CLA`) / 50) * 50
 
     p <- by_la_bar_plot(
       dataset = data,
       selected_geo_breakdown = input$geographic_breakdown_e2,
       selected_geo_lvl = input$select_geography_e2,
-      yvalue = "Share minus CLA (%)",
+      yvalue = "Share of CS spend not on CLA",
       yaxis_title = "Share spent on children's services excluding CLA (%)",
       decimal_percentage = TRUE
     ) %>%
@@ -18984,14 +18987,15 @@ server <- function(input, output, session) {
       input$spending_choice ==
         "Share of total local authority spend on children's services"
     ) {
-      data <- spending_data
+      data <- spending_data %>% 
+            rename("Share of spend on children's services" = "cs_share")
 
-      max_y_lim <- ceiling(max(data$cs_share) / 10) * 10
+      max_y_lim <- ceiling(max(data$"Share of spend on children's services") / 10) * 10
       p <- statistical_neighbours_plot(
         data,
         input$geographic_breakdown_e2,
         input$select_geography_e2,
-        "cs_share",
+        "Share of spend on children's services",
         "Share spent on children's services (%)",
         max_y_lim,
         decimal_percentage = TRUE
@@ -19224,14 +19228,16 @@ server <- function(input, output, session) {
       need(input$geographic_breakdown_e2 != "", "Select a location."),
     )
 
-    data <- spending_data_no_cla
-    max_y_lim <- ceiling(max(data$minus_cla_share) / 10) * 10
+    data <- spending_data_no_cla %>% 
+      rename("Share of CS spend not on CLA" = "minus_cla_share")
+    
+    max_y_lim <- ceiling(max(data$'Share of CS spend not on CLA') / 10) * 10 
 
     p <- statistical_neighbours_plot(
       data,
       input$geographic_breakdown_e2,
       input$select_geography_e2,
-      "minus_cla_share",
+      "Share of CS spend not on CLA",
       "Share spent on children's services excluding CLA (%)",
       max_y_lim,
       decimal_percentage = TRUE
