@@ -10633,28 +10633,64 @@ server <- function(input, output, session) {
   })
 
   output$table_tot_spending_la <- renderReactable({
+    
     shiny::validate(
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location."),
       need(input$spending_choice != "", "Select a spending level.")
     )
+    
     if (
       input$spending_choice ==
-        "Share of total local authority spend on children's services"
+      "Share of total local authority spend on children's services"
     ) {
-      data <- spending_data %>%
-        filter(
-          geographic_level == "Local authority",
-          time_period == max(spending_data$time_period)
-        ) %>%
-        select(time_period, geo_breakdown, cs_share) %>%
-        arrange(desc(cs_share)) %>%
-        rename(
-          "Time period" = "time_period",
-          "Local authority" = "geo_breakdown",
-          "Share of spending on children's services (%)" = "cs_share"
-        )
-
+      
+      if (input$select_geography_e2 == "Regional") {
+        
+        if (input$geographic_breakdown_e2 == "London") {
+          
+          # Include both Inner London and Outer London
+          location <- location_data %>%
+            filter(region_name %in% c("Inner London", "Outer London")) %>%
+            pull(la_name)
+          
+        } else {
+          
+          # Get the la_name values within the selected region_name
+          location <- location_data %>%
+            filter(region_name == input$geographic_breakdown_e2) %>%
+            pull(la_name)
+        }
+        
+        data <- spending_data %>%
+          filter(
+            geo_breakdown %in% location,
+            time_period == max(time_period)
+          ) %>%
+          select(time_period, geo_breakdown, "cs_share") %>%
+          arrange(desc(`cs_share`), geo_breakdown) %>%
+          rename(
+            "Time period" = "time_period",
+            "Local authority" = "geo_breakdown",
+            "Share of spending on children's services (%)" = "cs_share"
+          )
+        
+      } else {
+        
+        data <- spending_data %>%
+          filter(
+            geographic_level == "Local authority",
+            time_period == max(spending_data$time_period)
+          ) %>%
+          select(time_period, geo_breakdown, cs_share) %>%
+          arrange(desc(cs_share)) %>%
+          rename(
+            "Time period" = "time_period",
+            "Local authority" = "geo_breakdown",
+            "Share of spending on children's services (%)" = "cs_share"
+          )
+      }
+      
       table <- reactable(
         data,
         defaultColDef = colDef(align = "center"),
@@ -10665,21 +10701,56 @@ server <- function(input, output, session) {
           )
         ),
         defaultPageSize = 15,
-        searchable = TRUE,
+        searchable = TRUE
       )
+      
     } else {
-      data <- spending_per_capita %>%
-        filter(
-          geographic_level == "Local authority",
-          time_period == max(spending_data$time_period)
-        ) %>%
-        select(time_period, geo_breakdown, cost_per_capita) %>%
-        arrange(desc(cost_per_capita)) %>%
-        rename(
-          "Time period" = "time_period",
-          "Local authority" = "geo_breakdown",
-          "Average spend per child (£)" = "cost_per_capita"
-        )
+      
+      if (input$select_geography_e2 == "Regional") {
+        
+        if (input$geographic_breakdown_e2 == "London") {
+          
+          # Include both Inner London and Outer London
+          location <- location_data %>%
+            filter(region_name %in% c("Inner London", "Outer London")) %>%
+            pull(la_name)
+          
+        } else {
+          
+          # Get the la_name values within the selected region_name
+          location <- location_data %>%
+            filter(region_name == input$geographic_breakdown_e2) %>%
+            pull(la_name)
+        }
+        
+        data <- spending_per_capita %>%
+          filter(
+            geo_breakdown %in% location,
+            time_period == max(time_period)
+          ) %>%
+          select(time_period, geo_breakdown, "cost_per_capita") %>%
+          arrange(desc(`cost_per_capita`), geo_breakdown) %>%
+          rename(
+            "Time period" = "time_period",
+            "Local authority" = "geo_breakdown",
+            "Average spend per child (£)" = "cost_per_capita"
+          )
+        
+      } else {
+        
+        data <- spending_per_capita %>%
+          filter(
+            geographic_level == "Local authority",
+            time_period == max(spending_data$time_period)
+          ) %>%
+          select(time_period, geo_breakdown, cost_per_capita) %>%
+          arrange(desc(cost_per_capita)) %>%
+          rename(
+            "Time period" = "time_period",
+            "Local authority" = "geo_breakdown",
+            "Average spend per child (£)" = "cost_per_capita"
+          )
+      }
 
       table <- reactable(
         data,
@@ -10833,6 +10904,31 @@ server <- function(input, output, session) {
       need(input$select_geography_e2 != "", "Select a geography level."),
       need(input$geographic_breakdown_e2 != "", "Select a location.")
     )
+    if (input$select_geography_e2 == "Regional") {
+      if (input$geographic_breakdown_e2 == "London") {
+        # Include both Inner London and Outer London
+        location <- location_data %>%
+          filter(region_name %in% c("Inner London", "Outer London")) %>%
+          pull(la_name)
+      } else {
+        # Get the la_name values within the selected region_name
+        location <- location_data %>%
+          filter(region_name == input$geographic_breakdown_e2) %>%
+          pull(la_name)
+      }
+      
+      data <- spending_data_no_cla %>%
+        filter(geo_breakdown %in% location, time_period == max(time_period)) %>%
+        select(time_period, geo_breakdown, "minus_cla_share") %>%
+        arrange(desc(`minus_cla_share`), geo_breakdown) %>%
+        rename(
+          "Time period" = "time_period",
+          "Local authority" = "geo_breakdown",
+          "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share"
+        )
+    } else if (
+      input$select_geography_e2 %in% c("Local authority", "National")
+    ) {
     data <- spending_data_no_cla %>%
       filter(
         geographic_level == "Local authority",
@@ -10845,6 +10941,7 @@ server <- function(input, output, session) {
         "Local authority" = "geo_breakdown",
         "Share of Children’s Services spend not on CLA (%)" = "minus_cla_share"
       )
+    }
 
     reactable(
       data,
