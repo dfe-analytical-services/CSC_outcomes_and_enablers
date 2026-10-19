@@ -19020,7 +19020,7 @@ server <- function(input, output, session) {
         "Spend per child (£)",
         "Average spend per child (£)",
         max_y_lim,
-        decimal_percentage = TRUE
+        decimal_percentage = FALSE
       ) %>%
         config(displayModeBar = F)
       # p <- p + ggtitle("Average spend per child (£) by statistical neighbours")
