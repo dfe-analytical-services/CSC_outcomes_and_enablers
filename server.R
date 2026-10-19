@@ -10685,7 +10685,7 @@ server <- function(input, output, session) {
             time_period == max(spending_data$time_period)
           ) %>%
           select(time_period, geo_breakdown, cs_share) %>%
-          arrange(desc(cs_share)) %>%
+          arrange(desc(`cs_share`), geo_breakdown) %>%
           rename(
             "Time period" = "time_period",
             "Local authority" = "geo_breakdown",
@@ -10746,7 +10746,7 @@ server <- function(input, output, session) {
             time_period == max(spending_data$time_period)
           ) %>%
           select(time_period, geo_breakdown, cost_per_capita) %>%
-          arrange(desc(cost_per_capita)) %>%
+          arrange(desc(`cost_per_capita`), geo_breakdown) %>%
           rename(
             "Time period" = "time_period",
             "Local authority" = "geo_breakdown",
@@ -10938,7 +10938,7 @@ server <- function(input, output, session) {
         time_period == max(spending_data_no_cla$time_period)
       ) %>%
       select(time_period, geo_breakdown, minus_cla_share) %>%
-      arrange(desc(minus_cla_share)) %>%
+      arrange(desc(`minus_cla_share`), geo_breakdown) %>%
       rename(
         "Time period" = "time_period",
         "Local authority" = "geo_breakdown",
