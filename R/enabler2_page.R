@@ -145,7 +145,7 @@ enabler2_tab <- function() {
                               "Average per capita (of all children in a local authority) spend on children’s services is calculated based on",
                               a(
                                 href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales",
-                                "ONS published mid-2024 population estimates",
+                                "ONS published mid-2025 population estimates",
                                 target = "_blank"
                               ),
                               "for children aged 0 to 17 years and total children’s services expenditure."
@@ -156,8 +156,8 @@ enabler2_tab <- function() {
                             tags$li(
                               "Spending data is based on the RO3 and RSX data files from the",
                               a(
-                                href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2024-to-2025-individual-local-authority-data-outturn",
-                                "Local authority revenue expenditure and financing England: 2024 to 2025 individual local authority data – outturn",
+                                href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2025-to-2026-individual-local-authority-data-outturn",
+                                "Local authority revenue expenditure and financing England: 2025 to 2026 individual local authority data – outturn",
                                 target = "_blank"
                               )
                             ),
@@ -226,8 +226,8 @@ enabler2_tab <- function() {
                         tags$li(
                           "Spending data is based on the RO3 and RSX data files from the",
                           a(
-                            href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2024-to-2025-individual-local-authority-data-outturn",
-                            "Local authority revenue expenditure and financing England: 2024 to 2025 individual local authority data – outturn",
+                            href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2025-to-2026-individual-local-authority-data-outturn",
+                            "Local authority revenue expenditure and financing England: 2025 to 2026 individual local authority data – outturn",
                             target = "_blank"
                           )
                         ),

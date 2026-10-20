@@ -79,6 +79,7 @@ output_data <- create_qa_dataset_sn(
   output_identifier,
   dataset_calc = cin_rates,
   sn_long,
+  csv_file = null,
   id.vars_raw,
   measure.vars_raw,
   raw_melt_cols,
@@ -87,7 +88,7 @@ output_data <- create_qa_dataset_sn(
   calc_qa_formula,
   raw_qa_formula_1,
   raw_qa_formula_2,
-  write_data = FALSE,
+  write_data = TRUE,
   dataset_raw = cin_rate_data
 )
 
@@ -566,7 +567,7 @@ output_data <- create_qa_dataset_sn(
 #
 output_identifier <- "outcomes_assessment_factors_test_automation"
 dataset_calc <- copy(assessment_factors)
-dataset_raw <- copy(ass_fac_data[geographic_level == "Local authority"])
+dataset_raw <- read_assessment_factors(sn_long = stats_neighbours_long)[geographic_level == "Local authority"]
 csv_file <- "./data-raw/c3_factors_identified_at_end_of_assessment_2018_to_2025.csv"
 id.vars_raw <- c("time_period", "old_la_code", "la_name", "assessment_factor")
 measure.vars_raw = "rate_per_10000_char"

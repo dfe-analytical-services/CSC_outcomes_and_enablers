@@ -63,7 +63,7 @@ disclaimer_tab <- function() {
           )),
           tags$li(a(
             href = "https://www.ons.gov.uk/peoplepopulationandcommunity/populationandmigration/populationestimates/datasets/estimatesofthepopulationforenglandandwales",
-            "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: 30 July 2025) (opens in a new tab).",
+            "Estimates of the population for the UK, England, Wales, Scotland, and Northern Ireland (last updated: July 2026) (opens in a new tab).",
             target = "_blank",
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
@@ -74,8 +74,8 @@ disclaimer_tab <- function() {
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
           tags$li(a(
-            href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2024-to-2025-individual-local-authority-data-outturn",
-            "Local authority revenue expenditure and financing England: 2024 to 2025 (last updated: 4 December 2025) (opens in a new tab).",
+            href = "https://www.gov.uk/government/statistics/local-authority-revenue-expenditure-and-financing-england-2025-to-2026-individual-local-authority-data-outturn",
+            "Local authority revenue expenditure and financing England: 2025 to 2026 (last updated: September 2026) (opens in a new tab).",
             target = "_blank",
             style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
           )),
