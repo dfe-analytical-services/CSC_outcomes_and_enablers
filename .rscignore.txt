@@ -1,7 +1,0 @@
-.Rproj.user
-.Rhistory
-.RData
-.RData*
-.Ruserdata
-*unpublished*
-data/definitions.csv
