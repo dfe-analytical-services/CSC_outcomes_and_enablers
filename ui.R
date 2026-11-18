@@ -41,7 +41,8 @@
 #
 
 ui <- function(input, output, session) {
-  bslib::page(
+  gov_page(
+    width = "full",
     # use_tota11y(),
     title = tags$head(
       tags$link(
@@ -72,7 +73,7 @@ ui <- function(input, output, session) {
     dfeshiny::custom_disconnect_message(
       links = c(site_primary, site_overflow)
     ),
-    tags$head(includeScript("www/downloader.js")),
+#    tags$head(includeScript("www/downloader.js")),
     tags$head(includeHTML(("google-analytics.html"))),
     tags$head(
       tags$link(
@@ -82,7 +83,7 @@ ui <- function(input, output, session) {
       )
     ),
     dfeshiny::header(header = "Children's Social Care - Outcomes and Enablers"),
-    shinyGovstyle::banner(
+    shinyGovstyle::phase_banner(
       "beta banner",
       "beta",
       paste0(
