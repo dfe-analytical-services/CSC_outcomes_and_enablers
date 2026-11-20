@@ -75,6 +75,8 @@ if (!(is.null(params$pipeline_comparison))) {
   pc <- readRDS(file = params$pipeline_comparison_file)
 }
 
+has_changes <- length(pc$changed_datasets) > 0
+
 
 ```
 
@@ -130,9 +132,13 @@ This report will help the analyst to understand the differences between the data
 
 ## Analyse column contents
 
+```{r results='asis', eval=!has_changes}
+cat("**No changed datasets were found**, so there are no column contents to compare. This happens if the new data has already been copied into the app (pipeline step 8) before this report was run.")
+```
+
 ### Reference Datasets (exiting publication)
 
-```{r results='asis'}
+```{r results='asis', eval=has_changes}
   pc$dataset_column_values_comparison$old %>%
       prepare_rt() %>%
       reactable(width = 1000,
@@ -144,7 +150,7 @@ This report will help the analyst to understand the differences between the data
 
 ### New datasets (latest publication)
 
-```{r results='asis'}
+```{r results='asis', eval=has_changes}
   pc$dataset_column_values_comparison$new %>%
     prepare_rt() %>%
     reactable(width = 1000,

@@ -46,7 +46,7 @@ if (TRUE == FALSE) {
     output_dir = "inst",
     output_file = "pipeline_prelim.html",
     params = list(
-      pipeline_comparison = pipeline_prelim$dataset_comparison,
+      pipeline_comparison = pipeline_prelim$pipeline_comparison,
       pipeline_comparison_file = paste0(
         YOUR_LOCAL_PATH,
         "pipeline_comparison_prelim.rds"
@@ -76,7 +76,8 @@ if (TRUE == FALSE) {
   # pr <- run_data_pipeline_step_1(datasets_new = pipeline_run$datasets_new, YOUR_LOCAL_PATH = YOUR_LOCAL_PATH, TASK_NAME = TASK_NAME, PIPELINE_RUN_VERSION = PIPELINE_RUN_VERSION )
   # saveRDS(pr$pipeline_comparison, file = "~/CSC shiny dashboard/Data QA/sw_stability/pipeline_comparison_2004_v_2005.rds")
 
-  ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ----
+  ## 5. Investigate the output from above to compare the current and old data using the diagnostics provided ---- Run this step just once after data change. This is because when you run it the first time, the new data has already been copied into the app and the compariosn is made. ."
+  #No changed datasets were found**, so there are no column contents to compare. This happens if the new data has already been copied into the app (pipeline step 8) before this report was run.")
   print(pipeline_run$pipeline_comparison)
 
   saveRDS(
@@ -89,7 +90,7 @@ if (TRUE == FALSE) {
     output_dir = "inst",
     output_file = "pipeline_diagnostics.html",
     params = list(
-      pipeline_comparison = pipeline_run$dataset_comparison,
+      pipeline_comparison = pipeline_run$pipeline_comparison,
       pipeline_comparison_file = paste0(
         YOUR_LOCAL_PATH,
         "pipeline_comparison.rds"
@@ -98,21 +99,21 @@ if (TRUE == FALSE) {
   )
 
   # more indepth analysis of the diffs
-
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$s47_to_ICPC_data[] # !(variable_clean %in% c("Count", "Denominator"))]
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
-  pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la[
-    !(variable_clean %in% c("avg_att8", "t_pupils"))
-  ]
-  names(pipeline_run$pipeline_comparison$consolidated_setdiffs)
-  pipeline_run$pipeline_comparison$consolidated_setdiffs$s47_to_ICPC_data
-  pipeline_run$pipeline_comparison$dataset_setdiffs$s47_to_ICPC_data
+  pipeline_run$pipeline_comparison$consolidated_field_diffs$wellbeing_sdq_data
+  # pipeline_run$pipeline_comparison$consolidated_field_diffs$s47_to_ICPC_data[] # !(variable_clean %in% c("Count", "Denominator"))]
+  # pipeline_run$pipeline_comparison$consolidated_field_diffs$workforce_data # [!(variable_clean %in% c("Count", "Denominator"))]
+  # pipeline_run$pipeline_comparison$consolidated_field_diffs$ks4_la[
+  #   !(variable_clean %in% c("avg_att8", "t_pupils"))
+  # ]
+  names(pipeline_run$pipeline_comparison$consolidated_setdiffs) #shows names of datsets with differences
+  pipeline_run$pipeline_comparison$consolidated_setdiffs$wellbeing_sdq_data #shows the values and rows in the old and new versions of the dataset
+  pipeline_run$pipeline_comparison$dataset_setdiffs$wellbeing_sdq_data #shows rows only in the new version or only in the old version
 
   ## 6. If the diagnostics are ok then record the necessary parameters in order to run the second step of the pipeline ----
 
   # this must be entered, minimum 10 characters, please be verbose with explanation
 
-  reason_for_pipeline_run <- "LA leadership Ofsted ratings" # <---- EDIT HERE
+  reason_for_pipeline_run <- "updated Care Leaver activity data 17 to 21 " # <---- EDIT HERE
 
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
