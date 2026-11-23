@@ -423,7 +423,7 @@ read_cla_rate_data <- function(
     colClean() %>%
     rename(
       number = children_count,
-      population_count = population_type
+      population_count = cla_population_type
     ) %>%
     # removing old Dorset, Poole, Bournemouth, Northamptonshire
     filter(
@@ -503,7 +503,7 @@ read_cla_placement_data <- function(
     ) %>%
     setDT() %>%
     filter(
-      !(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))
+      !(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029","E08000038","E08000039"))
     ) %>%
     remove_cumbria_data() %>%
     select(
@@ -2160,9 +2160,14 @@ read_placement_info_data <- function(
 ## Care leavers activity -----
 read_care_leavers_activity_data <- function(
   sn_long,
-  file = "./data-raw/la_care_leavers_activity.csv"
+  file = "./data-raw/la_care_leavers_17_to_21.csv",
+  group_filter = NULL
 ) {
-  cl_activity_data <- fread(file) %>%
+  cl_activity_raw <- fread(file)
+  if (!is.null(group_filter)) {
+      cl_activity_raw <- cl_activity_raw[breakdown_group %in% group_filter]
+  }
+  cl_activity_data <- cl_activity_raw %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%
@@ -2212,12 +2217,18 @@ read_care_leavers_activity_data <- function(
   return(cl_activity_data)
 }
 
+
 ## Care leavers accommodation -----
 read_care_leavers_accommodation_suitability <- function(
   sn_long,
-  file = "./data-raw/la_care_leavers_accommodation_suitability.csv"
+  file = "./data-raw/la_care_leavers_17_to_21.csv",
+  group_filter = NULL
 ) {
-  cl_accom_data <- fread(file) %>%
+  cl_accom_raw <- fread(file) 
+  if (!is.null(group_filter)) {
+    cl_accom_raw <- cl_accom_raw[breakdown_group %in% group_filter]
+  }
+  cl_accom_data<- cl_accom_raw %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%

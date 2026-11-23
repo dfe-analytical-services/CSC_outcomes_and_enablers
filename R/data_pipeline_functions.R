@@ -394,10 +394,11 @@ pipeline_generate_datasets <- function() {
     sn_long = stats_neighbours_long
   ))
   care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(
-    sn_long = stats_neighbours_long
+    sn_long = stats_neighbours_long, group_filter = "Type of activity"
   ))
+
   care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(
-    sn_long = stats_neighbours_long
+    sn_long = stats_neighbours_long, group_filter = "Suitability of accommodation"
   ))
   wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(
     sn_long = stats_neighbours_long
@@ -610,8 +611,8 @@ pipeline_compare_datasets <- function(
     function(df_name, datasets_new, datasets_rds) {
       print(df_name)
       list(
-        old_v_new = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]]),
-        new_v_old = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]])
+        old_v_new = setdiff(datasets_rds[[df_name]], datasets_new[[df_name]]),
+        new_v_old = setdiff(datasets_new[[df_name]], datasets_rds[[df_name]])
       )
     },
     datasets_new,
@@ -852,6 +853,9 @@ field_diffs <- function(csd) {
   column_names <- names(csd)
   measure_vars <- grep("_newval|_oldval", column_names, value = TRUE)
   id_vars <- grep("_newval|_oldval", column_names, value = TRUE, invert = TRUE)
+  if (length(measure_vars) == 0) {
+    return(csd[0])
+  }
   # now melt the wide data into long format, adding a column to identify the old and new entires
   csd_melt <- melt(csd, id.vars = id_vars, measure.vars = measure_vars)
   csd_melt[grep("_oldval", variable), old_or_new := "OLD"]
