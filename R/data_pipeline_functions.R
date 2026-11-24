@@ -395,17 +395,11 @@ pipeline_generate_datasets <- function() {
   ))
   care_leavers_activity_data <- suppressWarnings(read_care_leavers_activity_data(
     sn_long = stats_neighbours_long,
-    file = "./data-raw/la_care_leavers_17_to_21.csv",
     group_filter = "Type of activity"
   ))
-
-  #  care_leavers_activity_22_25_data <- suppressWarnings(read_care_leavers_activity_data(
-  #   sn_long = stats_neighbours_long,
-  #   file = "./data-raw/la_care_leavers_22_25.csv",
-  #   group_filter = "Type of activity"
-  # ))
   care_leavers_accommodation_data <- suppressWarnings(read_care_leavers_accommodation_suitability(
-    sn_long = stats_neighbours_long
+    sn_long = stats_neighbours_long,
+    group_filter = "Suitability of accommodation"
   ))
   wellbeing_sdq_data <- suppressWarnings(read_wellbeing_child_data(
     sn_long = stats_neighbours_long

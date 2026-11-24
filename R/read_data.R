@@ -2218,26 +2218,18 @@ read_care_leavers_activity_data <- function(
 
   return(cl_activity_data)
 }
-## Care leavers activity 17 to 21 -----
-##resueing the 
-# care_leavers_17_to_21 <- read_care_leavers_activity_data(
-#   sn_long,
-#   file = "./data-raw/la_care_leavers_17_to_21.csv"
-# )
-
-# ## Care leavers activity 22 to 25 -----
-# care_leavers_22_to_25 <- read_care_leavers_activity_data(
-#   sn_long,
-#   file = "./data-raw/la_care_leavers_22_25.csv"
-# )
-
 
 ## Care leavers accommodation -----
 read_care_leavers_accommodation_suitability <- function(
   sn_long,
-  file = "./data-raw/la_care_leavers_accommodation_suitability.csv"
+  file = "./data-raw/la_care_leavers_17_to_21.csv",
+  group_filter = NULL
 ) {
-  cl_accom_data <- fread(file) %>%
+  cl_accom_raw <- fread(file)
+  if (!is.null(group_filter)) {
+    cl_accom_raw <- cl_accom_raw[breakdown_group %in% group_filter]
+  }
+  cl_accom_data <- cl_accom_raw %>%
     # filter out old dorset code
     filter(!(new_la_code %in% dropList)) %>%
     insert_geo_breakdown() %>%

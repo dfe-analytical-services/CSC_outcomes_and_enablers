@@ -774,8 +774,6 @@ output_data <- create_qa_dataset_sn(
 # updated 2025
 output_identifier <- "outcomes_care_leavers_activity_test_automation_2025"
 dataset_calc <- copy(care_leavers_activity_data)
-#dataset_calc <- copy(care_leavers_activity_22_25_data)
-#dataset_calc <- copy(care_leavers_activity_22_25_data)
 #csv_file <- "./data/la_care_leavers_activity.csv"
 dataset_raw <- read_care_leavers_activity_data(sn_long = stats_neighbours_long)[
   geographic_level != "Statistical neighbours (median)"
