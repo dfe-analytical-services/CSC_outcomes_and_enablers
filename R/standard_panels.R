@@ -41,7 +41,7 @@ support_links <- function() {
           tags$ul(
             tags$li(a(
               href = "https://explore-education-statistics.service.gov.uk/find-statistics/children-looked-after-in-england-including-adoptions",
-              "Children looked after in England including adoptions (last updated:	26 November 2025) (opens in a new tab).",
+              "Children looked after in England including adoptions (last updated:	19 November 2026) (opens in a new tab).",
               target = "_blank",
               style = "font-family: GDS Transport, arial, sans-serif; font-size :19px;"
             )),

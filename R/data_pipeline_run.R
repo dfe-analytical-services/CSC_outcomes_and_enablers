@@ -113,7 +113,7 @@ if (TRUE == FALSE) {
   
   # this must be entered, minimum 10 characters, please be verbose with explanation
   
-  reason_for_pipeline_run <- "Update on care leavers  " # <---- EDIT HERE
+  reason_for_pipeline_run <- "Update on national_cla_adopted_average_time  " # <---- EDIT HERE
   
   # this must be updated to "Y" to signify the comparison has been checked
   comparison_checked <- "Y" # <---- EDIT HERE
