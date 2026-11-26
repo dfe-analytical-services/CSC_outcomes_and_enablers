@@ -1651,14 +1651,14 @@ output_data <- create_qa_dataset_sn(
 output_identifier <- "outcomes_uasc_31_march_looked_after_2025"
 dataset_calc <- copy(combined_cla_31_march_data)[time_period <= "2025"][
   characteristic == "UASC"
-][population_count == "Children looked after on 31 March each year"]
+][population_count == "Children looked after at 31 March each year"]
 
 dataset_raw <- suppressWarnings(merge_cla_31_march_dataframes(
   sn_long = stats_neighbours_long
 ))[geographic_level != "Statistical neighbours (median)"][
   time_period <= "2025"
 ][characteristic == "UASC"][
-  population_count == "Children looked after on 31 March each year"
+  population_count == "Children looked after at 31 March each year"
 ]
 
 setDT(dataset_raw)

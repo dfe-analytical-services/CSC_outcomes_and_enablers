@@ -38,7 +38,7 @@
 # The documentation for this GOVUK components can be found at:
 #
 #    https://github.com/moj-analytical-services/shinyGovstyle
-#
+
 
 ui <- function(input, output, session) {
   gov_page(
@@ -94,7 +94,7 @@ ui <- function(input, output, session) {
       "banner",
       "",
       paste0(
-        "LA revenue expenditure 2025 to 2026 updated as of 17th September 2026."
+        "Children Looked After has been updated as of 19 Nov 2026."
       )
     ),
     bslib::navset_pill_list(

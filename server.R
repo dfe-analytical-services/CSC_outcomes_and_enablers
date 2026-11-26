@@ -662,7 +662,7 @@ server <- function(input, output, session) {
         filter(
           time_period == max(combined_cla_31_march_data$time_period) &
             geo_breakdown %in% input$geographic_breakdown_o1 &
-            population_count == "Children looked after on 31 March each year" &
+            population_count == "Children looked after at 31 March each year" &
             characteristic == "UASC"
         ) %>%
         select(placement_per_10000),
@@ -691,7 +691,7 @@ server <- function(input, output, session) {
         filter(
           time_period == max(cla_rates$time_period) &
             geo_breakdown %in% input$geographic_breakdown_o1 &
-            population_count == "Children looked after on 31 March each year"
+            population_count == "Children looked after at 31 March each year"
         ) %>%
         select(rate_per_10000),
       nsmall = 0
@@ -1674,7 +1674,7 @@ server <- function(input, output, session) {
 
     p <- p +
       ggtitle(
-        "CLA rate on 31 March per 10,000 with Unaccompanied asylum-seeking children breakdown"
+        "CLA rate at 31 March per 10,000 with Unaccompanied asylum-seeking children breakdown"
       )
     ggplotly(
       p,
@@ -1705,7 +1705,7 @@ server <- function(input, output, session) {
       filter(
         geo_breakdown %in% input$geographic_breakdown_o1,
         characteristic %in% c("UASC", "Non-UASC"),
-        population_count == "Children looked after on 31 March each year"
+        population_count == "Children looked after at 31 March each year"
       ) %>%
       mutate(
         characteristic = case_when(
@@ -1726,7 +1726,7 @@ server <- function(input, output, session) {
       rename(
         `Time period` = `time_period`,
         `Location` = `geo_breakdown`,
-        `Number of children looked after on the 31st March` = `cla_31_march_number`,
+        `Number of children looked after at the 31st March` = `cla_31_march_number`,
         `Rate per 10,000 children` = `Placement Rate Per 10000`
       )
 
@@ -1734,7 +1734,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -1756,7 +1756,7 @@ server <- function(input, output, session) {
     p <- plot_uasc_31_march_reg() %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by region (",
+      "CLA rate at 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by region (",
       max(p$data$time_period),
       ")"
     )
@@ -1790,7 +1790,7 @@ server <- function(input, output, session) {
       filter(
         geographic_level == "Regional",
         characteristic %in% c("UASC", "Non-UASC"),
-        population_count == "Children looked after on 31 March each year",
+        population_count == "Children looked after at 31 March each year",
         time_period == max(time_period)
       ) %>%
       mutate(
@@ -1812,7 +1812,7 @@ server <- function(input, output, session) {
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
         `UASC status` = `characteristic`,
-        `Number of children looked after on 31st March` = `cla_31_march_number`,
+        `Number of children looked after at the 31st March` = `cla_31_march_number`,
         `Rate per 10,000 children` = `Placement Rate Per 10000`
       )
 
@@ -1820,7 +1820,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -1845,7 +1845,7 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA on 31st March rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (",
+      "CLA at 31st March rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (",
       max(p$data$time_period),
       ")"
     )
@@ -1892,7 +1892,7 @@ server <- function(input, output, session) {
           geo_breakdown %in% location,
           time_period == max(combined_cla_31_march_data$time_period),
           characteristic %in% c("UASC", "Non-UASC"),
-          population_count == "Children looked after on 31 March each year",
+          population_count == "Children looked after at 31 March each year",
         ) %>%
         mutate(
           characteristic = case_when(
@@ -1914,7 +1914,7 @@ server <- function(input, output, session) {
           `Time period` = `time_period`,
           `Local authority` = `geo_breakdown`,
           `UASC status` = `characteristic`,
-          `Number of children looked after on the 31st March` = `cla_31_march_number`,
+          `Number of children looked after at the 31st March` = `cla_31_march_number`,
           `Rate per 10,000 children` = `Placement Rate Per 10000`
         )
     } else if (
@@ -1925,7 +1925,7 @@ server <- function(input, output, session) {
           geographic_level == "Local authority",
           time_period == max(combined_cla_31_march_data$time_period),
           characteristic %in% c("UASC", "Non-UASC"),
-          population_count == "Children looked after on 31 March each year",
+          population_count == "Children looked after at 31 March each year",
         ) %>%
         mutate(
           characteristic = case_when(
@@ -1947,7 +1947,7 @@ server <- function(input, output, session) {
           `Time period` = `time_period`,
           `Local authority` = `geo_breakdown`,
           `UASC status` = `characteristic`,
-          `Number of children looked after on the 31st March` = `cla_31_march_number`,
+          `Number of children looked after at the 31st March` = `cla_31_march_number`,
           `Rate per 10,000 children` = `Placement Rate Per 10000`
         )
     }
@@ -1956,7 +1956,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -1985,13 +1985,13 @@ server <- function(input, output, session) {
       check_compare_regional = input$region_comparison_checkbox_o1,
       check_compare_sn = input$sn_comparison_checkbox_o1,
       dimensional_filters = list(
-        "population_count" = "Children looked after on 31 March each year"
+        "population_count" = "Children looked after at 31 March each year"
       )
     )
 
     filtered_data <- filtered_data %>%
       filter(
-        population_count == "Children looked after on 31 March each year"
+        population_count == "Children looked after at 31 March each year"
       ) %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
@@ -1999,7 +1999,7 @@ server <- function(input, output, session) {
     max_rate <- max(
       cla_rates$`Rate Per 10000`[
         cla_rates$population_count ==
-          "Children looked after on 31 March each year"
+          "Children looked after at 31 March each year"
       ],
       na.rm = TRUE
     )
@@ -2016,7 +2016,7 @@ server <- function(input, output, session) {
       max_rate
     ) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 on 31 March")
+    p <- p + ggtitle("CLA rate per 10,000 at 31 March")
 
     ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
@@ -2049,7 +2049,7 @@ server <- function(input, output, session) {
       check_compare_regional = input$region_comparison_checkbox_o1,
       check_compare_sn = input$sn_comparison_checkbox_o1,
       dimensional_filters = list(
-        "population_count" = "Children looked after on 31 March each year"
+        "population_count" = "Children looked after at 31 March each year"
       )
     )
 
@@ -2058,7 +2058,7 @@ server <- function(input, output, session) {
       rename(
         `Time period` = `time_period`,
         `Location` = `geo_breakdown`,
-        `Number of children looked after on 31 March` = `number`,
+        `Number of children looked after at 31 March` = `number`,
         `Rate per 10,000 children` = `Rate Per 10000`
       )
 
@@ -2066,7 +2066,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -2086,7 +2086,7 @@ server <- function(input, output, session) {
     p <- plot_cla_march_reg() %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by region (",
+      "CLA rate per 10,000 at 31 March by region (",
       max(p$data$time_period),
       ")"
     )
@@ -2122,13 +2122,13 @@ server <- function(input, output, session) {
       filter(
         geographic_level == "Regional",
         time_period == max(cla_rates$time_period),
-        population_count == "Children looked after on 31 March each year"
+        population_count == "Children looked after at 31 March each year"
       ) %>%
       select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
       rename(
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
-        `Number of children looked after on 31 March` = `number`,
+        `Number of children looked after at 31 March` = `number`,
         `Rate per 10,000 children` = `Rate Per 10000`
       )
 
@@ -2136,7 +2136,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -2159,7 +2159,7 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by local authority (",
+      "CLA rate per 10,000 at 31 March by local authority (",
       max(p$data$time_period),
       ")"
     )
@@ -2205,14 +2205,14 @@ server <- function(input, output, session) {
         filter(
           geo_breakdown %in% location,
           time_period == max(time_period),
-          population_count == "Children looked after on 31 March each year"
+          population_count == "Children looked after at 31 March each year"
         ) %>%
         select(time_period, geo_breakdown, number, `Rate Per 10000`) %>%
         arrange(desc(`Rate Per 10000`)) %>%
         rename(
           `Time period` = `time_period`,
           `Location` = `geo_breakdown`,
-          `Number of children looked after on 31 March` = `number`,
+          `Number of children looked after at 31 March` = `number`,
           `Rate per 10,000 children` = `Rate Per 10000`
         )
     } else if (
@@ -2222,7 +2222,7 @@ server <- function(input, output, session) {
         filter(
           geographic_level == "Local authority",
           time_period == max(cla_rates$time_period),
-          population_count == "Children looked after on 31 March each year"
+          population_count == "Children looked after at 31 March each year"
         ) %>%
         select(
           time_period,
@@ -2234,7 +2234,7 @@ server <- function(input, output, session) {
         rename(
           `Time period` = `time_period`,
           `Location` = `geo_breakdown`,
-          `Number of children looked after on 31 March` = `number`,
+          `Number of children looked after at 31 March` = `number`,
           `Rate per 10,000 children` = `Rate Per 10000`
         )
     }
@@ -2243,7 +2243,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -4895,7 +4895,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -4916,7 +4916,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -4936,7 +4936,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -13649,7 +13649,7 @@ server <- function(input, output, session) {
     # Set the max y-axis scale based on the data
     max_rate <- max(
       combined_cla_31_march_data[
-        i = population_count == "Children looked after on 31 March each year" &
+        i = population_count == "Children looked after at 31 March each year" &
           characteristic %in% c("UASC", "Non-UASC") &
           time_period == max(combined_cla_31_march_data$time_period),
         j = .(total_rate = sum(`Placement Rate Per 10000`, na.rm = TRUE)),
@@ -13671,7 +13671,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
     # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
     title <- paste0(
-      "CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (",
+      "CLA rate at 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (",
       max(combined_cla_31_march_data$time_period),
       ")"
     )
@@ -13699,7 +13699,7 @@ server <- function(input, output, session) {
   output$SN_uasc_31_march_tbl <- renderReactable({
     filtered_data <- combined_cla_31_march_data %>%
       filter(
-        population_count == "Children looked after on 31 March each year",
+        population_count == "Children looked after at 31 March each year",
         characteristic %in% c("UASC", "Non-UASC")
       ) %>%
       mutate(
@@ -13846,7 +13846,7 @@ server <- function(input, output, session) {
     max_rate <- max(
       cla_rates$`Rate Per 10000`[
         cla_rates$population_count ==
-          "Children looked after on 31 March each year" &
+          "Children looked after at 31 March each year" &
           cla_rates$time_period == max(cla_rates$time_period) &
           cla_rates$geographic_level == "Local authority"
       ],
@@ -13858,7 +13858,7 @@ server <- function(input, output, session) {
 
     filtered_data <- cla_rates %>%
       filter(
-        population_count == "Children looked after on 31 March each year"
+        population_count == "Children looked after at 31 March each year"
       ) %>%
       rename("Rate per 10,000" = "Rate Per 10000")
 
@@ -13873,7 +13873,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
     # p <- p + ggtitle("CLA rate per 10,000 on 31 March by statistical neighbours")
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by statistical neighbours (",
+      "CLA rate per 10,000 at 31 March by statistical neighbours (",
       max(filtered_data$time_period),
       ")"
     )
@@ -13900,7 +13900,7 @@ server <- function(input, output, session) {
   # # cla March stats neighbour tables
   output$SN_cla_march_tbl <- renderReactable({
     filtered_data <- cla_rates %>%
-      filter(population_count == "Children looked after on 31 March each year")
+      filter(population_count == "Children looked after at 31 March each year")
 
     reactable(
       stats_neighbours_table(
@@ -13917,7 +13917,7 @@ server <- function(input, output, session) {
           cell = cellfunc,
           defaultSortOrder = "desc"
         ),
-        `number` = colDef(name = "Number of children looked after on 31 March")
+        `number` = colDef(name = "Number of children looked after at 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,
@@ -17001,7 +17001,7 @@ server <- function(input, output, session) {
               )
             ),
             tags$li(
-              "From 28 April 2023, supported accommodation providers in England were able to register with Ofsted and it became illegal for a supported accommodation provider to operate if they had not submitted a complete application which had been accepted by 28 October 2023. For 2024, figures in the category 'Independent and semi-independent living arrangements/supported accommodation' include young people, before 28 October 2023, who were placed in former semi independent living accommodation or who formerly lived independently, and also young people in placements from 28 April 2023 onwards at a provider that had submitted a complete application to Ofsted to operate as a supported accommodation provider by the deadline. Former semi-independent and former independent living providers who did not submit a completed application that was accepted by Ofsted by the end of 27 October 2023 who continued to provide placements are classified as ‘Other placements’ from 28 October 2023 onwards"
+              "The category 'Independent and semi-independent living arrangements/ supported accommodation' reports data for young people in placements in former semi-independent living arrangements and living independently up to and including 2023. From 2024 all placements are supported accommodation (registered with Ofsted). From 28 October 2023 it became illegal for young people to be placed in former semi independent and independent living placements. Supported accommodation providers were required to submit a completed application to Ofsted by 28 October 2023. From 2024, young people who were placed in former semi independent and independent living placements with providers who had not submitted a completed application by the deadline are reported within the 'Other' category."
             ),
             tags$br(),
             p(

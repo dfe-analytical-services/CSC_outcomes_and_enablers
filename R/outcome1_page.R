@@ -452,7 +452,7 @@ outcome1_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Rate of children looked after on 31 March, per 10,000 children",
+                    title = "Rate of children looked after at 31 March, per 10,000 children",
                     value = htmlOutput("cla_march_rate_headline_txt")
                   )
                 ),
@@ -469,7 +469,7 @@ outcome1_tab <- function() {
                 column(
                   width = 6,
                   value_box(
-                    title = "Rate of children looked after on 31 March who were UASC, per 10,000 children",
+                    title = "Rate of children looked after at 31 March who were UASC, per 10,000 children",
                     value = htmlOutput("uasc_31_march_rate_headline_txt")
                   )
                 ),
@@ -615,11 +615,11 @@ outcome1_tab <- function() {
                     uiOutput("SN_cla"),
                   )
                 ),
-                ## CLA on 31 March ---------
+                ## CLA at 31 March ---------
                 accordion_panel(
-                  "Rate of children looked after on 31 March",
+                  "Rate of children looked after at 31 March",
                   gov_row(
-                    h2("Rate of children looked after on 31 March"),
+                    h2("Rate of children looked after at 31 March"),
                     p(
                       "This metric measures the rate of children in care as a proportion of the 0-17 population. Avoiding permanent placements in care is a good indicator of supporting families to remain together"
                     ),
@@ -627,9 +627,9 @@ outcome1_tab <- function() {
                       inputId = "cla_31_March_rate_definition",
                       text = paste(
                         "<b>",
-                        "Rate of children looked after on 31 March",
+                        "Rate of children looked after at 31 March",
                         "</b><br>",
-                        "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                        "The children looked after rate is calculated as the number of children looked after at 31 March, per 10,000 children in the population."
                       )
                     ),
                     br(),
@@ -675,7 +675,7 @@ outcome1_tab <- function() {
                   ),
                   # cla on 31 march by region
                   gov_row(
-                    h2("Rate of children looked after on 31 March by region"),
+                    h2("Rate of children looked after at 31 March by region"),
                     p(
                       "This is a static chart and will not react to geographical level and location selected in the filters at the top."
                     ),
@@ -723,7 +723,7 @@ outcome1_tab <- function() {
                   # cla on 31 march by local authority
                   gov_row(
                     h2(
-                      "Rate of children looked after on 31 March by local authority"
+                      "Rate of children looked after at 31 March by local authority"
                     ),
                     p(sprintf(
                       "The charts below represent data from %s.",
@@ -900,10 +900,10 @@ outcome1_tab <- function() {
                 ),
                 ## CLA UASC 31 March -------------
                 accordion_panel(
-                  "Children looked after each year on 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
+                  "Children looked after each year at 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
                     h2(
-                      "Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at the 31st March who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(
                       "This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."
@@ -912,9 +912,9 @@ outcome1_tab <- function() {
                       inputId = "cla_rate_31_march_definition",
                       text = paste(
                         "<b>",
-                        "Rate of children looked after on the 31st March",
+                        "Rate of children looked after at the 31st March",
                         "</b><br>",
-                        "The children looked after rate is calculated as the number of children looked after on 31 March, per 10,000 children in the population."
+                        "The children looked after rate is calculated as the number of children looked after at 31 March, per 10,000 children in the population."
                       )
                     ),
                     br(),
@@ -971,7 +971,7 @@ outcome1_tab <- function() {
                   ## CLA UASC region
                   gov_row(
                     h2(
-                      "Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at 31st March by region who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(
                       "This is a static chart and will not react to geographical level and location selected in the filters at the top."
@@ -1034,7 +1034,7 @@ outcome1_tab <- function() {
                   ## CLA UASC 31st March by local authority
                   gov_row(
                     h2(
-                      "Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at 31st March by local authority who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(sprintf(
                       "The charts below represent data from %s.",
@@ -1126,7 +1126,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Overall absence for CLA 12 months on 31 March",
+                    title = "Overall absence for CLA 12 months at 31 March",
                     value = htmlOutput("absence_CLA_headline_txt")
                   )
                 ),
@@ -1150,7 +1150,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Persistent absentees for CLA 12 months on 31 March (overall absence 10% or more)",
+                    title = "Persistent absentees for CLA 12 months at 31 March (overall absence 10% or more)",
                     value = htmlOutput("persistent_CLA_headline_txt")
                   )
                 ),
@@ -1174,7 +1174,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Severe absentees for CLA 12 months on 31 March (overall absence 50% or more)",
+                    title = "Severe absentees for CLA 12 months at 31 March (overall absence 50% or more)",
                     value = htmlOutput("severe_CLA_headline_txt")
                   )
                 ),
@@ -1795,7 +1795,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "CLA 12 months on 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
+                    title = "CLA 12 months at 31 March pupils achieving expected standard in reading, writing and mathematics combined (KS2)",
                     value = htmlOutput("KS2_CLA_headline_txt")
                   )
                 ),
@@ -1819,7 +1819,7 @@ outcome1_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "Average attainment 8 for CLA 12 months on 31 March (KS4)",
+                    title = "Average attainment 8 for CLA 12 months at 31 March (KS4)",
                     value = htmlOutput("KS4_CLA_headline_txt")
                   )
                 ),

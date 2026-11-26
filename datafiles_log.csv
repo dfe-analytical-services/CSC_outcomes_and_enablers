@@ -30,7 +30,7 @@ data-raw/d5_cpps_at31march_by_duration_2013_to_2025.csv,published
 data-raw/la_cla_placement_stability.csv,published
 data-raw/la_cla_on_31_march_by_characteristics.csv,published
 data-raw/la_care_leavers_accommodation_suitability.csv,published
-data-raw/la_care_leavers_activity.csv,published
+data-raw/la_care_leavers_17_to_21.csv,published
 data-raw/la_conviction_health_outcome_cla.csv,published
 data-raw/la_hospital_admissions_2425.csv,published
 data-raw/region_hospital_admissions_2425.csv,published
@@ -86,3 +86,4 @@ data/workforce_data.rds,published
 data/workforce_eth.rds,published
 data/workforce_eth_seniority.rds,published
 data/workforce_headline_measures.rds,published
+data-raw/la_care_leavers_activity.csv,published
