@@ -1726,7 +1726,7 @@ server <- function(input, output, session) {
       rename(
         `Time period` = `time_period`,
         `Location` = `geo_breakdown`,
-        `Number of children looked after on the 31st March` = `cla_31_march_number`,
+        `Number of children looked after at the 31st March` = `cla_31_march_number`,
         `Rate per 10,000 children` = `Placement Rate Per 10000`
       )
 
@@ -1734,7 +1734,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -1756,7 +1756,7 @@ server <- function(input, output, session) {
     p <- plot_uasc_31_march_reg() %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by region (",
+      "CLA rate at 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by region (",
       max(p$data$time_period),
       ")"
     )
@@ -1812,7 +1812,7 @@ server <- function(input, output, session) {
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
         `UASC status` = `characteristic`,
-        `Number of children looked after on 31st March` = `cla_31_march_number`,
+        `Number of children looked after at the 31st March` = `cla_31_march_number`,
         `Rate per 10,000 children` = `Placement Rate Per 10000`
       )
 
@@ -1820,7 +1820,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -1845,7 +1845,7 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA on 31st March rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (",
+      "CLA at 31st March rate per 10,000 with Unaccompanied asylum-seeking children breakdown by local authority (",
       max(p$data$time_period),
       ")"
     )
@@ -1914,7 +1914,7 @@ server <- function(input, output, session) {
           `Time period` = `time_period`,
           `Local authority` = `geo_breakdown`,
           `UASC status` = `characteristic`,
-          `Number of children looked after on the 31st March` = `cla_31_march_number`,
+          `Number of children looked after at the 31st March` = `cla_31_march_number`,
           `Rate per 10,000 children` = `Placement Rate Per 10000`
         )
     } else if (
@@ -1947,7 +1947,7 @@ server <- function(input, output, session) {
           `Time period` = `time_period`,
           `Local authority` = `geo_breakdown`,
           `UASC status` = `characteristic`,
-          `Number of children looked after on the 31st March` = `cla_31_march_number`,
+          `Number of children looked after at the 31st March` = `cla_31_march_number`,
           `Rate per 10,000 children` = `Placement Rate Per 10000`
         )
     }
@@ -1956,7 +1956,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on the 31st March` = colDef(
+        `Number of children looked after at the 31st March` = colDef(
           cell = cellfunc
         ),
         `Rate per 10,000 children` = colDef(
@@ -13671,7 +13671,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
     # p <- p + ggtitle("CLA rate per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours")
     title <- paste0(
-      "CLA rate on 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (",
+      "CLA rate at 31st March per 10,000 with Unaccompanied asylum-seeking children breakdown by statistical neighbours (",
       max(combined_cla_31_march_data$time_period),
       ")"
     )

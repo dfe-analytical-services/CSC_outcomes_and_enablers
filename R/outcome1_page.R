@@ -903,7 +903,7 @@ outcome1_tab <- function() {
                   "Children looked after each year at 31 March, with a breakdown by whether they are Unaccompanied Asylum Seeking Children (UASC)",
                   gov_row(
                     h2(
-                      "Rate of children looked after on the 31st March who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at the 31st March who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(
                       "This measures the stock number in care who are UASC. UASC are children, who have applied for asylum in their own right and are separated from both parents and/or any other responsible adult. Local authorities have a legal duty to provide accommodation for these children. This breakdown is provided for context."
@@ -912,7 +912,7 @@ outcome1_tab <- function() {
                       inputId = "cla_rate_31_march_definition",
                       text = paste(
                         "<b>",
-                        "Rate of children looked after on the 31st March",
+                        "Rate of children looked after at the 31st March",
                         "</b><br>",
                         "The children looked after rate is calculated as the number of children looked after at 31 March, per 10,000 children in the population."
                       )
@@ -971,7 +971,7 @@ outcome1_tab <- function() {
                   ## CLA UASC region
                   gov_row(
                     h2(
-                      "Rate of children looked after on 31st March by region who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at 31st March by region who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(
                       "This is a static chart and will not react to geographical level and location selected in the filters at the top."
@@ -1034,7 +1034,7 @@ outcome1_tab <- function() {
                   ## CLA UASC 31st March by local authority
                   gov_row(
                     h2(
-                      "Rate of children looked after on 31st March by local authority who were Unaccompanied Asylum Seeking Children"
+                      "Rate of children looked after at 31st March by local authority who were Unaccompanied Asylum Seeking Children"
                     ),
                     p(sprintf(
                       "The charts below represent data from %s.",
