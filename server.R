@@ -1674,7 +1674,7 @@ server <- function(input, output, session) {
 
     p <- p +
       ggtitle(
-        "CLA rate on 31 March per 10,000 with Unaccompanied asylum-seeking children breakdown"
+        "CLA rate at 31 March per 10,000 with Unaccompanied asylum-seeking children breakdown"
       )
     ggplotly(
       p,
@@ -2016,7 +2016,7 @@ server <- function(input, output, session) {
       max_rate
     ) %>%
       config(displayModeBar = F)
-    p <- p + ggtitle("CLA rate per 10,000 on 31 March")
+    p <- p + ggtitle("CLA rate per 10,000 at 31 March")
 
     ggplotly(p, height = 420, tooltip = "text") %>%
       layout(yaxis = list(range = c(0, max_rate), tickmode = "auto")) %>%
@@ -2058,7 +2058,7 @@ server <- function(input, output, session) {
       rename(
         `Time period` = `time_period`,
         `Location` = `geo_breakdown`,
-        `Number of children looked after on 31 March` = `number`,
+        `Number of children looked after at 31 March` = `number`,
         `Rate per 10,000 children` = `Rate Per 10000`
       )
 
@@ -2066,7 +2066,7 @@ server <- function(input, output, session) {
       filtered_data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -2086,7 +2086,7 @@ server <- function(input, output, session) {
     p <- plot_cla_march_reg() %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by region (",
+      "CLA rate per 10,000 at 31 March by region (",
       max(p$data$time_period),
       ")"
     )
@@ -2128,7 +2128,7 @@ server <- function(input, output, session) {
       rename(
         `Time period` = `time_period`,
         `Region` = `geo_breakdown`,
-        `Number of children looked after on 31 March` = `number`,
+        `Number of children looked after at 31 March` = `number`,
         `Rate per 10,000 children` = `Rate Per 10000`
       )
 
@@ -2136,7 +2136,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -2159,7 +2159,7 @@ server <- function(input, output, session) {
     ) %>%
       config(displayModeBar = F)
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by local authority (",
+      "CLA rate per 10,000 at 31 March by local authority (",
       max(p$data$time_period),
       ")"
     )
@@ -2212,7 +2212,7 @@ server <- function(input, output, session) {
         rename(
           `Time period` = `time_period`,
           `Location` = `geo_breakdown`,
-          `Number of children looked after on 31 March` = `number`,
+          `Number of children looked after at 31 March` = `number`,
           `Rate per 10,000 children` = `Rate Per 10000`
         )
     } else if (
@@ -2234,7 +2234,7 @@ server <- function(input, output, session) {
         rename(
           `Time period` = `time_period`,
           `Location` = `geo_breakdown`,
-          `Number of children looked after on 31 March` = `number`,
+          `Number of children looked after at 31 March` = `number`,
           `Rate per 10,000 children` = `Rate Per 10000`
         )
     }
@@ -2243,7 +2243,7 @@ server <- function(input, output, session) {
       data,
       defaultColDef = colDef(align = "center"),
       columns = list(
-        `Number of children looked after on 31 March` = colDef(cell = cellfunc),
+        `Number of children looked after at 31 March` = colDef(cell = cellfunc),
         `Rate per 10,000 children` = colDef(
           cell = cellfunc,
           defaultSortOrder = "desc"
@@ -4895,7 +4895,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -4916,7 +4916,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -4936,7 +4936,7 @@ server <- function(input, output, session) {
     rv_geo_filters = rv_outcome_1,
     rv_dimensional_filters = list(),
     dataset = copy(school_stability_data),
-    chart_title = "CLA on 31 March with one or more mid-year moves during the year",
+    chart_title = "CLA at 31 March with one or more mid-year moves during the year",
     yvalue = "percent",
     yaxis_title = "CLA with one or more mid-year moves (%)",
     max_rate = calculate_max_rate(school_stability_data, "percent"),
@@ -13873,7 +13873,7 @@ server <- function(input, output, session) {
       config(displayModeBar = F)
     # p <- p + ggtitle("CLA rate per 10,000 on 31 March by statistical neighbours")
     title <- paste0(
-      "CLA rate per 10,000 on 31 March by statistical neighbours (",
+      "CLA rate per 10,000 at 31 March by statistical neighbours (",
       max(filtered_data$time_period),
       ")"
     )
@@ -13917,7 +13917,7 @@ server <- function(input, output, session) {
           cell = cellfunc,
           defaultSortOrder = "desc"
         ),
-        `number` = colDef(name = "Number of children looked after on 31 March")
+        `number` = colDef(name = "Number of children looked after at 31 March")
       ),
       defaultPageSize = 11, # 11 for stats neighbours, 10 for others?
       searchable = TRUE,

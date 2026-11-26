@@ -113,14 +113,14 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March with 3 or more placements during the year",
+                    title = "% CLA at 31 March with 3 or more placements during the year",
                     value = htmlOutput("placement_changes_txt")
                   )
                 ),
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March placed more than 20 miles from home",
+                    title = "% CLA at 31 March placed more than 20 miles from home",
                     value = htmlOutput("placement_distance_txt")
                   )
                 ),
@@ -136,7 +136,7 @@ outcome4_tab <- function() {
                 column(
                   width = 4,
                   value_box(
-                    title = "% CLA on 31 March living in foster care",
+                    title = "% CLA at 31 March living in foster care",
                     value = htmlOutput("foster_placement_txt")
                   )
                 ),
