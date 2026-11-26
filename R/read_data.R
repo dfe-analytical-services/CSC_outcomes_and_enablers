@@ -451,7 +451,7 @@ collect_summary_data_all <- function() {
     header_time_period != time_period,
     metric_text := paste0(metric_text, " (", time_period, ")")
   ]
-  #indicator on a different year has it shown in its own text above
+  #indicator on a different year has it shown in its own text
   summary_data[,
     heading_text := paste0(heading_text, " (", header_time_period, ")")
   ]
