@@ -13,6 +13,54 @@
 
 dropList <- c("E10000009", "E10000021", "E06000028", "E06000029")
 
+# LA codes that have changed in newer source data: old code = new code.
+# Add any further changes here and they will apply everywhere
+# update_la_codes() is used.
+la_code_updates <- c(
+  "E08000016" = "E08000038", # Barnsley
+  "E08000019" = "E08000039" # Sheffield
+)
+
+# Replace old LA codes with their new equivalents; other codes, and NAs,
+# are returned unchanged.
+update_la_codes <- function(codes, mapping = la_code_updates) {
+  idx <- match(codes, names(mapping))
+  ifelse(is.na(idx), codes, unname(mapping)[idx])
+}
+
+# Some source files carry both the old and new code for an LA whose code has
+# changed (see la_code_updates), with real figures under one code and a
+# suppressed "z" placeholder under the other, which differs by year.
+# This drops the placeholder row where a real row exists for the same
+# old_la_code and key_cols, keeps one row if every row is a placeholder, and
+# then moves all years onto the new code.
+# value_cols: the columns holding figures (a row is a placeholder if all are "z"/NA)
+# key_cols: the columns that identify a single row for one LA (besides the code)
+resolve_renamed_la_rows <- function(
+  dataset,
+  value_cols,
+  key_cols = c("old_la_code", "time_period")
+) {
+  dt <- data.table::copy(data.table::as.data.table(dataset))
+  affected_codes <- c(names(la_code_updates), unname(la_code_updates))
+
+  dt[, .affected := new_la_code %in% affected_codes]
+  dt[,
+    .placeholder := .affected &
+      Reduce(`&`, lapply(.SD, function(x) x %in% c("z", NA))),
+    .SDcols = value_cols
+  ]
+  dt[, .has_real := any(.affected & !.placeholder), by = key_cols]
+  dt <- dt[!(.placeholder & .has_real)]
+
+  # all-placeholder groups: keep a single row
+  dt <- dt[!(.affected & duplicated(dt, by = key_cols))]
+
+  dt[, new_la_code := update_la_codes(new_la_code)]
+  dt[, c(".affected", ".placeholder", ".has_real") := NULL]
+  dt[]
+}
+
 # Function to clean column names
 colClean <- function(x) {
   colnames(x) <- gsub("\\.", "perc", colnames(x))
@@ -433,6 +481,13 @@ read_cla_rate_data <- function(
 
   cla_rate_data <- remove_cumbria_data(cla_rate_data)
 
+  # Barnsley and Sheffield appear under both old and new codes: keep the real row
+  cla_rate_data <- resolve_renamed_la_rows(
+    cla_rate_data,
+    value_cols = c("number", "rate_per_10000"),
+    key_cols = c("old_la_code", "time_period", "population_count")
+  )
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -503,9 +558,14 @@ read_cla_placement_data <- function(
     ) %>%
     setDT() %>%
     filter(
-      !(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029","E08000038","E08000039"))
+      !(new_la_code %in% c("E10000009", "E10000021", "E06000028", "E06000029"))
     ) %>%
     remove_cumbria_data() %>%
+    # Barnsley and Sheffield appear under both old and new codes: keep the real row
+    resolve_renamed_la_rows(
+      value_cols = c("number", "percentage"),
+      key_cols = c("old_la_code", "time_period", "cla_group", "characteristic")
+    ) %>%
     select(
       geographic_level,
       geo_breakdown,
@@ -558,6 +618,11 @@ read_cla_31_march_data <- function(
     ) %>%
     setDT() %>%
     remove_cumbria_data() %>%
+    # Barnsley and Sheffield appear under both old and new codes: keep the real row
+    resolve_renamed_la_rows(
+      value_cols = c("number", "percentage"),
+      key_cols = c("old_la_code", "time_period", "cla_group", "characteristic")
+    ) %>%
     select(
       geographic_level,
       geo_breakdown,
@@ -1408,6 +1473,13 @@ read_outcome2 <- function(
     ) %>%
     remove_cumbria_data()
 
+  # Barnsley and Sheffield appear under both old and new codes: keep the real row
+  ceased_cla_data <- resolve_renamed_la_rows(
+    ceased_cla_data,
+    value_cols = c("number", "percentage"),
+    key_cols = c("old_la_code", "time_period", "cla_group", "characteristic")
+  )
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -2122,6 +2194,13 @@ read_placement_info_data <- function(
     insert_geo_breakdown() %>%
     remove_cumbria_data()
 
+  # Barnsley and Sheffield appear under both old and new codes: keep the real row
+  placement_info_data <- resolve_renamed_la_rows(
+    placement_info_data,
+    value_cols = c("number", "percentage"),
+    key_cols = c("old_la_code", "time_period", "cla_group", "characteristic")
+  )
+
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
     sn_long = sn_long,
@@ -2178,6 +2257,13 @@ read_care_leavers_activity_data <- function(
       activity = breakdown
     ) %>%
     remove_cumbria_data()
+
+  # Barnsley and Sheffield appear under both old and new codes: keep the real row
+  cl_activity_data <- resolve_renamed_la_rows(
+    cl_activity_data,
+    value_cols = c("number", "percentage"),
+    key_cols = c("old_la_code", "time_period", "age", "activity")
+  )
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -2239,6 +2325,13 @@ read_care_leavers_accommodation_suitability <- function(
       accommodation_suitability = breakdown
     ) %>%
     remove_cumbria_data()
+
+  # Barnsley and Sheffield appear under both old and new codes: keep the real row
+  cl_accom_data <- resolve_renamed_la_rows(
+    cl_accom_data,
+    value_cols = c("number", "percentage"),
+    key_cols = c("old_la_code", "time_period", "age", "accommodation_suitability")
+  )
 
   # now calculate SN metrics and append to the bottom of the dataset
   sn_metrics <- sn_aggregations(
@@ -3178,12 +3271,8 @@ read_spending_data <- function(
 
   lalookup <- GET_location(cla_placements)
   
-  #changes Barnsley and Sheffield to new codes
-  lalookup$new_la_code <- dplyr::recode(
-    lalookup$new_la_code,
-    "E08000016" = "E08000038",
-    "E08000019" = "E08000039"
-  )
+  # change old LA codes (e.g. Barnsley, Sheffield) to new codes
+  lalookup$new_la_code <- update_la_codes(lalookup$new_la_code)
   
   merged_data <- merge(
     lalookup,
@@ -3638,12 +3727,8 @@ read_spending_data2 <- function(
 
   lalookup <- GET_location(cla_placements)
   
-  #changes Barnsley and Sheffield to new codes
-  lalookup$new_la_code <- dplyr::recode(
-    lalookup$new_la_code,
-        "E08000016" = "E08000038",
-        "E08000019" = "E08000039"
-      )
+  # change old LA codes (e.g. Barnsley, Sheffield) to new codes
+  lalookup$new_la_code <- update_la_codes(lalookup$new_la_code)
   
     merged_data <- merge(
     lalookup,
