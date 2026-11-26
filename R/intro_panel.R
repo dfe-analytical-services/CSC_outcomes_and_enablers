@@ -70,7 +70,7 @@ introductionPanel <- function() {
                       "Rate of children starting to be looked who were UASC per 10k"
                     ),
                     tags$li(
-                      "Rate of children looked after on 31 March per 10k"
+                      "Rate of children looked after at 31 March per 10k"
                     ),
                     style = "font-family: GDS Transport, arial, sans-serif; font-size :17px;"
                   ),
@@ -84,7 +84,7 @@ introductionPanel <- function() {
                   h5("Child wellbeing and development"),
                   tags$ul(
                     tags$li(
-                      "Overall Absence for CINO, CPPO and CLA on 31 March by school type"
+                      "Overall Absence for CINO, CPPO and CLA at 31 March by school type"
                     ),
                     tags$li(
                       "Persistent absentees for CINO, CPPO and CLA at 31 March (overall absence 10% or more) by school type"
@@ -167,7 +167,7 @@ introductionPanel <- function() {
                       "Average number of months between placement order and match for children who are adopted"
                     ),
                     tags$li(
-                      "% children looked after on 31 March living in foster care"
+                      "% children looked after at 31 March living in foster care"
                     ),
                     tags$li(
                       "% children looked after living in secure homes and children's homes"

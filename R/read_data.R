@@ -445,13 +445,16 @@ collect_summary_data_all <- function() {
     .(header_time_period = max(header_time_period)),
     by = .(tab_name, accordion_text, heading_text)
   ]
-  # there may be discrepancies on dates within a heading so individual exceptions to the norm are corrected by adding the date in brackets within the indicator text.....
+  # there may be discrepancies on dates within a heading so individual exceptions to the norm are corrected by adding the date in brackets within the indicator text.
   summary_data <- merge(summary_data, date_per_heading)
   summary_data[
     header_time_period != time_period,
     metric_text := paste0(metric_text, " (", time_period, ")")
   ]
-  summary_data[, heading_text := paste0(heading_text, " (", time_period, ")")]
+  #indicator on a different year has it shown in its own text
+  summary_data[,
+    heading_text := paste0(heading_text, " (", header_time_period, ")")
+  ]
 
   return(summary_data)
 }
